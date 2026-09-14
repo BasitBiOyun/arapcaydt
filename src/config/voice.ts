@@ -1,6 +1,6 @@
 /**
  * Centralized Voice Configuration for ElevenLabs
- * 
+ *
  * Platform standard narration voice for Arabic YDT question solution videos.
  * (eleven_multilingual_v2) is optimized for dual-language (Turkish & Arabic)
  * educational explanation cadence.
@@ -39,7 +39,7 @@ export const DEFAULT_VOICE_CONFIG: VoiceConfig = {
   description: 'Eleven Multilingual v2 - Türkçe & Arapça soru çözümü için platform standart sesi',
 
   voiceSettings: {
-    speed: 1.0,
+    speed: 1,
     stability: 0.50,
     similarity_boost: 0.75,
     style: 0.0,
