@@ -71,7 +71,7 @@ test('solution parser follows an option across sentences and creates reject/corr
   assert.equal(parsed.deducedCorrectAnswer, 'C');
 });
 
-test('timeline aligner uses narration timings and keeps focus/check pair close together', () => {
+test('timeline aligner uses narration timings and keeps final focus/check pair close together', () => {
   const layout = detectYdtQuestionRegions(buildSyntheticOcr());
   const solution = [
     'A seçeneğine bakalım.',
@@ -98,7 +98,8 @@ test('timeline aligner uses narration timings and keeps focus/check pair close t
 
   const actions = alignEventsWithNarration(parsed.events, narration, 9);
   const rejectA = actions.find((a) => a.targetRegionId === 'option-a' && a.type === 'reject');
-  const focusC = actions.find((a) => a.targetRegionId === 'option-c' && a.type === 'focus');
+  const focusEventsC = actions.filter((a) => a.targetRegionId === 'option-c' && a.type === 'focus');
+  const focusC = focusEventsC[focusEventsC.length - 1];
   const correctC = actions.find((a) => a.targetRegionId === 'option-c' && a.type === 'correct');
 
   assert.ok(rejectA, 'A reject action should exist');
