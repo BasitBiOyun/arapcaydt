@@ -16,7 +16,7 @@ class ElevenLabsService implements IElevenLabsService {
 
   public async checkStatus(): Promise<ElevenLabsStatus> {
     try {
-      const res = await fetch('/api/elevenlabs/status');
+      const res = await fetch('/api/elevenlabs/status', { cache: 'no-store' });
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
       }
@@ -26,7 +26,7 @@ class ElevenLabsService implements IElevenLabsService {
       return {
         configured: false,
         mode: 'live',
-        message: 'ElevenLabs durumu sorgulanamadı.',
+        message: 'Ses servisi durumu sorgulanamadı.',
       };
     }
   }
@@ -64,20 +64,54 @@ class ElevenLabsService implements IElevenLabsService {
       voiceSettings: req.voiceSettings || STANDARD_VOICE_CONFIG.voiceSettings,
     };
 
-    const res = await fetch('/api/elevenlabs/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: 'Sunucudan bilinmeyen hata yanıtı alındı.' }));
-      throw new Error(err.error || `Sunucu hata kodu: ${res.status}`);
+    let res: Response;
+    try {
+      res = await fetch('/api/elevenlabs/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (error: any) {
+      throw new Error(`Ses servisine ulaşılamadı: ${error?.message || 'Ağ bağlantısı başarısız.'}`);
     }
 
-    return await res.json();
+    if (!res.ok) {
+      const contentType = res.headers.get('content-type') || '';
+      let message = '';
+
+      if (contentType.includes('application/json')) {
+        const err = await res.json().catch(() => null);
+        message = err?.error || err?.message || '';
+      } else {
+        const raw = await res.text().catch(() => '');
+        if (raw && !raw.toLowerCase().includes('<!doctype html')) {
+          message = raw.slice(0, 300);
+        }
+      }
+
+      if (!message) {
+        if (res.status === 404) {
+          message = 'Ses API endpointi Vercel dağıtımında bulunamadı (HTTP 404).';
+        } else if (res.status === 405) {
+          message = 'Ses API endpointi yanlış HTTP yöntemiyle çağrıldı (HTTP 405).';
+        } else if (res.status >= 500) {
+          message = `Ses sunucusunda hata oluştu (HTTP ${res.status}).`;
+        } else {
+          message = `Ses servisi hata döndürdü (HTTP ${res.status}).`;
+        }
+      }
+
+      throw new Error(message);
+    }
+
+    const result = await res.json();
+    if (!result?.audioBase64) {
+      throw new Error('Ses servisi yanıt verdi fakat ses verisi gelmedi.');
+    }
+
+    return result;
   }
 }
 
