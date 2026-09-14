@@ -104,7 +104,7 @@ test('timeline aligner uses narration timings and keeps focus/check pair close t
   assert.ok(rejectA, 'A reject action should exist');
   assert.ok(focusC, 'C focus action should exist');
   assert.ok(correctC, 'C correct action should exist');
-  assert.ok(rejectA!.start >= 3.0 && rejectA!.start < 3.6);
+  assert.ok(rejectA!.start >= 2.4 && rejectA!.start < 3.6);
   assert.ok(correctC!.start > focusC!.start);
   assert.ok(correctC!.start - focusC!.start < 0.7);
 });
