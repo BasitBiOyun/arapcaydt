@@ -1,3 +1,7 @@
+export const config = {
+  maxDuration: 60,
+};
+
 const VOICE_CONFIG = {
   voiceId: 'eUUtjbi66JcWz3T4Gvvo',
   name: 'Eğitmen Sesi',
@@ -11,6 +15,17 @@ const VOICE_CONFIG = {
     use_speaker_boost: true,
   },
 };
+
+function normalizeApiKey(value?: string): string {
+  let key = (value || '').trim();
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1).trim();
+  }
+  return key;
+}
 
 function extractWordsFromAlignment(
   characters: string[] = [],
@@ -57,17 +72,57 @@ function extractWordsFromAlignment(
   return words;
 }
 
+function getUpstreamError(status: number, raw: string): string {
+  let upstreamMessage = '';
+  let upstreamCode = '';
+
+  try {
+    const parsed = JSON.parse(raw);
+    const detail = parsed?.detail;
+    upstreamCode = detail?.status || parsed?.status || '';
+    upstreamMessage =
+      detail?.message ||
+      (typeof detail === 'string' ? detail : '') ||
+      parsed?.message ||
+      parsed?.error ||
+      '';
+  } catch {
+    upstreamMessage = raw.slice(0, 300);
+  }
+
+  if (status === 401 || upstreamCode === 'invalid_api_key') {
+    return 'Ses servisi API anahtarı geçersiz. Vercel ortam değişkenindeki ELEVENLABS_API_KEY değerini kontrol edin.';
+  }
+  if (status === 403) {
+    return 'Ses servisi isteği reddedildi. API anahtarının Text to Speech iznini ve varsa IP kısıtlamasını kontrol edin.';
+  }
+  if (status === 429 || upstreamCode === 'quota_exceeded') {
+    return 'Ses servisi kullanım kotası dolmuş görünüyor. Hesap kotasını kontrol edin.';
+  }
+  if (upstreamCode === 'voice_not_found') {
+    return 'Tanımlı ses hesabınızda kullanılamıyor veya voice ID erişilebilir değil.';
+  }
+  if (upstreamCode === 'max_character_limit_exceeded') {
+    return 'Çözüm metni tek seslendirme isteği için izin verilen uzunluğu aşıyor.';
+  }
+
+  return upstreamMessage
+    ? `Ses servisi hatası (${status}): ${upstreamMessage}`
+    : `Ses servisi hatası (${status}).`;
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.ELEVENLABS_API_KEY;
-  if (!apiKey || !apiKey.trim() || apiKey === 'MY_ELEVENLABS_API_KEY') {
+  const apiKey = normalizeApiKey(process.env.ELEVENLABS_API_KEY);
+  if (!apiKey || apiKey === 'MY_ELEVENLABS_API_KEY') {
     console.error('[ElevenLabs] ELEVENLABS_API_KEY is missing in Vercel runtime.');
     return res.status(500).json({
-      error: 'Ses servisi yapılandırılmamış. ELEVENLABS_API_KEY ortam değişkenini kontrol edin.',
+      error: 'Ses servisi yapılandırılmamış. Vercel ortam değişkeninde ELEVENLABS_API_KEY bulunamadı.',
+      code: 'MISSING_ELEVENLABS_API_KEY',
     });
   }
 
@@ -75,6 +130,7 @@ export default async function handler(req: any, res: any) {
   if (!text) {
     return res.status(400).json({
       error: 'Seslendirme için geçerli bir çözüm metni gereklidir.',
+      code: 'EMPTY_TEXT',
     });
   }
 
@@ -95,18 +151,24 @@ export default async function handler(req: any, res: any) {
 
     if (!upstream.ok) {
       const raw = await upstream.text();
-      let message = `ElevenLabs API hatası (${upstream.status})`;
-      try {
-        const parsed = JSON.parse(raw);
-        message = parsed?.detail?.message || parsed?.detail || parsed?.message || parsed?.error || message;
-      } catch {
-        if (raw) message = raw.slice(0, 300);
-      }
-      console.error('[ElevenLabs upstream]', upstream.status, message);
-      return res.status(upstream.status).json({ error: String(message) });
+      const message = getUpstreamError(upstream.status, raw);
+      console.error('[ElevenLabs upstream]', upstream.status, raw.slice(0, 500));
+      return res.status(upstream.status).json({
+        error: message,
+        code: 'ELEVENLABS_UPSTREAM_ERROR',
+        upstreamStatus: upstream.status,
+      });
     }
 
     const result: any = await upstream.json();
+    if (!result?.audio_base64) {
+      console.error('[ElevenLabs] Successful response did not contain audio_base64.');
+      return res.status(502).json({
+        error: 'Ses servisi geçerli bir ses dosyası döndürmedi.',
+        code: 'MISSING_AUDIO_PAYLOAD',
+      });
+    }
+
     const alignment = result.alignment || result.normalized_alignment || null;
     const words = alignment?.characters
       ? extractWordsFromAlignment(
@@ -136,6 +198,7 @@ export default async function handler(req: any, res: any) {
     console.error('[ElevenLabs network error]', error);
     return res.status(502).json({
       error: `Ses servisine bağlanılamadı: ${error?.message || 'Bilinmeyen ağ hatası'}`,
+      code: 'ELEVENLABS_NETWORK_ERROR',
     });
   }
 }
