@@ -1,33 +1,24 @@
 import { AnnotationRegion } from '../../types';
 import { OCRResult, OCRWord } from './ocrTypes';
 
+type OptionLetter = 'A' | 'B' | 'C' | 'D' | 'E';
+
 interface DetectedOptionMarker {
-  letter: 'A' | 'B' | 'C' | 'D' | 'E';
+  letter: OptionLetter;
   word: OCRWord;
   y: number;
+  confidence: number;
 }
 
-/**
- * Matches YDT option indicators:
- * Standard Latin: A), (A), A., [A], A-, A:
- * Arabic equivalents: أ), ب), ج), د), هـ)
- */
-function matchOptionLetter(text: string): 'A' | 'B' | 'C' | 'D' | 'E' | null {
+function matchOptionLetter(text: string): OptionLetter | null {
   const cleaned = text.trim();
 
-  // Single word checks: "A)", "B)", "(C)", "D.", "E"
   const latinMatch = cleaned.match(/^[\(\[]?([A-Ea-e])[\)\.\:\-\]]?$/);
-  if (latinMatch) {
-    return latinMatch[1].toUpperCase() as 'A' | 'B' | 'C' | 'D' | 'E';
-  }
+  if (latinMatch) return latinMatch[1].toUpperCase() as OptionLetter;
 
-  // Prefix match: "A)...", "B) ..."
-  const prefixMatch = cleaned.match(/^([A-Ea-e])[\)\.\:\-\]]/);
-  if (prefixMatch) {
-    return prefixMatch[1].toUpperCase() as 'A' | 'B' | 'C' | 'D' | 'E';
-  }
+  const prefixMatch = cleaned.match(/^[\(\[]?([A-Ea-e])[\)\.\:\-\]]\s*/);
+  if (prefixMatch) return prefixMatch[1].toUpperCase() as OptionLetter;
 
-  // Arabic letter markers
   if (/^[\(\[]?[أا][\)\.\:\-\]]?$/.test(cleaned)) return 'A';
   if (/^[\(\[]?[ب][\)\.\:\-\]]?$/.test(cleaned)) return 'B';
   if (/^[\(\[]?[ج][\)\.\:\-\]]?$/.test(cleaned)) return 'C';
@@ -37,143 +28,194 @@ function matchOptionLetter(text: string): 'A' | 'B' | 'C' | 'D' | 'E' | null {
   return null;
 }
 
+function addCandidate(
+  list: DetectedOptionMarker[],
+  letter: OptionLetter,
+  word: OCRWord,
+  confidenceBonus = 0
+) {
+  // Header/body noise frequently contains isolated A-E characters. YDT answer
+  // choices are expected below the opening question area.
+  if (word.y < 0.14 || word.y > 0.98) return;
+
+  const confidence = Math.max(0, Math.min(100, word.confidence + confidenceBonus));
+  const duplicate = list.some(
+    (c) => c.letter === letter && Math.abs(c.y - word.y) < Math.max(0.008, word.height * 0.6)
+  );
+  if (!duplicate) list.push({ letter, word, y: word.y, confidence });
+}
+
+function collectMarkerCandidates(ocr: OCRResult): DetectedOptionMarker[] {
+  const candidates: DetectedOptionMarker[] = [];
+
+  // Word-level markers are the most precise source.
+  for (const word of ocr.words || []) {
+    const letter = matchOptionLetter(word.text);
+    if (letter) addCandidate(candidates, letter, word, 5);
+  }
+
+  // Tesseract occasionally merges "A)" with the option text. In that case the
+  // line itself still starts with the marker, so use its first word / line bbox.
+  for (const line of ocr.lines || []) {
+    const letter = matchOptionLetter(line.text);
+    if (!letter) continue;
+
+    const firstWord = line.words?.[0];
+    const pseudoWord: OCRWord = firstWord || {
+      text: line.text,
+      confidence: line.confidence,
+      x: line.x,
+      y: line.y,
+      width: Math.min(line.width, 0.08),
+      height: line.height,
+      pixelX: Math.round(line.x * ocr.imageWidth),
+      pixelY: Math.round(line.y * ocr.imageHeight),
+      pixelWidth: Math.round(Math.min(line.width, 0.08) * ocr.imageWidth),
+      pixelHeight: Math.round(line.height * ocr.imageHeight),
+    };
+    addCandidate(candidates, letter, pseudoWord, 12);
+  }
+
+  return candidates.sort((a, b) => (a.y - b.y) || (b.confidence - a.confidence));
+}
+
+function chooseSequentialMarkers(candidates: DetectedOptionMarker[]): Map<OptionLetter, DetectedOptionMarker> {
+  const letters: OptionLetter[] = ['A', 'B', 'C', 'D', 'E'];
+  let best = new Map<OptionLetter, DetectedOptionMarker>();
+  let bestScore = -Infinity;
+
+  const aCandidates = candidates.filter((c) => c.letter === 'A');
+  const seeds = aCandidates.length > 0 ? aCandidates : [null];
+
+  for (const seed of seeds) {
+    const chosen = new Map<OptionLetter, DetectedOptionMarker>();
+    let previousY = 0.14;
+    let score = 0;
+
+    if (seed) {
+      chosen.set('A', seed);
+      previousY = seed.y;
+      score += 20 + seed.confidence / 10;
+    }
+
+    const startIndex = seed ? 1 : 0;
+    for (let i = startIndex; i < letters.length; i++) {
+      const letter = letters[i];
+      const possible = candidates
+        .filter((c) => c.letter === letter && c.y > previousY + 0.006)
+        .sort((a, b) => {
+          const gapA = a.y - previousY;
+          const gapB = b.y - previousY;
+          // Prefer the nearest plausible next row, then OCR confidence.
+          return (gapA - gapB) || (b.confidence - a.confidence);
+        });
+
+      const candidate = possible.find((c) => c.y - previousY < 0.24) || possible[0];
+      if (!candidate) continue;
+
+      chosen.set(letter, candidate);
+      const gap = candidate.y - previousY;
+      score += 20 + candidate.confidence / 10 - Math.abs(gap - 0.09) * 20;
+      previousY = candidate.y;
+    }
+
+    score += chosen.size * 50;
+    if (score > bestScore) {
+      bestScore = score;
+      best = chosen;
+    }
+  }
+
+  return best;
+}
+
 export function detectYdtQuestionRegions(ocr: OCRResult): {
   regions: AnnotationRegion[];
   detectedOptions: string[];
   questionPromptRegion?: AnnotationRegion;
 } {
   const regions: AnnotationRegion[] = [];
-  const words = ocr.words;
+  const words = ocr.words || [];
 
-  if (!words || words.length === 0) {
-    return { regions, detectedOptions: [] };
-  }
+  if (words.length === 0) return { regions, detectedOptions: [] };
 
-  // 1. Find option marker candidates
-  const markerCandidates: DetectedOptionMarker[] = [];
+  const markerCandidates = collectMarkerCandidates(ocr);
+  const finalMarkers = chooseSequentialMarkers(markerCandidates);
+  const targetLetters: OptionLetter[] = ['A', 'B', 'C', 'D', 'E'];
 
-  for (const word of words) {
-    const letter = matchOptionLetter(word.text);
-    if (letter) {
-      // In YDT layout, options appear in the middle to lower half of the page
-      // And option markers are typically on the left side (x < 0.40) or right side (for RTL option letters, x > 0.60)
-      markerCandidates.push({
-        letter,
-        word,
-        y: word.y,
+  const firstOption = targetLetters
+    .map((letter) => finalMarkers.get(letter))
+    .find(Boolean);
+  const cutoffY = firstOption?.y ?? 0.48;
+
+  // Question stem / passage above the first detected option.
+  const promptWords = words.filter((w) => w.y < cutoffY - 0.012 && w.y > 0.035);
+  if (promptWords.length >= 3) {
+    const minX = Math.max(0.015, Math.min(...promptWords.map((w) => w.x)) - 0.012);
+    const minY = Math.max(0.015, Math.min(...promptWords.map((w) => w.y)) - 0.008);
+    const maxX = Math.min(0.985, Math.max(...promptWords.map((w) => w.x + w.width)) + 0.012);
+    const maxY = Math.min(cutoffY - 0.006, Math.max(...promptWords.map((w) => w.y + w.height)) + 0.008);
+
+    if (maxY > minY && maxX > minX) {
+      regions.push({
+        id: 'question-root',
+        label: 'Soru Kökü / Metin',
+        type: 'paragraph',
+        x: Number(minX.toFixed(4)),
+        y: Number(minY.toFixed(4)),
+        width: Number((maxX - minX).toFixed(4)),
+        height: Number((maxY - minY).toFixed(4)),
+        content: promptWords.map((w) => w.text).join(' '),
       });
     }
   }
 
-  // Sort candidates by vertical position y
-  markerCandidates.sort((a, b) => a.y - b.y);
-
-  // 2. Select the most consistent sequential sequence A -> B -> C -> D -> E
-  const targetLetters: Array<'A' | 'B' | 'C' | 'D' | 'E'> = ['A', 'B', 'C', 'D', 'E'];
-  const finalMarkers = new Map<'A' | 'B' | 'C' | 'D' | 'E', DetectedOptionMarker>();
-
-  for (const letter of targetLetters) {
-    // Find candidates for this letter that appear below previous letter's y
-    const previousLetter = letter === 'A' ? null : targetLetters[targetLetters.indexOf(letter) - 1];
-    const prevY = previousLetter && finalMarkers.has(previousLetter)
-      ? finalMarkers.get(previousLetter)!.y
-      : 0.15; // Options generally start below 15% from top
-
-    const validCandidate = markerCandidates.find(
-      (c) => c.letter === letter && c.y > prevY - 0.02
-    );
-
-    if (validCandidate) {
-      finalMarkers.set(letter, validCandidate);
-    }
-  }
-
-  // 3. Question Prompt / Sentence region (words above Option A)
-  const markerA = finalMarkers.get('A');
-  const cutoffY = markerA ? markerA.y : 0.45;
-
-  const promptWords = words.filter((w) => w.y < cutoffY - 0.015 && w.y > 0.04);
-  if (promptWords.length >= 3) {
-    const minX = Math.max(0.02, Math.min(...promptWords.map((w) => w.x)) - 0.015);
-    const minY = Math.max(0.02, Math.min(...promptWords.map((w) => w.y)) - 0.01);
-    const maxX = Math.min(0.98, Math.max(...promptWords.map((w) => w.x + w.width)) + 0.015);
-    const maxY = Math.min(cutoffY - 0.01, Math.max(...promptWords.map((w) => w.y + w.height)) + 0.01);
-
-    const questionRegion: AnnotationRegion = {
-      id: 'question-root',
-      label: 'Soru Kökü / Metin',
-      type: 'paragraph',
-      x: parseFloat(minX.toFixed(4)),
-      y: parseFloat(minY.toFixed(4)),
-      width: parseFloat((maxX - minX).toFixed(4)),
-      height: parseFloat((maxY - minY).toFixed(4)),
-      content: promptWords.map((w) => w.text).join(' '),
-    };
-    regions.push(questionRegion);
-  }
-
-  // 4. Compute bounding boxes for each detected option
   const detectedOptions: string[] = [];
+  const detectedSequence = targetLetters
+    .map((letter) => ({ letter, marker: finalMarkers.get(letter) }))
+    .filter((item): item is { letter: OptionLetter; marker: DetectedOptionMarker } => Boolean(item.marker));
 
-  for (let i = 0; i < targetLetters.length; i++) {
-    const letter = targetLetters[i];
-    const marker = finalMarkers.get(letter);
-    if (!marker) continue;
+  for (let i = 0; i < detectedSequence.length; i++) {
+    const { letter, marker } = detectedSequence[i];
+    const nextMarker = detectedSequence[i + 1]?.marker;
 
-    const nextLetter = targetLetters[i + 1];
-    const nextMarker = nextLetter ? finalMarkers.get(nextLetter) : null;
-
-    const startY = marker.y - 0.008;
+    const startY = Math.max(0.01, marker.y - Math.max(0.006, marker.word.height * 0.35));
     let endY: number;
 
     if (nextMarker) {
-      endY = nextMarker.y - 0.008;
+      endY = Math.max(startY + 0.025, nextMarker.y - 0.006);
     } else {
-      // For the last option (E), find words below marker.y
-      const optionEWords = words.filter(
-        (w) => w.y >= startY && w.y <= marker.y + 0.18
+      const below = words.filter(
+        (w) => w.y >= startY && w.y <= Math.min(0.99, marker.y + 0.18)
       );
-      if (optionEWords.length > 0) {
-        endY = Math.min(0.98, Math.max(...optionEWords.map((w) => w.y + w.height)) + 0.015);
-      } else {
-        endY = Math.min(0.98, marker.y + 0.08);
-      }
+      endY = below.length > 0
+        ? Math.min(0.985, Math.max(...below.map((w) => w.y + w.height)) + 0.012)
+        : Math.min(0.985, marker.y + 0.075);
     }
 
-    // Find all words inside this vertical band
-    const optionWords = words.filter(
-      (w) => w.y >= startY - 0.005 && w.y <= endY + 0.005
-    );
+    const optionWords = words.filter((w) => {
+      const centerY = w.y + w.height / 2;
+      return centerY >= startY && centerY <= endY;
+    });
 
-    let minX: number;
-    let maxX: number;
+    const minX = optionWords.length > 0
+      ? Math.max(0.02, Math.min(...optionWords.map((w) => w.x)) - 0.012)
+      : Math.max(0.02, marker.word.x - 0.012);
+    const measuredMaxX = optionWords.length > 0
+      ? Math.max(...optionWords.map((w) => w.x + w.width)) + 0.015
+      : marker.word.x + marker.word.width + 0.75;
+    const maxX = Math.min(0.985, Math.max(measuredMaxX, minX + 0.55));
 
-    if (optionWords.length > 0) {
-      minX = Math.max(0.04, Math.min(...optionWords.map((w) => w.x)) - 0.015);
-      maxX = Math.min(0.96, Math.max(...optionWords.map((w) => w.x + w.width)) + 0.02);
-      // Ensure reasonable width for full option line in YDT layout
-      if (maxX - minX < 0.65) {
-        maxX = Math.min(0.96, minX + 0.85);
-      }
-    } else {
-      minX = Math.max(0.04, marker.word.x - 0.015);
-      maxX = 0.94;
-    }
-
-    const regionHeight = Math.max(0.035, endY - startY);
-
-    const optionRegion: AnnotationRegion = {
+    regions.push({
       id: `option-${letter.toLowerCase()}`,
       label: `${letter} Seçeneği`,
       type: 'option',
-      x: parseFloat(minX.toFixed(4)),
-      y: parseFloat(startY.toFixed(4)),
-      width: parseFloat((maxX - minX).toFixed(4)),
-      height: parseFloat(regionHeight.toFixed(4)),
+      x: Number(minX.toFixed(4)),
+      y: Number(startY.toFixed(4)),
+      width: Number((maxX - minX).toFixed(4)),
+      height: Number(Math.max(0.03, endY - startY).toFixed(4)),
       content: optionWords.map((w) => w.text).join(' '),
-    };
-
-    regions.push(optionRegion);
+    });
     detectedOptions.push(letter);
   }
 
@@ -185,69 +227,17 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
 }
 
 /**
- * Deterministic standard YDT Arabic question geometry for fallback situations.
+ * Legacy server-only fallback kept for compatibility. The browser production
+ * pipeline does not call this function because guessed coordinates should not
+ * be presented as if OCR had grounded them.
  */
 export function getYdtStandardGeometry(): AnnotationRegion[] {
   return [
-    {
-      id: 'question-root',
-      label: 'Soru Kökü',
-      type: 'question-root',
-      x: 0.05,
-      y: 0.06,
-      width: 0.90,
-      height: 0.32,
-      content: 'Soru Metni ve Paragrafı',
-    },
-    {
-      id: 'option-a',
-      label: 'A Seçeneği',
-      type: 'option',
-      x: 0.05,
-      y: 0.42,
-      width: 0.90,
-      height: 0.09,
-      content: 'A Şıkkı',
-    },
-    {
-      id: 'option-b',
-      label: 'B Seçeneği',
-      type: 'option',
-      x: 0.05,
-      y: 0.53,
-      width: 0.90,
-      height: 0.09,
-      content: 'B Şıkkı',
-    },
-    {
-      id: 'option-c',
-      label: 'C Seçeneği',
-      type: 'option',
-      x: 0.05,
-      y: 0.64,
-      width: 0.90,
-      height: 0.09,
-      content: 'C Şıkkı',
-    },
-    {
-      id: 'option-d',
-      label: 'D Seçeneği',
-      type: 'option',
-      x: 0.05,
-      y: 0.75,
-      width: 0.90,
-      height: 0.09,
-      content: 'D Şıkkı',
-    },
-    {
-      id: 'option-e',
-      label: 'E Seçeneği',
-      type: 'option',
-      x: 0.05,
-      y: 0.86,
-      width: 0.90,
-      height: 0.09,
-      content: 'E Şıkkı',
-    },
+    { id: 'question-root', label: 'Soru Kökü', type: 'question-root', x: 0.05, y: 0.06, width: 0.90, height: 0.32, content: 'Soru Metni ve Paragrafı' },
+    { id: 'option-a', label: 'A Seçeneği', type: 'option', x: 0.05, y: 0.42, width: 0.90, height: 0.09, content: 'A Şıkkı' },
+    { id: 'option-b', label: 'B Seçeneği', type: 'option', x: 0.05, y: 0.53, width: 0.90, height: 0.09, content: 'B Şıkkı' },
+    { id: 'option-c', label: 'C Seçeneği', type: 'option', x: 0.05, y: 0.64, width: 0.90, height: 0.09, content: 'C Şıkkı' },
+    { id: 'option-d', label: 'D Seçeneği', type: 'option', x: 0.05, y: 0.75, width: 0.90, height: 0.09, content: 'D Şıkkı' },
+    { id: 'option-e', label: 'E Seçeneği', type: 'option', x: 0.05, y: 0.86, width: 0.90, height: 0.09, content: 'E Şıkkı' },
   ];
 }
