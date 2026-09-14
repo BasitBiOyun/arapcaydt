@@ -38,12 +38,12 @@ export class LocalVideoPipeline {
   }
 
   /**
-   * Executes the 100% local, deterministic video composition pipeline:
-   * 1. Local browser OCR using Tesseract.js (Arabic + Turkish + English)
-   * 2. Deterministic YDT layout analysis (A, B, C, D, E options + question root)
-   * 3. Arabic keyword matching (no approximate guesswork)
-   * 4. Local solution semantics parser (rejections, correct checks, focuses)
-   * 5. Spoken narration word alignment (from ElevenLabs or local Whisper)
+   * 100% local animation-planning pipeline.
+   *
+   * Important: regions are intentionally rebuilt from the CURRENT image on
+   * every generation. Older AI Studio versions stored guessed/fallback boxes;
+   * reusing those stale regions was the main reason videos silently degraded to
+   * a static image + narration.
    */
   public async executePipeline(params: {
     imageUrl: string;
@@ -52,102 +52,86 @@ export class LocalVideoPipeline {
     existingRegions?: AnnotationRegion[];
     onProgress?: (progress: LocalPipelineProgress) => void;
   }): Promise<LocalPipelineResult> {
-    const { imageUrl, solutionText, narrationSource, existingRegions, onProgress } = params;
+    const { imageUrl, solutionText, narrationSource, onProgress } = params;
 
-    if (!imageUrl) {
-      throw new Error('Soru görseli bulunamadı.');
-    }
-
+    if (!imageUrl) throw new Error('Soru görseli bulunamadı.');
     if (!solutionText || solutionText.trim().length === 0) {
       throw new Error('Çözüm metni boş olamaz.');
     }
 
     const words: NarrationWord[] = narrationSource?.words || [];
-    const audioDuration = narrationSource?.duration || 15;
+    const audioDuration = Math.max(2, narrationSource?.duration || 15);
 
-    let finalRegions: AnnotationRegion[] = [];
-    let detectedOptions: string[] = [];
-    let ocrWords: any[] = [];
-
-    // Step 1: Local OCR & Layout Detection
-    if (existingRegions && existingRegions.length >= 3) {
-      // Re-use already detected or approved regions
-      finalRegions = [...existingRegions];
-      detectedOptions = finalRegions
-        .filter((r) => r.id.startsWith('option-'))
-        .map((r) => r.id.replace('option-', '').toUpperCase());
-      onProgress?.({
-        stage: 'detect_layout',
-        progress: 30,
-        message: 'Mevcut soru bölgeleri kullanılıyor...',
-      });
-    } else {
-      onProgress?.({
-        stage: 'ocr',
-        progress: 10,
-        message: 'Tesseract OCR ile soru metni ve şıklar taranıyor...',
-      });
-
-      const ocrResult = await localOcrService.recognize(imageUrl, (p: OCRProgress) => {
-        onProgress?.({
-          stage: 'ocr',
-          progress: Math.round(p.progress * 0.4),
-          message: p.message,
-        });
-      });
-
-      ocrWords = ocrResult.words;
-
-      onProgress?.({
-        stage: 'detect_layout',
-        progress: 45,
-        message: 'YDT Arapça şık konumları ve soru kökü tespit ediliyor...',
-      });
-
-      const layout = detectYdtQuestionRegions(ocrResult);
-      finalRegions = layout.regions;
-      detectedOptions = layout.detectedOptions;
-    }
-
-    // Step 2: Arabic Keyword Matching (Safe OCR matching, no hallucinations)
     onProgress?.({
-      stage: 'arabic_matching',
-      progress: 60,
-      message: 'Çözümdeki Arapça ifadeler taranıyor...',
+      stage: 'ocr',
+      progress: 10,
+      message: 'Tesseract OCR ile soru metni ve şıklar taranıyor...',
     });
 
-    const arabicMatches = ocrWords.length > 0
-      ? findArabicMatchesInOcr(solutionText, ocrWords)
-      : [];
+    const ocrResult = await localOcrService.recognize(imageUrl, (p: OCRProgress) => {
+      onProgress?.({
+        stage: 'ocr',
+        progress: Math.max(10, Math.min(40, Math.round(10 + p.progress * 0.3))),
+        message: p.message,
+      });
+    });
 
+    onProgress?.({
+      stage: 'detect_layout',
+      progress: 48,
+      message: 'YDT Arapça şık konumları ve soru kökü tespit ediliyor...',
+    });
+
+    const layout = detectYdtQuestionRegions(ocrResult);
+    const finalRegions: AnnotationRegion[] = [...layout.regions];
+    const detectedOptions = layout.detectedOptions;
+
+    if (detectedOptions.length === 0) {
+      throw new Error(
+        'A–E seçenek alanları görselde güvenilir biçimde tespit edilemedi. Görseli daha net veya yalnızca soru alanını içerecek şekilde yükleyin.'
+      );
+    }
+
+    onProgress?.({
+      stage: 'arabic_matching',
+      progress: 62,
+      message: 'Çözümdeki Arapça ifadeler görsel üzerinde eşleştiriliyor...',
+    });
+
+    const arabicMatches = findArabicMatchesInOcr(solutionText, ocrResult.words);
     for (const match of arabicMatches) {
       if (!finalRegions.some((r) => r.id === match.region.id)) {
         finalRegions.push(match.region);
       }
     }
 
-    // Step 3: Local Semantic Solution Analysis
     onProgress?.({
       stage: 'semantic_parsing',
-      progress: 75,
-      message: 'Pedagojik çözüm adımları ve şık elemeleri çözümleniyor...',
+      progress: 76,
+      message: 'Şık eleme, doğru cevap ve vurgu adımları çıkarılıyor...',
     });
 
     const parseResult = parseSolutionSemantics(solutionText, finalRegions, arabicMatches);
 
-    // Step 4: Alignment with Spoken Narration Words
     onProgress?.({
       stage: 'timeline_align',
       progress: 90,
-      message: 'Ses zamanlamalarıyla animasyonlar senkronize ediliyor...',
+      message: 'Animasyonlar gerçek ses zamanlamalarıyla eşleştiriliyor...',
     });
 
     const actions = alignEventsWithNarration(parseResult.events, words, audioDuration);
 
+    // Never silently claim success and then export only image + audio.
+    if (actions.length === 0) {
+      throw new Error(
+        'Çözüm metninden otomatik animasyon adımı çıkarılamadı. Çözümde A/B/C/D/E seçeneği, eleme veya doğru cevap ifadelerinin geçtiğinden emin olun.'
+      );
+    }
+
     onProgress?.({
       stage: 'completed',
       progress: 100,
-      message: 'Video animasyon zaman çizelgesi hazırlandı!',
+      message: `${actions.length} animasyon olayı hazırlandı.`,
     });
 
     return {
@@ -157,7 +141,7 @@ export class LocalVideoPipeline {
       stats: {
         totalEventsPlanned: parseResult.events.length,
         actionsGenerated: actions.length,
-        actionsSkipped: parseResult.events.length - actions.length,
+        actionsSkipped: Math.max(0, parseResult.events.length - actions.length),
         groundedOptions: detectedOptions,
         arabicMatchesCount: arabicMatches.length,
       },
