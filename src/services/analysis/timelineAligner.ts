@@ -4,82 +4,90 @@ import { SemanticParsedEvent } from './solutionParser';
 function normalizeTextForMatching(str: string): string {
   if (!str) return '';
   return str
-    .toLowerCase()
+    .toLocaleLowerCase('tr-TR')
     .replace(/['’]/g, '')
     .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"«»]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-/**
- * Searches for a sequence of trigger words in the spoken NarrationWord array.
- * Returns the matching word or null.
- */
+function tokenMatches(spoken: string, expected: string): boolean {
+  if (!spoken || !expected) return false;
+  if (spoken === expected) return true;
+
+  // Turkish inflections are common in natural narration. Prefix matching works
+  // well for "seçeneği / seçeneğini", "eliyoruz / eleyebiliriz" etc. while
+  // avoiding very short accidental matches.
+  const minLen = Math.min(spoken.length, expected.length);
+  if (minLen >= 4 && (spoken.startsWith(expected) || expected.startsWith(spoken))) {
+    return true;
+  }
+  return false;
+}
+
 function findPhraseTimestampInWords(
   phrase: string,
   words: NarrationWord[],
   searchStartIndex = 0
-): { start: number; end: number; wordIndex: number } | null {
+): { start: number; end: number; startWordIndex: number; endWordIndex: number } | null {
   if (!phrase || words.length === 0) return null;
 
-  const phraseNorm = normalizeTextForMatching(phrase);
-  const phraseTokens = phraseNorm.split(' ').filter(Boolean);
+  const phraseTokens = normalizeTextForMatching(phrase).split(' ').filter(Boolean);
   if (phraseTokens.length === 0) return null;
 
-  // Normalized representation of spoken words
-  const normWords = words.map((w) => ({
-    original: w,
-    norm: normalizeTextForMatching(w.text),
-  }));
+  const normWords = words.map((w) => normalizeTextForMatching(w.text));
+  const safeStart = Math.max(0, Math.min(searchStartIndex, Math.max(0, words.length - 1)));
 
-  // 1. Multi-token sequential search starting from searchStartIndex
-  for (let i = searchStartIndex; i <= normWords.length - phraseTokens.length; i++) {
+  // Exact/sequential phrase search first.
+  for (let i = safeStart; i <= normWords.length - phraseTokens.length; i++) {
     let matches = true;
     for (let j = 0; j < phraseTokens.length; j++) {
-      const pToken = phraseTokens[j];
-      const wToken = normWords[i + j].norm;
-
-      // Match exact token or prefix/suffix stem
-      if (
-        wToken !== pToken &&
-        !wToken.startsWith(pToken) &&
-        !pToken.startsWith(wToken)
-      ) {
+      if (!tokenMatches(normWords[i + j], phraseTokens[j])) {
         matches = false;
         break;
       }
     }
 
     if (matches) {
-      const firstWord = words[i];
-      const lastWord = words[i + phraseTokens.length - 1];
+      const endIndex = i + phraseTokens.length - 1;
       return {
-        start: firstWord.start,
-        end: lastWord.end,
-        wordIndex: i,
+        start: words[i].start,
+        end: words[endIndex].end,
+        startWordIndex: i,
+        endWordIndex: endIndex,
       };
     }
   }
 
-  // 2. Fallback: Search for primary keyword (e.g. "eliyoruz", "doğru", "yanlış", "seçeneği")
-  for (let i = searchStartIndex; i < normWords.length; i++) {
-    for (const pToken of phraseTokens) {
-      if (pToken.length >= 4 && (normWords[i].norm.includes(pToken) || pToken.includes(normWords[i].norm))) {
-        return {
-          start: words[i].start,
-          end: words[i].end,
-          wordIndex: i,
-        };
-      }
+  // Keyword fallback for a phrase whose exact inflection differs from TTS text.
+  const usefulTokens = phraseTokens.filter((token) => token.length >= 4);
+  for (let i = safeStart; i < normWords.length; i++) {
+    if (usefulTokens.some((token) => tokenMatches(normWords[i], token))) {
+      return {
+        start: words[i].start,
+        end: words[i].end,
+        startWordIndex: i,
+        endWordIndex: i,
+      };
     }
   }
 
   return null;
 }
 
+function getDefaultActionDuration(actionType: SemanticParsedEvent['actionType'], remaining: number): number {
+  if (actionType === 'focus') return Math.min(2.8, Math.max(1.2, remaining));
+  if (actionType === 'reject' || actionType === 'correct') return Math.max(0.4, remaining);
+  if (actionType === 'underline' || actionType === 'highlight') return Math.min(3.6, Math.max(1.0, remaining));
+  if (actionType === 'dim-others') return Math.min(3.0, Math.max(1.0, remaining));
+  return Math.min(2.5, Math.max(0.8, remaining));
+}
+
 /**
- * Aligns semantic events with spoken word timestamps from ElevenLabs or local Whisper.
- * Guarantees monotonic, real-time timestamps and appropriate action durations.
+ * Align semantic animation events with real ElevenLabs / local Whisper word
+ * timestamps. The output is deterministic and never lets a later event jump
+ * backwards in time. Focus + reject/check pairs are intentionally kept close
+ * together instead of being spread across the whole narration.
  */
 export function alignEventsWithNarration(
   events: SemanticParsedEvent[],
@@ -89,76 +97,73 @@ export function alignEventsWithNarration(
   const actions: VideoAction[] = [];
   const duration = Math.max(2, totalDuration);
 
-  if (events.length === 0) {
-    return actions;
-  }
+  if (events.length === 0) return actions;
 
-  let lastMatchedWordIndex = 0;
-  let lastTimestamp = 0.5;
+  let nextSearchWordIndex = 0;
+  let lastTimestamp = 0.15;
 
   for (let i = 0; i < events.length; i++) {
     const ev = events[i];
+    const previousEvent = i > 0 ? events[i - 1] : null;
+    const previousAction = actions.length > 0 ? actions[actions.length - 1] : null;
     let startTimestamp: number | null = null;
 
-    // Search for trigger phrase in spoken audio words
     if (words.length > 0) {
       const match = findPhraseTimestampInWords(
         ev.semanticTriggerPhrase,
         words,
-        lastMatchedWordIndex
+        nextSearchWordIndex
       );
 
       if (match) {
-        // Anticipate by 0.08s so visual element appears right as the teacher starts speaking the phrase
-        startTimestamp = Math.max(0.1, match.start - 0.08);
-        lastMatchedWordIndex = match.wordIndex;
+        startTimestamp = Math.max(0.05, match.start - 0.06);
+        nextSearchWordIndex = Math.min(words.length, match.endWordIndex + 1);
       }
     }
 
-    // Fallback if not matched: progressive linear interpolation
-    if (startTimestamp === null || startTimestamp < lastTimestamp) {
-      const fraction = (i + 1) / (events.length + 1);
-      startTimestamp = Math.max(lastTimestamp + 0.5, parseFloat((fraction * duration * 0.9).toFixed(2)));
+    // A focus + reject/correct pair can legitimately share the same spoken
+    // phrase (e.g. "Doğru cevabımız C"). Keep the mark 320ms after focus.
+    const isPairedMark =
+      previousEvent &&
+      previousAction &&
+      previousEvent.targetRegionId === ev.targetRegionId &&
+      previousEvent.actionType === 'focus' &&
+      (ev.actionType === 'reject' || ev.actionType === 'correct');
+
+    if (startTimestamp === null && isPairedMark) {
+      startTimestamp = previousAction.start + 0.32;
     }
 
-    // Enforce bounds
-    startTimestamp = Math.min(duration - 0.5, Math.max(0.2, startTimestamp));
+    if (startTimestamp === null) {
+      const fraction = (i + 1) / (events.length + 1);
+      startTimestamp = fraction * Math.max(1, duration - 0.8);
+    }
+
+    // Preserve chronology with only a small nudge. Do not shove events several
+    // seconds away from the phrase just because two events are close together.
+    const minGap = isPairedMark ? 0.28 : 0.12;
+    if (startTimestamp <= lastTimestamp) {
+      startTimestamp = lastTimestamp + minGap;
+    }
+
+    startTimestamp = Math.min(Math.max(0.05, startTimestamp), Math.max(0.05, duration - 0.2));
     lastTimestamp = startTimestamp;
 
-    // Compute appropriate duration based on action type
-    let actionDuration = 3.0;
-
-    if (ev.actionType === 'focus') {
-      // Focus lasts until next event or default 3.5s
-      actionDuration = 3.5;
-    } else if (ev.actionType === 'reject') {
-      // Rejection X stays visible on the option until end of video
-      actionDuration = Math.max(2.0, duration - startTimestamp);
-    } else if (ev.actionType === 'correct') {
-      // Correct checkmark stays visible until end of video
-      actionDuration = Math.max(2.0, duration - startTimestamp);
-    } else if (ev.actionType === 'underline' || ev.actionType === 'highlight') {
-      actionDuration = 4.0;
-    }
-
+    const remaining = Math.max(0.3, duration - startTimestamp);
+    const actionDuration = getDefaultActionDuration(ev.actionType, remaining);
     const endTimestamp = Math.min(duration, startTimestamp + actionDuration);
 
-    const action: VideoAction = {
+    actions.push({
       id: `act-${i + 1}-${ev.targetRegionId}-${ev.actionType}`,
       targetRegionId: ev.targetRegionId,
       regionId: ev.targetRegionId,
       type: ev.actionType,
-      start: parseFloat(startTimestamp.toFixed(2)),
-      startTime: parseFloat(startTimestamp.toFixed(2)),
-      duration: parseFloat((endTimestamp - startTimestamp).toFixed(2)),
+      start: Number(startTimestamp.toFixed(2)),
+      startTime: Number(startTimestamp.toFixed(2)),
+      duration: Number(Math.max(0.2, endTimestamp - startTimestamp).toFixed(2)),
       label: `${ev.actionType}: ${ev.semanticTriggerPhrase}`,
-    };
-
-    actions.push(action);
+    });
   }
 
-  // Sort actions deterministically by start time
-  actions.sort((a, b) => a.start - b.start);
-
-  return actions;
+  return actions.sort((a, b) => a.start - b.start);
 }
