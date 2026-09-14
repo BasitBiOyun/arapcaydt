@@ -1,0 +1,6 @@
+{
+  "name": "Arabic YDT Video Studio",
+  "description": "Academic teacher workspace for creating Arabic YDT question-solution video projects with ElevenLabs narration and interactive annotation timeline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

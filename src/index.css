@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary-red: #8B1E2D;
+    --primary-red-hover: #721824;
+    --primary-red-subtle: #F7EEEE;
+    --surface-bg: #FAF9F6;
+    --card-bg: #FFFFFF;
+    --border-subtle: #E5E5DF;
+    --text-main: #1C1917;
+    --text-muted: #666560;
+  }
+
+  body {
+    background-color: var(--surface-bg);
+    color: var(--text-main);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.font-arabic {
+  font-family: 'Amiri', 'Traditional Arabic', serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.8;
+}
+
+.font-mono-code {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Academic custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F2F1EC;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4D3CB;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B6B4A8;
+}
