@@ -14,6 +14,8 @@ import { QUESTION_CATEGORIES } from '../config/categories';
 import { VideoPreviewCanvas } from '../features/video/VideoPreviewCanvas';
 import { videoExporter } from '../features/video/engine/exporter';
 import { renderQuestionVideoFrame } from '../features/video/engine/renderer';
+import { RegionEditorCanvas } from '../features/question-editor/RegionEditorCanvas';
+import { EditableTimelineUI } from '../features/video/EditableTimelineUI';
 import { 
   ArrowLeft, 
   Check, 
@@ -68,11 +70,14 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   // MP4 Export state (MediaRecorder 1080p 30fps)
   const [isExportingMp4, setIsExportingMp4] = useState(false);
   const [exportPercent, setExportPercent] = useState<number | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
+  const exportAbortRef = useRef<AbortController | null>(null);
 
   // Determine if video already exists for this project
   useEffect(() => {
     if (
-      currentProject &&
+      currentProject && currentProject.videoReady !== false &&
       (currentProject.videoReady ||
         (currentProject.videoConfig.timelineActions &&
           currentProject.videoConfig.timelineActions.length > 0))
@@ -113,35 +118,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       audio.removeEventListener('ended', handleEnded);
     };
   }, [activeAudioUrl]);
-
-  // Playback timer for Video Preview
-  useEffect(() => {
-    let animId: number;
-    let lastTime = performance.now();
-
-    if (isPlayingPreview) {
-      const loop = (now: number) => {
-        const delta = (now - lastTime) / 1000;
-        lastTime = now;
-
-        setCurrentPreviewTime((prev) => {
-          const next = prev + delta;
-          if (next >= (activeAudioDuration || 15)) {
-            setIsPlayingPreview(false);
-            return 0;
-          }
-          return next;
-        });
-
-        animId = requestAnimationFrame(loop);
-      };
-      animId = requestAnimationFrame(loop);
-    }
-
-    return () => {
-      if (animId) cancelAnimationFrame(animId);
-    };
-  }, [isPlayingPreview, activeAudioDuration]);
 
   if (!currentProject) {
     return (
@@ -431,7 +407,12 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         ...currentProject.videoConfig,
         regions: result.regions,
         timelineActions: result.actions,
+        captions: result.captions,
+        timingQuality: result.timingQuality,
+        pipelineVersion: 2,
+        warnings: result.warnings,
       },
+      ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
       status: 'video_ready',
       videoReady: true,
     });
@@ -445,18 +426,18 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   const handleDownloadMp4 = async () => {
     if (isExportingMp4) return;
     setIsExportingMp4(true);
+    setExportError(null);
+    setIsPlayingPreview(false);
+    exportAbortRef.current = new AbortController();
     setExportPercent(5);
 
     try {
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.src = currentProject.imageUrl;
-      await new Promise((resolve) => {
-        if (img.complete) resolve(null);
-        else {
-          img.onload = () => resolve(null);
-          img.onerror = () => resolve(null);
-        }
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error('Soru görseli yüklenemedi.'));
+        img.src = currentProject.imageUrl;
       });
 
       const duration = currentProject.narrationSource?.duration || currentProject.audioNarration?.duration || 15;
@@ -466,8 +447,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         (ctx, time) => {
           renderQuestionVideoFrame(
             ctx,
-            1920,
-            1080,
+            ctx.canvas.width,
+            ctx.canvas.height,
             img,
             currentProject.videoConfig.regions,
             currentProject.videoConfig.timelineActions,
@@ -478,6 +459,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               aspectRatio: currentProject.videoConfig.aspectRatio || '16:9',
               showWatermark: currentProject.videoConfig.showWatermark,
               teacherTag: currentProject.videoConfig.teacherTag || 'Arapça YDT • Video Stüdyosu',
+              captions: currentProject.videoConfig.captions,
+              showCaptions: currentProject.videoConfig.showCaptions,
+              captionY: currentProject.videoConfig.captionY,
             }
           );
         },
@@ -491,7 +475,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         },
         (progress) => {
           setExportPercent(progress.percent);
-        }
+        },
+        exportAbortRef.current.signal
       );
 
       // Download file to teacher's computer
@@ -506,7 +491,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
     } catch (err) {
       console.error('Local MP4 Export error:', err);
-      alert('Video dışa aktarımı sırasında bir hata oluştu.');
+      setExportError(err instanceof Error ? err.message : 'Video oluşturulamadı.');
     } finally {
       setIsExportingMp4(false);
       setExportPercent(null);
@@ -600,7 +585,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       {/* TWO MAIN COLUMNS */}
       <div className="flex-1 flex min-h-0 overflow-hidden">
         {/* LEFT COLUMN: ~68% Large Visual / Video Preview */}
-        <section className="flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 flex flex-col items-center justify-center overflow-hidden relative">
+        <section className="flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 pt-16 flex flex-col items-center overflow-y-auto relative">
           {/* Preview Mode Switcher (if video generated and image exists) */}
           {videoGenerated && hasImage && (
             <div className="absolute top-4 left-6 z-20 flex items-center gap-1 bg-white/90 backdrop-blur-xs p-1 rounded-lg border border-[#E5E4DC] shadow-xs">
@@ -633,7 +618,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
           {previewMode === 'video' && videoGenerated ? (
             /* Generated Video Player powered by local Canvas engine */
-            <div className="w-full max-w-4xl flex flex-col items-center justify-center p-4">
+            <div className="w-full max-w-4xl flex flex-col gap-4 p-4">
               <VideoPreviewCanvas
                 imageUrl={currentProject.imageUrl}
                 regions={currentProject.videoConfig.regions}
@@ -646,6 +631,35 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                 videoConfig={currentProject.videoConfig}
                 audioUrl={activeAudioUrl}
               />
+              <div className="flex gap-2 items-center text-xs">
+                <label className="flex gap-2 items-center">
+                <input type="checkbox" checked={currentProject.videoConfig.showCaptions !== false}
+                  onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, showCaptions: e.target.checked } })} />
+                Altyazıları göster
+                </label>
+                <input aria-label="Altyazı yüksekliği" type="range" min="0.08" max="0.93" step="0.01"
+                  value={currentProject.videoConfig.captionY ?? .85}
+                  onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, captionY: Number(e.target.value) } })} />
+                Altyazı konumu
+              </div>
+              <details className="w-full text-xs bg-white rounded-lg p-3 border">
+                <summary className="cursor-pointer font-semibold">Kutuları ve vurguları düzenle</summary>
+                <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
+                  selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
+                  onUpdateRegions={regions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig,
+                    regions: regions.map(r => {
+                      const old = currentProject.videoConfig.regions?.find(o => o.id === r.id);
+                      return JSON.stringify(old) === JSON.stringify(r) ? r : { ...r, manuallyAdjusted: true };
+                    }) } })} />
+              </details>
+              <details className="w-full text-xs bg-white rounded-lg p-3 border">
+                <summary className="cursor-pointer font-semibold">İşaretlerin zamanlamasını düzenle</summary>
+                <EditableTimelineUI duration={activeAudioDuration} currentTime={currentPreviewTime} isPlaying={isPlayingPreview}
+                  onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} onSeek={setCurrentPreviewTime}
+                  regions={currentProject.videoConfig.regions || []} actions={currentProject.videoConfig.timelineActions || []}
+                  onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
+                  onRequestAutoGenerate={() => setIsVideoModalOpen(true)} />
+              </details>
             </div>
           ) : hasImage ? (
             /* Large, high-clarity question image preview */
@@ -995,10 +1009,14 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               <div className="p-4 rounded-xl border border-[#C5DAC8] bg-[#F4F9F5] space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-[#15803D]">
                   <CheckCircle size={18} weight="fill" />
-                  <span>Videonuz hazır</span>
+                  <span>Animasyon önizlemesi hazır</span>
                 </div>
 
                 <div className="space-y-2">
+                  {(currentProject.videoConfig.pipelineVersion !== 2) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
+                  {currentProject.videoConfig.warnings?.map(w => <p key={w} className="text-xs text-amber-800">{w}</p>)}
+                  {exportError && <p role="alert" className="text-xs text-red-700">{exportError}</p>}
+                  {isExportingMp4 && <button type="button" className="text-xs underline" onClick={() => exportAbortRef.current?.abort()}>Oluşturmayı iptal et</button>}
                   <button
                     type="button"
                     onClick={handleDownloadMp4}

@@ -1,169 +1,188 @@
 import { VideoAction, NarrationWord } from '../../types';
 import { SemanticParsedEvent } from './solutionParser';
 
-function normalizeTextForMatching(str: string): string {
-  if (!str) return '';
-  return str
-    .toLocaleLowerCase('tr-TR')
-    .replace(/['’]/g, '')
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"«»]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+export interface SourceNarrationWord extends NarrationWord {
+  sourceStart: number;
+  sourceEnd: number;
+  matched: boolean;
+}
+export interface AlignedCaption { text: string; start: number; end: number }
+export interface SolutionNarrationAlignment {
+  words: SourceNarrationWord[];
+  captions: AlignedCaption[];
+  quality: 'word-aligned' | 'anchored' | 'approximate';
+  matchedRatio: number;
 }
 
-function tokenMatches(spoken: string, expected: string): boolean {
-  if (!spoken || !expected) return false;
-  if (spoken === expected) return true;
-
-  // Turkish inflections are common in natural narration. Prefix matching works
-  // well for "seçeneği / seçeneğini", "eliyoruz / eleyebiliriz" etc. while
-  // avoiding very short accidental matches.
-  const minLen = Math.min(spoken.length, expected.length);
-  if (minLen >= 4 && (spoken.startsWith(expected) || expected.startsWith(spoken))) {
-    return true;
-  }
-  return false;
+function normalize(text: string): string {
+  return text.toLocaleLowerCase('tr-TR').normalize('NFD').replace(/\p{M}/gu, '')
+    .replace(/ı/g, 'i').replace(/ـ/g, '').replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي');
 }
 
-function findPhraseTimestampInWords(
-  phrase: string,
-  words: NarrationWord[],
-  searchStartIndex = 0
-): { start: number; end: number; startWordIndex: number; endWordIndex: number } | null {
-  if (!phrase || words.length === 0) return null;
-
-  const phraseTokens = normalizeTextForMatching(phrase).split(' ').filter(Boolean);
-  if (phraseTokens.length === 0) return null;
-
-  const normWords = words.map((w) => normalizeTextForMatching(w.text));
-  const safeStart = Math.max(0, Math.min(searchStartIndex, Math.max(0, words.length - 1)));
-
-  // Exact/sequential phrase search first.
-  for (let i = safeStart; i <= normWords.length - phraseTokens.length; i++) {
-    let matches = true;
-    for (let j = 0; j < phraseTokens.length; j++) {
-      if (!tokenMatches(normWords[i + j], phraseTokens[j])) {
-        matches = false;
-        break;
-      }
-    }
-
-    if (matches) {
-      const endIndex = i + phraseTokens.length - 1;
-      return {
-        start: words[i].start,
-        end: words[endIndex].end,
-        startWordIndex: i,
-        endWordIndex: endIndex,
-      };
-    }
-  }
-
-  // Keyword fallback for a phrase whose exact inflection differs from TTS text.
-  const usefulTokens = phraseTokens.filter((token) => token.length >= 4);
-  for (let i = safeStart; i < normWords.length; i++) {
-    if (usefulTokens.some((token) => tokenMatches(normWords[i], token))) {
-      return {
-        start: words[i].start,
-        end: words[i].end,
-        startWordIndex: i,
-        endWordIndex: i,
-      };
-    }
-  }
-
-  return null;
+function tokens(text: string) {
+  return Array.from(text.matchAll(/[\p{L}\p{N}][\p{L}\p{N}\p{M}'’]*/gu), match => ({
+    text: match[0], norm: normalize(match[0]).replace(/['’]/g, ''),
+    sourceStart: match.index!, sourceEnd: match.index! + match[0].length,
+  }));
 }
 
-function getDefaultActionDuration(actionType: SemanticParsedEvent['actionType'], remaining: number): number {
-  if (actionType === 'focus') return Math.min(2.8, Math.max(1.2, remaining));
-  if (actionType === 'reject' || actionType === 'correct') return Math.max(0.4, remaining);
-  if (actionType === 'underline' || actionType === 'highlight') return Math.min(3.6, Math.max(1.0, remaining));
-  if (actionType === 'dim-others') return Math.min(3.0, Math.max(1.0, remaining));
-  return Math.min(2.5, Math.max(0.8, remaining));
+function matches(a: string, b: string): boolean {
+  if (a === b) return true;
+  if ((a === '1' && b === 'bir') || (b === '1' && a === 'bir')) return true;
+  return Math.min(a.length, b.length) >= 5 && (a.startsWith(b) || b.startsWith(a));
+}
+
+/** Tokenize chunk timestamps too. Chunk subdivision remains an estimate. */
+function spokenTokens(words: NarrationWord[], duration: number) {
+  return words.filter(w => Number.isFinite(w.start) && Number.isFinite(w.end) && w.end >= w.start && w.start < duration)
+    .flatMap(word => {
+      const parts = tokens(word.text);
+      const weight = parts.reduce((sum, part) => sum + part.norm.length, 0) || 1;
+      let consumed = 0;
+      return parts.map(part => {
+        const start = Math.max(0, word.start + (word.end - word.start) * consumed / weight);
+        consumed += part.norm.length;
+        return { ...part, start, end: Math.min(duration, word.start + (word.end - word.start) * consumed / weight), exact: parts.length === 1 };
+      });
+    }).sort((a, b) => a.start - b.start);
 }
 
 /**
- * Align semantic animation events with real ElevenLabs / local Whisper word
- * timestamps. The output is deterministic and never lets a later event jump
- * backwards in time. Focus + reject/check pairs are intentionally kept close
- * together instead of being spread across the whole narration.
+ * Align the complete supplied script, not just animation triggers. A monotonic
+ * sequence match prevents repeated phrases from jumping to the first occurrence.
+ * Unrecognized Arabic stays original Unicode; Turkish anchors estimate its time.
  */
+export function alignSolutionNarration(
+  solutionText: string,
+  narration: NarrationWord[] = [],
+  totalDuration = 15,
+): SolutionNarrationAlignment {
+  const duration = Number.isFinite(totalDuration) && totalDuration > 0 ? totalDuration : 15;
+  const source = tokens(solutionText);
+  const spoken = spokenTokens(narration, duration);
+  const anchors = new Map<number, number>();
+  // Bound memory for accidentally book-length input. Such inputs explicitly
+  // fall back to approximate timing rather than freezing the teacher's browser.
+  if (source.length && spoken.length && source.length * spoken.length <= 8_000_000) {
+    const cols = spoken.length + 1;
+    const table = new Uint16Array((source.length + 1) * cols);
+    for (let i = source.length - 1; i >= 0; i--) {
+      for (let j = spoken.length - 1; j >= 0; j--) {
+        table[i * cols + j] = matches(source[i].norm, spoken[j].norm)
+          ? 1 + table[(i + 1) * cols + j + 1]
+          : Math.max(table[(i + 1) * cols + j], table[i * cols + j + 1]);
+      }
+    }
+    let i = 0; let j = 0;
+    while (i < source.length && j < spoken.length) {
+      if (matches(source[i].norm, spoken[j].norm)) { anchors.set(i++, j++); }
+      else if (table[(i + 1) * cols + j] > table[i * cols + j + 1]) i++;
+      else j++;
+    }
+  }
+  const matchedRatio = source.length ? anchors.size / source.length : 0;
+  if (matchedRatio < 0.18) anchors.clear();
+  const words: SourceNarrationWord[] = source.map(part => ({ ...part, start: 0, end: 0, matched: false }));
+  for (const [i, j] of anchors) {
+    words[i].start = spoken[j].start;
+    words[i].end = Math.max(spoken[j].start, spoken[j].end);
+    words[i].matched = true;
+  }
+  let previous = -1;
+  for (const next of [...anchors.keys(), source.length]) {
+    const start = previous >= 0 ? words[previous].end : 0;
+    const end = next < source.length ? Math.max(start, words[next].start) : duration;
+    const weight = source.slice(previous + 1, next).reduce((sum, part) => sum + Math.max(2, part.norm.length), 0) || 1;
+    let consumed = 0;
+    for (let i = previous + 1; i < next; i++) {
+      words[i].start = start + (end - start) * consumed / weight;
+      consumed += Math.max(2, source[i].norm.length);
+      words[i].end = start + (end - start) * consumed / weight;
+    }
+    previous = next;
+  }
+
+  // Captions are slices of the original script, never ASR's phonetic Arabic.
+  const captions: AlignedCaption[] = [];
+  let first = 0;
+  let captionStart = 0;
+  for (let i = 0; i < words.length; i++) {
+    const next = words[i + 1];
+    const trailing = solutionText.slice(words[i].sourceEnd, next?.sourceStart ?? solutionText.length);
+    const length = words[i].sourceEnd - words[first].sourceStart;
+    const split = !next || /[.!?;\n]/.test(trailing) || length >= 85
+      || words[i].end - words[first].start >= 5.5;
+    if (!split) continue;
+    let textEnd = next?.sourceStart ?? solutionText.length;
+    if (next) while (textEnd > words[i].sourceEnd && !/\s/.test(solutionText[textEnd - 1])) textEnd--;
+    captions.push({
+      text: solutionText.slice(captionStart, textEnd).trim(),
+      start: words[first].start,
+      end: Math.min(duration, Math.max(words[i].end, words[first].start + 0.1)),
+    });
+    captionStart = textEnd;
+    first = i + 1;
+  }
+  return {
+    words, captions,
+    quality: anchors.size === 0 ? 'approximate'
+      : matchedRatio >= 0.95 && spoken.every(word => word.exact) ? 'word-aligned' : 'anchored',
+    matchedRatio: anchors.size ? matchedRatio : 0,
+  };
+}
+
+function spanTime(words: SourceNarrationWord[], start: number, end: number) {
+  const selected = words.filter(word => word.sourceEnd > start && word.sourceStart < end);
+  return selected.length ? { start: selected[0].start, end: selected[selected.length - 1].end } : null;
+}
+
+/** Preserves the legacy three-argument call; new callers should pass the script. */
 export function alignEventsWithNarration(
   events: SemanticParsedEvent[],
   words: NarrationWord[] = [],
-  totalDuration = 15
+  totalDuration = 15,
+  solutionText?: string,
 ): VideoAction[] {
-  const actions: VideoAction[] = [];
-  const duration = Math.max(2, totalDuration);
+  if (!events.length) return [];
+  const duration = Number.isFinite(totalDuration) && totalDuration > 0 ? totalDuration : 15;
+  const sourceText = solutionText || events.find(event => event.sourceText)?.sourceText
+    || [...new Set(events.map(event => event.sentenceText))].join(' ');
+  const alignment = alignSolutionNarration(sourceText, words, duration);
+  const timed = events.map(event => {
+    const sourceStart = event.sourceStart ?? Math.max(0, sourceText.indexOf(event.semanticTriggerPhrase));
+    const sourceEnd = event.sourceEnd ?? sourceStart + event.semanticTriggerPhrase.length;
+    const trigger = spanTime(alignment.words, sourceStart, sourceEnd);
+    const sentence = spanTime(alignment.words, event.sentenceStart ?? sourceStart, event.sentenceEnd ?? sourceEnd);
+    return { event, start: Math.min(duration, Math.max(0, (trigger?.start ?? 0) - 0.04)), end: sentence?.end ?? trigger?.end ?? duration };
+  }).sort((a, b) => a.start - b.start || a.event.order - b.event.order);
 
-  if (events.length === 0) return actions;
-
-  let nextSearchWordIndex = 0;
-  let lastTimestamp = 0.15;
-
-  for (let i = 0; i < events.length; i++) {
-    const ev = events[i];
-    const previousEvent = i > 0 ? events[i - 1] : null;
-    const previousAction = actions.length > 0 ? actions[actions.length - 1] : null;
-    let startTimestamp: number | null = null;
-
-    if (words.length > 0) {
-      const match = findPhraseTimestampInWords(
-        ev.semanticTriggerPhrase,
-        words,
-        nextSearchWordIndex
-      );
-
-      if (match) {
-        startTimestamp = Math.max(0.05, match.start - 0.06);
-        nextSearchWordIndex = Math.min(words.length, match.endWordIndex + 1);
-      }
+  return timed.map((item, index) => {
+    const { event } = item;
+    let start = item.start;
+    // Only a genuinely shared answer phrase gets a tiny focus/check stagger.
+    // A rejection in a later sentence is tied to that later sentence.
+    if (event.actionType === 'correct' && timed.some(other => other.event.actionType === 'focus'
+      && other.event.targetRegionId === event.targetRegionId && other.event.sourceStart === event.sourceStart)) {
+      start = Math.min(duration, start + 0.18);
     }
-
-    // A focus + reject/correct pair can legitimately share the same spoken
-    // phrase (e.g. "Doğru cevabımız C"). Keep the mark 320ms after focus.
-    const isPairedMark =
-      previousEvent &&
-      previousAction &&
-      previousEvent.targetRegionId === ev.targetRegionId &&
-      previousEvent.actionType === 'focus' &&
-      (ev.actionType === 'reject' || ev.actionType === 'correct');
-
-    if (startTimestamp === null && isPairedMark) {
-      startTimestamp = previousAction.start + 0.32;
+    let end = item.end;
+    if (event.actionType === 'reject' || event.actionType === 'correct') end = duration;
+    else if (event.actionType === 'focus') {
+      const next = timed.slice(index + 1).find(other =>
+        (other.event.actionType === 'focus' && other.event.targetRegionId !== event.targetRegionId)
+        || (other.event.targetRegionId === event.targetRegionId && ['reject', 'correct'].includes(other.event.actionType)));
+      end = next ? next.start + (next.event.actionType === 'correct' && next.event.sourceStart === event.sourceStart ? 0.18 : 0) : duration;
+    } else if (event.actionType === 'highlight' || event.actionType === 'underline') {
+      const next = timed.find(other => other.start > start + 0.05
+        && ['highlight', 'underline', 'focus'].includes(other.event.actionType));
+      end = Math.min(Math.max(item.end, start + 0.7), next?.start ?? duration);
     }
-
-    if (startTimestamp === null) {
-      const fraction = (i + 1) / (events.length + 1);
-      startTimestamp = fraction * Math.max(1, duration - 0.8);
-    }
-
-    // Preserve chronology with only a small nudge. Do not shove events several
-    // seconds away from the phrase just because two events are close together.
-    const minGap = isPairedMark ? 0.28 : 0.12;
-    if (startTimestamp <= lastTimestamp) {
-      startTimestamp = lastTimestamp + minGap;
-    }
-
-    startTimestamp = Math.min(Math.max(0.05, startTimestamp), Math.max(0.05, duration - 0.2));
-    lastTimestamp = startTimestamp;
-
-    const remaining = Math.max(0.3, duration - startTimestamp);
-    const actionDuration = getDefaultActionDuration(ev.actionType, remaining);
-    const endTimestamp = Math.min(duration, startTimestamp + actionDuration);
-
-    actions.push({
-      id: `act-${i + 1}-${ev.targetRegionId}-${ev.actionType}`,
-      targetRegionId: ev.targetRegionId,
-      regionId: ev.targetRegionId,
-      type: ev.actionType,
-      start: Number(startTimestamp.toFixed(2)),
-      startTime: Number(startTimestamp.toFixed(2)),
-      duration: Number(Math.max(0.2, endTimestamp - startTimestamp).toFixed(2)),
-      label: `${ev.actionType}: ${ev.semanticTriggerPhrase}`,
-    });
-  }
-
-  return actions.sort((a, b) => a.start - b.start);
+    end = Math.min(duration, Math.max(start, end));
+    return {
+      id: `act-${index + 1}-${event.targetRegionId}-${event.actionType}`,
+      targetRegionId: event.targetRegionId, regionId: event.targetRegionId,
+      type: event.actionType, start, startTime: start, duration: end - start,
+      label: `${event.actionType}: ${event.semanticTriggerPhrase}`,
+    };
+  }).filter(action => action.duration > 0).sort((a, b) => a.start - b.start);
 }

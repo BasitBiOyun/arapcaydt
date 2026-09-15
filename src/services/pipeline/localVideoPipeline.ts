@@ -1,9 +1,9 @@
-import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource } from '../../types';
+import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCaption } from '../../types';
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
 import { findArabicMatchesInOcr } from '../ocr/arabicMatcher';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
-import { alignEventsWithNarration } from '../analysis/timelineAligner';
+import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
 
 export interface LocalPipelineProgress {
@@ -25,6 +25,9 @@ export interface LocalPipelineResult {
   };
   deducedCorrectAnswer?: 'A' | 'B' | 'C' | 'D' | 'E';
   duration: number;
+  captions: VideoCaption[];
+  timingQuality: 'word-aligned' | 'anchored' | 'approximate';
+  warnings: string[];
 }
 
 export class LocalVideoPipeline {
@@ -83,8 +86,15 @@ export class LocalVideoPipeline {
     });
 
     const layout = detectYdtQuestionRegions(ocrResult);
+    const manual = (params.existingRegions || []).filter(r => r.manuallyAdjusted);
     const finalRegions: AnnotationRegion[] = [...layout.regions];
-    const detectedOptions = layout.detectedOptions;
+    for (const region of manual) {
+      const id = /^option-[a-e]$/.test(region.type) ? region.type : region.id;
+      const index = finalRegions.findIndex(r => r.id === id);
+      if (index >= 0) finalRegions[index] = { ...region, id };
+      else finalRegions.push({ ...region, id });
+    }
+    const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter(letter => finalRegions.some(r => r.id === `option-${letter.toLowerCase()}`));
 
     if (detectedOptions.length === 0) {
       throw new Error(
@@ -119,7 +129,14 @@ export class LocalVideoPipeline {
       message: 'Animasyonlar gerçek ses zamanlamalarıyla eşleştiriliyor...',
     });
 
-    const actions = alignEventsWithNarration(parseResult.events, words, audioDuration);
+    const alignment = alignSolutionNarration(solutionText, words, audioDuration);
+    const actions = alignEventsWithNarration(parseResult.events, words, audioDuration, solutionText);
+    const warnings: string[] = [];
+    if (detectedOptions.length < 5) warnings.push(`Şu şıklar bulunamadı: ${['A', 'B', 'C', 'D', 'E'].filter(x => !detectedOptions.includes(x)).join(', ')}. Alan düzenleyicisinde eksik şıkları işaretleyip yeniden hazırlayın.`);
+    if (alignment.quality !== 'word-aligned') warnings.push(alignment.quality === 'approximate'
+      ? 'Ses zamanlamaları eşleştirilemedi. Süreler yaklaşık; dışa aktarmadan önce zaman çizelgesini kontrol edin.'
+      : 'Bazı ifadelerin süreleri komşu ses kelimelerinden hesaplandı. Önizlemede zamanlamayı kontrol edin.');
+    if (!parseResult.deducedCorrectAnswer) warnings.push('Çözüm metninde kesin doğru cevap bulunamadı. Doğru şıkkı zaman çizelgesinden işaretleyin.');
 
     // Never silently claim success and then export only image + audio.
     if (actions.length === 0) {
@@ -147,6 +164,9 @@ export class LocalVideoPipeline {
       },
       deducedCorrectAnswer: parseResult.deducedCorrectAnswer,
       duration: audioDuration,
+      captions: alignment.captions,
+      timingQuality: alignment.quality,
+      warnings,
     };
   }
 }

@@ -68,6 +68,13 @@ export interface AnnotationRegion {
   height: number; // normalized 0 to 1
   color?: string;
   content?: string;
+  manuallyAdjusted?: boolean;
+}
+
+export interface VideoCaption {
+  start: number;
+  end: number;
+  text: string;
 }
 
 export type VideoActionType =
@@ -122,6 +129,12 @@ export interface VideoConfig {
   annotations: VideoAnnotation[];
   regions?: AnnotationRegion[];
   timelineActions?: VideoAction[];
+  captions?: VideoCaption[];
+  showCaptions?: boolean;
+  captionY?: number;
+  timingQuality?: 'word-aligned' | 'anchored' | 'approximate';
+  pipelineVersion?: number;
+  warnings?: string[];
 }
 
 export interface ExportConfig {

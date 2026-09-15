@@ -13,6 +13,8 @@
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
+    "@fontsource/amiri": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
     "@google/genai": "^2.4.0",
     "@huggingface/transformers": "^4.2.0",
     "@phosphor-icons/react": "^2.1.10",
@@ -32,13 +34,13 @@
     "vite": "^6.2.3"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
-    "vite": "^6.2.3",
-    "@types/express": "^4.17.21"
+    "vite": "^6.2.3"
   }
 }

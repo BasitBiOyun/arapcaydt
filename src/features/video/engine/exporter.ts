@@ -1,234 +1,147 @@
+import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
 import { ExportConfig } from '../../../types';
 import { ExportProgress, IVideoExporter } from './types';
 
+export function exportDimensions(config: ExportConfig) {
+  const long = config.resolution === '720p' ? 1280 : 1920;
+  const short = config.resolution === '720p' ? 720 : 1080;
+  return config.aspectRatio === '9:16' ? { width: short, height: long } : { width: long, height: short };
+}
+const yieldToUI = () => new Promise<void>(resolve => setTimeout(resolve, 0));
+
 export class BrowserVideoExporter implements IVideoExporter {
   private static instance: BrowserVideoExporter;
-
-  public static getInstance(): BrowserVideoExporter {
-    if (!BrowserVideoExporter.instance) {
-      BrowserVideoExporter.instance = new BrowserVideoExporter();
-    }
-    return BrowserVideoExporter.instance;
+  public static getInstance() {
+    return this.instance || (this.instance = new BrowserVideoExporter());
   }
 
-  /**
-   * Performs an authentic browser-side video render combining Canvas frames + Web Audio Narration.
-   * Produces a real, playable MP4 or WebM video file.
-   */
+  /** Encode numbered frames and PCM samples against one media clock, never wall-clock recording. */
   public async exportVideo(
     canvasRenderer: (ctx: CanvasRenderingContext2D, time: number) => void,
-    audioUrl: string | undefined,
-    duration: number,
-    config: ExportConfig,
-    onProgress: (progress: ExportProgress) => void
+    audioUrl: string | undefined, duration: number, config: ExportConfig,
+    onProgress: (progress: ExportProgress) => void, signal?: AbortSignal
   ): Promise<Blob> {
-    const width = config.resolution === '720p' ? 1280 : 1920;
-    const height = config.resolution === '720p' ? 720 : 1080;
+    if (config.format !== 'mp4') throw new Error('Bu dışa aktarıcı MP4 üretir. MP4 biçimini seçin.');
+    if (!Number.isFinite(duration) || duration <= 0) throw new Error('Geçerli bir ses/video süresi gerekli.');
+    if (typeof VideoEncoder === 'undefined' || typeof VideoFrame === 'undefined') {
+      throw new Error('Bu tarayıcı MP4 kodlamayı desteklemiyor. Güncel masaüstü Chrome veya Edge kullanın.');
+    }
+    const { width, height } = exportDimensions(config);
     const fps = config.fps || 30;
-    const totalSeconds = Math.max(2, duration);
-    const totalFrames = Math.ceil(totalSeconds * fps);
-
-    onProgress({
-      stage: 'preparing',
-      percent: 5,
-      message: 'Video tuvali ve ses kanalları hazırlanıyor...',
-    });
-
-    // 1. Create Offscreen Canvas for rendering
-    const offscreenCanvas = document.createElement('canvas');
-    offscreenCanvas.width = width;
-    offscreenCanvas.height = height;
-    const ctx = offscreenCanvas.getContext('2d', { alpha: false });
-
-    if (!ctx) {
-      throw new Error('Canvas 2D context could not be created.');
-    }
-
-    // 2. Fetch and Decode Audio if available
-    let audioBuffer: AudioBuffer | null = null;
-    let audioContext: AudioContext | null = null;
-    let audioDestination: MediaStreamAudioDestinationNode | null = null;
-
-    if (audioUrl) {
-      try {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        audioContext = new AudioContextClass();
-        const response = await fetch(audioUrl);
-        const arrayBuffer = await response.arrayBuffer();
-        audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        audioDestination = audioContext.createMediaStreamDestination();
-      } catch (err) {
-        console.warn('Audio decoding failed or unavailable, continuing video-only render:', err);
-      }
-    }
-
-    onProgress({
-      stage: 'preparing',
-      percent: 15,
-      message: 'Medya kaydedici başlatılıyor...',
-    });
-
-    // 3. Determine best supported video format (Prefer MP4 with H.264/AAC, fallback to WebM)
-    const mimeCandidates = [
-      'video/mp4;codecs=avc1,mp4a.40.2',
-      'video/mp4;codecs=avc1',
-      'video/mp4',
-      'video/webm;codecs=vp9,opus',
-      'video/webm;codecs=vp8,opus',
-      'video/webm',
-    ];
-
-    let chosenMimeType = '';
-    for (const mime of mimeCandidates) {
-      if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(mime)) {
-        chosenMimeType = mime;
-        break;
-      }
-    }
-
-    if (!chosenMimeType) {
-      chosenMimeType = 'video/webm';
-    }
-
-    // 4. Set up Canvas Stream + Audio Stream
-    const canvasStream = offscreenCanvas.captureStream(fps);
-    const combinedTracks: MediaStreamTrack[] = [...canvasStream.getVideoTracks()];
-
-    if (audioDestination) {
-      const audioTracks = audioDestination.stream.getAudioTracks();
-      if (audioTracks.length > 0) {
-        combinedTracks.push(audioTracks[0]);
-      }
-    }
-
-    const combinedStream = new MediaStream(combinedTracks);
-
-    // 5. Initialize MediaRecorder
-    const videoBitsPerSecond = config.resolution === '720p' ? 2_500_000 : 4_500_000;
-    let mediaRecorder: MediaRecorder;
-
-    try {
-      mediaRecorder = new MediaRecorder(combinedStream, {
-        mimeType: chosenMimeType,
-        videoBitsPerSecond,
-      });
-    } catch {
-      // Fallback without mimeType option if browser refuses options
-      mediaRecorder = new MediaRecorder(combinedStream);
-    }
-
-    const recordedChunks: Blob[] = [];
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data && event.data.size > 0) {
-        recordedChunks.push(event.data);
-      }
+    const videoConfig: VideoEncoderConfig = {
+      codec: 'avc1.640028', width, height, framerate: fps,
+      bitrate: config.resolution === '720p' ? 3_000_000 : 6_000_000,
+      latencyMode: 'realtime', avc: { format: 'avc' },
     };
+    if (!(await VideoEncoder.isConfigSupported(videoConfig)).supported)
+      throw new Error('Bu cihaz seçilen çözünürlükte H.264 MP4 üretemiyor. Güncel masaüstü Chrome veya Edge deneyin.');
 
-    // Return promise that completes when recorder finishes
-    return new Promise<Blob>((resolve, reject) => {
-      mediaRecorder.onerror = (e) => {
-        reject(new Error('MediaRecorder error: ' + (e as any).error?.message));
-      };
-
-      mediaRecorder.onstop = () => {
-        onProgress({
-          stage: 'finalizing',
-          percent: 98,
-          message: 'Video dosyası paketleniyor...',
-        });
-
-        if (audioContext && audioContext.state !== 'closed') {
-          audioContext.close().catch(() => {});
-        }
-
-        const finalBlob = new Blob(recordedChunks, { type: chosenMimeType });
-
-        onProgress({
-          stage: 'completed',
-          percent: 100,
-          message: 'Video oluşturma başarıyla tamamlandı!',
-        });
-
-        resolve(finalBlob);
-      };
-
-      // Start recording
-      mediaRecorder.start(100);
-
-      // Play audio source through destination node
-      let audioSource: AudioBufferSourceNode | null = null;
-      if (audioContext && audioBuffer && audioDestination) {
-        audioSource = audioContext.createBufferSource();
-        audioSource.buffer = audioBuffer;
-        audioSource.connect(audioDestination);
-        audioSource.start(0);
+    let videoEncoder: VideoEncoder | undefined;
+    let audioEncoder: AudioEncoder | undefined;
+    let audioContext: AudioContext | undefined;
+    let encodingError: Error | undefined;
+    const check = () => {
+      if (signal?.aborted) throw new DOMException('Video oluşturma iptal edildi.', 'AbortError');
+      if (encodingError) throw encodingError;
+    };
+    try {
+      check();
+      onProgress({ stage: 'preparing', percent: 2, message: 'Fontlar ve ses hazırlanıyor...' });
+      await Promise.all([
+        document.fonts.load('500 36px Manrope'),
+        document.fonts.load('400 36px Amiri', 'العربية'),
+      ]);
+      await document.fonts.ready;
+      let audioBuffer: AudioBuffer | undefined;
+      if (audioUrl) {
+        if (typeof AudioEncoder === 'undefined' || typeof AudioData === 'undefined')
+          throw new Error('Bu tarayıcı sesli MP4 kodlamayı desteklemiyor. Güncel masaüstü Chrome veya Edge kullanın.');
+        const response = await fetch(audioUrl, { signal });
+        if (!response.ok) throw new Error('Ses dosyası yüklenemedi (' + response.status + ').');
+        audioContext = new AudioContext({ sampleRate: 48000 });
+        audioBuffer = await audioContext.decodeAudioData(await response.arrayBuffer());
+        await audioContext.close();
+        audioContext = undefined;
+        if (audioBuffer.numberOfChannels > 2) throw new Error('Lütfen mono veya stereo ses yükleyin.');
       }
+      check();
+      const totalSeconds = Math.max(duration, audioBuffer?.duration || 0);
+      const totalFrames = Math.ceil(totalSeconds * fps);
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d', { alpha: false });
+      if (!ctx) throw new Error('Video çizim alanı açılamadı.');
+      const muxer = new Muxer({
+        target: new ArrayBufferTarget(),
+        video: { codec: 'avc', width, height, frameRate: fps },
+        ...(audioBuffer ? { audio: { codec: 'aac' as const, sampleRate: audioBuffer.sampleRate, numberOfChannels: audioBuffer.numberOfChannels } } : {}),
+        fastStart: 'in-memory', firstTimestampBehavior: 'offset',
+      });
+      const failed = (error: DOMException) => { encodingError = error; };
+      videoEncoder = new VideoEncoder({
+        output: (chunk, metadata) => {
+          try { muxer.addVideoChunk(chunk, metadata); } catch (error) { encodingError = error as Error; }
+        }, error: failed,
+      });
+      videoEncoder.configure(videoConfig);
 
-      // 6. Frame Rendering Loop
-      const frameInterval = 1000 / fps;
-      let frameIndex = 0;
-      const startTime = performance.now();
-
-      const renderStep = () => {
-        const currentTime = frameIndex / fps;
-
-        if (frameIndex >= totalFrames || currentTime >= totalSeconds) {
-          onProgress({
-            stage: 'encoding',
-            percent: 92,
-            currentFrame: totalFrames,
-            totalFrames,
-            message: 'Kareler tamamlandı, ses ve video birleştiriliyor...',
+      if (audioBuffer) {
+        const audioConfig: AudioEncoderConfig = {
+          codec: 'mp4a.40.2', sampleRate: audioBuffer.sampleRate,
+          numberOfChannels: audioBuffer.numberOfChannels, bitrate: 192000,
+        };
+        if (!(await AudioEncoder.isConfigSupported(audioConfig)).supported)
+          throw new Error('Bu cihaz AAC sesi kodlayamıyor. Güncel masaüstü Chrome veya Edge kullanın.');
+        audioEncoder = new AudioEncoder({
+          output: (chunk, metadata) => {
+            try { muxer.addAudioChunk(chunk, metadata); } catch (error) { encodingError = error as Error; }
+          }, error: failed,
+        });
+        audioEncoder.configure(audioConfig);
+        const blockSize = 4096;
+        for (let offset = 0, block = 0; offset < audioBuffer.length; offset += blockSize, block++) {
+          check();
+          const count = Math.min(blockSize, audioBuffer.length - offset);
+          const samples = new Float32Array(count * audioBuffer.numberOfChannels);
+          for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++)
+            samples.set(audioBuffer.getChannelData(channel).subarray(offset, offset + count), channel * count);
+          const data = new AudioData({
+            format: 'f32-planar', sampleRate: audioBuffer.sampleRate,
+            numberOfFrames: count, numberOfChannels: audioBuffer.numberOfChannels,
+            timestamp: Math.round(offset / audioBuffer.sampleRate * 1_000_000), data: samples,
           });
-
-          if (audioSource) {
-            try {
-              audioSource.stop();
-            } catch {}
-          }
-
-          // Request last data and stop recorder
-          setTimeout(() => {
-            try {
-              if (mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-              }
-            } catch (err) {
-              reject(err);
-            }
-          }, 200);
-          return;
+          try { audioEncoder.encode(data); } finally { data.close(); }
+          if (block % 32 === 31) { await audioEncoder.flush(); await yieldToUI(); }
         }
-
-        // Draw this frame deterministically
-        canvasRenderer(ctx, currentTime);
-
-        frameIndex++;
-
-        // Report real percentage
-        if (frameIndex % 6 === 0 || frameIndex === totalFrames) {
-          const percent = Math.min(90, Math.round(15 + (frameIndex / totalFrames) * 75));
-          onProgress({
-            stage: 'rendering',
-            percent,
-            currentFrame: frameIndex,
-            totalFrames,
-            message: `Kareler işleniyor: %${percent} (${frameIndex}/${totalFrames})`,
-          });
+        await audioEncoder.flush(); check();
+      }
+      for (let i = 0; i < totalFrames; i++) {
+        check();
+        canvasRenderer(ctx, i / fps);
+        const timestamp = Math.round(i / fps * 1_000_000);
+        const frame = new VideoFrame(canvas, {
+          timestamp, duration: Math.round((i + 1) / fps * 1_000_000) - timestamp,
+        });
+        try { videoEncoder.encode(frame, { keyFrame: i % (fps * 2) === 0 }); } finally { frame.close(); }
+        if (i % 15 === 14 || i === totalFrames - 1) {
+          await videoEncoder.flush(); check();
+          onProgress({ stage: 'rendering', percent: Math.round(10 + (i + 1) / totalFrames * 85),
+            currentFrame: i + 1, totalFrames, message: 'Video kareleri oluşturuluyor...' });
+          await yieldToUI();
         }
-
-        // Schedule next frame in sync with realtime playback
-        const elapsed = performance.now() - startTime;
-        const expectedNextTime = frameIndex * frameInterval;
-        const delay = Math.max(0, expectedNextTime - elapsed);
-
-        setTimeout(renderStep, delay);
-      };
-
-      // Kick off render loop
-      renderStep();
-    });
+      }
+      await videoEncoder.flush(); check();
+      onProgress({ stage: 'finalizing', percent: 98, message: 'Sesli MP4 dosyası tamamlanıyor...' });
+      muxer.finalize();
+      const blob = new Blob([muxer.target.buffer], { type: 'video/mp4' });
+      if (!blob.size) throw new Error('Video dosyası boş oluşturuldu.');
+      onProgress({ stage: 'completed', percent: 100, message: 'MP4 hazır.' });
+      return blob;
+    } finally {
+      if (videoEncoder && videoEncoder.state !== 'closed') videoEncoder.close();
+      if (audioEncoder && audioEncoder.state !== 'closed') audioEncoder.close();
+      if (audioContext && audioContext.state !== 'closed') await audioContext.close().catch(() => {});
+    }
   }
 }
-
 export const videoExporter = BrowserVideoExporter.getInstance();

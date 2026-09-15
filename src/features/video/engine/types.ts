@@ -1,4 +1,4 @@
-import { AnnotationRegion, VideoAction, ExportConfig } from '../../../types';
+import { AnnotationRegion, VideoAction, ExportConfig, VideoCaption } from '../../../types';
 
 export interface ActiveHighlight {
   regionId: string;
@@ -55,6 +55,9 @@ export interface RenderOptions {
   teacherTag?: string;
   selectedRegionId?: string | null;
   interactiveMode?: boolean;
+  captions?: VideoCaption[];
+  showCaptions?: boolean;
+  captionY?: number;
 }
 
 export interface ExportProgress {
