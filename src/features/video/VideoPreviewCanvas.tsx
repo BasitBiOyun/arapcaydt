@@ -52,34 +52,49 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
     }
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.src = imageUrl;
+    setImageElement(null);
+    let active = true;
     img.onload = () => {
-      setImageElement(img);
+      if (active) setImageElement(img);
     };
+    img.src = imageUrl;
+    return () => { active = false; };
   }, [imageUrl]);
 
-  // Sync audio with video playback
+  const seekRef = useRef(onSeek);
+  const toggleRef = useRef(onPlayPause);
+  const timeRef = useRef(currentTime);
+  useEffect(() => {
+    seekRef.current = onSeek;
+    toggleRef.current = onPlayPause;
+    timeRef.current = currentTime;
+  }, [onSeek, onPlayPause, currentTime]);
+  // The media clock drives the picture, including buffering and resumed tabs.
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      if (Math.abs(audio.currentTime - currentTime) > 0.3) {
-        audio.currentTime = currentTime;
-      }
-      audio.play().catch(() => {});
-    } else {
-      audio.pause();
+    let raf = 0;
+    let stopped = false;
+    if (!isPlaying) { audio?.pause(); return; }
+    if (audio) {
+      audio.currentTime = timeRef.current;
+      audio.play().catch(() => { if (!stopped) toggleRef.current(); });
     }
-  }, [isPlaying]);
-
-  // Sync audio seek
+    const origin = performance.now() / 1000 - timeRef.current;
+    const tick = () => {
+      if (stopped) return;
+      const next = audio ? audio.currentTime : performance.now() / 1000 - origin;
+      if (next >= duration) { toggleRef.current(); seekRef.current(duration); return; }
+      seekRef.current(next);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => { stopped = true; cancelAnimationFrame(raf); audio?.pause(); };
+  }, [isPlaying, audioUrl, duration]);
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio && Math.abs(audio.currentTime - currentTime) > 0.4) {
+    if (audio && (!isPlaying || Math.abs(audio.currentTime - currentTime) > .4))
       audio.currentTime = currentTime;
-    }
-  }, [currentTime]);
+  }, [currentTime, isPlaying]);
 
   // Redraw canvas whenever currentTime, image, regions, or actions change
   const renderFrame = useCallback(() => {
@@ -104,12 +119,18 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         teacherTag: videoConfig.teacherTag || 'Arapça YDT • Video Stüdyosu',
         selectedRegionId,
         interactiveMode: false,
+        captions: videoConfig.captions,
+        showCaptions: videoConfig.showCaptions,
+        captionY: videoConfig.captionY,
       }
     );
   }, [currentTime, imageElement, regions, actions, videoConfig, selectedRegionId]);
 
   useEffect(() => {
     renderFrame();
+    let active = true;
+    document.fonts.ready.then(() => { if (active) renderFrame(); });
+    return () => { active = false; };
   }, [renderFrame]);
 
   const effectiveDuration = Math.max(1, duration);
@@ -162,7 +183,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         />
 
         {/* Center overlay play button when paused */}
-        {!isPlaying && (
+        {!isPlaying && currentTime === 0 && (
           <button
             type="button"
             onClick={onPlayPause}

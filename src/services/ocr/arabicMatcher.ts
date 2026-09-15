@@ -14,6 +14,8 @@ export function normalizeArabic(text: string): string {
   if (!text) return '';
 
   return text
+    .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '')
+    .replace(/[“”‘’]/g, '')
     // Remove diacritics / Tashkeel
     .replace(/[\u064B-\u065F\u0670]/g, '')
     // Remove Tatweel (kashida)
@@ -29,6 +31,7 @@ export function normalizeArabic(text: string): string {
     // Remove standard punctuation
     .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"'«»]/g, '')
     // Collapse whitespace
+    .replace(/[،؛؟]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -40,7 +43,7 @@ export function extractArabicPhrases(solutionText: string): string[] {
   if (!solutionText) return [];
 
   // Match sequences of Arabic Unicode characters
-  const arabicRegex = /[\u0600-\u06FF]+(?:\s+[\u0600-\u06FF]+)*/g;
+  const arabicRegex = /[\u0600-\u06FF]+(?:[ \t]+[\u0600-\u06FF]+)*/g;
   const matches = solutionText.match(arabicRegex) || [];
 
   // Clean and filter out tiny 1-character fragments
@@ -67,82 +70,66 @@ export interface ArabicMatchResult {
  * If a confident match exists, creates a visual AnnotationRegion using its OCR bounding box.
  * If no confident match exists, returns null (never guesses approximate screen positions).
  */
+/** Group by visual baseline first; pairwise y/x sorting is not transitive. */
+export function groupOcrWordsIntoLines(words: OCRWord[]): OCRWord[][] {
+  const rows: OCRWord[][] = [];
+  for (const word of [...words].sort((a, b) => a.y + a.height / 2 - b.y - b.height / 2)) {
+    const row = rows.find((items) => {
+      const center = items.reduce((sum, item) => sum + item.y + item.height / 2, 0) / items.length;
+      return Math.abs(center - word.y - word.height / 2) <= Math.max(word.height, items[0].height) * 0.65;
+    });
+    if (row) row.push(word); else rows.push([word]);
+  }
+  return rows.map((row) => row.sort((a, b) => b.x - a.x));
+}
+
 export function findArabicMatchesInOcr(
   solutionText: string,
   ocrWords: OCRWord[]
 ): ArabicMatchResult[] {
   const phrases = extractArabicPhrases(solutionText);
-  if (phrases.length === 0 || ocrWords.length === 0) return [];
-
+  if (!phrases.length || !ocrWords.length) return [];
+  // Arabic phrases read right-to-left even if OCR returned ascending x. Keep
+  // physical row identity so a wrapped phrase produces separate underlines.
+  const rows = groupOcrWordsIntoLines(ocrWords.filter((word) => /[\u0621-\u064A]/.test(word.text)));
+  const tokens = rows.flatMap((row, rowIndex) => row.flatMap((word) =>
+    normalizeArabic(word.text).split(' ').filter(Boolean).map((norm) => ({ norm, word, rowIndex }))));
   const results: ArabicMatchResult[] = [];
-  const normalizedOcrWords = ocrWords.map((w) => ({
-    original: w,
-    norm: normalizeArabic(w.text),
-  }));
-
-  let matchIndex = 1;
-
+  let matchIndex = 0;
   for (const phrase of phrases) {
-    const normPhrase = normalizeArabic(phrase);
-    if (!normPhrase || normPhrase.length < 2) continue;
-
-    const phraseTokens = normPhrase.split(' ').filter(Boolean);
-    if (phraseTokens.length === 0) continue;
-
-    // Search for sequence of matching tokens in OCR
-    let matchedOcrWords: OCRWord[] = [];
-
-    if (phraseTokens.length === 1) {
-      // Single word match
-      const target = phraseTokens[0];
-      const match = normalizedOcrWords.find((item) => item.norm === target || (target.length >= 4 && item.norm.includes(target)));
-      if (match) {
-        matchedOcrWords = [match.original];
-      }
-    } else {
-      // Multi-word sequence match
-      for (let i = 0; i <= normalizedOcrWords.length - phraseTokens.length; i++) {
-        let allMatch = true;
-        for (let j = 0; j < phraseTokens.length; j++) {
-          const expected = phraseTokens[j];
-          const actual = normalizedOcrWords[i + j].norm;
-          if (actual !== expected && !(expected.length >= 4 && actual.includes(expected))) {
-            allMatch = false;
-            break;
-          }
+    const expected = normalizeArabic(phrase).split(' ').filter(Boolean);
+    if (!expected.length) continue;
+    let match: typeof tokens = [];
+    for (let i = 0; i <= tokens.length - expected.length; i++) {
+      const candidate = tokens.slice(i, i + expected.length);
+      if (!candidate.every((token, index) => token.norm === expected[index])) continue;
+      const connected = candidate.every((token, index) => {
+        if (!index) return true;
+        const previous = candidate[index - 1];
+        if (token.rowIndex === previous.rowIndex) {
+          return previous.word.x - (token.word.x + token.word.width) <= 0.14;
         }
-        if (allMatch) {
-          matchedOcrWords = normalizedOcrWords.slice(i, i + phraseTokens.length).map((item) => item.original);
-          break;
-        }
-      }
-    }
-
-    // Only create a visual region if a confident OCR match exists
-    if (matchedOcrWords.length > 0) {
-      const minX = Math.max(0.01, Math.min(...matchedOcrWords.map((w) => w.x)) - 0.008);
-      const minY = Math.max(0.01, Math.min(...matchedOcrWords.map((w) => w.y)) - 0.005);
-      const maxX = Math.min(0.99, Math.max(...matchedOcrWords.map((w) => w.x + w.width)) + 0.008);
-      const maxY = Math.min(0.99, Math.max(...matchedOcrWords.map((w) => w.y + w.height)) + 0.005);
-
-      const region: AnnotationRegion = {
-        id: `arabic-phrase-${matchIndex++}`,
-        label: `Arapça: "${phrase}"`,
-        type: phraseTokens.length > 1 ? 'phrase' : 'word',
-        x: parseFloat(minX.toFixed(4)),
-        y: parseFloat(minY.toFixed(4)),
-        width: parseFloat((maxX - minX).toFixed(4)),
-        height: parseFloat((maxY - minY).toFixed(4)),
-        content: phrase,
-      };
-
-      results.push({
-        phrase,
-        region,
-        matchedWords: matchedOcrWords,
+        return token.rowIndex === previous.rowIndex + 1 &&
+          token.word.y - previous.word.y < Math.max(token.word.height, previous.word.height) * 2.8;
       });
+      if (connected) { match = candidate; break; }
+    }
+    if (!match.length) continue;
+    matchIndex++;
+    const rowIds = [...new Set(match.map((token) => token.rowIndex))];
+    for (const [lineIndex, rowId] of rowIds.entries()) {
+      const matchedWords = [...new Set(match.filter((token) => token.rowIndex === rowId).map((token) => token.word))];
+      const x = Math.max(0, Math.min(...matchedWords.map((word) => word.x)) - 0.005);
+      const y = Math.max(0, Math.min(...matchedWords.map((word) => word.y)) - 0.004);
+      const right = Math.min(1, Math.max(...matchedWords.map((word) => word.x + word.width)) + 0.005);
+      const bottom = Math.min(1, Math.max(...matchedWords.map((word) => word.y + word.height)) + 0.004);
+      results.push({ phrase, matchedWords, region: {
+        id: `arabic-phrase-${matchIndex}-line-${lineIndex + 1}`,
+        label: `Arapça: "${phrase}"${rowIds.length > 1 ? ` (${lineIndex + 1})` : ''}`,
+        type: expected.length > 1 ? 'phrase' : 'word', x, y, width: right - x, height: bottom - y,
+        content: phrase,
+      } });
     }
   }
-
   return results;
 }

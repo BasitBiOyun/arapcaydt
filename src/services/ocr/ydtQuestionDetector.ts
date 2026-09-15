@@ -11,7 +11,7 @@ interface DetectedOptionMarker {
 }
 
 function matchOptionLetter(text: string): OptionLetter | null {
-  const cleaned = text.trim();
+  const cleaned = text.replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '').trim();
 
   const latinMatch = cleaned.match(/^[\(\[]?([A-Ea-e])[\)\.\:\-\]]?$/);
   if (latinMatch) return latinMatch[1].toUpperCase() as OptionLetter;
@@ -76,57 +76,42 @@ function collectMarkerCandidates(ocr: OCRResult): DetectedOptionMarker[] {
     addCandidate(candidates, letter, pseudoWord, 12);
   }
 
-  return candidates.sort((a, b) => (a.y - b.y) || (b.confidence - a.confidence));
-}
-
-function chooseSequentialMarkers(candidates: DetectedOptionMarker[]): Map<OptionLetter, DetectedOptionMarker> {
-  const letters: OptionLetter[] = ['A', 'B', 'C', 'D', 'E'];
-  let best = new Map<OptionLetter, DetectedOptionMarker>();
-  let bestScore = -Infinity;
-
-  const aCandidates = candidates.filter((c) => c.letter === 'A');
-  const seeds = aCandidates.length > 0 ? aCandidates : [null];
-
-  for (const seed of seeds) {
-    const chosen = new Map<OptionLetter, DetectedOptionMarker>();
-    let previousY = 0.14;
-    let score = 0;
-
-    if (seed) {
-      chosen.set('A', seed);
-      previousY = seed.y;
-      score += 20 + seed.confidence / 10;
-    }
-
-    const startIndex = seed ? 1 : 0;
-    for (let i = startIndex; i < letters.length; i++) {
-      const letter = letters[i];
-      const possible = candidates
-        .filter((c) => c.letter === letter && c.y > previousY + 0.006)
-        .sort((a, b) => {
-          const gapA = a.y - previousY;
-          const gapB = b.y - previousY;
-          // Prefer the nearest plausible next row, then OCR confidence.
-          return (gapA - gapB) || (b.confidence - a.confidence);
-        });
-
-      const candidate = possible.find((c) => c.y - previousY < 0.24) || possible[0];
-      if (!candidate) continue;
-
-      chosen.set(letter, candidate);
-      const gap = candidate.y - previousY;
-      score += 20 + candidate.confidence / 10 - Math.abs(gap - 0.09) * 20;
-      previousY = candidate.y;
-    }
-
-    score += chosen.size * 50;
-    if (score > bestScore) {
-      bestScore = score;
-      best = chosen;
+  // A damaged Latin C is commonly recognized as 0) in the supplied slide.
+  // Recover its label only when three explicit labels prove the 2-column grid;
+  // retain the actual OCR box. Without that evidence the option stays missing.
+  if (!candidates.some((candidate) => candidate.letter === 'C')) {
+    const a = candidates.find((candidate) => candidate.letter === 'A');
+    const b = candidates.find((candidate) => candidate.letter === 'B');
+    const d = candidates.find((candidate) => candidate.letter === 'D');
+    if (a && b && d && Math.abs(a.y - b.y) < 0.025 &&
+        Math.abs(b.word.x - d.word.x) < 0.035 && d.y > a.y + 0.03) {
+      const damaged = (ocr.words || []).find((word) =>
+        /^[0O©][).]$/.test(word.text.replace(/[\u200E\u200F]/g, '').trim()) &&
+        Math.abs(word.x - a.word.x) < 0.035 && Math.abs(word.y - d.y) < 0.025);
+      if (damaged) addCandidate(candidates, 'C', damaged);
     }
   }
 
-  return best;
+  return candidates.sort((a, b) => (a.y - b.y) || (b.confidence - a.confidence));
+}
+
+/** Select labels by spatial evidence; A/B and C/D may share a row. */
+function chooseMarkers(candidates: DetectedOptionMarker[]): Map<OptionLetter, DetectedOptionMarker> {
+  const selected = new Map<OptionLetter, DetectedOptionMarker>();
+  for (const letter of ['A', 'B', 'C', 'D', 'E'] as OptionLetter[]) {
+    const options = candidates.filter((candidate) => candidate.letter === letter);
+    options.sort((a, b) => {
+      const score = (candidate: DetectedOptionMarker) => {
+        const peers = candidates.filter((other) => other.letter !== letter &&
+          Math.abs(other.y - candidate.y) < 0.36);
+        const marked = /[)\].:]/.test(candidate.word.text) ? 20 : 0;
+        return candidate.confidence + marked + new Set(peers.map((peer) => peer.letter)).size * 8;
+      };
+      return score(b) - score(a);
+    });
+    if (options[0]) selected.set(letter, options[0]);
+  }
+  return selected;
 }
 
 export function detectYdtQuestionRegions(ocr: OCRResult): {
@@ -136,94 +121,56 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
 } {
   const regions: AnnotationRegion[] = [];
   const words = ocr.words || [];
-
-  if (words.length === 0) return { regions, detectedOptions: [] };
-
-  const markerCandidates = collectMarkerCandidates(ocr);
-  const finalMarkers = chooseSequentialMarkers(markerCandidates);
-  const targetLetters: OptionLetter[] = ['A', 'B', 'C', 'D', 'E'];
-
-  const firstOption = targetLetters
-    .map((letter) => finalMarkers.get(letter))
-    .find(Boolean);
-  const cutoffY = firstOption?.y ?? 0.48;
-
-  // Question stem / passage above the first detected option.
-  const promptWords = words.filter((w) => w.y < cutoffY - 0.012 && w.y > 0.035);
-  if (promptWords.length >= 3) {
-    const minX = Math.max(0.015, Math.min(...promptWords.map((w) => w.x)) - 0.012);
-    const minY = Math.max(0.015, Math.min(...promptWords.map((w) => w.y)) - 0.008);
-    const maxX = Math.min(0.985, Math.max(...promptWords.map((w) => w.x + w.width)) + 0.012);
-    const maxY = Math.min(cutoffY - 0.006, Math.max(...promptWords.map((w) => w.y + w.height)) + 0.008);
-
-    if (maxY > minY && maxX > minX) {
-      regions.push({
-        id: 'question-root',
-        label: 'Soru Kökü / Metin',
-        type: 'paragraph',
-        x: Number(minX.toFixed(4)),
-        y: Number(minY.toFixed(4)),
-        width: Number((maxX - minX).toFixed(4)),
-        height: Number((maxY - minY).toFixed(4)),
-        content: promptWords.map((w) => w.text).join(' '),
-      });
-    }
+  if (!words.length) return { regions, detectedOptions: [] };
+  const markers = [...chooseMarkers(collectMarkerCandidates(ocr)).values()];
+  const rows: DetectedOptionMarker[][] = [];
+  for (const marker of markers.sort((a, b) => a.y - b.y)) {
+    const row = rows.find((group) => Math.abs(
+      group[0].word.y + group[0].word.height / 2 - marker.word.y - marker.word.height / 2
+    ) < Math.max(group[0].word.height, marker.word.height) * 0.85);
+    if (row) row.push(marker); else rows.push([marker]);
   }
-
-  const detectedOptions: string[] = [];
-  const detectedSequence = targetLetters
-    .map((letter) => ({ letter, marker: finalMarkers.get(letter) }))
-    .filter((item): item is { letter: OptionLetter; marker: DetectedOptionMarker } => Boolean(item.marker));
-
-  for (let i = 0; i < detectedSequence.length; i++) {
-    const { letter, marker } = detectedSequence[i];
-    const nextMarker = detectedSequence[i + 1]?.marker;
-
-    const startY = Math.max(0.01, marker.y - Math.max(0.006, marker.word.height * 0.35));
-    let endY: number;
-
-    if (nextMarker) {
-      endY = Math.max(startY + 0.025, nextMarker.y - 0.006);
-    } else {
-      const below = words.filter(
-        (w) => w.y >= startY && w.y <= Math.min(0.99, marker.y + 0.18)
-      );
-      endY = below.length > 0
-        ? Math.min(0.985, Math.max(...below.map((w) => w.y + w.height)) + 0.012)
-        : Math.min(0.985, marker.y + 0.075);
-    }
-
-    const optionWords = words.filter((w) => {
-      const centerY = w.y + w.height / 2;
-      return centerY >= startY && centerY <= endY;
-    });
-
-    const minX = optionWords.length > 0
-      ? Math.max(0.02, Math.min(...optionWords.map((w) => w.x)) - 0.012)
-      : Math.max(0.02, marker.word.x - 0.012);
-    const measuredMaxX = optionWords.length > 0
-      ? Math.max(...optionWords.map((w) => w.x + w.width)) + 0.015
-      : marker.word.x + marker.word.width + 0.75;
-    const maxX = Math.min(0.985, Math.max(measuredMaxX, minX + 0.55));
-
-    regions.push({
-      id: `option-${letter.toLowerCase()}`,
-      label: `${letter} Seçeneği`,
-      type: 'option',
-      x: Number(minX.toFixed(4)),
-      y: Number(startY.toFixed(4)),
-      width: Number((maxX - minX).toFixed(4)),
-      height: Number(Math.max(0.03, endY - startY).toFixed(4)),
-      content: optionWords.map((w) => w.text).join(' '),
-    });
-    detectedOptions.push(letter);
-  }
-
-  return {
-    regions,
-    detectedOptions,
-    questionPromptRegion: regions.find((r) => r.id === 'question-root'),
+  const cutoffY = rows[0]?.[0].y ?? 0.48;
+  // Arabic stem only: decorative slide headers and page numbers are not targets.
+  const promptWords = words.filter((word) => word.y + word.height / 2 < cutoffY - 0.006 &&
+    word.y > 0.035 && /[\u0621-\u064A]|[-ـ]{2,}/.test(word.text));
+  const bounds = (items: OCRWord[], padX = 0.007, padY = 0.006) => {
+    const x = Math.max(0, Math.min(...items.map((word) => word.x)) - padX);
+    const y = Math.max(0, Math.min(...items.map((word) => word.y)) - padY);
+    const right = Math.min(1, Math.max(...items.map((word) => word.x + word.width)) + padX);
+    const bottom = Math.min(1, Math.max(...items.map((word) => word.y + word.height)) + padY);
+    return { x, y, width: right - x, height: bottom - y };
   };
+  if (promptWords.length >= 1) {
+    regions.push({ id: 'question-root', label: 'Soru Kökü / Metin', type: 'paragraph',
+      ...bounds(promptWords), content: promptWords.map((word) => word.text).join(' ') });
+  }
+  for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+    const row = rows[rowIndex].sort((a, b) => a.word.x - b.word.x);
+    const top = Math.min(...row.map((marker) => marker.y));
+    const rowHeight = Math.max(...row.map((marker) => marker.word.height));
+    const nextTop = rows[rowIndex + 1]?.[0].y ?? Math.min(1, top + rowHeight * 3.2);
+    // Partition by label columns, not by full-width stripes. The next marker is
+    // the hard right edge of a cell, so a neighbouring choice can never enter it.
+    for (let column = 0; column < row.length; column++) {
+      const marker = row[column];
+      const left = column === 0 ? Math.max(0, marker.word.x - 0.035) : marker.word.x - 0.015;
+      const right = row[column + 1] ? row[column + 1].word.x - 0.02 : 1;
+      const optionWords = words.filter((word) => {
+        const cy = word.y + word.height / 2;
+        const cx = word.x + word.width / 2;
+        return cy >= top - rowHeight * 0.35 && cy < nextTop - rowHeight * 0.15 &&
+          cx >= left && cx < right && word.height >= rowHeight * 0.25;
+      });
+      // The detected label itself is always real OCR evidence, never a guessed box.
+      if (!optionWords.includes(marker.word)) optionWords.push(marker.word);
+      regions.push({ id: `option-${marker.letter.toLowerCase()}`, label: `${marker.letter} Seçeneği`,
+        type: ('option-' + marker.letter.toLowerCase()) as AnnotationRegion['type'], ...bounds(optionWords), content: optionWords.map((word) => word.text).join(' ') });
+    }
+  }
+  const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter((letter) =>
+    regions.some((region) => region.id === `option-${letter.toLowerCase()}`));
+  return { regions, detectedOptions, questionPromptRegion: regions.find((region) => region.id === 'question-root') };
 }
 
 /**

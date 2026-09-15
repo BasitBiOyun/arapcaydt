@@ -9,6 +9,12 @@ export interface SemanticParsedEvent {
   sentenceText: string;
   targetOptionLetter?: 'A' | 'B' | 'C' | 'D' | 'E';
   order: number;
+  /** Offsets into the unchanged narration, so repeated phrases stay distinct. */
+  sourceStart?: number;
+  sourceEnd?: number;
+  sentenceStart?: number;
+  sentenceEnd?: number;
+  sourceText?: string;
 }
 
 export interface SolutionParseResult {
@@ -18,6 +24,8 @@ export interface SolutionParseResult {
 }
 
 export const REJECTION_PATTERNS = [
+  /doğru\s+(?:değil|olmaz|olamaz)/i,
+  /olmaz/i,
   /uygun\s+değil/i,
   /uygun\s+olmaz/i,
   /eliyoruz/i,
@@ -43,6 +51,7 @@ export const REJECTION_PATTERNS = [
 ];
 
 export const CORRECT_PATTERNS = [
+  /tam\s+olarak\s+uygundur/i,
   /doğru\s+cevap/i,
   /doğru\s+yanıt/i,
   /cevabımız/i,
@@ -91,6 +100,7 @@ function detectOptionReference(sentence: string): OptionLetter | null {
 }
 
 function extractStandaloneCorrectAnswer(sentence: string): OptionLetter | null {
+  if (/doğru\s+(?:cevap|yanıt|seçenek|şık)?\s*(?:[A-E]\s*)?(?:değil|olamaz|olmaz)/i.test(sentence)) return null;
   const patterns = [
     /(?:doğru\s+cevap|doğru\s+yanıt|cevabımız|doğru\s+seçenek|doğru\s+şık)\s*(?:ise\s*)?[:\-]?\s*([A-Ea-e])\b/i,
     /\b([A-Ea-e])\s*(?:seçeneği|şıkkı)\s+(?:doğru(?:dur)?|cevaptır)/i,
@@ -170,35 +180,43 @@ export function parseSolutionSemantics(
   const counter = { value: 1 };
   const validRegionIds = new Set(availableRegions.map((r) => r.id));
 
-  const sentences = solutionText
-    .split(/(?:\r?\n)+|(?<=[.!?;])\s+/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-
-  const hasQuestionRootRegion = validRegionIds.has('question-root');
-  if (sentences.length > 0 && hasQuestionRootRegion) {
-    const firstSentence = sentences[0];
-    const rootTrigger = findTriggerPhrase(firstSentence, QUESTION_ROOT_PATTERNS);
-    if (rootTrigger || /\bsoru\b/i.test(firstSentence)) {
-      events.push({
-        id: `event-${counter.value++}`,
-        targetRegionId: 'question-root',
-        actionType: 'focus',
-        semanticTriggerPhrase: rootTrigger || 'soru',
-        sentenceText: firstSentence,
-        order: events.length + 1,
-      });
+  const sentences: Array<{ text: string; start: number; end: number }> = [];
+  const boundary = /(?:\r?\n)+|(?<=[.!?;])\s+/g;
+  let cursor = 0;
+  const addSentence = (end: number) => {
+    const raw = solutionText.slice(cursor, end);
+    const text = raw.trim();
+    if (text) {
+      const start = cursor + raw.indexOf(text);
+      sentences.push({ text, start, end: start + text.length });
     }
+  };
+  for (const match of solutionText.matchAll(boundary)) {
+    addSentence(match.index!);
+    cursor = match.index! + match[0].length;
   }
+  addSentence(solutionText.length);
 
-  for (const sentence of sentences) {
+  for (const sentenceSpan of sentences) {
+    const sentence = sentenceSpan.text;
+    const eventStart = events.length;
+    const attachOffsets = () => {
+      for (const event of events.slice(eventStart)) {
+        const localStart = sentence.toLocaleLowerCase('tr-TR').indexOf(event.semanticTriggerPhrase.toLocaleLowerCase('tr-TR'));
+        event.sourceStart = sentenceSpan.start + Math.max(0, localStart);
+        event.sourceEnd = Math.min(sentenceSpan.end, event.sourceStart + event.semanticTriggerPhrase.length);
+        event.sentenceStart = sentenceSpan.start;
+        event.sentenceEnd = sentenceSpan.end;
+        event.sourceText = solutionText;
+      }
+    };
     // Arabic words/phrases that were confidently grounded by OCR.
     for (const am of arabicMatches) {
       if (sentence.includes(am.phrase) && validRegionIds.has(am.region.id)) {
-        events.push({
+        for (const actionType of ['highlight', 'underline'] as const) events.push({
           id: `event-${counter.value++}`,
           targetRegionId: am.region.id,
-          actionType: 'underline',
+          actionType,
           semanticTriggerPhrase: am.phrase,
           sentenceText: sentence,
           order: events.length + 1,
@@ -206,20 +224,25 @@ export function parseSolutionSemantics(
       }
     }
 
-    const explicitCorrect = extractStandaloneCorrectAnswer(sentence);
+    const rejectionTrigger = findTriggerPhrase(sentence, REJECTION_PATTERNS);
+    const explicitCorrect = rejectionTrigger ? null : extractStandaloneCorrectAnswer(sentence);
     const referencedOption = detectOptionReference(sentence);
 
     // A direct "Doğru cevap C" statement wins over incidental option text.
     if (explicitCorrect) {
       const regionId = `option-${explicitCorrect.toLowerCase()}`;
       if (validRegionIds.has(regionId)) {
+        const alreadyCorrect = optionStances[explicitCorrect] === 'correct';
         activeOption = explicitCorrect;
         deducedCorrectAnswer = explicitCorrect;
         optionStances[explicitCorrect] = 'correct';
         const trigger = sentence.match(/(?:doğru\s+cevap|doğru\s+yanıt|cevabımız|doğru\s+seçenek|doğru\s+şık)[^.!?;]*/i)?.[0]
           || `${explicitCorrect} doğru cevap`;
-        pushOptionEvent(events, counter, explicitCorrect, 'focus', trigger, sentence);
-        pushOptionEvent(events, counter, explicitCorrect, 'correct', trigger, sentence);
+        if (!alreadyCorrect) {
+          pushOptionEvent(events, counter, explicitCorrect, 'focus', trigger, sentence);
+          pushOptionEvent(events, counter, explicitCorrect, 'correct', trigger, sentence);
+        }
+        attachOffsets();
         continue;
       }
     }
@@ -229,30 +252,39 @@ export function parseSolutionSemantics(
       if (validRegionIds.has(regionId)) {
         activeOption = referencedOption;
         const focusTrigger = findOptionMentionPhrase(sentence, referencedOption);
-        pushOptionEvent(events, counter, referencedOption, 'focus', focusTrigger, sentence);
+        if (optionStances[referencedOption] === 'neutral') pushOptionEvent(events, counter, referencedOption, 'focus', focusTrigger, sentence);
       }
     }
 
     // Rejection/correctness may be in the same sentence OR immediately follow
     // a sentence that introduced an option. Track the active option for this.
     const targetOption = referencedOption || activeOption;
-    if (!targetOption) continue;
+    if (!targetOption) { attachOffsets(); continue; }
 
     const targetRegionId = `option-${targetOption.toLowerCase()}`;
-    if (!validRegionIds.has(targetRegionId)) continue;
+    if (!validRegionIds.has(targetRegionId)) { attachOffsets(); continue; }
 
-    const rejectionTrigger = findTriggerPhrase(sentence, REJECTION_PATTERNS);
-    if (rejectionTrigger && optionStances[targetOption] !== 'correct') {
+    if (rejectionTrigger && optionStances[targetOption] === 'neutral') {
       optionStances[targetOption] = 'rejected';
       pushOptionEvent(events, counter, targetOption, 'reject', rejectionTrigger, sentence);
     }
 
     const correctTrigger = findTriggerPhrase(sentence, CORRECT_PATTERNS);
-    if (correctTrigger && !rejectionTrigger) {
+    if (correctTrigger && !rejectionTrigger && optionStances[targetOption] !== 'correct') {
       optionStances[targetOption] = 'correct';
       deducedCorrectAnswer = targetOption;
       pushOptionEvent(events, counter, targetOption, 'correct', correctTrigger, sentence);
     }
+    attachOffsets();
+  }
+
+  // Root introduction was emitted before the sentence loop.
+  for (const event of events) if (event.sourceStart === undefined) {
+    event.sourceStart = solutionText.indexOf(event.semanticTriggerPhrase);
+    event.sourceEnd = event.sourceStart + event.semanticTriggerPhrase.length;
+    event.sentenceStart = 0;
+    event.sentenceEnd = sentences[0]?.end ?? 0;
+    event.sourceText = solutionText;
   }
 
   // Deduplicate accidental identical events while preserving order.
@@ -261,7 +293,7 @@ export function parseSolutionSemantics(
       (other) =>
         other.targetRegionId === event.targetRegionId &&
         other.actionType === event.actionType &&
-        other.sentenceText === event.sentenceText &&
+        other.sourceStart === event.sourceStart &&
         other.semanticTriggerPhrase === event.semanticTriggerPhrase
     );
     return firstIndex === index;

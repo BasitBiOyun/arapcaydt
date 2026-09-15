@@ -37,6 +37,7 @@ export const RegionEditorCanvas: React.FC<RegionEditorCanvasProps> = ({
   onSelectRegion,
   onUpdateRegions,
 }) => {
+  const [imageAspect, setImageAspect] = useState(16 / 9);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawStart, setDrawStart] = useState<{ x: number; y: number } | null>(null);
@@ -112,11 +113,11 @@ export const RegionEditorCanvas: React.FC<RegionEditorCanvasProps> = ({
       // Minimum box size
       if (width > 0.03 && height > 0.02) {
         // Automatically determine next option letter if not present
-        const hasA = regions.some((r) => r.type === 'option-a');
-        const hasB = regions.some((r) => r.type === 'option-b');
-        const hasC = regions.some((r) => r.type === 'option-c');
-        const hasD = regions.some((r) => r.type === 'option-d');
-        const hasE = regions.some((r) => r.type === 'option-e');
+        const hasA = regions.some((r) => (r.type === 'option-a' || r.id === 'option-a'));
+        const hasB = regions.some((r) => (r.type === 'option-b' || r.id === 'option-b'));
+        const hasC = regions.some((r) => (r.type === 'option-c' || r.id === 'option-c'));
+        const hasD = regions.some((r) => (r.type === 'option-d' || r.id === 'option-d'));
+        const hasE = regions.some((r) => (r.type === 'option-e' || r.id === 'option-e'));
 
         let nextType: RegionType = 'question';
         let nextLabel = 'Soru Metni';
@@ -251,7 +252,9 @@ export const RegionEditorCanvas: React.FC<RegionEditorCanvasProps> = ({
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        className="relative w-full aspect-video bg-[#F4F3EE] rounded border border-[#D5D4CC] overflow-hidden cursor-crosshair flex items-center justify-center region-bg-layer"
+        onMouseLeave={handleMouseUp}
+        style={{ aspectRatio: imageAspect }}
+        className="relative w-full bg-[#F4F3EE] rounded border border-[#D5D4CC] overflow-hidden cursor-crosshair flex items-center justify-center region-bg-layer"
       >
         {/* Background Question Image */}
         {imageUrl ? (
@@ -259,6 +262,7 @@ export const RegionEditorCanvas: React.FC<RegionEditorCanvasProps> = ({
             src={imageUrl}
             alt="YDT Soru Sayfası"
             draggable={false}
+            onLoad={e => setImageAspect(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight)}
             className="max-w-full max-h-full object-contain pointer-events-none shadow-sm"
           />
         ) : (

@@ -42,6 +42,7 @@ export function computeTimelineVisualState(
 
     switch (action.type) {
       case 'reject': {
+        delete state.correctRegions[action.targetRegionId];
         // Permanent rejection mark until explicit reset
         state.rejectedRegions[action.targetRegionId] = {
           regionId: action.targetRegionId,
@@ -52,6 +53,7 @@ export function computeTimelineVisualState(
       }
 
       case 'correct': {
+        delete state.rejectedRegions[action.targetRegionId];
         // Permanent correct answer checkmark until explicit reset
         state.correctRegions[action.targetRegionId] = {
           regionId: action.targetRegionId,
@@ -72,7 +74,7 @@ export function computeTimelineVisualState(
           }
           state.activeHighlights.push({
             regionId: action.targetRegionId,
-            opacity: opacity * 0.45,
+            opacity: opacity * 0.24,
           });
         }
         break;

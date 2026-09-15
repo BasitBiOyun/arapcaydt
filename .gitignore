@@ -2,6 +2,8 @@ node_modules/
 build/
 dist/
 coverage/
+public/.verification/
+verification-output/
 .DS_Store
 *.log
 .env*

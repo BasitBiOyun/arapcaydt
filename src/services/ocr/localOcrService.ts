@@ -1,4 +1,5 @@
 import { createWorker, Worker } from 'tesseract.js';
+import { groupOcrWordsIntoLines } from './arabicMatcher';
 import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
 
 class LocalOcrService {
@@ -211,11 +212,8 @@ class LocalOcrService {
 
     // Stable visual ordering improves deterministic option/phrase detection.
     lines.sort((a, b) => (a.y - b.y) || (a.x - b.x));
-    words.sort((a, b) => {
-      const sameLine = Math.abs(a.y - b.y) < Math.max(a.height, b.height) * 0.55;
-      if (sameLine) return a.x - b.x;
-      return a.y - b.y;
-    });
+    const orderedWords = groupOcrWordsIntoLines(words).flat();
+    words.splice(0, words.length, ...orderedWords);
 
     if (words.length === 0) {
       throw new Error(
