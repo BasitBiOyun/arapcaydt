@@ -135,6 +135,7 @@ export interface VideoConfig {
   timingQuality?: 'word-aligned' | 'anchored' | 'approximate';
   pipelineVersion?: number;
   warnings?: string[];
+  suppressedRegionIds?: string[];
 }
 
 export interface ExportConfig {

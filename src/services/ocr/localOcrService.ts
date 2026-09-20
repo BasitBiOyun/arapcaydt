@@ -1,4 +1,4 @@
-import { createWorker, Worker } from 'tesseract.js';
+import { createWorker, Worker, PSM } from 'tesseract.js';
 import { groupOcrWordsIntoLines } from './arabicMatcher';
 import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
 
@@ -227,13 +227,34 @@ class LocalOcrService {
       message: `${words.length} metin parçası ve ${lines.length} satır tespit edildi.`,
     });
 
-    return {
+    const output: OCRResult = {
       text: data.text || lines.map((l) => l.text).join('\n'),
       imageWidth: imgWidth,
       imageHeight: imgHeight,
       words,
       lines,
     };
+    {
+      // Latin labels and Arabic text need different recognition contexts.
+      // Always cross-check labels: five detections can still contain a bad box.
+      onProgress?.({ status: 'recognizing', progress: 98, message: 'Şık harfleri ayrı bir taramayla kontrol ediliyor...' });
+      try {
+        await worker.reinitialize('eng');
+        await worker.setParameters({ tessedit_pageseg_mode: PSM.SPARSE_TEXT });
+        const labels = await worker.recognize(imageUrl, {}, { text: true, blocks: true });
+        const markers: OCRWord[] = [];
+        for (const block of labels.data.blocks || []) for (const paragraph of block.paragraphs || [])
+          for (const line of paragraph.lines || []) for (const raw of line.words || []) {
+            const word = this.toOcrWord(raw, imgWidth, imgHeight);
+            if (word && word.confidence >= 55 && /^[([]?[A-E][)\].:]$/.test(word.text.trim())) markers.push(word);
+          }
+        output.optionMarkers = markers;
+      } finally {
+        await worker.reinitialize('ara+tur+eng');
+        await worker.setParameters({ tessedit_pageseg_mode: PSM.AUTO });
+      }
+    }
+    return output;
   }
 
   public async terminate(): Promise<void> {

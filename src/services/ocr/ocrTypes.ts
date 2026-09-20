@@ -24,6 +24,8 @@ export interface OCRLine {
 }
 
 export interface OCRResult {
+  /** Independent Latin-label pass; never mix its Arabic guesses into words. */
+  optionMarkers?: OCRWord[];
   text: string;
   imageWidth: number;
   imageHeight: number;

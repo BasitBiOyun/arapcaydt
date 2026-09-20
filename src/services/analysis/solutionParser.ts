@@ -248,6 +248,8 @@ export function parseSolutionSemantics(
     }
 
     if (referencedOption) {
+      // A missing visual target must not leave the previous option active.
+      activeOption = referencedOption;
       const regionId = `option-${referencedOption.toLowerCase()}`;
       if (validRegionIds.has(regionId)) {
         activeOption = referencedOption;

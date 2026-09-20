@@ -1,3 +1,4 @@
+import { applyRegionEdits } from '../services/analysis/regionEdits';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   QuestionProject, 
@@ -146,6 +147,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         videoConfig: {
           ...currentProject.videoConfig,
           regions: [],
+          suppressedRegionIds: [],
           timelineActions: [],
         },
         videoReady: false,
@@ -163,6 +165,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       videoConfig: {
         ...currentProject.videoConfig,
         regions: [],
+        suppressedRegionIds: [],
         timelineActions: [],
       },
       videoReady: false,
@@ -409,7 +412,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         timelineActions: result.actions,
         captions: result.captions,
         timingQuality: result.timingQuality,
-        pipelineVersion: 2,
+        pipelineVersion: 3,
         warnings: result.warnings,
       },
       ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
@@ -642,16 +645,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                   onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, captionY: Number(e.target.value) } })} />
                 Altyazı konumu
               </div>
-              <details className="w-full text-xs bg-white rounded-lg p-3 border">
-                <summary className="cursor-pointer font-semibold">Kutuları ve vurguları düzenle</summary>
-                <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
-                  selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
-                  onUpdateRegions={regions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig,
-                    regions: regions.map(r => {
-                      const old = currentProject.videoConfig.regions?.find(o => o.id === r.id);
-                      return JSON.stringify(old) === JSON.stringify(r) ? r : { ...r, manuallyAdjusted: true };
-                    }) } })} />
-              </details>
+
               <details className="w-full text-xs bg-white rounded-lg p-3 border">
                 <summary className="cursor-pointer font-semibold">İşaretlerin zamanlamasını düzenle</summary>
                 <EditableTimelineUI duration={activeAudioDuration} currentTime={currentPreviewTime} isPlaying={isPlayingPreview}
@@ -684,6 +678,16 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               </p>
             </div>
           )}
+          {hasImage && <details className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-lg p-3 border">
+            <summary className="cursor-pointer font-semibold">Kutuları ve vurguları düzenle</summary>
+            <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
+              solutionText={currentProject.solutionText}
+              selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
+              onUpdateRegions={regions => updateCurrentProject({ videoConfig: applyRegionEdits(
+                currentProject.videoConfig, regions, currentProject.solutionText,
+                currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15
+              ) })} />
+          </details>}
         </section>
 
         {/* RIGHT COLUMN: ~32% Progressive 4-Step Workflow Panel */}
@@ -1013,7 +1017,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                 </div>
 
                 <div className="space-y-2">
-                  {(currentProject.videoConfig.pipelineVersion !== 2) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
+                  {(currentProject.videoConfig.pipelineVersion !== 3) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
                   {currentProject.videoConfig.warnings?.map(w => <p key={w} className="text-xs text-amber-800">{w}</p>)}
                   {exportError && <p role="alert" className="text-xs text-red-700">{exportError}</p>}
                   {isExportingMp4 && <button type="button" className="text-xs underline" onClick={() => exportAbortRef.current?.abort()}>Oluşturmayı iptal et</button>}
@@ -1092,3 +1096,4 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     </div>
   );
 };
+

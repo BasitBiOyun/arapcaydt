@@ -53,6 +53,7 @@ export class LocalVideoPipeline {
     solutionText: string;
     narrationSource: NarrationSource;
     existingRegions?: AnnotationRegion[];
+    suppressedRegionIds?: string[];
     onProgress?: (progress: LocalPipelineProgress) => void;
   }): Promise<LocalPipelineResult> {
     const { imageUrl, solutionText, narrationSource, onProgress } = params;
@@ -87,7 +88,8 @@ export class LocalVideoPipeline {
 
     const layout = detectYdtQuestionRegions(ocrResult);
     const manual = (params.existingRegions || []).filter(r => r.manuallyAdjusted);
-    const finalRegions: AnnotationRegion[] = [...layout.regions];
+    const suppressed = new Set(params.suppressedRegionIds || []);
+    const finalRegions: AnnotationRegion[] = layout.regions.filter(r => !suppressed.has(r.id));
     for (const region of manual) {
       const id = /^option-[a-e]$/.test(region.type) ? region.type : region.id;
       const index = finalRegions.findIndex(r => r.id === id);
@@ -96,11 +98,6 @@ export class LocalVideoPipeline {
     }
     const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter(letter => finalRegions.some(r => r.id === `option-${letter.toLowerCase()}`));
 
-    if (detectedOptions.length === 0) {
-      throw new Error(
-        'A–E seçenek alanları görselde güvenilir biçimde tespit edilemedi. Görseli daha net veya yalnızca soru alanını içerecek şekilde yükleyin.'
-      );
-    }
 
     onProgress?.({
       stage: 'arabic_matching',
@@ -108,10 +105,19 @@ export class LocalVideoPipeline {
       message: 'Çözümdeki Arapça ifadeler görsel üzerinde eşleştiriliyor...',
     });
 
-    const arabicMatches = findArabicMatchesInOcr(solutionText, ocrResult.words);
+    const arabicMatches = findArabicMatchesInOcr(solutionText, ocrResult.words).filter(m => !suppressed.has(m.region.id));
     for (const match of arabicMatches) {
       if (!finalRegions.some((r) => r.id === match.region.id)) {
         finalRegions.push(match.region);
+      }
+    }
+
+    for (const region of manual) {
+      if (region.content && !region.type.startsWith('option') && region.id !== 'question-root') {
+        const existing = arabicMatches.findIndex(m => m.region.id === region.id);
+        const match = { phrase: region.content, region, matchedWords: [] };
+        if (existing >= 0) arabicMatches[existing] = match;
+        else arabicMatches.push(match);
       }
     }
 
@@ -140,9 +146,7 @@ export class LocalVideoPipeline {
 
     // Never silently claim success and then export only image + audio.
     if (actions.length === 0) {
-      throw new Error(
-        'Çözüm metninden otomatik animasyon adımı çıkarılamadı. Çözümde A/B/C/D/E seçeneği, eleme veya doğru cevap ifadelerinin geçtiğinden emin olun.'
-      );
+      warnings.push('Animasyon adımı bulunamadı. Kutuları ve vurguları düzenle bölümünden alan ekleyin; zaman çizelgesinden işaret ekleyebilirsiniz.');
     }
 
     onProgress?.({

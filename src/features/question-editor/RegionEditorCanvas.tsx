@@ -1,408 +1,136 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { AnnotationRegion, RegionType } from '../../types';
-import { 
-  Plus, 
-  Trash, 
-  ArrowsOutCardinal, 
-  Check, 
-  Sparkle, 
-  Cursor,
-  Tag
-} from '@phosphor-icons/react';
 
-interface RegionEditorCanvasProps {
+interface Props {
   imageUrl: string;
   regions: AnnotationRegion[];
   selectedRegionId: string | null;
   onSelectRegion: (id: string | null) => void;
   onUpdateRegions: (regions: AnnotationRegion[]) => void;
+  solutionText?: string;
 }
-
-const REGION_TYPE_OPTIONS: { type: RegionType; label: string; color: string }[] = [
-  { type: 'question', label: 'Soru Kökü', color: '#1E40AF' },
-  { type: 'paragraph', label: 'Paragraf Metni', color: '#374151' },
-  { type: 'keyword', label: 'Anahtar Kelime', color: '#D97706' },
-  { type: 'option-a', label: 'A Şıkkı', color: '#8B1E2D' },
-  { type: 'option-b', label: 'B Şıkkı', color: '#8B1E2D' },
-  { type: 'option-c', label: 'C Şıkkı', color: '#8B1E2D' },
-  { type: 'option-d', label: 'D Şıkkı', color: '#8B1E2D' },
-  { type: 'option-e', label: 'E Şıkkı', color: '#8B1E2D' },
-  { type: 'custom', label: 'Özel Bölge', color: '#4B5563' },
+const types: { type: RegionType; label: string }[] = [
+  ...['a', 'b', 'c', 'd', 'e'].map(l => ({ type: `option-${l}` as RegionType, label: `${l.toUpperCase()} Şıkkı` })),
+  { type: 'keyword', label: 'Kelime / İfade' }, { type: 'paragraph', label: 'Soru Metni' },
 ];
+const field = 'border rounded px-2 py-1 bg-white text-xs';
+const button = 'border rounded px-3 py-2 bg-white hover:bg-stone-100 text-xs cursor-pointer';
 
-export const RegionEditorCanvas: React.FC<RegionEditorCanvasProps> = ({
-  imageUrl,
-  regions = [],
-  selectedRegionId,
-  onSelectRegion,
-  onUpdateRegions,
-}) => {
-  const [imageAspect, setImageAspect] = useState(16 / 9);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [drawStart, setDrawStart] = useState<{ x: number; y: number } | null>(null);
-  const [drawCurrent, setDrawCurrent] = useState<{ x: number; y: number } | null>(null);
-
-  // Dragging / Resizing states
-  const [dragMode, setDragMode] = useState<'move' | 'resize' | null>(null);
-  const [dragStartPos, setDragStartPos] = useState<{ x: number; y: number } | null>(null);
-  const [dragInitialRegion, setDragInitialRegion] = useState<AnnotationRegion | null>(null);
-
-  const selectedRegion = regions.find((r) => r.id === selectedRegionId);
-
-  // Get normalized [0..1] coordinates from mouse event
-  const getNormalizedPos = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return { x: 0, y: 0 };
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
-    return { x, y };
+export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, onSelectRegion, onUpdateRegions, solutionText = '' }: Props) {
+  const stage = useRef<HTMLDivElement>(null);
+  const script = useRef<HTMLTextAreaElement>(null);
+  const [aspect, setAspect] = useState(16 / 9);
+  const [drawing, setDrawing] = useState(false);
+  const [newType, setNewType] = useState<RegionType>('keyword');
+  const [phrase, setPhrase] = useState('');
+  const [gesture, setGesture] = useState<{ mode: 'draw' | 'move' | 'resize'; x: number; y: number; region?: AnnotationRegion } | null>(null);
+  const [draft, setDraft] = useState<AnnotationRegion | null>(null);
+  const selected = regions.find(r => r.id === selectedRegionId);
+  const pos = (e: React.PointerEvent) => {
+    const rect = stage.current!.getBoundingClientRect();
+    return { x: Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)), y: Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height)) };
   };
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return; // only left click
-    const target = e.target as HTMLElement;
-
-    // Check if clicked directly on background
-    if (target === containerRef.current || target.classList.contains('region-bg-layer')) {
-      const pos = getNormalizedPos(e);
-      setIsDrawing(true);
-      setDrawStart(pos);
-      setDrawCurrent(pos);
-      onSelectRegion(null);
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const pos = getNormalizedPos(e);
-
-    if (isDrawing && drawStart) {
-      setDrawCurrent(pos);
-    } else if (dragMode === 'move' && dragStartPos && dragInitialRegion) {
-      const dx = pos.x - dragStartPos.x;
-      const dy = pos.y - dragStartPos.y;
-
-      const newX = Math.max(0, Math.min(1 - dragInitialRegion.width, dragInitialRegion.x + dx));
-      const newY = Math.max(0, Math.min(1 - dragInitialRegion.height, dragInitialRegion.y + dy));
-
-      const updated = regions.map((r) =>
-        r.id === dragInitialRegion.id ? { ...r, x: newX, y: newY } : r
-      );
-      onUpdateRegions(updated);
-    } else if (dragMode === 'resize' && dragStartPos && dragInitialRegion) {
-      const dx = pos.x - dragStartPos.x;
-      const dy = pos.y - dragStartPos.y;
-
-      const newW = Math.max(0.04, Math.min(1 - dragInitialRegion.x, dragInitialRegion.width + dx));
-      const newH = Math.max(0.03, Math.min(1 - dragInitialRegion.y, dragInitialRegion.height + dy));
-
-      const updated = regions.map((r) =>
-        r.id === dragInitialRegion.id ? { ...r, width: newW, height: newH } : r
-      );
-      onUpdateRegions(updated);
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (isDrawing && drawStart && drawCurrent) {
-      const x = Math.min(drawStart.x, drawCurrent.x);
-      const y = Math.min(drawStart.y, drawCurrent.y);
-      const width = Math.abs(drawCurrent.x - drawStart.x);
-      const height = Math.abs(drawCurrent.y - drawStart.y);
-
-      // Minimum box size
-      if (width > 0.03 && height > 0.02) {
-        // Automatically determine next option letter if not present
-        const hasA = regions.some((r) => (r.type === 'option-a' || r.id === 'option-a'));
-        const hasB = regions.some((r) => (r.type === 'option-b' || r.id === 'option-b'));
-        const hasC = regions.some((r) => (r.type === 'option-c' || r.id === 'option-c'));
-        const hasD = regions.some((r) => (r.type === 'option-d' || r.id === 'option-d'));
-        const hasE = regions.some((r) => (r.type === 'option-e' || r.id === 'option-e'));
-
-        let nextType: RegionType = 'question';
-        let nextLabel = 'Soru Metni';
-
-        if (!hasA) {
-          nextType = 'option-a';
-          nextLabel = 'A Şıkkı';
-        } else if (!hasB) {
-          nextType = 'option-b';
-          nextLabel = 'B Şıkkı';
-        } else if (!hasC) {
-          nextType = 'option-c';
-          nextLabel = 'C Şıkkı';
-        } else if (!hasD) {
-          nextType = 'option-d';
-          nextLabel = 'D Şıkkı';
-        } else if (!hasE) {
-          nextType = 'option-e';
-          nextLabel = 'E Şıkkı';
-        } else {
-          nextType = 'keyword';
-          nextLabel = `Bölge #${regions.length + 1}`;
-        }
-
-        const newRegion: AnnotationRegion = {
-          id: `reg_${Date.now()}`,
-          label: nextLabel,
-          type: nextType,
-          x: parseFloat(x.toFixed(4)),
-          y: parseFloat(y.toFixed(4)),
-          width: parseFloat(width.toFixed(4)),
-          height: parseFloat(height.toFixed(4)),
-        };
-
-        onUpdateRegions([...regions, newRegion]);
-        onSelectRegion(newRegion.id);
-      }
-    }
-
-    setIsDrawing(false);
-    setDrawStart(null);
-    setDrawCurrent(null);
-    setDragMode(null);
-    setDragStartPos(null);
-    setDragInitialRegion(null);
-  };
-
-  const handleStartMove = (e: React.MouseEvent, region: AnnotationRegion) => {
+  const begin = (e: React.PointerEvent, mode: 'draw' | 'move' | 'resize', region?: AnnotationRegion) => {
+    if (e.button !== 0) return;
     e.stopPropagation();
-    onSelectRegion(region.id);
-    setDragMode('move');
-    setDragStartPos(getNormalizedPos(e));
-    setDragInitialRegion(region);
+    stage.current!.setPointerCapture(e.pointerId);
+    setGesture({ mode, ...pos(e), region });
+    setDraft(region || null);
+    if (region) onSelectRegion(region.id);
   };
-
-  const handleStartResize = (e: React.MouseEvent, region: AnnotationRegion) => {
-    e.stopPropagation();
-    onSelectRegion(region.id);
-    setDragMode('resize');
-    setDragStartPos(getNormalizedPos(e));
-    setDragInitialRegion(region);
-  };
-
-  const handleDeleteRegion = (id: string, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    const updated = regions.filter((r) => r.id !== id);
-    onUpdateRegions(updated);
-    if (selectedRegionId === id) {
-      onSelectRegion(null);
+  const move = (e: React.PointerEvent) => {
+    if (!gesture) return;
+    const p = pos(e), r = gesture.region;
+    if (gesture.mode === 'draw') {
+      setDraft({ id: 'draft', label: '', type: newType, x: Math.min(p.x, gesture.x), y: Math.min(p.y, gesture.y), width: Math.abs(p.x - gesture.x), height: Math.abs(p.y - gesture.y) });
+    } else if (r) {
+      const dx = p.x - gesture.x, dy = p.y - gesture.y;
+      setDraft(gesture.mode === 'move' ? { ...r, x: Math.max(0, Math.min(1-r.width,r.x+dx)), y: Math.max(0,Math.min(1-r.height,r.y+dy)) }
+        : { ...r, width: Math.max(.008,Math.min(1-r.x,r.width+dx)), height: Math.max(.008,Math.min(1-r.y,r.height+dy)) });
     }
   };
-
-  const handleAutoPopulateOptions = () => {
-    const newOptions: AnnotationRegion[] = [
-      { id: `reg_${Date.now()}_q`, label: 'Soru Kökü', type: 'question', x: 0.08, y: 0.12, width: 0.84, height: 0.28 },
-      { id: `reg_${Date.now()}_a`, label: 'A Şıkkı', type: 'option-a', x: 0.1, y: 0.44, width: 0.8, height: 0.08 },
-      { id: `reg_${Date.now()}_b`, label: 'B Şıkkı', type: 'option-b', x: 0.1, y: 0.54, width: 0.8, height: 0.08 },
-      { id: `reg_${Date.now()}_c`, label: 'C Şıkkı', type: 'option-c', x: 0.1, y: 0.64, width: 0.8, height: 0.08 },
-      { id: `reg_${Date.now()}_d`, label: 'D Şıkkı', type: 'option-d', x: 0.1, y: 0.74, width: 0.8, height: 0.08 },
-      { id: `reg_${Date.now()}_e`, label: 'E Şıkkı', type: 'option-e', x: 0.1, y: 0.84, width: 0.8, height: 0.08 },
-    ];
-    onUpdateRegions([...regions, ...newOptions]);
-    onSelectRegion(newOptions[0].id);
+  const finish = (e: React.PointerEvent) => {
+    if (gesture && draft && draft.width > .008 && draft.height > .008) {
+      if (gesture.mode === 'draw') {
+        const id = newType.startsWith('option-') ? newType : `manual-${crypto.randomUUID()}`;
+        const region = { ...draft, id, type: newType, label: types.find(t => t.type === newType)?.label || 'İfade', content: phrase.trim(), manuallyAdjusted: true };
+        onUpdateRegions([...regions.filter(r => r.id !== id && !(newType.startsWith('option-') && r.type === newType)), region]);
+        onSelectRegion(id);
+        setDrawing(false);
+      } else onUpdateRegions(regions.map(r => r.id === draft.id ? { ...draft, manuallyAdjusted: true } : r));
+    }
+    if (stage.current?.hasPointerCapture(e.pointerId)) stage.current.releasePointerCapture(e.pointerId);
+    setGesture(null); setDraft(null);
   };
-
-  return (
-    <div className="space-y-3 select-none">
-      {/* Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded bg-white border border-[#E5E4DC] text-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 font-semibold text-[#1C1917]">
-            <Cursor size={15} weight="bold" className="text-[#8B1E2D]" />
-            <span>Görsel Üzerinde Alan Çizin veya Seçin</span>
-          </div>
-          <span className="text-[11px] text-[#787670]">
-            (Soru görseline fare ile tıklayıp sürükleyerek alan belirleyin)
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {regions.length === 0 && (
-            <button
-              type="button"
-              onClick={handleAutoPopulateOptions}
-              className="px-2.5 py-1 rounded border border-[#DFC8CB] bg-[#FDF2F2] hover:bg-[#F8E2E4] text-[#8B1E2D] font-semibold flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              <Sparkle size={13} weight="bold" />
-              <span>Standart Şık Alanlarını Ekle (A-E)</span>
-            </button>
-          )}
-
-          {regions.length > 0 && (
-            <button
-              type="button"
-              onClick={() => {
-                if (confirm('Tüm tanımlı alanları temizlemek istiyor musunuz?')) {
-                  onUpdateRegions([]);
-                  onSelectRegion(null);
-                }
-              }}
-              className="px-2 py-1 rounded text-[#787670] hover:text-[#8B1E2D] hover:bg-[#F2F1EB] cursor-pointer"
-            >
-              Temizle ({regions.length})
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Main Interactive Stage Container */}
-      <div
-        ref={containerRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        style={{ aspectRatio: imageAspect }}
-        className="relative w-full bg-[#F4F3EE] rounded border border-[#D5D4CC] overflow-hidden cursor-crosshair flex items-center justify-center region-bg-layer"
-      >
-        {/* Background Question Image */}
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="YDT Soru Sayfası"
-            draggable={false}
-            onLoad={e => setImageAspect(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight)}
-            className="max-w-full max-h-full object-contain pointer-events-none shadow-sm"
-          />
-        ) : (
-          <div className="text-center text-xs text-[#787670] p-6 pointer-events-none">
-            Soru görseli yüklenmedi
-          </div>
-        )}
-
-        {/* Existing Defined Regions */}
-        {regions.map((reg) => {
-          const isSelected = reg.id === selectedRegionId;
-          const opt = REGION_TYPE_OPTIONS.find((o) => o.type === reg.type);
-          const color = opt?.color || '#8B1E2D';
-
-          return (
-            <div
-              key={reg.id}
-              onMouseDown={(e) => handleStartMove(e, reg)}
-              style={{
-                left: `${reg.x * 100}%`,
-                top: `${reg.y * 100}%`,
-                width: `${reg.width * 100}%`,
-                height: `${reg.height * 100}%`,
-                borderColor: color,
-              }}
-              className={`absolute border-2 rounded transition-shadow cursor-move ${
-                isSelected
-                  ? 'ring-2 ring-[#8B1E2D] ring-offset-1 shadow-md bg-[#8B1E2D]/10'
-                  : 'border-dashed bg-black/5 hover:bg-black/10'
-              }`}
-            >
-              {/* Region Label Badge */}
-              <div
-                style={{ backgroundColor: color }}
-                className="absolute -top-5 left-0 px-1.5 py-0.5 rounded-t text-[10px] font-bold text-white whitespace-nowrap shadow-xs flex items-center gap-1"
-              >
-                <span>{reg.label}</span>
-                {isSelected && (
-                  <button
-                    type="button"
-                    onClick={(e) => handleDeleteRegion(reg.id, e)}
-                    className="hover:text-red-200 ml-1 cursor-pointer"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-
-              {/* Bottom-right Resize Handle */}
-              {isSelected && (
-                <div
-                  onMouseDown={(e) => handleStartResize(e, reg)}
-                  className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 rounded bg-[#8B1E2D] border border-white cursor-nwse-resize shadow-xs"
-                />
-              )}
-            </div>
-          );
-        })}
-
-        {/* Dynamic Drawing Box */}
-        {isDrawing && drawStart && drawCurrent && (
-          <div
-            style={{
-              left: `${Math.min(drawStart.x, drawCurrent.x) * 100}%`,
-              top: `${Math.min(drawStart.y, drawCurrent.y) * 100}%`,
-              width: `${Math.abs(drawCurrent.x - drawStart.x) * 100}%`,
-              height: `${Math.abs(drawCurrent.y - drawStart.y) * 100}%`,
-            }}
-            className="absolute border-2 border-[#8B1E2D] border-dashed bg-[#8B1E2D]/15 rounded pointer-events-none"
-          />
-        )}
-      </div>
-
-      {/* Selected Region Quick Inspector Panel */}
-      {selectedRegion && (
-        <div className="p-3 rounded bg-white border border-[#E5E4DC] flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-3">
-            <div className="space-y-0.5">
-              <label className="text-[10px] text-[#666560] font-semibold uppercase">
-                Bölge Başlığı:
-              </label>
-              <input
-                type="text"
-                value={selectedRegion.label}
-                onChange={(e) => {
-                  const updated = regions.map((r) =>
-                    r.id === selectedRegion.id ? { ...r, label: e.target.value } : r
-                  );
-                  onUpdateRegions(updated);
-                }}
-                className="px-2 py-1 rounded border border-[#D5D4CC] bg-[#FAF9F5] text-xs font-semibold text-[#1C1917] outline-none"
-              />
-            </div>
-
-            <div className="space-y-0.5">
-              <label className="text-[10px] text-[#666560] font-semibold uppercase">
-                Bölge Türü:
-              </label>
-              <select
-                value={selectedRegion.type}
-                onChange={(e) => {
-                  const newType = e.target.value as RegionType;
-                  const opt = REGION_TYPE_OPTIONS.find((o) => o.type === newType);
-                  const updated = regions.map((r) =>
-                    r.id === selectedRegion.id
-                      ? { ...r, type: newType, label: opt?.label || r.label }
-                      : r
-                  );
-                  onUpdateRegions(updated);
-                }}
-                className="px-2 py-1 rounded border border-[#D5D4CC] bg-[#FAF9F5] text-xs font-medium text-[#1C1917] outline-none"
-              >
-                {REGION_TYPE_OPTIONS.map((opt) => (
-                  <option key={opt.type} value={opt.type}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => handleDeleteRegion(selectedRegion.id)}
-              className="px-3 py-1.5 rounded border border-[#F8D7DA] bg-[#FDF2F2] hover:bg-[#F8E2E4] text-xs font-semibold text-[#8B1E2D] flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              <Trash size={14} />
-              <span>Bölgeyi Sil</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onSelectRegion(null)}
-              className="px-3 py-1.5 rounded bg-[#FAF9F5] hover:bg-[#EFEFEA] border border-[#D5D4CC] text-xs font-medium text-[#33322E] cursor-pointer"
-            >
-              Seçimi Bırak
-            </button>
-          </div>
-        </div>
-      )}
+  const update = (patch: Partial<AnnotationRegion>) => {
+    if (!selected) return;
+    const updated = { ...selected, ...patch, manuallyAdjusted: true };
+    if (patch.type) {
+      updated.id = patch.type.startsWith('option-') ? patch.type : `manual-${crypto.randomUUID()}`;
+      updated.label = types.find(t => t.type === patch.type)?.label || selected.label;
+    }
+    onUpdateRegions([...regions.filter(r => r.id !== selected.id && r.id !== updated.id), updated]);
+    onSelectRegion(updated.id);
+  };
+  return <div className="space-y-3 mt-3 text-xs">
+    <p>Şık seçip kutusunu çizin. Kelime vurgusu için aşağıdaki metinden ifadeyi seçin; ardından görselde yerini çizin. Çift sütundaki her şık ayrı bir kutu olmalı.</p>
+    <div className="flex flex-wrap gap-2 items-center">
+      <select aria-label="Çizilecek alan türü" className={field} value={newType} onChange={e => setNewType(e.target.value as RegionType)}>
+        {types.map(t => <option key={t.type} value={t.type}>{t.label}</option>)}
+      </select>
+      <button type="button" className={button} aria-pressed={drawing} onClick={() => { setDrawing(!drawing); setGesture(null); setDraft(null); }}>{drawing ? 'Çizmeyi iptal et' : 'Yeni kutu çiz'}</button>
+      <span>{drawing ? 'Görselde basılı tutup sürükleyin; mevcut kutular çizimi engellemez.' : 'Kutuyu seçip taşıyabilir, köşesinden boyutlandırabilirsiniz.'}</span>
     </div>
-  );
-};
+    {solutionText && <details>
+      <summary className="cursor-pointer font-semibold">Çözüm metninden kelime / ifade seç</summary>
+      <textarea aria-label="Vurgu için çözüm metni" ref={script} readOnly value={solutionText} dir="auto" rows={5} className="select-text w-full border rounded p-2 mt-2" />
+      <button className={button} type="button" onClick={() => {
+        const el = script.current!;
+        const text = el.value.slice(el.selectionStart, el.selectionEnd).trim();
+        if (text) { setPhrase(text); setNewType('keyword'); setDrawing(true); }
+      }}>Seçili ifadeye kutu çiz</button>
+    </details>}
+    <label className="flex flex-col gap-1">Sesle eşleştirilecek ifade
+      <input aria-label="Sesle eşleştirilecek ifade" dir="auto" className={field} value={phrase} onChange={e => setPhrase(e.target.value)} placeholder="Örneğin: مُمَيِّزَاتٌ" />
+    </label>
+    <div ref={stage} role="group" aria-label="Bölge çizim alanı" style={{ aspectRatio: aspect, touchAction: 'none' }}
+      className={`relative w-full border rounded bg-white select-none ${drawing ? 'cursor-crosshair' : ''}`}
+      onPointerDown={e => { if (drawing) begin(e, 'draw'); }} onPointerMove={move} onPointerUp={finish}
+      onPointerCancel={() => { setGesture(null); setDraft(null); }}>
+      <img src={imageUrl} alt="Soru üzerinde düzenlenebilir alanlar" draggable={false} className="w-full h-full pointer-events-none"
+        onLoad={e => setAspect(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight)} />
+      {regions.map(region => {
+        const r = gesture?.region?.id === region.id && draft ? draft : region;
+        return <div key={r.id} style={{ left: `${r.x*100}%`, top: `${r.y*100}%`, width: `${r.width*100}%`, height: `${r.height*100}%`, pointerEvents: drawing ? 'none' : 'auto', zIndex: r.id === selectedRegionId ? 20 : 1 }}
+          className={`absolute border-2 cursor-move ${r.id === selectedRegionId ? 'border-red-700 bg-red-800/10' : 'border-amber-600 bg-amber-300/10'}`}
+          onPointerDown={e => begin(e, 'move', r)}>
+          <span className="absolute -top-4 left-0 text-[10px] bg-white text-stone-900 whitespace-nowrap">{r.label}</span>
+          {r.id === selectedRegionId && <div aria-label="Kutuyu boyutlandır" className="absolute -bottom-2 -right-2 w-4 h-4 bg-red-800 cursor-nwse-resize" onPointerDown={e => begin(e,'resize',r)} />}
+        </div>;
+      })}
+      {gesture?.mode === 'draw' && draft && <div className="absolute pointer-events-none border-2 border-red-700 bg-yellow-200/30" style={{ left:`${draft.x*100}%`, top:`${draft.y*100}%`, width:`${draft.width*100}%`, height:`${draft.height*100}%` }} />}
+    </div>
+    <label className="flex flex-col gap-1">Düzenlenecek kutu
+      <select aria-label="Düzenlenecek kutu" value={selectedRegionId || ''} className={field} onChange={e => onSelectRegion(e.target.value || null)}>
+        <option value="">Kutu seçin ({regions.length})</option>
+        {regions.map(r => <option key={r.id} value={r.id}>{r.label} {r.content?.slice(0,60)}</option>)}
+      </select>
+    </label>
+    {selected && <div className="flex flex-wrap gap-2 items-center border p-3 rounded">
+      <select aria-label="Seçili kutunun türü" value={selected.type} className={field} onChange={e => update({ type:e.target.value as RegionType })}>
+        {!types.some(t => t.type === selected.type) && <option value={selected.type}>{selected.type}</option>}
+        {types.map(t => <option key={t.type} value={t.type}>{t.label}</option>)}
+      </select>
+      <input aria-label="Kutunun eşleşen metni" dir="auto" className={field} value={selected.content || ''} onChange={e => update({content:e.target.value})} />
+      {(['x','y','width','height'] as const).map((key,i) => <label key={key}>{['Sol %','Üst %','Genişlik %','Yükseklik %'][i]}
+        <input aria-label={['Sol yüzde','Üst yüzde','Genişlik yüzde','Yükseklik yüzde'][i]} className={`${field} w-20`} type="number" min={key === 'width' || key === 'height' ? .8 : 0} max="100" step="0.1" value={Number((selected[key]*100).toFixed(1))}
+          onChange={e => {
+            const value = Number(e.target.value)/100;
+            if (!Number.isFinite(value) || e.target.value === '') return;
+            const max = key === 'x' ? 1-selected.width : key === 'y' ? 1-selected.height : key === 'width' ? 1-selected.x : 1-selected.y;
+            update({[key]:Math.max(key === 'width' || key === 'height' ? .008 : 0,Math.min(max,value))});
+          }} /></label>)}
+      <button className={`${button} text-red-800`} type="button" onClick={() => { onUpdateRegions(regions.filter(r => r.id !== selected.id)); onSelectRegion(null); }}>Seçili kutuyu sil</button>
+    </div>}
+  </div>;
+}

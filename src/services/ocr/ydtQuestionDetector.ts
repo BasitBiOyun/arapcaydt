@@ -49,7 +49,7 @@ function collectMarkerCandidates(ocr: OCRResult): DetectedOptionMarker[] {
   const candidates: DetectedOptionMarker[] = [];
 
   // Word-level markers are the most precise source.
-  for (const word of ocr.words || []) {
+  for (const word of [...(ocr.optionMarkers || []), ...(ocr.words || [])]) {
     const letter = matchOptionLetter(word.text);
     if (letter) addCandidate(candidates, letter, word, 5);
   }
@@ -60,7 +60,10 @@ function collectMarkerCandidates(ocr: OCRResult): DetectedOptionMarker[] {
     const letter = matchOptionLetter(line.text);
     if (!letter) continue;
 
-    const firstWord = line.words?.[0];
+    // RTL output order is not physical order. Never attach A to the first
+    // Arabic word of a full-width line containing both A and B.
+    const firstWord = line.words?.find(word => matchOptionLetter(word.text) === letter);
+    if (!firstWord) continue;
     const pseudoWord: OCRWord = firstWord || {
       text: line.text,
       confidence: line.confidence,
@@ -156,12 +159,34 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
       const marker = row[column];
       const left = column === 0 ? Math.max(0, marker.word.x - 0.035) : marker.word.x - 0.015;
       const right = row[column + 1] ? row[column + 1].word.x - 0.02 : 1;
-      const optionWords = words.filter((word) => {
+      const candidates = words.filter((word) => {
         const cy = word.y + word.height / 2;
         const cx = word.x + word.width / 2;
         return cy >= top - rowHeight * 0.35 && cy < nextTop - rowHeight * 0.15 &&
-          cx >= left && cx < right && word.height >= rowHeight * 0.25;
+          cx >= left && cx < right && word.x + word.width <= right + .005 && word.height >= rowHeight * 0.25;
       });
+      // Stop at a whitespace gutter even if the neighbouring label was missed.
+      // Keep successive lines only while their baselines remain contiguous.
+      const optionWords: OCRWord[] = [];
+      const lineGroups: OCRWord[][] = [];
+      for (const word of candidates.sort((a, b) => a.y - b.y)) {
+        const group = lineGroups.find(g => Math.abs(g[0].y + g[0].height / 2 - word.y - word.height / 2) < Math.max(g[0].height, word.height) * .8);
+        if (group) group.push(word); else lineGroups.push([word]);
+      }
+      let lastBottom = marker.y + marker.word.height;
+      for (const group of lineGroups) {
+        if (Math.min(...group.map(w => w.y)) > lastBottom + rowHeight * .9) break;
+        const sorted = group.sort((a,b) => a.x - b.x);
+        let edge = marker.word.x + marker.word.width;
+        for (const word of sorted) {
+          if (word.x + word.width < left) continue;
+          const gap = word.x - edge;
+          if (gap > Math.max(.08, rowHeight * ocr.imageHeight / ocr.imageWidth * 2.4)) break;
+          optionWords.push(word);
+          edge = Math.max(edge, word.x + word.width);
+          lastBottom = Math.max(lastBottom, word.y + word.height);
+        }
+      }
       // The detected label itself is always real OCR evidence, never a guessed box.
       if (!optionWords.includes(marker.word)) optionWords.push(marker.word);
       regions.push({ id: `option-${marker.letter.toLowerCase()}`, label: `${marker.letter} Seçeneği`,

@@ -51,6 +51,7 @@ export const AutoVideoGeneratorModal: React.FC<AutoVideoGeneratorModalProps> = (
           words: project.audioNarration?.words,
         },
         existingRegions: project.videoConfig?.regions,
+        suppressedRegionIds: project.videoConfig?.suppressedRegionIds,
         onProgress: (progress) => {
           setStepMessage(progress.message);
           if (progress.stage === 'ocr') setCurrentStep('analyzing_image');
@@ -135,7 +136,7 @@ export const AutoVideoGeneratorModal: React.FC<AutoVideoGeneratorModalProps> = (
             <div className="space-y-4">
               <div className="p-3.5 rounded bg-[#F7F6F0] border border-[#E5E4DC] text-xs text-[#55544F] leading-relaxed space-y-2">
                 <p className="font-semibold text-[#1C1917]">
-                  Öğretmenlerin manuel alan çizmesine veya zaman çizelgesi düzenlemesine gerek yoktur.
+                  Şıklar otomatik taranır. Eksik veya hatalı alanları önizlemedeki düzenleyicide düzeltebilirsiniz.
                 </p>
                 <p>
                   Sistem soru görselini inceleyecek, şıkları (A, B, C, D, E) ve çözüm açıklamanızdaki eleme/doğrulama mantığını tespit ederek seslendirmeyle senkronize edecektir.

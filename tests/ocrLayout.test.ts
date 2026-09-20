@@ -102,3 +102,34 @@ test('real Konak OCR recovers damaged C marker only from confirmed grid and stri
   assert.ok(phraseMatches.every((match) => match.region.height < .065));
   assert.equal(detectYdtQuestionRegions(ocr([word('0)', .2, .4)])).detectedOptions.length, 0);
 });
+
+test('real Soru 2: independent Latin pass recovers D without merging C and D', async () => {
+  const { readFileSync } = await import('node:fs');
+  const raw = JSON.parse(readFileSync(new URL('./fixtures/soru2-ocr.json', import.meta.url), 'utf8'));
+  const layout = detectYdtQuestionRegions(raw);
+  assert.deepEqual(layout.detectedOptions, ['A','B','C','D','E']);
+  const expected: Record<string, string> = { a:'محذورات', b:'معروضات', c:'مميزات', d:'معاونات', e:'معلومات' };
+  for (const [letter, text] of Object.entries(expected)) {
+    const region = layout.regions.find(r => r.id === `option-${letter}`)!;
+    assert.ok(region.content?.includes(text), `${letter}: ${region.content}`);
+    assert.ok(region.width < .16 && region.height < .075, JSON.stringify(region));
+    for (const other of Object.values(expected).filter(t => t !== text)) assert.ok(!region.content?.includes(other));
+  }
+});
+
+test('missed B never expands A across the whitespace gutter or into later rows', () => {
+  const result = detectYdtQuestionRegions(ocr([
+    word('A)', .26,.52,.02),word('استخدام',.29,.52,.08),
+    word('اختيار',.55,.52,.08),word('اجتماع',.55,.65,.08),
+  ]));
+  const a = result.regions.find(r => r.id === 'option-a')!;
+  assert.ok(a.width < .15);
+  assert.ok(a.height < .06);
+  assert.ok(!a.content?.includes('اختيار'));
+});
+
+test('RTL line text never moves a label onto the first Arabic word in that line', () => {
+  const raw = ocr([word('A)',.2,.5,.02),word('كلمة',.23,.5,.06),word('B)',.6,.5,.02),word('ثانية',.63,.5,.06)]);
+  raw.lines=[{text:'A) كلمة B) ثانية',confidence:96,x:.2,y:.5,width:.5,height:.04,words:[raw.words[3],...raw.words.slice(0,3)]}];
+  assert.ok(detectYdtQuestionRegions(raw).regions.find(r=>r.id==='option-a')!.x < .21);
+});
