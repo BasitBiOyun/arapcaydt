@@ -1,3 +1,4 @@
+import { authHeaders } from '../supabase';
 import { ElevenLabsVoice, ElevenLabsStatus } from '../../types';
 import { GenerateNarrationRequest, GenerateNarrationResponse, IElevenLabsService } from './types';
 import { STANDARD_VOICE_CONFIG } from '../../config/voice';
@@ -16,7 +17,7 @@ class ElevenLabsService implements IElevenLabsService {
 
   public async checkStatus(): Promise<ElevenLabsStatus> {
     try {
-      const res = await fetch('/api/elevenlabs/status', { cache: 'no-store' });
+      const res = await fetch('/api/elevenlabs/status', { cache: 'no-store', headers: await authHeaders() });
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
       }
@@ -33,7 +34,7 @@ class ElevenLabsService implements IElevenLabsService {
 
   public async getVoices(): Promise<ElevenLabsVoice[]> {
     try {
-      const res = await fetch('/api/elevenlabs/voices');
+      const res = await fetch('/api/elevenlabs/voices', {headers: await authHeaders()});
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
       }
@@ -57,6 +58,7 @@ class ElevenLabsService implements IElevenLabsService {
 
   public async generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
     const payload: GenerateNarrationRequest = {
+      projectId: req.projectId,
       text: req.text,
       voiceId: req.voiceId || STANDARD_VOICE_CONFIG.voiceId,
       modelId: req.modelId || STANDARD_VOICE_CONFIG.modelId,
@@ -70,6 +72,7 @@ class ElevenLabsService implements IElevenLabsService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...await authHeaders(),
         },
         body: JSON.stringify(payload),
       });

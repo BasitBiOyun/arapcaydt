@@ -1,3 +1,4 @@
+import { requireMember, serviceDatabase } from '../../server/auth';
 export const config = {
   maxDuration: 60,
 };
@@ -112,6 +113,8 @@ function getUpstreamError(status: number, raw: string): string {
 }
 
 export default async function handler(req: any, res: any) {
+  const member=await requireMember(req,res);
+  if(!member)return;
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
@@ -134,10 +137,20 @@ export default async function handler(req: any, res: any) {
     });
   }
 
+  let audit: ReturnType<typeof serviceDatabase>;
+  let eventId: string;
+  try {
+    audit=serviceDatabase();
+    const {data,error}=await audit.rpc('reserve_voice',{member_id:member.user.id,target_project:req.body?.projectId||'',char_count:text.length});
+    if(error) return res.status(403).json({error:error.message});
+    eventId=data;
+  } catch {return res.status(503).json({error:'Ses kullanım kaydı açılamadı; ücretli istek gönderilmedi.'});}
+  const finish=async(state:string)=>{const {error}=await audit.from('activity').update({state}).eq('id',eventId);if(error)console.error('Voice audit update failed');};
   try {
     const endpoint = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_CONFIG.voiceId}/with-timestamps?output_format=${encodeURIComponent(VOICE_CONFIG.outputFormat)}`;
     const upstream = await fetch(endpoint, {
       method: 'POST',
+      signal: AbortSignal.timeout(50000),
       headers: {
         'xi-api-key': apiKey,
         'Content-Type': 'application/json',
@@ -150,6 +163,7 @@ export default async function handler(req: any, res: any) {
     });
 
     if (!upstream.ok) {
+      await finish('failed');
       const raw = await upstream.text();
       const message = getUpstreamError(upstream.status, raw);
       console.error('[ElevenLabs upstream]', upstream.status, raw.slice(0, 500));
@@ -162,6 +176,7 @@ export default async function handler(req: any, res: any) {
 
     const result: any = await upstream.json();
     if (!result?.audio_base64) {
+      await finish('failed');
       console.error('[ElevenLabs] Successful response did not contain audio_base64.');
       return res.status(502).json({
         error: 'Ses servisi geçerli bir ses dosyası döndürmedi.',
@@ -181,6 +196,7 @@ export default async function handler(req: any, res: any) {
     const endTimes = alignment?.character_end_times_seconds || [];
     const duration = endTimes.length ? endTimes[endTimes.length - 1] : 10;
 
+    await finish('succeeded');
     return res.status(200).json({
       audioBase64: result.audio_base64,
       mimeType: 'audio/mpeg',
@@ -195,7 +211,8 @@ export default async function handler(req: any, res: any) {
       outputFormat: VOICE_CONFIG.outputFormat,
     });
   } catch (error: any) {
-    console.error('[ElevenLabs network error]', error);
+    await finish('uncertain');
+    console.error('[ElevenLabs network error]', error?.name);
     return res.status(502).json({
       error: `Ses servisine bağlanılamadı: ${error?.message || 'Bilinmeyen ağ hatası'}`,
       code: 'ELEVENLABS_NETWORK_ERROR',

@@ -37,7 +37,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await saveCurrentProject();
+      if(!await saveCurrentProject())return;
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2000);
     } catch (e) {
@@ -49,6 +49,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
   const getPageTitle = () => {
     switch (currentPage) {
+      case 'admin':
+        return {title:'Yönetim Paneli',subtitle:'Öğretmenler, projeler ve üretim takibi'};
       case 'dashboard':
         return {
           title: 'Öğretmen Kontrol Paneli',

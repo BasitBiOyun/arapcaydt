@@ -1,127 +1,38 @@
-import React, { useState } from 'react';
-import { useAuth } from './AuthContext';
-import { 
-  LockKey, 
-  EnvelopeSimple, 
-  SignIn, 
-  Sparkle, 
-  WarningCircle,
-  BookOpenText,
-  CheckCircle
-} from '@phosphor-icons/react';
-
-export const LoginPage: React.FC = () => {
-  const { login, quickDemoLogin } = useAuth();
-  const [email, setEmail] = useState('yunusemreyilmaz93@gmail.com');
-  const [password, setPassword] = useState('ydt2024');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
-    const result = await login(email, password);
-    if (!result.success) {
-      setError(result.error || 'Giriş başarısız oldu.');
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div className="min-h-screen bg-[#FAF9F5] flex flex-col justify-center items-center p-4 select-none">
-      {/* Container */}
-      <div className="max-w-md w-full space-y-6">
-        {/* Academic Brand Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-[#8B1E2D] text-white text-2xl font-bold shadow-sm">
-            ض
-          </div>
-          <h1 className="text-xl font-bold text-[#1C1917] tracking-tight">
-            Arapça YDT Video Stüdyosu
-          </h1>
-          <p className="text-xs text-[#666560] max-w-xs mx-auto">
-            Öğretmenler İçin Soru Analiz, ElevenLabs Seslendirme ve Video Prodüksiyon Portalı
-          </p>
-        </div>
-
-        {/* Login Box */}
-        <div className="bg-[#FFFFFF] border border-[#D5D4CC] rounded p-6 shadow-sm space-y-4">
-          <div className="border-b border-[#EFEFEA] pb-3">
-            <h2 className="text-sm font-semibold text-[#1C1917]">Öğretmen Girişi</h2>
-            <p className="text-[11px] text-[#787670]">
-              YDT soru hazırlama paneline erişmek için bilgilerinizi giriniz.
-            </p>
-          </div>
-
-          {error && (
-            <div className="p-2.5 rounded bg-[#FDF2F2] border border-[#F8D7DA] text-xs text-[#8B1E2D] flex items-center gap-2">
-              <WarningCircle size={16} weight="bold" className="shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
-            <div className="space-y-1">
-              <label className="font-semibold text-[#33322E] flex items-center gap-1.5">
-                <EnvelopeSimple size={14} className="text-[#8B1E2D]" />
-                <span>Kullanıcı Adı veya E-posta</span>
-              </label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ornek@ogretmen.meb.gov.tr"
-                className="w-full px-3 py-2 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] outline-none transition-colors"
-                required
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="font-semibold text-[#33322E] flex items-center gap-1.5">
-                <LockKey size={14} className="text-[#8B1E2D]" />
-                <span>Şifre</span>
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-3 py-2 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] outline-none transition-colors"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 px-4 rounded bg-[#8B1E2D] hover:bg-[#721824] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
-            >
-              <SignIn size={16} weight="bold" />
-              <span>{loading ? 'Giriş Yapılıyor...' : 'Sisteme Giriş Yap'}</span>
-            </button>
-          </form>
-
-          {/* Quick Demo Login Shortcut */}
-          <div className="pt-2 border-t border-[#EFEFEA]">
-            <button
-              type="button"
-              onClick={quickDemoLogin}
-              className="w-full py-2 px-3 rounded border border-[#DCDCD4] bg-[#FAF9F5] hover:bg-[#F0EFEB] text-[#44423D] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <Sparkle size={15} weight="bold" className="text-[#8B1E2D]" />
-              <span>Hızlı Demo Öğretmen Girişi (Tek Tıkla)</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Footer info */}
-        <div className="text-center text-[11px] text-[#787670] space-y-1">
-          <div>Arapça Yabancı Dil Testi (YDT) • Soru Video Çözüm Motoru</div>
-          <div>ElevenLabs Multilingual v2 Entegrasyonu</div>
-        </div>
-      </div>
-    </div>
-  );
+import React,{useState} from 'react';
+import {useAuth} from './AuthContext';
+import {database,supabase} from '../../services/supabase';
+export const LoginPage:React.FC=()=>{
+ const {refresh,recovering,finishRecovery,error:authError}=useAuth();
+ const [mode,setMode]=useState<'login'|'signup'|'reset'>('login');
+ const [name,setName]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState('');
+ const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
+ const submit=async(e:React.FormEvent)=>{
+  e.preventDefault();setBusy(true);setError('');setMessage('');
+  try{
+   const client=database();
+   if(recovering){const {error}=await client.auth.updateUser({password});if(error)throw error;finishRecovery();setPassword('');await refresh();}
+   else if(mode==='signup'){
+    const {error}=await client.auth.signUp({email:email.trim(),password,options:{data:{name:name.trim()},emailRedirectTo:window.location.origin}});
+    if(error)throw error;setMessage('Doğrulama e-postası gönderildi. Adresinizi doğruladıktan sonra yönetici onayı beklenecek.');setPassword('');
+   }else if(mode==='reset'){
+    const {error}=await client.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin});if(error)throw error;
+    setMessage('Bu adres kayıtlıysa şifre yenileme bağlantısı gönderildi.');
+   }else{const {error}=await client.auth.signInWithPassword({email:email.trim(),password});if(error)throw error;setPassword('');await refresh();}
+  }catch(err){setError(err instanceof Error?err.message:'İşlem tamamlanamadı.');}finally{setBusy(false);}
+ };
+ const title=recovering?'Yeni şifre belirle':mode==='signup'?'Öğretmen kaydı':mode==='reset'?'Şifremi unuttum':'Stüdyoya giriş';
+ return <main className="min-h-screen bg-[#FAF9F5] flex items-center justify-center p-6"><div className="w-full max-w-md space-y-6">
+  <div><div className="text-4xl text-[#8B1E2D] mb-4">ض</div><h1 className="text-2xl font-bold">Arapça YDT Stüdyosu</h1><p className="text-sm text-stone-500 mt-2">Sorularınız, seslendirmeleriniz ve videolarınız tek yerde.</p></div>
+  <form onSubmit={submit} className="bg-white border border-stone-200 rounded-xl p-6 space-y-4">
+   <h2 className="font-semibold text-lg">{title}</h2>
+   {!supabase&&<p role="alert">Üyelik sistemi kurulumu tamamlanıyor. Lütfen daha sonra tekrar deneyin.</p>}
+   {(error||authError)&&<p role="alert" className="text-red-700 text-sm">{error||authError}</p>}
+   {message&&<p role="status" className="text-green-800 text-sm">{message}</p>}
+   {mode==='signup'&&!recovering&&<label className="block text-sm">Ad soyad<input required maxLength={120} value={name} onChange={e=>setName(e.target.value)} autoComplete="name" className="block w-full border rounded p-2 mt-1"/></label>}
+   {!recovering&&<label className="block text-sm">E-posta<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} className="block w-full border rounded p-2 mt-1"/></label>}
+   {(recovering||mode!=='reset')&&<label className="block text-sm">Şifre<input required type="password" minLength={mode==='signup'||recovering?8:1} autoComplete={mode==='signup'||recovering?'new-password':'current-password'} value={password} onChange={e=>setPassword(e.target.value)} className="block w-full border rounded p-2 mt-1"/></label>}
+   <button disabled={busy||!supabase} className="w-full rounded bg-[#8B1E2D] text-white p-3 disabled:opacity-50">{busy?'İşlem yapılıyor…':title}</button>
+   {!recovering&&<div className="flex flex-wrap gap-4 text-sm">{(['login','signup','reset'] as const).filter(m=>m!==mode).map(m=><button type="button" key={m} onClick={()=>{setMode(m);setError('');setMessage('');}}>{m==='login'?'Giriş yap':m==='signup'?'Hesap oluştur':'Şifremi unuttum'}</button>)}</div>}
+  </form><p className="text-xs text-stone-500">Yeni öğretmen hesapları, e-posta doğrulaması ve yönetici onayından sonra açılır.</p>
+ </div></main>;
 };

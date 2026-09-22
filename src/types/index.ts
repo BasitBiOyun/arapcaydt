@@ -18,6 +18,7 @@ export interface User {
   title: string;
   institution?: string;
   role: 'teacher' | 'editor' | 'admin';
+  status?: 'pending' | 'approved' | 'blocked';
 }
 
 export type AnnotationType = 'check' | 'cross' | 'highlight' | 'underline' | 'rule_box';
@@ -167,6 +168,8 @@ export interface NarrationSource {
 }
 
 export interface QuestionProject {
+  ownerId?: string;
+  examName?: string;
   id: string;
   title: string;
   examYear: string;

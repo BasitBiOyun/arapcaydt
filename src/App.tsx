@@ -5,7 +5,7 @@ import { LoginPage } from './features/auth/LoginPage';
 import { AppLayout } from './layouts/AppLayout';
 
 const AppContent: React.FC = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user, logout, refresh, recovering } = useAuth();
 
   if (isLoading) {
     return (
@@ -18,12 +18,13 @@ const AppContent: React.FC = () => {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || recovering) {
     return <LoginPage />;
   }
 
+  if(user?.status !== 'approved') return <main className="min-h-screen flex items-center justify-center bg-[#FAF9F5]"><section className="bg-white rounded-xl border p-8 max-w-md space-y-4"><h1 className="text-xl font-semibold">{user?.status==='blocked'?'Hesabınızın erişimi durduruldu':'Yönetici onayı bekleniyor'}</h1><p>{user?.email}</p><p>Hesabınız onaylandığında kendi soru ve video panelinize erişebilirsiniz.</p><button onClick={()=>void refresh()} className="border rounded p-2 mr-3">Durumu yenile</button><button onClick={()=>void logout()}>Çıkış yap</button></section></main>;
   return (
-    <ProjectProvider>
+    <ProjectProvider key={user?.id}>
       <AppLayout />
     </ProjectProvider>
   );

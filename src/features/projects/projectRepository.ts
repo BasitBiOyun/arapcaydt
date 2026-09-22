@@ -1,3 +1,4 @@
+import { CloudProjectRepository } from './cloudProjectRepository';
 import { QuestionProject } from '../../types';
 import { INITIAL_PROJECTS } from './sampleData';
 
@@ -72,7 +73,7 @@ export class LocalStorageProjectRepository implements IProjectRepository {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
     } catch (e) {
-      console.error('Error writing projects to storage:', e);
+      throw new Error('Tarayıcı depolama alanı dolu; kayıt tamamlanamadı.');
     }
   }
 
@@ -130,4 +131,4 @@ export class LocalStorageProjectRepository implements IProjectRepository {
   }
 }
 
-export const projectRepository = new LocalStorageProjectRepository();
+export const projectRepository: IProjectRepository = new CloudProjectRepository();

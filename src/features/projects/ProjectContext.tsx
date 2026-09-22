@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { QuestionProject, ProjectStatus } from '../../types';
 import { projectRepository } from './projectRepository';
 import { SAMPLE_QUESTION_IMAGE_1 } from './sampleData';
 import { DEFAULT_CATEGORY_ID } from '../../config/categories';
 
 interface ProjectContextType {
+  error: string;
   projects: QuestionProject[];
   currentProject: QuestionProject | null;
   isLoading: boolean;
@@ -15,7 +16,7 @@ interface ProjectContextType {
   loadProjects: () => Promise<void>;
   selectProject: (id: string) => Promise<QuestionProject | null>;
   createNewProject: (custom?: Partial<QuestionProject>) => Promise<QuestionProject>;
-  saveCurrentProject: () => Promise<QuestionProject | null>;
+  saveCurrentProject: (updates?: Partial<QuestionProject>) => Promise<QuestionProject | null>;
   updateCurrentProject: (updates: Partial<QuestionProject>) => void;
   deleteProjectById: (id: string) => Promise<boolean>;
   setCurrentProject: React.Dispatch<React.SetStateAction<QuestionProject | null>>;
@@ -24,8 +25,11 @@ interface ProjectContextType {
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [error, setError] = useState('');
   const [projects, setProjects] = useState<QuestionProject[]>([]);
   const [currentProject, setCurrentProject] = useState<QuestionProject | null>(null);
+  const projectRef=useRef(currentProject);
+  projectRef.current=currentProject;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -33,10 +37,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const loadProjects = useCallback(async () => {
     setIsLoading(true);
     try {
+      setError('');
       const data = await projectRepository.getAll();
       setProjects(data);
     } catch (e) {
-      console.error('Failed to load projects', e);
+      setError('Projeler yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.');
     } finally {
       setIsLoading(false);
     }
@@ -115,15 +120,18 @@ Bu sebeple doğru cevabımız ... seçeneğidir.`,
     });
   }, []);
 
-  const saveCurrentProject = useCallback(async (): Promise<QuestionProject | null> => {
+  const saveCurrentProject = useCallback(async (updates: Partial<QuestionProject> = {}): Promise<QuestionProject | null> => {
     if (!currentProject) return null;
     try {
-      const saved = await projectRepository.save(currentProject);
-      setCurrentProject(saved);
+      setError('');
+      const snapshot = {...(projectRef.current?.id===currentProject.id?projectRef.current:currentProject),...updates};
+      if(projectRef.current?.id===snapshot.id)setCurrentProject(snapshot);
+      const saved = await projectRepository.save(snapshot);
+      setCurrentProject(prev=>prev===snapshot ? saved : prev);
       setProjects((prev) => prev.map((p) => (p.id === saved.id ? saved : p)));
       return saved;
     } catch (e) {
-      console.error('Failed to save project', e);
+      setError(e instanceof Error ? e.message : 'Proje kaydedilemedi.');
       return null;
     }
   }, [currentProject]);
@@ -142,6 +150,7 @@ Bu sebeple doğru cevabımız ... seçeneğidir.`,
   return (
     <ProjectContext.Provider
       value={{
+        error,
         projects,
         currentProject,
         isLoading,

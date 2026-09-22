@@ -1,3 +1,5 @@
+import {useAuth} from '../features/auth/AuthContext';
+import {AdminPage} from '../pages/AdminPage';
 import React, { useState } from 'react';
 import { AppSidebar, AppPage } from '../components/common/AppSidebar';
 import { AppHeader } from '../components/common/AppHeader';
@@ -9,9 +11,10 @@ import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
 
 export const AppLayout: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<AppPage>('dashboard');
+  const {user}=useAuth();
+  const [currentPage, setCurrentPage] = useState<AppPage>(user?.role==='admin'?'admin':'dashboard');
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
-  const { selectProject, createNewProject, currentProject, projects } = useProjects();
+  const { selectProject, createNewProject, currentProject, projects, error, loadProjects } = useProjects();
 
   const handleSelectProject = async (id: string) => {
     await selectProject(id);
@@ -66,6 +69,8 @@ export const AppLayout: React.FC = () => {
         />
 
         <main className="flex-1 overflow-y-auto">
+          {error&&<div role="alert" className="p-4 bg-red-50 text-red-800">{error} <button onClick={()=>void loadProjects()}>Yeniden dene</button></div>}
+          {currentPage==='admin'&&user?.role==='admin'&&<AdminPage/>}
           {currentPage === 'dashboard' && (
             <DashboardPage
               onNavigate={setCurrentPage}

@@ -11,7 +11,7 @@ import {
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 
-export type AppPage = 'dashboard' | 'questions' | 'editor' | 'settings';
+export type AppPage = 'dashboard' | 'questions' | 'editor' | 'settings' | 'admin';
 
 interface AppSidebarProps {
   currentPage: AppPage;
@@ -60,6 +60,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
       {/* Navigation Links */}
       <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+        {user?.role==='admin'&&<button onClick={()=>onNavigate('admin')} className={`w-full text-left px-3 py-2 rounded text-sm ${currentPage==='admin'?'bg-[#EFECE6] text-[#8B1E2D] font-semibold':''}`}>Yönetim Paneli</button>}
         <button
           onClick={() => onNavigate('dashboard')}
           className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${

@@ -1,3 +1,4 @@
+import { database } from '../services/supabase';
 import { applyRegionEdits } from '../services/analysis/regionEdits';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
@@ -129,8 +130,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   }
 
   // Handle Save
-  const handleSave = () => {
-    saveCurrentProject();
+  const handleSave = async () => {
+    const saved=await saveCurrentProject();
+    if(!saved) {setAudioError('Kayıt tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');return;}
     setSaveSuccess(true);
     setTimeout(() => setSaveSuccess(false), 2000);
   };
@@ -184,7 +186,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setIsGeneratingAudio(true);
 
     try {
+      if(!await saveCurrentProject())throw new Error('Önce proje kaydedilmelidir.');
       const result = await elevenlabsService.generateNarration({
+        projectId: currentProject.id,
         text: currentProject.solutionText,
         voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId,
@@ -221,16 +225,18 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         alignment: result.alignment,
       };
 
-      updateCurrentProject({
+      const persisted=await saveCurrentProject({
         narrationSource: newNarrationSource,
         audioNarration: compatNarration,
+        status: 'audio_generated',
         audioApproved: false,
         videoReady: false,
       });
+      if(!persisted)setAudioError('Ses üretildi ama kaydedilemedi. MP3 dosyasını indirip Kaydet düğmesini tekrar deneyin.');
       setVideoGenerated(false);
     } catch (err: any) {
       console.error('Audio generation error:', err);
-      setAudioError('Seslendirme oluşturulamadı. Lütfen tekrar deneyin.');
+      setAudioError(err instanceof Error ? err.message : 'Seslendirme oluşturulamadı.');
     } finally {
       setIsGeneratingAudio(false);
     }
@@ -492,6 +498,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+      const {error:activityError}=await database().rpc('record_video_export',{project_id:currentProject.id});
+      if(activityError)setExportError('Video indirildi; üretim kaydı kaydedilemedi.');
     } catch (err) {
       console.error('Local MP4 Export error:', err);
       setExportError(err instanceof Error ? err.message : 'Video oluşturulamadı.');
@@ -692,6 +700,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
         {/* RIGHT COLUMN: ~32% Progressive 4-Step Workflow Panel */}
         <aside className="flex-[32] h-full bg-white overflow-y-auto p-6 flex flex-col space-y-6">
+          <details className="border rounded-lg p-3 text-sm"><summary className="cursor-pointer font-semibold">Proje bilgileri</summary><div className="space-y-3 pt-3"><label className="block">Proje adı<input value={currentProject.title} onChange={e=>updateCurrentProject({title:e.target.value})} className="block w-full border rounded p-2"/></label><label className="block">Sınav / yıl<input value={currentProject.examYear} onChange={e=>updateCurrentProject({examYear:e.target.value})} className="block w-full border rounded p-2"/></label>{currentProject.category==='deneme'&&<label className="block">Deneme adı<input placeholder="Örnek: Eylül Denemesi 1" value={currentProject.examName||''} onChange={e=>updateCurrentProject({examName:e.target.value})} className="block w-full border rounded p-2"/></label>}</div></details>
           {/* STEP 1: Soru Görseli */}
           <div className="space-y-2.5">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
@@ -778,10 +787,15 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               2. Çözüm Metni
             </h2>
             <textarea
+              aria-label="Çözüm metni"
+              disabled={isGeneratingAudio}
               value={currentProject.solutionText}
               onChange={(e) => {
                 updateCurrentProject({
                   solutionText: e.target.value,
+                  audioApproved: false,
+                  narrationSource: currentProject.narrationSource ? {...currentProject.narrationSource,isApproved:false} : undefined,
+                  audioNarration: currentProject.audioNarration ? {...currentProject.audioNarration,isApproved:false} : undefined,
                   videoReady: false,
                 });
                 setVideoGenerated(false);

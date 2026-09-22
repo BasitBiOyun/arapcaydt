@@ -1,3 +1,4 @@
+import { requireMember, serviceDatabase } from '../../server/auth';
 function normalizeApiKey(value?: string): string {
   let key = (value || '').trim();
   if (
@@ -10,6 +11,8 @@ function normalizeApiKey(value?: string): string {
 }
 
 export default async function handler(req: any, res: any) {
+  const member=await requireMember(req,res);
+  if(!member)return;
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });

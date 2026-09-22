@@ -1,6 +1,7 @@
 import { createWorker, Worker, PSM } from 'tesseract.js';
 import { groupOcrWordsIntoLines } from './arabicMatcher';
 import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
+import { missingMarkerCrops } from './markerRecovery';
 
 class LocalOcrService {
   private static instance: LocalOcrService;
@@ -248,6 +249,15 @@ class LocalOcrService {
             const word = this.toOcrWord(raw, imgWidth, imgHeight);
             if (word && word.confidence >= 55 && /^[([]?[A-E][)\].:]$/.test(word.text.trim())) markers.push(word);
           }
+        for(const crop of missingMarkerCrops(markers,imgWidth,imgHeight)){
+          await worker.setParameters({tessedit_pageseg_mode:PSM.SINGLE_LINE});
+          const retry=await worker.recognize(imageUrl,{rectangle:crop.rectangle},{text:true,blocks:true});
+          for(const block of retry.data.blocks||[]) for(const paragraph of block.paragraphs||[])
+            for(const line of paragraph.lines||[]) for(const raw of line.words||[]){
+              const word=this.toOcrWord(raw,imgWidth,imgHeight);
+              if(word&&word.confidence>=65&&new RegExp(`^${crop.letter}[)\\].:]$`).test(word.text.trim()))markers.push(word);
+            }
+        }
         output.optionMarkers = markers;
       } finally {
         await worker.reinitialize('ara+tur+eng');
