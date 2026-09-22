@@ -4,6 +4,7 @@ dist/
 coverage/
 public/.verification/
 verification-output/
+*.traineddata
 .DS_Store
 *.log
 .env*

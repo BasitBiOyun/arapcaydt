@@ -65,7 +65,7 @@ export function computeTimelineVisualState(
 
       case 'highlight': {
         // Highlight is active during [action.start, action.start + action.duration]
-        const duration = Math.max(0.8, action.duration || 3.0);
+        const duration = action.duration ?? 3.0;
         if (currentTime <= action.start + duration) {
           const fadeOutThreshold = duration - 0.25;
           let opacity = Math.min(1, elapsed / 0.2); // fade in in 200ms
@@ -82,9 +82,9 @@ export function computeTimelineVisualState(
 
       case 'underline': {
         // Underline draws along line, stays for duration, then clears
-        const duration = Math.max(0.8, action.duration || 3.5);
+        const duration = action.duration ?? 3.5;
         if (currentTime <= action.start + duration) {
-          const progress = Math.min(1, elapsed / 0.4); // 400ms draw
+          const progress = Math.min(1, elapsed / Math.max(.05, action.drawDuration ?? .4));
           state.activeUnderlines.push({
             regionId: action.targetRegionId,
             progress,
@@ -96,7 +96,7 @@ export function computeTimelineVisualState(
 
       case 'focus': {
         // Focus box emphasizes region during duration
-        const duration = Math.max(0.8, action.duration || 2.5);
+        const duration = action.duration ?? 2.5;
         if (currentTime <= action.start + duration) {
           const intensity = Math.min(1, elapsed / 0.25);
           state.activeFocus.push({

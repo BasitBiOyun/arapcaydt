@@ -1,7 +1,7 @@
 import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCaption } from '../../types';
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
-import { findArabicMatchesInOcr } from '../ocr/arabicMatcher';
+import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
@@ -93,7 +93,13 @@ export class LocalVideoPipeline {
     for (const region of manual) {
       const id = /^option-[a-e]$/.test(region.type) ? region.type : region.id;
       const index = finalRegions.findIndex(r => r.id === id);
-      if (index >= 0) finalRegions[index] = { ...region, id };
+      if (index >= 0) {
+        const original = finalRegions[index];
+        const anchor = original.markerAnchor;
+        const y = anchor ? (original.y + anchor.y*original.height - region.y)/region.height : -1;
+        finalRegions[index] = { ...region, id,
+          ...(!region.markerAnchor && anchor && y>=0 && y<=1 ? {markerAnchor:{x:0,y}} : {}) };
+      }
       else finalRegions.push({ ...region, id });
     }
     const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter(letter => finalRegions.some(r => r.id === `option-${letter.toLowerCase()}`));
@@ -105,7 +111,9 @@ export class LocalVideoPipeline {
       message: 'Çözümdeki Arapça ifadeler görsel üzerinde eşleştiriliyor...',
     });
 
-    const arabicMatches = findArabicMatchesInOcr(solutionText, ocrResult.words).filter(m => !suppressed.has(m.region.id));
+    const options = finalRegions.filter(r => r.type.startsWith('option'));
+    const stemWords = ocrResult.words.filter(w => !options.some(r => w.x+w.width/2 >= r.x && w.x+w.width/2 <= r.x+r.width && w.y+w.height/2 >= r.y && w.y+w.height/2 <= r.y+r.height));
+    const arabicMatches = findBestArabicMatches(solutionText, stemWords, ocrResult.arabicStemWords).filter(m => !suppressed.has(m.region.id));
     for (const match of arabicMatches) {
       if (!finalRegions.some((r) => r.id === match.region.id)) {
         finalRegions.push(match.region);
@@ -138,6 +146,9 @@ export class LocalVideoPipeline {
     const alignment = alignSolutionNarration(solutionText, words, audioDuration);
     const actions = alignEventsWithNarration(parseResult.events, words, audioDuration, solutionText);
     const warnings: string[] = [];
+    const covered = new Set([...arabicMatches.map(m => m.phrase), ...options.map(r => r.content || '')].flatMap(p => normalizeArabic(p).split(' ')));
+    const unread = [...new Set(extractArabicPhrases(solutionText).flatMap(p => p.split(/\s+/)).filter(w => !covered.has(normalizeArabic(w))))];
+    if (unread.length) warnings.push(`Görselde eşleştirilemeyen Arapça kelimeler: ${unread.slice(0,8).join('، ')}${unread.length>8?'…':''}. Görselde bulunanları alan düzenleyicisinde işaretleyin; bu kelimelere tahmini vurgu eklenmedi.`);
     if (detectedOptions.length < 5) warnings.push(`Şu şıklar bulunamadı: ${['A', 'B', 'C', 'D', 'E'].filter(x => !detectedOptions.includes(x)).join(', ')}. Alan düzenleyicisinde eksik şıkları işaretleyip yeniden hazırlayın.`);
     if (alignment.quality !== 'word-aligned') warnings.push(alignment.quality === 'approximate'
       ? 'Ses zamanlamaları eşleştirilemedi. Süreler yaklaşık; dışa aktarmadan önce zaman çizelgesini kontrol edin.'

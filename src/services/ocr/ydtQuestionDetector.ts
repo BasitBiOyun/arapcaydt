@@ -189,8 +189,12 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
       }
       // The detected label itself is always real OCR evidence, never a guessed box.
       if (!optionWords.includes(marker.word)) optionWords.push(marker.word);
+      const box = bounds(optionWords);
       regions.push({ id: `option-${marker.letter.toLowerCase()}`, label: `${marker.letter} Seçeneği`,
-        type: ('option-' + marker.letter.toLowerCase()) as AnnotationRegion['type'], ...bounds(optionWords), content: optionWords.map((word) => word.text).join(' ') });
+        type: ('option-' + marker.letter.toLowerCase()) as AnnotationRegion['type'], ...box,
+        markerAnchor: { x: (marker.word.x - box.x) / box.width,
+          y: (marker.word.y + marker.word.height / 2 - box.y) / box.height },
+        content: optionWords.map((word) => word.text).join(' ') });
     }
   }
   const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter((letter) =>

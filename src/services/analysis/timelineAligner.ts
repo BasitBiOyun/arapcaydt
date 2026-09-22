@@ -28,6 +28,7 @@ function tokens(text: string) {
 
 function matches(a: string, b: string): boolean {
   if (a === b) return true;
+  if (['b','c','d'].some(letter => (a === letter && b === letter+'e') || (b === letter && a === letter+'e'))) return true;
   if ((a === '1' && b === 'bir') || (b === '1' && a === 'bir')) return true;
   return Math.min(a.length, b.length) >= 5 && (a.startsWith(b) || b.startsWith(a));
 }
@@ -153,7 +154,8 @@ export function alignEventsWithNarration(
     const sourceEnd = event.sourceEnd ?? sourceStart + event.semanticTriggerPhrase.length;
     const trigger = spanTime(alignment.words, sourceStart, sourceEnd);
     const sentence = spanTime(alignment.words, event.sentenceStart ?? sourceStart, event.sentenceEnd ?? sourceEnd);
-    return { event, start: Math.min(duration, Math.max(0, (trigger?.start ?? 0) - 0.04)), end: sentence?.end ?? trigger?.end ?? duration };
+    return { event, start: Math.min(duration, Math.max(0, (trigger?.start ?? 0) - 0.04)),
+      triggerEnd: trigger?.end, end: sentence?.end ?? trigger?.end ?? duration };
   }).sort((a, b) => a.start - b.start || a.event.order - b.event.order);
 
   return timed.map((item, index) => {
@@ -183,6 +185,7 @@ export function alignEventsWithNarration(
       targetRegionId: event.targetRegionId, regionId: event.targetRegionId,
       type: event.actionType, start, startTime: start, duration: end - start,
       label: `${event.actionType}: ${event.semanticTriggerPhrase}`,
+      ...(event.actionType === 'underline' ? {drawDuration: Math.max(.1, (item.triggerEnd ?? start+.4)-start)} : {}),
     };
   }).filter(action => action.duration > 0).sort((a, b) => a.start - b.start);
 }

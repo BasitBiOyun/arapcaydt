@@ -70,6 +70,8 @@ export interface AnnotationRegion {
   color?: string;
   content?: string;
   manuallyAdjusted?: boolean;
+  /** Label center relative to this region, independent of Arabic descenders. */
+  markerAnchor?: { x: number; y: number };
 }
 
 export interface VideoCaption {
@@ -88,6 +90,7 @@ export type VideoActionType =
   | 'reset';
 
 export interface VideoAction {
+  drawDuration?: number;
   id: string;
   start: number; // seconds
   startTime?: number; // alias

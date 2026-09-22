@@ -18,8 +18,8 @@ export function regionCanvasRect(region: AnnotationRegion, fit: FitRect): FitRec
 }
 
 // Marks belong outside the text. At image edges try the other side, then above.
-export function markerGeometry(rect: FitRect, canvasWidth: number, scale = 1, correct = false) {
-  const radius = Math.max(10 * scale, Math.min(18 * scale, rect.height * .23));
+export function markerGeometry(rect: FitRect, canvasWidth: number, scale = 1, correct = false, anchor?: AnnotationRegion['markerAnchor']) {
+  const radius = 16 * scale;
   const gap = 12 * scale;
   const left = rect.x - gap - radius;
   const right = rect.x + rect.width + gap + radius;
@@ -27,7 +27,7 @@ export function markerGeometry(rect: FitRect, canvasWidth: number, scale = 1, co
   const canRight = right + radius <= canvasWidth - 2 * scale;
   const x = correct ? (canRight ? right : canLeft ? left : rect.x + radius)
     : (canLeft ? left : canRight ? right : rect.x + radius);
-  return { x, y: canLeft || canRight ? rect.y + rect.height / 2 : Math.max(radius, rect.y - gap - radius), radius };
+  return { x, y: canLeft || canRight ? rect.y + rect.height * (anchor?.y ?? .5) : Math.max(radius, rect.y - gap - radius), radius };
 }
 
 function isolateArabic(text: string) {
@@ -120,13 +120,13 @@ export function renderQuestionVideoFrame(
   }
   for (const [id, mark] of Object.entries(state.rejectedRegions)) {
     const r = rectFor(id); if (!r || state.correctRegions[id]) continue;
-    const m = markerGeometry(r, width, scale);
+    const m = markerGeometry(r, width, scale, false, byId.get(id)?.markerAnchor);
     drawAnimatedCross(ctx, m.x, m.y, m.radius, mark.drawProgress, '#AE3038', 4 * scale);
   }
   for (const [id, mark] of Object.entries(state.correctRegions)) {
     const r = rectFor(id); if (!r) continue;
     frame(r, '#238657', 'rgba(71,177,123,.15)', mark.drawProgress);
-    const m = markerGeometry(r, width, scale, true);
+    const m = markerGeometry(r, width, scale, true, byId.get(id)?.markerAnchor);
     drawAnimatedCheck(ctx, m.x, m.y, m.radius * 1.25, mark.drawProgress, '#238657', 5 * scale);
     if (mark.drawProgress > .8) {
       ctx.font = '700 ' + 27 * scale + 'px "Manrope", sans-serif';

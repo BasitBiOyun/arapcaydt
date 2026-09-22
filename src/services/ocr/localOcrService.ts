@@ -2,6 +2,7 @@ import { createWorker, Worker, PSM } from 'tesseract.js';
 import { groupOcrWordsIntoLines } from './arabicMatcher';
 import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
 import { missingMarkerCrops } from './markerRecovery';
+import { detectYdtQuestionRegions } from './ydtQuestionDetector';
 
 class LocalOcrService {
   private static instance: LocalOcrService;
@@ -259,6 +260,29 @@ class LocalOcrService {
             }
         }
         output.optionMarkers = markers;
+        // Turkish/English models sometimes read Arabic words as Latin gibberish.
+        // Re-read just the stem in Arabic, keeping the option geometry unchanged.
+        const root = detectYdtQuestionRegions(output).questionPromptRegion;
+        if (root) {
+          await worker.reinitialize('ara');
+          const stemLines = groupOcrWordsIntoLines(output.words.filter(w =>
+            w.x+w.width/2 >= root.x && w.x+w.width/2 <= root.x+root.width &&
+            w.y+w.height/2 >= root.y && w.y+w.height/2 <= root.y+root.height));
+          await worker.setParameters({tessedit_pageseg_mode: stemLines.length === 1 ? PSM.SINGLE_LINE : PSM.SINGLE_BLOCK});
+          const left = Math.max(0, Math.floor(root.x * imgWidth)-10);
+          const top = Math.max(0, Math.floor(root.y * imgHeight)-8);
+          const rectangle = {left, top,
+            width: Math.min(imgWidth-left, Math.ceil(root.width*imgWidth)+20),
+            height: Math.min(imgHeight-top, Math.ceil(root.height*imgHeight)+16)};
+          const retry = await worker.recognize(imageUrl, {rectangle}, {text:true, blocks:true});
+          const stemWords: OCRWord[] = [];
+          for (const block of retry.data.blocks || []) for (const paragraph of block.paragraphs || [])
+            for (const line of paragraph.lines || []) for (const raw of line.words || []) {
+              const word = this.toOcrWord(raw,imgWidth,imgHeight);
+              if (word && word.confidence >= 45 && /[\u0621-\u064A]/.test(word.text)) stemWords.push(word);
+            }
+          output.arabicStemWords = stemWords;
+        }
       } finally {
         await worker.reinitialize('ara+tur+eng');
         await worker.setParameters({ tessedit_pageseg_mode: PSM.AUTO });

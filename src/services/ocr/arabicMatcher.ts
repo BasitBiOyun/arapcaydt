@@ -65,6 +65,17 @@ export interface ArabicMatchResult {
   matchedWords: OCRWord[];
 }
 
+/** Pick the better OCR pass per phrase without mixing overlapping word boxes. */
+export function findBestArabicMatches(text: string, primary: OCRWord[], alternative: OCRWord[] = []): ArabicMatchResult[] {
+  return extractArabicPhrases(text).flatMap((phrase, index) => {
+    const a = findArabicMatchesInOcr(phrase, primary);
+    const b = findArabicMatchesInOcr(phrase, alternative);
+    const coverage = (items: ArabicMatchResult[]) => items.reduce((sum, item) => sum + normalizeArabic(item.phrase).split(' ').length, 0);
+    return (coverage(b) > coverage(a) ? b : a).map((item, line) => ({...item,
+      region: {...item.region, id: `arabic-grounded-${index + 1}-${line + 1}`}}));
+  });
+}
+
 /**
  * Searches for Arabic expressions found in the solution text inside OCR words.
  * If a confident match exists, creates a visual AnnotationRegion using its OCR bounding box.
@@ -114,20 +125,42 @@ export function findArabicMatchesInOcr(
       });
       if (connected) { match = candidate; break; }
     }
-    if (!match.length) continue;
+    if (!match.length) {
+      // Recover proven subphrases on either side of an unread word. Never draw
+      // a single large box across missing OCR evidence or disconnected columns.
+      const missing = expected.map(norm => !tokens.some(t => t.norm === norm));
+      if (expected.length > 1 && missing.some(Boolean) && missing.some(v => !v)) {
+        const parts = phrase.split(/\s+/);
+        let begin = 0;
+        for (let i = 0; i <= expected.length; i++) {
+          if (i < expected.length && !missing[i]) continue;
+          if (i > begin) {
+            for (const partial of findArabicMatchesInOcr(parts.slice(begin,i).join(' '), ocrWords)) {
+              partial.region.id = `arabic-partial-${matchIndex++}-${partial.region.id}`;
+              results.push(partial);
+            }
+          }
+          begin = i + 1;
+        }
+      }
+      continue;
+    }
     matchIndex++;
     const rowIds = [...new Set(match.map((token) => token.rowIndex))];
     for (const [lineIndex, rowId] of rowIds.entries()) {
       const matchedWords = [...new Set(match.filter((token) => token.rowIndex === rowId).map((token) => token.word))];
+      const phraseTokens = phrase.split(/\s+/);
+      const indices = match.map((token, index) => token.rowIndex === rowId ? index : -1).filter(index => index >= 0);
+      const linePhrase = phraseTokens.slice(indices[0], indices[indices.length-1]+1).join(' ');
       const x = Math.max(0, Math.min(...matchedWords.map((word) => word.x)) - 0.005);
       const y = Math.max(0, Math.min(...matchedWords.map((word) => word.y)) - 0.004);
       const right = Math.min(1, Math.max(...matchedWords.map((word) => word.x + word.width)) + 0.005);
       const bottom = Math.min(1, Math.max(...matchedWords.map((word) => word.y + word.height)) + 0.004);
-      results.push({ phrase, matchedWords, region: {
+      results.push({ phrase: linePhrase, matchedWords, region: {
         id: `arabic-phrase-${matchIndex}-line-${lineIndex + 1}`,
         label: `Arapça: "${phrase}"${rowIds.length > 1 ? ` (${lineIndex + 1})` : ''}`,
         type: expected.length > 1 ? 'phrase' : 'word', x, y, width: right - x, height: bottom - y,
-        content: phrase,
+        content: linePhrase,
       } });
     }
   }

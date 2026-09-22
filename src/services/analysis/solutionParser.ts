@@ -84,9 +84,9 @@ function detectOptionReference(sentence: string): OptionLetter | null {
   // Covers natural Turkish inflections: "A seçeneği", "A seçeneğini",
   // "B seçeneğinde", "C şıkkına", "D şıkkını" etc.
   const namedOption = sentence.match(
-    /\b([A-Ea-e])\s*(?:seçene[a-zçğıöşü]*|şı[a-zçğıöşü]*)\b/i
+    /\b(Be|Ce|De|[A-E])\s*(?:seçene[a-zçğıöşü]*|şı[a-zçğıöşü]*)\b/i
   );
-  if (namedOption) return namedOption[1].toUpperCase() as OptionLetter;
+  if (namedOption) return namedOption[1][0].toUpperCase() as OptionLetter;
 
   // Apostrophe suffixes: A'ya, B'yi, C'de, D'den...
   const apostropheOption = sentence.match(/\b([A-Ea-e])['’][a-zçğıöşü]+\b/i);
@@ -102,13 +102,13 @@ function detectOptionReference(sentence: string): OptionLetter | null {
 function extractStandaloneCorrectAnswer(sentence: string): OptionLetter | null {
   if (/doğru\s+(?:cevap|yanıt|seçenek|şık)?\s*(?:[A-E]\s*)?(?:değil|olamaz|olmaz)/i.test(sentence)) return null;
   const patterns = [
-    /(?:doğru\s+cevap|doğru\s+yanıt|cevabımız|doğru\s+seçenek|doğru\s+şık)\s*(?:ise\s*)?[:\-]?\s*([A-Ea-e])\b/i,
-    /\b([A-Ea-e])\s*(?:seçeneği|şıkkı)\s+(?:doğru(?:dur)?|cevaptır)/i,
+    /(?:doğru\s+cevap|doğru\s+yanıt|cevabımız|doğru\s+seçenek|doğru\s+şık)\s*(?:ise\s*)?[:\-]?\s*(Be|Ce|De|[A-E])\b/i,
+    /\b(Be|Ce|De|[A-E])\s*(?:seçeneği|şıkkı)\s+(?:doğru(?:dur)?|cevaptır)/i,
   ];
 
   for (const pattern of patterns) {
     const match = sentence.match(pattern);
-    if (match) return match[1].toUpperCase() as OptionLetter;
+    if (match) return match[1][0].toUpperCase() as OptionLetter;
   }
   return null;
 }
@@ -122,7 +122,7 @@ function findTriggerPhrase(sentence: string, patterns: RegExp[]): string | null 
 }
 
 function findOptionMentionPhrase(sentence: string, option: OptionLetter): string {
-  const escaped = option.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escaped = ['B','C','D'].includes(option) ? `(?:${option}e|${option})` : option;
   const patterns = [
     new RegExp(`\\b${escaped}\\s*(?:seçene[a-zçğıöşü]*|şı[a-zçğıöşü]*)`, 'i'),
     new RegExp(`\\b${escaped}['’][a-zçğıöşü]+`, 'i'),
@@ -203,25 +203,38 @@ export function parseSolutionSemantics(
     const attachOffsets = () => {
       for (const event of events.slice(eventStart)) {
         const localStart = sentence.toLocaleLowerCase('tr-TR').indexOf(event.semanticTriggerPhrase.toLocaleLowerCase('tr-TR'));
-        event.sourceStart = sentenceSpan.start + Math.max(0, localStart);
-        event.sourceEnd = Math.min(sentenceSpan.end, event.sourceStart + event.semanticTriggerPhrase.length);
+        event.sourceStart ??= sentenceSpan.start + Math.max(0, localStart);
+        event.sourceEnd ??= Math.min(sentenceSpan.end, event.sourceStart + event.semanticTriggerPhrase.length);
         event.sentenceStart = sentenceSpan.start;
         event.sentenceEnd = sentenceSpan.end;
         event.sourceText = solutionText;
       }
     };
-    // Arabic words/phrases that were confidently grounded by OCR.
-    for (const am of arabicMatches) {
-      if (sentence.includes(am.phrase) && validRegionIds.has(am.region.id)) {
-        for (const actionType of ['highlight', 'underline'] as const) events.push({
+    // Choose the longest phrase at EACH spoken occurrence. A later single-word
+    // explanation must not also light up inside the earlier full sentence.
+    const candidates = arabicMatches.flatMap(am => {
+      if (!validRegionIds.has(am.region.id)) return [];
+      const cx = am.region.x + am.region.width / 2, cy = am.region.y + am.region.height / 2;
+      if (availableRegions.some(r => r.type.startsWith('option') && cx >= r.x && cx <= r.x+r.width && cy >= r.y && cy <= r.y+r.height)) return [];
+      const escaped = am.phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return Array.from(sentence.matchAll(new RegExp(escaped, 'g'))).flatMap(m => {
+        const start = m.index!, end = start + m[0].length;
+        if (/[\u0621-\u065F]/.test(sentence[start-1] || '') || /[\u0621-\u065F]/.test(sentence[end] || '')) return [];
+        return [{ am, start, end }];
+      });
+    });
+    for (const {am, start, end} of candidates.filter(c => !candidates.some(other =>
+      other.start <= c.start && other.end >= c.end && other.end-other.start > c.end-c.start))) {
+        events.push({
           id: `event-${counter.value++}`,
           targetRegionId: am.region.id,
-          actionType,
+          actionType: 'underline',
           semanticTriggerPhrase: am.phrase,
           sentenceText: sentence,
+          sourceStart: sentenceSpan.start + start,
+          sourceEnd: sentenceSpan.start + end,
           order: events.length + 1,
         });
-      }
     }
 
     const rejectionTrigger = findTriggerPhrase(sentence, REJECTION_PATTERNS);

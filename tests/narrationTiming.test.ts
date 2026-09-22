@@ -40,7 +40,7 @@ test('Konak: captions preserve supplied Arabic; Whisper Turkish phonetics are ne
   assert.ok(firstA && firstA.start > 51 && firstA.start < 53);
 });
 
-test('repeated Arabic phrases align to their own occurrence; highlight/underline remain paired', () => {
+test('repeated Arabic phrases align to their own occurrence with a single underline', () => {
   const phrase = 'بُرْجُ السَّاعَةِ';
   const text = `${phrase} yer alır. Şimdi tekrar ${phrase} ifadesini açıklayalım.`;
   const narration: NarrationWord[] = [
@@ -54,10 +54,10 @@ test('repeated Arabic phrases align to their own occurrence; highlight/underline
   const actions = alignEventsWithNarration(parsed.events, narration, 12, text);
   const highlights = actions.filter(a => a.type === 'highlight');
   const underlines = actions.filter(a => a.type === 'underline');
-  assert.equal(highlights.length, 2);
-  assert.ok(Math.abs(highlights[0].start - 1) < .1);
-  assert.ok(Math.abs(highlights[1].start - 9) < .1);
-  assert.deepEqual(highlights.map(a => [a.start,a.duration]), underlines.map(a => [a.start,a.duration]));
+  assert.equal(highlights.length, 0);
+  assert.equal(underlines.length, 2);
+  assert.ok(Math.abs(underlines[0].start - 1) < .1);
+  assert.ok(Math.abs(underlines[1].start - 9) < .1);
 });
 
 test('missing timing uses the complete script length, independent of animation event count', () => {

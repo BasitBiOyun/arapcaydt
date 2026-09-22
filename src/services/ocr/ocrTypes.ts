@@ -24,6 +24,8 @@ export interface OCRLine {
 }
 
 export interface OCRResult {
+  /** Dedicated Arabic-only stem pass; independent alternative to mixed OCR. */
+  arabicStemWords?: OCRWord[];
   /** Independent Latin-label pass; never mix its Arabic guesses into words. */
   optionMarkers?: OCRWord[];
   text: string;
