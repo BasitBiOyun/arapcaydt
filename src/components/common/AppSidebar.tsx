@@ -31,7 +31,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   const approvedCount = projects.filter((p) => p.status === 'audio_approved' || p.status === 'video_ready').length;
 
   return (
-    <aside className="w-64 h-screen flex flex-col bg-[#FAF9F5] border-r border-[#E5E4DC] select-none shrink-0">
+    <aside className="studio-sidebar w-64 h-screen flex flex-col bg-[#FAF9F5] border-r border-[#E5E4DC] select-none shrink-0">
       {/* Brand / Header */}
       <div className="h-16 px-5 flex items-center gap-3 border-b border-[#E5E4DC]">
         <div className="w-8 h-8 rounded bg-[#8B1E2D] flex items-center justify-center text-white font-bold text-base shadow-xs">
@@ -59,7 +59,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+      <nav aria-label="Ana menü" className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
         {user?.role==='admin'&&<button onClick={()=>onNavigate('admin')} className={`w-full text-left px-3 py-2 rounded text-sm ${currentPage==='admin'?'bg-[#EFECE6] text-[#8B1E2D] font-semibold':''}`}>Yönetim Paneli</button>}
         <button
           onClick={() => onNavigate('dashboard')}
@@ -131,6 +131,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <Gear size={18} weight={currentPage === 'settings' ? 'fill' : 'regular'} />
           <span>Ayarlar & Entegrasyon</span>
         </button>
+        <button className="mobile-signout" onClick={logout}><SignOut size={18}/>Çıkış</button>
       </nav>
 
       {/* Academic Teacher Profile Info Footer */}

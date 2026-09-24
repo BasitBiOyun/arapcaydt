@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import {moveRegion} from './workflow';
 import { AnnotationRegion, RegionType } from '../../types';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
   onSelectRegion: (id: string | null) => void;
   onUpdateRegions: (regions: AnnotationRegion[]) => void;
   solutionText?: string;
+  onUndo?:()=>void;
+  canUndo?:boolean;
 }
 const types: { type: RegionType; label: string }[] = [
   ...['a', 'b', 'c', 'd', 'e'].map(l => ({ type: `option-${l}` as RegionType, label: `${l.toUpperCase()} Şıkkı` })),
@@ -16,7 +19,9 @@ const types: { type: RegionType; label: string }[] = [
 const field = 'border rounded px-2 py-1 bg-white text-xs';
 const button = 'border rounded px-3 py-2 bg-white hover:bg-stone-100 text-xs cursor-pointer';
 
-export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, onSelectRegion, onUpdateRegions, solutionText = '' }: Props) {
+export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, onSelectRegion, onUpdateRegions, solutionText = '',onUndo,canUndo }: Props) {
+  const [undo,setUndo]=useState<AnnotationRegion[][]>([]);
+  const commit=(next:AnnotationRegion[])=>{setUndo(history=>[...history.slice(-29),regions]);onUpdateRegions(next);};
   const stage = useRef<HTMLDivElement>(null);
   const script = useRef<HTMLTextAreaElement>(null);
   const [aspect, setAspect] = useState(16 / 9);
@@ -37,6 +42,7 @@ export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, o
     setGesture({ mode, ...pos(e), region });
     setDraft(region || null);
     if (region) onSelectRegion(region.id);
+    stage.current?.focus();
   };
   const move = (e: React.PointerEvent) => {
     if (!gesture) return;
@@ -54,10 +60,10 @@ export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, o
       if (gesture.mode === 'draw') {
         const id = newType.startsWith('option-') ? newType : `manual-${crypto.randomUUID()}`;
         const region = { ...draft, id, type: newType, label: types.find(t => t.type === newType)?.label || 'İfade', content: phrase.trim(), manuallyAdjusted: true };
-        onUpdateRegions([...regions.filter(r => r.id !== id && !(newType.startsWith('option-') && r.type === newType)), region]);
+        commit([...regions.filter(r => r.id !== id && !(newType.startsWith('option-') && r.type === newType)), region]);
         onSelectRegion(id);
         setDrawing(false);
-      } else onUpdateRegions(regions.map(r => r.id === draft.id ? { ...draft, manuallyAdjusted: true } : r));
+      } else commit(regions.map(r => r.id === draft.id ? { ...draft, manuallyAdjusted: true } : r));
     }
     if (stage.current?.hasPointerCapture(e.pointerId)) stage.current.releasePointerCapture(e.pointerId);
     setGesture(null); setDraft(null);
@@ -69,17 +75,18 @@ export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, o
       updated.id = patch.type.startsWith('option-') ? patch.type : `manual-${crypto.randomUUID()}`;
       updated.label = types.find(t => t.type === patch.type)?.label || selected.label;
     }
-    onUpdateRegions([...regions.filter(r => r.id !== selected.id && r.id !== updated.id), updated]);
+    commit([...regions.filter(r => r.id !== selected.id && r.id !== updated.id), updated]);
     onSelectRegion(updated.id);
   };
   return <div className="space-y-3 mt-3 text-xs">
     <p>Şık seçip kutusunu çizin. Kelime vurgusu için aşağıdaki metinden ifadeyi seçin; ardından görselde yerini çizin. Çift sütundaki her şık ayrı bir kutu olmalı.</p>
     <div className="flex flex-wrap gap-2 items-center">
+      <button type="button" className={button} disabled={onUndo?!canUndo:!undo.length} onClick={()=>{if(onUndo){onUndo();return;}const previous=undo[undo.length-1];if(previous){onUpdateRegions(previous);setUndo(undo.slice(0,-1));}}}>Geri al</button>
       <select aria-label="Çizilecek alan türü" className={field} value={newType} onChange={e => setNewType(e.target.value as RegionType)}>
         {types.map(t => <option key={t.type} value={t.type}>{t.label}</option>)}
       </select>
       <button type="button" className={button} aria-pressed={drawing} onClick={() => { setDrawing(!drawing); setGesture(null); setDraft(null); }}>{drawing ? 'Çizmeyi iptal et' : 'Yeni kutu çiz'}</button>
-      <span>{drawing ? 'Görselde basılı tutup sürükleyin; mevcut kutular çizimi engellemez.' : 'Kutuyu seçip taşıyabilir, köşesinden boyutlandırabilirsiniz.'}</span>
+      <span>{drawing ? 'Görselde basılı tutup sürükleyin; mevcut kutular çizimi engellemez.' : 'Kutuyu taşıyın veya köşesinden boyutlandırın. Ok tuşları: ince ayar; Shift + ok: büyük adım.'}</span>
     </div>
     {solutionText && <details>
       <summary className="cursor-pointer font-semibold">Çözüm metninden kelime / ifade seç</summary>
@@ -93,7 +100,7 @@ export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, o
     <label className="flex flex-col gap-1">Sesle eşleştirilecek ifade
       <input aria-label="Sesle eşleştirilecek ifade" dir="auto" className={field} value={phrase} onChange={e => setPhrase(e.target.value)} placeholder="Örneğin: مُمَيِّزَاتٌ" />
     </label>
-    <div ref={stage} role="group" aria-label="Bölge çizim alanı" style={{ aspectRatio: aspect, touchAction: 'none' }}
+    <div ref={stage} role="group" tabIndex={0} aria-label="Bölge çizim alanı" onKeyDown={e=>{if(!selected || !["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key))return;e.preventDefault();const delta=e.shiftKey?.005:.001;commit(regions.map(r=>r.id===selected.id?moveRegion(r,e.key==="ArrowRight"?delta:e.key==="ArrowLeft"?-delta:0,e.key==="ArrowDown"?delta:e.key==="ArrowUp"?-delta:0):r));}} style={{ aspectRatio: aspect, touchAction: 'none' }}
       className={`relative w-full border rounded bg-white select-none ${drawing ? 'cursor-crosshair' : ''}`}
       onPointerDown={e => { if (drawing) begin(e, 'draw'); }} onPointerMove={move} onPointerUp={finish}
       onPointerCancel={() => { setGesture(null); setDraft(null); }}>
@@ -130,7 +137,7 @@ export function RegionEditorCanvas({ imageUrl, regions = [], selectedRegionId, o
             const max = key === 'x' ? 1-selected.width : key === 'y' ? 1-selected.height : key === 'width' ? 1-selected.x : 1-selected.y;
             update({[key]:Math.max(key === 'width' || key === 'height' ? .008 : 0,Math.min(max,value))});
           }} /></label>)}
-      <button className={`${button} text-red-800`} type="button" onClick={() => { onUpdateRegions(regions.filter(r => r.id !== selected.id)); onSelectRegion(null); }}>Seçili kutuyu sil</button>
+      <button className={`${button} text-red-800`} type="button" onClick={() => { commit(regions.filter(r => r.id !== selected.id)); onSelectRegion(null); }}>Seçili kutuyu sil</button>
     </div>}
   </div>;
 }

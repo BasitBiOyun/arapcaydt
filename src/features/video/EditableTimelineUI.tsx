@@ -1,3 +1,4 @@
+import {shiftAction} from '../question-editor/workflow';
 import React, { useState } from 'react';
 import { 
   VideoAction, 
@@ -64,6 +65,8 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
   correctAnswer = 'C',
   onRequestAutoGenerate,
 }) => {
+  const [undo,setUndo]=useState<VideoAction[][]>([]);
+  const commit=(next:VideoAction[])=>{setUndo(h=>[...h.slice(-29),actions]);onUpdateActions(next);};
   const effectiveDuration = Math.max(2, duration);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedActionId, setSelectedActionId] = useState<string | null>(null);
@@ -101,7 +104,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
     };
 
     const updated = [...actions, newAct].sort((a, b) => a.start - b.start);
-    onUpdateActions(updated);
+    commit(updated);
     setIsAdding(false);
     setSelectedActionId(newAct.id);
   };
@@ -109,7 +112,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
   const handleDeleteAction = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const updated = actions.filter((a) => a.id !== id);
-    onUpdateActions(updated);
+    commit(updated);
     if (selectedActionId === id) setSelectedActionId(null);
   };
 
@@ -137,7 +140,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
       return;
     }
 
-    onUpdateActions(generated);
+    commit(generated);
   };
 
   // 1-second interval ruler ticks
@@ -146,12 +149,19 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
 
   return (
     <div className="p-3.5 rounded bg-white border border-[#E5E4DC] space-y-3 select-none">
+      <div className="space-y-3">
+        <label className="block text-sm font-semibold">Düzenlenecek işaret<select className="block w-full border rounded-lg p-2 mt-2" value={selectedActionId||''} onChange={e=>{setSelectedActionId(e.target.value);const action=actions.find(a=>a.id===e.target.value);if(action)onSeek(action.start);}}><option value="">Bir kelime veya şık seçin</option>{actions.map(a=><option key={a.id} value={a.id}>{a.start.toFixed(1)} sn · {regions.find(r=>r.id===a.targetRegionId)?.content || regions.find(r=>r.id===a.targetRegionId)?.label} · {ACTION_TYPES.find(t=>t.type===a.type)?.label}</option>)}</select></label>
+        <div className="flex flex-wrap gap-2">{[-.2,.2].map(delta=><button className="studio-secondary" key={delta} disabled={!selectedActionId} onClick={()=>{commit(actions.map(a=>a.id===selectedActionId?shiftAction(a,delta,effectiveDuration):a));const a=actions.find(a=>a.id===selectedActionId);if(a)onSeek(shiftAction(a,delta,effectiveDuration).start);}}>{delta<0?'0,2 sn erken':'0,2 sn geç'}</button>)}
+          <button className="studio-secondary" disabled={!selectedActionId} onClick={()=>{const a=actions.find(a=>a.id===selectedActionId);if(a){onSeek(Math.max(0,a.start-.5));if(!isPlaying)onPlayPause();}}}>Bu anı dinle</button>
+          <button className="studio-secondary" disabled={!undo.length} onClick={()=>{if(undo.length){onUpdateActions(undo[undo.length-1]);setUndo(undo.slice(0,-1));}}}>Geri al</button>
+        </div>
+      </div>
       {/* Header bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[#EFEFEA]">
         <div className="flex items-center gap-2">
           <Clock size={16} weight="bold" className="text-[#8B1E2D]" />
           <h3 className="font-bold text-xs text-[#1C1917]">
-            Video Zaman Çizelgesi & Animasyon Senkronizasyonu
+            İşaretlerin zamanlaması
           </h3>
           <span className="text-[11px] font-mono-code text-[#787670]">
             ({actions.length} Otomatik Eylem)
@@ -164,7 +174,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
             type="button"
             onClick={handleAutoGenerate}
             className="px-3 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#721824] text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
-            title="Gemini Vision ve ElevenLabs zamanlamaları ile animasyonları otomatik senkronize eder"
+            title="Mevcut ses ve görsel üzerinden işaretleri yeniden hazırlar"
           >
             <Sparkle size={14} weight="fill" />
             <span>Videoyu Otomatik Senkronize Et</span>
@@ -471,7 +481,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
                           </td>
                           <td className="py-1.5 px-3">
                             <span className="font-semibold text-[#1C1917]">
-                              {act.type.toUpperCase()}
+                              {ACTION_TYPES.find(t=>t.type===act.type)?.label || act.type}
                             </span>
                           </td>
                           <td className="py-1.5 px-3 text-[#55544F]">

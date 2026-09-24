@@ -17,7 +17,8 @@ export const AppLayout: React.FC = () => {
   const { selectProject, createNewProject, currentProject, projects, error, loadProjects } = useProjects();
 
   const handleSelectProject = async (id: string) => {
-    await selectProject(id);
+    const selected=await selectProject(id);
+    if(!selected)return;
     setCurrentPage('editor');
   };
 
@@ -40,7 +41,7 @@ export const AppLayout: React.FC = () => {
   if (currentPage === 'editor') {
     return (
       <div className="h-screen w-screen overflow-hidden bg-[#FAF9F5]">
-        <QuestionEditorPage
+        <QuestionEditorPage key={currentProject?.id}
           onBack={() => setCurrentPage('questions')}
         />
         <NewProjectCategoryModal
@@ -53,7 +54,7 @@ export const AppLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#FAF9F5]">
+    <div className="studio-shell flex h-screen w-screen overflow-hidden bg-[#FAF9F5]">
       {/* Left Sidebar */}
       <AppSidebar
         currentPage={currentPage}

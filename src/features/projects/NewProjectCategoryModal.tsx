@@ -5,7 +5,7 @@ import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categorie
 interface NewProjectCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (categoryId: string) => void;
+  onCreate: (categoryId: string) => void | Promise<void>;
 }
 
 export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = ({
@@ -14,6 +14,9 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
   onCreate,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(DEFAULT_CATEGORY_ID);
+
+  const [busy,setBusy]=useState(false),[error,setError]=useState('');
+  const create=async()=>{setBusy(true);setError('');try{await onCreate(selectedCategory);onClose();}catch(e){setError(e instanceof Error?e.message:'Proje oluşturulamadı.');}finally{setBusy(false);}};
 
   if (!isOpen) return null;
 
@@ -40,7 +43,7 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
             <p className="text-xs text-[#787670] mt-0.5">Soru kategorisini seçin</p>
           </div>
           <button
-            onClick={onClose}
+            onClick={onClose} disabled={busy} aria-label="Kapat"
             className="p-1 rounded text-[#787670] hover:text-[#1C1917] hover:bg-[#F0EFEA] transition-colors"
           >
             <X className="w-4 h-4" />
@@ -92,24 +95,22 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
           })}
         </div>
 
+        {error&&<p role="alert" className="px-5 pb-3 text-sm text-red-700">{error}</p>}
         {/* Actions */}
         <div className="px-5 py-3.5 bg-white border-t border-[#E5E4DC] flex items-center justify-end gap-2">
           <button
             type="button"
-            onClick={onClose}
+            onClick={onClose} disabled={busy} aria-label="Kapat"
             className="px-3.5 py-1.5 rounded text-xs font-semibold text-[#55544F] hover:bg-[#F0EFEA] transition-colors"
           >
             İptal
           </button>
           <button
             type="button"
-            onClick={() => {
-              onCreate(selectedCategory);
-              onClose();
-            }}
+            onClick={()=>void create()} disabled={busy}
             className="px-4 py-2 rounded bg-[#8B1E2D] hover:bg-[#721824] text-white text-xs font-semibold transition-colors shadow-xs"
           >
-            Projeyi Başlat
+            {busy?'Oluşturuluyor…':'Projeyi Başlat'}
           </button>
         </div>
       </div>

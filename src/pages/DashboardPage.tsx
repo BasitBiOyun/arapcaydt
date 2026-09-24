@@ -78,6 +78,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         </div>
       </div>
 
+      {projects.length>0&&<section className="resume-project"><div><h3>Kaldığınız yerden devam edin</h3><p>{projects[0].title}</p><span>{projects[0].examName||projects[0].examYear}</span></div><button className="studio-primary" onClick={()=>onSelectProject(projects[0].id)}>Çalışmaya devam et <ArrowRight size={18}/></button></section>}
       {/* Academic Compact Metrics Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="p-3.5 rounded bg-[#FFFFFF] border border-[#E5E4DC] space-y-1">
@@ -104,13 +105,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
         <div className="p-3.5 rounded bg-[#FFFFFF] border border-[#E5E4DC] space-y-1">
           <div className="flex items-center justify-between text-[#666560]">
-            <span className="text-xs font-medium">Ses İnceleme Bekleyen</span>
+            <span className="text-xs font-medium">Dinlenecek sesler</span>
             <Waveform size={16} className="text-[#B48419]" />
           </div>
           <div className="text-xl font-bold font-mono-code text-[#B48419]">
             {audioGenCount}
           </div>
-          <div className="text-[11px] text-[#787670]">Onay bekleyen ses kayıtları</div>
+          <div className="text-[11px] text-[#787670]">Dinleyip kullanacağınız kayıtlar</div>
         </div>
 
         <div className="p-3.5 rounded bg-[#FFFFFF] border border-[#E5E4DC] space-y-1">

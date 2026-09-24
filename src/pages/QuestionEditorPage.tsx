@@ -1,8 +1,10 @@
+import {steps,resumeStep,checkNarration} from '../features/question-editor/workflow';
+import {VoiceSample} from '../features/question-editor/VoiceSample';
 import { database } from '../services/supabase';
 import { applyRegionEdits } from '../services/analysis/regionEdits';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  QuestionProject, 
+  QuestionProject, VideoConfig,
   AudioNarration, 
   NarrationSource 
 } from '../types';
@@ -41,10 +43,13 @@ interface QuestionEditorPageProps {
 }
 
 export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }) => {
-  const { currentProject, updateCurrentProject, saveCurrentProject } = useProjects();
+  const { currentProject, updateCurrentProject, saveCurrentProject, saveStatus, error:saveError } = useProjects();
 
+  const [step,setStep]=useState(()=>currentProject?resumeStep(currentProject):0);
+  const [editRegions,setEditRegions]=useState(false);
+  const [regionHistory,setRegionHistory]=useState<VideoConfig[]>([]);
+  const [sampleBusy,setSampleBusy]=useState(false);
   // Navigation & Save state
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Audio generation state
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
@@ -133,8 +138,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   const handleSave = async () => {
     const saved=await saveCurrentProject();
     if(!saved) {setAudioError('Kayıt tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');return;}
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 2000);
   };
 
   // Image File handlers
@@ -418,7 +421,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         timelineActions: result.actions,
         captions: result.captions,
         timingQuality: result.timingQuality,
-        pipelineVersion: 3,
+        pipelineVersion: 4,
         warnings: result.warnings,
       },
       ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
@@ -429,6 +432,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setPreviewMode('video');
     setCurrentPreviewTime(0);
     setIsVideoModalOpen(false);
+    setStep(3);setEditRegions(false);
   };
 
   // Handle direct MP4 Export & Download using local browser engine (1080p @ 30fps)
@@ -535,14 +539,19 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setIsVideoModalOpen(true);
   };
 
+  const check=checkNarration(currentProject.solutionText,currentProject.correctAnswer);
+  const enabled=[true,hasImage,hasImage&&hasSolution,isAudioApproved,videoGenerated&&isAudioApproved];
+  const busy=isGeneratingAudio||sampleBusy||isTranscribingMp3||isExportingMp4;
+  const go=(next:number)=>{if(!busy&&enabled[next]){setStep(next);setIsPlayingPreview(false);if(stageAudioRef.current)stageAudioRef.current.pause();setIsAudioPlaying(false);}};
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#FAF9F5] select-none">
+    <div className="studio-editor flex flex-col h-screen w-screen overflow-hidden bg-[#FAF9F5]">
       {/* TOP BAR */}
       <header className="h-14 bg-white border-b border-[#E5E4DC] px-6 flex items-center justify-between shrink-0 z-10">
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={onBack}
+            onClick={()=>{if(!busy)onBack();}}
+            disabled={busy}
             className="flex items-center gap-1.5 text-xs font-semibold text-[#55544F] hover:text-[#1C1917] px-2.5 py-1.5 rounded hover:bg-[#F0EFEA] transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} />
@@ -551,26 +560,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
           <div className="h-4 w-px bg-[#E5E4DC]" />
 
-          {/* Centralized Category Segmented Control */}
-          <div className="flex items-center gap-1 bg-[#F0EFEA] p-1 rounded-lg border border-[#E5E4DC]">
-            {QUESTION_CATEGORIES.map((cat) => {
-              const isSelected = currentProject.category === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => updateCurrentProject({ category: cat.id })}
-                  className={`px-2.5 py-1 rounded text-xs font-semibold transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-white text-[#8B1E2D] shadow-xs font-bold'
-                      : 'text-[#666560] hover:text-[#1C1917]'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
+          <span className="editor-brand">Arapça YDT Stüdyosu</span>
         </div>
 
         <h1 className="text-sm font-bold text-[#1C1917] tracking-tight hidden md:block">
@@ -579,24 +569,26 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
         <button
           type="button"
-          onClick={handleSave}
+          onClick={handleSave} aria-label="Projeyi kaydet"
           className="px-4 py-1.5 rounded text-xs font-semibold bg-[#FAF9F5] border border-[#D5D4CC] text-[#1C1917] hover:bg-[#F0EFEA] transition-colors flex items-center gap-1.5 cursor-pointer"
         >
-          {saveSuccess ? (
+          {saveStatus==='saved' ? (
             <>
               <Check size={14} className="text-[#15803D]" />
-              <span className="text-[#15803D]">Kaydedildi</span>
+              <span role="status" className="text-[#15803D]">Kaydedildi</span>
             </>
           ) : (
-            <span>Kaydet</span>
+            <span>{({saved:'Kaydedildi',pending:'Değişiklikler bekliyor',saving:'Kaydediliyor…',error:'Kaydı tekrar dene'})[saveStatus]}</span>
           )}
         </button>
       </header>
 
+      <nav className="workflow-nav" aria-label="Video hazırlama adımları">{steps.map((label,i)=><button key={label} disabled={!enabled[i]||busy} aria-current={step===i?'step':undefined} onClick={()=>go(i)}><span className="step-number">{i+1}</span><span>{label}</span></button>)}</nav>
+      {saveError&&<div role="alert" className="save-alert">{saveError} <button onClick={()=>void handleSave()}>Tekrar kaydet</button></div>}
       {/* TWO MAIN COLUMNS */}
-      <div className="flex-1 flex min-h-0 overflow-hidden">
+      <div className="editor-columns flex-1 flex min-h-0 overflow-hidden">
         {/* LEFT COLUMN: ~68% Large Visual / Video Preview */}
-        <section className="flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 pt-16 flex flex-col items-center overflow-y-auto relative">
+        <section className="editor-stage flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 pt-16 flex flex-col items-center overflow-y-auto relative">
           {/* Preview Mode Switcher (if video generated and image exists) */}
           {videoGenerated && hasImage && (
             <div className="absolute top-4 left-6 z-20 flex items-center gap-1 bg-white/90 backdrop-blur-xs p-1 rounded-lg border border-[#E5E4DC] shadow-xs">
@@ -627,6 +619,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
             </div>
           )}
 
+          <div className="preview-content" hidden={step===3&&editRegions}>
           {previewMode === 'video' && videoGenerated ? (
             /* Generated Video Player powered by local Canvas engine */
             <div className="w-full max-w-4xl flex flex-col gap-4 p-4">
@@ -654,7 +647,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                 Altyazı konumu
               </div>
 
-              <details className="w-full text-xs bg-white rounded-lg p-3 border">
+              <details open={step===3&&!editRegions} hidden={step!==3} className="w-full text-xs bg-white rounded-lg p-3 border">
                 <summary className="cursor-pointer font-semibold">İşaretlerin zamanlamasını düzenle</summary>
                 <EditableTimelineUI duration={activeAudioDuration} currentTime={currentPreviewTime} isPlaying={isPlayingPreview}
                   onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} onSeek={setCurrentPreviewTime}
@@ -665,11 +658,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
             </div>
           ) : hasImage ? (
             /* Large, high-clarity question image preview */
-            <div className="w-full h-full flex items-center justify-center p-4">
+            <div className="w-full flex items-center justify-center">
               <img
                 src={currentProject.imageUrl}
                 alt="Soru Görseli"
-                className="max-h-[calc(100vh-8rem)] max-w-full object-contain rounded-lg border border-[#E5E4DC] bg-white shadow-xs p-2"
+                className="max-h-[calc(100vh-16rem)] max-w-full object-contain rounded-lg border border-[#E5E4DC] bg-white shadow-xs p-2"
               />
             </div>
           ) : (
@@ -686,23 +679,25 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               </p>
             </div>
           )}
-          {hasImage && <details className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-lg p-3 border">
+          </div>
+          {hasImage && step===3 && editRegions && <details open className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-lg p-3 border">
             <summary className="cursor-pointer font-semibold">Kutuları ve vurguları düzenle</summary>
             <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
               solutionText={currentProject.solutionText}
               selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
-              onUpdateRegions={regions => updateCurrentProject({ videoConfig: applyRegionEdits(
+              canUndo={regionHistory.length>0} onUndo={()=>{const previous=regionHistory.at(-1);if(previous){updateCurrentProject({videoConfig:previous});setRegionHistory(regionHistory.slice(0,-1));}}}
+              onUpdateRegions={regions => {setRegionHistory(h=>[...h.slice(-29),currentProject.videoConfig]);updateCurrentProject({ videoConfig: applyRegionEdits(
                 currentProject.videoConfig, regions, currentProject.solutionText,
                 currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15
-              ) })} />
+              ) });}} />
           </details>}
         </section>
 
         {/* RIGHT COLUMN: ~32% Progressive 4-Step Workflow Panel */}
-        <aside className="flex-[32] h-full bg-white overflow-y-auto p-6 flex flex-col space-y-6">
-          <details className="border rounded-lg p-3 text-sm"><summary className="cursor-pointer font-semibold">Proje bilgileri</summary><div className="space-y-3 pt-3"><label className="block">Proje adı<input value={currentProject.title} onChange={e=>updateCurrentProject({title:e.target.value})} className="block w-full border rounded p-2"/></label><label className="block">Sınav / yıl<input value={currentProject.examYear} onChange={e=>updateCurrentProject({examYear:e.target.value})} className="block w-full border rounded p-2"/></label>{currentProject.category==='deneme'&&<label className="block">Deneme adı<input placeholder="Örnek: Eylül Denemesi 1" value={currentProject.examName||''} onChange={e=>updateCurrentProject({examName:e.target.value})} className="block w-full border rounded p-2"/></label>}</div></details>
+        <aside className="editor-panel flex-[32] h-full bg-white overflow-y-auto p-6 flex flex-col space-y-6">
+          <details hidden={step>1} className="border rounded-lg p-3 text-sm"><summary className="cursor-pointer font-semibold">Proje bilgileri</summary><div className="space-y-3 pt-3"><label className="block">Proje adı<input value={currentProject.title} onChange={e=>updateCurrentProject({title:e.target.value})} className="block w-full border rounded p-2"/></label><label className="block">Kategori<select className="block w-full border rounded p-2" value={currentProject.category} onChange={e=>updateCurrentProject({category:e.target.value})}>{QUESTION_CATEGORIES.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select></label><label className="block">Sınav / yıl<input value={currentProject.examYear} onChange={e=>updateCurrentProject({examYear:e.target.value})} className="block w-full border rounded p-2"/></label>{<label className="block">Koleksiyon / deneme adı<input placeholder="Örnek: Eylül Denemesi 1" value={currentProject.examName||''} onChange={e=>updateCurrentProject({examName:e.target.value})} className="block w-full border rounded p-2"/></label>}</div></details>
           {/* STEP 1: Soru Görseli */}
-          <div className="space-y-2.5">
+          <div hidden={step!==0} className="space-y-2.5">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
               1. Soru Görseli
             </h2>
@@ -782,13 +777,14 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
           </div>
 
           {/* STEP 2: Çözüm Metni */}
-          <div className="space-y-2.5">
+          <div hidden={step!==1} className="space-y-2.5">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              2. Çözüm Metni
+              Çözüm metnini hazırlayın
             </h2>
+            <label className="flex items-center gap-3">Doğru cevap<select className="border rounded px-3 py-2" value={currentProject.correctAnswer} onChange={e=>{updateCurrentProject({correctAnswer:e.target.value as QuestionProject['correctAnswer'],videoReady:false});setVideoGenerated(false);}}>{['A','B','C','D','E'].map(l=><option key={l}>{l}</option>)}</select></label>
             <textarea
               aria-label="Çözüm metni"
-              disabled={isGeneratingAudio}
+              disabled={isGeneratingAudio || sampleBusy}
               value={currentProject.solutionText}
               onChange={(e) => {
                 updateCurrentProject({
@@ -801,15 +797,18 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                 setVideoGenerated(false);
               }}
               placeholder="Sorunun çözümünü buraya yazın..."
-              rows={6}
+              rows={12}
+              dir="auto"
               className="w-full p-3.5 rounded-lg border border-[#D5D4CC] focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] text-xs text-[#1C1917] leading-relaxed bg-white outline-none resize-y placeholder:text-[#A8A69E]"
             />
           </div>
 
+          {(step===1||step===2)&&<section className="narration-check" aria-label="Ses ön kontrolü"><strong>{check.characters.toLocaleString('tr')} / 5.000 karakter</strong><p>Doğru cevap: {currentProject.correctAnswer}. Ses üretimi ElevenLabs kotasından tüketir.</p>{check.characters>5000&&<p role="alert">Tek ses için metni 5.000 karakterin altına kısaltın.</p>}{check.missing.length>0&&<p>Metinde şık başlığı bulunamadı: {check.missing.join(', ')}. Açıklamalarınızı kontrol edin.</p>}{check.mismatch&&<p role="alert">Metin {check.mismatch} diyor; seçili cevap {currentProject.correctAnswer}. Ses üretmeden önce düzeltin.</p>}</section>}
+          {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy}/>}
           {/* STEP 3: Seslendirme */}
-          <div className="space-y-3">
+          <div hidden={step!==2} className="space-y-3">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              3. Seslendirme
+              Seslendirmeyi dinleyin
             </h2>
 
             {hasAudio ? (
@@ -918,7 +917,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                     <button
                       type="button"
                       onClick={handleGenerateAudio}
-                      disabled={isGeneratingAudio}
+                      disabled={isGeneratingAudio || sampleBusy}
                       className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
                     >
                       {isGeneratingAudio ? (
@@ -949,7 +948,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                   <button
                     type="button"
                     onClick={handleGenerateAudio}
-                    disabled={isGeneratingAudio || !hasSolution}
+                    disabled={isGeneratingAudio || sampleBusy || !hasSolution || currentProject.solutionText.trim().length>5000}
                     className={`py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs ${
                       hasSolution
                         ? 'bg-[#8B1E2D] hover:bg-[#721824] text-white'
@@ -1016,10 +1015,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
             )}
           </div>
 
-          {/* STEP 4: Video Oluştur (ALWAYS VISIBLE) */}
-          <div className="space-y-3 pt-2 border-t border-[#E5E4DC]">
+          {step===3&&<section className="space-y-3"><h2>İşaretleri kontrol edin</h2><p>Önizlemeyi dinleyin. Gerekirse kutuları taşıyın veya işaretin zamanını düzeltin.</p><div className="flex flex-wrap gap-2"><button className="studio-secondary" aria-pressed={editRegions} onClick={()=>setEditRegions(true)}>Kutuları düzelt</button><button className="studio-secondary" disabled={!videoGenerated} aria-pressed={!editRegions} onClick={()=>{setEditRegions(false);setPreviewMode('video');}}>Zamanlamayı düzelt</button></div>{!videoGenerated&&<p>Önce aşağıdaki düğmeyle mevcut sesinize uygun işaretleri hazırlayın.</p>}</section>}
+          {/* STEP 4: Video Oluştur */}
+          <div hidden={step<3} className="space-y-3 pt-2 border-t border-[#E5E4DC]">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              {videoGenerated ? '4. Video' : '4. Video Oluştur'}
+              {step===4?'Videonuzu indirin':'Animasyon önizlemesi'}
             </h2>
 
             {videoGenerated ? (
@@ -1031,13 +1031,14 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                 </div>
 
                 <div className="space-y-2">
-                  {(currentProject.videoConfig.pipelineVersion !== 3) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
+                  {(currentProject.videoConfig.pipelineVersion !== 4) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
                   {currentProject.videoConfig.warnings?.map(w => <p key={w} className="text-xs text-amber-800">{w}</p>)}
                   {exportError && <p role="alert" className="text-xs text-red-700">{exportError}</p>}
                   {isExportingMp4 && <button type="button" className="text-xs underline" onClick={() => exportAbortRef.current?.abort()}>Oluşturmayı iptal et</button>}
                   <button
                     type="button"
                     onClick={handleDownloadMp4}
+                    hidden={step!==4}
                     disabled={isExportingMp4}
                     className="w-full py-3 px-4 rounded-lg bg-[#8B1E2D] hover:bg-[#721824] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
                   >
@@ -1079,7 +1080,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                   }`}
                 >
                   <Sparkle size={18} weight="fill" />
-                  <span>Videoyu Oluştur</span>
+                  <span>İşaretleri otomatik hazırla</span>
                 </button>
 
                 {!isAudioApproved && (
@@ -1097,6 +1098,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               </div>
             )}
           </div>
+          <footer className="workflow-footer"><p>{['Görseli yükleyin; özgün tasarımı videoda korunur.','Arapça ifadeleri harekeli yazın.','Sesi dinleyip “Bu Sesi Kullan” ile devam edin.','Kutuları ve zamanlamayı son kez kontrol edin.','MP4 bu tarayıcıda hazırlanır. İndirme bitene kadar sekmeyi açık tutun.'][step]}</p><div className="flex gap-2">{step>0&&<button className="studio-secondary" disabled={busy} onClick={()=>go(step-1)}>Geri</button>}{step<4&&<button className="studio-primary" disabled={busy||!enabled[step+1]} onClick={()=>go(step+1)}>{['Metne geç','Sese geç','İşaretlere geç','İndirmeye geç'][step]}</button>}</div></footer>
         </aside>
       </div>
 

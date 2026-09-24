@@ -44,6 +44,7 @@ export class CloudProjectRepository implements IProjectRepository {
   }
   async save(project:QuestionProject){
     const owner=await ownerId();
+    if(project.ownerId && project.ownerId!==owner)throw new Error('Hesap değişti. Projeyi kendi hesabınızdan açın.');
     const p:any=structuredClone(project);
     p.imageUrl=await uploadAsset(p.imageUrl,owner,p.id);
     const uploaded=new Map<string,unknown>();
@@ -68,4 +69,10 @@ export class CloudProjectRepository implements IProjectRepository {
     if(assets?.length)await bucket().remove(assets.map(a=>`${owner}/${id}/${a.name}`));
     return true;
   }
+}
+
+/** Read-only viewer; database RLS enforces teacher ownership and admin visibility. */
+export async function readProjectForOverview(id:string):Promise<QuestionProject|null>{
+ const {data,error}=await database().from('projects').select('*').eq('id',id).maybeSingle();
+ if(error)throw error;return data?hydrate(data):null;
 }
