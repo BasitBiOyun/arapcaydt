@@ -1,4 +1,4 @@
-import { requireMember, serviceDatabase } from '../../server/auth';
+import { requireMember } from '../../server/auth.js';
 export default async function handler(req: any, res: any) {
   const member=await requireMember(req,res);
   if(!member)return;

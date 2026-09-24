@@ -1,4 +1,4 @@
-import { requireMember, serviceDatabase } from '../../server/auth';
+import { requireMember, serviceDatabase } from '../../server/auth.js';
 export const config = {
   maxDuration: 60,
 };

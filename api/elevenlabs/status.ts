@@ -1,4 +1,4 @@
-import { requireMember, serviceDatabase } from '../../server/auth';
+import { requireMember } from '../../server/auth.js';
 function normalizeApiKey(value?: string): string {
   let key = (value || '').trim();
   if (
