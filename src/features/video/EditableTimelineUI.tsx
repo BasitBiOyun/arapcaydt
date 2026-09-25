@@ -143,9 +143,23 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
     commit(generated);
   };
 
-  // 1-second interval ruler ticks
-  const tickCount = Math.min(40, Math.ceil(effectiveDuration));
-  const ticks = Array.from({ length: tickCount + 1 }, (_, i) => i);
+  // Keep ruler labels tied to real seconds even on long narrations.
+  const tickStep =
+    effectiveDuration <= 20 ? 1 :
+    effectiveDuration <= 60 ? 5 :
+    effectiveDuration <= 180 ? 10 :
+    effectiveDuration <= 360 ? 30 : 60;
+  const ticks = Array.from(
+    { length: Math.floor(effectiveDuration / tickStep) + 1 },
+    (_, i) => i * tickStep
+  );
+  if (ticks[ticks.length - 1] < effectiveDuration) ticks.push(effectiveDuration);
+  const formatRulerTime = (seconds:number) => {
+    const rounded = Math.round(seconds);
+    const mins = Math.floor(rounded / 60);
+    const secs = rounded % 60;
+    return mins ? `${mins}:${secs.toString().padStart(2,'0')}` : `${secs}s`;
+  };
 
   return (
     <div className="p-3.5 rounded bg-white border border-[#E5E4DC] space-y-3 select-none">
@@ -196,6 +210,11 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
         onClick={handleTimelineClick}
         className="relative w-full bg-[#FAF9F5] border border-[#E5E4DC] rounded p-2.5 cursor-pointer overflow-hidden"
       >
+        <div
+          className="absolute left-0 top-0 h-1 bg-[#8B1E2D]/25 pointer-events-none"
+          style={{ width: `${Math.min(100, Math.max(0, (currentTime / effectiveDuration) * 100))}%` }}
+        />
+
         {/* Playhead Scrubber Line */}
         <div
           style={{
@@ -207,13 +226,17 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
         </div>
 
         {/* 1. Time Ruler Ticks */}
-        <div className="relative h-5 border-b border-[#E5E4DC] flex justify-between items-end pb-1 text-[9px] font-mono-code text-[#8C8A82]">
-          {ticks.map((t) => (
-            <div key={t} className="flex flex-col items-center">
-              <span className="h-1.5 w-px bg-[#D5D4CC]" />
-              {t % 2 === 0 && <span>{t}s</span>}
-            </div>
-          ))}
+        <div className="relative h-6 border-b border-[#E5E4DC] text-[9px] font-mono-code text-[#8C8A82]">
+          {ticks.map((t, index) => {
+            const left = Math.min(100, (t / effectiveDuration) * 100);
+            const edgeClass = index === 0 ? 'translate-x-0' : index === ticks.length - 1 ? '-translate-x-full' : '-translate-x-1/2';
+            return (
+              <div key={`${t}-${index}`} className={`absolute bottom-0 flex flex-col items-center ${edgeClass}`} style={{ left: `${left}%` }}>
+                <span className="h-1.5 w-px bg-[#D5D4CC]" />
+                <span className="whitespace-nowrap">{formatRulerTime(t)}</span>
+              </div>
+            );
+          })}
         </div>
 
         {/* 2. Track A: ElevenLabs Narration Audio Track */}
