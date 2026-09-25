@@ -17,6 +17,27 @@ const VOICE_CONFIG = {
   },
 };
 
+function clampSetting(value: unknown, min: number, max: number, fallback: number): number {
+  const parsed = typeof value === 'number' ? value : Number(value);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.max(min, Math.min(max, parsed));
+}
+
+function resolveVoiceSettings(value: any) {
+  const defaults = VOICE_CONFIG.voiceSettings;
+  const requested = value && typeof value === 'object' ? value : {};
+  return {
+    speed: clampSetting(requested.speed, 0.7, 1.2, defaults.speed),
+    stability: clampSetting(requested.stability, 0, 1, defaults.stability),
+    similarity_boost: clampSetting(requested.similarity_boost, 0, 1, defaults.similarity_boost),
+    style: clampSetting(requested.style, 0, 1, defaults.style),
+    use_speaker_boost:
+      typeof requested.use_speaker_boost === 'boolean'
+        ? requested.use_speaker_boost
+        : defaults.use_speaker_boost,
+  };
+}
+
 function normalizeApiKey(value?: string): string {
   let key = (value || '').trim();
   if (
@@ -137,6 +158,8 @@ export default async function handler(req: any, res: any) {
     });
   }
 
+  const voiceSettings = resolveVoiceSettings(req.body?.voiceSettings);
+
   let audit: ReturnType<typeof serviceDatabase>;
   let eventId: string;
   try {
@@ -158,7 +181,7 @@ export default async function handler(req: any, res: any) {
       body: JSON.stringify({
         text,
         model_id: VOICE_CONFIG.modelId,
-        voice_settings: VOICE_CONFIG.voiceSettings,
+        voice_settings: voiceSettings,
       }),
     });
 
@@ -209,6 +232,7 @@ export default async function handler(req: any, res: any) {
       voiceName: VOICE_CONFIG.name,
       modelId: VOICE_CONFIG.modelId,
       outputFormat: VOICE_CONFIG.outputFormat,
+      voiceSettings,
     });
   } catch (error: any) {
     await finish('uncertain');
