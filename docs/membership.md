@@ -4,7 +4,7 @@ Supabase Auth handles email/password signup, confirmation and recovery. New veri
 
 ## Deployment
 
-1. Run the Supabase migrations in order. Existing installations must also apply `20260925_admin_roles.sql` to enable administrator promotion.
+1. Run supabase/migrations/20260921_membership.sql once in a fresh project.
 2. Set Supabase Site URL to https://arapcaydt.vercel.app. Enable email confirmation; set a production SMTP provider for teacher confirmation and recovery emails (the built-in Supabase sender is restricted).
 3. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (publishable key) at build time. Server also needs SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY (secret or legacy service_role, never browser-exposed).
 4. Existing ELEVENLABS_API_KEY remains server-only. Deploy only after the database and environment are ready.
@@ -12,7 +12,7 @@ Supabase Auth handles email/password signup, confirmation and recovery. New veri
 
 ## Authorization and storage
 
-All database tables have RLS. Teachers only read/write their own projects. Administrators read all project summaries and activity, can approve or block teachers, and can promote an email-confirmed member to administrator through a security-definer RPC. Disabling a teacher prevents new database/storage access and paid voice requests. Already-issued private signed asset links expire after six hours.
+All database tables have RLS. Teachers only read/write their own projects. Administrators read all project summaries and activity, can approve or block teachers, and can promote an email-confirmed member to administrator through the authenticated server API. Role elevation is performed only with the server-side service role after the caller is verified as an approved administrator. Disabling a teacher prevents new database/storage access and paid voice requests. Already-issued private signed asset links expire after six hours.
 
 Images/audio are immutable private Storage objects, referenced by permanent paths in project JSON. Signed URLs are reconstructed when opening projects. Redundant base64 is stripped on save. MP4 rendering remains entirely in the browser; generated videos download to the teacher rather than consuming cloud render/storage quota.
 
