@@ -5,7 +5,7 @@ import {projectRepository} from '../features/projects/projectRepository';
 import {useProjects} from '../features/projects/ProjectContext';
 import React,{useCallback,useEffect,useState} from 'react';
 import {authHeaders,database} from '../services/supabase';
-import {getCategoryLabel,QUESTION_CATEGORIES} from '../config/categories';
+import {getCategoryLabel} from '../config/categories';
 interface Member {id:string;email:string;name:string;role:string;status:string;questions:number;mock_questions:number;mock_exams:number;voice_attempts:number;voices:number;characters:number;exports:number;}
 interface Overview {members:Member[];projects:Array<{id:string;owner_id:string;title:string;category:string;status:string;updated_at:string}>;activity:Array<{id:string;owner_id:string;kind:string;state:string;characters:number;created_at:string}>;}
 interface MemberAnalytics {categories:Record<string,number>;draft:number;audioGenerated:number;audioApproved:number;videoReady:number;withAudio:number;uploadedAudio:number;lastProjectAt:string|null;}
