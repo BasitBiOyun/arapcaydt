@@ -149,7 +149,7 @@ export function RegionEditorCanvas({
           <p className="font-semibold text-[#1C1917]">Görsel düzenleyici</p>
           <p className="text-[11px] text-[#787670] mt-0.5">Bir aracı seçin, sonra görsel üzerinde sürükleyerek alanı belirleyin. Mevcut kutular doğrudan taşınabilir ve boyutlandırılabilir.</p>
         </div>
-        <button type="button" className={button} disabled={onUndo?!canUndo:!undo.length} onClick={()=>{if(onUndo){onUndo();return;}const previous=undo[undo.length-1];if(previous){onUpdateRegions(previous);setUndo(undo.slice(0,-1));}}}>↶ Geri al</button>
+        <button type="button" className={button} disabled={onUndo?!canUndo:!undo.length} onClick={()=>{if(onUndo){onUndo();return;}const previous=undo[undo.length-1];if(previous){onUpdateRegions(previous);setUndo(undo.slice(0,-1));}}}>↶ Kutu geri al</button>
       </div>
 
       <div className="flex flex-wrap gap-2 items-center">
@@ -189,6 +189,21 @@ export function RegionEditorCanvas({
     {!solutionText&&<label className="flex flex-col gap-1">Sesle eşleştirilecek ifade
       <input aria-label="Sesle eşleştirilecek ifade" dir="auto" className={field} value={phrase} onChange={e => setPhrase(e.target.value)} placeholder="Örneğin: مُمَيِّزَاتٌ" />
     </label>}
+    {selected&&<div className="sticky top-0 z-30 rounded-xl border border-[#DCC9CB] bg-white/95 backdrop-blur-sm shadow-sm p-2.5 flex flex-wrap items-center gap-2">
+      <div className="min-w-0 mr-auto">
+        <p className="font-semibold text-[#1C1917] truncate">Seçili: {selected.label}</p>
+        {selected.content&&<p className="text-[10px] text-[#787670] truncate max-w-sm" dir="auto">{selected.content}</p>}
+      </div>
+      {onUpdateActions&&(selected.type.startsWith('option-')
+        ? (['focus','reject','correct'] as VideoActionType[])
+        : (['underline','highlight','focus'] as VideoActionType[])
+      ).map(type=><button key={type} type="button" aria-pressed={hasAction(type)} onClick={()=>toggleAction(type)}
+        className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold transition-all ${hasAction(type)?'bg-[#8B1E2D] border-[#8B1E2D] text-white shadow-sm':'bg-white border-[#D5D4CC] text-[#44423D] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}>
+        {actionLabel[type]}{hasAction(type)?' ✓':''}
+      </button>)}
+      <button className={`${button} text-red-800 py-1.5`} type="button" onClick={removeSelected}>Sil</button>
+    </div>}
+
     <div ref={stage} role="group" tabIndex={0} aria-label="Bölge çizim alanı" onKeyDown={e=>{
       if(e.key==='Escape'){setDrawing(false);setGesture(null);setDraft(null);return;}
       if(selected && (e.key==='Delete'||e.key==='Backspace') && e.target===stage.current){e.preventDefault();removeSelected();return;}
@@ -221,19 +236,7 @@ export function RegionEditorCanvas({
         <button className={`${button} text-red-800`} type="button" onClick={removeSelected}>Sil</button>
       </div>
 
-      {onUpdateActions&&<div className="space-y-2">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] uppercase tracking-wide font-semibold text-[#8C8A82] mr-1">Animasyon</span>
-          {(selected.type.startsWith('option-')
-            ? (['focus','reject','correct'] as VideoActionType[])
-            : (['underline','highlight','focus'] as VideoActionType[])
-          ).map(type=><button key={type} type="button" aria-pressed={hasAction(type)} onClick={()=>toggleAction(type)}
-            className={`rounded-lg border px-3 py-1.5 text-[11px] font-semibold transition-all ${hasAction(type)?'bg-[#8B1E2D] border-[#8B1E2D] text-white shadow-sm':'bg-white border-[#D5D4CC] text-[#44423D] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}>
-            {actionLabel[type]}{hasAction(type)?' ✓':''}
-          </button>)}
-        </div>
-        <p className="text-[10px] text-[#787670]">Yeni işaret, varsa bu alanın mevcut ses zamanını kullanır. Yoksa önizlemedeki {currentTime.toFixed(1)}. saniyeye eklenir. Zamanı daha sonra “Zamanlamayı düzelt” bölümünden ince ayarlayabilirsiniz.</p>
-      </div>}
+      {onUpdateActions&&<p className="text-[10px] text-[#787670]">Üstteki hızlı araçlardan eklenen yeni işaret, varsa bu alanın mevcut ses zamanını kullanır. Yoksa önizlemedeki {currentTime.toFixed(1)}. saniyeye eklenir. Zamanı daha sonra “Zamanlamayı düzenle” bölümünden ince ayarlayabilirsiniz.</p>}
 
       <details>
         <summary className="cursor-pointer font-semibold text-[11px] text-[#55544F]">İnce ayar ve koordinatlar</summary>
