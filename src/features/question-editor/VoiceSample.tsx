@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {elevenlabsService} from '../../services/elevenlabs/elevenlabsService';
 import {useProjects} from '../projects/ProjectContext';
 
-export function VoiceSample({text,disabled,onBusy}:{text:string;disabled:boolean;onBusy:(busy:boolean)=>void}) {
+export function VoiceSample({text,disabled,onBusy,voiceSettings}:{text:string;disabled:boolean;onBusy:(busy:boolean)=>void;voiceSettings?:{speed?:number;stability?:number;similarity_boost?:number;style?:number;use_speaker_boost?:boolean}}) {
   const {saveCurrentProject}=useProjects();
   const [sample,setSample]=useState(text.slice(0,300).replace(/\s+\S*$/,''));
   const [audio,setAudio]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
@@ -10,7 +10,7 @@ export function VoiceSample({text,disabled,onBusy}:{text:string;disabled:boolean
     if(busy)return;setBusy(true);onBusy(true);setError('');setAudio('');
     try {
       const project=await saveCurrentProject();if(!project)throw new Error('Önce proje kaydedilmelidir.');
-      const result=await elevenlabsService.generateNarration({projectId:project.id,text:sample.trim()});
+      const result=await elevenlabsService.generateNarration({projectId:project.id,text:sample.trim(),voiceSettings});
       setAudio(`data:${result.mimeType};base64,${result.audioBase64}`);
     }catch(e){setError(e instanceof Error?e.message:'Örnek ses oluşturulamadı.');}
     finally{setBusy(false);onBusy(false);}
