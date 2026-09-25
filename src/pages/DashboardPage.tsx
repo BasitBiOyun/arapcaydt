@@ -13,6 +13,7 @@ import {
 import { useProjects } from '../features/projects/ProjectContext';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AppPage } from '../components/common/AppSidebar';
+import { getCategoryLabel } from '../config/categories';
 
 interface DashboardPageProps {
   onNavigate: (page: AppPage) => void;
@@ -183,7 +184,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </td>
                   <td className="py-3 px-3">
                     <span className="px-1.5 py-0.5 rounded text-[10px] font-mono-code uppercase bg-[#F2F1EB] text-[#44423D] border border-[#D5D4CC]">
-                      {p.category}
+                      {getCategoryLabel(p.category)}
                     </span>
                   </td>
                   <td className="py-3 px-2 text-center">

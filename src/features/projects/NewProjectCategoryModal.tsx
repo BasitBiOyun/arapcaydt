@@ -51,7 +51,7 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
         </div>
 
         {/* Category Cards */}
-        <div className="p-5 space-y-2.5">
+        <div className="p-5 space-y-2.5 max-h-[68vh] overflow-y-auto">
           {QUESTION_CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.id;
             return (

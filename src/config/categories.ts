@@ -5,18 +5,20 @@ export interface QuestionCategory {
 }
 
 /**
- * Centrally defined Question Categories.
- * Currently confirmed:
- * 1. Soru Çöz
- * 2. Çıkmış Soru
- * 3. Deneme
- * (Architecture ready for a 4th category when provided)
+ * Centrally defined question types.
+ * Keep ids stable because saved projects and admin analytics depend on them.
  */
 export const QUESTION_CATEGORIES: QuestionCategory[] = [
   { id: 'soru-coz', label: 'Soru Çöz', description: 'Konu anlatımlı pratik soru çözümleri' },
   { id: 'cikmis-soru', label: 'Çıkmış Soru', description: 'ÖSYM YDT / YDS çıkmış sınav soruları' },
   { id: 'deneme', label: 'Deneme', description: 'Özgün deneme sınavı soruları' },
-  // 4th category slot will be inserted here when provided
+  { id: 'arapca-ydt-hazirlik', label: 'ARAPÇA YDT HAZIRLIK' },
+  { id: 'arapca-okul-dersleri-hazirlik', label: 'ARAPÇA OKUL DERSLERİ HAZIRLIK' },
+  { id: 'dkab-yks-deneme', label: 'DKAB YKS DENEME' },
+  { id: 'dkab-lgs-deneme', label: 'DKAB LGS DENEME' },
+  { id: 'arapca-ydt-degerlendirme', label: 'ARAPÇA YDT DEĞERLENDİRME' },
+  { id: 'dkab-yks-tarama', label: 'DKAB YKS TARAMA' },
+  { id: 'dkab-yks-cikmis-sorular', label: 'DKAB YKS ÇIKMIŞ SORULAR' },
 ];
 
 export const DEFAULT_CATEGORY_ID = 'soru-coz';
