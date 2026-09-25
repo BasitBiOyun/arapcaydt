@@ -13,7 +13,7 @@ import { VideoGenerationModal } from '../features/video/VideoGenerationModal';
 import { LocalPipelineResult } from '../services/pipeline/localVideoPipeline';
 import { localWhisperService } from '../services/whisper/localWhisperService';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
-import { STANDARD_VOICE_CONFIG } from '../config/voice';
+import { STANDARD_VOICE_CONFIG, VoiceSettingsConfig } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
 import { VideoPreviewCanvas } from '../features/video/VideoPreviewCanvas';
 import { videoExporter } from '../features/video/engine/exporter';
@@ -56,6 +56,29 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   const [isTranscribingMp3, setIsTranscribingMp3] = useState(false);
   const [transcribeProgress, setTranscribeProgress] = useState<{ progress: number; message: string } | null>(null);
   const [audioError, setAudioError] = useState<string | null>(null);
+  const [voiceSettings, setVoiceSettings] = useState<VoiceSettingsConfig>(() => {
+    const defaults = { ...STANDARD_VOICE_CONFIG.voiceSettings };
+    if (typeof window === 'undefined') return defaults;
+    try {
+      const saved = window.localStorage.getItem('arapcaydt.voiceSettings.v1');
+      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+    } catch {
+      return defaults;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('arapcaydt.voiceSettings.v1', JSON.stringify(voiceSettings));
+    } catch {
+      // Local preference persistence is optional; generation still works without it.
+    }
+  }, [voiceSettings]);
+
+  function setVoiceSetting<K extends keyof VoiceSettingsConfig>(key: K, value: VoiceSettingsConfig[K]) {
+    setVoiceSettings(previous => ({ ...previous, [key]: value }));
+  }
+  const resetVoiceSettings = () => setVoiceSettings({ ...STANDARD_VOICE_CONFIG.voiceSettings });
 
   // Audio preview playback in Step 3
   const [audioPlayTime, setAudioPlayTime] = useState(0);
@@ -206,7 +229,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId,
         outputFormat: STANDARD_VOICE_CONFIG.outputFormat,
-        voiceSettings: STANDARD_VOICE_CONFIG.voiceSettings,
+        voiceSettings,
       });
 
       const audioUrl = `data:${result.mimeType};base64,${result.audioBase64}`;
@@ -838,7 +861,56 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
           </div>
 
           {(step===1||step===2)&&<section className="narration-check" aria-label="Ses ön kontrolü"><strong>{check.characters.toLocaleString('tr')} / 5.000 karakter</strong><p>Doğru cevap: {currentProject.correctAnswer}. Ses üretimi ElevenLabs kotasından tüketir.</p>{check.characters>5000&&<p role="alert">Tek ses için metni 5.000 karakterin altına kısaltın.</p>}{check.missing.length>0&&<p>Metinde şık başlığı bulunamadı: {check.missing.join(', ')}. Açıklamalarınızı kontrol edin.</p>}{check.mismatch&&<p role="alert">Metin {check.mismatch} diyor; seçili cevap {currentProject.correctAnswer}. Ses üretmeden önce düzeltin.</p>}</section>}
-          {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy}/>}
+          {step===2&&<details className="rounded-xl border border-[#E5E4DC] bg-[#FAF9F5] p-3 text-xs">
+            <summary className="cursor-pointer font-semibold text-[#1C1917] flex items-center justify-between gap-3">
+              <span>Ses ayarları</span>
+              <span className="text-[10px] font-normal text-[#787670]">Hız {voiceSettings.speed.toFixed(2)} · Kararlılık %{Math.round(voiceSettings.stability*100)}</span>
+            </summary>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
+              <label className="space-y-1.5">
+                <div className="flex items-center justify-between"><span className="font-semibold">Hız / tempo</span><span className="font-mono-code">{voiceSettings.speed.toFixed(2)}x</span></div>
+                <input type="range" min="0.7" max="1.2" step="0.01" value={voiceSettings.speed}
+                  disabled={isGeneratingAudio||sampleBusy}
+                  onChange={e=>setVoiceSetting('speed',Number(e.target.value))}
+                  className="w-full accent-[#8B1E2D]" />
+                <p className="text-[10px] text-[#787670]">0,70 daha yavaş, 1,00 normal, 1,20 daha hızlı.</p>
+              </label>
+              <label className="space-y-1.5">
+                <div className="flex items-center justify-between"><span className="font-semibold">Kararlılık</span><span className="font-mono-code">%{Math.round(voiceSettings.stability*100)}</span></div>
+                <input type="range" min="0" max="1" step="0.01" value={voiceSettings.stability}
+                  disabled={isGeneratingAudio||sampleBusy}
+                  onChange={e=>setVoiceSetting('stability',Number(e.target.value))}
+                  className="w-full accent-[#8B1E2D]" />
+                <p className="text-[10px] text-[#787670]">Yükseldikçe ton daha tutarlı ve kontrollü olur.</p>
+              </label>
+              <label className="space-y-1.5">
+                <div className="flex items-center justify-between"><span className="font-semibold">Benzerlik</span><span className="font-mono-code">%{Math.round(voiceSettings.similarity_boost*100)}</span></div>
+                <input type="range" min="0" max="1" step="0.01" value={voiceSettings.similarity_boost}
+                  disabled={isGeneratingAudio||sampleBusy}
+                  onChange={e=>setVoiceSetting('similarity_boost',Number(e.target.value))}
+                  className="w-full accent-[#8B1E2D]" />
+                <p className="text-[10px] text-[#787670]">Ses karakterinin kaynak sese ne kadar yakın tutulacağını belirler.</p>
+              </label>
+              <label className="space-y-1.5">
+                <div className="flex items-center justify-between"><span className="font-semibold">Stil vurgusu</span><span className="font-mono-code">%{Math.round(voiceSettings.style*100)}</span></div>
+                <input type="range" min="0" max="1" step="0.01" value={voiceSettings.style}
+                  disabled={isGeneratingAudio||sampleBusy}
+                  onChange={e=>setVoiceSetting('style',Number(e.target.value))}
+                  className="w-full accent-[#8B1E2D]" />
+                <p className="text-[10px] text-[#787670]">Yükseltmek ifadeyi artırabilir ama kararlılığı azaltabilir.</p>
+              </label>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-3 mt-3 border-t border-[#E5E4DC]">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={voiceSettings.use_speaker_boost}
+                  disabled={isGeneratingAudio||sampleBusy}
+                  onChange={e=>setVoiceSetting('use_speaker_boost',e.target.checked)} />
+                <span>Speaker Boost</span>
+              </label>
+              <button type="button" className="studio-secondary" disabled={isGeneratingAudio||sampleBusy} onClick={resetVoiceSettings}>Varsayılana dön</button>
+            </div>
+          </details>}
+          {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy} voiceSettings={voiceSettings}/>}
           {/* STEP 3: Seslendirme */}
           <div hidden={step!==2} className="space-y-3">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
