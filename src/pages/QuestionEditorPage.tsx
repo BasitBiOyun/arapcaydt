@@ -141,12 +141,10 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   };
 
   const finishRegionEditing = async () => {
-    if (saveStatus !== 'saved') {
-      const saved = await saveCurrentProject();
-      if (!saved) {
-        setAudioError('Düzenlemeler kaydedilemedi. Önizlemeye dönmeden önce tekrar deneyin.');
-        return;
-      }
+    const saved = await saveCurrentProject();
+    if (!saved) {
+      setAudioError('Düzenlemeler kaydedilemedi. Önizlemeye dönmeden önce tekrar deneyin.');
+      return;
     }
     setEditRegions(false);
     setPreviewMode('video');
