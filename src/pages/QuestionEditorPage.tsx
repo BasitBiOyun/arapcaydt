@@ -140,6 +140,16 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     if(!saved) {setAudioError('Kayıt tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');return;}
   };
 
+  const finishRegionEditing = async () => {
+    const saved = await saveCurrentProject();
+    if (!saved) {
+      setAudioError('Düzenlemeler kaydedilemedi. Önizlemeye dönmeden önce tekrar deneyin.');
+      return;
+    }
+    setEditRegions(false);
+    setPreviewMode('video');
+  };
+
   // Image File handlers
   const handleImageFile = (file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -680,17 +690,41 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
             </div>
           )}
           </div>
-          {hasImage && step===3 && editRegions && <details open className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-lg p-3 border">
-            <summary className="cursor-pointer font-semibold">Kutuları ve vurguları düzenle</summary>
+          {hasImage && step===3 && editRegions && <section className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-xl p-3 border border-[#D5D4CC] shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E5E4DC]">
+              <div>
+                <h3 className="font-semibold text-[#1C1917]">Görsel işaretleri düzenle</h3>
+                <p className="text-[11px] text-[#787670] mt-0.5">Kutuları, kelime vurgularını ve temel animasyonları doğrudan soru üzerinde düzenleyin.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span role="status" className={`text-[10px] px-2 py-1 rounded-full border font-semibold ${
+                  saveStatus==='saved'
+                    ? 'bg-[#EFF7F0] border-[#C5DAC8] text-[#1E562A]'
+                    : saveStatus==='error'
+                    ? 'bg-red-50 border-red-200 text-red-700'
+                    : 'bg-[#FFF7ED] border-[#F1D7AF] text-[#8A5A12]'
+                }`}>
+                  {({saved:'Kaydedildi',pending:'Değişiklikler bekliyor',saving:'Kaydediliyor…',error:'Kayıt hatası'})[saveStatus]}
+                </span>
+                <button type="button" onClick={()=>void finishRegionEditing()}
+                  className="px-3 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white text-[11px] font-semibold transition-colors cursor-pointer">
+                  Düzenlemeyi Bitir ve Önizlemeye Dön
+                </button>
+              </div>
+            </div>
             <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
               solutionText={currentProject.solutionText}
+              currentTime={currentPreviewTime}
+              audioDuration={activeAudioDuration || 15}
+              actions={currentProject.videoConfig.timelineActions || []}
+              onUpdateActions={actions=>updateCurrentProject({videoConfig:{...currentProject.videoConfig,timelineActions:actions}})}
               selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
               canUndo={regionHistory.length>0} onUndo={()=>{const previous=regionHistory.at(-1);if(previous){updateCurrentProject({videoConfig:previous});setRegionHistory(regionHistory.slice(0,-1));}}}
               onUpdateRegions={regions => {setRegionHistory(h=>[...h.slice(-29),currentProject.videoConfig]);updateCurrentProject({ videoConfig: applyRegionEdits(
                 currentProject.videoConfig, regions, currentProject.solutionText,
                 currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15
               ) });}} />
-          </details>}
+          </section>}
         </section>
 
         {/* RIGHT COLUMN: ~32% Progressive 4-Step Workflow Panel */}
@@ -1015,7 +1049,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
             )}
           </div>
 
-          {step===3&&<section className="space-y-3"><h2>İşaretleri kontrol edin</h2><p>Önizlemeyi dinleyin. Gerekirse kutuları taşıyın veya işaretin zamanını düzeltin.</p><div className="flex flex-wrap gap-2"><button className="studio-secondary" aria-pressed={editRegions} onClick={()=>setEditRegions(true)}>Kutuları düzelt</button><button className="studio-secondary" disabled={!videoGenerated} aria-pressed={!editRegions} onClick={()=>{setEditRegions(false);setPreviewMode('video');}}>Zamanlamayı düzelt</button></div>{!videoGenerated&&<p>Önce aşağıdaki düğmeyle mevcut sesinize uygun işaretleri hazırlayın.</p>}</section>}
+          {step===3&&<section className="space-y-3"><h2>İşaretleri kontrol edin</h2><p>Önizlemeyi dinleyin. Gerekirse görsel üzerindeki alanları veya işaretlerin zamanını düzeltin.</p><div className="flex flex-wrap gap-2"><button className="studio-secondary" aria-pressed={editRegions} onClick={()=>setEditRegions(true)}>Görseli düzenle</button><button className="studio-secondary" disabled={!videoGenerated} aria-pressed={!editRegions} onClick={()=>{setEditRegions(false);setPreviewMode('video');}}>Zamanlamayı düzenle</button></div>{!videoGenerated&&<p>Önce aşağıdaki düğmeyle mevcut sesinize uygun işaretleri hazırlayın.</p>}</section>}
           {/* STEP 4: Video Oluştur */}
           <div hidden={step<3} className="space-y-3 pt-2 border-t border-[#E5E4DC]">
             <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
