@@ -85,6 +85,7 @@ export function RegionEditorCanvas({
   const hasAction = (type:VideoActionType) => selectedActions.some(a => a.type === type);
   const beginQuickDraw = (type:RegionType) => {
     setNewType(type);
+    if (type !== 'keyword') setPhrase('');
     setDrawing(true);
     setGesture(null);
     setDraft(null);
