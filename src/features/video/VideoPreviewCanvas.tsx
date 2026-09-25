@@ -165,6 +165,9 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         <audio
           ref={audioRef}
           src={audioUrl}
+          onTimeUpdate={e => {
+            if (isPlaying) onSeek(e.currentTarget.currentTime);
+          }}
           onEnded={() => {
             if (isPlaying) onPlayPause();
             onSeek(0);
