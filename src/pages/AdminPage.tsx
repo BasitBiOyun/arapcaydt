@@ -4,7 +4,7 @@ import type {QuestionProject} from '../types';
 import {projectRepository} from '../features/projects/projectRepository';
 import {useProjects} from '../features/projects/ProjectContext';
 import React,{useCallback,useEffect,useState} from 'react';
-import {database} from '../services/supabase';
+import {authHeaders,database} from '../services/supabase';
 import {getCategoryLabel} from '../config/categories';
 interface Member {id:string;email:string;name:string;role:string;status:string;questions:number;mock_questions:number;mock_exams:number;voice_attempts:number;voices:number;characters:number;exports:number;}
 interface Overview {members:Member[];projects:Array<{id:string;owner_id:string;title:string;category:string;status:string;updated_at:string}>;activity:Array<{id:string;owner_id:string;kind:string;state:string;characters:number;created_at:string}>;}
@@ -21,10 +21,15 @@ export const AdminPage:React.FC=()=>{
  const change=async(id:string,status:string)=>{setBusy(true);setMessage('');try{const {error}=await database().rpc('set_member_status',{member_id:id,new_status:status});if(error)throw error;await load();}catch(e){setError(e instanceof Error?e.message:'Değişiklik kaydedilemedi.');}finally{setBusy(false);}};
  const promote=async(member:Member)=>{
   if(!window.confirm(`${member.name || member.email} kullanıcısına tam yönetici yetkisi verilsin mi? Yönetici tüm öğretmenleri ve projeleri görüntüleyebilir, üyelik erişimini yönetebilir.`))return;
-  setBusy(true);setMessage('');
+  setBusy(true);setMessage('');setError('');
   try{
-   const {error}=await database().rpc('set_member_role',{member_id:member.id,new_role:'admin'});
-   if(error)throw error;
+   const response=await fetch('/api/admin/set-role',{
+    method:'POST',
+    headers:{'Content-Type':'application/json',...await authHeaders()},
+    body:JSON.stringify({memberId:member.id,role:'admin'}),
+   });
+   const payload=await response.json().catch(()=>null);
+   if(!response.ok)throw new Error(payload?.error||`Yönetici yetkisi verilemedi (HTTP ${response.status}).`);
    setMessage(`${member.name || member.email} artık yönetici.`);
    await load();
   }catch(e){setError(e instanceof Error?e.message:'Yönetici yetkisi verilemedi.');}
@@ -42,6 +47,6 @@ export const AdminPage:React.FC=()=>{
    <div className="overflow-x-auto"><table className="w-full text-sm text-left"><thead className="bg-stone-50"><tr>{['Öğretmen','Rol','Durum','Sorular','Deneme / soru','Ses / deneme','İstenen karakter','Video dışa aktarım','Erişim'].map(t=><th key={t} className="p-3 whitespace-nowrap">{t}</th>)}</tr></thead><tbody>{data?.members.filter(m=>(m.name+' '+m.email).toLocaleLowerCase('tr').includes(filter.toLocaleLowerCase('tr'))).map(m=><tr key={m.id} className="border-t"><td className="p-3"><div>{m.name}</div><div className="text-xs text-stone-500">{m.email}</div></td><td className="p-3"><span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${m.role==='admin'?'bg-[#F8EEEE] text-[#8B1E2D]':'bg-stone-100 text-stone-600'}`}>{m.role==='admin'?'Yönetici':'Öğretmen'}</span></td><td className="p-3">{statuses[m.status]||m.status}</td><td className="p-3">{m.questions}</td><td className="p-3">{m.mock_exams} / {m.mock_questions}</td><td className="p-3">{m.voices} / {m.voice_attempts}</td><td className="p-3">{m.characters.toLocaleString('tr')}</td><td className="p-3">{m.exports}</td><td className="p-3">{m.role!=='admin'?<div className="flex flex-wrap gap-2 items-center"><select aria-label={`${m.email} erişimi`} disabled={busy} value={m.status} onChange={e=>void change(m.id,e.target.value)} className="border rounded p-2"><option value="pending">Onay bekliyor</option><option value="approved">Onayla</option><option value="blocked">Durdur</option></select><button type="button" disabled={busy} onClick={()=>void promote(m)} className="border border-[#8B1E2D] text-[#8B1E2D] hover:bg-[#F8EEEE] rounded px-3 py-2 font-semibold whitespace-nowrap">Yönetici Yap</button></div>:<span className="text-xs text-stone-500">Tam yetki</span>}</td></tr>)}</tbody></table></div>
    <p className="text-xs text-stone-500 p-4">Deneme sayısı, öğretmenin girdiği farklı deneme adlarıdır. Ses denemelerine başarısız istekler dahildir. Karakter sayısı fatura tutarı değildir. Video sayısı tarayıcının bildirdiği tamamlanan dışa aktarımlardır.</p></section>
   <section className="bg-white border rounded-xl p-4"><h3 className="font-semibold mb-3">Son 100 soru projesi</h3><div className="overflow-x-auto"><table className="w-full text-sm text-left"><thead><tr>{['Proje','Öğretmen','Tür','Durum','Güncelleme'].map(t=><th className="p-2" key={t}>{t}</th>)}</tr></thead><tbody>{data?.projects.map(p=><tr key={p.id} className="border-t"><td className="p-2"><button disabled={busy} className="text-[#8b1e2d] underline text-left" onClick={()=>void open(p.id)}>{p.title}</button></td><td className="p-2">{who(p.owner_id)}</td><td className="p-2">{getCategoryLabel(p.category)}</td><td className="p-2">{statuses[p.status]||p.status}</td><td className="p-2">{new Date(p.updated_at).toLocaleString('tr')}</td></tr>)}</tbody></table></div></section>
-  <section className="bg-white border rounded-xl p-4"><h3 className="font-semibold mb-3">Son 100 işlem</h3><ul className="divide-y text-sm">{data?.activity.map(a=><li key={a.id} className="py-2">{who(a.owner_id)} · {a.kind==='voice'?'Ses üretimi':a.kind==='video_export'?'Video dışa aktarımı':a.kind==='member_role'?'Rol değişikliği':'Üyelik'} · {({succeeded:'Tamamlandı',requested:'İstek gönderildi',failed:'Başarısız',uncertain:'Sonuç doğrulanamadı',client_reported:'Tarayıcıda tamamlandı',admin:'Yönetici yapıldı',teacher:'Öğretmen yapıldı',...statuses} as Record<string,string>)[a.state]||a.state} <span className="text-stone-400">{new Date(a.created_at).toLocaleString('tr')}</span></li>)}</ul></section>
+  <section className="bg-white border rounded-xl p-4"><h3 className="font-semibold mb-3">Son 100 işlem</h3><ul className="divide-y text-sm">{data?.activity.map(a=><li key={a.id} className="py-2">{who(a.owner_id)} · {a.kind==='voice'?'Ses üretimi':a.kind==='video_export'?'Video dışa aktarımı':a.kind==='member_role'?'Rol değişikliği':'Üyelik'} · {({succeeded:'Tamamlandı',requested:'İstek gönderildi',failed:'Başarısız',uncertain:'Sonuç doğrulanamadı',client_reported:'Tarayıcıda tamamlandı',role_admin:'Yönetici yapıldı',...statuses} as Record<string,string>)[a.state]||a.state} <span className="text-stone-400">{new Date(a.created_at).toLocaleString('tr')}</span></li>)}</ul></section>
  </section>;
 };
