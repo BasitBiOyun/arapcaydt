@@ -75,9 +75,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     }
   }, [voiceSettings]);
 
-  const setVoiceSetting = <K extends keyof VoiceSettingsConfig>(key: K, value: VoiceSettingsConfig[K]) => {
+  function setVoiceSetting<K extends keyof VoiceSettingsConfig>(key: K, value: VoiceSettingsConfig[K]) {
     setVoiceSettings(previous => ({ ...previous, [key]: value }));
-  };
+  }
   const resetVoiceSettings = () => setVoiceSettings({ ...STANDARD_VOICE_CONFIG.voiceSettings });
 
   // Audio preview playback in Step 3
