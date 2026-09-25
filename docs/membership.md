@@ -1,6 +1,6 @@
 # Teacher membership
 
-Supabase Auth handles email/password signup, confirmation and recovery. New verified teachers remain pending until the owner approves them. The fixed bootstrap admin email is yunusemreyilmaz93@gmail.com; signup metadata never controls roles. No demo auth fallback exists.
+Supabase Auth handles email/password signup, confirmation and recovery. New verified teachers remain pending until an administrator approves them. The fixed bootstrap admin email is yunusemreyilmaz93@gmail.com and provides the initial owner account. Existing administrators can promote any email-confirmed member to administrator from the management panel. Signup metadata never controls roles. No demo auth fallback exists.
 
 ## Deployment
 
@@ -12,7 +12,7 @@ Supabase Auth handles email/password signup, confirmation and recovery. New veri
 
 ## Authorization and storage
 
-All database tables have RLS. Teachers only read/write their own projects. Admin reads all project summaries and activity; only the status RPC can approve or block teachers. Disabling a teacher prevents new database/storage access and paid voice requests. Already-issued private signed asset links expire after six hours.
+All database tables have RLS. Teachers only read/write their own projects. Administrators read all project summaries and activity, can approve or block teachers, and can promote an email-confirmed member to administrator through the authenticated server API. Role elevation is performed only with the server-side service role after the caller is verified as an approved administrator. Disabling a teacher prevents new database/storage access and paid voice requests. Already-issued private signed asset links expire after six hours.
 
 Images/audio are immutable private Storage objects, referenced by permanent paths in project JSON. Signed URLs are reconstructed when opening projects. Redundant base64 is stripped on save. MP4 rendering remains entirely in the browser; generated videos download to the teacher rather than consuming cloud render/storage quota.
 
