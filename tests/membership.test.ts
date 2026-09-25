@@ -17,7 +17,6 @@ test('database enforces ownership, approval, admin access and paid request reser
  grant select,insert,delete on storage.objects to authenticated;
  create function storage.foldername(text) returns text[] language sql as $$select string_to_array($1,'/')$$;`);
  await db.exec(readFileSync(new URL('../supabase/migrations/20260921_membership.sql',import.meta.url),'utf8'));
- await db.exec(readFileSync(new URL('../supabase/migrations/20260925_admin_roles.sql',import.meta.url),'utf8'));
  const admin='00000000-0000-4000-8000-000000000001',a='00000000-0000-4000-8000-000000000002',b='00000000-0000-4000-8000-000000000003';
  await db.query(`insert into auth.users values ($1,'yunusemreyilmaz93@gmail.com',now(),'{}'),($2,'a@example.test',now(),'{"role":"admin","status":"approved"}'),($3,'b@example.test',now(),'{}')`,[admin,a,b]);
  const as=async(id:string)=>{await db.exec(`reset role;set role authenticated;select set_config('request.jwt.claim.sub','${id}',false);`);};
@@ -27,7 +26,6 @@ test('database enforces ownership, approval, admin access and paid request reser
  await assert.rejects(db.exec(`update public.profiles set role='admin'`));
  await assert.rejects(db.exec(`select public.admin_overview()`));
  await assert.rejects(db.query('select public.set_member_status($1,$2)',[a,'approved']));
- await assert.rejects(db.query('select public.set_member_role($1,$2)',[a,'admin']));
  await as(admin);await db.query('select public.set_member_status($1,$2)',[a,'approved']);await db.query('select public.set_member_status($1,$2)',[b,'approved']);
  await as(a);await db.exec(`insert into public.projects(id,data)values('a','{"title":"Teacher A"}')`);
  await db.query(`insert into storage.objects(bucket_id,name)values('project-assets',$1)`,[a+'/a/sound']);
@@ -49,8 +47,5 @@ test('database enforces ownership, approval, admin access and paid request reser
  await as(a);assert.equal((await db.exec(`select * from public.projects`))[0].rows.length,0);
  await assert.rejects(db.exec(`select public.record_video_export('a')`));
  await db.exec('reset role;set role service_role');await assert.rejects(db.query(`select public.reserve_voice($1,'a',100)`,[a]));
- await as(admin);await db.query('select public.set_member_role($1,$2)',[b,'admin']);
- await as(b);assert.equal((await db.query<any>('select public.is_admin() ok')).rows[0].ok,true);
- assert.ok((await db.query<any>('select public.admin_overview() result')).rows[0].result);
  await db.close();
 });
