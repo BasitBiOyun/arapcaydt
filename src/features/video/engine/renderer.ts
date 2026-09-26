@@ -194,7 +194,8 @@ function markBadge(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius
   ctx.translate(cx, cy); ctx.scale(pop, pop);
   ctx.shadowColor = 'rgba(15,23,42,.28)'; ctx.shadowBlur = 10 * scale; ctx.shadowOffsetY = 3 * scale;
   ctx.fillStyle = color; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.shadowColor = 'transparent';
+  // The disc's drop shadow must not leak into the glyph: a leftover offset stamps a ghost copy of the X/✓ below it.
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
   ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2.5 * scale; ctx.stroke();
   const stroke = Math.min(1, Math.max(0, (age - .08) / .3));
   if (kind === 'reject') drawAnimatedCross(ctx, 0, 0, radius * .5, stroke, '#FFFFFF', 4.5 * scale);

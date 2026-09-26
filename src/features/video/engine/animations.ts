@@ -47,6 +47,8 @@ export function drawAnimatedCross(
   // White halo / drop shadow for contrast against question text
   ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
   ctx.shadowBlur = color === '#FFFFFF' ? 0 : 4;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
 
   const halfSize = radius * 0.9;
   const p1 = Math.min(1, progress * 2); // first slash (top-left to bottom-right)
@@ -104,6 +106,8 @@ export function drawAnimatedCheck(
 
   ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
   ctx.shadowBlur = color === '#FFFFFF' ? 0 : 5;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
 
   const startX = centerX - radius * 0.75;
   const startY = centerY - radius * 0.05;

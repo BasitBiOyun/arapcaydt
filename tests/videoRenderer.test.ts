@@ -57,3 +57,14 @@ test('marks never land on a neighbouring option (five options in one row)',()=>{
   const cross=markerGeometry(b,1920,1,false,undefined,[a]);
   assert.ok(cross.x>b.x+b.width, 'no room on the left, so the cross moves right');
 });
+test('X / check glyphs are drawn once: no drop-shadow offset leaks into the white strokes',async()=>{
+  const {renderQuestionVideoFrame}=await import('../src/features/video/engine/renderer');
+  const state:Record<string,unknown>={};const leaks:string[]=[];
+  const ctx:any=new Proxy(state,{get:(t,k)=>k in t?t[k as string]:k==='measureText'?()=>({width:10}):k==='stroke'?()=>{
+      if(t.strokeStyle==='#FFFFFF'&&t.shadowColor!=='transparent'&&((t.shadowOffsetY as number)||(t.shadowOffsetX as number)))leaks.push(String(t.shadowOffsetY));
+    }:()=>{},set:(t,k,v)=>{t[k as string]=v;return true;}});
+  const regions=[{id:'option-a',type:'option-a',label:'A',x:.3,y:.4,width:.1,height:.06},{id:'option-b',type:'option-b',label:'B',x:.3,y:.5,width:.1,height:.06}] as any;
+  const actions:VideoAction[]=[{id:'r',type:'reject',targetRegionId:'option-a',start:0,duration:9},{id:'c',type:'correct',targetRegionId:'option-b',start:0,duration:9}];
+  renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,2,{width:1920,height:1080,aspectRatio:'16:9'});
+  assert.deepEqual(leaks,[]);
+});
