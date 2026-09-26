@@ -9,7 +9,7 @@ test('emitted ElevenLabs handlers load in native Node ESM and reject anonymous r
  const root=resolve('verification-output');await mkdir(root,{recursive:true});
  const folder=await mkdtemp(join(root,'server-runtime-'));
  try {
-  for(const file of ['server/auth.ts','api/elevenlabs/status.ts','api/elevenlabs/voices.ts','api/elevenlabs/generate.ts']){
+  for(const file of ['server/auth.ts','api/elevenlabs/status.ts','api/elevenlabs/voices.ts','api/elevenlabs/generate.ts','api/elevenlabs/align.ts']){
    const output=join(folder,file.replace(/\.ts$/,'.js'));
    await mkdir(resolve(output,'..'),{recursive:true});
    const source=await readFile(file,'utf8');
@@ -19,11 +19,11 @@ test('emitted ElevenLabs handlers load in native Node ESM and reject anonymous r
     import assert from 'node:assert/strict';
     process.env.SUPABASE_URL='https://example.supabase.co';
     process.env.SUPABASE_ANON_KEY='test-public-key';
-    for(const name of ['status','voices','generate']){
+    for(const name of ['status','voices','generate','align']){
       const {default:handler}=await import('./api/elevenlabs/'+name+'.js');
       let status;
       const res={status(code){status=code;return this;},json(){return this;},setHeader(){}};
-      await handler({method:name==='generate'?'POST':'GET',headers:{}},res);
+      await handler({method:['generate','align'].includes(name)?'POST':'GET',headers:{}},res);
       assert.equal(status,401,name+' must load and require sign-in');
     }
   `);

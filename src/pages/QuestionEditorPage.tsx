@@ -1,7 +1,7 @@
 import {steps,resumeStep,checkNarration} from '../features/question-editor/workflow';
 import {VoiceSample} from '../features/question-editor/VoiceSample';
+import {CURRENT_PIPELINE_VERSION, type ReadinessAction} from '../features/question-editor/readiness';
 import { database } from '../services/supabase';
-import { applyRegionEdits } from '../services/analysis/regionEdits';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   QuestionProject, VideoConfig,
@@ -12,31 +12,25 @@ import { useProjects } from '../features/projects/ProjectContext';
 import { VideoGenerationModal } from '../features/video/VideoGenerationModal';
 import { LocalPipelineResult } from '../services/pipeline/localVideoPipeline';
 import { localWhisperService } from '../services/whisper/localWhisperService';
+import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
+import { readDataUrl, readAudioDuration } from '../services/narration/browserMedia';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { STANDARD_VOICE_CONFIG, VoiceSettingsConfig } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
-import { VideoPreviewCanvas } from '../features/video/VideoPreviewCanvas';
-import { videoExporter } from '../features/video/engine/exporter';
-import { renderQuestionVideoFrame } from '../features/video/engine/renderer';
-import { RegionEditorCanvas } from '../features/question-editor/RegionEditorCanvas';
-import { EditableTimelineUI } from '../features/video/EditableTimelineUI';
-import { 
-  ArrowLeft, 
-  Check, 
-  UploadSimple, 
-  Image as ImageIcon, 
-  Play, 
-  Pause, 
-  ArrowsClockwise, 
-  CheckCircle, 
-  CircleNotch, 
-  Sparkle, 
-  DownloadSimple, 
-  Trash,
-  WarningCircle,
-  FilmStrip,
-  Microphone
-} from '@phosphor-icons/react';
+import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
+import { ExportStep } from '../features/question-editor/steps/ExportStep';
+import { AudioStep } from '../features/question-editor/steps/AudioStep';
+import { VoiceSettingsPanel } from '../features/question-editor/steps/VoiceSettingsPanel';
+import { NarrationCheck } from '../features/question-editor/steps/NarrationCheck';
+import { SolutionStep } from '../features/question-editor/steps/SolutionStep';
+import { EditorStage } from '../features/question-editor/steps/EditorStage';
+import { ImageStep } from '../features/question-editor/steps/ImageStep';
+import { ArrowLeft, Check } from '@phosphor-icons/react';
+
+function hasAnimationPlan(project: QuestionProject | null | undefined) {
+  return Boolean(project && project.videoReady !== false &&
+    (project.videoReady || (project.videoConfig.timelineActions && project.videoConfig.timelineActions.length > 0)));
+}
 
 interface QuestionEditorPageProps {
   onBack: () => void;
@@ -89,9 +83,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
   // Video generation & status
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [videoGenerated, setVideoGenerated] = useState(false);
+  const [videoGenerated, setVideoGenerated] = useState(() => hasAnimationPlan(currentProject));
   const [videoButtonWarning, setVideoButtonWarning] = useState<string | null>(null);
-  const [previewMode, setPreviewMode] = useState<'video' | 'image'>('image');
+  const [previewMode, setPreviewMode] = useState<'video' | 'image'>(() => hasAnimationPlan(currentProject) ? 'video' : 'image');
 
   // Video preview player state (HTML5 Canvas + Audio Sync)
   const [currentPreviewTime, setCurrentPreviewTime] = useState(0);
@@ -106,18 +100,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
   // Determine if video already exists for this project
   useEffect(() => {
-    if (
-      currentProject && currentProject.videoReady !== false &&
-      (currentProject.videoReady ||
-        (currentProject.videoConfig.timelineActions &&
-          currentProject.videoConfig.timelineActions.length > 0))
-    ) {
-      setVideoGenerated(true);
-      setPreviewMode('video');
-    } else {
-      setVideoGenerated(false);
-      setPreviewMode('image');
-    }
+    const ready = hasAnimationPlan(currentProject);
+    setVideoGenerated(ready);
+    setPreviewMode(ready ? 'video' : 'image');
   }, [currentProject?.id]);
 
   // Audio playback updates
@@ -278,7 +263,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     }
   };
 
-  // Handle Uploaded MP3 file with local Whisper speech-to-text
+  // Uploaded MP3: align the written solution to the audio; Whisper stays as fallback.
   const handleUploadMp3File = async (file: File) => {
     if (!file.name.toLowerCase().endsWith('.mp3') && !file.type.includes('audio')) {
       setAudioError('Lütfen geçerli bir .mp3 dosyası seçin.');
@@ -287,88 +272,31 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setAudioError(null);
     setIsTranscribingMp3(true);
     setTranscribeProgress({ progress: 10, message: 'Ses dosyası taranıyor...' });
-
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      // Transcribe locally in browser with Whisper - zero external AI API calls!
-      const transcription = await localWhisperService.transcribeAudioLocally(
-        arrayBuffer,
-        (p) => {
-          setTranscribeProgress({ progress: p.progress, message: p.message });
-        }
-      );
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const dataUrl = e.target?.result as string;
-        const base64Data = dataUrl.split(',')[1] || dataUrl;
-
-        const uploadedSource: NarrationSource = {
-          type: 'uploaded',
-          audioUrl: dataUrl,
-          audioBase64: base64Data,
-          duration: transcription.duration,
-          fileName: file.name,
-          words: transcription.words, // Normalized word-level timestamps!
-          isApproved: false,
-          generatedAt: new Date().toISOString(),
-        };
-
-        const compatNarration: AudioNarration = {
-          audioUrl: dataUrl,
-          audioBase64: base64Data,
-          duration: transcription.duration,
-          voiceId: 'local-whisper',
-          voiceName: file.name,
-          modelId: 'whisper-tiny-local',
-          generatedAt: new Date().toISOString(),
-          isApproved: false,
-          mode: 'live',
-          words: transcription.words,
-        };
-
-        updateCurrentProject({
-          narrationSource: uploadedSource,
-          audioNarration: compatNarration,
-          audioApproved: false,
-          videoReady: false,
-        });
-        setVideoGenerated(false);
-        setIsTranscribingMp3(false);
-        setTranscribeProgress(null);
-      };
-      reader.readAsDataURL(file);
-    } catch (err: any) {
-      console.warn('Local Whisper transcription notice:', err);
-      // Fallback: still load audio file so teacher is never blocked
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const dataUrl = e.target?.result as string;
-        const tempAudio = new Audio();
-        tempAudio.src = dataUrl;
-        tempAudio.onloadedmetadata = () => {
-          const duration = tempAudio.duration || 15;
-          const uploadedSource: NarrationSource = {
-            type: 'uploaded',
-            audioUrl: dataUrl,
-            audioBase64: dataUrl.split(',')[1] || '',
-            duration: Math.round(duration * 100) / 100,
-            fileName: file.name,
-            words: [],
-            isApproved: false,
-            generatedAt: new Date().toISOString(),
-          };
-          updateCurrentProject({
-            narrationSource: uploadedSource,
-            audioApproved: false,
-            videoReady: false,
-          });
-          setVideoGenerated(false);
-          setIsTranscribingMp3(false);
-          setTranscribeProgress(null);
-        };
-      };
-      reader.readAsDataURL(file);
+      const text = currentProject.solutionText.trim();
+      // The server reserves usage against the saved project, so save before aligning.
+      const canAlign = text.length > 0 && text.length <= 5000 && await saveCurrentProject();
+      const result = await prepareUploadedNarration(file, {
+        readDataUrl, readDuration: readAudioDuration,
+        align: canAlign ? (audioBase64, mimeType) =>
+          elevenlabsService.alignUploadedNarration({ projectId: currentProject.id, text, audioBase64, mimeType }) : undefined,
+        transcribe: async upload => localWhisperService.transcribeAudioLocally(await upload.arrayBuffer(),
+          p => setTranscribeProgress({ progress: p.progress, message: p.message })),
+        onProgress: (progress, message) => setTranscribeProgress({ progress, message }),
+      });
+      updateCurrentProject({
+        narrationSource: result.source,
+        audioNarration: result.compat,
+        audioApproved: false,
+        videoReady: false,
+      });
+      if (result.notice) setAudioError(result.notice);
+      setVideoGenerated(false);
+    } catch (err) {
+      setAudioError(err instanceof Error ? err.message : 'Ses dosyası okunamadı.');
+    } finally {
+      setIsTranscribingMp3(false);
+      setTranscribeProgress(null);
     }
   };
 
@@ -454,7 +382,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         timelineActions: result.actions,
         captions: result.captions,
         timingQuality: result.timingQuality,
-        pipelineVersion: 5,
+        pipelineVersion: CURRENT_PIPELINE_VERSION,
         warnings: result.warnings,
       },
       ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
@@ -478,60 +406,13 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setExportPercent(5);
 
     try {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      await new Promise<void>((resolve, reject) => {
-        img.onload = () => resolve();
-        img.onerror = () => reject(new Error('Soru görseli yüklenemedi.'));
-        img.src = currentProject.imageUrl;
-      });
-
-      const duration = currentProject.narrationSource?.duration || currentProject.audioNarration?.duration || 15;
-      const audioUrl = activeAudioUrl;
-
-      const videoBlob = await videoExporter.exportVideo(
-        (ctx, time) => {
-          renderQuestionVideoFrame(
-            ctx,
-            ctx.canvas.width,
-            ctx.canvas.height,
-            img,
-            currentProject.videoConfig.regions,
-            currentProject.videoConfig.timelineActions,
-            time,
-            {
-              width: 1920,
-              height: 1080,
-              aspectRatio: currentProject.videoConfig.aspectRatio || '16:9',
-              showWatermark: currentProject.videoConfig.showWatermark,
-              teacherTag: currentProject.videoConfig.teacherTag || 'Arapça YDT • Video Stüdyosu',
-              captions: currentProject.videoConfig.captions,
-              showCaptions: currentProject.videoConfig.showCaptions,
-              captionY: currentProject.videoConfig.captionY,
-              duration,
-            }
-          );
-        },
-        audioUrl,
-        duration,
-        {
-          resolution: '1080p',
-          fps: 30,
-          format: 'mp4',
-          aspectRatio: (currentProject.videoConfig?.aspectRatio || '16:9') as '16:9' | '9:16',
-        },
-        (progress) => {
-          setExportPercent(progress.percent);
-        },
-        exportAbortRef.current.signal
-      );
+      const videoBlob = await exportProjectVideo(currentProject, setExportPercent, exportAbortRef.current.signal);
 
       // Download file to teacher's computer
       const blobUrl = URL.createObjectURL(videoBlob);
       const a = document.createElement('a');
       a.href = blobUrl;
-      const cleanTitle = (currentProject.title || 'ydt_soru_cozumu').replace(/[^a-zA-Z0-9_\u0600-\u06FF\u00C0-\u017F-]/g, '_');
-      a.download = `${cleanTitle}_1080p.mp4`;
+      a.download = videoFileName(currentProject);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -571,6 +452,15 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       return;
     }
     setIsVideoModalOpen(true);
+  };
+
+  const handleReadinessAction = (action: ReadinessAction) => {
+    if (action === 'regenerate') { setIsVideoModalOpen(true); return; }
+    if (action === 'text') { go(1); return; }
+    setStep(3);
+    setIsPlayingPreview(false);
+    setEditRegions(action === 'regions');
+    if (action === 'timing') setPreviewMode('video');
   };
 
   const check=checkNarration(currentProject.solutionText,currentProject.correctAnswer);
@@ -623,588 +513,20 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
       <div className="editor-columns flex-1 flex min-h-0 overflow-hidden">
         {/* LEFT COLUMN: ~68% Large Visual / Video Preview */}
         <section className="editor-stage flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 pt-16 flex flex-col items-center overflow-y-auto relative">
-          {/* Preview Mode Switcher (if video generated and image exists) */}
-          {videoGenerated && hasImage && (
-            <div className="absolute top-4 left-6 z-20 flex items-center gap-1 bg-white/90 backdrop-blur-xs p-1 rounded-lg border border-[#E5E4DC] shadow-xs">
-              <button
-                type="button"
-                onClick={() => setPreviewMode('video')}
-                className={`px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  previewMode === 'video'
-                    ? 'bg-[#8B1E2D] text-white shadow-xs'
-                    : 'text-[#55544F] hover:text-[#1C1917]'
-                }`}
-              >
-                <FilmStrip size={14} weight="bold" />
-                <span>Video Önizleme</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setPreviewMode('image')}
-                className={`px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  previewMode === 'image'
-                    ? 'bg-[#8B1E2D] text-white shadow-xs'
-                    : 'text-[#55544F] hover:text-[#1C1917]'
-                }`}
-              >
-                <ImageIcon size={14} weight="bold" />
-                <span>Soru Görseli</span>
-              </button>
-            </div>
-          )}
-
-          <div className="preview-content" hidden={step===3&&editRegions}>
-          {previewMode === 'video' && videoGenerated ? (
-            /* Generated Video Player powered by local Canvas engine */
-            <div className="w-full max-w-4xl flex flex-col gap-4 p-4">
-              <VideoPreviewCanvas
-                imageUrl={currentProject.imageUrl}
-                regions={currentProject.videoConfig.regions}
-                actions={currentProject.videoConfig.timelineActions}
-                currentTime={currentPreviewTime}
-                duration={activeAudioDuration || 15}
-                isPlaying={isPlayingPreview}
-                onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)}
-                onSeek={(t) => setCurrentPreviewTime(t)}
-                videoConfig={currentProject.videoConfig}
-                audioUrl={activeAudioUrl}
-              />
-              <div className="flex gap-2 items-center text-xs">
-                <label className="flex gap-2 items-center">
-                <input type="checkbox" checked={currentProject.videoConfig.showCaptions !== false}
-                  onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, showCaptions: e.target.checked } })} />
-                Altyazıları göster
-                </label>
-                <input aria-label="Altyazı yüksekliği" type="range" min="0.08" max="0.93" step="0.01"
-                  value={currentProject.videoConfig.captionY ?? .85}
-                  onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, captionY: Number(e.target.value) } })} />
-                Altyazı konumu
-              </div>
-
-              <details open={step===3&&!editRegions} hidden={step!==3} className="w-full text-xs bg-white rounded-lg p-3 border">
-                <summary className="cursor-pointer font-semibold">İşaretlerin zamanlamasını düzenle</summary>
-                <EditableTimelineUI duration={activeAudioDuration} currentTime={currentPreviewTime} isPlaying={isPlayingPreview}
-                  onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} onSeek={setCurrentPreviewTime}
-                  regions={currentProject.videoConfig.regions || []} actions={currentProject.videoConfig.timelineActions || []}
-                  onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
-                  onRequestAutoGenerate={() => setIsVideoModalOpen(true)} />
-              </details>
-            </div>
-          ) : hasImage ? (
-            /* Large, high-clarity question image preview */
-            <div className="w-full flex items-center justify-center">
-              <img
-                src={currentProject.imageUrl}
-                alt="Soru Görseli"
-                className="max-h-[calc(100vh-16rem)] max-w-full object-contain rounded-lg border border-[#E5E4DC] bg-white shadow-xs p-2"
-              />
-            </div>
-          ) : (
-            /* Initial placeholder */
-            <div className="flex flex-col items-center justify-center text-center p-8 max-w-md text-[#8C8A82]">
-              <div className="w-16 h-16 rounded-full bg-[#FAF9F5] border border-[#D5D4CC] flex items-center justify-center mb-3 text-[#A8A69E]">
-                <ImageIcon size={32} />
-              </div>
-              <p className="text-xs font-medium text-[#55544F]">
-                Soru görseli henüz yüklenmedi
-              </p>
-              <p className="text-[11px] text-[#8C8A82] mt-1">
-                Sağdaki panelden görseli yüklediğinizde burada net ve büyük boyutta görüntülenecektir.
-              </p>
-            </div>
-          )}
-          </div>
-          {hasImage && step===3 && editRegions && <section className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-xl p-3 border border-[#D5D4CC] shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E5E4DC]">
-              <div>
-                <h3 className="font-semibold text-[#1C1917]">Görsel işaretleri düzenle</h3>
-                <p className="text-[11px] text-[#787670] mt-0.5">Kutuları, kelime vurgularını ve temel animasyonları doğrudan soru üzerinde düzenleyin.</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span role="status" className={`text-[10px] px-2 py-1 rounded-full border font-semibold ${
-                  saveStatus==='saved'
-                    ? 'bg-[#EFF7F0] border-[#C5DAC8] text-[#1E562A]'
-                    : saveStatus==='error'
-                    ? 'bg-red-50 border-red-200 text-red-700'
-                    : 'bg-[#FFF7ED] border-[#F1D7AF] text-[#8A5A12]'
-                }`}>
-                  {({saved:'Kaydedildi',pending:'Değişiklikler bekliyor',saving:'Kaydediliyor…',error:'Kayıt hatası'})[saveStatus]}
-                </span>
-                <button type="button" onClick={()=>void finishRegionEditing()}
-                  className="px-3 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white text-[11px] font-semibold transition-colors cursor-pointer">
-                  Düzenlemeyi Bitir ve Önizlemeye Dön
-                </button>
-              </div>
-            </div>
-            <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
-              solutionText={currentProject.solutionText}
-              currentTime={currentPreviewTime}
-              audioDuration={activeAudioDuration || 15}
-              actions={currentProject.videoConfig.timelineActions || []}
-              onUpdateActions={actions=>updateCurrentProject({videoConfig:{...currentProject.videoConfig,timelineActions:actions}})}
-              selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
-              canUndo={regionHistory.length>0} onUndo={()=>{const previous=regionHistory.at(-1);if(previous){updateCurrentProject({videoConfig:previous});setRegionHistory(regionHistory.slice(0,-1));}}}
-              onUpdateRegions={regions => {setRegionHistory(h=>[...h.slice(-29),currentProject.videoConfig]);updateCurrentProject({ videoConfig: applyRegionEdits(
-                currentProject.videoConfig, regions, currentProject.solutionText,
-                currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15
-              ) });}} />
-          </section>}
+          <EditorStage videoGenerated={videoGenerated} hasImage={hasImage} previewMode={previewMode} setPreviewMode={setPreviewMode} step={step} editRegions={editRegions} currentProject={currentProject} updateCurrentProject={updateCurrentProject} currentPreviewTime={currentPreviewTime} setCurrentPreviewTime={setCurrentPreviewTime} isPlayingPreview={isPlayingPreview} setIsPlayingPreview={setIsPlayingPreview} activeAudioDuration={activeAudioDuration} activeAudioUrl={activeAudioUrl} setIsVideoModalOpen={setIsVideoModalOpen} saveStatus={saveStatus} finishRegionEditing={finishRegionEditing} selectedRegionId={selectedRegionId} setSelectedRegionId={setSelectedRegionId} regionHistory={regionHistory} setRegionHistory={setRegionHistory} />
         </section>
 
         {/* RIGHT COLUMN: ~32% Progressive 4-Step Workflow Panel */}
         <aside className="editor-panel flex-[32] h-full bg-white overflow-y-auto p-6 flex flex-col space-y-6">
           <details hidden={step>1} className="border rounded-lg p-3 text-sm"><summary className="cursor-pointer font-semibold">Proje bilgileri</summary><div className="space-y-3 pt-3"><label className="block">Proje adı<input value={currentProject.title} onChange={e=>updateCurrentProject({title:e.target.value})} className="block w-full border rounded p-2"/></label><label className="block">Kategori<select className="block w-full border rounded p-2" value={currentProject.category} onChange={e=>updateCurrentProject({category:e.target.value})}>{QUESTION_CATEGORIES.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select></label><label className="block">Sınav / yıl<input value={currentProject.examYear} onChange={e=>updateCurrentProject({examYear:e.target.value})} className="block w-full border rounded p-2"/></label>{<label className="block">Koleksiyon / deneme adı<input placeholder="Örnek: Eylül Denemesi 1" value={currentProject.examName||''} onChange={e=>updateCurrentProject({examName:e.target.value})} className="block w-full border rounded p-2"/></label>}</div></details>
-          {/* STEP 1: Soru Görseli */}
-          <div hidden={step!==0} className="space-y-2.5">
-            <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              1. Soru Görseli
-            </h2>
-
-            {hasImage ? (
-              <div className="p-3 rounded-lg border border-[#E5E4DC] bg-[#FAF9F5] flex items-center justify-between">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-10 h-10 rounded border border-[#D5D4CC] overflow-hidden bg-white shrink-0">
-                    <img
-                      src={currentProject.imageUrl}
-                      alt="Thumbnail"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-[#15803D]">
-                      <CheckCircle size={15} weight="fill" />
-                      <span className="truncate">{currentProject.imageFileName || 'Soru Görseli'}</span>
-                    </div>
-                    <div className="text-[11px] text-[#787670]">
-                      YDT Soru Görseli
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <label className="px-2.5 py-1 text-[11px] font-semibold text-[#55544F] hover:text-[#1C1917] bg-white border border-[#D5D4CC] rounded hover:bg-[#F0EFEA] cursor-pointer transition-colors">
-                    Görseli Değiştir
-                    <input
-                      ref={replaceImageInputRef}
-                      type="file"
-                      accept="image/png,image/jpeg,image/webp"
-                      className="hidden"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) handleImageFile(e.target.files[0]);
-                      }}
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    onClick={handleDeleteImage}
-                    title="Görseli Sil"
-                    className="p-1.5 text-[#787670] hover:text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition-colors cursor-pointer"
-                  >
-                    <Trash size={14} />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <label
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  if (e.dataTransfer.files?.[0]) handleImageFile(e.dataTransfer.files[0]);
-                }}
-                className="w-full py-8 border-2 border-dashed border-[#D5D4CC] hover:border-[#8B1E2D] rounded-xl flex flex-col items-center justify-center cursor-pointer bg-[#FAF9F5] hover:bg-white transition-all text-center p-4 group"
-              >
-                <div className="w-10 h-10 rounded-full bg-white border border-[#D5D4CC] group-hover:border-[#8B1E2D] flex items-center justify-center text-[#787670] group-hover:text-[#8B1E2D] mb-2 transition-colors">
-                  <UploadSimple size={20} />
-                </div>
-                <span className="text-xs font-semibold text-[#1C1917]">
-                  PNG veya JPG yükle
-                </span>
-                <span className="text-[11px] text-[#787670] mt-0.5">
-                  Soru görselini sürükleyin veya tıklayın
-                </span>
-                <input
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files?.[0]) handleImageFile(e.target.files[0]);
-                  }}
-                />
-              </label>
-            )}
-          </div>
-
-          {/* STEP 2: Çözüm Metni */}
-          <div hidden={step!==1} className="space-y-2.5">
-            <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              Çözüm metnini hazırlayın
-            </h2>
-            <label className="flex items-center gap-3">Doğru cevap<select className="border rounded px-3 py-2" value={currentProject.correctAnswer} onChange={e=>{updateCurrentProject({correctAnswer:e.target.value as QuestionProject['correctAnswer'],videoReady:false});setVideoGenerated(false);}}>{['A','B','C','D','E'].map(l=><option key={l}>{l}</option>)}</select></label>
-            <textarea
-              aria-label="Çözüm metni"
-              disabled={isGeneratingAudio || sampleBusy}
-              value={currentProject.solutionText}
-              onChange={(e) => {
-                updateCurrentProject({
-                  solutionText: e.target.value,
-                  audioApproved: false,
-                  narrationSource: currentProject.narrationSource ? {...currentProject.narrationSource,isApproved:false} : undefined,
-                  audioNarration: currentProject.audioNarration ? {...currentProject.audioNarration,isApproved:false} : undefined,
-                  videoReady: false,
-                });
-                setVideoGenerated(false);
-              }}
-              placeholder="Sorunun çözümünü buraya yazın..."
-              rows={12}
-              dir="auto"
-              className="w-full p-3.5 rounded-lg border border-[#D5D4CC] focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] text-xs text-[#1C1917] leading-relaxed bg-white outline-none resize-y placeholder:text-[#A8A69E]"
-            />
-          </div>
-
-          {(step===1||step===2)&&<section className="narration-check" aria-label="Ses ön kontrolü"><strong>{check.characters.toLocaleString('tr')} / 5.000 karakter</strong><p>Doğru cevap: {currentProject.correctAnswer}. Ses üretimi ElevenLabs kotasından tüketir.</p>{check.characters>5000&&<p role="alert">Tek ses için metni 5.000 karakterin altına kısaltın.</p>}{check.missing.length>0&&<p>Metinde şık başlığı bulunamadı: {check.missing.join(', ')}. Açıklamalarınızı kontrol edin.</p>}{check.mismatch&&<p role="alert">Metin {check.mismatch} diyor; seçili cevap {currentProject.correctAnswer}. Ses üretmeden önce düzeltin.</p>}</section>}
-          {step===2&&<details className="rounded-xl border border-[#E5E4DC] bg-[#FAF9F5] p-3 text-xs">
-            <summary className="cursor-pointer font-semibold text-[#1C1917] flex items-center justify-between gap-3">
-              <span>Ses ayarları</span>
-              <span className="text-[10px] font-normal text-[#787670]">Hız {voiceSettings.speed.toFixed(2)} · Kararlılık %{Math.round(voiceSettings.stability*100)}</span>
-            </summary>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
-              <label className="space-y-1.5">
-                <div className="flex items-center justify-between"><span className="font-semibold">Hız / tempo</span><span className="font-mono-code">{voiceSettings.speed.toFixed(2)}x</span></div>
-                <input type="range" min="0.7" max="1.2" step="0.01" value={voiceSettings.speed}
-                  disabled={isGeneratingAudio||sampleBusy}
-                  onChange={e=>setVoiceSetting('speed',Number(e.target.value))}
-                  className="w-full accent-[#8B1E2D]" />
-                <p className="text-[10px] text-[#787670]">0,70 daha yavaş, 1,00 normal, 1,20 daha hızlı.</p>
-              </label>
-              <label className="space-y-1.5">
-                <div className="flex items-center justify-between"><span className="font-semibold">Kararlılık</span><span className="font-mono-code">%{Math.round(voiceSettings.stability*100)}</span></div>
-                <input type="range" min="0" max="1" step="0.01" value={voiceSettings.stability}
-                  disabled={isGeneratingAudio||sampleBusy}
-                  onChange={e=>setVoiceSetting('stability',Number(e.target.value))}
-                  className="w-full accent-[#8B1E2D]" />
-                <p className="text-[10px] text-[#787670]">Yükseldikçe ton daha tutarlı ve kontrollü olur.</p>
-              </label>
-              <label className="space-y-1.5">
-                <div className="flex items-center justify-between"><span className="font-semibold">Benzerlik</span><span className="font-mono-code">%{Math.round(voiceSettings.similarity_boost*100)}</span></div>
-                <input type="range" min="0" max="1" step="0.01" value={voiceSettings.similarity_boost}
-                  disabled={isGeneratingAudio||sampleBusy}
-                  onChange={e=>setVoiceSetting('similarity_boost',Number(e.target.value))}
-                  className="w-full accent-[#8B1E2D]" />
-                <p className="text-[10px] text-[#787670]">Ses karakterinin kaynak sese ne kadar yakın tutulacağını belirler.</p>
-              </label>
-              <label className="space-y-1.5">
-                <div className="flex items-center justify-between"><span className="font-semibold">Stil vurgusu</span><span className="font-mono-code">%{Math.round(voiceSettings.style*100)}</span></div>
-                <input type="range" min="0" max="1" step="0.01" value={voiceSettings.style}
-                  disabled={isGeneratingAudio||sampleBusy}
-                  onChange={e=>setVoiceSetting('style',Number(e.target.value))}
-                  className="w-full accent-[#8B1E2D]" />
-                <p className="text-[10px] text-[#787670]">Yükseltmek ifadeyi artırabilir ama kararlılığı azaltabilir.</p>
-              </label>
-            </div>
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-3 mt-3 border-t border-[#E5E4DC]">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={voiceSettings.use_speaker_boost}
-                  disabled={isGeneratingAudio||sampleBusy}
-                  onChange={e=>setVoiceSetting('use_speaker_boost',e.target.checked)} />
-                <span>Speaker Boost</span>
-              </label>
-              <button type="button" className="studio-secondary" disabled={isGeneratingAudio||sampleBusy} onClick={resetVoiceSettings}>Varsayılana dön</button>
-            </div>
-          </details>}
+          <ImageStep step={step} hasImage={hasImage} currentProject={currentProject} replaceImageInputRef={replaceImageInputRef} handleImageFile={handleImageFile} handleDeleteImage={handleDeleteImage} />
+          <SolutionStep step={step} currentProject={currentProject} updateCurrentProject={updateCurrentProject} setVideoGenerated={setVideoGenerated} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} />
+          <NarrationCheck step={step} check={check} currentProject={currentProject} />
+          <VoiceSettingsPanel step={step} voiceSettings={voiceSettings} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} setVoiceSetting={setVoiceSetting} resetVoiceSettings={resetVoiceSettings} />
           {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy} voiceSettings={voiceSettings}/>}
-          {/* STEP 3: Seslendirme */}
-          <div hidden={step!==2} className="space-y-3">
-            <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              Seslendirmeyi dinleyin
-            </h2>
-
-            {hasAudio ? (
-              <div className="p-3.5 rounded-lg border border-[#E5E4DC] bg-[#FAF9F5] space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs font-bold text-[#1C1917] truncate">
-                      {isUploadedAudio
-                        ? `Yüklenen Ses: ${currentProject.narrationSource?.fileName || 'seslendirme.mp3'}`
-                        : 'Eğitmen Sesi'}
-                    </span>
-                  </div>
-
-                  {isAudioApproved ? (
-                    <span className="text-[11px] font-semibold text-[#15803D] flex items-center gap-1 shrink-0 bg-green-50 px-2 py-0.5 rounded border border-green-200">
-                      <Check size={12} weight="bold" /> Onaylandı
-                    </span>
-                  ) : (
-                    <span className="text-[11px] font-medium text-[#B45309] bg-amber-50 px-2 py-0.5 rounded border border-amber-200 shrink-0">
-                      Onay Bekliyor
-                    </span>
-                  )}
-                </div>
-
-                {/* Minimalist Audio player bar */}
-                <div className="flex items-center gap-3 bg-white p-2.5 rounded-lg border border-[#E5E4DC]">
-                  <button
-                    type="button"
-                    onClick={toggleStageAudio}
-                    className="w-7 h-7 rounded-full bg-[#8B1E2D] text-white flex items-center justify-center shrink-0 hover:bg-[#721824] transition-colors cursor-pointer"
-                  >
-                    {isAudioPlaying ? (
-                      <Pause size={13} weight="fill" />
-                    ) : (
-                      <Play size={13} weight="fill" className="ml-0.5" />
-                    )}
-                  </button>
-
-                  <div className="text-[11px] font-mono-code text-[#55544F] shrink-0">
-                    {formatTime(audioPlayTime)}
-                  </div>
-
-                  <input
-                    type="range"
-                    min={0}
-                    max={activeAudioDuration || 1}
-                    step={0.1}
-                    value={audioPlayTime}
-                    onChange={(e) => {
-                      const val = parseFloat(e.target.value);
-                      setAudioPlayTime(val);
-                      if (stageAudioRef.current) {
-                        stageAudioRef.current.currentTime = val;
-                      }
-                    }}
-                    className="flex-1 h-1.5 bg-[#E5E4DC] rounded-lg appearance-none cursor-pointer accent-[#8B1E2D]"
-                  />
-
-                  <div className="text-[11px] font-mono-code text-[#787670] shrink-0">
-                    {formatTime(activeAudioDuration)}
-                  </div>
-
-                  <audio
-                    ref={stageAudioRef}
-                    src={activeAudioUrl}
-                    preload="auto"
-                  />
-                </div>
-
-                {/* Actions: MP3 İndir, Yeniden Oluştur / Değiştir / Sil, Bu Sesi Kullan */}
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={handleDownloadNarrationMp3}
-                    title="Oluşturulan veya yüklenen MP3 dosyasını indirin"
-                    className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
-                  >
-                    <DownloadSimple size={13} weight="bold" />
-                    <span>MP3 İndir</span>
-                  </button>
-
-                  {isUploadedAudio ? (
-                    <>
-                      <label className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0">
-                        <ArrowsClockwise size={13} />
-                        <span>MP3 Değiştir</span>
-                        <input
-                          type="file"
-                          accept=".mp3,audio/mpeg,audio/mp3"
-                          className="hidden"
-                          onChange={(e) => {
-                            if (e.target.files?.[0]) handleUploadMp3File(e.target.files[0]);
-                          }}
-                        />
-                      </label>
-                      <button
-                        type="button"
-                        onClick={handleDeleteAudio}
-                        className="py-1.5 px-2 rounded text-[11px] font-semibold text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition-colors cursor-pointer flex items-center gap-1 shrink-0"
-                      >
-                        <Trash size={13} />
-                        <span>Sil</span>
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={handleGenerateAudio}
-                      disabled={isGeneratingAudio || sampleBusy}
-                      className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
-                    >
-                      {isGeneratingAudio ? (
-                        <CircleNotch size={13} className="animate-spin" />
-                      ) : (
-                        <ArrowsClockwise size={13} />
-                      )}
-                      <span>Yeniden Oluştur</span>
-                    </button>
-                  )}
-
-                  {!isAudioApproved && (
-                    <button
-                      type="button"
-                      onClick={handleApproveVoice}
-                      className="ml-auto py-1.5 px-3 rounded text-[11px] font-bold bg-[#15803D] hover:bg-[#116630] text-white transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs shrink-0"
-                    >
-                      <Check size={13} weight="bold" />
-                      <span>Bu Sesi Kullan</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            ) : (
-              /* Two clean choices: Seslendirme Oluştur or MP3 Yükle */
-              <div className="space-y-2.5">
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={handleGenerateAudio}
-                    disabled={isGeneratingAudio || sampleBusy || !hasSolution || currentProject.solutionText.trim().length>5000}
-                    className={`py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs ${
-                      hasSolution
-                        ? 'bg-[#8B1E2D] hover:bg-[#721824] text-white'
-                        : 'bg-[#E5E4DC] text-[#8C8A82] cursor-not-allowed'
-                    }`}
-                  >
-                    {isGeneratingAudio ? (
-                      <>
-                        <CircleNotch size={14} className="animate-spin" />
-                        <span>Seslendiriliyor...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Microphone size={15} weight="bold" />
-                        <span>Seslendirme Oluştur</span>
-                      </>
-                    )}
-                  </button>
-
-                  <label
-                    className="py-2.5 px-3 rounded-lg text-xs font-bold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#1C1917] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs text-center"
-                  >
-                    <UploadSimple size={15} weight="bold" />
-                    <span>MP3 Yükle</span>
-                    <input
-                      ref={uploadMp3InputRef}
-                      type="file"
-                      accept=".mp3,audio/mpeg,audio/mp3"
-                      className="hidden"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) handleUploadMp3File(e.target.files[0]);
-                      }}
-                    />
-                  </label>
-                </div>
-                {!hasSolution && (
-                  <p className="text-[11px] text-[#787670]">
-                    Seslendirme oluşturmak için önce çözüm metnini yazın.
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Whisper Local Transcription Progress */}
-            {isTranscribingMp3 && (
-              <div className="p-3 rounded-lg bg-[#FAF9F5] border border-[#E5E4DC] text-xs space-y-2">
-                <div className="flex items-center gap-2 text-[#1C1917] font-semibold">
-                  <CircleNotch size={15} className="animate-spin text-[#8B1E2D] shrink-0" />
-                  <span className="truncate">{transcribeProgress?.message || 'Whisper ile ses çözümleniyor...'}</span>
-                </div>
-                <div className="w-full bg-[#E5E4DC] h-1.5 rounded-full overflow-hidden">
-                  <div
-                    className="bg-[#8B1E2D] h-full transition-all duration-150"
-                    style={{ width: `${transcribeProgress?.progress || 15}%` }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {audioError && (
-              <p className="text-[11px] text-red-600 font-medium">
-                {audioError}
-              </p>
-            )}
-          </div>
-
+          <AudioStep step={step} hasAudio={hasAudio} hasSolution={hasSolution} isUploadedAudio={isUploadedAudio} isAudioApproved={isAudioApproved} currentProject={currentProject} isAudioPlaying={isAudioPlaying} toggleStageAudio={toggleStageAudio} formatTime={formatTime} audioPlayTime={audioPlayTime} setAudioPlayTime={setAudioPlayTime} activeAudioDuration={activeAudioDuration} activeAudioUrl={activeAudioUrl} stageAudioRef={stageAudioRef} uploadMp3InputRef={uploadMp3InputRef} handleDownloadNarrationMp3={handleDownloadNarrationMp3} handleUploadMp3File={handleUploadMp3File} handleDeleteAudio={handleDeleteAudio} handleGenerateAudio={handleGenerateAudio} handleApproveVoice={handleApproveVoice} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} isTranscribingMp3={isTranscribingMp3} transcribeProgress={transcribeProgress} audioError={audioError} />
           {step===3&&<section className="space-y-3"><h2>İşaretleri kontrol edin</h2><p>Önizlemeyi dinleyin. Gerekirse görsel üzerindeki alanları veya işaretlerin zamanını düzeltin.</p><div className="flex flex-wrap gap-2"><button className="studio-secondary" aria-pressed={editRegions} onClick={()=>setEditRegions(true)}>Görseli düzenle</button><button className="studio-secondary" disabled={!videoGenerated} aria-pressed={!editRegions} onClick={()=>{setEditRegions(false);setPreviewMode('video');}}>Zamanlamayı düzenle</button></div>{!videoGenerated&&<p>Önce aşağıdaki düğmeyle mevcut sesinize uygun işaretleri hazırlayın.</p>}</section>}
-          {/* STEP 4: Video Oluştur */}
-          <div hidden={step<3} className="space-y-3 pt-2 border-t border-[#E5E4DC]">
-            <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-              {step===4?'Videonuzu indirin':'Animasyon önizlemesi'}
-            </h2>
-
-            {videoGenerated ? (
-              /* Completed Video State: single clear download action + Yeniden Oluştur */
-              <div className="p-4 rounded-xl border border-[#C5DAC8] bg-[#F4F9F5] space-y-3">
-                <div className="flex items-center gap-2 text-xs font-bold text-[#15803D]">
-                  <CheckCircle size={18} weight="fill" />
-                  <span>Animasyon önizlemesi hazır</span>
-                </div>
-
-                <div className="space-y-2">
-                  {(currentProject.videoConfig.pipelineVersion !== 5) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
-                  {currentProject.videoConfig.warnings?.map(w => <p key={w} className="text-xs text-amber-800">{w}</p>)}
-                  {exportError && <p role="alert" className="text-xs text-red-700">{exportError}</p>}
-                  {isExportingMp4 && <button type="button" className="text-xs underline" onClick={() => exportAbortRef.current?.abort()}>Oluşturmayı iptal et</button>}
-                  <button
-                    type="button"
-                    onClick={handleDownloadMp4}
-                    hidden={step!==4}
-                    disabled={isExportingMp4}
-                    className="w-full py-3 px-4 rounded-lg bg-[#8B1E2D] hover:bg-[#721824] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
-                  >
-                    {isExportingMp4 ? (
-                      <>
-                        <CircleNotch size={16} className="animate-spin" />
-                        <span>MP4 Hazırlanıyor... {exportPercent ? `%${exportPercent}` : ''}</span>
-                      </>
-                    ) : (
-                      <>
-                        <DownloadSimple size={17} weight="bold" />
-                        <span>MP4 İndir (1080p)</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                <div className="pt-1 text-center">
-                  <button
-                    type="button"
-                    onClick={() => setIsVideoModalOpen(true)}
-                    className="text-[11px] font-semibold text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer"
-                  >
-                    Yeniden Oluştur
-                  </button>
-                </div>
-              </div>
-            ) : (
-              /* Video creation button (Enabled ONLY when audio is approved) */
-              <div className="space-y-2">
-                <button
-                  type="button"
-                  onClick={handleAttemptCreateVideo}
-                  disabled={!isAudioApproved}
-                  className={`w-full py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-all ${
-                    isAudioApproved
-                      ? 'bg-[#8B1E2D] hover:bg-[#721824] text-white cursor-pointer'
-                      : 'bg-[#E5E4DC] text-[#787670] cursor-not-allowed opacity-75'
-                  }`}
-                >
-                  <Sparkle size={18} weight="fill" />
-                  <span>İşaretleri otomatik hazırla</span>
-                </button>
-
-                {!isAudioApproved && (
-                  <p className="text-[11px] text-[#787670] text-center">
-                    Önce bir seslendirme oluşturun veya MP3 yükleyip onaylayın.
-                  </p>
-                )}
-
-                {videoButtonWarning && (
-                  <div className="p-2.5 rounded bg-amber-50 border border-amber-200 text-[11px] text-amber-800 flex items-center gap-1.5 animate-in fade-in">
-                    <WarningCircle size={15} weight="bold" className="shrink-0 text-amber-700" />
-                    <span>{videoButtonWarning}</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+          <ExportStep step={step} videoGenerated={videoGenerated} currentProject={currentProject} handleReadinessAction={handleReadinessAction} exportError={exportError} isExportingMp4={isExportingMp4} exportAbortRef={exportAbortRef} handleDownloadMp4={handleDownloadMp4} exportPercent={exportPercent} setIsVideoModalOpen={setIsVideoModalOpen} handleAttemptCreateVideo={handleAttemptCreateVideo} isAudioApproved={isAudioApproved} videoButtonWarning={videoButtonWarning} />
           <footer className="workflow-footer"><p>{['Görseli yükleyin; özgün tasarımı videoda korunur.','Arapça ifadeleri harekeli yazın.','Sesi dinleyip “Bu Sesi Kullan” ile devam edin.','Kutuları ve zamanlamayı son kez kontrol edin.','MP4 bu tarayıcıda hazırlanır. İndirme bitene kadar sekmeyi açık tutun.'][step]}</p><div className="flex gap-2">{step>0&&<button className="studio-secondary" disabled={busy} onClick={()=>go(step-1)}>Geri</button>}{step<4&&<button className="studio-primary" disabled={busy||!enabled[step+1]} onClick={()=>go(step+1)}>{['Metne geç','Sese geç','İşaretlere geç','İndirmeye geç'][step]}</button>}</div></footer>
         </aside>
       </div>

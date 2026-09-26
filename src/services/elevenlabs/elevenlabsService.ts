@@ -1,5 +1,5 @@
 import { authHeaders } from '../supabase';
-import { ElevenLabsVoice, ElevenLabsStatus } from '../../types';
+import { ElevenLabsVoice, ElevenLabsStatus, NarrationWord } from '../../types';
 import { GenerateNarrationRequest, GenerateNarrationResponse, IElevenLabsService } from './types';
 import { STANDARD_VOICE_CONFIG } from '../../config/voice';
 
@@ -54,6 +54,18 @@ class ElevenLabsService implements IElevenLabsService {
         },
       ];
     }
+  }
+
+  /** Aligns the known solution text to an uploaded MP3 on the server. Throws on any failure. */
+  public async alignUploadedNarration(req: { projectId: string; text: string; audioBase64: string; mimeType: string }): Promise<NarrationWord[]> {
+    const res = await fetch('/api/elevenlabs/align', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...await authHeaders() },
+      body: JSON.stringify(req),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !Array.isArray(data?.words) || !data.words.length) throw new Error(data?.error || `Hizalama başarısız (HTTP ${res.status}).`);
+    return data.words.map((w: NarrationWord) => ({ text: w.text, start: w.start, end: w.end }));
   }
 
   public async generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {

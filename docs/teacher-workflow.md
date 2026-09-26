@@ -14,3 +14,9 @@
 
 48 otomatik test: erişim kuralları, animasyon regresyonları, sıralı kayıt, hata sonrası kayıt, aynı sürümün tekrarını önleme ve düzenleme sınırları. Vercel için gerçek Node ESM yükleme/anonim erişim testi. TypeScript ve üretim derlemesi. Yerel örnek üzerinden masaüstü/390px mobil görünüm, adımlar ve kütüphane araması kontrol edildi. Ücretli ses denemesi otomatik çağrılmadı. Gerçek e-posta doğrulama ve şifre yenileme teslimatı ayrıca kullanıcı hesabıyla doğrulanmalıdır.
 
+
+## Yayın kontrolü ve yüklenen MP3
+
+- İşaretler ve İndir adımlarında **Yayın kontrolü** kartı görünür: bulunan şıklar, doğru cevaba tik, metin–cevap uyumu, zamanlama kalitesi, görselde bulunamayan Arapça kelimeler ve animasyon planının güncelliği. Kırmızı madde yayından önce düzeltilmelidir; sarı madde kontrol önerisidir. Her maddenin yanındaki düğme ilgili düzenleyiciyi açar.
+- ElevenLabs ile üretilen seste kelime zamanları doğrudan ElevenLabs'ten gelir.
+- Öğretmenin kendi MP3'ü yüklendiğinde yazılı çözüm metni sese sunucuda hizalanır (ElevenLabs forced alignment, `api/elevenlabs/align.ts`). Bu istek ses kullanım sınırına sayılır; yönetici panelinde "Ses hizalama" olarak görünür ve üretilen ses sayısına eklenmez. 3 MB'den büyük dosyalar, hizalama hatası veya boş metin durumunda tarayıcıdaki Whisper ile tahmin edilir ve öğretmene not gösterilir.

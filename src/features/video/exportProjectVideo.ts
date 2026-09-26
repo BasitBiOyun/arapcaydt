@@ -1,0 +1,43 @@
+import type { QuestionProject } from '../../types';
+import { videoExporter } from './engine/exporter';
+import { renderQuestionVideoFrame } from './engine/renderer';
+
+/** Renders one project to a 1080p MP4 in this browser (single editor download and batch queue share it). */
+export async function exportProjectVideo(project: QuestionProject, onProgress: (percent: number) => void, signal?: AbortSignal): Promise<Blob> {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => resolve();
+    img.onerror = () => reject(new Error('Soru görseli yüklenemedi.'));
+    img.src = project.imageUrl;
+  });
+
+  const duration = project.narrationSource?.duration || project.audioNarration?.duration || 15;
+  const audioUrl = project.narrationSource?.audioUrl || project.audioNarration?.audioUrl || '';
+  const config = project.videoConfig;
+  return videoExporter.exportVideo(
+    (ctx, time) => {
+      renderQuestionVideoFrame(ctx, ctx.canvas.width, ctx.canvas.height, img, config.regions, config.timelineActions, time, {
+        width: 1920,
+        height: 1080,
+        aspectRatio: config.aspectRatio || '16:9',
+        showWatermark: config.showWatermark,
+        teacherTag: config.teacherTag || 'Arapça YDT • Video Stüdyosu',
+        captions: config.captions,
+        showCaptions: config.showCaptions,
+        captionY: config.captionY,
+        duration,
+      });
+    },
+    audioUrl,
+    duration,
+    { resolution: '1080p', fps: 30, format: 'mp4', aspectRatio: (config.aspectRatio || '16:9') as '16:9' | '9:16' },
+    progress => onProgress(progress.percent),
+    signal,
+  );
+}
+
+export function videoFileName(project: QuestionProject) {
+  const cleanTitle = (project.title || 'ydt_soru_cozumu').replace(/[^a-zA-Z0-9_؀-ۿÀ-ſ-]/g, '_');
+  return `${cleanTitle}_1080p.mp4`;
+}

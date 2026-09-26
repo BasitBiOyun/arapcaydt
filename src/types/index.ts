@@ -168,6 +168,8 @@ export interface NarrationSource {
     character_end_times_seconds: number[];
   };
   transcript?: string;
+  /** How word timings of an uploaded MP3 were obtained. */
+  timingSource?: 'forced-alignment' | 'whisper' | 'none';
   generatedAt?: string;
   isApproved?: boolean;
 }

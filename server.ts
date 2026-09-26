@@ -1,6 +1,7 @@
 import voiceHandler from './api/elevenlabs/generate';
 import voiceStatusHandler from './api/elevenlabs/status';
 import voiceListHandler from './api/elevenlabs/voices';
+import alignHandler from './api/elevenlabs/align';
 import { requireMember } from './server/auth';
 import express from 'express';
 import path from 'path';
@@ -17,6 +18,7 @@ app.use(express.json({ limit: '50mb' }));
 app.get('/api/elevenlabs/status', voiceStatusHandler);
 app.get('/api/elevenlabs/voices', voiceListHandler);
 app.post('/api/elevenlabs/generate', voiceHandler);
+app.post('/api/elevenlabs/align', alignHandler);
 app.use('/api', async(req,res,next)=>{if(await requireMember(req,res))next();});
 
 import { isGeminiConfigured } from './server/gemini/client';
