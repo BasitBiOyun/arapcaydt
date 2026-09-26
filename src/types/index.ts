@@ -113,6 +113,7 @@ export interface AudioNarration {
   generatedAt: string;
   isApproved: boolean;
   mode: 'live' | 'mock';
+  mimeType?: string;
   words?: NarrationWord[];
   alignment?: {
     characters: string[];
@@ -151,7 +152,7 @@ export interface ExportConfig {
   aspectRatio: '16:9' | '9:16';
 }
 
-export type NarrationSourceType = 'elevenlabs' | 'uploaded';
+export type NarrationSourceType = 'gemini' | 'elevenlabs' | 'uploaded';
 
 export interface NarrationSource {
   type: NarrationSourceType;
@@ -161,6 +162,8 @@ export interface NarrationSource {
   fileName?: string;
   voiceName?: string;
   voiceId?: string;
+  modelId?: string;
+  mimeType?: string;
   words?: NarrationWord[];
   alignment?: {
     characters: string[];

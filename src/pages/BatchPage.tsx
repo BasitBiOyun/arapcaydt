@@ -7,7 +7,7 @@ import { runBatch, type BatchDeps, type BatchRowState } from '../features/batch/
 import { projectRepository } from '../features/projects/projectRepository';
 import { useProjects } from '../features/projects/ProjectContext';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
-import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
+import { narrationService } from '../services/narration/narrationService';
 import { readAudioDuration, readDataUrl } from '../services/narration/browserMedia';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { localOcrService } from '../services/ocr/localOcrService';
@@ -15,7 +15,6 @@ import { localVideoPipeline } from '../services/pipeline/localVideoPipeline';
 import { database } from '../services/supabase';
 import { localWhisperService } from '../services/whisper/localWhisperService';
 
-const DAILY_VOICE_LIMIT = 20_000;
 const stageLabels: Record<BatchRowState['stage'], string> = {
   waiting: 'Sırada', creating: 'Oluşturuluyor', voice: 'Ses', markers: 'İşaretler', video: 'MP4',
   done: 'Tamamlandı', failed: 'Hata', skipped: 'Atlandı', stopped: 'Durduruldu',
@@ -61,7 +60,7 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
 
   const start = async () => {
     if (!runnable.length || running) return;
-    if (voiceChars > 0 && !window.confirm(`${runnable.filter(i => !i.audio).length} soru ElevenLabs ile seslendirilecek: toplam ${voiceChars.toLocaleString('tr')} karakter kotadan düşülecek.${voiceChars > DAILY_VOICE_LIMIT ? ` Günlük ${DAILY_VOICE_LIMIT.toLocaleString('tr')} karakter sınırını aştığı için sondaki sorular sınır nedeniyle hata verecek.` : ''} Devam edilsin mi?`)) return;
+    if (voiceChars > 0 && !window.confirm(`${runnable.filter(i => !i.audio).length} soru önce Gemini ücretsiz TTS havuzuyla seslendirilecek. Google modelleri kullanılamazsa ElevenLabs yedeği otomatik devreye girebilir. Devam edilsin mi?`)) return;
     setError('');
     setRunning(true);
     abort.current = new AbortController();
@@ -71,7 +70,7 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
       readDataUrl,
       createProject: p => projectRepository.create(p),
       saveProject: p => projectRepository.save(p),
-      generateVoice: p => elevenlabsService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
+      generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat, voiceSettings }),
       prepareUpload: (p, file) => prepareUploadedNarration(file, {
         readDataUrl, readDuration: readAudioDuration,
@@ -128,8 +127,8 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
         </div>
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1" checked={generateVoice} disabled={running} onChange={e => setGenerateVoice(e.target.checked)} />
-          <span>MP3'ü olmayan soruları ElevenLabs ile seslendir{generateVoice && voiceChars > 0 && <> · <strong>{voiceChars.toLocaleString('tr')} karakter</strong></>}
-            <span className="block text-xs text-[#787670]">Kapalıysa bu sorular oluşturulur ve ses için editörde bekler. Kayıtlı ses ayarlarınız kullanılır.</span></span>
+          <span>MP3'ü olmayan soruları otomatik seslendir{generateVoice && voiceChars > 0 && <> · <strong>{runnable.filter(i => !i.audio).length} soru</strong></>}
+            <span className="block text-xs text-[#787670]">Önce Gemini ücretsiz TTS modelleri ve ortak Achernar sesi kullanılır. Kotalar kullanılamazsa ElevenLabs yedeği devreye girer.</span></span>
         </label>
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1" checked={exportVideo} disabled={running} onChange={e => setExportVideo(e.target.checked)} />
@@ -159,7 +158,7 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
           <td className="p-3">{item.image?.name || <span className="text-red-700">yok</span>}</td>
           <td className="p-3 max-w-xs"><span dir="auto" className="line-clamp-2 text-[#55544F]">{item.solution?.replace(/\s+/g, ' ').slice(0, 110) || <span className="text-red-700">yok</span>}</span></td>
           <td className="p-3">{item.answer || '—'}</td>
-          <td className="p-3">{item.audio?.name || (generateVoice ? 'ElevenLabs' : 'Sonra')}</td>
+          <td className="p-3">{item.audio?.name || (generateVoice ? 'Gemini → ElevenLabs' : 'Sonra')}</td>
           <td className="p-3 min-w-48">
             {row ? <>
               <strong className={row.stage === 'failed' ? 'text-red-700' : ''}>{stageLabels[row.stage]}{row.stage === 'video' && row.percent ? ` %${row.percent}` : ''}</strong>

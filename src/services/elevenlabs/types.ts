@@ -32,6 +32,10 @@ export interface GenerateNarrationResponse {
     end: number;
   }>;
   message?: string;
+  provider?: 'gemini' | 'elevenlabs';
+  modelId?: string;
+  voiceId?: string;
+  voiceName?: string;
 }
 
 export interface IElevenLabsService {

@@ -4,19 +4,24 @@ import type { LocalPipelineResult } from '../../services/pipeline/localVideoPipe
 import { STANDARD_VOICE_CONFIG } from '../../config/voice';
 import { CURRENT_PIPELINE_VERSION } from './readiness';
 
-/** Project fields for a fresh ElevenLabs narration (editor and batch share this shape). */
+/** Project fields for a fresh TTS narration (Gemini primary, ElevenLabs fallback). */
 export function narrationFromTts(result: GenerateNarrationResponse, approved = false): { narrationSource: NarrationSource; audioNarration: AudioNarration } {
   const audioUrl = `data:${result.mimeType};base64,${result.audioBase64}`;
   const generatedAt = new Date().toISOString();
+  const provider = result.provider === 'gemini' ? 'gemini' : 'elevenlabs';
+  const voiceId = result.voiceId || STANDARD_VOICE_CONFIG.voiceId;
+  const voiceName = result.voiceName || STANDARD_VOICE_CONFIG.name;
+  const modelId = result.modelId || STANDARD_VOICE_CONFIG.modelId;
+  const extension = result.mimeType.includes('wav') ? 'wav' : 'mp3';
   return {
     narrationSource: {
-      type: 'elevenlabs', audioUrl, audioBase64: result.audioBase64, duration: result.durationSeconds,
-      voiceId: STANDARD_VOICE_CONFIG.voiceId, voiceName: STANDARD_VOICE_CONFIG.name,
+      type: provider, audioUrl, audioBase64: result.audioBase64, duration: result.durationSeconds,
+      voiceId, voiceName, modelId, mimeType: result.mimeType, fileName: `seslendirme.${extension}`,
       words: result.words, alignment: result.alignment, isApproved: approved, generatedAt,
     },
     audioNarration: {
       audioUrl, audioBase64: result.audioBase64, duration: result.durationSeconds,
-      voiceId: STANDARD_VOICE_CONFIG.voiceId, voiceName: STANDARD_VOICE_CONFIG.name, modelId: STANDARD_VOICE_CONFIG.modelId,
+      voiceId, voiceName, modelId, mimeType: result.mimeType,
       generatedAt, isApproved: approved, mode: result.mode, words: result.words, alignment: result.alignment,
     },
   };

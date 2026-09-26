@@ -19,7 +19,7 @@ export interface BatchOptions {
   category: string;
   examName: string;
   examYear: string;
-  /** Narrate questions without an MP3 with ElevenLabs (paid). */
+  /** Narrate questions without an MP3 with Gemini free-tier TTS first, then ElevenLabs fallback. */
   generateVoice: boolean;
   /** Encode and download each MP4 once its markers are ready. */
   exportVideo: boolean;
@@ -39,8 +39,8 @@ export interface BatchDeps<F> {
   now(): number;
 }
 
-/** The server refuses a second paid voice request within 10 s of the previous one. */
-export const VOICE_SPACING_MS = 11_000;
+/** Four Gemini models each expose 10 RPM in the current free tier; route keys distribute load across them. */
+export const VOICE_SPACING_MS = 1_700;
 
 /**
  * Processes matched questions one by one: project → narration → markers →
@@ -85,7 +85,7 @@ export async function runBatch<F extends { name: string }>(
         project = await deps.saveProject({ ...project, narrationSource: { ...uploaded.source, isApproved: true },
           audioNarration: { ...uploaded.compat, isApproved: true }, audioApproved: true, status: 'audio_approved' });
       } else if (options.generateVoice) {
-        step('voice', 'ElevenLabs ile seslendiriliyor');
+        step('voice', 'Gemini TTS ile seslendiriliyor');
         await spaceVoice();
         const narration = narrationFromTts(await deps.generateVoice(project), true);
         project = await deps.saveProject({ ...project, ...narration, audioApproved: true, status: 'audio_approved' });

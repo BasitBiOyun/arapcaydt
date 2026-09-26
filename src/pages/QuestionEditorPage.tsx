@@ -13,6 +13,7 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration } from '../services/narration/browserMedia';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
+import { narrationService } from '../services/narration/narrationService';
 import { STANDARD_VOICE_CONFIG, VoiceSettingsConfig, readSavedVoiceSettings, VOICE_SETTINGS_STORAGE_KEY } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
@@ -194,7 +195,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setVideoGenerated(false);
   };
 
-  // Generate Audio via ElevenLabs standard voice configuration
+  // Generate audio with Gemini free-tier TTS first; ElevenLabs remains the automatic fallback.
   const handleGenerateAudio = async () => {
     if (!currentProject.solutionText || currentProject.solutionText.trim().length === 0) {
       setAudioError('Lütfen önce çözüm metnini yazın.');
@@ -206,7 +207,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
     try {
       if(!await saveCurrentProject())throw new Error('Önce proje kaydedilmelidir.');
-      const result = await elevenlabsService.generateNarration({
+      const result = await narrationService.generateNarration({
         projectId: currentProject.id,
         text: currentProject.solutionText,
         voiceId: STANDARD_VOICE_CONFIG.voiceId,
@@ -292,10 +293,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     const a = document.createElement('a');
     a.href = activeAudioUrl;
     const isUploaded = currentProject.narrationSource?.type === 'uploaded';
+    const generatedExtension = currentProject.narrationSource?.mimeType?.includes('wav') ? 'wav' : 'mp3';
     const fallbackName = isUploaded
       ? currentProject.narrationSource?.fileName || 'yuklenen_ses.mp3'
-      : `${currentProject.title || 'soru'}_seslendirme.mp3`;
-    a.download = fallbackName.endsWith('.mp3') ? fallbackName : `${fallbackName}.mp3`;
+      : currentProject.narrationSource?.fileName || `${currentProject.title || 'soru'}_seslendirme.${generatedExtension}`;
+    a.download = fallbackName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -304,7 +306,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   // Approve Voice
   const handleApproveVoice = () => {
     const currentSource = currentProject.narrationSource || (currentProject.audioNarration ? {
-      type: 'elevenlabs' as const,
+      type: currentProject.audioNarration.modelId?.startsWith('gemini-') ? 'gemini' as const : 'elevenlabs' as const,
       audioUrl: currentProject.audioNarration.audioUrl,
       audioBase64: currentProject.audioNarration.audioBase64,
       duration: currentProject.audioNarration.duration,

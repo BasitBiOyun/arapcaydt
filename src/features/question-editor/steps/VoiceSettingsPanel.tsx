@@ -14,9 +14,10 @@ export function VoiceSettingsPanel({ step, voiceSettings, isGeneratingAudio, sam
   return (
     step===2&&<details className="rounded-xl border border-[#E5E4DC] bg-[#FAF9F5] p-3 text-xs">
       <summary className="cursor-pointer font-semibold text-[#1C1917] flex items-center justify-between gap-3">
-        <span>Ses ayarları</span>
+        <span>ElevenLabs yedek ayarları</span>
         <span className="text-[10px] font-normal text-[#787670]">Hız {voiceSettings.speed.toFixed(2)} · Kararlılık %{Math.round(voiceSettings.stability*100)}</span>
       </summary>
+      <p className="pt-2 text-[10px] text-[#787670]">Ana ses motoru Gemini Achernar profilidir. Bu ayarlar yalnızca Gemini kotaları kullanılamadığında devreye giren ElevenLabs yedeğini etkiler.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
         <label className="space-y-1.5">
           <div className="flex items-center justify-between"><span className="font-semibold">Hız / tempo</span><span className="font-mono-code">{voiceSettings.speed.toFixed(2)}x</span></div>
