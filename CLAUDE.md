@@ -15,9 +15,8 @@
 - React 19 + TypeScript + Vite frontend.
 - Express server entry is `server.ts`.
 - ElevenLabs endpoints live under `api/elevenlabs/`.
-- Gemini server-side analysis lives under `server/gemini/`.
+- Animation planning is local: OCR (`src/services/ocr/`), solution parsing and narration alignment (`src/services/analysis/`), canvas rendering and MP4 export (`src/features/video/`).
 - Auth is server-side and the approved-member flow must remain intact unless the task explicitly changes it.
-- Remotion is used for video/animation work.
 - Supabase-backed application data and credentials must remain server-safe.
 
 ## Security and external services
