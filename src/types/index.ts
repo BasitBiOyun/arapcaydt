@@ -113,6 +113,8 @@ export interface AudioNarration {
   generatedAt: string;
   isApproved: boolean;
   mode: 'live' | 'mock';
+  assetPath?: string;
+  fallbackReason?: string;
   mimeType?: string;
   words?: NarrationWord[];
   alignment?: {
@@ -175,6 +177,8 @@ export interface NarrationSource {
   timingSource?: 'gemini-transcribe' | 'forced-alignment' | 'whisper' | 'none';
   generatedAt?: string;
   isApproved?: boolean;
+  assetPath?: string;
+  fallbackReason?: string;
 }
 
 export interface QuestionProject {

@@ -6,7 +6,7 @@ import { CURRENT_PIPELINE_VERSION } from './readiness';
 
 /** Project fields for a fresh TTS narration (Gemini primary, ElevenLabs fallback). */
 export function narrationFromTts(result: GenerateNarrationResponse, approved = false): { narrationSource: NarrationSource; audioNarration: AudioNarration } {
-  const audioUrl = `data:${result.mimeType};base64,${result.audioBase64}`;
+  const audioUrl = result.audioUrl || (result.audioBase64 ? `data:${result.mimeType};base64,${result.audioBase64}` : '');
   const generatedAt = new Date().toISOString();
   const provider = result.provider === 'gemini' ? 'gemini' : 'elevenlabs';
   const voiceId = result.voiceId || STANDARD_VOICE_CONFIG.voiceId;
@@ -17,11 +17,13 @@ export function narrationFromTts(result: GenerateNarrationResponse, approved = f
     narrationSource: {
       type: provider, audioUrl, audioBase64: result.audioBase64, duration: result.durationSeconds,
       voiceId, voiceName, modelId, mimeType: result.mimeType, fileName: `seslendirme.${extension}`,
+      assetPath: result.assetPath, fallbackReason: result.provider === 'elevenlabs' ? result.message : undefined,
       words: result.words, alignment: result.alignment, isApproved: approved, generatedAt,
     },
     audioNarration: {
       audioUrl, audioBase64: result.audioBase64, duration: result.durationSeconds,
       voiceId, voiceName, modelId, mimeType: result.mimeType,
+      assetPath: result.assetPath, fallbackReason: result.provider === 'elevenlabs' ? result.message : undefined,
       generatedAt, isApproved: approved, mode: result.mode, words: result.words, alignment: result.alignment,
     },
   };

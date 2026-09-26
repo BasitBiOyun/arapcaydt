@@ -1,4 +1,5 @@
-import { requireMember } from '../../server/auth.js';
+import { createHash } from 'node:crypto';
+import { requireMember, serviceDatabase } from '../../server/auth.js';
 
 export const config = { maxDuration: 120 };
 
@@ -23,9 +24,7 @@ const STYLE = [
 
 function normalizeApiKey(value?: string): string {
   let key = (value || '').trim();
-  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
-    key = key.slice(1, -1).trim();
-  }
+  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) key = key.slice(1, -1).trim();
   return key;
 }
 
@@ -99,9 +98,7 @@ function pcmToWav(pcm: Buffer, sampleRate = 24000) {
 
 function wavDurationSeconds(buffer: Buffer): number {
   if (buffer.length < 44 || buffer.toString('ascii', 0, 4) !== 'RIFF') return 0;
-  let offset = 12;
-  let byteRate = 0;
-  let dataSize = 0;
+  let offset = 12, byteRate = 0, dataSize = 0;
   while (offset + 8 <= buffer.length) {
     const id = buffer.toString('ascii', offset, offset + 4);
     const size = buffer.readUInt32LE(offset + 4);
@@ -120,8 +117,16 @@ function sampleRateFromMime(mime: string) {
   return match ? Number(match[1]) : 24000;
 }
 
-function safeHeader(value: string) {
-  return value.replace(/[^\x20-\x7E]/g, '').slice(0, 180);
+async function saveGeneratedAudio(memberId: string, projectId: string, text: string, audio: Buffer) {
+  const db = serviceDatabase();
+  const digest = createHash('sha256').update(text).digest('hex').slice(0, 20);
+  const path = `${memberId}/${projectId}/gemini-${digest}.wav`;
+  const bucket = db.storage.from('project-assets');
+  const { error: uploadError } = await bucket.upload(path, audio, { contentType: 'audio/wav', upsert: true });
+  if (uploadError) throw new Error(`Gemini sesi depoya kaydedilemedi: ${uploadError.message}`);
+  const { data, error: signedError } = await bucket.createSignedUrl(path, 21600);
+  if (signedError || !data?.signedUrl) throw new Error('Gemini sesi için oynatma bağlantısı oluşturulamadı.');
+  return { path, signedUrl: data.signedUrl };
 }
 
 export default async function handler(req: any, res: any) {
@@ -135,35 +140,36 @@ export default async function handler(req: any, res: any) {
   const apiKey = normalizeApiKey(process.env.GEMINI_API_KEY);
   if (!apiKey) {
     return res.status(503).json({
-      error: 'Gemini ses servisi yapılandırılmamış.',
+      error: 'Gemini ses servisi yapılandırılmamış. Vercel Production ortamında GEMINI_API_KEY bulunamadı.',
       code: 'MISSING_GEMINI_API_KEY',
       fallbackAllowed: true,
     });
   }
 
   const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
+  const projectId = typeof req.body?.projectId === 'string' ? req.body.projectId.trim() : '';
   if (!text || text.length > 5000) {
-    return res.status(400).json({
-      error: 'Seslendirme metni 1–5000 karakter arasında olmalıdır.',
-      code: 'INVALID_TEXT',
-      fallbackAllowed: false,
-    });
+    return res.status(400).json({ error: 'Seslendirme metni 1–5000 karakter arasında olmalıdır.', code: 'INVALID_TEXT', fallbackAllowed: false });
+  }
+  if (!projectId) {
+    return res.status(400).json({ error: 'Gemini seslendirmesi için proje kimliği gerekli.', code: 'MISSING_PROJECT_ID', fallbackAllowed: false });
   }
 
-  const routeKey = String(req.body?.projectId || member.user.id || 'default');
-  const attempts: Array<{ model: string; status: number; detail?: string }> = [];
+  const db = serviceDatabase();
+  const { data: project, error: projectError } = await db.from('projects').select('id').eq('id', projectId).eq('owner_id', member.user.id).maybeSingle();
+  if (projectError || !project) {
+    return res.status(403).json({ error: 'Gemini seslendirmesi için proje erişimi doğrulanamadı.', code: 'PROJECT_ACCESS_DENIED', fallbackAllowed: false });
+  }
 
-  for (const model of modelOrder(routeKey)) {
+  const attempts: Array<{ model: string; status: number; detail?: string }> = [];
+  for (const model of modelOrder(projectId || member.user.id)) {
     try {
       const upstream = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
         {
           method: 'POST',
           signal: AbortSignal.timeout(105000),
-          headers: {
-            'x-goog-api-key': apiKey,
-            'Content-Type': 'application/json',
-          },
+          headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' },
           body: JSON.stringify(makeRequestBody(model, text)),
         }
       );
@@ -183,8 +189,7 @@ export default async function handler(req: any, res: any) {
       }
 
       const payload = JSON.parse(raw);
-      const parts = payload?.candidates?.[0]?.content?.parts || [];
-      const audioPart = parts.find((part: any) => part?.inlineData?.data);
+      const audioPart = (payload?.candidates?.[0]?.content?.parts || []).find((part: any) => part?.inlineData?.data);
       if (!audioPart?.inlineData?.data) {
         attempts.push({ model, status: 502, detail: 'Gemini yanıtında ses verisi yok.' });
         continue;
@@ -194,28 +199,31 @@ export default async function handler(req: any, res: any) {
       let audio = Buffer.from(audioPart.inlineData.data, 'base64');
       if (audio.toString('ascii', 0, 4) !== 'RIFF') audio = pcmToWav(audio, sampleRateFromMime(upstreamMime));
       const duration = wavDurationSeconds(audio);
+      const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio);
 
-      res.status(200);
-      res.setHeader('Content-Type', 'audio/wav');
-      res.setHeader('Cache-Control', 'no-store');
-      res.setHeader('X-TTS-Provider', 'gemini');
-      res.setHeader('X-TTS-Model', safeHeader(model));
-      res.setHeader('X-TTS-Voice', VOICE_NAME);
-      res.setHeader('X-Audio-Duration', Number(duration.toFixed(3)).toString());
-      res.setHeader('X-Gemini-Attempts', String(attempts.length + 1));
-      const chunkSize = 64 * 1024;
-      for (let i = 0; i < audio.length; i += chunkSize) res.write(audio.subarray(i, i + chunkSize));
-      return res.end();
+      return res.status(200).json({
+        audioUrl: stored.signedUrl,
+        assetPath: stored.path,
+        mimeType: 'audio/wav',
+        mode: 'live',
+        durationSeconds: Number(duration.toFixed(3)),
+        provider: 'gemini',
+        modelId: model,
+        voiceId: VOICE_NAME,
+        voiceName: VOICE_NAME,
+        attempts: attempts.length + 1,
+      });
     } catch (error: any) {
       attempts.push({ model, status: 502, detail: error?.message || 'Ağ hatası' });
     }
   }
 
+  const compact = attempts.map(a => `${a.model}: HTTP ${a.status}${a.detail ? ` (${a.detail.slice(0, 120)})` : ''}`).join(' | ');
   console.warn('[Gemini TTS] all free-tier models failed', attempts);
   return res.status(429).json({
-    error: 'Gemini ücretsiz TTS modelleri şu anda kullanılamıyor veya günlük/dakikalık kota doldu.',
+    error: `Gemini TTS başarısız. ${compact || 'Model yanıtı alınamadı.'}`,
     code: 'GEMINI_TTS_EXHAUSTED',
     fallbackAllowed: true,
-    attempts: attempts.map(a => ({ model: a.model, status: a.status })),
+    attempts,
   });
 }

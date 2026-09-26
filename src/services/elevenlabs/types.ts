@@ -16,7 +16,9 @@ export interface GenerateNarrationRequest {
 }
 
 export interface GenerateNarrationResponse {
-  audioBase64: string;
+  audioBase64?: string;
+  audioUrl?: string;
+  assetPath?: string;
   mimeType: string;
   mode: 'live' | 'mock';
   durationSeconds: number;

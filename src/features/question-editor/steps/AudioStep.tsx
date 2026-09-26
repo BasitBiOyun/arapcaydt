@@ -176,6 +176,11 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
                 : 'henüz kesin kelime zaman damgası yok'}
             </p>
           )}
+          {currentProject.narrationSource?.type === 'elevenlabs' && currentProject.narrationSource.fallbackReason && (
+            <p className="text-[10px] text-[#B45309]">
+              Gemini denendi ancak yedeğe geçildi: {currentProject.narrationSource.fallbackReason}
+            </p>
+          )}
         </div>
       ) : (
         /* Two clean choices: Seslendirme Oluştur or MP3 Yükle */

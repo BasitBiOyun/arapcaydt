@@ -24,7 +24,8 @@ async function elevenLabsFallback(req: GenerateNarrationRequest, reason?: string
   if (wait > 0) await sleep(wait);
   lastElevenLabsFallbackAt = Date.now();
   try {
-    return await elevenlabsService.generateNarration(req);
+    const result = await elevenlabsService.generateNarration(req);
+    return { ...result, provider: 'elevenlabs', message: reason || result.message };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'ElevenLabs yedeği başarısız.';
     throw new Error(reason ? `${reason} ElevenLabs yedeği de başarısız: ${message}` : message);
@@ -57,18 +58,18 @@ class NarrationService {
       });
 
       if (res.ok) {
-        const audioBuffer = await res.arrayBuffer();
-        if (!audioBuffer.byteLength) throw new Error('Gemini ses verisi boş döndü.');
-        const duration = Number(res.headers.get('x-audio-duration') || 0);
+        const data = await res.json().catch(() => null);
+        if (!data?.audioUrl || !data?.assetPath) throw new Error('Gemini ses servisi ses dosyası konumu döndürmedi.');
         return {
-          audioBase64: bufferToBase64(audioBuffer),
-          mimeType: (res.headers.get('content-type') || 'audio/wav').split(';')[0],
+          audioUrl: data.audioUrl,
+          assetPath: data.assetPath,
+          mimeType: data.mimeType || 'audio/wav',
           mode: 'live',
-          durationSeconds: Number.isFinite(duration) && duration > 0 ? duration : 15,
+          durationSeconds: Number(data.durationSeconds) > 0 ? Number(data.durationSeconds) : 15,
           provider: 'gemini',
-          modelId: res.headers.get('x-tts-model') || 'gemini-tts',
-          voiceId: res.headers.get('x-tts-voice') || 'Achernar',
-          voiceName: res.headers.get('x-tts-voice') || 'Achernar',
+          modelId: data.modelId || 'gemini-tts',
+          voiceId: data.voiceId || 'Achernar',
+          voiceName: data.voiceName || 'Achernar',
         };
       }
 

@@ -49,9 +49,15 @@ export class CloudProjectRepository implements IProjectRepository {
     p.imageUrl=await uploadAsset(p.imageUrl,owner,p.id);
     const uploaded=new Map<string,unknown>();
     for(const key of ['narrationSource','audioNarration']) if(p[key]){
-      const url=p[key].audioUrl;
-      if(!uploaded.has(url))uploaded.set(url,await uploadAsset(url,owner,p.id));
-      p[key].audioUrl=uploaded.get(url);delete p[key].audioBase64;
+      if (typeof p[key].assetPath === 'string' && p[key].assetPath) {
+        p[key].audioUrl = { assetPath: p[key].assetPath };
+      } else {
+        const url=p[key].audioUrl;
+        if(!uploaded.has(url))uploaded.set(url,await uploadAsset(url,owner,p.id));
+        p[key].audioUrl=uploaded.get(url);
+      }
+      delete p[key].assetPath;
+      delete p[key].audioBase64;
     }
     delete p.renderedVideoUrl;delete p.ownerId;
     const {data,error}=await database().from('projects').upsert({id:p.id,owner_id:owner,data:p}).select().single();
