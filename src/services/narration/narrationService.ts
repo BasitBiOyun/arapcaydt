@@ -7,6 +7,8 @@ let lastElevenLabsFallbackAt = -Infinity;
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+class NoFallbackError extends Error {}
+
 function bufferToBase64(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
   let binary = '';
@@ -61,10 +63,11 @@ class NarrationService {
 
       const err = await res.json().catch(() => null);
       if (err?.fallbackAllowed === false) {
-        throw new Error(err?.error || `Gemini ses servisi hata döndürdü (HTTP ${res.status}).`);
+        throw new NoFallbackError(err?.error || `Gemini ses servisi hata döndürdü (HTTP ${res.status}).`);
       }
       return await elevenLabsFallback(req, err?.error || 'Gemini TTS kullanılamadı.');
     } catch (error) {
+      if (error instanceof NoFallbackError) throw error;
       if (error instanceof Error && error.message.includes('ElevenLabs yedeği')) throw error;
       const reason = error instanceof Error ? `Gemini TTS bağlantısı başarısız: ${error.message}.` : 'Gemini TTS bağlantısı başarısız.';
       return await elevenLabsFallback(req, reason);

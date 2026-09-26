@@ -66,14 +66,14 @@ function makeRequestBody(model: string, text: string) {
   return {
     contents: [{
       role: 'user',
-      parts: is38 ? [{ text, speechMetadata: { style: STYLE } }] : [{ text: legacyPrompt(text) }],
+      parts: is38 ? [{ text, speech_metadata: { style: STYLE } }] : [{ text: legacyPrompt(text) }],
     }],
     generationConfig: {
       responseModalities: ['AUDIO'],
       speechConfig: {
-        voiceConfig: {
-          prebuiltVoiceConfig: { voiceName: VOICE_NAME },
-        },
+        voiceConfig: is38
+          ? { voice: VOICE_NAME }
+          : { prebuiltVoiceConfig: { voiceName: VOICE_NAME } },
       },
     },
   };
