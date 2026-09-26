@@ -11,6 +11,8 @@ export interface ActiveUnderline {
   progress: number; // 0 to 1
   isRtl: boolean;
   color?: string;
+  /** Fades the marker out at the end of its spoken span. */
+  opacity?: number;
 }
 
 export interface ActiveFocus {
@@ -58,6 +60,8 @@ export interface RenderOptions {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
+  /** Narration length; draws the thin progress bar in exported frames. */
+  duration?: number;
 }
 
 export interface ExportProgress {

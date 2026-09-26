@@ -454,7 +454,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         timelineActions: result.actions,
         captions: result.captions,
         timingQuality: result.timingQuality,
-        pipelineVersion: 4,
+        pipelineVersion: 5,
         warnings: result.warnings,
       },
       ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
@@ -508,6 +508,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
               captions: currentProject.videoConfig.captions,
               showCaptions: currentProject.videoConfig.showCaptions,
               captionY: currentProject.videoConfig.captionY,
+              duration,
             }
           );
         },
@@ -1137,7 +1138,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
                 </div>
 
                 <div className="space-y-2">
-                  {(currentProject.videoConfig.pipelineVersion !== 4) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
+                  {(currentProject.videoConfig.pipelineVersion !== 5) && <p className="text-xs text-amber-800">Bu soru eski animasyon planını kullanıyor. Düzeltmeleri uygulamak için Yeniden Oluştur'a basın.</p>}
                   {currentProject.videoConfig.warnings?.map(w => <p key={w} className="text-xs text-amber-800">{w}</p>)}
                   {exportError && <p role="alert" className="text-xs text-red-700">{exportError}</p>}
                   {isExportingMp4 && <button type="button" className="text-xs underline" onClick={() => exportAbortRef.current?.abort()}>Oluşturmayı iptal et</button>}

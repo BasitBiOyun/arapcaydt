@@ -15,3 +15,13 @@ ElevenLabs Multilingual v2 için telaffuz sözlüğünde alias/yazım değişimi
 ## Doğrulama
 
 `tests/phrasePlayback.test.ts`: gerçek Soru 4 OCR tekrar kaydı, atlanan ikinci kelime, cümle/kelime çakışması, tekrar edilen ifadeler, satır zamanları, sabit çarpı boyutu, Latin harfine hizalama, şıkta tek vurgu ve Türkçe harf adları.
+
+## Soru tipleri ve görünüm (pipeline 5)
+
+- Bir cümlede birden çok şık değerlendirilebilir: `A ve B seçenekleri uymaz`, `A, B, D ve E şıkları yanlıştır`, `Doğru cevap C şıkkıdır, çünkü A şıkkı olmaz`. Her şık kendi cümleciğindeki hükümle işaretlenir; gruptaki çarpılar sırayla çizilir.
+- `Diğer şıklar / diğer seçenekler / diğerleri … olmaz` doğru cevap dışındaki açık şıkları eler. Sesle söylenen doğru cevap hiçbir zaman çarpılanmaz.
+- `Cevap C.`, `Cevabımız D`, `B'yi eliyoruz`, `C'de ise … uygundur` tanınır. `Şimdi de şıklara bakalım` D şıkkı sayılmaz; `I, III` gibi Roma rakamları şık değildir. Dört şıklı (LGS) sorularda yalnız görselde bulunan şıklar işlenir.
+- Metin doğru cevabı hiç söylemiyorsa seçili cevap (veya tek açık kalan şık) son cümlede işaretlenir. Metin başka bir cevap söylüyorsa uyarı verilir ve sesle uyumlu şık işaretlenir.
+- Görünüm: incelenen şık dışındaki alan hafifçe kararır (spot), çerçeve çizilerek gelir, çarpı/tik renkli rozet olarak belirir, elenen şıklar soluklaşır, doğru cevap halka + "Doğru cevap" etiketiyle gelir ve tekrar söylendiğinde yeniden vurgulanır. Arapça ifadeler sesle birlikte sağdan sola fosforlu kalemle taranır.
+- Altyazı, konuşulan kelimeyi kelime zamanlarıyla (karaoke) vurgular; Arapça kelimeler Türkçe satır içinde doğru sırada durur. Altta ince ilerleme çubuğu bulunur.
+- Eski projeler için **Yeniden Oluştur** gerekir; ses yeniden üretilmez.

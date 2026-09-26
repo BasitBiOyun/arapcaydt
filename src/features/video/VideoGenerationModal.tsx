@@ -109,8 +109,10 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       const result = await localVideoPipeline.executePipeline({
         imageUrl: project.imageUrl,
         solutionText: project.solutionText,
+        correctAnswer: project.correctAnswer,
         narrationSource: activeNarrationSource,
         existingRegions: project.videoConfig?.regions?.length ? project.videoConfig.regions : undefined,
+        suppressedRegionIds: project.videoConfig?.suppressedRegionIds,
         onProgress: (p: LocalPipelineProgress) => {
           setStatusDetail(p.message);
           if (p.stage === 'ocr' || p.stage === 'detect_layout') {

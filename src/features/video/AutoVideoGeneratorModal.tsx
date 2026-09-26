@@ -44,6 +44,7 @@ export const AutoVideoGeneratorModal: React.FC<AutoVideoGeneratorModalProps> = (
       const result = await localVideoPipeline.executePipeline({
         imageUrl: project.imageUrl,
         solutionText: project.solutionText,
+        correctAnswer: project.correctAnswer,
         narrationSource: project.narrationSource || {
           type: 'uploaded',
           audioUrl: project.audioNarration?.audioUrl || '',

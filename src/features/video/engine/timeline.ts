@@ -89,6 +89,7 @@ export function computeTimelineVisualState(
             regionId: action.targetRegionId,
             progress,
             isRtl: true, // Arabic YDT default is right-to-left
+            opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .18) : 1,
           });
         }
         break;
@@ -98,7 +99,8 @@ export function computeTimelineVisualState(
         // Focus box emphasizes region during duration
         const duration = action.duration ?? 2.5;
         if (currentTime <= action.start + duration) {
-          const intensity = Math.min(1, elapsed / 0.25);
+          // Soft exit so switching options never snaps; very short cues keep full strength.
+          const intensity = Math.min(1, elapsed / 0.25, duration > .6 ? (duration - elapsed) / .15 : 1);
           state.activeFocus.push({
             regionId: action.targetRegionId,
             intensity,

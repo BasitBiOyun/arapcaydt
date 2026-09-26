@@ -54,6 +54,8 @@ export class LocalVideoPipeline {
     narrationSource: NarrationSource;
     existingRegions?: AnnotationRegion[];
     suppressedRegionIds?: string[];
+    /** Teacher-selected answer: used when the script never names it, never to cross it out. */
+    correctAnswer?: 'A' | 'B' | 'C' | 'D' | 'E';
     onProgress?: (progress: LocalPipelineProgress) => void;
   }): Promise<LocalPipelineResult> {
     const { imageUrl, solutionText, narrationSource, onProgress } = params;
@@ -135,7 +137,7 @@ export class LocalVideoPipeline {
       message: 'Şık eleme, doğru cevap ve vurgu adımları çıkarılıyor...',
     });
 
-    const parseResult = parseSolutionSemantics(solutionText, finalRegions, arabicMatches);
+    const parseResult = parseSolutionSemantics(solutionText, finalRegions, arabicMatches, params.correctAnswer);
 
     onProgress?.({
       stage: 'timeline_align',
@@ -153,7 +155,9 @@ export class LocalVideoPipeline {
     if (alignment.quality !== 'word-aligned') warnings.push(alignment.quality === 'approximate'
       ? 'Ses zamanlamaları eşleştirilemedi. Süreler yaklaşık; dışa aktarmadan önce zaman çizelgesini kontrol edin.'
       : 'Bazı ifadelerin süreleri komşu ses kelimelerinden hesaplandı. Önizlemede zamanlamayı kontrol edin.');
-    if (!parseResult.deducedCorrectAnswer) warnings.push('Çözüm metninde kesin doğru cevap bulunamadı. Doğru şıkkı zaman çizelgesinden işaretleyin.');
+    if (parseResult.deducedCorrectAnswer && params.correctAnswer && parseResult.deducedCorrectAnswer !== params.correctAnswer)
+      warnings.push(`Çözüm metni ${parseResult.deducedCorrectAnswer} diyor; seçili cevap ${params.correctAnswer} idi. Video sesle uyumlu olması için ${parseResult.deducedCorrectAnswer} şıkkını işaretler.`);
+    if (!parseResult.deducedCorrectAnswer && !actions.some(a => a.type === 'correct')) warnings.push('Çözüm metninde kesin doğru cevap bulunamadı. Doğru şıkkı zaman çizelgesinden işaretleyin.');
 
     // Never silently claim success and then export only image + audio.
     if (actions.length === 0) {

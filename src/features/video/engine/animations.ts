@@ -7,6 +7,12 @@ export function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 3);
 }
 
+/** Slight overshoot for badges that "pop" into place. */
+export function easeOutBack(t: number): number {
+  const c = 1.70158; const x = Math.max(0, Math.min(1, t)) - 1;
+  return 1 + (c + 1) * x * x * x + c * x * x;
+}
+
 export function easeInOutQuad(t: number): number {
   const clamped = Math.max(0, Math.min(1, t));
   return clamped < 0.5 ? 2 * clamped * clamped : 1 - Math.pow(-2 * clamped + 2, 2) / 2;
@@ -40,7 +46,7 @@ export function drawAnimatedCross(
 
   // White halo / drop shadow for contrast against question text
   ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
-  ctx.shadowBlur = 4;
+  ctx.shadowBlur = color === '#FFFFFF' ? 0 : 4;
 
   const halfSize = radius * 0.9;
   const p1 = Math.min(1, progress * 2); // first slash (top-left to bottom-right)
@@ -97,7 +103,7 @@ export function drawAnimatedCheck(
   ctx.lineJoin = 'round';
 
   ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
-  ctx.shadowBlur = 5;
+  ctx.shadowBlur = color === '#FFFFFF' ? 0 : 5;
 
   const startX = centerX - radius * 0.75;
   const startY = centerY - radius * 0.05;

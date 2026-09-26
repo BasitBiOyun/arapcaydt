@@ -6,7 +6,7 @@ export interface SourceNarrationWord extends NarrationWord {
   sourceEnd: number;
   matched: boolean;
 }
-export interface AlignedCaption { text: string; start: number; end: number }
+export interface AlignedCaption { text: string; start: number; end: number; words?: Array<{ from: number; to: number; start: number; end: number }> }
 export interface SolutionNarrationAlignment {
   words: SourceNarrationWord[];
   captions: AlignedCaption[];
@@ -116,10 +116,14 @@ export function alignSolutionNarration(
     if (!split) continue;
     let textEnd = next?.sourceStart ?? solutionText.length;
     if (next) while (textEnd > words[i].sourceEnd && !/\s/.test(solutionText[textEnd - 1])) textEnd--;
+    const raw = solutionText.slice(captionStart, textEnd);
+    const offset = captionStart + raw.length - raw.trimStart().length;
     captions.push({
-      text: solutionText.slice(captionStart, textEnd).trim(),
+      text: raw.trim(),
       start: words[first].start,
       end: Math.min(duration, Math.max(words[i].end, words[first].start + 0.1)),
+      words: words.slice(first, i + 1).map(word => ({ from: word.sourceStart - offset, to: word.sourceEnd - offset,
+        start: word.start, end: word.end })),
     });
     captionStart = textEnd;
     first = i + 1;
@@ -167,11 +171,18 @@ export function alignEventsWithNarration(
       && other.event.targetRegionId === event.targetRegionId && other.event.sourceStart === event.sourceStart)) {
       start = Math.min(duration, start + 0.18);
     }
+    // One judgment for several options ("diğer şıklar elenir") draws the marks in sequence, not as one flash.
+    if (event.actionType === 'reject' || event.actionType === 'correct') {
+      const siblings = timed.filter(other => ['reject', 'correct'].includes(other.event.actionType)
+        && other.event.sourceStart === event.sourceStart && other.event.sourceEnd === event.sourceEnd);
+      start = Math.min(duration, start + 0.14 * siblings.indexOf(item));
+    }
     let end = item.end;
     if (event.actionType === 'reject' || event.actionType === 'correct') end = duration;
     else if (event.actionType === 'focus') {
+      // Options named together ("A ve B şıkları") share the frame instead of cancelling each other.
       const next = timed.slice(index + 1).find(other =>
-        (other.event.actionType === 'focus' && other.event.targetRegionId !== event.targetRegionId)
+        (other.event.actionType === 'focus' && other.event.targetRegionId !== event.targetRegionId && other.start > item.start + 0.05)
         || (other.event.targetRegionId === event.targetRegionId && ['reject', 'correct'].includes(other.event.actionType)));
       end = next ? next.start + (next.event.actionType === 'correct' && next.event.sourceStart === event.sourceStart ? 0.18 : 0) : duration;
     } else if (event.actionType === 'highlight' || event.actionType === 'underline') {

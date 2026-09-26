@@ -122,9 +122,10 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         captions: videoConfig.captions,
         showCaptions: videoConfig.showCaptions,
         captionY: videoConfig.captionY,
+        duration,
       }
     );
-  }, [currentTime, imageElement, regions, actions, videoConfig, selectedRegionId]);
+  }, [currentTime, imageElement, regions, actions, videoConfig, selectedRegionId, duration]);
 
   useEffect(() => {
     renderFrame();

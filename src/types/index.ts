@@ -78,6 +78,8 @@ export interface VideoCaption {
   start: number;
   end: number;
   text: string;
+  /** Spoken timing of each word, as offsets into `text` (karaoke highlight). */
+  words?: Array<{ from: number; to: number; start: number; end: number }>;
 }
 
 export type VideoActionType =

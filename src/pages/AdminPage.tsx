@@ -48,8 +48,8 @@ export const AdminPage:React.FC=()=>{
  };
  const who=(id:string)=>data?.members.find(m=>m.id===id)?.name||'Öğretmen';
  const categoryEntries=(counts:Record<string,number>|undefined)=>Object.entries(counts||{}).sort((a,b)=>b[1]-a[1]);
- const totalVideoReady=Object.values(analytics?.members||{}).reduce((sum,m)=>sum+m.videoReady,0);
- const totalUploadedAudio=Object.values(analytics?.members||{}).reduce((sum,m)=>sum+m.uploadedAudio,0);
+ const totalVideoReady=Object.values<MemberAnalytics>(analytics?.members||{}).reduce((sum,m)=>sum+m.videoReady,0);
+ const totalUploadedAudio=Object.values<MemberAnalytics>(analytics?.members||{}).reduce((sum,m)=>sum+m.uploadedAudio,0);
  return <section className="p-6 space-y-6 max-w-7xl mx-auto">
   {viewing&&<ProjectViewer project={viewing} onClose={()=>setViewing(null)}/>}
   <div className="flex justify-between items-start"><div><h2 className="text-2xl font-bold">Stüdyo yönetimi</h2><p className="text-stone-500 text-sm mt-1">Üyelik erişimini yönetin, öğretmenlerin üretimlerini görüntüleyin. İçerikler için yönetici onayı gerekmez.</p></div><button disabled={busy} onClick={()=>void load()} className="border rounded px-4 py-2">{busy?'Yükleniyor…':'Yenile'}</button></div>
