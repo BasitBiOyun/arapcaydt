@@ -225,7 +225,30 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         audioApproved: false,
         videoReady: false,
       });
-      if(!persisted)setAudioError('Ses üretildi ama kaydedilemedi. MP3 dosyasını indirip Kaydet düğmesini tekrar deneyin.');
+      if(!persisted) {
+        setAudioError('Ses üretildi ama kaydedilemedi. Ses dosyasını indirip Kaydet düğmesini tekrar deneyin.');
+      } else if (result.provider === 'gemini') {
+        try {
+          const words = await narrationService.alignGeneratedNarration(persisted.id);
+          if (words.length) {
+            await saveCurrentProject({
+              narrationSource: persisted.narrationSource ? {
+                ...persisted.narrationSource,
+                words,
+                timingSource: 'gemini-transcribe',
+              } : persisted.narrationSource,
+              audioNarration: persisted.audioNarration ? {
+                ...persisted.audioNarration,
+                words,
+                wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+              } : persisted.audioNarration,
+            });
+          }
+        } catch (alignError) {
+          console.warn('Gemini word timing unavailable:', alignError);
+          setAudioError('Ses Gemini ile oluşturuldu. Kelime zaman damgaları alınamadı; animasyon hazırlanırken yaklaşık zamanlama kullanılabilir.');
+        }
+      }
       setVideoGenerated(false);
     } catch (err: any) {
       console.error('Audio generation error:', err);

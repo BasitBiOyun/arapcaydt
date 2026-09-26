@@ -30,6 +30,7 @@ export interface BatchDeps<F> {
   createProject(project: Omit<QuestionProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<QuestionProject>;
   saveProject(project: QuestionProject): Promise<QuestionProject>;
   generateVoice(project: QuestionProject): Promise<GenerateNarrationResponse>;
+  alignGeneratedVoice?(project: QuestionProject): Promise<Array<{ text: string; start: number; end: number }>>;
   prepareUpload(project: QuestionProject, file: F): Promise<UploadedNarrationResult>;
   runPipeline(project: QuestionProject, declaredAnswer?: QuestionProject['correctAnswer']): Promise<LocalPipelineResult>;
   exportVideo(project: QuestionProject, onPercent: (percent: number) => void, signal?: AbortSignal): Promise<Blob>;
@@ -87,8 +88,28 @@ export async function runBatch<F extends { name: string }>(
       } else if (options.generateVoice) {
         step('voice', 'Gemini TTS ile seslendiriliyor');
         await spaceVoice();
-        const narration = narrationFromTts(await deps.generateVoice(project), true);
+        const generated = await deps.generateVoice(project);
+        const narration = narrationFromTts(generated, true);
         project = await deps.saveProject({ ...project, ...narration, audioApproved: true, status: 'audio_approved' });
+        if (generated.provider === 'gemini' && deps.alignGeneratedVoice) {
+          step('voice', 'Kelime zaman damgaları alınıyor');
+          try {
+            const words = await deps.alignGeneratedVoice(project);
+            if (words.length) {
+              project = await deps.saveProject({
+                ...project,
+                narrationSource: project.narrationSource ? { ...project.narrationSource, words, timingSource: 'gemini-transcribe' } : project.narrationSource,
+                audioNarration: project.audioNarration ? {
+                  ...project.audioNarration,
+                  words,
+                  wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+                } : project.audioNarration,
+              });
+            }
+          } catch {
+            // Exact timestamps are preferred but not allowed to discard an otherwise valid narration.
+          }
+        }
       } else {
         update(item.number, { stage: 'done', message: 'Proje oluşturuldu; ses bekleniyor', projectId, readiness: assessReadiness(project).level });
         continue;

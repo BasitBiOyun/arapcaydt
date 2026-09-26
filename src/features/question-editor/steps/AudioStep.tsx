@@ -45,7 +45,9 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               <span className="text-xs font-bold text-[#1C1917] truncate">
                 {isUploadedAudio
                   ? `Yüklenen Ses: ${currentProject.narrationSource?.fileName || 'seslendirme.mp3'}`
-                  : 'Eğitmen Sesi'}
+                  : currentProject.narrationSource?.type === 'gemini'
+                    ? `Gemini · ${currentProject.narrationSource.modelId || 'TTS'} · ${currentProject.narrationSource.voiceName || 'Achernar'}`
+                    : `ElevenLabs · ${currentProject.narrationSource?.voiceName || 'Eğitmen Sesi'}`}
               </span>
             </div>
 
@@ -114,7 +116,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
             >
               <DownloadSimple size={13} weight="bold" />
-              <span>MP3 İndir</span>
+              <span>Ses Dosyasını İndir</span>
             </button>
 
             {isUploadedAudio ? (
@@ -167,6 +169,13 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </button>
             )}
           </div>
+          {currentProject.narrationSource?.type === 'gemini' && (
+            <p className="text-[10px] text-[#787670]">
+              Zamanlama: {currentProject.narrationSource.timingSource === 'gemini-transcribe'
+                ? 'Gemini 3.5 Transcribe kelime zaman damgaları'
+                : 'henüz kesin kelime zaman damgası yok'}
+            </p>
+          )}
         </div>
       ) : (
         /* Two clean choices: Seslendirme Oluştur or MP3 Yükle */

@@ -72,6 +72,7 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
       saveProject: p => projectRepository.save(p),
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat, voiceSettings }),
+      alignGeneratedVoice: p => narrationService.alignGeneratedNarration(p.id),
       prepareUpload: (p, file) => prepareUploadedNarration(file, {
         readDataUrl, readDuration: readAudioDuration,
         align: (audioBase64, mimeType) => elevenlabsService.alignUploadedNarration({ projectId: p.id, text: p.solutionText.trim(), audioBase64, mimeType }),

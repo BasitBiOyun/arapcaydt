@@ -37,6 +37,17 @@ class NarrationService {
     return this.instance || (this.instance = new NarrationService());
   }
 
+  async alignGeneratedNarration(projectId: string): Promise<Array<{ text: string; start: number; end: number }>> {
+    const res = await fetch('/api/gemini/align-project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...await authHeaders() },
+      body: JSON.stringify({ projectId }),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) throw new Error(data?.error || `Gemini zamanlama servisi hata döndürdü (HTTP ${res.status}).`);
+    return Array.isArray(data?.words) ? data.words : [];
+  }
+
   async generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
     try {
       const res = await fetch('/api/gemini/generate', {
