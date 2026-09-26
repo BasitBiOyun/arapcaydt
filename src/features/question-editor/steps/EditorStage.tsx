@@ -97,7 +97,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} onSeek={setCurrentPreviewTime}
             regions={currentProject.videoConfig.regions || []} actions={currentProject.videoConfig.timelineActions || []}
             onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
-            onRequestAutoGenerate={() => setIsVideoModalOpen(true)} />
+            onRequestAutoGenerate={() => setIsVideoModalOpen(true)} keyboardEnabled={step===3&&!editRegions} />
         </details>
       </div>
     ) : hasImage ? (

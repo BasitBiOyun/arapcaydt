@@ -25,3 +25,14 @@ export function shiftAction(action:VideoAction,delta:number,duration:number):Vid
 export function moveRegion(region:AnnotationRegion,dx:number,dy:number):AnnotationRegion {
   return {...region,x:Math.max(0,Math.min(1-region.width,region.x+dx)),y:Math.max(0,Math.min(1-region.height,region.y+dy)),manuallyAdjusted:true};
 }
+
+/** Next/previous animation cue from the playhead (keyboard navigation in the timing editor). */
+export function adjacentAction(actions:VideoAction[],time:number,direction:1|-1):VideoAction|undefined {
+  const sorted=[...actions].sort((a,b)=>a.start-b.start);
+  return direction>0?sorted.find(a=>a.start>time+.05):[...sorted].reverse().find(a=>a.start<time-.05);
+}
+/** Keys typed into a form field never drive the player. */
+export function isTypingTarget(target:EventTarget|null):boolean {
+  const el=target as HTMLElement|null;
+  return !!el&&(['INPUT','TEXTAREA','SELECT'].includes(el.tagName)||el.isContentEditable===true);
+}

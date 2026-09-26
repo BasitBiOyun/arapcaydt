@@ -33,3 +33,11 @@ ElevenLabs Multilingual v2 için telaffuz sözlüğünde alias/yazım değişimi
 - Desteklenen düzenler: A B / C D / E ızgarası, beş şık tek satır ve uzun şıklar tek sütun. Etiket metne yapışıp kaybolursa, satır/sütun aralığından bulunan konum yalnız orada gerçekten şık metni varsa kullanılır.
 - Şık kutuları birbirine girmez; harekeler taşırsa ortak boşluk ikiye bölünür. Çerçeve, spot ve ✓/X rozetleri komşu şıkka taşmaz. Yan tarafta yer yoksa rozet boş tarafa ya da üste geçer.
 - Arapça ifadeler kutu içine alınmaz; okunurken sağdan sola, alttaki harekelerin de altından geçen bir çizgiyle vurgulanır.
+
+## Tur 2: şablon, hız, kısayol, kamera, kapanış
+
+- **Şablon profili:** Aynı şablondaki iki slaytta aynı yerde okunan yazılar (üst bant, yönerge kutusu, alt yazı) bu tarayıcıda öğrenilir ve şık/kök tespitinden önce ayıklanır. Kısa etiketler (`A)`), Arapça kelimeler ve şık/kök kutularının içindekiler hiç öğrenilmez. Görsel kırpılmaz.
+- **Önceden yükleme:** Görsel yüklü ama işaretler henüz hazırlanmamışsa OCR modelleri tarayıcı boşta kaldığında arka planda indirilir. Whisper önceden yüklenmez; yüklenen MP3'lerde artık sunucu hizalaması kullanılıyor.
+- **Kısayollar (İşaretler adımı):** Boşluk oynat/durdur, ← → önceki/sonraki işaret, Shift + ← → seçili işareti 0,2 sn kaydır. Yazı alanlarında devre dışıdır.
+- **Kamera:** Uzun sorularda (soru kökü slaytın %18'inden yüksek veya şıklar uzun cümle) incelenen şıkka en fazla %22 yumuşak yakınlaştırma yapılır. Zamanın saf fonksiyonudur; önizleme ve MP4 aynıdır. Altyazı ve ilerleme çubuğu sabit kalır.
+- **Kapanış:** Anlatım bittikten sonra 2,5 sn sessiz kapanış: doğru şık aydınlatılır ve "Doğru cevap: X" kartı gösterilir. Önizlemede de oynar.

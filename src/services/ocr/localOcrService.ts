@@ -21,7 +21,19 @@ class LocalOcrService {
    * Turkish, and English. The worker is reused between questions so the large
    * language models are not downloaded/initialized on every video.
    */
+  /** Current caller's progress sink; the worker logger outlives any single call (e.g. a background warm-up). */
+  private progressListener?: (progress: OCRProgress) => void;
+
+  /**
+   * Starts downloading/initialising the OCR models in the background so the
+   * teacher's first "İşaretleri hazırla" does not wait for them. Safe to call often.
+   */
+  public warmUp(): void {
+    void this.getWorker().catch(() => { /* the real scan reports errors */ });
+  }
+
   private async getWorker(onProgress?: (progress: OCRProgress) => void): Promise<Worker> {
+    if (onProgress) this.progressListener = onProgress;
     if (this.worker) {
       return this.worker;
     }
@@ -43,6 +55,7 @@ class LocalOcrService {
 
       const worker = await createWorker(['ara', 'tur', 'eng'], 1, {
         logger: (m) => {
+          const onProgress = this.progressListener;
           if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract') {
             onProgress?.({
               status: 'loading_model',

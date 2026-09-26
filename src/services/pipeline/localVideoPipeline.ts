@@ -5,6 +5,8 @@ import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '..
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
+import { learnTemplate, matchProfile, stripTemplateWords } from '../ocr/templateProfile';
+import { imageSignature, loadTemplateProfiles, saveTemplateProfiles } from '../ocr/templateStore';
 
 export interface LocalPipelineProgress {
   stage: 'ocr' | 'detect_layout' | 'arabic_matching' | 'semantic_parsing' | 'timeline_align' | 'completed';
@@ -74,7 +76,11 @@ export class LocalVideoPipeline {
       message: 'Tesseract OCR ile soru metni ve şıklar taranıyor...',
     });
 
-    const ocrResult = await localOcrService.recognize(imageUrl, (p: OCRProgress) => {
+    // Fixed template text (header, instruction box, footer) learned from earlier slides is ignored.
+    const signature = await imageSignature(imageUrl);
+    const templates = loadTemplateProfiles();
+    const template = signature ? matchProfile(templates, signature) : undefined;
+    const rawOcr = await localOcrService.recognize(imageUrl, (p: OCRProgress) => {
       onProgress?.({
         stage: 'ocr',
         progress: Math.max(10, Math.min(40, Math.round(10 + p.progress * 0.3))),
@@ -88,6 +94,7 @@ export class LocalVideoPipeline {
       message: 'YDT Arapça şık konumları ve soru kökü tespit ediliyor...',
     });
 
+    const ocrResult = stripTemplateWords(rawOcr, template);
     const layout = detectYdtQuestionRegions(ocrResult);
     const manual = (params.existingRegions || []).filter(r => r.manuallyAdjusted);
     const suppressed = new Set(params.suppressedRegionIds || []);
@@ -105,6 +112,8 @@ export class LocalVideoPipeline {
       else finalRegions.push({ ...region, id });
     }
     const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter(letter => finalRegions.some(r => r.id === `option-${letter.toLowerCase()}`));
+    if (signature && detectedOptions.length >= 4)
+      saveTemplateProfiles(learnTemplate(templates, signature, rawOcr.words, finalRegions));
 
 
     onProgress?.({

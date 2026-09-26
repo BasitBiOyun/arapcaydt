@@ -1,5 +1,5 @@
-import {shiftAction} from '../question-editor/workflow';
-import React, { useState } from 'react';
+import {shiftAction,adjacentAction,isTypingTarget} from '../question-editor/workflow';
+import React, { useEffect, useState } from 'react';
 import { 
   VideoAction, 
   VideoActionType, 
@@ -39,6 +39,8 @@ interface EditableTimelineUIProps {
   audioNarration?: AudioNarration;
   correctAnswer?: 'A' | 'B' | 'C' | 'D' | 'E';
   onRequestAutoGenerate?: () => void;
+  /** Space / ← → / Shift+← → shortcuts; only while this editor is the visible step. */
+  keyboardEnabled?: boolean;
 }
 
 const ACTION_TYPES: { type: VideoActionType; label: string; icon: any; color: string }[] = [
@@ -64,6 +66,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
   audioNarration,
   correctAnswer = 'C',
   onRequestAutoGenerate,
+  keyboardEnabled = false,
 }) => {
   const [undo,setUndo]=useState<VideoAction[][]>([]);
   const commit=(next:VideoAction[])=>{setUndo(h=>[...h.slice(-29),actions]);onUpdateActions(next);};
@@ -77,6 +80,33 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
   const [newTargetId, setNewTargetId] = useState<string>(regions[0]?.id || '');
   const [newStart, setNewStart] = useState<number>(parseFloat(currentTime.toFixed(1)));
   const [newDuration, setNewDuration] = useState<number>(2.5);
+  // Re-bound each render so the handler always sees the current playhead and selection.
+  useEffect(() => {
+    if (!keyboardEnabled) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || isTypingTarget(e.target)) return;
+      const list = actions, time = currentTime, selected = selectedActionId;
+      if (e.key === ' ' || e.code === 'Space') {
+        if ((e.target as HTMLElement | null)?.tagName === 'BUTTON') return;
+        e.preventDefault(); onPlayPause(); return;
+      }
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      const direction = e.key === 'ArrowRight' ? 1 : -1;
+      e.preventDefault();
+      if (e.shiftKey) {
+        const action = list.find(a => a.id === selected);
+        if (!action) return;
+        const moved = shiftAction(action, direction * .2, effectiveDuration);
+        commit(list.map(a => a.id === selected ? moved : a));
+        onSeek(moved.start);
+        return;
+      }
+      const next = adjacentAction(list, time, direction);
+      if (next) { setSelectedActionId(next.id); onSeek(next.start); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
 
   const handleTimelineClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -169,6 +199,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
           <button className="studio-secondary" disabled={!selectedActionId} onClick={()=>{const a=actions.find(a=>a.id===selectedActionId);if(a){onSeek(Math.max(0,a.start-.5));if(!isPlaying)onPlayPause();}}}>Bu anı dinle</button>
           <button className="studio-secondary" disabled={!undo.length} onClick={()=>{if(undo.length){onUpdateActions(undo[undo.length-1]);setUndo(undo.slice(0,-1));}}}>Geri al</button>
         </div>
+        {keyboardEnabled&&<p className="text-[11px] text-[#787670]">Kısayollar: Boşluk oynat/durdur · ← → önceki/sonraki işaret · Shift + ← → seçili işareti 0,2 sn kaydır</p>}
       </div>
       {/* Header bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[#EFEFEA]">

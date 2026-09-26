@@ -1,6 +1,6 @@
 import type { QuestionProject } from '../../types';
 import { videoExporter } from './engine/exporter';
-import { renderQuestionVideoFrame } from './engine/renderer';
+import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
 
 /** Renders one project to a 1080p MP4 in this browser (single editor download and batch queue share it). */
 export async function exportProjectVideo(project: QuestionProject, onProgress: (percent: number) => void, signal?: AbortSignal): Promise<Blob> {
@@ -30,7 +30,7 @@ export async function exportProjectVideo(project: QuestionProject, onProgress: (
       });
     },
     audioUrl,
-    duration,
+    duration + outroSeconds(config.timelineActions),
     { resolution: '1080p', fps: 30, format: 'mp4', aspectRatio: (config.aspectRatio || '16:9') as '16:9' | '9:16' },
     progress => onProgress(progress.percent),
     signal,

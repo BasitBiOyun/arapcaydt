@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { AnnotationRegion, VideoAction, VideoConfig } from '../../types';
-import { renderQuestionVideoFrame } from './engine/renderer';
+import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
 import { 
   Play, 
   Pause, 
@@ -39,6 +39,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
   selectedRegionId = null,
   audioUrl,
 }) => {
+  const totalDuration = duration + outroSeconds(actions);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -79,21 +80,28 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
       audio.currentTime = timeRef.current;
       audio.play().catch(() => { if (!stopped) toggleRef.current(); });
     }
-    const origin = performance.now() / 1000 - timeRef.current;
+    let origin = performance.now() / 1000 - timeRef.current;
+    // After the narration the silent closing frame runs on the wall clock.
+    let onWallClock = !audio || timeRef.current >= duration - .02;
     const tick = () => {
       if (stopped) return;
-      const next = audio ? audio.currentTime : performance.now() / 1000 - origin;
-      if (next >= duration) { toggleRef.current(); seekRef.current(duration); return; }
+      if (audio && !onWallClock && (audio.ended || audio.currentTime >= duration - .02) && totalDuration > duration) {
+        onWallClock = true;
+        origin = performance.now() / 1000 - Math.max(audio.currentTime, duration);
+      }
+      const next = audio && !onWallClock ? audio.currentTime : performance.now() / 1000 - origin;
+      if (next >= totalDuration) { toggleRef.current(); seekRef.current(totalDuration); return; }
       seekRef.current(next);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => { stopped = true; cancelAnimationFrame(raf); audio?.pause(); };
-  }, [isPlaying, audioUrl, duration]);
+  }, [isPlaying, audioUrl, duration, totalDuration]);
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio && (!isPlaying || Math.abs(audio.currentTime - currentTime) > .4))
-      audio.currentTime = currentTime;
+    // The closing frame has no audio: leave the ended track alone instead of re-seeking it every frame.
+    if (audio && (!isPlaying || Math.abs(audio.currentTime - currentTime) > .4) && (currentTime < duration || !isPlaying))
+      audio.currentTime = Math.min(currentTime, duration);
   }, [currentTime, isPlaying]);
 
   // Redraw canvas whenever currentTime, image, regions, or actions change
@@ -134,7 +142,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
     return () => { active = false; };
   }, [renderFrame]);
 
-  const effectiveDuration = Math.max(1, duration);
+  const effectiveDuration = Math.max(1, totalDuration);
 
   const handleFullscreen = () => {
     if (containerRef.current) {

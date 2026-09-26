@@ -12,6 +12,7 @@ import { useProjects } from '../features/projects/ProjectContext';
 import { VideoGenerationModal } from '../features/video/VideoGenerationModal';
 import { LocalPipelineResult } from '../services/pipeline/localVideoPipeline';
 import { localWhisperService } from '../services/whisper/localWhisperService';
+import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration } from '../services/narration/browserMedia';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
@@ -104,6 +105,15 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     setVideoGenerated(ready);
     setPreviewMode(ready ? 'video' : 'image');
   }, [currentProject?.id]);
+
+  // OCR models download while the teacher writes the solution, not when they press "İşaretleri hazırla".
+  const needsOcrSoon = Boolean(currentProject?.imageUrl) && !hasAnimationPlan(currentProject);
+  useEffect(() => {
+    if (!needsOcrSoon) return;
+    const idle = (window as any).requestIdleCallback as undefined | ((cb: () => void, o?: { timeout: number }) => number);
+    const handle = idle ? idle(() => localOcrService.warmUp(), { timeout: 4000 }) : window.setTimeout(() => localOcrService.warmUp(), 1500);
+    return () => { if (idle) (window as any).cancelIdleCallback?.(handle); else window.clearTimeout(handle); };
+  }, [needsOcrSoon]);
 
   // Audio playback updates
   const activeAudioUrl =

@@ -49,6 +49,7 @@ export class BrowserVideoExporter implements IVideoExporter {
       onProgress({ stage: 'preparing', percent: 2, message: 'Fontlar ve ses hazırlanıyor...' });
       await Promise.all([
         document.fonts.load('500 36px Manrope'),
+        document.fonts.load('700 36px Manrope'),
         document.fonts.load('400 36px Amiri', 'العربية'),
       ]);
       await document.fonts.ready;

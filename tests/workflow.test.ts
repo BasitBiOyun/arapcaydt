@@ -36,3 +36,14 @@ test('narration preflight finds omitted options',()=>{
  assert.ok(result.missing.includes('C'));assert.ok(result.missing.includes('E'));
  assert.equal(result.missing.includes('A'),false);
 });
+
+test('keyboard navigation jumps to the next and previous cue from the playhead', async () => {
+  const { adjacentAction, isTypingTarget } = await import('../src/features/question-editor/workflow');
+  const actions = [5, 1, 9].map((start, i) => ({ id: `a${i}`, type: 'focus', targetRegionId: 'x', start, duration: 1 })) as any;
+  assert.equal(adjacentAction(actions, 1, 1)?.start, 5, 'the cue under the playhead is skipped');
+  assert.equal(adjacentAction(actions, 5, -1)?.start, 1);
+  assert.equal(adjacentAction(actions, 9, 1), undefined);
+  assert.equal(adjacentAction(actions, 0, -1), undefined);
+  assert.ok(isTypingTarget({ tagName: 'TEXTAREA' } as any));
+  assert.ok(!isTypingTarget({ tagName: 'CANVAS' } as any));
+});

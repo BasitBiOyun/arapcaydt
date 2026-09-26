@@ -68,3 +68,43 @@ test('X / check glyphs are drawn once: no drop-shadow offset leaks into the whit
   renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,2,{width:1920,height:1080,aspectRatio:'16:9'});
   assert.deepEqual(leaks,[]);
 });
+test('camera pushes in only on long questions, eases in, and never shows past the slide',async()=>{
+  const {cameraAt,isLongQuestion}=await import('../src/features/video/engine/renderer');
+  const fit={x:0,y:0,width:1920,height:1080};
+  const opt=(l:string,y:number,w:number)=>({id:`option-${l}`,type:`option-${l}`,label:l,x:.26,y,width:w,height:.08}) as any;
+  const long=[opt('a',.4,.35),opt('b',.5,.35),opt('c',.6,.35)];
+  const short=[opt('a',.4,.09),opt('b',.5,.09),{id:'question-root',type:'paragraph',label:'k',x:.4,y:.3,width:.3,height:.07} as any];
+  const actions:VideoAction[]=[{id:'f',type:'focus',targetRegionId:'option-c',start:4,duration:3}];
+  assert.ok(isLongQuestion(long));assert.ok(!isLongQuestion(short));
+  assert.equal(cameraAt(6,actions,short,fit,1920,1080).zoom,1);
+  assert.equal(cameraAt(3,actions,long,fit,1920,1080).zoom,1);
+  const easing=cameraAt(4.2,actions,long,fit,1920,1080), settled=cameraAt(5.5,actions,long,fit,1920,1080);
+  assert.ok(easing.zoom>1&&easing.zoom<settled.zoom,'zoom ramps in');
+  assert.ok(settled.zoom<=1.22);
+  const hx=1920/(2*settled.zoom);assert.ok(settled.cx>=hx&&settled.cx<=1920-hx);
+  assert.equal(cameraAt(8,actions,long,fit,1920,1080).zoom,1,'returns to the full slide after the focus');
+  assert.deepEqual(cameraAt(5,actions,long,fit,1920,1080),cameraAt(5,actions,long,fit,1920,1080));
+});
+test('closing frame restates the checked answer only after the narration ends',async()=>{
+  const {renderQuestionVideoFrame,outroSeconds}=await import('../src/features/video/engine/renderer');
+  const texts:string[]=[];
+  const ctx:any=new Proxy({} as Record<string,unknown>,{get:(t,k)=>k in t?t[k as string]:k==='measureText'?()=>({width:10}):k==='fillText'?(s:string)=>texts.push(s):()=>{},set:(t,k,v)=>{t[k as string]=v;return true;}});
+  const regions=[{id:'option-c',type:'option-c',label:'C',x:.3,y:.5,width:.1,height:.06}] as any;
+  const actions:VideoAction[]=[{id:'c',type:'correct',targetRegionId:'option-c',start:8,duration:2}];
+  const opts={width:1920,height:1080,aspectRatio:'16:9' as const,duration:10};
+  assert.equal(outroSeconds(actions),2.5);assert.equal(outroSeconds([]),0);
+  renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,9.9,opts);
+  assert.ok(!texts.includes('Doğru cevap: C'));
+  renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,11,opts);
+  assert.ok(texts.includes('Doğru cevap: C'));
+});
+test('"Doğru cevap" label never covers the question stem',async()=>{
+  const {renderQuestionVideoFrame}=await import('../src/features/video/engine/renderer');
+  const draw=(regions:any[])=>{const texts:string[]=[];
+    const ctx:any=new Proxy({} as Record<string,unknown>,{get:(t,k)=>k in t?t[k as string]:k==='measureText'?()=>({width:120}):k==='fillText'?(s:string)=>texts.push(s):()=>{},set:(t,k,v)=>{t[k as string]=v;return true;}});
+    renderQuestionVideoFrame(ctx,1920,1080,null,regions,[{id:'c',type:'correct',targetRegionId:'option-a',start:0,duration:9}],3,{width:1920,height:1080,aspectRatio:'16:9'});
+    return texts;};
+  const option={id:'option-a',type:'option-a',label:'A',x:.27,y:.4,width:.35,height:.08};
+  assert.ok(draw([option]).includes('Doğru cevap'));
+  assert.ok(!draw([option,{id:'question-root',type:'paragraph',label:'k',x:.44,y:.38,width:.33,height:.06}]).includes('Doğru cevap'));
+});

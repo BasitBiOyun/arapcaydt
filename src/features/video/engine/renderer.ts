@@ -203,6 +203,76 @@ function markBadge(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius
   ctx.restore();
 }
 
+/** Silent closing frame after the narration that restates the answer. */
+export const OUTRO_SECONDS = 2.5;
+export function outroSeconds(actions: VideoAction[] = []): number {
+  return actions.some(a => a.type === 'correct') ? OUTRO_SECONDS : 0;
+}
+
+function drawOutroCard(ctx: CanvasRenderingContext2D, width: number, height: number, t: number, letter: string, options: RenderOptions) {
+  const scale = Math.min(width / 1920, height / 1080);
+  const reveal = easeOutCubic(Math.min(1, t / .45));
+  if (reveal <= 0) return;
+  const text = `Doğru cevap: ${letter}`;
+  ctx.save();
+  ctx.font = '700 ' + 46 * scale + 'px "Manrope", sans-serif';
+  ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  const r = 26 * scale, gap = 18 * scale, padX = 34 * scale, h = 84 * scale;
+  const w = padX * 2 + r * 2 + gap + ctx.measureText(text).width;
+  const x = (width - w) / 2;
+  const cy = Math.max(h / 2, Math.min(height - h / 2, height * (options.captionY ?? .85))) + (1 - reveal) * 24 * scale;
+  ctx.globalAlpha = reveal;
+  ctx.shadowColor = 'rgba(15,23,42,.3)'; ctx.shadowBlur = 24 * scale; ctx.shadowOffsetY = 6 * scale;
+  ctx.fillStyle = '#16A34A'; ctx.beginPath(); ctx.roundRect(x, cy - h / 2, w, h, h / 2); ctx.fill();
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+  ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(x + padX + r, cy, r, 0, Math.PI * 2); ctx.fill();
+  drawAnimatedCheck(ctx, x + padX + r, cy, r * .62, Math.min(1, t / .6), '#16A34A', 5 * scale);
+  ctx.fillStyle = '#FFFFFF'; ctx.fillText(text, x + padX + r * 2 + gap, cy + 2 * scale);
+  ctx.restore();
+}
+
+/** Paragraph/dialogue stems or sentence-long options: small text worth a closer look. */
+export function isLongQuestion(regions: AnnotationRegion[]): boolean {
+  const root = regions.find(r => r.id === 'question-root');
+  const widths = regions.filter(r => /^option-[a-e]$/.test(r.id)).map(r => r.width).sort((a, b) => a - b);
+  return (root?.height ?? 0) >= .18 || (widths.length > 0 && widths[Math.floor(widths.length / 2)] >= .3);
+}
+
+export interface Camera { zoom: number; cx: number; cy: number }
+
+/**
+ * Gentle push-in on the option being examined in long questions. A pure
+ * function of time (moving average of the per-instant target), so preview,
+ * scrubbing and every exported frame agree. Never zooms past 1.22 and never
+ * shows past the slide's edges.
+ */
+export function cameraAt(time: number, actions: VideoAction[], regions: AnnotationRegion[], fit: FitRect, width: number, height: number): Camera {
+  const rest = { zoom: 1, cx: width / 2, cy: height / 2 };
+  if (!actions.length || !isLongQuestion(regions)) return rest;
+  const byId = new Map(regions.map(r => [r.id, r]));
+  const target = (t: number) => {
+    if (t < 0) return rest;
+    const state = computeTimelineVisualState(t, actions, regions);
+    const ids = state.activeFocus.filter(f => !state.correctRegions[f.regionId] && !state.rejectedRegions[f.regionId]).map(f => f.regionId);
+    const rects = ids.map(id => byId.get(id)).filter(Boolean).map(r => regionCanvasRect(r!, fit));
+    if (!rects.length) return rest;
+    const x0 = Math.min(...rects.map(r => r.x)), y0 = Math.min(...rects.map(r => r.y));
+    const x1 = Math.max(...rects.map(r => r.x + r.width)), y1 = Math.max(...rects.map(r => r.y + r.height));
+    const margin = 160 * Math.min(width / 1920, height / 1080);
+    const zoom = Math.max(1, Math.min(1.22, .9 * width / (x1 - x0 + 2 * margin), .9 * height / (y1 - y0 + 2 * margin)));
+    return { zoom, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
+  };
+  const samples = 12, span = .66;
+  let zoom = 0, cx = 0, cy = 0;
+  for (let k = 0; k < samples; k++) {
+    const c = target(time - span * k / (samples - 1));
+    zoom += c.zoom / samples; cx += c.cx / samples; cy += c.cy / samples;
+  }
+  if (zoom < 1.001) return rest;
+  const hx = width / (2 * zoom), hy = height / (2 * zoom);
+  return { zoom, cx: Math.max(hx, Math.min(width - hx, cx)), cy: Math.max(hy, Math.min(height - hy, cy)) };
+}
+
 /** One deterministic painter for editing, playback, and every encoded frame. */
 export function renderQuestionVideoFrame(
   ctx: CanvasRenderingContext2D, width: number, height: number,
@@ -212,6 +282,12 @@ export function renderQuestionVideoFrame(
   const scale = Math.min(width / 1920, height / 1080);
   ctx.save(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, width, height);
   const fit = calculateFitRect(imageElement?.naturalWidth || width, imageElement?.naturalHeight || height, width, height);
+  // Slide and its marks move with the camera; captions and the progress bar stay put.
+  const camera = options.interactiveMode ? null : cameraAt(currentTime, actions, regions, fit, width, height);
+  ctx.save();
+  if (camera && camera.zoom > 1) {
+    ctx.translate(width / 2, height / 2); ctx.scale(camera.zoom, camera.zoom); ctx.translate(-camera.cx, -camera.cy);
+  }
   if (imageElement?.complete && imageElement.naturalWidth > 0)
     ctx.drawImage(imageElement, fit.x, fit.y, fit.width, fit.height);
   const state = computeTimelineVisualState(currentTime, actions, regions, options.selectedRegionId);
@@ -265,7 +341,11 @@ export function renderQuestionVideoFrame(
   // Spotlight: while an option is examined the rest of the slide recedes; judged options stay visible.
   const lastCorrect = Object.values(state.correctRegions).sort((a, b) => b.timestamp - a.timestamp)[0];
   const lit = [...focused, ...emphasis];
-  const spot = lit.length
+  const outroT = options.duration && !options.interactiveMode ? currentTime - options.duration : -1;
+  const correctIds = Object.keys(state.correctRegions);
+  const spot = outroT >= 0 && correctIds.length
+    ? { ids: correctIds, strength: Math.min(1, outroT / .4) }
+    : lit.length
     ? { ids: [...lit.map(f => f.regionId), ...Object.keys(state.correctRegions)], strength: Math.max(...lit.map(f => f.intensity)) }
     : lastCorrect && age(lastCorrect) < 2.4
       ? { ids: [lastCorrect.regionId], strength: Math.min(1, age(lastCorrect) / .3, (2.4 - age(lastCorrect)) / .5) }
@@ -310,7 +390,8 @@ export function renderQuestionVideoFrame(
       const labelWidth = ctx.measureText(label).width + 28 * scale;
       const labelX = m.x + m.radius * 1.3 + 10 * scale;
       const blocked = regions.some(other => {
-        if (other.id === id || !other.type.startsWith('option')) return false;
+        // Any printed content (other options, the stem, grounded phrases) blocks the label.
+        if (other.id === id) return false;
         const b = regionCanvasRect(other, fit);
         return b.x < labelX + labelWidth && b.x + b.width > labelX
           && b.y < m.y + 20 * scale && b.y + b.height > m.y - 20 * scale;
@@ -323,7 +404,9 @@ export function renderQuestionVideoFrame(
       ctx.restore();
     }
   }
+  ctx.restore();
   drawCaption(ctx, width, height, currentTime, options);
+  if (outroT >= 0 && correctIds.length) drawOutroCard(ctx, width, height, outroT, correctIds[correctIds.length - 1].slice(-1).toUpperCase(), options);
   if (!options.interactiveMode && options.duration && options.duration > 0) {
     const p = Math.max(0, Math.min(1, currentTime / options.duration));
     ctx.fillStyle = 'rgba(139,30,45,.14)'; ctx.fillRect(0, height - 6 * scale, width, 6 * scale);
