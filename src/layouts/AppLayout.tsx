@@ -7,6 +7,7 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { QuestionsPage } from '../pages/QuestionsPage';
 import { QuestionEditorPage } from '../pages/QuestionEditorPage';
 import { SettingsPage } from '../pages/SettingsPage';
+import { BatchPage } from '../pages/BatchPage';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
 
@@ -88,6 +89,7 @@ export const AppLayout: React.FC = () => {
             />
           )}
 
+          {currentPage === 'batch' && <BatchPage onOpenProject={id => void handleSelectProject(id)} />}
           {currentPage === 'settings' && <SettingsPage />}
         </main>
       </div>

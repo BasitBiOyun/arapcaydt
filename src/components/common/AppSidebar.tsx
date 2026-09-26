@@ -6,12 +6,13 @@ import {
   Gear, 
   SignOut,
   BookOpenText,
-  IdentificationBadge
+  IdentificationBadge,
+  Stack
 } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 
-export type AppPage = 'dashboard' | 'questions' | 'editor' | 'settings' | 'admin';
+export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin';
 
 interface AppSidebarProps {
   currentPage: AppPage;
@@ -112,6 +113,18 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               {draftCount} taslak
             </span>
           )}
+        </button>
+
+        <button
+          onClick={() => onNavigate('batch')}
+          className={`w-full flex items-center gap-2.5 px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${
+            currentPage === 'batch'
+              ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold'
+              : 'text-[#44423D] hover:bg-[#F2EFE9] hover:text-[#1C1917]'
+          }`}
+        >
+          <Stack size={18} weight={currentPage === 'batch' ? 'fill' : 'regular'} />
+          <span>Toplu Üretim</span>
         </button>
 
         <div className="pt-4 pb-1 px-3">

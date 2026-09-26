@@ -68,6 +68,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             ? `${currentProject.examYear} • Soru ${currentProject.questionNumber} • Doğru Şık: [ ${currentProject.correctAnswer} ]`
             : 'Yeni proje oluşturun veya listeden bir soru seçin',
         };
+      case 'batch':
+        return { title: 'Toplu Üretim', subtitle: 'Bir soru setini tek seferde işaretleyip MP4 olarak hazırlayın' };
       case 'settings':
         return {
           title: 'Sistem Ayarları & Entegrasyonlar',

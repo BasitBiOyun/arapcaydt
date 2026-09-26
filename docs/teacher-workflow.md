@@ -20,3 +20,13 @@
 - İşaretler ve İndir adımlarında **Yayın kontrolü** kartı görünür: bulunan şıklar, doğru cevaba tik, metin–cevap uyumu, zamanlama kalitesi, görselde bulunamayan Arapça kelimeler ve animasyon planının güncelliği. Kırmızı madde yayından önce düzeltilmelidir; sarı madde kontrol önerisidir. Her maddenin yanındaki düğme ilgili düzenleyiciyi açar.
 - ElevenLabs ile üretilen seste kelime zamanları doğrudan ElevenLabs'ten gelir.
 - Öğretmenin kendi MP3'ü yüklendiğinde yazılı çözüm metni sese sunucuda hizalanır (ElevenLabs forced alignment, `api/elevenlabs/align.ts`). Bu istek ses kullanım sınırına sayılır; yönetici panelinde "Ses hizalama" olarak görünür ve üretilen ses sayısına eklenmez. 3 MB'den büyük dosyalar, hizalama hatası veya boş metin durumunda tarayıcıdaki Whisper ile tahmin edilir ve öğretmene not gösterilir.
+
+## Toplu üretim
+
+Kenar menüdeki **Toplu Üretim** sayfası bir soru setini tek seferde hazırlar.
+
+- **Görseller:** Dosya adında soru numarası olmalı (`soru_3.png`, `S3.jpg`, `3.png`). Etiketsiz birden çok sayı içeren adlar (`deneme 2026 12.png`) eşleşmez ve listede gösterilir.
+- **Çözüm metni:** Tek belge; her soru kendi satırında `Soru 3` (veya `3. Soru`, `## Soru 3`) başlığıyla başlar. Başlık seslendirmede okunur. Metnin içindeki `Soru 1'de …` gibi ifadeler başlık sayılmaz.
+- **MP3 (isteğe bağlı):** Aynı adlandırmayla eşleşir ve metne hizalanır. MP3'ü olmayan sorular yalnız kutu işaretliyse ElevenLabs ile seslendirilir; başlamadan önce toplam karakter gösterilip onay istenir. İstekler arasında sunucunun 10 saniye kuralına uyulur.
+- **Sıra:** Her soru için proje oluşturma → ses → işaretler → (seçiliyse) MP4 indirme. Her adımdan sonra proje kaydedilir; hata yalnız o soruyu etkiler. Görseli veya metni eksik sorular atlanır. **Durdur** mevcut adımı bitirir, kalanları başlatmaz.
+- **Sonuç:** Her satırda yayın kontrolü sonucu (yayına hazır / kontrol önerilir / düzeltme gerekli) ve projeyi editörde açan düğme bulunur.

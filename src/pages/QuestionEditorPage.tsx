@@ -1,13 +1,10 @@
 import {steps,resumeStep,checkNarration} from '../features/question-editor/workflow';
 import {VoiceSample} from '../features/question-editor/VoiceSample';
-import {CURRENT_PIPELINE_VERSION, type ReadinessAction} from '../features/question-editor/readiness';
+import {type ReadinessAction} from '../features/question-editor/readiness';
+import {applyPipelineResult, narrationFromTts} from '../features/question-editor/projectUpdates';
 import { database } from '../services/supabase';
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  QuestionProject, VideoConfig,
-  AudioNarration, 
-  NarrationSource 
-} from '../types';
+import { QuestionProject, VideoConfig } from '../types';
 import { useProjects } from '../features/projects/ProjectContext';
 import { VideoGenerationModal } from '../features/video/VideoGenerationModal';
 import { LocalPipelineResult } from '../services/pipeline/localVideoPipeline';
@@ -16,7 +13,7 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration } from '../services/narration/browserMedia';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
-import { STANDARD_VOICE_CONFIG, VoiceSettingsConfig } from '../config/voice';
+import { STANDARD_VOICE_CONFIG, VoiceSettingsConfig, readSavedVoiceSettings, VOICE_SETTINGS_STORAGE_KEY } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { ExportStep } from '../features/question-editor/steps/ExportStep';
@@ -51,20 +48,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   const [isTranscribingMp3, setIsTranscribingMp3] = useState(false);
   const [transcribeProgress, setTranscribeProgress] = useState<{ progress: number; message: string } | null>(null);
   const [audioError, setAudioError] = useState<string | null>(null);
-  const [voiceSettings, setVoiceSettings] = useState<VoiceSettingsConfig>(() => {
-    const defaults = { ...STANDARD_VOICE_CONFIG.voiceSettings };
-    if (typeof window === 'undefined') return defaults;
-    try {
-      const saved = window.localStorage.getItem('arapcaydt.voiceSettings.v1');
-      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
-    } catch {
-      return defaults;
-    }
-  });
+  const [voiceSettings, setVoiceSettings] = useState<VoiceSettingsConfig>(readSavedVoiceSettings);
 
   useEffect(() => {
     try {
-      window.localStorage.setItem('arapcaydt.voiceSettings.v1', JSON.stringify(voiceSettings));
+      window.localStorage.setItem(VOICE_SETTINGS_STORAGE_KEY, JSON.stringify(voiceSettings));
     } catch {
       // Local preference persistence is optional; generation still works without it.
     }
@@ -227,34 +215,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         voiceSettings,
       });
 
-      const audioUrl = `data:${result.mimeType};base64,${result.audioBase64}`;
-
-      const newNarrationSource: NarrationSource = {
-        type: 'elevenlabs',
-        audioUrl,
-        audioBase64: result.audioBase64,
-        duration: result.durationSeconds,
-        voiceId: STANDARD_VOICE_CONFIG.voiceId,
-        voiceName: STANDARD_VOICE_CONFIG.name,
-        words: result.words,
-        alignment: result.alignment,
-        isApproved: false,
-        generatedAt: new Date().toISOString(),
-      };
-
-      const compatNarration: AudioNarration = {
-        audioUrl,
-        audioBase64: result.audioBase64,
-        duration: result.durationSeconds,
-        voiceId: STANDARD_VOICE_CONFIG.voiceId,
-        voiceName: STANDARD_VOICE_CONFIG.name,
-        modelId: STANDARD_VOICE_CONFIG.modelId,
-        generatedAt: new Date().toISOString(),
-        isApproved: false,
-        mode: result.mode,
-        words: result.words,
-        alignment: result.alignment,
-      };
+      const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
 
       const persisted=await saveCurrentProject({
         narrationSource: newNarrationSource,
@@ -385,20 +346,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
 
   // On Video Generation Pipeline Success
   const handleVideoPipelineSuccess = (result: LocalPipelineResult) => {
-    updateCurrentProject({
-      videoConfig: {
-        ...currentProject.videoConfig,
-        regions: result.regions,
-        timelineActions: result.actions,
-        captions: result.captions,
-        timingQuality: result.timingQuality,
-        pipelineVersion: CURRENT_PIPELINE_VERSION,
-        warnings: result.warnings,
-      },
-      ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
-      status: 'video_ready',
-      videoReady: true,
-    });
+    updateCurrentProject(applyPipelineResult(currentProject, result));
     setVideoGenerated(true);
     setPreviewMode('video');
     setCurrentPreviewTime(0);
