@@ -17,17 +17,25 @@ export function regionCanvasRect(region: AnnotationRegion, fit: FitRect): FitRec
     width: region.width * fit.width, height: region.height * fit.height };
 }
 
-// Marks belong outside the text. At image edges try the other side, then above.
-export function markerGeometry(rect: FitRect, canvasWidth: number, scale = 1, correct = false, anchor?: AnnotationRegion['markerAnchor']) {
+// Marks belong outside the text. Correct marks prefer the right, crosses the left;
+// a side is skipped when it leaves the canvas or would sit on another option
+// (five options in one row leave no room between neighbours), then above is used.
+export function markerGeometry(rect: FitRect, canvasWidth: number, scale = 1, correct = false,
+  anchor?: AnnotationRegion['markerAnchor'], obstacles: FitRect[] = []) {
   const radius = 16 * scale;
   const gap = 12 * scale;
-  const left = rect.x - gap - radius;
-  const right = rect.x + rect.width + gap + radius;
-  const canLeft = left - radius >= 2 * scale;
-  const canRight = right + radius <= canvasWidth - 2 * scale;
-  const x = correct ? (canRight ? right : canLeft ? left : rect.x + radius)
-    : (canLeft ? left : canRight ? right : rect.x + radius);
-  return { x, y: canLeft || canRight ? rect.y + rect.height * (anchor?.y ?? .5) : Math.max(radius, rect.y - gap - radius), radius };
+  const y = rect.y + rect.height * (anchor?.y ?? .5);
+  const reach = radius * 1.35;
+  const free = (x: number, cy: number) => x - reach >= 2 * scale && x + reach <= canvasWidth - 2 * scale
+    && !obstacles.some(o => o.x < x + reach && o.x + o.width > x - reach && o.y < cy + reach && o.y + o.height > cy - reach);
+  const left = { x: rect.x - gap - radius, y };
+  const right = { x: rect.x + rect.width + gap + radius, y };
+  const above = { x: correct ? rect.x + rect.width - radius : rect.x + radius, y: Math.max(radius, rect.y - gap - radius) };
+  const order = correct ? [right, left] : [left, right];
+  const spot = order.find(p => free(p.x, p.y))
+    ?? (obstacles.length ? undefined : order.find(p => p.x - radius >= 2 * scale && p.x + radius <= canvasWidth - 2 * scale))
+    ?? above;
+  return { x: spot.x, y: spot.y, radius };
 }
 
 function isolateArabic(text: string) {
@@ -155,12 +163,12 @@ function drawCaption(ctx: CanvasRenderingContext2D, width: number, height: numbe
 
 /** Frame whose outline is traced around the box as `progress` goes 0 → 1. */
 function tracedFrame(ctx: CanvasRenderingContext2D, r: FitRect, scale: number, stroke: string, fill: string,
-  progress: number, opacity: number, glow: string) {
+  progress: number, opacity: number, glow: string, padding = 7 * scale) {
   if (opacity <= 0) return;
-  const x = r.x - 7 * scale, y = r.y - 6 * scale, w = r.width + 14 * scale, h = r.height + 12 * scale;
+  const x = r.x - padding, y = r.y - padding, w = r.width + padding * 2, h = r.height + padding * 2;
   const perimeter = 2 * (w + h);
   ctx.save(); ctx.globalAlpha = opacity;
-  ctx.beginPath(); ctx.roundRect(x, y, w, h, 12 * scale);
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, Math.min(12 * scale, h / 2));
   // Multiply tints the paper but leaves the printed letters at full contrast.
   ctx.globalCompositeOperation = 'multiply';
   ctx.fillStyle = fill; ctx.globalAlpha = opacity * Math.min(1, progress * 1.6); ctx.fill();
@@ -209,6 +217,22 @@ export function renderQuestionVideoFrame(
   const byId = new Map(regions.map(r => [r.id, r]));
   const rectFor = (id: string) => { const r = byId.get(id); return r ? regionCanvasRect(r, fit) : null; };
   const age = (mark: { timestamp: number }) => Math.max(0, currentTime - mark.timestamp);
+  // Frames of neighbouring options (A|B side by side, B above C) must never touch.
+  const optionRects = regions.filter(r => r.type.startsWith('option')).map(r => ({ id: r.id, rect: regionCanvasRect(r, fit) }));
+  const obstaclesFor = (id: string) => optionRects.filter(o => o.id !== id).map(o => o.rect);
+  const framePad = (id: string) => {
+    const r = rectFor(id); if (!r) return 7 * scale;
+    let room = 7 * scale;
+    for (const other of optionRects) {
+      if (other.id === id) continue;
+      const o = other.rect;
+      const dx = Math.max(o.x - r.x - r.width, r.x - o.x - o.width);
+      const dy = Math.max(o.y - r.y - r.height, r.y - o.y - o.height);
+      if (dx < 0 && dy >= 0) room = Math.min(room, dy / 2 - scale);
+      else if (dy < 0 && dx >= 0) room = Math.min(room, dx / 2 - scale);
+    }
+    return Math.max(scale, room);
+  };
   const pad = (r: FitRect, p: number) => ({ x: r.x - p, y: r.y - p, width: r.width + p * 2, height: r.height + p * 2 });
 
   const focused = state.activeFocus.filter(f => !state.correctRegions[f.regionId] && !state.rejectedRegions[f.regionId]);
@@ -219,63 +243,63 @@ export function renderQuestionVideoFrame(
     ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = h.opacity;
     ctx.fillStyle = '#FFD860'; ctx.beginPath(); ctx.roundRect(r.x, r.y, r.width, r.height, 5 * scale); ctx.fill(); ctx.restore();
   }
-  // Highlighter pen sweeps with the voice (right-to-left for Arabic), with a crisp underline beneath.
+  // Arabic is underlined as it is read (right-to-left). The line sits below the
+  // lowest harakat, so no box ever cuts through the vowel marks.
   for (const u of state.activeUnderlines) {
     const r = rectFor(u.regionId); if (!r || u.progress <= 0) continue;
-    const p = easeOutQuad(u.progress);
-    const swept = r.width * p;
-    const x0 = u.isRtl ? r.x + r.width - swept : r.x;
+    const swept = r.width * easeOutQuad(u.progress);
+    const y = r.y + r.height + Math.max(5 * scale, r.height * .12);
     ctx.save(); ctx.globalAlpha = u.opacity ?? 1;
-    ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = 'rgba(253,224,71,.55)';
-    ctx.beginPath(); ctx.roundRect(x0 - 2 * scale, r.y + r.height * .12, swept + 4 * scale, r.height * .82, 6 * scale); ctx.fill();
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = '#D97706'; ctx.lineWidth = 4 * scale; ctx.lineCap = 'round'; ctx.beginPath();
-    ctx.moveTo(u.isRtl ? r.x + r.width : r.x, r.y + r.height + 4 * scale);
-    ctx.lineTo(u.isRtl ? r.x + r.width - swept : r.x + swept, r.y + r.height + 4 * scale); ctx.stroke();
+    ctx.strokeStyle = '#D97706'; ctx.lineWidth = 5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
+    ctx.moveTo(u.isRtl ? r.x + r.width : r.x, y);
+    ctx.lineTo(u.isRtl ? r.x + r.width - swept : r.x + swept, y); ctx.stroke();
     ctx.restore();
   }
   // Eliminated choices fade back so the remaining ones stand out.
   for (const [id, mark] of Object.entries(state.rejectedRegions)) {
     const r = rectFor(id); if (!r || state.correctRegions[id]) continue;
     ctx.save(); ctx.globalAlpha = .5 * Math.min(1, age(mark) / .45); ctx.fillStyle = '#FFFFFF';
-    ctx.beginPath(); ctx.roundRect(r.x - 4 * scale, r.y - 3 * scale, r.width + 8 * scale, r.height + 6 * scale, 8 * scale); ctx.fill(); ctx.restore();
+    const p = pad(r, Math.min(4 * scale, framePad(id))); ctx.beginPath(); ctx.roundRect(p.x, p.y, p.width, p.height, 8 * scale); ctx.fill(); ctx.restore();
   }
   // Spotlight: while an option is examined the rest of the slide recedes; judged options stay visible.
   const lastCorrect = Object.values(state.correctRegions).sort((a, b) => b.timestamp - a.timestamp)[0];
   const lit = [...focused, ...emphasis];
   const spot = lit.length
-    ? { rects: [...lit.map(f => f.regionId), ...Object.keys(state.correctRegions)].map(rectFor).filter(Boolean) as FitRect[],
-        strength: Math.max(...lit.map(f => f.intensity)) }
+    ? { ids: [...lit.map(f => f.regionId), ...Object.keys(state.correctRegions)], strength: Math.max(...lit.map(f => f.intensity)) }
     : lastCorrect && age(lastCorrect) < 2.4
-      ? { rects: [rectFor(lastCorrect.regionId)].filter(Boolean) as FitRect[], strength: Math.min(1, age(lastCorrect) / .3, (2.4 - age(lastCorrect)) / .5) }
+      ? { ids: [lastCorrect.regionId], strength: Math.min(1, age(lastCorrect) / .3, (2.4 - age(lastCorrect)) / .5) }
       : state.activeDimOthers.active
-        ? { rects: [rectFor(state.activeDimOthers.targetRegionId!)].filter(Boolean) as FitRect[], strength: .6 }
+        ? { ids: [state.activeDimOthers.targetRegionId!], strength: .6 }
         : null;
-  if (spot?.rects.length && spot.strength > 0) {
+  if (spot?.ids.length && spot.strength > 0) {
     ctx.save(); ctx.fillStyle = `rgba(15,23,42,${.16 * spot.strength})`; ctx.beginPath();
     ctx.rect(fit.x, fit.y, fit.width, fit.height);
-    for (const r of spot.rects) { const p = pad(r, 9 * scale); ctx.roundRect(p.x, p.y, p.width, p.height, 13 * scale); }
+    // Each hole once: with even-odd filling a repeated or overlapping hole would be dimmed again.
+    for (const id of new Set(spot.ids)) {
+      const r = rectFor(id); if (!r) continue;
+      const p = pad(r, framePad(id)); ctx.roundRect(p.x, p.y, p.width, p.height, Math.min(12 * scale, p.height / 2));
+    }
     ctx.fill('evenodd'); ctx.restore();
   }
 
   for (const f of focused) {
     const r = rectFor(f.regionId); if (!r) continue;
-    tracedFrame(ctx, r, scale, '#F59E0B', 'rgba(254,243,199,.38)', easeOutCubic(f.intensity), f.intensity, 'rgba(245,158,11,.45)');
+    tracedFrame(ctx, r, scale, '#F59E0B', 'rgba(254,243,199,.38)', easeOutCubic(f.intensity), f.intensity, 'rgba(245,158,11,.45)', framePad(f.regionId));
   }
   for (const [id, mark] of Object.entries(state.rejectedRegions)) {
     const r = rectFor(id); if (!r || state.correctRegions[id]) continue;
     const t = age(mark);
-    if (t < .45) tracedFrame(ctx, r, scale, '#DC2626', 'rgba(254,226,226,.35)', 1, 1 - t / .45, 'rgba(220,38,38,.35)');
-    const m = markerGeometry(r, width, scale, false, byId.get(id)?.markerAnchor);
+    if (t < .45) tracedFrame(ctx, r, scale, '#DC2626', 'rgba(254,226,226,.35)', 1, 1 - t / .45, 'rgba(220,38,38,.35)', framePad(id));
+    const m = markerGeometry(r, width, scale, false, byId.get(id)?.markerAnchor, obstaclesFor(id));
     markBadge(ctx, m.x, m.y, m.radius * 1.15, t, 'reject', scale);
   }
   for (const [id, mark] of Object.entries(state.correctRegions)) {
     const r = rectFor(id); if (!r) continue;
     const t = age(mark);
     const lift = emphasis.find(f => f.regionId === id)?.intensity ?? 0;
-    tracedFrame(ctx, r, scale, '#16A34A', `rgba(220,252,231,${.45 + .25 * lift})`, easeOutCubic(Math.min(1, t / .45)), 1, 'rgba(22,163,74,.5)');
-    if (lift > 0) tracedFrame(ctx, pad(r, 7 * scale), scale, 'rgba(22,163,74,.55)', 'transparent', 1, lift * (.55 + .45 * Math.sin(currentTime * 5) ** 2), 'rgba(22,163,74,.6)');
-    const m = markerGeometry(r, width, scale, true, byId.get(id)?.markerAnchor);
+    tracedFrame(ctx, r, scale, '#16A34A', `rgba(220,252,231,${.45 + .25 * lift})`, easeOutCubic(Math.min(1, t / .45)), 1, 'rgba(22,163,74,.5)', framePad(id));
+    if (lift > 0) tracedFrame(ctx, r, scale, 'rgba(22,163,74,.7)', 'transparent', 1, lift * (.55 + .45 * Math.sin(currentTime * 5) ** 2), 'rgba(22,163,74,.9)', framePad(id));
+    const m = markerGeometry(r, width, scale, true, byId.get(id)?.markerAnchor, obstaclesFor(id));
     markBadge(ctx, m.x, m.y, m.radius * 1.3, t, 'correct', scale);
     const reveal = Math.min(1, Math.max(0, (t - .3) / .3));
     if (reveal > 0) {

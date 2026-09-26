@@ -117,6 +117,171 @@ function chooseMarkers(candidates: DetectedOptionMarker[]): Map<OptionLetter, De
   return selected;
 }
 
+const LETTER_ORDER: OptionLetter[] = ['A', 'B', 'C', 'D', 'E'];
+
+/** Rows by visual baseline; used for reading-order label assignment. */
+function rowsOf<T extends { word: OCRWord }>(items: T[]): T[][] {
+  const rows: T[][] = [];
+  for (const item of [...items].sort((a, b) => a.word.y - b.word.y)) {
+    const row = rows.find(group => Math.abs(group[0].word.y + group[0].word.height / 2 - item.word.y - item.word.height / 2)
+      < Math.max(group[0].word.height, item.word.height) * .6);
+    if (row) row.push(item); else rows.push([item]);
+  }
+  return rows;
+}
+
+/**
+ * Scanned labels are often misread ("B)" → "(5", "C)" → "0", "E)" → "3").
+ * Labels share one font size, so tokens with the size of the letters OCR did
+ * read are label candidates. Letters are then assigned in reading order
+ * (A B / C D / E, a single row, or a single column) and accepted only when
+ * every confidently read label keeps its own letter.
+ */
+function inferMarkersFromLayout(selected: Map<OptionLetter, DetectedOptionMarker>, words: OCRWord[]) {
+  const anchors = [...selected.values()];
+  if (!anchors.length || anchors.length >= 5) return selected;
+  const median = (values: number[]) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+  const h = median(anchors.map(a => a.word.height));
+  const w = median(anchors.map(a => a.word.width));
+  const overlaps = (a: OCRWord, b: OCRWord) => a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+  const pool: DetectedOptionMarker[] = [];
+  for (const word of words) {
+    const text = word.text.replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '').trim();
+    if (!text || text.length > 3 || word.y < .14 || word.y > .94) continue;
+    if (Math.abs(word.height - h) > h * .18 || word.width < w * .5 || word.width > w * 1.7) continue;
+    // A label always introduces option text on its right.
+    if (!words.some(other => other !== word && other.x >= word.x + word.width - .002 && other.x - word.x - word.width < w * 3
+      && Math.abs(other.y + other.height / 2 - word.y - word.height / 2) < h)) continue;
+    if (anchors.some(a => overlaps(a.word, word)) || pool.some(c => overlaps(c.word, word))) continue;
+    pool.push({ letter: 'A', word, y: word.y, confidence: 50 });
+  }
+  const slotted = fitLabelSlots(anchors, pool, words, h, w);
+  if (slotted) return slotted;
+  const all = [...anchors, ...pool];
+  for (const count of [5, 4]) {
+    if (all.length < count || anchors.some(a => LETTER_ORDER.indexOf(a.letter) >= count)) continue;
+    // Extra candidates are dropped from the top (question numbers, instructions) first.
+    const kept = [...anchors, ...pool.sort((a, b) => b.y - a.y).slice(0, count - anchors.length)];
+    if (kept.length !== count) continue;
+    const rowMajor = rowsOf(kept).flatMap(row => row.sort((a, b) => a.word.x - b.word.x));
+    const columns: DetectedOptionMarker[][] = [];
+    for (const item of [...kept].sort((a, b) => a.word.x - b.word.x)) {
+      const column = columns.find(group => Math.abs(group[0].word.x - item.word.x) < w * 1.5);
+      if (column) column.push(item); else columns.push([item]);
+    }
+    const columnMajor = columns.flatMap(column => column.sort((a, b) => a.y - b.y));
+    for (const order of [rowMajor, columnMajor]) {
+      if (!anchors.every(a => order.indexOf(a) === LETTER_ORDER.indexOf(a.letter))) continue;
+      return new Map(order.map((item, index) => [LETTER_ORDER[index], { ...item, letter: LETTER_ORDER[index] }]));
+    }
+  }
+  return selected;
+}
+
+/**
+ * Labels sit on a regular lattice: one row (A B C D E), one column, or the
+ * A B / C D / E grid. Two read labels fix the lattice; each slot takes a real
+ * label-sized token, or - when OCR merged the label into its text - a label
+ * box is placed only if option text really exists right of that slot.
+ */
+function fitLabelSlots(anchors: DetectedOptionMarker[], pool: DetectedOptionMarker[], words: OCRWord[], h: number, w: number) {
+  if (anchors.length < 2) return null;
+  const idx = (m: DetectedOptionMarker) => LETTER_ORDER.indexOf(m.letter);
+  const sorted = [...anchors].sort((a, b) => idx(a) - idx(b));
+  const first = sorted[0], last = sorted[sorted.length - 1];
+  const cy = (m: DetectedOptionMarker | OCRWord) => 'word' in m ? m.word.y + m.word.height / 2 : m.y + m.height / 2;
+  const layouts: Array<(k: number) => { x?: number; y: number } | null> = [];
+  const span = idx(last) - idx(first);
+  if (span > 0 && anchors.every(a => Math.abs(cy(a) - cy(first)) < h * .6)) {
+    const d = (last.word.x - first.word.x) / span;
+    if (d > w * 1.5) layouts.push(k => ({ x: first.word.x + (k - idx(first)) * d, y: cy(first) }));
+  }
+  if (span > 0 && anchors.every(a => Math.abs(a.word.x - first.word.x) < w * .9)) {
+    const d = (cy(last) - cy(first)) / span;
+    if (d > h * 1.2) layouts.push(k => ({ x: first.word.x, y: cy(first) + (k - idx(first)) * d }));
+  }
+  // A B / C D / E
+  const colOf = (k: number) => k === 4 ? 2 : k % 2, rowOf = (k: number) => Math.floor(k / 2);
+  const colX = new Map<number, number>(), rowY = new Map<number, number>();
+  for (const a of anchors) { if (colOf(idx(a)) < 2) colX.set(colOf(idx(a)), a.word.x); rowY.set(rowOf(idx(a)), cy(a)); }
+  for (const c of pool) for (const r of [0, 1]) {
+    // A pool label in a known row but unknown column fixes that column.
+    if (rowY.has(r) && Math.abs(cy(c) - rowY.get(r)!) < h * .6) {
+      const known = colX.get(0) ?? colX.get(1);
+      if (known !== undefined && Math.abs(c.word.x - known) > w * 3) colX.set(colX.has(0) ? 1 : 0, c.word.x);
+    }
+  }
+  if (rowY.has(0) && rowY.has(1)) rowY.set(2, rowY.get(1)! * 2 - rowY.get(0)!);
+  else if (rowY.has(1) && rowY.has(2)) rowY.set(0, rowY.get(1)! * 2 - rowY.get(2)!);
+  const gridOk = anchors.every(a => colOf(idx(a)) === 2 || !colX.has(1 - colOf(idx(a))) || Math.abs(colX.get(1 - colOf(idx(a)))! - a.word.x) > w * 3);
+  if (gridOk && rowY.has(0) && rowY.has(1) && (colX.has(0) || colX.has(1)) && Math.abs(rowY.get(0)! - rowY.get(1)!) > h * 1.2)
+    layouts.push(k => { const y = rowY.get(rowOf(k)); const x = colOf(k) < 2 ? colX.get(colOf(k)) : undefined;
+      return y === undefined || (colOf(k) < 2 && x === undefined) ? null : { x, y }; });
+
+  let best: Map<OptionLetter, DetectedOptionMarker> | null = null, bestReal = 0;
+  for (const slotAt of layouts) {
+    const result = new Map<OptionLetter, DetectedOptionMarker>();
+    let real = 0, ok = true;
+    const used = new Set<DetectedOptionMarker>();
+    LETTER_ORDER.forEach((letter, k) => {
+      if (!ok) return;
+      const anchor = anchors.find(a => a.letter === letter);
+      const slot = slotAt(k);
+      if (anchor) {
+        if (slot && ((slot.x !== undefined && Math.abs(anchor.word.x - slot.x) > w * 1.2) || Math.abs(cy(anchor) - slot.y) > h * .7)) ok = false;
+        else { result.set(letter, anchor); real++; }
+        return;
+      }
+      if (!slot || slot.y > .93) return;
+      const hit = pool.filter(c => !used.has(c) && Math.abs(cy(c) - slot.y) < h * .7 && (slot.x === undefined || Math.abs(c.word.x - slot.x) < w * 1.2))
+        .sort((a, b) => Math.abs(a.word.x - (slot.x ?? a.word.x)) - Math.abs(b.word.x - (slot.x ?? b.word.x)))[0];
+      if (hit) { used.add(hit); result.set(letter, { ...hit, letter }); real++; return; }
+      if (slot.x === undefined) return;
+      const text = words.some(word => word.y < .94 && word.height > h * .5 && Math.abs(cy(word) - slot.y) < h
+        && word.x + word.width > slot.x + w && word.x < slot.x + w * 4);
+      if (!text) return;
+      const label: OCRWord = { text: `${letter})`, confidence: 40, x: slot.x, y: slot.y - h / 2, width: w, height: h,
+        pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 };
+      result.set(letter, { letter, word: label, y: label.y, confidence: 40 });
+    });
+    // Options are contiguous from A; a trailing missing E is a four-option (LGS) question.
+    const count = result.size;
+    if (!ok || count < 4 || !LETTER_ORDER.slice(0, count).every(l => result.has(l))) continue;
+    if (real > bestReal || (real === bestReal && best && count > best.size)) { best = result; bestReal = real; }
+  }
+  return best && best.size > anchors.length ? best : null;
+}
+
+/** Tall Arabic harakat can push neighbouring boxes into each other; split the shared gap. */
+function separateOptionBoxes(regions: AnnotationRegion[]) {
+  const options = regions.filter(r => /^option-[a-e]$/.test(r.id));
+  const markerY = new Map(options.map(r => [r.id, r.markerAnchor ? r.y + r.markerAnchor.y * r.height : undefined]));
+  const markerX = new Map(options.map(r => [r.id, r.markerAnchor ? r.x + r.markerAnchor.x * r.width : undefined]));
+  const gap = .004;
+  for (const a of options) for (const b of options) {
+    if (a === b) continue;
+    const xOverlap = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
+    const yOverlap = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
+    if (xOverlap <= 0 || yOverlap <= -gap) continue;
+    if (b.y > a.y && yOverlap < Math.min(a.height, b.height) * .9) {
+      const split = (Math.max(a.y + a.height - yOverlap, b.y) + Math.min(a.y + a.height, b.y + b.height)) / 2;
+      const bottom = b.y + b.height;
+      a.height = Math.max(.01, split - gap / 2 - a.y);
+      b.y = split + gap / 2; b.height = Math.max(.01, bottom - b.y);
+    } else if (b.x > a.x && Math.abs(a.y - b.y) < Math.max(a.height, b.height) * .5) {
+      const split = (a.x + a.width + b.x) / 2;
+      const right = b.x + b.width;
+      a.width = Math.max(.01, split - gap / 2 - a.x);
+      b.x = split + gap / 2; b.width = Math.max(.01, right - b.x);
+    }
+  }
+  for (const r of options) {
+    const y = markerY.get(r.id), x = markerX.get(r.id);
+    if (y !== undefined && x !== undefined)
+      r.markerAnchor = { x: Math.max(0, Math.min(1, (x - r.x) / r.width)), y: Math.max(0, Math.min(1, (y - r.y) / r.height)) };
+  }
+}
+
 export function detectYdtQuestionRegions(ocr: OCRResult): {
   regions: AnnotationRegion[];
   detectedOptions: string[];
@@ -125,7 +290,8 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
   const regions: AnnotationRegion[] = [];
   const words = ocr.words || [];
   if (!words.length) return { regions, detectedOptions: [] };
-  const markers = [...chooseMarkers(collectMarkerCandidates(ocr)).values()];
+  const markers = [...inferMarkersFromLayout(chooseMarkers(collectMarkerCandidates(ocr)),
+    [...(ocr.optionMarkers || []), ...words]).values()];
   const rows: DetectedOptionMarker[][] = [];
   for (const marker of markers.sort((a, b) => a.y - b.y)) {
     const row = rows.find((group) => Math.abs(
@@ -137,6 +303,15 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
   // Arabic stem only: decorative slide headers and page numbers are not targets.
   const promptWords = words.filter((word) => word.y + word.height / 2 < cutoffY - 0.006 &&
     word.y > 0.035 && /[\u0621-\u064A]|[-ـ]{2,}/.test(word.text));
+  // Arabic misread as Latin ("يقرأ" → "JA") stays part of the stem when it touches a stem line.
+  for (let grew = true; grew;) {
+    grew = false;
+    for (const word of words) {
+      if (promptWords.includes(word) || word.y + word.height / 2 >= cutoffY - 0.006 || word.y <= 0.035 || /^[\d.)(]+$/.test(word.text.trim())) continue;
+      if (promptWords.some(p => Math.abs(p.y + p.height / 2 - word.y - word.height / 2) < Math.max(p.height, word.height) * .6
+        && Math.max(p.x - word.x - word.width, word.x - p.x - p.width) < .03)) { promptWords.push(word); grew = true; }
+    }
+  }
   const bounds = (items: OCRWord[], padX = 0.007, padY = 0.006) => {
     const x = Math.max(0, Math.min(...items.map((word) => word.x)) - padX);
     const y = Math.max(0, Math.min(...items.map((word) => word.y)) - padY);
@@ -197,6 +372,7 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
         content: optionWords.map((word) => word.text).join(' ') });
     }
   }
+  separateOptionBoxes(regions);
   const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter((letter) =>
     regions.some((region) => region.id === `option-${letter.toLowerCase()}`));
   return { regions, detectedOptions, questionPromptRegion: regions.find((region) => region.id === 'question-root') };

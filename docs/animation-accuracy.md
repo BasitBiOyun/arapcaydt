@@ -25,3 +25,11 @@ ElevenLabs Multilingual v2 için telaffuz sözlüğünde alias/yazım değişimi
 - Görünüm: incelenen şık dışındaki alan hafifçe kararır (spot), çerçeve çizilerek gelir, çarpı/tik renkli rozet olarak belirir, elenen şıklar soluklaşır, doğru cevap halka + "Doğru cevap" etiketiyle gelir ve tekrar söylendiğinde yeniden vurgulanır. Arapça ifadeler sesle birlikte sağdan sola fosforlu kalemle taranır.
 - Altyazı, konuşulan kelimeyi kelime zamanlarıyla (karaoke) vurgular; Arapça kelimeler Türkçe satır içinde doğru sırada durur. Altta ince ilerleme çubuğu bulunur.
 - Eski projeler için **Yeniden Oluştur** gerekir; ses yeniden üretilmez.
+
+## Sabit şablonlu slaytlar ve şık düzenleri
+
+- Üst bant, yönerge kutusu, soru numarası ve alt yazı şık/soru kökü sayılmaz.
+- Şık etiketleri yanlış okunsa bile (`B)` → `(5`, `C)` → `0`, `E)` → `3`) bulunur. Okunan etiketlerle aynı boyuttaki parçalar okuma sırasına göre harf alır. Okunan harfler bu sırayla çelişirse atama yapılmaz.
+- Desteklenen düzenler: A B / C D / E ızgarası, beş şık tek satır ve uzun şıklar tek sütun. Etiket metne yapışıp kaybolursa, satır/sütun aralığından bulunan konum yalnız orada gerçekten şık metni varsa kullanılır.
+- Şık kutuları birbirine girmez; harekeler taşırsa ortak boşluk ikiye bölünür. Çerçeve, spot ve ✓/X rozetleri komşu şıkka taşmaz. Yan tarafta yer yoksa rozet boş tarafa ya da üste geçer.
+- Arapça ifadeler kutu içine alınmaz; okunurken sağdan sola, alttaki harekelerin de altından geçen bir çizgiyle vurgulanır.

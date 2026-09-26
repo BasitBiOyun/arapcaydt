@@ -49,3 +49,11 @@ test('unsupported export fails explicitly instead of saving WebM with an MP4 ext
     {resolution:'1080p',aspectRatio:'16:9',fps:30,format:'webm'},()=>{}),/MP4/);
 });
 
+test('marks never land on a neighbouring option (five options in one row)',()=>{
+  const a={x:500,y:480,width:150,height:60}, b={x:672,y:480,width:150,height:60};
+  const tick=markerGeometry(a,1920,1,true,undefined,[b]);
+  assert.ok(tick.x+tick.radius*1.35<=b.x || tick.x-tick.radius*1.35>=b.x+b.width || tick.y+tick.radius<=b.y);
+  assert.ok(tick.x<a.x, 'no room on the right, so the check moves to the free left side');
+  const cross=markerGeometry(b,1920,1,false,undefined,[a]);
+  assert.ok(cross.x>b.x+b.width, 'no room on the left, so the cross moves right');
+});
