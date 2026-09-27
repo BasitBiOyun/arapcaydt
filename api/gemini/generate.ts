@@ -20,17 +20,6 @@ const STYLE = [
   'Read the transcript faithfully without adding, omitting, translating, paraphrasing or repeating words.',
 ].join(' ');
 
-function hashKey(value: string): number {
-  let hash = 0;
-  for (let i = 0; i < value.length; i++) hash = ((hash << 5) - hash + value.charCodeAt(i)) | 0;
-  return Math.abs(hash);
-}
-
-function modelOrder(routeKey: string) {
-  const start = hashKey(routeKey || 'default') % GEMINI_MODELS.length;
-  return [...GEMINI_MODELS.slice(start), ...GEMINI_MODELS.slice(0, start)];
-}
-
 function legacyPrompt(text: string) {
   return `# AUDIO PROFILE: Achernar
 ## "Experienced Exam Teacher"
@@ -164,7 +153,7 @@ export default async function handler(req: any, res: any) {
 
   const attempts: Attempt[] = [];
   for (const lane of lanes) {
-    for (const model of modelOrder(projectId || member.user.id).filter(m => !lane.skip.includes(m))) {
+    for (const model of GEMINI_MODELS.filter(m => !lane.skip.includes(m))) {
       try {
         const upstream = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
