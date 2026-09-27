@@ -1,5 +1,6 @@
 import { CloudProjectRepository } from './cloudProjectRepository';
-import { QuestionProject } from '../../types';
+import type { ProjectSummary, QuestionProject } from '../../types';
+import { toSummary } from './projectSummary';
 import { INITIAL_PROJECTS } from './sampleData';
 
 const STORAGE_KEY = 'arabic_ydt_teacher_projects_v2';
@@ -20,7 +21,10 @@ function sanitizeImageUrl(url: string): string {
 }
 
 export interface IProjectRepository {
+  /** Full projects (backup/export only; heavy). */
   getAll(): Promise<QuestionProject[]>;
+  /** What lists show; open a project with getById. */
+  getSummaries(): Promise<ProjectSummary[]>;
   getById(id: string): Promise<QuestionProject | null>;
   save(project: QuestionProject): Promise<QuestionProject>;
   delete(id: string): Promise<boolean>;
@@ -28,6 +32,10 @@ export interface IProjectRepository {
 }
 
 export class LocalStorageProjectRepository implements IProjectRepository {
+  public async getSummaries(): Promise<ProjectSummary[]> {
+    return (await this.getAll()).map(toSummary);
+  }
+
   private getStorageData(): QuestionProject[] {
     try {
       let raw = localStorage.getItem(STORAGE_KEY);

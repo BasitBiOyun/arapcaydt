@@ -3,7 +3,8 @@ import {Plus,Copy,Trash,ArrowRight,MagnifyingGlass} from '@phosphor-icons/react'
 import {useProjects} from '../features/projects/ProjectContext';
 import {QUESTION_CATEGORIES,getCategoryLabel} from '../config/categories';
 import {resumeStep,steps} from '../features/question-editor/workflow';
-import type {QuestionProject} from '../types';
+import type {ProjectSummary} from '../types';
+import {projectRepository} from '../features/projects/projectRepository';
 import type {AppPage} from '../components/common/AppSidebar';
 interface Props {onNavigate:(page:AppPage)=>void;onSelectProject:(id:string)=>void;onNewQuestion:()=>void;}
 export function QuestionsPage({onSelectProject,onNewQuestion,onNavigate}:Props){
@@ -13,13 +14,15 @@ export function QuestionsPage({onSelectProject,onNewQuestion,onNavigate}:Props){
  const collections=[...new Set(projects.map(p=>p.examName).filter(Boolean))].sort();
  const years=[...new Set(projects.map(p=>p.examYear).filter(Boolean))].sort().reverse();
  const rows=projects.filter(p=>(!category||p.category===category)&&(!collection||p.examName===collection)&&(!year||p.examYear===year)&&(!status||String(resumeStep(p))===status)&&[p.title,p.examName,p.examYear,p.arabicQuestionSnippet,String(p.questionNumber)].join(' ').toLocaleLowerCase('tr').includes(search.toLocaleLowerCase('tr')));
- const duplicate=async(p:QuestionProject)=>{setBusy(p.id);setError('');try{
+ const duplicate=async(summary:ProjectSummary)=>{setBusy(summary.id);setError('');try{
+   // The list holds summaries; copying needs the full project (timings, regions, settings).
+   const p=await projectRepository.getById(summary.id);if(!p)throw new Error('Proje bulunamadı.');
    let imageUrl='';
    if(p.imageUrl){const response=await fetch(p.imageUrl);if(!response.ok)throw new Error('Görsel kopyalanamadı. Tekrar deneyin.');const blob=await response.blob();imageUrl=await new Promise<string>((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=reject;reader.readAsDataURL(blob);});}
    await createNewProject({title:p.title+' (Kopya)',examYear:p.examYear,examName:p.examName,category:p.category,correctAnswer:p.correctAnswer,imageUrl,imageFileName:p.imageFileName,solutionText:p.solutionText,videoConfig:{...p.videoConfig,annotations:[],regions:[],timelineActions:[],captions:[],warnings:[],suppressedRegionIds:[],pipelineVersion:undefined},audioApproved:false,videoReady:false,status:'draft'});
    onNavigate('editor');
  }catch(e){setError(e instanceof Error?e.message:'Proje kopyalanamadı.');}finally{setBusy('');}};
- const remove=async(p:QuestionProject)=>{if(!confirm(`“${p.title}” silinsin mi?`))return;setBusy(p.id);try{if(!await deleteProjectById(p.id))throw new Error('Silinemedi');}catch{setError('Soru silinemedi. Tekrar deneyin.');}finally{setBusy('');}};
+ const remove=async(p:ProjectSummary)=>{if(!confirm(`“${p.title}” silinsin mi?`))return;setBusy(p.id);try{if(!await deleteProjectById(p.id))throw new Error('Silinemedi');}catch{setError('Soru silinemedi. Tekrar deneyin.');}finally{setBusy('');}};
  return <section className="studio-library">
   <header className="library-heading"><div><h2>Soru kütüphanem</h2><p>Sorularınız, koleksiyonlarınız ve kaldığınız yer.</p></div><button className="studio-primary" onClick={onNewQuestion}><Plus size={18}/>Yeni soru</button></header>
   <div className="library-filters"><label className="library-search"><MagnifyingGlass size={20}/><input aria-label="Sorularda ara" placeholder="Başlık, yıl veya Arapça metin ara…" value={search} onChange={e=>setSearch(e.target.value)}/></label>

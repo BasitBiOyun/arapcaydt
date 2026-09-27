@@ -208,6 +208,17 @@ export interface QuestionProject {
   notes?: string;
 }
 
+/**
+ * What project lists need: no narration words, captions or animation plan.
+ * The full project is loaded only when it is opened (projectRepository.getById).
+ */
+export type ProjectSummary = Pick<QuestionProject,
+  'id' | 'ownerId' | 'createdAt' | 'updatedAt' | 'title' | 'examYear' | 'examName' | 'questionNumber' | 'category'
+  | 'correctAnswer' | 'status' | 'audioApproved' | 'videoReady' | 'imageUrl' | 'imageFileName' | 'arabicQuestionSnippet' | 'solutionText'> & {
+  narrationSource?: Pick<NarrationSource, 'type' | 'isApproved' | 'duration'>;
+  audioNarration?: Pick<AudioNarration, 'isApproved' | 'duration'>;
+};
+
 export interface ElevenLabsVoice {
   voice_id: string;
   name: string;

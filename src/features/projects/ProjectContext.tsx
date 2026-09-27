@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
-import { QuestionProject, ProjectStatus } from '../../types';
+import type { ProjectSummary, QuestionProject } from '../../types';
+import { toSummary } from './projectSummary';
 import { projectRepository } from './projectRepository';
 import {useAuth} from '../auth/AuthContext';
 import {draftStore} from './draftStore';
@@ -9,7 +10,8 @@ import { DEFAULT_CATEGORY_ID } from '../../config/categories';
 interface ProjectContextType {
   error: string;
   saveStatus: 'saved' | 'pending' | 'saving' | 'error';
-  projects: QuestionProject[];
+  /** Light list entries; open one with selectProject for the full project. */
+  projects: ProjectSummary[];
   currentProject: QuestionProject | null;
   isLoading: boolean;
   activeFilter: string;
@@ -35,7 +37,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const confirmed=useRef(new Map<string,string>());
   const enqueue=useRef(createSaveQueue<QuestionProject>(p=>projectRepository.save(p)));
   const localWrites=useRef(Promise.resolve<unknown>(undefined));
-  const [projects, setProjects] = useState<QuestionProject[]>([]);
+  const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [currentProject, setCurrentProject] = useState<QuestionProject | null>(null);
   const projectRef=useRef(currentProject);
   projectRef.current=currentProject;
@@ -57,7 +59,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const saved=await enqueue.current(snapshot);
       confirmed.current.set(saved.id,JSON.stringify(saved));
       if(projectRef.current===snapshot){projectRef.current=saved;setCurrentProject(saved);setSaveStatus('saved');setError('');}
-      setProjects(prev=>prev.map(p=>p.id===saved.id?saved:p).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)));
+      setProjects(prev=>prev.map(p=>p.id===saved.id?toSummary(saved):p).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)));
       // Removal follows all pending local writes and only clears this revision.
       localWrites.current=localWrites.current.catch(()=>undefined).then(async()=>{
         const draft=await draftStore.get(owner,snapshot.id);
@@ -75,9 +77,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setIsLoading(true);
     try {
       setError('');
-      const data = await projectRepository.getAll();
-      for(const p of data)confirmed.current.set(p.id,JSON.stringify(p));
-      setProjects(data);
+      // Summaries only: `confirmed` tracks full projects and is set when one is opened.
+      setProjects(await projectRepository.getSummaries());
     } catch (e) {
       setError('Projeler yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.');
     } finally {
@@ -141,7 +142,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     const created = await projectRepository.create(initial);
-    setProjects((prev) => [created, ...prev]);
+    setProjects((prev) => [toSummary(created), ...prev]);
     confirmed.current.set(created.id,JSON.stringify(created));
     projectRef.current=created;setCurrentProject(created);setSaveStatus('saved');setError('');
     return created;

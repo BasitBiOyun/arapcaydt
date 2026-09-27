@@ -1,7 +1,8 @@
 import type {QuestionProject,VideoAction,AnnotationRegion} from '../../types';
 import {parseSolutionSemantics} from '../../services/analysis/solutionParser';
 export const steps=['Soru','Metin','Ses','İşaretler','İndir'];
-export function resumeStep(p:QuestionProject) {
+/** Works on a full project or a list summary (only these fields are read). */
+export function resumeStep(p:Pick<QuestionProject,'imageUrl'|'solutionText'|'audioApproved'|'videoReady'>&{narrationSource?:{isApproved?:boolean};audioNarration?:{isApproved?:boolean}}) {
   if(!p.imageUrl)return 0;
   if(!p.solutionText.trim())return 1;
   if(!(p.audioApproved||p.narrationSource?.isApproved||p.audioNarration?.isApproved))return 2;

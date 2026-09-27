@@ -14,6 +14,7 @@ import {
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { ElevenLabsStatus } from '../types';
 import { useProjects } from '../features/projects/ProjectContext';
+import { projectRepository } from '../features/projects/projectRepository';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
 
 export const SettingsPage: React.FC = () => {
@@ -52,11 +53,13 @@ export const SettingsPage: React.FC = () => {
     setTimeout(() => setSavedSuccess(false), 2000);
   };
 
-  const handleExportBackup = () => {
+  const handleExportBackup = async () => {
+    // The shared list holds summaries only; the backup needs every full project.
+    const full = await projectRepository.getAll();
     const data = {
       exportedAt: new Date().toISOString(),
-      projectsCount: projects.length,
-      projects,
+      projectsCount: full.length,
+      projects: full,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -219,7 +222,7 @@ export const SettingsPage: React.FC = () => {
             Kayıtlı Soru Projesi Sayısı: <strong>{projects.length}</strong>
           </div>
           <button
-            onClick={handleExportBackup}
+            onClick={() => void handleExportBackup().catch(() => window.alert('Yedek hazırlanamadı. Bağlantınızı kontrol edip tekrar deneyin.'))}
             className="px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] hover:bg-[#F2F1EB] text-xs font-semibold text-[#33322E] flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <DownloadSimple size={14} />

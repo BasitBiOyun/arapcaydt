@@ -1,6 +1,7 @@
 import { database } from '../../services/supabase';
-import { QuestionProject } from '../../types';
+import type { ProjectSummary, QuestionProject } from '../../types';
 import type { IProjectRepository } from './projectRepository';
+import { SUMMARY_SELECT, imageAssetPath, summaryFromRow } from './projectSummary';
 
 // Asset references survive reloads; signed URLs are reconstructed only for playback.
 const resolvedPaths = new Map<string, string>();
@@ -33,11 +34,48 @@ async function hydrate(row: any): Promise<QuestionProject> {
   return {...p,id:row.id,ownerId:row.owner_id,createdAt:row.created_at,updatedAt:row.updated_at};
 }
 async function ownerId(){const {data,error}=await database().auth.getUser();if(error||!data.user)throw new Error('Yeniden giriş yapın.');return data.user.id;}
+/** Signed links for many files in one request (thumbnails); a failed batch falls back to one link per file. */
+async function signedLinks(paths: string[]): Promise<Map<string, string>> {
+  const links = new Map<string, string>();
+  for (let i = 0; i < paths.length; i += 200) {
+    const chunk = paths.slice(i, i + 200);
+    const { data, error } = await bucket().createSignedUrls(chunk, 21600);
+    for (const item of error ? [] : data || []) if (item.path && item.signedUrl && !item.error) links.set(item.path, item.signedUrl);
+    for (const path of chunk) if (!links.has(path)) {
+      const single = await bucket().createSignedUrl(path, 21600);
+      if (single.data?.signedUrl) links.set(path, single.data.signedUrl);
+    }
+  }
+  for (const [path, url] of links) resolvedPaths.set(url, path);
+  return links;
+}
+
 export class CloudProjectRepository implements IProjectRepository {
+  /** Light list for libraries and dashboards: summary fields only, thumbnails signed in one batch. */
+  async getSummaries(): Promise<ProjectSummary[]> {
+    const owner = await ownerId();
+    const rows: any[] = [];
+    for (let from = 0; ; from += 1000) {
+      const { data, error } = await database().from('projects').select(SUMMARY_SELECT).eq('owner_id', owner)
+        .order('updated_at', { ascending: false }).range(from, from + 999);
+      if (error) throw error;
+      rows.push(...(data || []));
+      if ((data || []).length < 1000) break;
+    }
+    const paths = [...new Set(rows.map(r => imageAssetPath(r.imageUrl)).filter((p): p is string => !!p))];
+    const signed = await signedLinks(paths);
+    return rows.map(row => summaryFromRow(row, signed));
+  }
   async getAll(){
     const owner=await ownerId();
-    const {data,error}=await database().from('projects').select('*').eq('owner_id',owner).order('updated_at',{ascending:false});
-    if(error)throw error;return Promise.all(data.map(hydrate));
+    const rows:any[]=[];
+    for(let from=0;;from+=1000){
+      const {data,error}=await database().from('projects').select('*').eq('owner_id',owner).order('updated_at',{ascending:false}).range(from,from+999);
+      if(error)throw error;
+      rows.push(...data);
+      if(data.length<1000)break;
+    }
+    return Promise.all(rows.map(hydrate));
   }
   async getById(id:string){
     const owner=await ownerId();
