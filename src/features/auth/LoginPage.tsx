@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {useAuth} from './AuthContext';
 import {database,supabase} from '../../services/supabase';
 import {BrandMark} from '../../components/common/BrandMark';
-import {APP_NAME} from '../../config/brand';
+import {APP_NAME,APP_OWNER_LINE} from '../../config/brand';
 export const LoginPage:React.FC<{initialMode?:'login'|'signup';onBack?:()=>void}>=({initialMode='login',onBack})=>{
  const {refresh,recovering,finishRecovery,logout,error:authError}=useAuth();
  const [mode,setMode]=useState<'login'|'signup'|'reset'>(initialMode);
@@ -25,7 +25,7 @@ export const LoginPage:React.FC<{initialMode?:'login'|'signup';onBack?:()=>void}
  const title=recovering?'Yeni şifre belirle':mode==='signup'?'Öğretmen kaydı':mode==='reset'?'Şifremi unuttum':'Stüdyoya giriş';
  return <main className="min-h-screen bg-[#FAF9F5] flex items-center justify-center p-6"><div className="w-full max-w-md space-y-6">
   {onBack&&!recovering&&<button type="button" onClick={onBack} className="text-sm text-[#55544F] hover:text-[#1C1917] inline-flex items-center gap-1.5">← Ana sayfa</button>}
-  <div><BrandMark size={48} className="mb-4"/><h1 className="text-2xl font-bold">{APP_NAME}</h1><p className="text-sm text-stone-500 mt-2">Sorularınız, seslendirmeleriniz ve videolarınız tek yerde.</p></div>
+  <div><BrandMark size={48} className="mb-4"/><h1 className="text-2xl font-bold">{APP_NAME}</h1><p className="text-sm text-stone-500 mt-2">{APP_OWNER_LINE}.</p></div>
   <form onSubmit={submit} className="bg-white border border-stone-200 rounded-xl p-6 space-y-4">
    <h2 className="font-semibold text-lg">{title}</h2>
    {!supabase&&<p role="alert">Üyelik sistemi kurulumu tamamlanıyor. Lütfen daha sonra tekrar deneyin.</p>}

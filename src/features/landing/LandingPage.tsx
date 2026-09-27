@@ -4,7 +4,7 @@ import {
   Stack, TextAa, Waveform,
 } from '@phosphor-icons/react';
 import { BrandMark } from '../../components/common/BrandMark';
-import { APP_NAME } from '../../config/brand';
+import { APP_NAME, APP_OWNER_LINE } from '../../config/brand';
 import { DemoPlayer } from './DemoPlayer';
 
 export type AuthMode = 'login' | 'signup';
@@ -70,6 +70,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
                 <button type="button" onClick={() => onAuth('signup')} className={secondary}>Hesap oluştur</button>
               </div>
               <p className="mt-4 text-xs text-[#787670]">Yeni hesaplar e-posta doğrulaması ve yönetici onayıyla açılır.</p>
+              <p className="mt-6 pt-5 border-t border-[#E5E4DC] text-sm font-semibold text-[#55544F]">{APP_OWNER_LINE}.</p>
             </div>
 
             <figure className="relative">
@@ -144,7 +145,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
         <div className="max-w-6xl mx-auto px-5 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#787670]">
           <div className="flex items-center gap-2">
             <BrandMark size={20} />
-            <span>{APP_NAME} · Komisyon çalışma alanı · {new Date().getFullYear()}</span>
+            <span>{APP_NAME} · {APP_OWNER_LINE} · {new Date().getFullYear()}</span>
           </div>
           <p className="text-[11px]">Made by Yunus Emre Yılmaz with <span role="img" aria-label="sevgi">❤️</span></p>
         </div>
