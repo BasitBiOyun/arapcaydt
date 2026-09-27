@@ -171,9 +171,12 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
           </div>
           {currentProject.narrationSource?.type === 'gemini' && (
             <p className="text-[10px] text-[#787670]">
-              Zamanlama: {currentProject.narrationSource.timingSource === 'gemini-transcribe'
-                ? 'Gemini 3.5 Transcribe kelime zaman damgaları'
-                : 'henüz kesin kelime zaman damgası yok'}
+              Zamanlama: {{
+                'gemini-transcribe': 'Gemini 3.5 Transcribe kelime zaman damgaları',
+                'forced-alignment': 'ElevenLabs Forced Alignment kelime zaman damgaları',
+                'whisper': 'Yerel Whisper kelime zaman damgaları',
+                'none': 'kesin kelime zaman damgası yok',
+              }[currentProject.narrationSource.timingSource || 'none']}
             </p>
           )}
           {currentProject.narrationSource?.type === 'elevenlabs' && currentProject.narrationSource.fallbackReason && (
