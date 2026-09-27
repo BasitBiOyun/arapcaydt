@@ -105,11 +105,13 @@ test('narration uses the teacher key first and skips its exhausted models afterw
   const first = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.' });
   assert.equal(first.status, 200);
   assert.equal(first.payload.keySource, 'system');
-  assert.deepEqual(world.google.map(g => g.key === TEACHER_KEY ? 'teacher' : 'studio'), ['teacher', 'teacher', 'teacher', 'teacher', 'studio']);
-  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · daily$/.test(a.detail)).length, 4);
+  const { GEMINI_TTS_MODELS } = await import('../server/quota');
+  assert.deepEqual(world.google.map(g => g.key === TEACHER_KEY ? 'teacher' : 'studio'), [...GEMINI_TTS_MODELS.map(() => 'teacher'), 'studio']);
+  assert.deepEqual(world.google.slice(0, GEMINI_TTS_MODELS.length).map(g => g.what), [...GEMINI_TTS_MODELS], 'strict quality order');
+  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · daily$/.test(a.detail)).length, GEMINI_TTS_MODELS.length);
   assert.equal(world.activity.filter(a => a.key_source === 'system' && a.state === 'succeeded').length, 1);
 
-  // Same day: the teacher's four exhausted models are not called again.
+  // Same day: the teacher's exhausted models are not called again.
   world.google = [];
   world.activity = world.activity.map(today);
   const second = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.' });
