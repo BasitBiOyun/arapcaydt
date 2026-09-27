@@ -136,7 +136,7 @@ async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, proje
   let uploadedName = '';
   let status = 0;
   try {
-    const uploaded = await uploadGeminiFile(apiKey, bytes, mimeType, `narration-${projectId}.wav`);
+    const uploaded = await uploadGeminiFile(apiKey, bytes, mimeType, `narration-${projectId}.${mimeType === 'audio/mpeg' ? 'mp3' : 'wav'}`);
     uploadedName = uploaded.name;
 
     const interaction = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {

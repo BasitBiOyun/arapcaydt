@@ -7,6 +7,7 @@ import voiceListHandler from './api/elevenlabs/voices';
 import alignHandler from './api/elevenlabs/align';
 import elevenLabsProjectAlignHandler from './api/elevenlabs/align-project';
 import analyticsHandler from './api/admin/analytics';
+import storageHandler from './api/admin/storage';
 import setRoleHandler from './api/admin/set-role';
 import { requireMember } from './server/auth';
 import express from 'express';
@@ -31,6 +32,7 @@ app.post('/api/elevenlabs/align', alignHandler);
 app.post('/api/elevenlabs/align-project', elevenLabsProjectAlignHandler);
 // Same handlers Vercel serves from api/, so the admin panel also works in local development.
 app.get('/api/admin/analytics', analyticsHandler);
+app.all('/api/admin/storage', storageHandler);
 app.post('/api/admin/set-role', setRoleHandler);
 app.use('/api', async(req,res,next)=>{if(await requireMember(req,res))next();});
 

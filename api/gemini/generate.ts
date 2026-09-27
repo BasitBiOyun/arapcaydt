@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage, type UsageEvent } from '../../server/usage.js';
+import { storedNarrationAudio } from '../../server/mp3.js';
 import {
   GEMINI_TTS_MODELS as GEMINI_MODELS, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid, normalizeApiKey,
   readDailyState, readTeacherKey, usageDetail, type KeySource,
@@ -100,12 +101,12 @@ function sampleRateFromMime(mime: string) {
   return match ? Number(match[1]) : 24000;
 }
 
-async function saveGeneratedAudio(memberId: string, projectId: string, text: string, audio: Buffer) {
+async function saveGeneratedAudio(memberId: string, projectId: string, text: string, audio: Buffer, extension: string, contentType: string) {
   const db = serviceDatabase();
   const digest = createHash('sha256').update(text).digest('hex').slice(0, 20);
-  const path = `${memberId}/${projectId}/gemini-${digest}.wav`;
+  const path = `${memberId}/${projectId}/gemini-${digest}.${extension}`;
   const bucket = db.storage.from('project-assets');
-  const { error: uploadError } = await bucket.upload(path, audio, { contentType: 'audio/wav', upsert: true });
+  const { error: uploadError } = await bucket.upload(path, audio, { contentType, upsert: true });
   if (uploadError) throw new Error(`Gemini sesi depoya kaydedilemedi: ${uploadError.message}`);
   const { data, error: signedError } = await bucket.createSignedUrl(path, 21600);
   if (signedError || !data?.signedUrl) throw new Error('Gemini sesi için oynatma bağlantısı oluşturulamadı.');
@@ -194,17 +195,18 @@ export default async function handler(req: any, res: any) {
         }
 
         const upstreamMime = String(audioPart.inlineData.mimeType || '');
-        let audio = Buffer.from(audioPart.inlineData.data, 'base64');
-        if (audio.toString('ascii', 0, 4) !== 'RIFF') audio = pcmToWav(audio, sampleRateFromMime(upstreamMime));
-        const duration = wavDurationSeconds(audio);
-        const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio);
+        let wav = Buffer.from(audioPart.inlineData.data, 'base64');
+        if (wav.toString('ascii', 0, 4) !== 'RIFF') wav = pcmToWav(wav, sampleRateFromMime(upstreamMime));
+        const duration = wavDurationSeconds(wav);
+        const audio = await storedNarrationAudio(wav);
+        const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio.bytes, audio.extension, audio.mimeType);
 
         await recordUsage(member.user.id, projectId, [...failedUsage(attempts, text.length),
           { kind: 'gemini_tts', state: 'succeeded', detail: model, characters: text.length, keySource: lane.source }]);
         return res.status(200).json({
           audioUrl: stored.signedUrl,
           assetPath: stored.path,
-          mimeType: 'audio/wav',
+          mimeType: audio.mimeType,
           mode: 'live',
           durationSeconds: Number(duration.toFixed(3)),
           provider: 'gemini',

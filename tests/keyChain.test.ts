@@ -24,6 +24,15 @@ interface World {
   /** narrationSource.audioUrl as stored in the (teacher-editable) project JSON. */
   audioUrl?: unknown;
   downloads: string[];
+  uploads: Array<{ path: string; type: string; bytes: number }>;
+  /** Stored file contents by path (downloads of other paths return 64 zero bytes). */
+  files: Record<string, Buffer>;
+  /** project_asset_objects() rows and replace_project_audio() calls. */
+  objects: Row[];
+  replaced: Row[];
+  removed: string[];
+  /** Rows for the admin storage query (projects selected with asset field aliases). */
+  assetRows?: Row[];
   /** Google answer per key and model ("transcribe" for Transcribe). */
   answer(key: string, model: string): { status: number; body?: any };
 }
@@ -41,6 +50,7 @@ function install(world: World) {
       const path = url.pathname;
       if (path === '/auth/v1/user') return json({ id: 't1', email: 't@x', email_confirmed_at: '2026-01-01T00:00:00Z', aud: 'authenticated' });
       if (path === '/rest/v1/profiles') return rows([{ role: world.role, status: 'approved' }]);
+      if (path === '/rest/v1/projects' && (url.searchParams.get('select') || '').includes('nsAudio')) return rows(world.assetRows || []);
       if (path === '/rest/v1/projects') return rows([{ id: 'p1', owner_id: 't1', data: {
         solutionText: 'Doğru cevap C.', narrationSource: { type: 'gemini', mimeType: 'audio/wav', audioUrl: world.audioUrl ?? { assetPath: 't1/p1/a.wav' } } } }]);
       if (path === '/rest/v1/activity') {
@@ -53,9 +63,15 @@ function install(world: World) {
         if (method === 'DELETE') { world.keys = []; return new Response(null, { status: 204 }); }
         return rows(world.keys);
       }
+      if (path === '/rest/v1/rpc/project_asset_objects') return rows(world.objects);
+      if (path === '/rest/v1/rpc/replace_project_audio') { const args = JSON.parse(init.body); world.replaced.push(args); return json(true); }
       if (path.startsWith('/storage/v1/object/sign/')) return json({ signedURL: '/object/sign/x?token=1' });
       if (path.startsWith('/storage/v1/object/')) {
-        if (method === 'GET') { world.downloads.push(decodeURIComponent(path.replace(/^\/storage\/v1\/object\/(authenticated\/)?project-assets\//, ''))); return new Response(new Uint8Array(64)); }
+        const name = decodeURIComponent(path.replace(/^\/storage\/v1\/object\/(authenticated\/)?project-assets\/?/, ''));
+        if (method === 'GET') { world.downloads.push(name); return new Response(world.files[name] ?? new Uint8Array(64)); }
+        if (method === 'DELETE') { const names: string[] = JSON.parse(init.body).prefixes; world.removed.push(...names); return json(names.map(n => ({ name: n }))); }
+        const body = init.body instanceof Uint8Array || Buffer.isBuffer(init.body) ? init.body.length : (init.body?.size ?? 0);
+        world.uploads.push({ path: name, type: headers.get('content-type') || (init.body?.type ?? ''), bytes: body });
         return json({ Key: 'x' });
       }
       throw new Error(`unexpected Supabase call ${method} ${path}`);
@@ -91,7 +107,7 @@ async function call(handler: (req: any, res: any) => Promise<any>, method: strin
 
 async function freshWorld(over: Partial<World> = {}): Promise<World> {
   const { encryptKey } = await import('../server/quota');
-  const world: World = { role: 'teacher', activity: [], google: [], eleven: 0, downloads: [],
+  const world: World = { role: 'teacher', activity: [], google: [], eleven: 0, downloads: [], uploads: [], files: {}, objects: [], replaced: [], removed: [],
     keys: [{ owner_id: 't1', ciphertext: encryptKey(TEACHER_KEY), last4: 'TTTT', status: 'active', updated_at: '2026-09-27T10:00:00Z' }],
     answer: () => ok, ...over };
   install(world);
@@ -215,4 +231,55 @@ test('alignment only reads audio from the teacher’s own storage folder', async
   const world = await freshWorld({ audioUrl: `${SUPABASE}/storage/v1/object/sign/project-assets/t1/p1/a.wav?token=x` });
   assert.equal((await call(gemini, 'POST', { projectId: 'p1' })).status, 200);
   assert.deepEqual(world.downloads, ['t1/p1/a.wav']);
+});
+
+function wavFile(seconds: number, rate = 24000): Buffer {
+  const samples = Buffer.alloc(Math.round(seconds * rate) * 2);
+  for (let i = Math.round(0.2 * rate); i < samples.length / 2; i++) samples.writeInt16LE(Math.round(8000 * Math.sin(i / 6)), i * 2);
+  const h = Buffer.alloc(44);
+  h.write('RIFF', 0); h.writeUInt32LE(36 + samples.length, 4); h.write('WAVE', 8); h.write('fmt ', 12); h.writeUInt32LE(16, 16);
+  h.writeUInt16LE(1, 20); h.writeUInt16LE(1, 22); h.writeUInt32LE(rate, 24); h.writeUInt32LE(rate * 2, 28); h.writeUInt16LE(2, 32); h.writeUInt16LE(16, 34);
+  h.write('data', 36); h.writeUInt32LE(samples.length, 40);
+  return Buffer.concat([h, samples]);
+}
+
+test('new narrations are stored as MP3', async () => {
+  const { default: generate } = await import('../api/gemini/generate');
+  const world = await freshWorld();
+  const r = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.' });
+  assert.equal(r.status, 200);
+  assert.equal(r.payload.mimeType, 'audio/mpeg');
+  assert.equal(world.uploads.length, 1);
+  assert.match(world.uploads[0].path, /^t1\/p1\/gemini-[0-9a-f]{20}\.mp3$/);
+  assert.equal(r.payload.assetPath, world.uploads[0].path);
+});
+
+test('admin storage: convert WAV narrations to MP3, then remove the unused WAV files', async () => {
+  const { default: storage } = await import('../api/admin/storage');
+  const old = new Date(Date.now() - 86400_000).toISOString();
+  const world = await freshWorld({ role: 'admin',
+    files: { 't1/p1/a.wav': wavFile(3) },
+    objects: [{ name: 't1/p1/a.wav', bytes: 144_044, mimetype: 'audio/wav', created_at: old }, { name: 't1/p1/img', bytes: 90_000, mimetype: 'image/png', created_at: old }],
+    assetRows: [{ id: 'p1', owner_id: 't1', image: { assetPath: 't1/p1/img' }, nsAudio: { assetPath: 't1/p1/a.wav' }, anAudio: { assetPath: 't1/p1/a.wav' } }] });
+
+  const before = await call(storage, 'GET');
+  assert.equal(before.payload.convertible, 1);
+  assert.deepEqual(before.payload.byKind.wav, { count: 1, bytes: 144_044 });
+
+  const converted = await call(storage, 'POST', { action: 'convert' });
+  assert.deepEqual(converted.payload, { converted: 1, failures: [], remaining: 0 });
+  assert.deepEqual(world.uploads.map(u => u.path), ['t1/p1/a.mp3']);
+  assert.deepEqual(world.replaced, [{ target_project: 'p1', old_path: 't1/p1/a.wav', new_path: 't1/p1/a.mp3', new_mime: 'audio/mpeg' }]);
+  assert.ok(world.uploads[0].bytes > 0 && world.uploads[0].bytes < 144_044 / 4, `mp3 ${world.uploads[0].bytes} bytes`);
+
+  // Before the project points at the MP3 nothing is removed; afterwards only the WAV goes.
+  world.objects.push({ name: 't1/p1/a.mp3', bytes: world.uploads[0].bytes, mimetype: 'audio/mpeg', created_at: new Date().toISOString() });
+  assert.equal((await call(storage, 'POST', { action: 'sweep', scope: 'wav' })).payload.removed, 0);
+  world.assetRows = [{ id: 'p1', owner_id: 't1', image: { assetPath: 't1/p1/img' }, nsAudio: { assetPath: 't1/p1/a.mp3' }, anAudio: { assetPath: 't1/p1/a.mp3' } }];
+  const swept = await call(storage, 'POST', { action: 'sweep', scope: 'wav' });
+  assert.deepEqual(world.removed, ['t1/p1/a.wav']);
+  assert.equal(swept.payload.bytes, 144_044);
+
+  world.role = 'teacher';
+  assert.equal((await call(storage, 'GET')).status, 403);
 });

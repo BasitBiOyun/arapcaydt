@@ -1,5 +1,6 @@
 import {readProjectForOverview} from '../features/projects/cloudProjectRepository';
 import {ProjectViewer} from '../features/projects/ProjectViewer';
+import {StorageSection} from '../features/admin/StorageSection';
 import type {QuestionProject} from '../types';
 import {projectRepository} from '../features/projects/projectRepository';
 import {useProjects} from '../features/projects/ProjectContext';
@@ -100,6 +101,7 @@ export const AdminPage:React.FC=()=>{
    </tbody></table></div>
    <p className="text-xs text-stone-500 mt-2">"Bugün", {analytics.requests.quotaDay} Pasifik günüdür (Türkiye saatiyle 10:00–11:00 arası yenilenir). Sayılar kotadan düşen istekleri gösterir; 429 ile reddedilen istekler dahil değildir.</p>
   </section>}
+  <StorageSection/>
   {analytics&&<section className="bg-white border rounded-xl p-4"><h3 className="font-semibold">Ses ve zamanlama</h3><p className="text-xs text-stone-500 mt-1 mb-3">Her projenin şu anki ses kaydına göre. Ana ses Gemini, yedek ElevenLabs.</p>
    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
     <div className="border rounded-lg p-3 space-y-1.5 text-sm"><p className="text-xs font-semibold text-stone-500">Ses motoru</p>
