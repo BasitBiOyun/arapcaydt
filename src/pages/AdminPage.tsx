@@ -9,6 +9,8 @@ import { authHeaders, database } from '../services/supabase';
 import { getCategoryLabel } from '../config/categories';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import type { ElevenLabsStatus } from '../types';
+import { ArrowClockwise, CheckCircle, UserPlus } from '@phosphor-icons/react';
+
 interface Member {
   id: string;
   email: string;
@@ -25,22 +27,8 @@ interface Member {
 }
 interface Overview {
   members: Member[];
-  projects: Array<{
-    id: string;
-    owner_id: string;
-    title: string;
-    category: string;
-    status: string;
-    updated_at: string;
-  }>;
-  activity: Array<{
-    id: string;
-    owner_id: string;
-    kind: string;
-    state: string;
-    characters: number;
-    created_at: string;
-  }>;
+  projects: Array<{ id: string; owner_id: string; title: string; category: string; status: string; updated_at: string }>;
+  activity: Array<{ id: string; owner_id: string; kind: string; state: string; characters: number; created_at: string }>;
 }
 interface MemberAnalytics {
   categories: Record<string, number>;
@@ -56,6 +44,17 @@ interface MemberAnalytics {
   quality: { ready: number; check: number; blocked: number };
   lastProjectAt: string | null;
 }
+interface MemberToday {
+  ownTts: number;
+  ownTranscribe: number;
+  ownTranscribeExhausted: boolean;
+  ownTtsExhausted: number;
+  sharedTts: number;
+  sharedTranscribe: number;
+  elevenlabsAlign: number;
+}
+type Counter = { succeeded: number; failed: number };
+type RequestService = 'gemini_tts' | 'gemini_transcribe' | 'elevenlabs_align' | 'voice';
 interface Analytics {
   totalProjects: number;
   categoryTotals: Record<string, number>;
@@ -84,34 +83,15 @@ interface Analytics {
     limits?: { sharedTranscribePerTeacher: number; elevenlabsAlignPerTeacher: number };
   };
 }
-interface MemberToday {
-  ownTts: number;
-  ownTranscribe: number;
-  ownTranscribeExhausted: boolean;
-  ownTtsExhausted: number;
-  sharedTts: number;
-  sharedTranscribe: number;
-  elevenlabsAlign: number;
-}
+
 /** The studio key's free Transcribe quota per day (Google AI Studio project of the studio owner). */
 const STUDIO_TRANSCRIBE_DAILY = 100;
-type Counter = { succeeded: number; failed: number };
-type RequestService = 'gemini_tts' | 'gemini_transcribe' | 'elevenlabs_align' | 'voice';
 const requestLabels: Record<RequestService, string> = {
   gemini_tts: 'Gemini seslendirme',
   gemini_transcribe: 'Gemini Transcribe',
   elevenlabs_align: 'ElevenLabs Forced Alignment',
   voice: 'ElevenLabs yedek sesi',
 };
-const counts = (c?: Counter) =>
-  c ? (
-    <>
-      <strong>{c.succeeded + c.failed}</strong>
-      {c.failed > 0 && <span className="text-xs text-red-700"> · {c.failed} başarısız</span>}
-    </>
-  ) : (
-    '—'
-  );
 const timingLabels: Record<string, string> = {
   'gemini-transcribe': 'Gemini Transcribe',
   'forced-alignment': 'ElevenLabs Forced Alignment',
@@ -128,60 +108,86 @@ const statuses: Record<string, string> = {
   audio_approved: 'Ses seçildi',
   video_ready: 'Video hazır',
 };
+const activityStates: Record<string, string> = {
+  succeeded: 'Tamamlandı',
+  requested: 'İstek gönderildi',
+  failed: 'Başarısız',
+  aligned: 'Tamamlandı',
+  align_failed: 'Başarısız',
+  uncertain: 'Sonuç doğrulanamadı',
+  client_reported: 'Tarayıcıda tamamlandı',
+  role_admin: 'Yönetici yapıldı',
+  ...statuses,
+};
+
+const counts = (c?: Counter) =>
+  c ? (
+    <>
+      <strong className="tabular-nums">{c.succeeded + c.failed}</strong>
+      {c.failed > 0 && <span className="text-xs text-red-700"> · {c.failed} başarısız</span>}
+    </>
+  ) : (
+    '—'
+  );
+const sorted = (map: Record<string, number> | undefined) => Object.entries(map || {}).sort((a, b) => b[1] - a[1]);
+const dateTime = (iso: string) => new Date(iso).toLocaleString('tr', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+function ago(iso: string | null | undefined): string {
+  if (!iso) return '—';
+  const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  const rtf = new Intl.RelativeTimeFormat('tr', { numeric: 'auto' });
+  if (Math.abs(minutes) < 60) return rtf.format(-minutes, 'minute');
+  if (Math.abs(minutes) < 60 * 24) return rtf.format(-Math.round(minutes / 60), 'hour');
+  return rtf.format(-Math.round(minutes / 1440), 'day');
+}
+
+type Tab = 'overview' | 'teachers' | 'usage' | 'projects';
+const card = 'rounded-xl border bg-white p-5';
+
+const Stat: React.FC<{ label: string; value: React.ReactNode; hint?: React.ReactNode; tone?: string }> = ({ label, value, hint, tone }) => (
+  <div className={card}>
+    <p className="text-sm text-[#666560]">{label}</p>
+    <p className={`mt-1 text-3xl font-bold tabular-nums tracking-tight ${tone || 'text-[#1C1917]'}`}>{value}</p>
+    {hint && <p className="mt-1 text-xs text-[#787670]">{hint}</p>}
+  </div>
+);
+const SectionTitle: React.FC<{ title: string; note?: React.ReactNode; action?: React.ReactNode }> = ({ title, note, action }) => (
+  <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+    <div>
+      <h3 className="font-bold text-[#1C1917]">{title}</h3>
+      {note && <p className="text-xs text-[#787670] mt-1 max-w-3xl">{note}</p>}
+    </div>
+    {action}
+  </div>
+);
+const Chip: React.FC<{ tone: 'green' | 'amber' | 'red' | 'gray' | 'brand'; children: React.ReactNode }> = ({ tone, children }) => (
+  <span
+    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap ${
+      {
+        green: 'bg-[#EFF7F0] text-[#1E562A]',
+        amber: 'bg-[#FFF8E6] text-[#78540E]',
+        red: 'bg-red-50 text-red-700',
+        gray: 'bg-[#F2F1EB] text-[#55544F]',
+        brand: 'bg-[#F8EEEE] text-[#8B1E2D]',
+      }[tone]
+    }`}
+  >
+    {children}
+  </span>
+);
+
 export const AdminPage: React.FC = () => {
   const { loadProjects } = useProjects();
+  const [tab, setTab] = useState<Tab>('overview');
   const [viewing, setViewing] = useState<QuestionProject | null>(null);
-  const open = async (id: string) => {
-    setBusy(true);
-    try {
-      const p = await readProjectForOverview(id);
-      if (!p) throw new Error('Proje bulunamadı.');
-      setViewing(p);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Proje açılamadı.');
-    } finally {
-      setBusy(false);
-    }
-  };
-  const [importMessage, setImportMessage] = useState('');
-  const importLegacy = async () => {
-    setBusy(true);
-    try {
-      const {
-        data: { user },
-      } = await database().auth.getUser();
-      if (!user) throw new Error('Yeniden giriş yapın.');
-      const raw =
-        localStorage.getItem('arabic_ydt_teacher_projects_v2') ||
-        localStorage.getItem('arabic_ydt_teacher_projects_v1') ||
-        '[]';
-      const projects = JSON.parse(raw);
-      if (!Array.isArray(projects)) throw new Error('Eski kayıt okunamadı.');
-      let count = 0;
-      for (const p of projects) {
-        if (!p.id || !p.videoConfig || typeof p.solutionText !== 'string') continue;
-        const id = `legacy_${user.id}_${p.id}`;
-        if (await projectRepository.getById(id)) continue;
-        await projectRepository.save({ ...p, id });
-        count++;
-        setImportMessage(`${count} proje aktarıldı…`);
-      }
-      setImportMessage(`${count} eski proje hesabınıza aktarıldı. Tarayıcıdaki kopyalar korundu.`);
-      await loadProjects();
-      await load();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Aktarım tamamlanamadı.');
-    } finally {
-      setBusy(false);
-    }
-  };
   const [voice, setVoice] = useState<ElevenLabsStatus | null>(null);
-  const [data, setData] = useState<Overview | null>(null),
-    [analytics, setAnalytics] = useState<Analytics | null>(null),
-    [error, setError] = useState(''),
-    [message, setMessage] = useState(''),
-    [busy, setBusy] = useState(false),
-    [filter, setFilter] = useState('');
+  const [data, setData] = useState<Overview | null>(null);
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [filter, setFilter] = useState('');
+  const [importMessage, setImportMessage] = useState('');
+
   const load = useCallback(async () => {
     setBusy(true);
     try {
@@ -193,7 +199,7 @@ export const AdminPage: React.FC = () => {
       setVoice(voiceStatus);
       if (overviewResult.error) throw overviewResult.error;
       const analyticsPayload = await analyticsResponse.json().catch(() => null);
-      if (!analyticsResponse.ok) throw new Error(analyticsPayload?.error || 'Soru tipi istatistikleri alınamadı.');
+      if (!analyticsResponse.ok) throw new Error(analyticsPayload?.error || 'Yönetim istatistikleri alınamadı.');
       setData(overviewResult.data);
       setAnalytics(analyticsPayload);
       setError('');
@@ -206,12 +212,28 @@ export const AdminPage: React.FC = () => {
   useEffect(() => {
     void load();
   }, [load]);
-  const change = async (id: string, status: string) => {
+
+  const open = async (id: string) => {
+    setBusy(true);
+    try {
+      const p = await readProjectForOverview(id);
+      if (!p) throw new Error('Proje bulunamadı.');
+      setViewing(p);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Proje açılamadı.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const change = async (member: Member, status: string) => {
+    if (status === 'blocked' && !window.confirm(`${member.name || member.email} için erişim durdurulsun mu? Projeleri silinmez.`)) return;
     setBusy(true);
     setMessage('');
     try {
-      const { error } = await database().rpc('set_member_status', { member_id: id, new_status: status });
+      const { error } = await database().rpc('set_member_status', { member_id: member.id, new_status: status });
       if (error) throw error;
+      setMessage(`${member.name || member.email}: ${statuses[status] || status}.`);
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Değişiklik kaydedilemedi.');
@@ -219,6 +241,7 @@ export const AdminPage: React.FC = () => {
       setBusy(false);
     }
   };
+
   const promote = async (member: Member) => {
     if (
       !window.confirm(
@@ -245,236 +268,285 @@ export const AdminPage: React.FC = () => {
       setBusy(false);
     }
   };
-  const who = (id: string) => data?.members.find((m) => m.id === id)?.name || 'Öğretmen';
-  const categoryEntries = (counts: Record<string, number> | undefined) =>
-    Object.entries(counts || {}).sort((a, b) => b[1] - a[1]);
-  const totalVideoReady = Object.values<MemberAnalytics>(analytics?.members || {}).reduce(
-    (sum, m) => sum + m.videoReady,
-    0,
-  );
-  const totalUploadedAudio = Object.values<MemberAnalytics>(analytics?.members || {}).reduce(
-    (sum, m) => sum + m.uploadedAudio,
-    0,
-  );
+
+  const importLegacy = async () => {
+    setBusy(true);
+    try {
+      const {
+        data: { user },
+      } = await database().auth.getUser();
+      if (!user) throw new Error('Yeniden giriş yapın.');
+      const raw =
+        localStorage.getItem('arabic_ydt_teacher_projects_v2') || localStorage.getItem('arabic_ydt_teacher_projects_v1') || '[]';
+      const projects = JSON.parse(raw);
+      if (!Array.isArray(projects)) throw new Error('Eski kayıt okunamadı.');
+      let count = 0;
+      for (const p of projects) {
+        if (!p.id || !p.videoConfig || typeof p.solutionText !== 'string') continue;
+        const id = `legacy_${user.id}_${p.id}`;
+        if (await projectRepository.getById(id)) continue;
+        await projectRepository.save({ ...p, id });
+        count++;
+        setImportMessage(`${count} proje aktarıldı…`);
+      }
+      setImportMessage(`${count} eski proje hesabınıza aktarıldı. Tarayıcıdaki kopyalar korundu.`);
+      await loadProjects();
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Aktarım tamamlanamadı.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const members = data?.members || [];
+  const pending = members.filter((m) => m.status === 'pending');
+  const who = (id: string) => members.find((m) => m.id === id)?.name || 'Öğretmen';
+  const memberStats = Object.values<MemberAnalytics>(analytics?.members || {});
+  const totalVideoReady = memberStats.reduce((sum, m) => sum + m.videoReady, 0);
+  const requests = analytics?.requests;
+  const limits = { shared: requests?.limits?.sharedTranscribePerTeacher ?? 25, eleven: requests?.limits?.elevenlabsAlignPerTeacher ?? 20 };
+  const activeKeys = Object.values<{ status: string }>(analytics?.teacherKeys || {}).filter((k) => k.status === 'active').length;
+
+  const tabs: Array<{ id: Tab; label: string; badge?: number }> = [
+    { id: 'overview', label: 'Genel bakış' },
+    { id: 'teachers', label: 'Öğretmenler', badge: pending.length || undefined },
+    { id: 'usage', label: 'Kullanım' },
+    { id: 'projects', label: 'Projeler' },
+  ];
+
+  const issuesList = (limit?: number) =>
+    analytics && analytics.issues.length > 0 ? (
+      <ul className="divide-y divide-[#EFEFEA]">
+        {analytics.issues.slice(0, limit).map((issue) => (
+          <li key={issue.projectId + issue.detail} className="py-2.5 flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <button disabled={busy} className="font-semibold text-[#8B1E2D] hover:underline text-left" onClick={() => void open(issue.projectId)}>
+                {issue.title}
+              </button>{' '}
+              <span className="text-sm text-[#787670]">· {who(issue.ownerId)}</span>
+              <p className="text-xs text-[#55544F] break-words mt-0.5">{issue.detail}</p>
+            </div>
+            <span className="text-xs text-[#A8A69E] whitespace-nowrap">{ago(issue.updatedAt)}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-sm text-[#787670] flex items-center gap-2">
+        <CheckCircle size={18} weight="fill" className="text-[#15803D]" /> Dikkat gerektiren proje yok.
+      </p>
+    );
+
   return (
-    <section className="p-6 space-y-6 max-w-7xl mx-auto">
+    <section className="studio-library">
       {viewing && <ProjectViewer project={viewing} onClose={() => setViewing(null)} />}
-      <div className="flex justify-between items-start">
+      <header className="library-heading !mb-5">
         <div>
-          <h2 className="text-2xl font-bold">Yönetim</h2>
-          <p className="text-stone-500 text-sm mt-1">
-            Üyelik erişimini yönetin, öğretmenlerin üretimlerini görüntüleyin. İçerikler için yönetici onayı gerekmez.
-          </p>
+          <h2>Yönetim</h2>
+          <p>Üyelik erişimini yönetin, öğretmenlerin üretimini ve kaynak kullanımını izleyin.</p>
         </div>
-        <button disabled={busy} onClick={() => void load()} className="border rounded px-4 py-2">
-          {busy ? 'Yükleniyor…' : 'Yenile'}
+        <button disabled={busy} onClick={() => void load()} className="studio-secondary">
+          <ArrowClockwise size={16} weight="bold" className={busy ? 'animate-spin' : ''} /> {busy ? 'Yükleniyor…' : 'Yenile'}
         </button>
+      </header>
+
+      <div role="tablist" aria-label="Yönetim bölümleri" className="flex gap-1 border-b mb-6 overflow-x-auto">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={tab === t.id}
+            onClick={() => setTab(t.id)}
+            className={`px-4 py-2.5 -mb-px border-b-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+              tab === t.id ? 'border-[#8B1E2D] text-[#8B1E2D]' : 'border-transparent text-[#666560] hover:text-[#1C1917]'
+            }`}
+          >
+            {t.label}
+            {t.badge ? <span className="ml-2 rounded-full bg-[#8B1E2D] text-white text-[11px] px-1.5 py-0.5">{t.badge}</span> : null}
+          </button>
+        ))}
       </div>
+
       {error && (
-        <p role="alert" className="bg-red-50 text-red-800 p-3 rounded">
+        <p role="alert" className="mb-4 bg-red-50 text-red-800 p-3 rounded-xl text-sm">
           {error}
         </p>
       )}
       {message && (
-        <p role="status" className="bg-green-50 text-green-800 p-3 rounded">
+        <p role="status" className="mb-4 bg-[#EFF7F0] text-[#1E562A] p-3 rounded-xl text-sm">
           {message}
         </p>
       )}
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-        {[
-          ['Öğretmen', data?.members.filter((m) => m.role === 'teacher').length || 0],
-          ['Onay bekleyen', data?.members.filter((m) => m.status === 'pending').length || 0],
-          ['Soru', analytics?.totalProjects ?? data?.members.reduce((s, m) => s + m.questions, 0) ?? 0],
-          ['Seslendirilen soru', analytics?.funnel.withAudio ?? 0],
-          ['Video hazır', totalVideoReady],
-          ['Yüklenen MP3', totalUploadedAudio],
-        ].map(([label, value]) => (
-          <div key={label} className="bg-white border rounded-xl p-5">
-            <p className="text-sm text-stone-500">{label}</p>
-            <strong className="text-3xl">{value}</strong>
+
+      {tab === 'overview' && (
+        <div className="space-y-6">
+          {pending.length > 0 && (
+            <section className="rounded-xl border border-[#E5D7B0] bg-[#FFF8E6] p-5">
+              <SectionTitle title={`Onay bekleyen hesaplar (${pending.length})`} note="E-postasını doğrulamış ve onayınızı bekleyen öğretmenler." />
+              <ul className="space-y-2">
+                {pending.map((m) => (
+                  <li key={m.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-white border px-4 py-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <UserPlus size={20} className="text-[#78540E] shrink-0" />
+                      <div className="min-w-0">
+                        <p className="font-semibold truncate">{m.name}</p>
+                        <p className="text-xs text-[#787670] truncate">{m.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button disabled={busy} className="studio-primary !min-h-0 !py-2" onClick={() => void change(m, 'approved')}>
+                        Onayla
+                      </button>
+                      <button disabled={busy} className="studio-secondary !min-h-0 !py-2" onClick={() => void change(m, 'blocked')}>
+                        Reddet
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <Stat label="Onaylı öğretmen" value={members.filter((m) => m.status === 'approved' && m.role === 'teacher').length}
+              hint={`${activeKeys} kişi kendi Google anahtarını bağladı`} />
+            <Stat label="Soru" value={analytics?.totalProjects ?? members.reduce((s, m) => s + m.questions, 0)}
+              hint={`${analytics?.funnel.withAudio ?? 0} tanesi seslendirildi`} />
+            <Stat label="Video hazır" value={totalVideoReady} tone="text-[#8B1E2D]"
+              hint={`${members.reduce((s, m) => s + m.exports, 0)} MP4 indirildi`} />
+            <Stat label="Yayına hazır" value={analytics?.quality.ready ?? 0} tone="text-[#1E562A]"
+              hint={analytics ? `${analytics.quality.check} kontrol önerilir · ${analytics.quality.blocked} düzeltme gerekli` : undefined} />
           </div>
-        ))}
-      </div>
-      {analytics?.requests && (
-        <section className="bg-white border rounded-xl p-4">
-          <h3 className="font-semibold">İstek sayaçları</h3>
-          <p className="text-xs text-stone-500 mt-1 mb-3">
-            Her istek ayrı sayılır: her Gemini model denemesi, yeniden seslendirmeler ve başarısız istekler dahil.
-            "Bugün", Gemini günlük kotasının sıfırlandığı Pasifik saatine göredir ({analytics.requests.quotaDay}).
-          </p>
-          {analytics.requests.migrationPending ? (
-            <p className="text-sm bg-amber-50 text-amber-900 border border-amber-200 rounded p-3">
-              İstek sayacı için veritabanı güncellemesi bekleniyor:{' '}
-              <code>supabase/migrations/20260928_teacher_keys.sql</code> dosyasını Supabase SQL Editor'da bir kez
-              çalıştırın. O zamana kadar istekler sayılmaz, günlük haklar uygulanmaz ve öğretmenler anahtar kaydedemez.
-            </p>
-          ) : (
-            <>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="bg-stone-50">
-                    <tr>
-                      {['Servis', 'Bugün', 'Son 30 gün', 'Toplam'].map((t) => (
-                        <th key={t} className="p-2 whitespace-nowrap">
-                          {t}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(Object.keys(requestLabels) as RequestService[]).map((k) => (
-                      <tr key={k} className="border-t">
-                        <td className="p-2">{requestLabels[k]}</td>
-                        <td className="p-2">{counts(analytics.requests!.totals.today[k])}</td>
-                        <td className="p-2">{counts(analytics.requests!.totals.last30Days[k])}</td>
-                        <td className="p-2">{counts(analytics.requests!.totals.all[k])}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              {Object.keys(analytics.requests.geminiModels).length > 0 && (
-                <div className="mt-3">
-                  <p className="text-xs font-semibold text-stone-500 mb-1">Gemini seslendirme · model başına</p>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
-                    {(
-                      Object.entries(analytics.requests.geminiModels) as Array<
-                        [string, { today: Counter; last30Days: Counter }]
-                      >
-                    )
-                      .sort(
-                        (a, b) =>
-                          b[1].last30Days.succeeded +
-                          b[1].last30Days.failed -
-                          (a[1].last30Days.succeeded + a[1].last30Days.failed),
-                      )
-                      .map(([model, c]) => (
-                        <div key={model} className="border rounded-lg px-3 py-2 text-sm">
-                          <p className="font-mono-code text-xs break-all">{model}</p>
-                          <p>Bugün {counts(c.today)}</p>
-                          <p className="text-xs text-stone-500">
-                            Son 30 gün: {c.last30Days.succeeded + c.last30Days.failed}
-                          </p>
-                        </div>
-                      ))}
-                  </div>
+
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6">
+            <section className={card}>
+              <SectionTitle
+                title="Dikkat gerektiren projeler"
+                action={analytics && analytics.issues.length > 6 ? (
+                  <button className="text-sm font-semibold text-[#8B1E2D] hover:underline" onClick={() => setTab('projects')}>Tümü</button>
+                ) : undefined}
+              />
+              {issuesList(6)}
+            </section>
+            <section className={card}>
+              <SectionTitle title="Üretim hunisi" />
+              {analytics && (
+                <div className="space-y-3">
+                  {([
+                    ['Proje', analytics.funnel.total],
+                    ['Sesli', analytics.funnel.withAudio],
+                    ['İşaretleri hazır', analytics.funnel.withMarkers],
+                    ['Yayına hazır', analytics.funnel.ready],
+                  ] as Array<[string, number]>).map(([label, value]) => (
+                    <div key={label}>
+                      <div className="flex justify-between text-sm"><span className="text-[#55544F]">{label}</span><strong className="tabular-nums">{value}</strong></div>
+                      <div className="h-2 rounded-full bg-[#F2F1EB] mt-1 overflow-hidden">
+                        <div className="h-full bg-[#8B1E2D]" style={{ width: `${analytics.funnel.total ? (value / analytics.funnel.total) * 100 : 0}%` }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
-            </>
-          )}
-        </section>
+              {requests && !requests.migrationPending && (
+                <div className="mt-5 pt-4 border-t text-sm space-y-1.5">
+                  <div className="flex justify-between"><span className="text-[#55544F]">Ortak anahtar · bugünkü zamanlama</span>
+                    <strong className={`tabular-nums ${requests.studio?.transcribeExhausted ? 'text-red-700' : ''}`}>{requests.studio?.transcribeUsed ?? 0} / ~{STUDIO_TRANSCRIBE_DAILY}</strong></div>
+                  <div className="flex justify-between"><span className="text-[#55544F]">ElevenLabs yedek kotası</span>
+                    <strong className="tabular-nums">{voice?.remainingCharacters != null ? `${voice.remainingCharacters.toLocaleString('tr')} karakter` : '—'}</strong></div>
+                </div>
+              )}
+            </section>
+          </div>
+        </div>
       )}
-      {analytics?.requests && !analytics.requests.migrationPending && (
-        <section className="bg-white border rounded-xl p-4">
-          <h3 className="font-semibold">Google anahtarları ve bugünkü haklar</h3>
-          <p className="text-xs text-stone-500 mt-1 mb-3">
-            Sıra: öğretmenin kendi anahtarı → ortak anahtar (zamanlamada öğretmen başına günde{' '}
-            {analytics.requests.limits?.sharedTranscribePerTeacher ?? 25}) → ElevenLabs hizalama (öğretmen başına günde{' '}
-            {analytics.requests.limits?.elevenlabsAlignPerTeacher ?? 20}) → bilgisayarda Whisper. Yöneticiler
-            sınırsızdır. Günlük kota dolan modeller Pasifik gece yarısına kadar atlanır.
-          </p>
-          <div className="grid sm:grid-cols-3 gap-3 mb-3">
-            <div className="border rounded-lg p-3">
-              <p className="text-xs text-stone-500">Kendi anahtarını bağlayan</p>
-              <strong className="text-2xl">
-                {
-                  Object.values<{ status: string }>(analytics.teacherKeys || {}).filter((k) => k.status === 'active')
-                    .length
-                }
-              </strong>
-              <span className="text-sm text-stone-500">
-                {' '}
-                / {data?.members.filter((m) => m.status === 'approved').length ?? 0} üye
-              </span>
+
+      {tab === 'teachers' && (
+        <section className="rounded-xl border bg-white overflow-hidden">
+          <div className="p-5 flex flex-wrap items-center justify-between gap-3 border-b">
+            <div>
+              <h3 className="font-bold">Öğretmenler</h3>
+              <p className="text-xs text-[#787670] mt-1">
+                “Bugün” Gemini kotasının yenilendiği Pasifik günüdür (Türkiye saatiyle 10:00–11:00). Ortak zamanlama öğretmen başına günde {limits.shared}, ElevenLabs hizalama {limits.eleven}; yöneticiler sınırsız.
+              </p>
             </div>
-            <div className="border rounded-lg p-3">
-              <p className="text-xs text-stone-500">Ortak anahtar · bugünkü zamanlama</p>
-              <strong className="text-2xl">{analytics.requests.studio?.transcribeUsed ?? 0}</strong>
-              <span className="text-sm text-stone-500"> / ~{STUDIO_TRANSCRIBE_DAILY}</span>
-              {analytics.requests.studio?.transcribeExhausted && (
-                <p className="text-xs text-red-700">Bugünkü kota doldu</p>
-              )}
-            </div>
-            <div className="border rounded-lg p-3">
-              <p className="text-xs text-stone-500">Ortak anahtar · kotası dolan ses modelleri</p>
-              {analytics.requests.studio?.ttsExhausted.length ? (
-                analytics.requests.studio.ttsExhausted.map((m) => (
-                  <p key={m} className="font-mono-code text-xs break-all">
-                    {m}
-                  </p>
-                ))
-              ) : (
-                <p className="text-sm">Yok</p>
-              )}
-            </div>
+            <input aria-label="Öğretmen ara" placeholder="Ad veya e-posta ara" value={filter} onChange={(e) => setFilter(e.target.value)}
+              className="border rounded-lg px-3 py-2 text-sm w-64 max-w-full" />
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="bg-stone-50">
+              <thead className="bg-[#FAF9F5] text-xs text-[#666560]">
                 <tr>
-                  {[
-                    'Öğretmen',
-                    'Kendi anahtarı',
-                    'Kendi ses',
-                    'Kendi zamanlama',
-                    'Ortak ses',
-                    'Ortak zamanlama',
-                    'ElevenLabs hizalama',
-                  ].map((t) => (
-                    <th key={t} className="p-2 whitespace-nowrap">
-                      {t}
-                    </th>
+                  {['Öğretmen', 'Durum', 'Sorular', 'Kalite', 'Google anahtarı', 'Bugün', 'Son çalışma', 'Erişim'].map((t) => (
+                    <th key={t} className="px-4 py-3 font-semibold whitespace-nowrap">{t}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
-                {data?.members
-                  .filter((m) => m.status === 'approved')
+              <tbody className="divide-y divide-[#EFEFEA]">
+                {members
+                  .filter((m) => (m.name + ' ' + m.email).toLocaleLowerCase('tr').includes(filter.toLocaleLowerCase('tr')))
                   .map((m) => {
-                    const k = analytics.teacherKeys?.[m.id];
-                    const t = analytics.requests!.membersToday?.[m.id];
+                    const stats = analytics?.members[m.id];
+                    const key = analytics?.teacherKeys?.[m.id];
+                    const today = requests?.membersToday?.[m.id];
                     const admin = m.role === 'admin';
+                    const types = sorted(stats?.categories);
                     return (
-                      <tr key={m.id} className="border-t">
-                        <td className="p-2">{m.name}</td>
-                        <td className="p-2 whitespace-nowrap">
-                          {k ? (
-                            k.status === 'active' ? (
-                              <span className="text-[#15803D] font-semibold">Bağlı · ••••{k.last4}</span>
-                            ) : (
-                              <span className="text-red-700 font-semibold">Geçersiz</span>
-                            )
+                      <tr key={m.id} className="align-top">
+                        <td className="px-4 py-3">
+                          <div className="font-semibold flex items-center gap-2">{m.name}{admin && <Chip tone="brand">Yönetici</Chip>}</div>
+                          <div className="text-xs text-[#787670]">{m.email}</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <Chip tone={m.status === 'approved' ? 'green' : m.status === 'pending' ? 'amber' : 'red'}>{statuses[m.status] || m.status}</Chip>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span className="font-semibold tabular-nums">{m.questions}</span>
+                          <span className="text-xs text-[#787670]"> · {stats?.videoReady || 0} video</span>
+                          {types.length > 0 && (
+                            <div className="text-xs text-[#787670]" title={types.map(([id, n]) => `${getCategoryLabel(id)}: ${n}`).join('\n')}>
+                              {types.length === 1 ? getCategoryLabel(types[0][0]) : `${types.length} soru tipi`}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-xs" title="yayına hazır · kontrol önerilir · düzeltme gerekli">
+                          <span className="text-[#15803D] font-semibold">{stats?.quality.ready || 0}</span>
+                          <span className="text-[#C9C7BE]"> · </span>
+                          <span className="text-[#B45309] font-semibold">{stats?.quality.check || 0}</span>
+                          <span className="text-[#C9C7BE]"> · </span>
+                          <span className="text-red-700 font-semibold">{stats?.quality.blocked || 0}</span>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          {key ? (key.status === 'active' ? <Chip tone="green">Bağlı · ••••{key.last4}</Chip> : <Chip tone="red">Geçersiz</Chip>) : <Chip tone="gray">Yok</Chip>}
+                        </td>
+                        <td className="px-4 py-3 text-xs whitespace-nowrap text-[#55544F]">
+                          {requests?.migrationPending ? '—' : (
+                            <>
+                              <div>Ses {(today?.ownTts ?? 0) + (today?.sharedTts ?? 0)} · zamanlama {(today?.ownTranscribe ?? 0) + (today?.sharedTranscribe ?? 0)}</div>
+                              <div className="text-[#787670]">
+                                ortak {today?.sharedTranscribe ?? 0}{admin ? '' : `/${limits.shared}`} · ElevenLabs {today?.elevenlabsAlign ?? 0}{admin ? '' : `/${limits.eleven}`}
+                                {today?.ownTranscribeExhausted && <span className="text-red-700"> · kendi kotası doldu</span>}
+                              </div>
+                            </>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-xs whitespace-nowrap text-[#55544F]" title={stats?.lastProjectAt ? new Date(stats.lastProjectAt).toLocaleString('tr') : undefined}>
+                          {ago(stats?.lastProjectAt)}
+                        </td>
+                        <td className="px-4 py-3">
+                          {!admin ? (
+                            <div className="flex flex-col gap-1.5 items-start">
+                              <select aria-label={`${m.email} erişimi`} disabled={busy} value={m.status}
+                                onChange={(e) => void change(m, e.target.value)} className="border rounded-lg px-2 py-1.5 text-sm bg-white">
+                                <option value="pending">Onay bekliyor</option>
+                                <option value="approved">Onaylı</option>
+                                <option value="blocked">Durduruldu</option>
+                              </select>
+                              <button type="button" disabled={busy} onClick={() => void promote(m)} className="text-xs font-semibold text-[#8B1E2D] hover:underline">
+                                Yönetici yap
+                              </button>
+                            </div>
                           ) : (
-                            <span className="text-stone-400">Yok</span>
-                          )}
-                        </td>
-                        <td className="p-2">
-                          {t?.ownTts ?? 0}
-                          {t?.ownTtsExhausted ? (
-                            <span className="text-xs text-stone-500"> · {t.ownTtsExhausted} model doldu</span>
-                          ) : null}
-                        </td>
-                        <td className="p-2">
-                          {t?.ownTranscribe ?? 0}
-                          {t?.ownTranscribeExhausted && <span className="text-xs text-red-700"> · doldu</span>}
-                        </td>
-                        <td className="p-2">{t?.sharedTts ?? 0}</td>
-                        <td className="p-2">
-                          {t?.sharedTranscribe ?? 0}
-                          {!admin && (
-                            <span className="text-stone-500">
-                              {' '}
-                              / {analytics.requests!.limits?.sharedTranscribePerTeacher ?? 25}
-                            </span>
-                          )}
-                        </td>
-                        <td className="p-2">
-                          {t?.elevenlabsAlign ?? 0}
-                          {!admin && (
-                            <span className="text-stone-500">
-                              {' '}
-                              / {analytics.requests!.limits?.elevenlabsAlignPerTeacher ?? 20}
-                            </span>
+                            <span className="text-xs text-[#787670]">Tam yetki</span>
                           )}
                         </td>
                       </tr>
@@ -483,379 +555,184 @@ export const AdminPage: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-stone-500 mt-2">
-            "Bugün", {analytics.requests.quotaDay} Pasifik günüdür (Türkiye saatiyle 10:00–11:00 arası yenilenir).
-            Sayılar kotadan düşen istekleri gösterir; 429 ile reddedilen istekler dahil değildir.
+          <p className="text-xs text-[#787670] px-5 py-4 border-t">
+            Soru ve kalite sayıları kayıtlı projelerin şu anki durumundan hesaplanır. “Bugün” sütunu Google kotasından düşen istekleri gösterir (429 ile reddedilenler hariç).
           </p>
         </section>
       )}
-      <StorageSection />
-      {analytics && (
-        <section className="bg-white border rounded-xl p-4">
-          <h3 className="font-semibold">Ses ve zamanlama</h3>
-          <p className="text-xs text-stone-500 mt-1 mb-3">
-            Her projenin şu anki ses kaydına göre. Ana ses Gemini, yedek ElevenLabs.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="border rounded-lg p-3 space-y-1.5 text-sm">
-              <p className="text-xs font-semibold text-stone-500">Ses motoru</p>
-              <div className="flex items-center justify-between gap-3">
-                <span>Gemini</span>
-                <strong>{analytics.voice.gemini}</strong>
+
+      {tab === 'usage' && (
+        <div className="space-y-6">
+          {requests?.migrationPending ? (
+            <p className="text-sm bg-amber-50 text-amber-900 border border-amber-200 rounded-xl p-4">
+              İstek sayacı için veritabanı güncellemesi bekleniyor: <code>supabase/migrations/20260928_teacher_keys.sql</code> dosyasını Supabase SQL Editor'da bir kez çalıştırın. O zamana kadar istekler sayılmaz, günlük haklar uygulanmaz ve öğretmenler anahtar kaydedemez.
+            </p>
+          ) : requests && (
+            <>
+              <div className="grid sm:grid-cols-3 gap-3">
+                <Stat label="Kendi anahtarını bağlayan" value={activeKeys} hint={`${members.filter((m) => m.status === 'approved').length} onaylı üyeden`} />
+                <Stat label="Ortak anahtar · bugünkü zamanlama" value={<>{requests.studio?.transcribeUsed ?? 0}<span className="text-base text-[#787670] font-semibold"> / ~{STUDIO_TRANSCRIBE_DAILY}</span></>}
+                  tone={requests.studio?.transcribeExhausted ? 'text-red-700' : undefined} hint={requests.studio?.transcribeExhausted ? 'Bugünkü kota doldu' : `Pasifik günü ${requests.quotaDay}`} />
+                <Stat label="Ortak anahtar · kotası dolan ses modeli" value={requests.studio?.ttsExhausted.length ?? 0}
+                  hint={requests.studio?.ttsExhausted.length ? requests.studio.ttsExhausted.join(', ') : 'Hepsi kullanılabilir'} />
               </div>
-              <div className="flex items-center justify-between gap-3">
-                <span>ElevenLabs yedeği</span>
-                <strong>{analytics.voice.elevenlabs}</strong>
-              </div>
-              <div className="flex items-center justify-between gap-3 text-xs text-stone-500">
-                <span>Gemini hatası sonrası</span>
-                <span>{analytics.voice.geminiFallbacks}</span>
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                <span>Yüklenen MP3</span>
-                <strong>{analytics.voice.uploaded}</strong>
-              </div>
-            </div>
-            <div className="border rounded-lg p-3 space-y-1.5 text-sm">
-              <p className="text-xs font-semibold text-stone-500">Gemini modelleri</p>
-              {categoryEntries(analytics.voice.models).map(([model, count]) => (
-                <div key={model} className="flex items-center justify-between gap-3">
-                  <span className="font-mono-code text-xs break-all">{model}</span>
-                  <strong>{count}</strong>
+
+              <section className={card}>
+                <SectionTitle title="İstek sayaçları" note={<>Her istek ayrı sayılır: her Gemini model denemesi, yeniden seslendirmeler ve başarısız istekler dahil. “Bugün” Pasifik gününe göredir ({requests.quotaDay}).</>} />
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-[#FAF9F5] text-xs text-[#666560]">
+                      <tr>{['Servis', 'Bugün', 'Son 30 gün', 'Toplam'].map((t) => <th key={t} className="px-3 py-2 font-semibold whitespace-nowrap">{t}</th>)}</tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#EFEFEA]">
+                      {(Object.keys(requestLabels) as RequestService[]).map((k) => (
+                        <tr key={k}>
+                          <td className="px-3 py-2">{requestLabels[k]}</td>
+                          <td className="px-3 py-2">{counts(requests.totals.today[k])}</td>
+                          <td className="px-3 py-2">{counts(requests.totals.last30Days[k])}</td>
+                          <td className="px-3 py-2">{counts(requests.totals.all[k])}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              ))}
-              {!Object.keys(analytics.voice.models).length && (
-                <p className="text-xs text-stone-400">Henüz Gemini sesi yok</p>
-              )}
-            </div>
-            <div className="border rounded-lg p-3 space-y-1.5 text-sm">
-              <p className="text-xs font-semibold text-stone-500">Kelime zamanı kaynağı</p>
-              {categoryEntries(analytics.voice.timing).map(([source, count]) => (
-                <div key={source} className="flex items-center justify-between gap-3">
-                  <span>{timingLabels[source] || source}</span>
-                  <strong>{count}</strong>
-                </div>
-              ))}
-              {!Object.keys(analytics.voice.timing).length && <p className="text-xs text-stone-400">Henüz ses yok</p>}
-            </div>
-            <div className="border rounded-lg p-3 space-y-1.5 text-sm">
-              <p className="text-xs font-semibold text-stone-500">ElevenLabs yedek kotası</p>
-              <strong className="text-2xl">
-                {voice?.remainingCharacters != null ? voice.remainingCharacters.toLocaleString('tr') : '—'}
-              </strong>
-              <p className="text-xs text-stone-500">
-                {voice?.remainingCharacters != null
-                  ? `karakter kaldı${voice.tier ? ` · ${voice.tier}` : ''}`
-                  : voice?.configured
-                    ? 'Kota okunamadı'
-                    : 'ElevenLabs yapılandırılmamış'}
-              </p>
-              <p className="text-xs text-stone-500">
-                Gemini: {voice?.gemini?.configured ? 'yapılandırıldı' : 'yapılandırılmamış'}
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-      {analytics && (
-        <section className="bg-white border rounded-xl p-4">
-          <h3 className="font-semibold mb-3">Üretim hunisi ve kalite</h3>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-            {[
-              ['Proje', analytics.funnel.total],
-              ['Sesli', analytics.funnel.withAudio],
-              ['İşaretleri hazır', analytics.funnel.withMarkers],
-              ['Yayına hazır', analytics.funnel.ready],
-              ['MP4 indirilen', data?.members.reduce((s, m) => s + m.exports, 0) ?? 0],
-            ].map(([label, value]) => (
-              <div key={label} className="border rounded-lg p-3">
-                <p className="text-xs text-stone-500">{label}</p>
-                <strong className="text-2xl">{value}</strong>
-              </div>
-            ))}
-          </div>
-          <p className="text-sm mt-3">
-            <span className="text-[#15803D] font-semibold">{analytics.quality.ready} yayına hazır</span> ·{' '}
-            <span className="text-[#B45309] font-semibold">{analytics.quality.check} kontrol önerilir</span> ·{' '}
-            <span className="text-red-700 font-semibold">{analytics.quality.blocked} düzeltme gerekli</span>
-          </p>
-        </section>
-      )}
-      {analytics && analytics.issues.length > 0 && (
-        <section className="bg-white border rounded-xl p-4">
-          <h3 className="font-semibold mb-3">Dikkat gerektiren projeler</h3>
-          <ul className="divide-y text-sm">
-            {analytics.issues.map((issue) => (
-              <li
-                key={issue.projectId + issue.detail}
-                className="py-2 flex flex-wrap items-start justify-between gap-3"
-              >
-                <div className="min-w-0">
-                  <button
-                    disabled={busy}
-                    className="text-[#8b1e2d] underline text-left"
-                    onClick={() => void open(issue.projectId)}
-                  >
-                    {issue.title}
-                  </button>{' '}
-                  <span className="text-stone-500">· {who(issue.ownerId)}</span>
-                  <p className="text-xs text-stone-600 break-words">{issue.detail}</p>
-                </div>
-                <span className="text-xs text-stone-400 whitespace-nowrap">
-                  {new Date(issue.updatedAt).toLocaleString('tr')}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-      {analytics && (
-        <section className="bg-white border rounded-xl p-4">
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div>
-              <h3 className="font-semibold">Soru tipi dağılımı</h3>
-              <p className="text-xs text-stone-500 mt-1">Tüm öğretmenlerin kaydettiği projeler, soru tipine göre.</p>
-            </div>
-            <span className="text-xs text-stone-500">{Object.keys(analytics.categoryTotals).length} aktif tip</span>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {categoryEntries(analytics.categoryTotals).map(([id, count]) => (
-              <div key={id} className="border rounded-lg px-3 py-2 flex items-center justify-between gap-3">
-                <span className="text-sm">{getCategoryLabel(id)}</span>
-                <strong className="tabular-nums">{count}</strong>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-      <details className="bg-white border rounded-xl p-4 text-sm">
-        <summary>Eski tarayıcı kayıtlarım</summary>
-        <p className="my-3">
-          Önceki sürümde bu tarayıcıya kaydettiğiniz projeleri kendi yönetici hesabınıza aktarın. Daha önce aktarılanlar
-          tekrar eklenmez.
-        </p>
-        <button disabled={busy} className="border rounded p-2" onClick={() => void importLegacy()}>
-          Eski projelerimi aktar
-        </button>
-        {importMessage && (
-          <p role="status" className="mt-2">
-            {importMessage}
-          </p>
-        )}
-      </details>
-      <section className="bg-white border rounded-xl overflow-hidden">
-        <div className="p-4 flex flex-wrap justify-between gap-3">
-          <h3 className="font-semibold">Üyeler ve üretim</h3>
-          <input
-            aria-label="Öğretmen ara"
-            placeholder="Ad veya e-posta ara"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="border rounded p-2 text-sm"
-          />
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="bg-stone-50">
-              <tr>
-                {[
-                  'Öğretmen',
-                  'Rol',
-                  'Durum',
-                  'Sorular',
-                  'Soru tipleri',
-                  'Video hazır',
-                  'Kalite',
-                  'Gemini ses',
-                  'Gemini istek',
-                  'ElevenLabs yedeği',
-                  'ElevenLabs karakter',
-                  'Video dışa aktarım',
-                  'Son çalışma',
-                  'Erişim',
-                ].map((t) => (
-                  <th key={t} className="p-3 whitespace-nowrap">
-                    {t}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data?.members
-                .filter((m) =>
-                  (m.name + ' ' + m.email).toLocaleLowerCase('tr').includes(filter.toLocaleLowerCase('tr')),
-                )
-                .map((m) => {
-                  const stats = analytics?.members[m.id];
-                  const types = categoryEntries(stats?.categories);
-                  return (
-                    <tr key={m.id} className="border-t align-top">
-                      <td className="p-3">
-                        <div>{m.name}</div>
-                        <div className="text-xs text-stone-500">{m.email}</div>
-                      </td>
-                      <td className="p-3">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${m.role === 'admin' ? 'bg-[#F8EEEE] text-[#8B1E2D]' : 'bg-stone-100 text-stone-600'}`}
-                        >
-                          {m.role === 'admin' ? 'Yönetici' : 'Öğretmen'}
-                        </span>
-                      </td>
-                      <td className="p-3">{statuses[m.status] || m.status}</td>
-                      <td className="p-3 font-semibold">{m.questions}</td>
-                      <td className="p-3 min-w-64">
-                        {types.length ? (
-                          <details>
-                            <summary className="cursor-pointer text-[#8B1E2D] font-semibold">
-                              {types.length} tip · ayrıntı
-                            </summary>
-                            <div className="mt-2 space-y-1">
-                              {types.map(([id, count]) => (
-                                <div key={id} className="flex items-center justify-between gap-3 text-xs">
-                                  <span>{getCategoryLabel(id)}</span>
-                                  <strong>{count}</strong>
-                                </div>
-                              ))}
-                            </div>
-                          </details>
-                        ) : (
-                          <span className="text-stone-400">Henüz soru yok</span>
-                        )}
-                      </td>
-                      <td className="p-3">{stats?.videoReady || 0}</td>
-                      <td className="p-3 whitespace-nowrap text-xs">
-                        <span className="text-[#15803D] font-semibold">{stats?.quality.ready || 0}</span> ·{' '}
-                        <span className="text-[#B45309] font-semibold">{stats?.quality.check || 0}</span> ·{' '}
-                        <span className="text-red-700 font-semibold">{stats?.quality.blocked || 0}</span>
-                      </td>
-                      <td className="p-3 font-semibold">{stats?.gemini || 0}</td>
-                      <td className="p-3">
-                        {analytics?.requests?.members[m.id]?.gemini_tts ?? 0}
-                        <div className="text-xs text-stone-500">
-                          {analytics?.requests?.members[m.id]?.gemini_transcribe ?? 0} transcribe
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        <div className="font-semibold">{m.voices} başarılı</div>
-                        <div className="text-xs text-stone-500">
-                          {m.voice_attempts} deneme
-                          {stats?.geminiFallbacks ? ` · ${stats.geminiFallbacks} Gemini hatası sonrası` : ''}
-                        </div>
-                      </td>
-                      <td className="p-3">{m.characters.toLocaleString('tr')}</td>
-                      <td className="p-3">{m.exports}</td>
-                      <td className="p-3 whitespace-nowrap text-xs">
-                        {stats?.lastProjectAt ? new Date(stats.lastProjectAt).toLocaleString('tr') : '-'}
-                      </td>
-                      <td className="p-3">
-                        {m.role !== 'admin' ? (
-                          <div className="flex flex-wrap gap-2 items-center">
-                            <select
-                              aria-label={`${m.email} erişimi`}
-                              disabled={busy}
-                              value={m.status}
-                              onChange={(e) => void change(m.id, e.target.value)}
-                              className="border rounded p-2"
-                            >
-                              <option value="pending">Onay bekliyor</option>
-                              <option value="approved">Onayla</option>
-                              <option value="blocked">Durdur</option>
-                            </select>
-                            <button
-                              type="button"
-                              disabled={busy}
-                              onClick={() => void promote(m)}
-                              className="border border-[#8B1E2D] text-[#8B1E2D] hover:bg-[#F8EEEE] rounded px-3 py-2 font-semibold whitespace-nowrap"
-                            >
-                              Yönetici Yap
-                            </button>
+                {Object.keys(requests.geminiModels).length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-xs font-semibold text-[#666560] mb-2">Gemini seslendirme · model başına</p>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                      {(Object.entries(requests.geminiModels) as Array<[string, { today: Counter; last30Days: Counter }]>)
+                        .sort((a, b) => b[1].last30Days.succeeded + b[1].last30Days.failed - (a[1].last30Days.succeeded + a[1].last30Days.failed))
+                        .map(([model, c]) => (
+                          <div key={model} className="border rounded-lg px-3 py-2 text-sm">
+                            <p className="font-mono-code text-xs break-all">{model}</p>
+                            <p>Bugün {counts(c.today)}</p>
+                            <p className="text-xs text-[#787670]">Son 30 gün: {c.last30Days.succeeded + c.last30Days.failed}</p>
                           </div>
-                        ) : (
-                          <span className="text-xs text-stone-500">Tam yetki</span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            </>
+          )}
+
+          {analytics && (
+            <section className={card}>
+              <SectionTitle title="Ses ve zamanlama" note="Her projenin şu anki ses kaydına göre. Ana ses Gemini, yedek ElevenLabs." />
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="border rounded-lg p-3 space-y-1.5 text-sm">
+                  <p className="text-xs font-semibold text-[#666560]">Ses motoru</p>
+                  <div className="flex justify-between gap-3"><span>Gemini</span><strong className="tabular-nums">{analytics.voice.gemini}</strong></div>
+                  <div className="flex justify-between gap-3"><span>ElevenLabs yedeği</span><strong className="tabular-nums">{analytics.voice.elevenlabs}</strong></div>
+                  <div className="flex justify-between gap-3 text-xs text-[#787670]"><span>Gemini hatası sonrası</span><span>{analytics.voice.geminiFallbacks}</span></div>
+                  <div className="flex justify-between gap-3"><span>Yüklenen MP3</span><strong className="tabular-nums">{analytics.voice.uploaded}</strong></div>
+                </div>
+                <div className="border rounded-lg p-3 space-y-1.5 text-sm">
+                  <p className="text-xs font-semibold text-[#666560]">Gemini modelleri</p>
+                  {sorted(analytics.voice.models).map(([model, n]) => (
+                    <div key={model} className="flex justify-between gap-3"><span className="font-mono-code text-xs break-all">{model}</span><strong className="tabular-nums">{n}</strong></div>
+                  ))}
+                  {!Object.keys(analytics.voice.models).length && <p className="text-xs text-[#A8A69E]">Henüz Gemini sesi yok</p>}
+                </div>
+                <div className="border rounded-lg p-3 space-y-1.5 text-sm">
+                  <p className="text-xs font-semibold text-[#666560]">Kelime zamanı kaynağı</p>
+                  {sorted(analytics.voice.timing).map(([source, n]) => (
+                    <div key={source} className="flex justify-between gap-3"><span>{timingLabels[source] || source}</span><strong className="tabular-nums">{n}</strong></div>
+                  ))}
+                  {!Object.keys(analytics.voice.timing).length && <p className="text-xs text-[#A8A69E]">Henüz ses yok</p>}
+                </div>
+                <div className="border rounded-lg p-3 space-y-1.5 text-sm">
+                  <p className="text-xs font-semibold text-[#666560]">ElevenLabs yedek kotası</p>
+                  <strong className="text-2xl tabular-nums">{voice?.remainingCharacters != null ? voice.remainingCharacters.toLocaleString('tr') : '—'}</strong>
+                  <p className="text-xs text-[#787670]">
+                    {voice?.remainingCharacters != null ? `karakter kaldı${voice.tier ? ` · ${voice.tier}` : ''}` : voice?.configured ? 'Kota okunamadı' : 'ElevenLabs yapılandırılmamış'}
+                  </p>
+                  <p className="text-xs text-[#787670]">Gemini: {voice?.gemini?.configured ? 'yapılandırıldı' : 'yapılandırılmamış'}</p>
+                </div>
+              </div>
+            </section>
+          )}
+
+          <StorageSection />
         </div>
-        <p className="text-xs text-stone-500 p-4">
-          Soru tipi, kalite ve Gemini sayıları kayıtlı projelerin şu anki durumundan hesaplanır (kalite: yayına hazır ·
-          kontrol önerilir · düzeltme gerekli). ElevenLabs sütunları yalnız yedek ses isteklerini gösterir; denemelere
-          başarısız istekler dahildir, karakter sayısı fatura tutarı değildir. Video dışa aktarım sayısı tarayıcının
-          bildirdiği tamamlanan dışa aktarımlardır.
-        </p>
-      </section>
-      <section className="bg-white border rounded-xl p-4">
-        <h3 className="font-semibold mb-3">Son 100 soru projesi</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead>
-              <tr>
-                {['Proje', 'Öğretmen', 'Tür', 'Durum', 'Güncelleme'].map((t) => (
-                  <th className="p-2" key={t}>
-                    {t}
-                  </th>
+      )}
+
+      {tab === 'projects' && (
+        <div className="space-y-6">
+          <section className={card}>
+            <SectionTitle title="Dikkat gerektiren projeler" note="Gemini'nin kullanılamadığı, kelime zamanı alınamayan veya yayın kontrolünde düzeltme gereken son projeler." />
+            {issuesList()}
+          </section>
+
+          {analytics && (
+            <section className={card}>
+              <SectionTitle title="Soru tipi dağılımı" note="Tüm öğretmenlerin kaydettiği projeler, soru tipine göre." />
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                {sorted(analytics.categoryTotals).map(([id, n]) => (
+                  <div key={id} className="border rounded-lg px-3 py-2 flex items-center justify-between gap-3">
+                    <span className="text-sm">{getCategoryLabel(id)}</span>
+                    <strong className="tabular-nums">{n}</strong>
+                  </div>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data?.projects.map((p) => (
-                <tr key={p.id} className="border-t">
-                  <td className="p-2">
-                    <button
-                      disabled={busy}
-                      className="text-[#8b1e2d] underline text-left"
-                      onClick={() => void open(p.id)}
-                    >
-                      {p.title}
-                    </button>
-                  </td>
-                  <td className="p-2">{who(p.owner_id)}</td>
-                  <td className="p-2">{getCategoryLabel(p.category)}</td>
-                  <td className="p-2">{statuses[p.status] || p.status}</td>
-                  <td className="p-2">{new Date(p.updated_at).toLocaleString('tr')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              </div>
+            </section>
+          )}
+
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6">
+            <section className={card}>
+              <SectionTitle title="Son projeler" />
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                  <thead className="text-xs text-[#666560]">
+                    <tr>{['Proje', 'Öğretmen', 'Tür', 'Durum', 'Güncelleme'].map((t) => <th key={t} className="px-2 py-2 font-semibold">{t}</th>)}</tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#EFEFEA]">
+                    {data?.projects.map((p) => (
+                      <tr key={p.id}>
+                        <td className="px-2 py-2">
+                          <button disabled={busy} className="font-semibold text-[#8B1E2D] hover:underline text-left" onClick={() => void open(p.id)}>{p.title}</button>
+                        </td>
+                        <td className="px-2 py-2">{who(p.owner_id)}</td>
+                        <td className="px-2 py-2 text-[#55544F]">{getCategoryLabel(p.category)}</td>
+                        <td className="px-2 py-2">{statuses[p.status] || p.status}</td>
+                        <td className="px-2 py-2 text-xs text-[#787670] whitespace-nowrap">{dateTime(p.updated_at)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <section className={card}>
+              <SectionTitle title="Son işlemler" />
+              <ul className="divide-y divide-[#EFEFEA] text-sm">
+                {data?.activity.map((a) => (
+                  <li key={a.id} className="py-2 flex justify-between gap-3">
+                    <span>
+                      <span className="font-semibold">{who(a.owner_id)}</span> ·{' '}
+                      {a.kind === 'voice' ? (a.state.startsWith('align') ? 'Ses hizalama' : 'ElevenLabs yedek sesi')
+                        : a.kind === 'video_export' ? 'Video dışa aktarımı' : a.kind === 'member_role' ? 'Rol değişikliği' : 'Üyelik'}{' '}
+                      · <span className="text-[#55544F]">{activityStates[a.state] || a.state}</span>
+                    </span>
+                    <span className="text-xs text-[#A8A69E] whitespace-nowrap">{ago(a.created_at)}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
+
+          <details className={`${card} text-sm`}>
+            <summary className="cursor-pointer font-semibold text-[#55544F]">Eski tarayıcı kayıtlarım</summary>
+            <p className="my-3 text-[#55544F]">
+              Önceki sürümde bu tarayıcıya kaydettiğiniz projeleri kendi yönetici hesabınıza aktarın. Daha önce aktarılanlar tekrar eklenmez.
+            </p>
+            <button disabled={busy} className="studio-secondary" onClick={() => void importLegacy()}>Eski projelerimi aktar</button>
+            {importMessage && <p role="status" className="mt-2">{importMessage}</p>}
+          </details>
         </div>
-      </section>
-      <section className="bg-white border rounded-xl p-4">
-        <h3 className="font-semibold mb-3">Son 100 işlem</h3>
-        <ul className="divide-y text-sm">
-          {data?.activity.map((a) => (
-            <li key={a.id} className="py-2">
-              {who(a.owner_id)} ·{' '}
-              {a.kind === 'voice'
-                ? a.state.startsWith('align')
-                  ? 'Ses hizalama'
-                  : 'ElevenLabs yedek sesi'
-                : a.kind === 'video_export'
-                  ? 'Video dışa aktarımı'
-                  : a.kind === 'member_role'
-                    ? 'Rol değişikliği'
-                    : 'Üyelik'}{' '}
-              ·{' '}
-              {(
-                {
-                  succeeded: 'Tamamlandı',
-                  requested: 'İstek gönderildi',
-                  failed: 'Başarısız',
-                  aligned: 'Tamamlandı',
-                  align_failed: 'Başarısız',
-                  uncertain: 'Sonuç doğrulanamadı',
-                  client_reported: 'Tarayıcıda tamamlandı',
-                  role_admin: 'Yönetici yapıldı',
-                  ...statuses,
-                } as Record<string, string>
-              )[a.state] || a.state}{' '}
-              <span className="text-stone-400">{new Date(a.created_at).toLocaleString('tr')}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      )}
+      {!analytics && !error && busy && (
+        <p className="text-sm text-[#787670] flex items-center gap-2"><ArrowClockwise size={16} className="animate-spin" /> Yönetim bilgileri yükleniyor…</p>
+      )}
     </section>
   );
 };
