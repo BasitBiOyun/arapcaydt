@@ -76,5 +76,7 @@ test('simple timing list shows the marks a teacher hears, in order, with plain t
   const cues = listedCues(actions);
   assert.deepEqual(cues.map(c => c.id), ['4', '1', '2', '3']);
   assert.deepEqual(cues.map(c => cueTitle(c, regions as any)),
-    ['Altı çizilir: ذَهَبَ الطَّالِبُ', 'Odak: A şıkkı', 'A şıkkı elenir', 'D şıkkı: doğru cevap']);
+    ['Altı çizilir: ذَهَبَ الطَّالِبُ', 'Odak: A şıkkı', 'A şıkkı elenir', 'D şıkkı: doğru cevap']);  const { cueSummary } = await import('../src/features/question-editor/SimpleTimingList');
+  assert.equal(cueSummary(cues), '1 şık elenir · 1 doğru cevap · 2 vurgu', 'the closed list still says what will happen');
+  assert.equal(cueSummary([]), '');
 });

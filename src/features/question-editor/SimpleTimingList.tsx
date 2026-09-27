@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowCounterClockwise, CaretLeft, CaretRight, SpeakerHigh, Trash } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, CaretDown, CaretLeft, CaretRight, SpeakerHigh, Trash } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import { nudgeAction } from './workflow';
 
@@ -30,6 +30,15 @@ export function cueTitle(action: VideoAction, regions: AnnotationRegion[]): stri
 }
 
 /** The phrase in the solution that triggers the cue ("reject: C şıkkı yanlış" → "C şıkkı yanlış"). */
+/** One line for the closed list: "3 şık elenir · 1 doğru cevap · 2 vurgu". */
+export function cueSummary(cues: VideoAction[]): string {
+  const count = (types: VideoAction['type'][]) => cues.filter(c => types.includes(c.type)).length;
+  return [
+    [count(['reject']), 'şık elenir'], [count(['correct']), 'doğru cevap'],
+    [count(['focus', 'underline', 'highlight']), 'vurgu'],
+  ].filter(([n]) => n).map(([n, label]) => `${n} ${label}`).join(' · ');
+}
+
 const cuePhrase = (action: VideoAction) => (action.label || '').replace(/^[a-z-]+:\s*/, '').slice(0, 60);
 
 const seconds = (t: number) => `${t.toLocaleString('tr', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} sn`;
@@ -50,6 +59,7 @@ interface Props {
  */
 export function SimpleTimingList({ actions, regions, duration, currentTime, onUpdateActions, onSeek, setPlaying }: Props) {
   const [undo, setUndo] = useState<VideoAction[][]>([]);
+  const [open, setOpen] = useState(false);
   const stopTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(stopTimer.current), []);
   const total = Math.max(1, duration);
@@ -76,13 +86,18 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-xs text-[#666560]">{cues.length} işaret · sırayla dinleyin</p>
+        <p className="text-xs text-[#666560]">{cues.length ? `${cues.length} işaret: ${cueSummary(cues)}` : 'İşaret yok'}</p>
         <button type="button" className={button} disabled={!undo.length} onClick={back} style={{ opacity: undo.length ? 1 : .45 }}>
           <ArrowCounterClockwise size={13} /> Geri al
         </button>
       </div>
       {!cues.length && <p className="text-xs text-[#787670]">Bu soruda kontrol edilecek işaret yok.</p>}
-      <ol className="divide-y divide-[#EFEFEA] border rounded-xl bg-white overflow-hidden">
+      {cues.length > 0 && <details open={open} onToggle={e => setOpen(e.currentTarget.open)} className="group border rounded-xl bg-white overflow-hidden">
+      <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer px-3 py-2.5 flex items-center justify-between gap-2 text-sm font-semibold text-[#33322E] hover:bg-[#FAF9F5]">
+        <span>{open ? 'Listeyi kapat' : 'İşaretleri tek tek kontrol et'}</span>
+        <CaretDown size={14} weight="bold" className="transition-transform group-open:rotate-180" />
+      </summary>
+      <ol className="divide-y divide-[#EFEFEA] border-t border-[#EFEFEA]">
         {cues.map(cue => {
           const kind = KIND[cue.type]!;
           const title = cueTitle(cue, regions);
@@ -115,6 +130,7 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
           );
         })}
       </ol>
+      </details>}
     </div>
   );
 }
