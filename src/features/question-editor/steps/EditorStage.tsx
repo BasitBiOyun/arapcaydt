@@ -3,7 +3,6 @@ import type { QuestionProject, VideoConfig } from '../../../types';
 import { FilmStrip, Image as ImageIcon } from '@phosphor-icons/react';
 import { VideoPreviewCanvas } from '../../video/VideoPreviewCanvas';
 import { EditableTimelineUI } from '../../video/EditableTimelineUI';
-import { SimpleTimingList } from '../SimpleTimingList';
 import { RegionEditorCanvas } from '../RegionEditorCanvas';
 import { applyRegionEdits } from '../../../services/analysis/regionEdits';
 
@@ -92,22 +91,13 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
           Altyazı konumu
         </div>
 
-        <details open={step===3&&!editRegions} hidden={step!==3} className="w-full text-xs bg-white rounded-lg p-3 border">
-          <summary className="cursor-pointer font-semibold">İşaretlerin zamanlamasını kontrol et</summary>
-          <div className="mt-3">
-            <SimpleTimingList actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
-              duration={activeAudioDuration || 15} currentTime={currentPreviewTime}
-              onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
-              onSeek={setCurrentPreviewTime} setPlaying={setIsPlayingPreview} />
-          </div>
-          <details className="mt-3">
+        <details hidden={step!==3||editRegions} className="w-full text-xs bg-white rounded-xl p-3 border">
           <summary className="cursor-pointer font-semibold text-[#55544F]">Gelişmiş: zaman çizelgesi</summary>
           <EditableTimelineUI duration={activeAudioDuration} currentTime={currentPreviewTime} isPlaying={isPlayingPreview}
             onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} onSeek={setCurrentPreviewTime}
             regions={currentProject.videoConfig.regions || []} actions={currentProject.videoConfig.timelineActions || []}
             onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
             onRequestAutoGenerate={() => setIsVideoModalOpen(true)} keyboardEnabled={step===3&&!editRegions} />
-          </details>
         </details>
       </div>
     ) : hasImage ? (

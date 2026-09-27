@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { LeaveGuard } from '../layouts/AppLayout';
-import { Stack, Play, Stop, ArrowRight } from '@phosphor-icons/react';
+import { Stack, Play, Stop, ArrowRight, ImageSquare, MusicNotes, FileText } from '@phosphor-icons/react';
+import { FileDrop } from '../components/common/FileDrop';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../config/categories';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { buildBatchPlan } from '../features/batch/batchPlan';
@@ -37,6 +38,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
   const [images, setImages] = useState<File[]>([]);
   const [audios, setAudios] = useState<File[]>([]);
   const [solutions, setSolutions] = useState('');
+  const [solutionFile, setSolutionFile] = useState<File[]>([]);
   const [category, setCategory] = useState(DEFAULT_CATEGORY_ID);
   const [examName, setExamName] = useState('');
   const [examYear, setExamYear] = useState(`${new Date().getFullYear()} YDT`);
@@ -116,7 +118,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
     }
   };
 
-  const field = 'block w-full border rounded p-2 mt-1 text-sm';
+  const field = 'block w-full border rounded-lg p-2.5 mt-1 text-sm bg-white';
   return <section className="studio-library">
     <header className="library-heading">
       <div><h2>Toplu üretim</h2><p>Birden çok soru görselini, tek bir çözüm metnini ve isteğe bağlı MP3'leri soru numarasına göre eşleştirip sırayla hazırlayın.</p></div>
@@ -127,13 +129,10 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
 
     <div className="grid gap-4 md:grid-cols-2 pb-6 border-b border-[#E5E4DC]">
       <div className="space-y-4">
-        <label className="block text-sm font-semibold">Soru görselleri
-          <input type="file" multiple accept="image/png,image/jpeg,image/webp" disabled={running} className={field} onChange={e => setImages(Array.from(e.target.files || []))} />
-          <span className="block text-xs font-normal text-[#787670] mt-1">Dosya adında soru numarası olmalı: soru_3.png, S3.jpg, 3.png.</span>
-        </label>
-        <label className="block text-sm font-semibold">MP3 dosyaları (isteğe bağlı)
-          <input type="file" multiple accept=".mp3,audio/mpeg,audio/mp3" disabled={running} className={field} onChange={e => setAudios(Array.from(e.target.files || []))} />
-        </label>
+        <FileDrop label="Soru görselleri" icon={ImageSquare} multiple accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
+          hint="Dosya adında soru numarası olmalı: soru_3.png, S3.jpg, 3.png." disabled={running} files={images} onFiles={setImages} />
+        <FileDrop label="MP3 dosyaları (isteğe bağlı)" icon={MusicNotes} multiple accept=".mp3,audio/mpeg,audio/mp3"
+          hint="Adında aynı soru numarası olan MP3 o soruya eşleşir." disabled={running} files={audios} onFiles={setAudios} />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <label className="block text-sm font-semibold">Kategori
             <select className={field} value={category} disabled={running} onChange={e => setCategory(e.target.value)}>{QUESTION_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}</select>
@@ -156,13 +155,15 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
             <span className="block text-xs text-[#787670]">Tarayıcı ilk dosyada birden çok indirmeye izin isteyebilir. İşlem bitene kadar bu sekmeyi açık tutun.</span></span>
         </label>
       </div>
+      <div className="space-y-3">
       <label className="block text-sm font-semibold">Çözüm metinleri
         <textarea dir="auto" rows={16} disabled={running} value={solutions} onChange={e => setSolutions(e.target.value)}
           placeholder={'Soru 1\nA şıkkı … olmaz.\nDoğru cevap C.\n\nSoru 2\n…'} className={`${field} font-normal leading-relaxed`} />
-        <span className="block text-xs font-normal text-[#787670] mt-1">Her soru kendi satırında "Soru 3" başlığıyla başlamalı. Metin dosyası da yükleyebilirsiniz:</span>
-        <input type="file" accept=".txt,.md,text/plain" disabled={running} className={field}
-          onChange={async e => { const file = e.target.files?.[0]; if (file) setSolutions(await file.text()); }} />
+        <span className="block text-xs font-normal text-[#787670] mt-1">Her soru kendi satırında "Soru 3" başlığıyla başlamalı.</span>
       </label>
+      <FileDrop label="…ya da metin dosyası" icon={FileText} accept=".txt,.md,text/plain" disabled={running} files={solutionFile}
+        onFiles={async files => { setSolutionFile(files); if (files[0]) setSolutions(await files[0].text()); }} />
+      </div>
     </div>
 
     {error && <p role="alert" className="save-alert">{error}</p>}

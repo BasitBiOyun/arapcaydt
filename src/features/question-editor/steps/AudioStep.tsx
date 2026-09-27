@@ -116,7 +116,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             />
           </div>
 
-          {/* Actions: MP3 İndir, Yeniden Oluştur / Değiştir / Sil, Bu Sesi Kullan */}
+          {/* Actions: MP3 İndir, Yeniden seslendir / Değiştir / Sil, Bu Sesi Kullan */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
             <button
               type="button"
@@ -163,7 +163,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
                 ) : (
                   <ArrowsClockwise size={13} />
                 )}
-                <span>Yeniden Oluştur</span>
+                <span>Yeniden seslendir</span>
               </button>
             )}
 

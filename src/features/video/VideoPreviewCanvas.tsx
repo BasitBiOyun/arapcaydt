@@ -255,7 +255,6 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium text-[#787670]">1080p • 30fps Yerel Render</span>
             <button
               type="button"
               onClick={handleFullscreen}

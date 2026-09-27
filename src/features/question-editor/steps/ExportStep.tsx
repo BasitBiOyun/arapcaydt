@@ -29,7 +29,7 @@ export function ExportStep({ step, videoGenerated, currentProject, handleReadine
       </h2>
 
       {videoGenerated ? (
-        /* Completed Video State: single clear download action + Yeniden Oluştur */
+        /* Completed Video State: single clear download action + İşaretleri yeniden hazırla */
         <div className="p-4 rounded-xl border border-[#C5DAC8] bg-[#F4F9F5] space-y-3">
           <div className="flex items-center gap-2 text-xs font-bold text-[#15803D]">
             <CheckCircle size={18} weight="fill" />
@@ -65,10 +65,12 @@ export function ExportStep({ step, videoGenerated, currentProject, handleReadine
           <div className="pt-1 text-center">
             <button
               type="button"
-              onClick={() => setIsVideoModalOpen(true)}
-              className="text-[11px] font-semibold text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer"
+              onClick={() => {
+                if (window.confirm('İşaretler görsel ve sese göre baştan hazırlanır. Elle yaptığınız zamanlama düzeltmeleri kaybolur. Devam edilsin mi?')) setIsVideoModalOpen(true);
+              }}
+              className="text-xs font-semibold text-[#55544F] hover:text-[#1C1917] underline-offset-2 hover:underline transition-colors"
             >
-              Yeniden Oluştur
+              İşaretleri yeniden hazırla
             </button>
           </div>
         </div>

@@ -22,6 +22,7 @@ import { AudioStep } from '../features/question-editor/steps/AudioStep';
 import { NarrationCheck } from '../features/question-editor/steps/NarrationCheck';
 import { SolutionStep } from '../features/question-editor/steps/SolutionStep';
 import { EditorStage } from '../features/question-editor/steps/EditorStage';
+import { SimpleTimingList } from '../features/question-editor/SimpleTimingList';
 import { ImageStep } from '../features/question-editor/steps/ImageStep';
 import { ArrowLeft, Check, Plus } from '@phosphor-icons/react';
 import type { LeaveGuard } from '../layouts/AppLayout';
@@ -556,7 +557,17 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
           <NarrationCheck step={step} check={check} currentProject={currentProject} />
           {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy}/>}
           <AudioStep step={step} hasAudio={hasAudio} hasSolution={hasSolution} isUploadedAudio={isUploadedAudio} isAudioApproved={isAudioApproved} currentProject={currentProject} isAudioPlaying={isAudioPlaying} toggleStageAudio={toggleStageAudio} formatTime={formatTime} audioPlayTime={audioPlayTime} setAudioPlayTime={setAudioPlayTime} activeAudioDuration={activeAudioDuration} activeAudioUrl={activeAudioUrl} stageAudioRef={stageAudioRef} uploadMp3InputRef={uploadMp3InputRef} handleDownloadNarrationMp3={handleDownloadNarrationMp3} handleUploadMp3File={handleUploadMp3File} handleDeleteAudio={handleDeleteAudio} handleGenerateAudio={handleGenerateAudio} handleApproveVoice={handleApproveVoice} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} isTranscribingMp3={isTranscribingMp3} transcribeProgress={transcribeProgress} audioError={audioError} />
-          {step===3&&<section className="space-y-3"><h2>İşaretleri kontrol edin</h2><p>Önizlemeyi dinleyin. Gerekirse görsel üzerindeki alanları veya işaretlerin zamanını düzeltin.</p><div className="flex flex-wrap gap-2"><button className="studio-secondary" aria-pressed={editRegions} onClick={()=>setEditRegions(true)}>Görseli düzenle</button><button className="studio-secondary" disabled={!videoGenerated} aria-pressed={!editRegions} onClick={()=>{setEditRegions(false);setPreviewMode('video');}}>Zamanlamayı düzenle</button></div>{!videoGenerated&&<p>Önce aşağıdaki düğmeyle mevcut sesinize uygun işaretleri hazırlayın.</p>}</section>}
+          {step===3&&<section className="space-y-3">
+            <h2>İşaretleri kontrol edin</h2>
+            <p>{editRegions ? 'Soldaki görselde kutuları düzenleyin; bitince önizlemeye dönün.' : videoGenerated ? 'Her işareti “Dinle” ile kontrol edin. Sesle uyuşmuyorsa biraz erkene ya da geçe alın.' : 'Önce aşağıdaki düğmeyle sesinize uygun işaretleri hazırlayın.'}</p>
+            {videoGenerated && !editRegions && <SimpleTimingList actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
+              duration={activeAudioDuration || 15} currentTime={currentPreviewTime}
+              onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
+              onSeek={setCurrentPreviewTime} setPlaying={playing => { if (playing) setPreviewMode('video'); setIsPlayingPreview(playing); }} />}
+            {hasImage && (editRegions
+              ? <button className="studio-primary w-full" onClick={()=>void finishRegionEditing()}>Kaydet ve önizlemeye dön</button>
+              : <button className="studio-secondary w-full" onClick={()=>setEditRegions(true)}>Görseldeki kutuları düzenle</button>)}
+          </section>}
           <ExportStep step={step} videoGenerated={videoGenerated} currentProject={currentProject} handleReadinessAction={handleReadinessAction} exportError={exportError} isExportingMp4={isExportingMp4} exportAbortRef={exportAbortRef} handleDownloadMp4={handleDownloadMp4} exportPercent={exportPercent} setIsVideoModalOpen={setIsVideoModalOpen} handleAttemptCreateVideo={handleAttemptCreateVideo} isAudioApproved={isAudioApproved} videoButtonWarning={videoButtonWarning} />
           <footer className="workflow-footer"><p>{['Görseli yükleyin; özgün tasarımı videoda korunur.','Arapça ifadeleri harekeli yazın.','Sesi dinleyip “Bu Sesi Kullan” ile devam edin.','Kutuları ve zamanlamayı son kez kontrol edin.','MP4 bu tarayıcıda hazırlanır. İndirme bitene kadar sekmeyi açık tutun.'][step]}</p><div className="flex gap-2">{step>0&&<button className="studio-secondary" disabled={busy} onClick={()=>go(step-1)}>Geri</button>}{step<4&&<button className="studio-primary" disabled={busy||!enabled[step+1]} onClick={()=>go(step+1)}>{['Metne geç','Sese geç','İşaretlere geç','İndirmeye geç'][step]}</button>}</div></footer>
         </aside>

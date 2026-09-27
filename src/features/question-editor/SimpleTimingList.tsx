@@ -71,43 +71,46 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
   const back = () => { const previous = undo.at(-1); if (previous) { onUpdateActions(previous); setUndo(undo.slice(0, -1)); } };
 
   const cues = listedCues(actions);
-  const button = 'px-2 py-1 rounded border border-[#D5D4CC] bg-white hover:bg-[#F2F1EB] text-[11px] font-semibold text-[#33322E] flex items-center gap-1 cursor-pointer';
+  const button = 'px-2.5 py-1.5 rounded-lg border bg-white hover:bg-[#F2F1EB] text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 transition-colors';
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[11px] text-[#666560]">
-          Her işareti “Dinle” ile kontrol edin. Ses ile işaret uyuşmuyorsa “Biraz erken” veya “Biraz geç” ile {NUDGE_SECONDS.toLocaleString('tr')} saniye kaydırın.
-        </p>
-        <button type="button" className={button} disabled={!undo.length} onClick={back} style={{ opacity: undo.length ? 1 : .5 }}>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-xs text-[#666560]">{cues.length} işaret · sırayla dinleyin</p>
+        <button type="button" className={button} disabled={!undo.length} onClick={back} style={{ opacity: undo.length ? 1 : .45 }}>
           <ArrowCounterClockwise size={13} /> Geri al
         </button>
       </div>
-      {!cues.length && <p className="text-[11px] text-[#787670]">Bu soruda kontrol edilecek işaret yok.</p>}
-      <ol className="divide-y divide-[#EFEFEA] border border-[#E5E4DC] rounded-lg bg-white">
+      {!cues.length && <p className="text-xs text-[#787670]">Bu soruda kontrol edilecek işaret yok.</p>}
+      <ol className="divide-y divide-[#EFEFEA] border rounded-xl bg-white overflow-hidden">
         {cues.map(cue => {
           const kind = KIND[cue.type]!;
+          const title = cueTitle(cue, regions);
           const active = currentTime >= cue.start && currentTime < cue.start + Math.min(cue.duration, 1.5);
           return (
-            <li key={cue.id} className={`flex flex-wrap items-center gap-2 px-3 py-2 ${active ? 'bg-[#FAF5E6]' : ''}`}>
-              <span aria-hidden className="w-5 text-center font-bold" style={{ color: kind.color }}>{kind.icon}</span>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-[#1C1917] truncate">{cueTitle(cue, regions)}</p>
-                {cuePhrase(cue) && <p className="text-[11px] text-[#787670] truncate">“{cuePhrase(cue)}”</p>}
+            <li key={cue.id} className={`px-3 py-2.5 space-y-2 transition-colors ${active ? 'bg-[#FAF5E6]' : ''}`}>
+              <div className="flex items-start gap-2">
+                <span aria-hidden className="w-5 text-center font-bold leading-5" style={{ color: kind.color }}>{kind.icon}</span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-[#1C1917] truncate">{title}</p>
+                  {cuePhrase(cue) && <p className="text-xs text-[#787670] truncate">“{cuePhrase(cue)}”</p>}
+                </div>
+                <span className="font-mono-code text-xs text-[#55544F] whitespace-nowrap leading-5">{seconds(cue.start)}</span>
               </div>
-              <span className="font-mono-code text-[11px] text-[#55544F] w-14 text-right">{seconds(cue.start)}</span>
-              <button type="button" className={button} onClick={() => listen(cue.start)} aria-label={`${cueTitle(cue, regions)}: dinle`}>
-                <SpeakerHigh size={13} /> Dinle
-              </button>
-              <button type="button" className={button} onClick={() => nudge(cue.id, -NUDGE_SECONDS)} aria-label={`${cueTitle(cue, regions)}: biraz erken`}>
-                <CaretLeft size={13} /> Biraz erken
-              </button>
-              <button type="button" className={button} onClick={() => nudge(cue.id, NUDGE_SECONDS)} aria-label={`${cueTitle(cue, regions)}: biraz geç`}>
-                Biraz geç <CaretRight size={13} />
-              </button>
-              <button type="button" className={`${button} text-[#8B1E2D]`} onClick={() => remove(cue.id)} aria-label={`${cueTitle(cue, regions)}: kaldır`}>
-                <Trash size={13} /> Kaldır
-              </button>
+              <div className="flex flex-wrap gap-1.5 pl-7">
+                <button type="button" className={button} onClick={() => listen(cue.start)} aria-label={`${title}: dinle`}>
+                  <SpeakerHigh size={13} /> Dinle
+                </button>
+                <button type="button" className={button} onClick={() => nudge(cue.id, -NUDGE_SECONDS)} aria-label={`${title}: biraz erken`} title={`${NUDGE_SECONDS.toLocaleString('tr')} sn erkene al`}>
+                  <CaretLeft size={13} /> Erken
+                </button>
+                <button type="button" className={button} onClick={() => nudge(cue.id, NUDGE_SECONDS)} aria-label={`${title}: biraz geç`} title={`${NUDGE_SECONDS.toLocaleString('tr')} sn geçe al`}>
+                  Geç <CaretRight size={13} />
+                </button>
+                <button type="button" className={`${button} text-[#8B1E2D] ml-auto`} onClick={() => remove(cue.id)} aria-label={`${title}: kaldır`} title="İşareti kaldır">
+                  <Trash size={13} />
+                </button>
+              </div>
             </li>
           );
         })}
