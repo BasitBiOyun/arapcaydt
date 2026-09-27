@@ -30,7 +30,8 @@ export interface BatchDeps<F> {
   createProject(project: Omit<QuestionProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<QuestionProject>;
   saveProject(project: QuestionProject): Promise<QuestionProject>;
   generateVoice(project: QuestionProject): Promise<GenerateNarrationResponse>;
-  alignGeneratedVoice?(project: QuestionProject): Promise<Array<{ text: string; start: number; end: number }>>;
+  alignGeneratedVoice?(project: QuestionProject): Promise<{ words: Array<{ text: string; start: number; end: number }>; timingSource: 'gemini-transcribe' | 'forced-alignment' }>;
+  alignGeneratedVoiceLocal?(project: QuestionProject): Promise<Array<{ text: string; start: number; end: number }>>;
   prepareUpload(project: QuestionProject, file: F): Promise<UploadedNarrationResult>;
   runPipeline(project: QuestionProject, declaredAnswer?: QuestionProject['correctAnswer']): Promise<LocalPipelineResult>;
   exportVideo(project: QuestionProject, onPercent: (percent: number) => void, signal?: AbortSignal): Promise<Blob>;
@@ -94,20 +95,41 @@ export async function runBatch<F extends { name: string }>(
         if (generated.provider === 'gemini' && deps.alignGeneratedVoice) {
           step('voice', 'Kelime zaman damgaları alınıyor');
           try {
-            const words = await deps.alignGeneratedVoice(project);
-            if (words.length) {
+            const alignment = await deps.alignGeneratedVoice(project);
+            if (alignment.words.length) {
               project = await deps.saveProject({
                 ...project,
-                narrationSource: project.narrationSource ? { ...project.narrationSource, words, timingSource: 'gemini-transcribe' } : project.narrationSource,
+                narrationSource: project.narrationSource ? {
+                  ...project.narrationSource,
+                  words: alignment.words,
+                  timingSource: alignment.timingSource,
+                } : project.narrationSource,
                 audioNarration: project.audioNarration ? {
                   ...project.audioNarration,
-                  words,
-                  wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+                  words: alignment.words,
+                  wordAlignments: alignment.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
                 } : project.audioNarration,
               });
             }
           } catch {
-            // Exact timestamps are preferred but not allowed to discard an otherwise valid narration.
+            if (deps.alignGeneratedVoiceLocal) {
+              try {
+                const words = await deps.alignGeneratedVoiceLocal(project);
+                if (words.length) {
+                  project = await deps.saveProject({
+                    ...project,
+                    narrationSource: project.narrationSource ? { ...project.narrationSource, words, timingSource: 'whisper' } : project.narrationSource,
+                    audioNarration: project.audioNarration ? {
+                      ...project.audioNarration,
+                      words,
+                      wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+                    } : project.audioNarration,
+                  });
+                }
+              } catch {
+                // Exact services and local Whisper failed; the video pipeline can still use approximate timing.
+              }
+            }
           }
         }
       } else {
