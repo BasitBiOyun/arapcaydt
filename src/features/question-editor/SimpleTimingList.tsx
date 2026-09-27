@@ -50,7 +50,7 @@ interface Props {
  */
 export function SimpleTimingList({ actions, regions, duration, currentTime, onUpdateActions, onSeek, setPlaying }: Props) {
   const [undo, setUndo] = useState<VideoAction[][]>([]);
-  const stopTimer = useRef<ReturnType<typeof setTimeout>>();
+  const stopTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(stopTimer.current), []);
   const total = Math.max(1, duration);
 

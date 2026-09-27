@@ -20,6 +20,14 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+// Security headers for the Node server (npm start). Framing stays allowed here because
+// AI Studio previews this server in a frame; the Vercel site forbids framing (vercel.json).
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), fullscreen=(self)');
+  next();
+});
 app.use(express.json({ limit: '50mb' }));
 
 app.get('/api/elevenlabs/status', voiceStatusHandler);

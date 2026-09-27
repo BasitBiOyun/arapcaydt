@@ -101,6 +101,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
         isApproved: true,
       } : {
         type: 'elevenlabs' as const,
+        audioUrl: '',
         duration: 15,
         words: [],
         isApproved: true,
