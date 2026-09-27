@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { recordUsage, type UsageEvent } from '../../server/usage.js';
 
 export const config = { maxDuration: 120 };
 
@@ -129,6 +130,11 @@ async function saveGeneratedAudio(memberId: string, projectId: string, text: str
   return { path, signedUrl: data.signedUrl };
 }
 
+/** Each model attempt is its own request against that model's free-tier quota. */
+function failedUsage(attempts: Array<{ model: string; status: number }>, characters: number): UsageEvent[] {
+  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: `${a.model} · ${a.status}`, characters }));
+}
+
 export default async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
@@ -201,6 +207,8 @@ export default async function handler(req: any, res: any) {
       const duration = wavDurationSeconds(audio);
       const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio);
 
+      await recordUsage(member.user.id, projectId, [...failedUsage(attempts, text.length),
+        { kind: 'gemini_tts', state: 'succeeded', detail: model, characters: text.length }]);
       return res.status(200).json({
         audioUrl: stored.signedUrl,
         assetPath: stored.path,
@@ -218,6 +226,7 @@ export default async function handler(req: any, res: any) {
     }
   }
 
+  await recordUsage(member.user.id, projectId, failedUsage(attempts, text.length));
   const compact = attempts.map(a => `${a.model}: HTTP ${a.status}${a.detail ? ` (${a.detail.slice(0, 120)})` : ''}`).join(' | ');
   console.warn('[Gemini TTS] all free-tier models failed', attempts);
   return res.status(429).json({

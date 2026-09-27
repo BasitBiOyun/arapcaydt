@@ -121,6 +121,59 @@ export function summarizeProjects(rows: ProjectRow[]) {
   return { totalProjects: rows.length, categoryTotals, members, voice, funnel, quality: qualityTotals, issues: issues.slice(0, 40) };
 }
 
+export interface ActivityRow { owner_id: string; kind: string; state: string; detail?: string | null; created_at: string }
+type Counter = { succeeded: number; failed: number };
+const SERVICES = ['gemini_tts', 'gemini_transcribe', 'elevenlabs_align', 'voice'] as const;
+type Service = typeof SERVICES[number];
+const emptyCounters = () => Object.fromEntries(SERVICES.map(k => [k, { succeeded: 0, failed: 0 }])) as Record<Service, Counter>;
+/** Gemini's per-day free quota resets at midnight Pacific time. */
+export const quotaDay = (iso: string) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date(iso));
+
+/**
+ * Request counts from the per-request usage log: every Gemini TTS model
+ * attempt, Transcribe call, Forced Alignment call and ElevenLabs TTS request
+ * is one row, so regenerated narrations and failures are all counted.
+ */
+export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISOString()) {
+  const today = quotaDay(nowIso);
+  const monthAgo = new Date(new Date(nowIso).getTime() - 30 * 86400_000).toISOString();
+  const totals = { today: emptyCounters(), last30Days: emptyCounters(), all: emptyCounters() };
+  const geminiModels: Record<string, { today: Counter; last30Days: Counter }> = {};
+  const members: Record<string, Record<Service, number>> = {};
+  for (const row of rows) {
+    if (!(SERVICES as readonly string[]).includes(row.kind)) continue;
+    const kind = row.kind as Service;
+    // ElevenLabs TTS rows stay "requested" until the server marks them; only "succeeded" counts as success.
+    const outcome: keyof Counter = row.state === 'succeeded' ? 'succeeded' : 'failed';
+    const isToday = quotaDay(row.created_at) === today;
+    const recent = row.created_at >= monthAgo;
+    totals.all[kind][outcome]++;
+    if (recent) totals.last30Days[kind][outcome]++;
+    if (isToday) totals.today[kind][outcome]++;
+    (members[row.owner_id] ??= { gemini_tts: 0, gemini_transcribe: 0, elevenlabs_align: 0, voice: 0 })[kind]++;
+    if (kind === 'gemini_tts') {
+      const model = (row.detail || 'bilinmiyor').split(' · ')[0];
+      const m = geminiModels[model] ??= { today: { succeeded: 0, failed: 0 }, last30Days: { succeeded: 0, failed: 0 } };
+      if (isToday) m.today[outcome]++;
+      if (recent) m.last30Days[outcome]++;
+    }
+  }
+  return { quotaDay: today, totals, geminiModels, members };
+}
+
+async function readUsage(db: any): Promise<{ rows: ActivityRow[]; migrationPending: boolean }> {
+  const rows: ActivityRow[] = [];
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await db.from('activity').select('owner_id,kind,state,detail,created_at')
+      .in('kind', SERVICES as unknown as string[]).order('created_at', { ascending: false }).range(from, from + 999);
+    // Before supabase/migrations/20260927_voice_usage.sql there is no detail column and no new kinds.
+    if (error) return { rows: [], migrationPending: true };
+    rows.push(...(data || []));
+    if ((data || []).length < 1000) break;
+  }
+  return { rows, migrationPending: false };
+}
+
 async function readAllProjects(db: any): Promise<ProjectRow[]> {
   const all: ProjectRow[] = [];
   const pageSize = 1000;
@@ -149,7 +202,9 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    return res.status(200).json(summarizeProjects(await readAllProjects(serviceDatabase())));
+    const db = serviceDatabase();
+    const [projects, usage] = await Promise.all([readAllProjects(db), readUsage(db)]);
+    return res.status(200).json({ ...summarizeProjects(projects), requests: { ...summarizeRequests(usage.rows), migrationPending: usage.migrationPending } });
   } catch (error: any) {
     console.error('[Admin analytics]', error?.message || error);
     return res.status(500).json({ error: 'Yönetim istatistikleri hazırlanamadı.' });

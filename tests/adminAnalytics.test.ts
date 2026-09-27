@@ -43,3 +43,49 @@ test('admin quality mirrors the editor publish check', () => {
   assert.ok(s.issues.some(i => i.projectId === 'p7' && i.detail.includes('kelime zamanı alınamadı')));
   assert.equal(s.issues.filter(i => i.detail.startsWith('Yayın kontrolü')).length, 2);
 });
+
+test('every request is counted separately, per service and Gemini model, on the Pacific quota day', async () => {
+  const { summarizeRequests } = await import('../api/admin/analytics');
+  const now = '2026-09-27T12:00:00Z'; // 05:00 in Los Angeles
+  const rows = [
+    { owner_id: 't1', kind: 'gemini_tts', state: 'failed', detail: 'gemini-3.8-flash-lite-tts · 429', created_at: '2026-09-27T11:00:00Z' },
+    { owner_id: 't1', kind: 'gemini_tts', state: 'succeeded', detail: 'gemini-3.8-flash-tts', created_at: '2026-09-27T11:00:01Z' },
+    { owner_id: 't1', kind: 'gemini_tts', state: 'succeeded', detail: 'gemini-3.8-flash-tts', created_at: '2026-09-27T06:00:00Z' }, // 23:00 previous Pacific day
+    { owner_id: 't2', kind: 'gemini_transcribe', state: 'succeeded', detail: 'gemini-3.5-transcribe · 200', created_at: '2026-09-27T11:00:05Z' },
+    { owner_id: 't2', kind: 'elevenlabs_align', state: 'failed', detail: 'forced-alignment · network', created_at: '2026-09-20T11:00:00Z' },
+    { owner_id: 't2', kind: 'voice', state: 'succeeded', created_at: '2026-07-01T11:00:00Z' },
+    { owner_id: 't2', kind: 'video_export', state: 'client_reported', created_at: '2026-09-27T11:00:00Z' },
+  ];
+  const r = summarizeRequests(rows, now);
+  assert.equal(r.quotaDay, '2026-09-27');
+  assert.deepEqual(r.totals.today.gemini_tts, { succeeded: 1, failed: 1 });
+  assert.deepEqual(r.totals.all.gemini_tts, { succeeded: 2, failed: 1 });
+  assert.deepEqual(r.geminiModels['gemini-3.8-flash-tts'].today, { succeeded: 1, failed: 0 });
+  assert.deepEqual(r.geminiModels['gemini-3.8-flash-lite-tts'].today, { succeeded: 0, failed: 1 });
+  assert.deepEqual(r.totals.last30Days.elevenlabs_align, { succeeded: 0, failed: 1 });
+  assert.deepEqual(r.totals.last30Days.voice, { succeeded: 0, failed: 0 });
+  assert.deepEqual(r.totals.all.voice, { succeeded: 1, failed: 0 });
+  assert.equal(r.members.t1.gemini_tts, 3);
+  assert.equal(r.members.t2.gemini_transcribe, 1);
+});
+
+test('usage migration applies on top of the membership schema and accepts the new request kinds', async () => {
+  const { PGlite } = await import('@electric-sql/pglite');
+  const { readFileSync } = await import('node:fs');
+  const db = new PGlite();
+  await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create schema storage;
+   create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,raw_user_meta_data jsonb default '{}');
+   create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+   create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
+   create table storage.objects(id uuid default gen_random_uuid(),bucket_id text,name text);
+   create function storage.foldername(text) returns text[] language sql as $$select string_to_array($1,'/')$$;`);
+  for (const file of ['20260921_membership.sql', '20260927_voice_usage.sql'])
+    await db.exec(readFileSync(new URL(`../supabase/migrations/${file}`, import.meta.url), 'utf8'));
+  const id = '00000000-0000-4000-8000-000000000009';
+  await db.query(`insert into auth.users values ($1,'t@example.test',now(),'{}')`, [id]);
+  await db.query(`insert into public.activity(owner_id,kind,state,detail) values ($1,'gemini_tts','succeeded','gemini-3.8-flash-tts'),($1,'gemini_transcribe','failed','gemini-3.5-transcribe · 429'),($1,'elevenlabs_align','succeeded',null)`, [id]);
+  assert.equal((await db.query<any>(`select count(*)::int as n from public.activity`)).rows[0].n, 3);
+  await assert.rejects(db.query(`insert into public.activity(owner_id,kind,state) values ($1,'something_else','x')`, [id]));
+  // Re-running the migration is harmless.
+  await db.exec(readFileSync(new URL('../supabase/migrations/20260927_voice_usage.sql', import.meta.url), 'utf8'));
+});

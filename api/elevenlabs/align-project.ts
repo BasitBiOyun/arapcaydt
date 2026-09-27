@@ -1,3 +1,4 @@
+import { recordUsage } from '../../server/usage.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 
 export const config = { maxDuration: 120 };
@@ -64,6 +65,10 @@ export default async function handler(req: any, res: any) {
   }
   if (!text) return res.status(400).json({ error: 'Forced Alignment için çözüm metni bulunamadı.' });
 
+  // Every Forced Alignment request is counted, including failures (admin usage view).
+  let alignmentRequested = false;
+  const countAlignment = (state: 'succeeded' | 'failed', status: number | string) => recordUsage(member.user.id, projectId,
+    [{ kind: 'elevenlabs_align', state, detail: `forced-alignment · ${status}`, characters: text.length }]);
   try {
     const { bytes, mimeType } = await loadProjectAudio(db, source);
     if (!bytes.length) return res.status(400).json({ error: 'Ses dosyası boş.' });
@@ -75,6 +80,7 @@ export default async function handler(req: any, res: any) {
     form.append('file', new Blob([bytes], { type: mimeType }), mimeType.includes('wav') ? 'narration.wav' : 'narration.mp3');
     form.append('text', text);
 
+    alignmentRequested = true;
     const upstream = await fetch('https://api.elevenlabs.io/v1/forced-alignment', {
       method: 'POST',
       signal: AbortSignal.timeout(100000),
@@ -83,6 +89,8 @@ export default async function handler(req: any, res: any) {
     });
 
     const raw = await upstream.text();
+    alignmentRequested = false;
+    await countAlignment(upstream.ok ? 'succeeded' : 'failed', upstream.status);
     if (!upstream.ok) {
       let detail = '';
       try {
@@ -124,6 +132,7 @@ export default async function handler(req: any, res: any) {
       loss: Number.isFinite(result?.loss) ? Number(result.loss.toFixed(4)) : null,
     });
   } catch (error: any) {
+    if (alignmentRequested) await countAlignment('failed', 'network');
     console.error('[ElevenLabs Forced Alignment project]', error?.message || error);
     return res.status(502).json({ error: error?.message || 'ElevenLabs Forced Alignment servisine ulaşılamadı.' });
   }

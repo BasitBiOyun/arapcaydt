@@ -1,4 +1,5 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { recordUsage, type UsageEvent } from '../../server/usage.js';
 
 export const config = { maxDuration: 120 };
 
@@ -105,6 +106,8 @@ export default async function handler(req: any, res: any) {
   if (!bytes.length) return res.status(400).json({ error: 'Ses dosyası boş.' });
 
   let uploadedName = '';
+  // One row per Transcribe request (the Files API upload itself is not a model request).
+  let usage: UsageEvent | null = null;
   try {
     const uploaded = await uploadGeminiFile(apiKey, bytes, mimeType, `narration-${projectId}.wav`);
     uploadedName = uploaded.name;
@@ -136,6 +139,7 @@ export default async function handler(req: any, res: any) {
     });
 
     const raw = await interaction.text();
+    usage = { kind: 'gemini_transcribe', state: interaction.ok ? 'succeeded' : 'failed', detail: `gemini-3.5-transcribe · ${interaction.status}` };
     if (!interaction.ok) {
       let detail = '';
       try { detail = JSON.parse(raw)?.error?.message || ''; } catch {}
@@ -173,6 +177,7 @@ export default async function handler(req: any, res: any) {
     console.error('[Gemini Transcribe alignment]', error?.message || error);
     return res.status(502).json({ error: error?.message || 'Gemini zamanlama servisine ulaşılamadı.' });
   } finally {
+    if (usage) await recordUsage(member.user.id, projectId, [usage]);
     await deleteGeminiFile(apiKey, uploadedName);
   }
 }
