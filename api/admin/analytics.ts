@@ -1,5 +1,5 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
-import { ELEVENLABS_ALIGN_PER_TEACHER, SHARED_TRANSCRIBE_PER_TEACHER, quotaDay, summarizeDay } from '../../server/quota.js';
+import { DEFAULT_LIMITS, readLimits, quotaDay, summarizeDay, type Limits } from '../../server/quota.js';
 
 /**
  * One row per project with only the JSON fields the panel needs. Narration
@@ -136,7 +136,7 @@ export interface MemberToday { ownTts: number; ownTranscribe: number; ownTranscr
  * attempt, Transcribe call, Forced Alignment call and ElevenLabs TTS request
  * is one row, so regenerated narrations and failures are all counted.
  */
-export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISOString()) {
+export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISOString(), limits: Limits = DEFAULT_LIMITS) {
   const today = quotaDay(nowIso);
   const monthAgo = new Date(new Date(nowIso).getTime() - 30 * 86400_000).toISOString();
   const totals = { today: emptyCounters(), last30Days: emptyCounters(), all: emptyCounters() };
@@ -165,14 +165,14 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
   const studio = summarizeDay(todayRows, '').shared;
   const membersToday: Record<string, MemberToday> = {};
   for (const owner of new Set(todayRows.map(r => r.owner_id))) {
-    const day = summarizeDay(todayRows, owner);
+    const day = summarizeDay(todayRows, owner, limits);
     const sharedTts = todayRows.filter(r => r.owner_id === owner && r.kind === 'gemini_tts' && r.key_source === 'system' && (r.detail || '').split(' · ')[1] !== '429').length;
     membersToday[owner] = { ownTts: day.own.ttsUsed, ownTranscribe: day.own.transcribeUsed, ownTranscribeExhausted: day.own.transcribeExhausted,
       ownTtsExhausted: day.own.ttsExhausted.length, sharedTts, sharedTranscribe: day.shared.transcribeUsed, elevenlabsAlign: day.elevenlabsAlignUsed };
   }
   return { quotaDay: today, totals, geminiModels, members, membersToday,
     studio: { transcribeUsed: studio.transcribeUsedAll, transcribeExhausted: studio.transcribeExhausted, ttsExhausted: studio.ttsExhausted },
-    limits: { sharedTranscribePerTeacher: SHARED_TRANSCRIBE_PER_TEACHER, elevenlabsAlignPerTeacher: ELEVENLABS_ALIGN_PER_TEACHER } };
+    limits: { sharedTranscribePerTeacher: limits.sharedTranscribe, elevenlabsAlignPerTeacher: limits.elevenlabsAlign } };
 }
 
 async function readUsage(db: any): Promise<{ rows: ActivityRow[]; migrationPending: boolean }> {
@@ -224,9 +224,9 @@ export default async function handler(req: any, res: any) {
 
   try {
     const db = serviceDatabase();
-    const [projects, usage, teacherKeys] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db)]);
+    const [projects, usage, teacherKeys, limits] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db)]);
     return res.status(200).json({ ...summarizeProjects(projects), teacherKeys,
-      requests: { ...summarizeRequests(usage.rows), migrationPending: usage.migrationPending } });
+      requests: { ...summarizeRequests(usage.rows, undefined, limits), migrationPending: usage.migrationPending } });
   } catch (error: any) {
     console.error('[Admin analytics]', error?.message || error);
     return res.status(500).json({ error: 'Yönetim istatistikleri hazırlanamadı.' });

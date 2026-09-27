@@ -6,6 +6,7 @@ import {
 import { BrandMark } from '../../components/common/BrandMark';
 import { APP_NAME, APP_OWNER_LINE } from '../../config/brand';
 import { DemoPlayer } from './DemoPlayer';
+import { useSignupsOpen } from '../settings/studioSettings';
 
 export type AuthMode = 'login' | 'signup';
 
@@ -28,6 +29,7 @@ const FEATURES = [
 /** Public front page for commission members: what the studio does, shown with a live demo. */
 export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
   const primary = 'inline-flex items-center justify-center gap-2 rounded-xl bg-[#8B1E2D] hover:bg-[#721824] text-white font-bold text-sm px-5 py-3 shadow-[0_8px_24px_-8px_rgba(139,30,45,.55)] transition-colors';
+  const signups = useSignupsOpen();
   const secondary = 'inline-flex items-center justify-center gap-2 rounded-xl border border-[#D5D4CC] bg-white/80 hover:bg-white text-[#1C1917] font-bold text-sm px-5 py-3 transition-colors';
 
   return (
@@ -41,7 +43,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
           </a>
           <div className="flex items-center gap-2">
             <button type="button" onClick={() => onAuth('login')} className="text-sm font-semibold px-3 py-2 rounded-lg hover:bg-[#F0EFEA]">Giriş yap</button>
-            <button type="button" onClick={() => onAuth('signup')} className="hidden sm:inline-flex text-sm font-bold px-4 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white">Hesap oluştur</button>
+            {signups && <button type="button" onClick={() => onAuth('signup')} className="hidden sm:inline-flex text-sm font-bold px-4 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white">Hesap oluştur</button>}
           </div>
         </nav>
       </header>
@@ -67,9 +69,9 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <button type="button" onClick={() => onAuth('login')} className={primary}>Stüdyoya giriş yap <ArrowRight size={16} weight="bold" /></button>
-                <button type="button" onClick={() => onAuth('signup')} className={secondary}>Hesap oluştur</button>
+                {signups && <button type="button" onClick={() => onAuth('signup')} className={secondary}>Hesap oluştur</button>}
               </div>
-              <p className="mt-4 text-xs text-[#787670]">Yeni hesaplar e-posta doğrulaması ve yönetici onayıyla açılır.</p>
+              <p className="mt-4 text-xs text-[#787670]">{signups ? 'Yeni hesaplar e-posta doğrulaması ve yönetici onayıyla açılır.' : 'Yeni kayıtlar şu an kapalı; hesabı olan üyeler giriş yapabilir.'}</p>
               <p className="mt-6 pt-5 border-t border-[#E5E4DC] text-sm font-semibold text-[#55544F]">{APP_OWNER_LINE}.</p>
             </div>
 
@@ -131,9 +133,9 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
             <div aria-hidden className="pointer-events-none absolute -right-10 -bottom-16 opacity-15"><BrandMark size={260} /></div>
             <div className="relative max-w-xl">
               <h2 className="text-3xl font-bold tracking-tight">Komisyon üyesi misiniz?</h2>
-              <p className="mt-3 text-white/80 leading-relaxed">Hesabınızı oluşturun; e-postanızı doğrulayıp yönetici onayını aldıktan sonra stüdyonuz hazır.</p>
+              <p className="mt-3 text-white/80 leading-relaxed">{signups ? 'Hesabınızı oluşturun; e-postanızı doğrulayıp yönetici onayını aldıktan sonra stüdyonuz hazır.' : 'Yeni kayıtlar şu an kapalı. Hesabınız varsa stüdyoya giriş yapabilirsiniz.'}</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <button type="button" onClick={() => onAuth('signup')} className="inline-flex items-center gap-2 rounded-xl bg-white text-[#8B1E2D] hover:bg-[#FFF8E6] font-bold text-sm px-5 py-3 transition-colors">Hesap oluştur <ArrowRight size={16} weight="bold" /></button>
+                {signups && <button type="button" onClick={() => onAuth('signup')} className="inline-flex items-center gap-2 rounded-xl bg-white text-[#8B1E2D] hover:bg-[#FFF8E6] font-bold text-sm px-5 py-3 transition-colors">Hesap oluştur <ArrowRight size={16} weight="bold" /></button>}
                 <button type="button" onClick={() => onAuth('login')} className="inline-flex items-center gap-2 rounded-xl border border-white/40 hover:bg-white/10 font-bold text-sm px-5 py-3 transition-colors">Giriş yap</button>
               </div>
             </div>

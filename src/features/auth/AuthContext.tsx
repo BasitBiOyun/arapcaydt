@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User } from '../../types';
 import { database, supabase } from '../../services/supabase';
+import { cleanPreferences } from '../settings/preferences';
 
 interface AuthContextType {
   user: User | null; isAuthenticated: boolean; isLoading: boolean; recovering: boolean; error: string;
@@ -20,7 +21,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
       if(!verified.email_confirmed_at) { setUser(null); setError('Önce e-posta adresinizi doğrulayın.'); return; }
       const {data,error}=await supabase.from('profiles').select('*').eq('id',verified.id).single();
       if(error) throw error;
-      setUser({id:data.id,email:data.email,name:data.name,title:data.role==='admin'?'Yönetici':'Öğretmen',role:data.role,status:data.status});
+      setUser({id:data.id,email:data.email,name:data.name,title:data.role==='admin'?'Yönetici':'Öğretmen',role:data.role,status:data.status,preferences:cleanPreferences(data.preferences)});
       setError('');
     } catch { setUser(null); setError('Üyelik bilgileri yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.'); }
     finally {setLoading(false);}

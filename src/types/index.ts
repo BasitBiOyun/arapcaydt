@@ -19,6 +19,8 @@ export interface User {
   institution?: string;
   role: 'teacher' | 'editor' | 'admin';
   status?: 'pending' | 'approved' | 'blocked';
+  /** New-question and video defaults; see features/settings/preferences. */
+  preferences?: import('../features/settings/preferences').UserPreferences;
 }
 
 export type AnnotationType = 'check' | 'cross' | 'highlight' | 'underline' | 'rule_box';
@@ -141,6 +143,7 @@ export interface VideoConfig {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
+  showOutro?: boolean;
   timingQuality?: 'word-aligned' | 'anchored' | 'approximate';
   pipelineVersion?: number;
   warnings?: string[];

@@ -92,7 +92,7 @@ test('closing frame restates the checked answer only after the narration ends',a
   const regions=[{id:'option-c',type:'option-c',label:'C',x:.3,y:.5,width:.1,height:.06}] as any;
   const actions:VideoAction[]=[{id:'c',type:'correct',targetRegionId:'option-c',start:8,duration:2}];
   const opts={width:1920,height:1080,aspectRatio:'16:9' as const,duration:10};
-  assert.equal(outroSeconds(actions),2.5);assert.equal(outroSeconds([]),0);
+  assert.equal(outroSeconds(actions),2.5);assert.equal(outroSeconds([]),0);assert.equal(outroSeconds(actions,false),0);
   renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,9.9,opts);
   assert.ok(!texts.includes('Doğru cevap: C'));
   renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,11,opts);

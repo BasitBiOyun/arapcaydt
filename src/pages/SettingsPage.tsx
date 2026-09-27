@@ -13,9 +13,13 @@ import { ElevenLabsStatus } from '../types';
 import { useProjects } from '../features/projects/ProjectContext';
 import { projectRepository } from '../features/projects/projectRepository';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
+import { DefaultsCard, ProfileCard } from '../features/settings/MySettingsCards';
+import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
+import { useAuth } from '../features/auth/AuthContext';
 
 export const SettingsPage: React.FC = () => {
   const { projects } = useProjects();
+  const { user } = useAuth();
   const [status, setStatus] = useState<ElevenLabsStatus | null>(null);
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<string | null>(null);
@@ -60,11 +64,14 @@ export const SettingsPage: React.FC = () => {
       <header className="library-heading !mb-2">
         <div>
           <h2>Ayarlar</h2>
-          <p>Ses servisi, Google anahtarınız ve proje yedekleme.</p>
+          <p>Profiliniz, yeni soru varsayılanları, ses servisi ve yedekleme{user?.role === 'admin' ? '; en altta stüdyo ayarları' : ''}.</p>
         </div>
       </header>
 
-      {/* 1. Voice service card (Gemini primary, ElevenLabs fallback) */}
+      <ProfileCard />
+      <DefaultsCard />
+
+      {/* Voice service card (Gemini primary, ElevenLabs fallback) */}
       <div className="p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
         <div className="flex items-center justify-between border-b border-[#EFEFEA] pb-3">
           <div className="flex items-center gap-2">
@@ -142,6 +149,8 @@ export const SettingsPage: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {user?.role === 'admin' && <StudioSettingsCard />}
     </div>
   );
 };

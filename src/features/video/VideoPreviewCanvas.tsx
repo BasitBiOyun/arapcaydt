@@ -39,7 +39,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
   selectedRegionId = null,
   audioUrl,
 }) => {
-  const totalDuration = duration + outroSeconds(actions);
+  const totalDuration = duration + outroSeconds(actions, videoConfig.showOutro !== false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -130,6 +130,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         captions: videoConfig.captions,
         showCaptions: videoConfig.showCaptions,
         captionY: videoConfig.captionY,
+        showOutro: videoConfig.showOutro,
         duration,
       }
     );

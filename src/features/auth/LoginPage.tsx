@@ -1,13 +1,16 @@
-import React,{useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import {useAuth} from './AuthContext';
 import {database,supabase} from '../../services/supabase';
 import {BrandMark} from '../../components/common/BrandMark';
 import {APP_NAME,APP_OWNER_LINE} from '../../config/brand';
+import {useSignupsOpen} from '../settings/studioSettings';
 export const LoginPage:React.FC<{initialMode?:'login'|'signup';onBack?:()=>void}>=({initialMode='login',onBack})=>{
  const {refresh,recovering,finishRecovery,logout,error:authError}=useAuth();
  const [mode,setMode]=useState<'login'|'signup'|'reset'>(initialMode);
  const [name,setName]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState('');
  const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
+ const signups=useSignupsOpen();
+ useEffect(()=>{if(!signups&&mode==='signup'){setMode('login');setError('Yeni kayıtlar şu an kapalı. Hesabınız varsa giriş yapabilirsiniz.');}},[signups,mode]);
  const submit=async(e:React.FormEvent)=>{
   e.preventDefault();setBusy(true);setError('');setMessage('');
   try{
@@ -15,7 +18,7 @@ export const LoginPage:React.FC<{initialMode?:'login'|'signup';onBack?:()=>void}
    if(recovering){const {error}=await client.auth.updateUser({password});if(error)throw error;finishRecovery();setPassword('');await refresh();}
    else if(mode==='signup'){
     const {error}=await client.auth.signUp({email:email.trim(),password,options:{data:{name:name.trim()},emailRedirectTo:window.location.origin}});
-    if(error)throw error;setMessage('Doğrulama e-postası gönderildi. Adresinizi doğruladıktan sonra yönetici onayı beklenecek.');setPassword('');
+    if(error)throw /database error saving new user/i.test(error.message)?new Error('Yeni kayıtlar şu an kapalı.'):error;setMessage('Doğrulama e-postası gönderildi. Adresinizi doğruladıktan sonra yönetici onayı beklenecek.');setPassword('');
    }else if(mode==='reset'){
     const {error}=await client.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin});if(error)throw error;
     setMessage('Bu adres kayıtlıysa şifre yenileme bağlantısı gönderildi.');
@@ -36,7 +39,7 @@ export const LoginPage:React.FC<{initialMode?:'login'|'signup';onBack?:()=>void}
    {(recovering||mode!=='reset')&&<label className="block text-sm">Şifre<input required type="password" minLength={mode==='signup'||recovering?8:1} autoComplete={mode==='signup'||recovering?'new-password':'current-password'} value={password} onChange={e=>setPassword(e.target.value)} className="block w-full border rounded p-2 mt-1"/></label>}
    <button disabled={busy||!supabase} className="w-full rounded bg-[#8B1E2D] text-white p-3 disabled:opacity-50">{busy?'İşlem yapılıyor…':title}</button>
    {recovering&&<button type="button" className="text-sm" onClick={()=>{setPassword('');setError('');void logout();}}>Vazgeç, giriş ekranına dön</button>}
-   {!recovering&&<div className="flex flex-wrap gap-4 text-sm">{(['login','signup','reset'] as const).filter(m=>m!==mode).map(m=><button type="button" key={m} onClick={()=>{setMode(m);setError('');setMessage('');}}>{m==='login'?'Giriş yap':m==='signup'?'Hesap oluştur':'Şifremi unuttum'}</button>)}</div>}
-  </form><p className="text-xs text-stone-500">Yeni öğretmen hesapları, e-posta doğrulaması ve yönetici onayından sonra açılır.</p>
+   {!recovering&&<div className="flex flex-wrap gap-4 text-sm">{(['login','signup','reset'] as const).filter(m=>m!==mode&&(signups||m!=='signup')).map(m=><button type="button" key={m} onClick={()=>{setMode(m);setError('');setMessage('');}}>{m==='login'?'Giriş yap':m==='signup'?'Hesap oluştur':'Şifremi unuttum'}</button>)}</div>}
+  </form><p className="text-xs text-stone-500">{signups?'Yeni öğretmen hesapları, e-posta doğrulaması ve yönetici onayından sonra açılır.':'Yeni kayıtlar şu an kapalı.'}</p>
  </div></main>;
 };

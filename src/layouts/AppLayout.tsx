@@ -3,6 +3,7 @@ import {AdminPage} from '../pages/AdminPage';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppSidebar, AppPage } from '../components/common/AppSidebar';
 import { AppHeader } from '../components/common/AppHeader';
+import { AnnouncementBanner } from '../features/settings/AnnouncementBanner';
 import { DashboardPage } from '../pages/DashboardPage';
 import { QuestionsPage } from '../pages/QuestionsPage';
 import { QuestionEditorPage } from '../pages/QuestionEditorPage';
@@ -105,6 +106,7 @@ export const AppLayout: React.FC = () => {
           onNavigate={navigate}
         />
 
+        <AnnouncementBanner />
         <main className="flex-1 overflow-y-auto">
           {error&&<div role="alert" className="p-4 bg-red-50 text-red-800">{error} <button onClick={()=>void loadProjects()}>Yeniden dene</button></div>}
           {currentPage==='admin'&&user?.role==='admin'&&<AdminPage/>}

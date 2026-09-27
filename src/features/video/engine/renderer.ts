@@ -205,8 +205,8 @@ function markBadge(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius
 
 /** Silent closing frame after the narration that restates the answer. */
 export const OUTRO_SECONDS = 2.5;
-export function outroSeconds(actions: VideoAction[] = []): number {
-  return actions.some(a => a.type === 'correct') ? OUTRO_SECONDS : 0;
+export function outroSeconds(actions: VideoAction[] = [], show = true): number {
+  return show && actions.some(a => a.type === 'correct') ? OUTRO_SECONDS : 0;
 }
 
 function drawOutroCard(ctx: CanvasRenderingContext2D, width: number, height: number, t: number, letter: string, options: RenderOptions) {
@@ -341,7 +341,7 @@ export function renderQuestionVideoFrame(
   // Spotlight: while an option is examined the rest of the slide recedes; judged options stay visible.
   const lastCorrect = Object.values(state.correctRegions).sort((a, b) => b.timestamp - a.timestamp)[0];
   const lit = [...focused, ...emphasis];
-  const outroT = options.duration && !options.interactiveMode ? currentTime - options.duration : -1;
+  const outroT = options.duration && !options.interactiveMode && options.showOutro !== false ? currentTime - options.duration : -1;
   const correctIds = Object.keys(state.correctRegions);
   const spot = outroT >= 0 && correctIds.length
     ? { ids: correctIds, strength: Math.min(1, outroT / .4) }

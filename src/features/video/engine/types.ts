@@ -60,6 +60,8 @@ export interface RenderOptions {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
+  /** Closing "Doğru cevap" card after the narration (on unless false). */
+  showOutro?: boolean;
   /** Narration length; draws the thin progress bar in exported frames. */
   duration?: number;
 }

@@ -2,7 +2,7 @@ import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import {
-  SHARED_TRANSCRIBE_PER_TEACHER, TRANSCRIBE_MODEL, isCapped, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid,
+  TRANSCRIBE_MODEL, isCapped, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid,
   normalizeApiKey, readDailyState, readTeacherKey, sharedTranscribeAllowed, usageDetail, type KeySource,
 } from '../../server/quota.js';
 
@@ -103,7 +103,7 @@ export default async function handler(req: any, res: any) {
   if (!lanes.length) {
     const reason = !systemKey && !teacherKey ? 'Gemini API anahtarı yapılandırılmamış.'
       : today.shared.transcribeExhausted ? 'Bugünkü Gemini kelime zamanı kotaları doldu.'
-      : `Bugünkü Gemini kelime zamanı hakkınız doldu (ortak kotadan günlük ${SHARED_TRANSCRIBE_PER_TEACHER}).`;
+      : `Bugünkü Gemini kelime zamanı hakkınız doldu (ortak kotadan günlük ${today.limits.sharedTranscribe}).`;
     return res.status(429).json({ error: reason, code: 'TRANSCRIBE_LIMIT' });
   }
 

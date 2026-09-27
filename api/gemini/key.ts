@@ -1,6 +1,6 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import {
-  ELEVENLABS_ALIGN_PER_TEACHER, GEMINI_TTS_MODELS, SHARED_TRANSCRIBE_PER_TEACHER, encryptKey, isCapped, keyStorageReady,
+  GEMINI_TTS_MODELS, encryptKey, isCapped, keyStorageReady,
   normalizeApiKey, readDailyState,
 } from '../../server/quota.js';
 
@@ -73,8 +73,8 @@ export default async function handler(req: any, res: any) {
       tracking: today.tracking,
       tts: { used: today.own.ttsUsed, exhaustedModels: today.own.ttsExhausted.length, models: GEMINI_TTS_MODELS.length },
       transcribe: { used: today.own.transcribeUsed, exhausted: today.own.transcribeExhausted },
-      shared: { used: today.shared.transcribeUsed, limit: capped ? SHARED_TRANSCRIBE_PER_TEACHER : null, exhausted: today.shared.transcribeExhausted },
-      elevenlabs: { used: today.elevenlabsAlignUsed, limit: capped ? ELEVENLABS_ALIGN_PER_TEACHER : null },
+      shared: { used: today.shared.transcribeUsed, limit: capped ? today.limits.sharedTranscribe : null, exhausted: today.shared.transcribeExhausted },
+      elevenlabs: { used: today.elevenlabsAlignUsed, limit: capped ? today.limits.elevenlabsAlign : null },
     },
   });
 }

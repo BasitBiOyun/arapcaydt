@@ -26,11 +26,12 @@ export async function exportProjectVideo(project: QuestionProject, onProgress: (
         captions: config.captions,
         showCaptions: config.showCaptions,
         captionY: config.captionY,
+        showOutro: config.showOutro,
         duration,
       });
     },
     audioUrl,
-    duration + outroSeconds(config.timelineActions),
+    duration + outroSeconds(config.timelineActions, config.showOutro !== false),
     { resolution: '1080p', fps: 30, format: 'mp4', aspectRatio: (config.aspectRatio || '16:9') as '16:9' | '9:16' },
     progress => onProgress(progress.percent),
     signal,

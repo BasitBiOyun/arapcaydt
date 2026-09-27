@@ -8,6 +8,8 @@ import { buildBatchPlan } from '../features/batch/batchPlan';
 import { runBatch, type BatchDeps, type BatchRowState } from '../features/batch/batchRunner';
 import { projectRepository } from '../features/projects/projectRepository';
 import { useProjects } from '../features/projects/ProjectContext';
+import { useAuth } from '../features/auth/AuthContext';
+import { newProjectDefaults } from '../features/settings/preferences';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { narrationService } from '../services/narration/narrationService';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
@@ -35,13 +37,15 @@ function download(blob: Blob, name: string) {
 
 export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject: (id: string) => void; registerLeaveGuard?: (guard: LeaveGuard | null) => void }) {
   const { loadProjects } = useProjects();
+  const { user } = useAuth();
+  const defaults = newProjectDefaults(user?.preferences);
   const [images, setImages] = useState<File[]>([]);
   const [audios, setAudios] = useState<File[]>([]);
   const [solutions, setSolutions] = useState('');
   const [solutionFile, setSolutionFile] = useState<File[]>([]);
-  const [category, setCategory] = useState(DEFAULT_CATEGORY_ID);
-  const [examName, setExamName] = useState('');
-  const [examYear, setExamYear] = useState(`${new Date().getFullYear()} YDT`);
+  const [category, setCategory] = useState(defaults.category || DEFAULT_CATEGORY_ID);
+  const [examName, setExamName] = useState(defaults.examName || '');
+  const [examYear, setExamYear] = useState(defaults.examYear || `${new Date().getFullYear()} YDT`);
   const [generateVoice, setGenerateVoice] = useState(false);
   const [exportVideo, setExportVideo] = useState(true);
   const [rows, setRows] = useState<Record<number, BatchRowState>>({});
@@ -108,7 +112,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       now: () => Date.now(),
     };
     try {
-      await runBatch(plan.items, { category, examName: examName.trim(), examYear: examYear.trim(), generateVoice, exportVideo }, deps,
+      await runBatch(plan.items, { category, examName: examName.trim(), examYear: examYear.trim(), generateVoice, exportVideo, video: defaults.video }, deps,
         (number, state) => setRows(previous => ({ ...previous, [number]: state })), abort.current.signal);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Toplu üretim tamamlanamadı.');

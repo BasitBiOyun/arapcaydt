@@ -1,4 +1,4 @@
-import type { QuestionProject } from '../../types';
+import type { QuestionProject, VideoConfig } from '../../types';
 import type { GenerateNarrationResponse } from '../../services/elevenlabs/types';
 import type { LocalPipelineResult } from '../../services/pipeline/localVideoPipeline';
 import type { UploadedNarrationResult } from '../../services/narration/uploadedNarration';
@@ -23,6 +23,8 @@ export interface BatchOptions {
   generateVoice: boolean;
   /** Encode and download each MP4 once its markers are ready. */
   exportVideo: boolean;
+  /** The teacher's caption and closing-card defaults. */
+  video?: Partial<VideoConfig>;
 }
 
 export interface BatchDeps<F> {
@@ -75,7 +77,7 @@ export async function runBatch<F extends { name: string }>(
         category: options.category, correctAnswer: item.answer || 'A', status: 'draft',
         imageUrl: await deps.readDataUrl(item.image), imageFileName: item.image.name, solutionText: item.solution,
         audioApproved: false, videoReady: false,
-        videoConfig: { aspectRatio: '16:9', fps: 30, backgroundColor: '#FFFFFF', showWatermark: true, teacherTag: 'Soru Çözümü', annotations: [] },
+        videoConfig: { aspectRatio: '16:9', fps: 30, backgroundColor: '#FFFFFF', showWatermark: true, teacherTag: 'Soru Çözümü', annotations: [], ...options.video },
       });
       const projectId = project.id;
       const step = (stage: BatchStage, message: string, percent?: number) => update(item.number, { stage, message, projectId, percent });

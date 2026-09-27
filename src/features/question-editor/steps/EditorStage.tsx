@@ -89,6 +89,11 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             value={currentProject.videoConfig.captionY ?? .85}
             onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, captionY: Number(e.target.value) } })} />
           Altyazı konumu
+          <label className="flex gap-2 items-center ml-2">
+          <input type="checkbox" checked={currentProject.videoConfig.showOutro !== false}
+            onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, showOutro: e.target.checked } })} />
+          Kapanış kartı
+          </label>
         </div>
 
         <details hidden={step!==3||editRegions} className="w-full text-xs bg-white rounded-xl p-3 border">

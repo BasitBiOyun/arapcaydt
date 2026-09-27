@@ -6,6 +6,7 @@ import {useAuth} from '../auth/AuthContext';
 import {draftStore} from './draftStore';
 import {createSaveQueue} from './saveQueue';
 import { DEFAULT_CATEGORY_ID } from '../../config/categories';
+import { newProjectDefaults } from '../settings/preferences';
 
 interface ProjectContextType {
   error: string;
@@ -116,11 +117,13 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const createNewProject = useCallback(async (custom?: Partial<QuestionProject>): Promise<QuestionProject> => {
     if(!await flush())throw new Error('Mevcut proje kaydedilemedi. Önce tekrar kaydedin.');
     const nextNum = projects.length > 0 ? Math.max(...projects.map((p) => p.questionNumber || 0)) + 1 : 1;
+    const defaults=newProjectDefaults(user?.preferences);
     const initial: Omit<QuestionProject, 'id' | 'createdAt' | 'updatedAt'> = {
+      ...(defaults.examName?{examName:defaults.examName}:{}),
       title: custom?.title || `Yeni Soru Projesi #${nextNum}`,
-      examYear: custom?.examYear || `${new Date().getFullYear()} YDT`,
+      examYear: custom?.examYear || defaults.examYear || `${new Date().getFullYear()} YDT`,
       questionNumber: custom?.questionNumber || nextNum,
-      category: custom?.category || DEFAULT_CATEGORY_ID,
+      category: custom?.category || defaults.category || DEFAULT_CATEGORY_ID,
       correctAnswer: custom?.correctAnswer || 'A',
       status: 'draft',
       audioApproved: custom?.audioApproved ?? false,
@@ -136,6 +139,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         showWatermark: true,
         teacherTag: 'Soru Çözümü',
         annotations: [],
+        ...defaults.video,
       },
       notes: '',
       ...custom,
@@ -146,7 +150,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     confirmed.current.set(created.id,JSON.stringify(created));
     projectRef.current=created;setCurrentProject(created);setSaveStatus('saved');setError('');
     return created;
-  }, [projects,flush]);
+  }, [projects,flush,user?.preferences]);
 
   useEffect(()=>{
     if(!currentProject || confirmed.current.get(currentProject.id)===JSON.stringify(currentProject))return;

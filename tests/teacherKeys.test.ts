@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  ELEVENLABS_ALIGN_PER_TEACHER, SHARED_TRANSCRIBE_PER_TEACHER, decryptKey, elevenLabsAlignAllowed, encryptKey, isCapped,
-  isDailyQuotaError, isInvalidKeyError, pacificDayStart, readDailyState, sharedTranscribeAllowed, summarizeDay, usageDetail, type DayRow,
+  DEFAULT_LIMITS, ELEVENLABS_ALIGN_PER_TEACHER, SHARED_TRANSCRIBE_PER_TEACHER, decryptKey, elevenLabsAlignAllowed, encryptKey, isCapped,
+  isDailyQuotaError, isInvalidKeyError, pacificDayStart, readDailyState, readLimits, sharedTranscribeAllowed, summarizeDay, usageDetail, type DayRow,
 } from '../server/quota';
 import { isGoogleKeyShape } from '../api/gemini/key';
 import { summarizeRequests } from '../api/admin/analytics';
@@ -65,6 +65,19 @@ test('shared Transcribe and ElevenLabs caps apply to teachers only', () => {
   assert.equal(elevenLabsAlignAllowed(eleven, false), true);
   assert.equal(isCapped({ profile: { role: 'teacher' } }), true);
   assert.equal(isCapped({ profile: { role: 'admin' } }), false);
+});
+
+test('admin-set daily limits replace the defaults; a missing settings table keeps them', async () => {
+  const db = (result: any) => ({ from: () => ({ select: () => ({ maybeSingle: async () => result }) }) });
+  assert.deepEqual(await readLimits(db({ data: null, error: { message: 'relation "studio_settings" does not exist' } })), DEFAULT_LIMITS);
+  assert.deepEqual(await readLimits({ from: () => { throw new Error('offline'); } }), DEFAULT_LIMITS);
+  assert.deepEqual(await readLimits(db({ data: { shared_transcribe_per_teacher: 5, elevenlabs_align_per_teacher: 0 }, error: null })),
+    { sharedTranscribe: 5, elevenlabsAlign: 0 });
+  assert.deepEqual(await readLimits(db({ data: { shared_transcribe_per_teacher: -1, elevenlabs_align_per_teacher: 'x' }, error: null })), DEFAULT_LIMITS);
+  const two = Array.from({ length: 2 }, () => ({ owner_id: 't1', kind: 'gemini_transcribe', state: 'succeeded', detail: 'm · 200', key_source: 'system' }));
+  assert.equal(sharedTranscribeAllowed(summarizeDay(two, 't1', { sharedTranscribe: 2, elevenlabsAlign: 0 }), true), false);
+  assert.equal(elevenLabsAlignAllowed(summarizeDay([], 't1', { sharedTranscribe: 2, elevenlabsAlign: 0 }), true), false, 'zero switches ElevenLabs alignment off for teachers');
+  assert.equal(elevenLabsAlignAllowed(summarizeDay([], 't1', { sharedTranscribe: 2, elevenlabsAlign: 0 }), false), true);
 });
 
 test('an unreadable usage log never blocks narration', async () => {

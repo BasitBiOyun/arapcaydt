@@ -55,12 +55,32 @@ export function usageDetail(model: string, status: number | string, daily = fals
 }
 
 export interface DayRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null }
+/** Per-teacher daily caps; admins can change them in Settings (studio_settings). */
+export interface Limits { sharedTranscribe: number; elevenlabsAlign: number }
+export const DEFAULT_LIMITS: Limits = { sharedTranscribe: SHARED_TRANSCRIBE_PER_TEACHER, elevenlabsAlign: ELEVENLABS_ALIGN_PER_TEACHER };
+
+/** The admin-set caps, or the defaults when none are saved yet (migration pending, read error). */
+export async function readLimits(db: any): Promise<Limits> {
+  try {
+    const { data, error } = await db.from('studio_settings').select('shared_transcribe_per_teacher,elevenlabs_align_per_teacher').maybeSingle();
+    if (error || !data) return DEFAULT_LIMITS;
+    const pick = (value: unknown, fallback: number) => Number.isInteger(value) && (value as number) >= 0 ? value as number : fallback;
+    return {
+      sharedTranscribe: pick(data.shared_transcribe_per_teacher, DEFAULT_LIMITS.sharedTranscribe),
+      elevenlabsAlign: pick(data.elevenlabs_align_per_teacher, DEFAULT_LIMITS.elevenlabsAlign),
+    };
+  } catch {
+    return DEFAULT_LIMITS;
+  }
+}
+
 export interface DailyState {
   /** False when the usage log could not be read (migration pending): nothing is skipped or capped. */
   tracking: boolean;
   own: { ttsUsed: number; ttsExhausted: string[]; transcribeUsed: number; transcribeExhausted: boolean };
   shared: { transcribeUsed: number; transcribeUsedAll: number; ttsExhausted: string[]; transcribeExhausted: boolean };
   elevenlabsAlignUsed: number;
+  limits: Limits;
 }
 
 const parts = (detail?: string | null) => (detail || '').split(' · ');
@@ -68,12 +88,13 @@ const isDaily = (row: DayRow) => row.state === 'failed' && / · daily$/.test(row
 /** A request rejected with 429 never consumed quota; everything else did. */
 const consumed = (row: DayRow) => parts(row.detail)[1] !== '429';
 
-export function summarizeDay(rows: DayRow[], ownerId: string): DailyState {
+export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = DEFAULT_LIMITS): DailyState {
   const state: DailyState = {
     tracking: true,
     own: { ttsUsed: 0, ttsExhausted: [], transcribeUsed: 0, transcribeExhausted: false },
     shared: { transcribeUsed: 0, transcribeUsedAll: 0, ttsExhausted: [], transcribeExhausted: false },
     elevenlabsAlignUsed: 0,
+    limits,
   };
   for (const row of rows) {
     const mine = row.owner_id === ownerId;
@@ -102,7 +123,8 @@ export function summarizeDay(rows: DayRow[], ownerId: string): DailyState {
 export async function readDailyState(db: any, ownerId: string, nowIso = new Date().toISOString()): Promise<DailyState> {
   const rows: DayRow[] = [];
   const since = pacificDayStart(nowIso);
-  const untracked = { ...summarizeDay([], ownerId), tracking: false };
+  const limits = db ? await readLimits(db) : DEFAULT_LIMITS;
+  const untracked = { ...summarizeDay([], ownerId, limits), tracking: false };
   try {
     for (let from = 0; ; from += 1000) {
       const { data, error } = await db.from('activity').select('owner_id,kind,state,detail,key_source')
@@ -115,17 +137,17 @@ export async function readDailyState(db: any, ownerId: string, nowIso = new Date
   } catch {
     return untracked;
   }
-  return summarizeDay(rows, ownerId);
+  return summarizeDay(rows, ownerId, limits);
 }
 
 /** Per-teacher caps apply to teachers only; the studio owner's admins are not capped. */
 export const isCapped = (member: { profile?: { role?: string } | null }) => member.profile?.role !== 'admin';
 
 export function sharedTranscribeAllowed(state: DailyState, capped: boolean): boolean {
-  return !state.shared.transcribeExhausted && (!capped || state.shared.transcribeUsed < SHARED_TRANSCRIBE_PER_TEACHER);
+  return !state.shared.transcribeExhausted && (!capped || state.shared.transcribeUsed < state.limits.sharedTranscribe);
 }
 export function elevenLabsAlignAllowed(state: DailyState, capped: boolean): boolean {
-  return !capped || state.elevenlabsAlignUsed < ELEVENLABS_ALIGN_PER_TEACHER;
+  return !capped || state.elevenlabsAlignUsed < state.limits.elevenlabsAlign;
 }
 
 // ---- Teacher key storage (AES-256-GCM, server-only) ----
