@@ -73,6 +73,13 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat, voiceSettings }),
       alignGeneratedVoice: p => narrationService.alignGeneratedNarration(p.id),
+      alignGeneratedVoiceLocal: async p => {
+        const audioUrl = p.narrationSource?.audioUrl || p.audioNarration?.audioUrl;
+        if (!audioUrl) throw new Error('Ses dosyası bağlantısı bulunamadı.');
+        const response = await fetch(audioUrl);
+        if (!response.ok) throw new Error(`Ses dosyası indirilemedi (HTTP ${response.status}).`);
+        return (await localWhisperService.transcribeAudioLocally(await response.arrayBuffer())).words;
+      },
       prepareUpload: (p, file) => prepareUploadedNarration(file, {
         readDataUrl, readDuration: readAudioDuration,
         align: (audioBase64, mimeType) => elevenlabsService.alignUploadedNarration({ projectId: p.id, text: p.solutionText.trim(), audioBase64, mimeType }),
