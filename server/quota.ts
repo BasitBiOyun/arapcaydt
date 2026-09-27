@@ -4,7 +4,7 @@ import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:
  * Daily quota bookkeeping for the Google (Gemini) and ElevenLabs timing chain.
  *
  * Order per request:
- *   TTS:        teacher key (4 models) → studio key (4 models) → ElevenLabs TTS
+ *   TTS:        teacher key (3 models) → studio key (3 models) → ElevenLabs TTS
  *   Timestamps: teacher Transcribe → studio Transcribe (per-teacher cap)
  *               → ElevenLabs Forced Alignment (per-teacher cap) → local Whisper
  *
@@ -15,10 +15,9 @@ import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:
 export const SHARED_TRANSCRIBE_PER_TEACHER = 25;
 export const ELEVENLABS_ALIGN_PER_TEACHER = 20;
 export const GEMINI_TTS_MODELS = [
-  'gemini-3.8-flash-lite-tts',
   'gemini-3.8-flash-tts',
+  'gemini-3.8-flash-lite-tts',
   'gemini-3.1-flash-tts-preview',
-  'gemini-2.5-flash-preview-tts',
 ] as const;
 export const TRANSCRIBE_MODEL = 'gemini-3.5-transcribe';
 
