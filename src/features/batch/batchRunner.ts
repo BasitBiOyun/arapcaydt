@@ -41,7 +41,7 @@ export interface BatchDeps<F> {
   now(): number;
 }
 
-/** Four Gemini models each expose 10 RPM in the current free tier; route keys distribute load across them. */
+/** Three Gemini TTS models are tried in strict quality order; spacing keeps batch generation gentle on model RPM limits. */
 export const VOICE_SPACING_MS = 1_700;
 
 /**
