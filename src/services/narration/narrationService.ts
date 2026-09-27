@@ -29,13 +29,21 @@ export interface GeneratedAlignmentResult {
 }
 
 async function requestAlignment(endpoint: string, projectId: string): Promise<{ ok: boolean; data: any; status: number }> {
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...await authHeaders() },
-    body: JSON.stringify({ projectId }),
-  });
-  const data = await res.json().catch(() => null);
-  return { ok: res.ok, data, status: res.status };
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...await authHeaders() },
+      body: JSON.stringify({ projectId }),
+    });
+    const data = await res.json().catch(() => null);
+    return { ok: res.ok, data, status: res.status };
+  } catch (error) {
+    return {
+      ok: false,
+      status: 0,
+      data: { error: error instanceof Error ? error.message : 'Zamanlama servisine ulaşılamadı.' },
+    };
+  }
 }
 
 class NarrationService {
