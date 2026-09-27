@@ -15,7 +15,7 @@ const AppContent: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#FAF9F5] flex items-center justify-center">
-        <div className="flex items-center gap-2 text-xs font-mono-code text-[#787670]">
+        <div className="flex items-center gap-2 text-xs text-[#787670]">
           <span className="w-2 h-2 rounded-full bg-[#8B1E2D] animate-ping"></span>
           <span>{APP_NAME} yükleniyor…</span>
         </div>

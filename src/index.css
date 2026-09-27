@@ -12,6 +12,11 @@
     --text-muted: #666560;
   }
 
+  /* Tailwind 4 draws a bare `border` in currentColor (black); the studio's default is its soft line colour. */
+  *, ::before, ::after, ::backdrop, ::file-selector-button {
+    border-color: #E5E4DC;
+  }
+
   body {
     background-color: var(--surface-bg);
     color: var(--text-main);

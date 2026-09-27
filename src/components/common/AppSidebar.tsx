@@ -1,18 +1,10 @@
 import React from 'react';
-import { 
-  SquaresFour, 
-  ListDashes, 
-  PlusCircle, 
-  Gear, 
-  SignOut,
-  BookOpenText,
-  IdentificationBadge,
-  Stack
-} from '@phosphor-icons/react';
+import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 import { BrandMark } from './BrandMark';
 import { APP_NAME } from '../../config/brand';
+import { PAGE_LABELS } from '../../config/pages';
 
 export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin';
 
@@ -30,126 +22,64 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   const { user, logout } = useAuth();
   const { projects } = useProjects();
 
-  const draftCount = projects.filter((p) => p.status === 'draft').length;
-  const approvedCount = projects.filter((p) => p.status === 'audio_approved' || p.status === 'video_ready').length;
+  const items: Array<{ page: AppPage; label: string; icon: React.ElementType; badge?: string }> = [
+    ...(user?.role === 'admin' ? [{ page: 'admin' as const, label: PAGE_LABELS.admin, icon: ShieldCheck }] : []),
+    { page: 'dashboard', label: PAGE_LABELS.dashboard, icon: SquaresFour },
+    { page: 'questions', label: PAGE_LABELS.questions, icon: ListDashes, badge: projects.length ? String(projects.length) : undefined },
+    { page: 'batch', label: PAGE_LABELS.batch, icon: Stack },
+  ];
+  const link = (item: { page: AppPage; label: string; icon: React.ElementType; badge?: string }) => {
+    const active = currentPage === item.page;
+    return (
+      <button
+        key={item.page}
+        onClick={() => onNavigate(item.page)}
+        aria-current={active ? 'page' : undefined}
+        className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
+          active ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold' : 'text-[#44423D] font-medium hover:bg-[#F2EFE9] hover:text-[#1C1917]'
+        }`}
+      >
+        <div className="flex items-center gap-2.5">
+          <item.icon size={18} weight={active ? 'fill' : 'regular'} />
+          <span>{item.label}</span>
+        </div>
+        {item.badge && <span className="text-xs tabular-nums text-[#787670]">{item.badge}</span>}
+      </button>
+    );
+  };
 
   return (
-    <aside className="studio-sidebar w-64 h-screen flex flex-col bg-[#FAF9F5] border-r border-[#E5E4DC] select-none shrink-0">
-      {/* Brand / Header */}
-      <div className="h-16 px-5 flex items-center gap-3 border-b border-[#E5E4DC]">
+    <aside className="studio-sidebar w-64 h-screen flex flex-col bg-[#FAF9F5] border-r select-none shrink-0">
+      <div className="h-16 px-5 flex items-center gap-3 border-b">
         <BrandMark size={32} />
         <div className="flex flex-col">
-          <span className="font-semibold text-sm tracking-tight text-[#1C1917] leading-tight">
-            {APP_NAME}
-          </span>
-          <span className="text-[11px] text-[#787670] font-mono-code leading-tight">
-            Öğretmen Soru-Video Paneli
-          </span>
+          <span className="font-bold text-sm tracking-tight text-[#1C1917] leading-tight">{APP_NAME}</span>
+          <span className="text-xs text-[#787670] leading-tight">{user?.role === 'admin' ? 'Yönetici paneli' : 'Öğretmen paneli'}</span>
         </div>
       </div>
 
-      {/* Primary Action Button */}
       <div className="p-4 pb-2">
         <button
           onClick={onNewQuestion}
-          className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded bg-[#8B1E2D] hover:bg-[#721824] text-white text-xs font-semibold tracking-wide transition-colors shadow-xs cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg bg-[#8B1E2D] hover:bg-[#721824] text-white text-sm font-semibold transition-colors shadow-xs"
         >
-          <PlusCircle size={17} weight="bold" />
-          <span>Yeni Soru Projesi</span>
+          <PlusCircle size={18} weight="bold" />
+          <span>Yeni soru</span>
         </button>
       </div>
 
-      {/* Navigation Links */}
       <nav aria-label="Ana menü" className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
-        {user?.role==='admin'&&<button onClick={()=>onNavigate('admin')} className={`w-full text-left px-3 py-2 rounded text-sm ${currentPage==='admin'?'bg-[#EFECE6] text-[#8B1E2D] font-semibold':''}`}>Yönetim Paneli</button>}
-        <button
-          onClick={() => onNavigate('dashboard')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${
-            currentPage === 'dashboard'
-              ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold'
-              : 'text-[#44423D] hover:bg-[#F2EFE9] hover:text-[#1C1917]'
-          }`}
-        >
-          <div className="flex items-center gap-2.5">
-            <SquaresFour size={18} weight={currentPage === 'dashboard' ? 'fill' : 'regular'} />
-            <span>Kontrol Paneli</span>
-          </div>
-          <span className="text-[11px] text-[#787670] font-mono-code">{projects.length}</span>
-        </button>
-
-        <button
-          onClick={() => onNavigate('questions')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${
-            currentPage === 'questions'
-              ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold'
-              : 'text-[#44423D] hover:bg-[#F2EFE9] hover:text-[#1C1917]'
-          }`}
-        >
-          <div className="flex items-center gap-2.5">
-            <ListDashes size={18} weight={currentPage === 'questions' ? 'bold' : 'regular'} />
-            <span>Soru Havuzu</span>
-          </div>
-          {approvedCount > 0 && (
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]">
-              {approvedCount} hazır
-            </span>
-          )}
-        </button>
-
-        <button
-          onClick={() => onNavigate('editor')}
-          className={`w-full flex items-center justify-between px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${
-            currentPage === 'editor'
-              ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold'
-              : 'text-[#44423D] hover:bg-[#F2EFE9] hover:text-[#1C1917]'
-          }`}
-        >
-          <div className="flex items-center gap-2.5">
-            <BookOpenText size={18} weight={currentPage === 'editor' ? 'fill' : 'regular'} />
-            <span>Soru & Video Editörü</span>
-          </div>
-          {draftCount > 0 && (
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-[#F2F2EC] text-[#605F5A]">
-              {draftCount} taslak
-            </span>
-          )}
-        </button>
-
-        <button
-          onClick={() => onNavigate('batch')}
-          className={`w-full flex items-center gap-2.5 px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${
-            currentPage === 'batch'
-              ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold'
-              : 'text-[#44423D] hover:bg-[#F2EFE9] hover:text-[#1C1917]'
-          }`}
-        >
-          <Stack size={18} weight={currentPage === 'batch' ? 'fill' : 'regular'} />
-          <span>Toplu Üretim</span>
-        </button>
-
+        {items.map(link)}
         <div className="pt-4 pb-1 px-3">
-          <div className="text-[10px] uppercase font-semibold text-[#8C8A82] tracking-wider">
-            Sistem
-          </div>
+          <div className="text-[11px] uppercase font-semibold text-[#8C8A82] tracking-wider">Sistem</div>
         </div>
-
-        <button
-          onClick={() => onNavigate('settings')}
-          className={`w-full flex items-center gap-2.5 px-3 py-2 rounded text-xs font-medium transition-colors cursor-pointer ${
-            currentPage === 'settings'
-              ? 'bg-[#EFECE6] text-[#8B1E2D] font-semibold'
-              : 'text-[#44423D] hover:bg-[#F2EFE9] hover:text-[#1C1917]'
-          }`}
-        >
-          <Gear size={18} weight={currentPage === 'settings' ? 'fill' : 'regular'} />
-          <span>Ayarlar & Entegrasyon</span>
-        </button>
+        {link({ page: 'settings', label: PAGE_LABELS.settings, icon: Gear })}
         <button className="mobile-signout" onClick={logout}><SignOut size={18}/>Çıkış</button>
       </nav>
 
       {/* Academic Teacher Profile Info Footer */}
-      <div className="p-3 border-t border-[#E5E4DC] bg-[#FAF9F5]">
-        <div className="p-2 rounded border border-[#E5E4DC] bg-white flex items-center justify-between">
+      <div className="p-3 border-t bg-[#FAF9F5]">
+        <div className="p-2 rounded-lg border bg-white flex items-center justify-between">
           <div className="flex items-center gap-2 overflow-hidden">
             <div className="w-7 h-7 rounded bg-[#F2ECEC] border border-[#DFC8CB] flex items-center justify-center text-[#8B1E2D] text-xs font-bold shrink-0">
               <IdentificationBadge size={16} />
@@ -159,7 +89,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 {user?.name || 'Öğretmen'}
               </div>
               <div className="text-[10px] text-[#787670] truncate leading-tight">
-                {user?.title || 'YDT Eğitmeni'}
+                {user?.title || 'Öğretmen'}
               </div>
             </div>
           </div>

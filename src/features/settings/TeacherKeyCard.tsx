@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Key, Trash, FloppyDisk, CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import { geminiKeyService, type TeacherKeyStatus } from '../../services/narration/geminiKeyService';
 
-const badge = (ok: boolean) => `font-mono-code font-bold px-2 py-0.5 rounded text-[11px] ${
+const badge = (ok: boolean) => `font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
   ok ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'}`;
 
 /** Settings card: the teacher pastes their own Google AI Studio key; it is verified, stored encrypted and never shown again. */
@@ -31,7 +31,7 @@ export const TeacherKeyCard: React.FC = () => {
   const connected = key?.status === 'active';
 
   return (
-    <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
+    <div className="p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
       <div className="flex items-center gap-2 border-b border-[#EFEFEA] pb-3">
         <div className="w-8 h-8 rounded bg-[#8B1E2D]/10 text-[#8B1E2D] flex items-center justify-center">
           <Key size={20} weight="bold" />
@@ -46,7 +46,7 @@ export const TeacherKeyCard: React.FC = () => {
         <div className="flex items-center justify-between">
           <span className="text-[#666560]">Durum:</span>
           <span className={badge(connected)}>
-            {!status ? '…' : connected ? `BAĞLI · ••••${key!.last4}` : key ? 'GEÇERSİZ · YENİLEYİN' : 'BAĞLI DEĞİL'}
+            {!status ? '…' : connected ? `Bağlı · ••••${key!.last4}` : key ? 'Geçersiz · yenileyin' : 'Bağlı değil'}
           </span>
         </div>
         {today && (

@@ -56,18 +56,16 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h2 className="text-base font-bold text-[#1C1917] tracking-tight">
-          Sistem Ayarları & Entegrasyon Yönetimi
-        </h2>
-        <p className="text-xs text-[#666560] mt-0.5">
-          Ses servisi, Google anahtarınız ve proje yedekleme.
-        </p>
-      </div>
+    <div className="studio-library !max-w-4xl space-y-6">
+      <header className="library-heading !mb-2">
+        <div>
+          <h2>Ayarlar</h2>
+          <p>Ses servisi, Google anahtarınız ve proje yedekleme.</p>
+        </div>
+      </header>
 
       {/* 1. Voice service card (Gemini primary, ElevenLabs fallback) */}
-      <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
+      <div className="p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
         <div className="flex items-center justify-between border-b border-[#EFEFEA] pb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded bg-[#8B1E2D]/10 text-[#8B1E2D] flex items-center justify-center">
@@ -91,15 +89,15 @@ export const SettingsPage: React.FC = () => {
         <div className="p-3.5 rounded bg-[#FAF9F5] border border-[#E5E4DC] text-xs space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[#666560]">Seslendirme:</span>
-            <span className={`font-mono-code font-bold px-2 py-0.5 rounded text-[11px] ${
+            <span className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
               status?.gemini?.configured ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
-            }`}>{status?.gemini?.configured ? 'HAZIR' : 'YAPILANDIRILMAMIŞ'}</span>
+            }`}>{status?.gemini?.configured ? 'Hazır' : 'Yapılandırılmamış'}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-[#666560]">Yedek ses:</span>
-            <span className={`font-mono-code font-bold px-2 py-0.5 rounded text-[11px] ${
+            <span className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
               status?.configured && status.valid !== false ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
-            }`}>{status?.configured && status.valid !== false ? 'HAZIR' : 'KULLANILAMIYOR'}</span>
+            }`}>{status?.configured && status.valid !== false ? 'Hazır' : 'Kullanılamıyor'}</span>
           </div>
           <p className="text-[#55544F] leading-relaxed text-[11px]">
             Ana ses servisi kullanılamazsa yedek ses otomatik devreye girer. Ayrıca bir ayar yapmanız gerekmez.
@@ -121,7 +119,7 @@ export const SettingsPage: React.FC = () => {
       <TeacherKeyCard />
 
       {/* Backup */}
-      <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-3 shadow-xs">
+      <div className="p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-3 shadow-xs">
         <div className="border-b border-[#EFEFEA] pb-2">
           <h3 className="text-sm font-semibold text-[#1C1917]">
             Yedekleme

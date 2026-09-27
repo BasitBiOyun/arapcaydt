@@ -150,12 +150,12 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
           <p className="text-xs text-[#666560]">
             {waitingForProject ? 'Birkaç saniye sürebilir.' : loadError
               ? loadError
-              : 'Soru kütüphanenizden bir soru seçin ya da yeni bir soru oluşturun.'}
+              : 'Sorularım listesinden bir soru seçin ya da yeni bir soru oluşturun.'}
           </p>
           {!waitingForProject && (
             <div className="flex flex-wrap justify-center gap-2">
               <button type="button" onClick={onBack} className="studio-secondary flex items-center gap-1.5">
-                <ArrowLeft size={16} /> Soru kütüphanesine dön
+                <ArrowLeft size={16} /> Sorularıma dön
               </button>
               {onNewQuestion && (
                 <button type="button" onClick={onNewQuestion} className="studio-primary flex items-center gap-1.5">

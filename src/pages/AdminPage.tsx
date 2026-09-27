@@ -261,7 +261,7 @@ export const AdminPage: React.FC = () => {
       {viewing && <ProjectViewer project={viewing} onClose={() => setViewing(null)} />}
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="text-2xl font-bold">Stüdyo yönetimi</h2>
+          <h2 className="text-2xl font-bold">Yönetim</h2>
           <p className="text-stone-500 text-sm mt-1">
             Üyelik erişimini yönetin, öğretmenlerin üretimlerini görüntüleyin. İçerikler için yönetici onayı gerekmez.
           </p>
@@ -622,7 +622,7 @@ export const AdminPage: React.FC = () => {
             {categoryEntries(analytics.categoryTotals).map(([id, count]) => (
               <div key={id} className="border rounded-lg px-3 py-2 flex items-center justify-between gap-3">
                 <span className="text-sm">{getCategoryLabel(id)}</span>
-                <strong className="font-mono-code">{count}</strong>
+                <strong className="tabular-nums">{count}</strong>
               </div>
             ))}
           </div>
