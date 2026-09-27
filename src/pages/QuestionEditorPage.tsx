@@ -229,24 +229,46 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         setAudioError('Ses üretildi ama kaydedilemedi. Ses dosyasını indirip Kaydet düğmesini tekrar deneyin.');
       } else if (result.provider === 'gemini') {
         try {
-          const words = await narrationService.alignGeneratedNarration(persisted.id);
-          if (words.length) {
+          const alignment = await narrationService.alignGeneratedNarration(persisted.id);
+          if (alignment.words.length) {
             await saveCurrentProject({
               narrationSource: persisted.narrationSource ? {
                 ...persisted.narrationSource,
-                words,
-                timingSource: 'gemini-transcribe',
+                words: alignment.words,
+                timingSource: alignment.timingSource,
               } : persisted.narrationSource,
               audioNarration: persisted.audioNarration ? {
                 ...persisted.audioNarration,
-                words,
-                wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+                words: alignment.words,
+                wordAlignments: alignment.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
               } : persisted.audioNarration,
             });
           }
-        } catch (alignError) {
-          console.warn('Gemini word timing unavailable:', alignError);
-          setAudioError('Ses Gemini ile oluşturuldu. Kelime zaman damgaları alınamadı; animasyon hazırlanırken yaklaşık zamanlama kullanılabilir.');
+        } catch (exactAlignError) {
+          console.warn('Exact server alignment unavailable; trying local Whisper:', exactAlignError);
+          try {
+            const audioUrl = persisted.narrationSource?.audioUrl || persisted.audioNarration?.audioUrl;
+            if (!audioUrl) throw new Error('Ses dosyası bağlantısı bulunamadı.');
+            const audioResponse = await fetch(audioUrl);
+            if (!audioResponse.ok) throw new Error(`Ses dosyası indirilemedi (HTTP ${audioResponse.status}).`);
+            const local = await localWhisperService.transcribeAudioLocally(await audioResponse.arrayBuffer());
+            if (!local.words.length) throw new Error('Whisper kelime zaman damgası döndürmedi.');
+            await saveCurrentProject({
+              narrationSource: persisted.narrationSource ? {
+                ...persisted.narrationSource,
+                words: local.words,
+                timingSource: 'whisper',
+              } : persisted.narrationSource,
+              audioNarration: persisted.audioNarration ? {
+                ...persisted.audioNarration,
+                words: local.words,
+                wordAlignments: local.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+              } : persisted.audioNarration,
+            });
+          } catch (localAlignError) {
+            console.warn('Local Whisper timing unavailable:', localAlignError);
+            setAudioError('Ses Gemini ile oluşturuldu ancak kesin kelime zaman damgaları alınamadı. Animasyon yaklaşık zamanlamayla hazırlanabilir.');
+          }
         }
       }
       setVideoGenerated(false);
