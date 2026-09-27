@@ -18,11 +18,20 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Voice status for the whole narration stack: Gemini TTS is primary (key presence only;
+  // no request is spent), ElevenLabs is the fallback whose remaining quota is reported.
+  const geminiConfigured = Boolean(normalizeApiKey(process.env.GEMINI_API_KEY));
   const apiKey = normalizeApiKey(process.env.ELEVENLABS_API_KEY);
   const configured = Boolean(apiKey && apiKey !== 'MY_ELEVENLABS_API_KEY');
+  const json = (body: Record<string, unknown>) => res.status(200).json({
+    ...body,
+    gemini: { configured: geminiConfigured },
+    // Narration works when either engine is available.
+    voiceReady: geminiConfigured || (configured && body.valid !== false),
+  });
 
   if (!configured) {
-    return res.status(200).json({
+    return json({
       configured: false,
       valid: false,
       mode: 'unconfigured',
@@ -48,7 +57,7 @@ export default async function handler(req: any, res: any) {
         detail = raw.slice(0, 200);
       }
 
-      return res.status(200).json({
+      return json({
         configured: true,
         valid: false,
         mode: 'live',
@@ -66,7 +75,7 @@ export default async function handler(req: any, res: any) {
     const characterLimit = Number(subscription?.character_limit || 0);
     const characterCount = Number(subscription?.character_count || 0);
 
-    return res.status(200).json({
+    return json({
       configured: true,
       valid: true,
       mode: 'live',
@@ -78,7 +87,7 @@ export default async function handler(req: any, res: any) {
     });
   } catch (error: any) {
     console.error('[ElevenLabs status network error]', error);
-    return res.status(200).json({
+    return json({
       configured: true,
       valid: false,
       mode: 'live',

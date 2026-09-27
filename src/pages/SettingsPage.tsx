@@ -34,7 +34,7 @@ export const SettingsPage: React.FC = () => {
     try {
       const s = await elevenlabsService.checkStatus();
       setStatus(s);
-      setTestResult(s.message);
+      setTestResult(s.voiceReady ?? s.configured ? 'Ses servisi hazır.' : 'Ses servisi şu anda kullanılamıyor.');
     } catch (e: any) {
       setTestResult('Bağlantı kontrolü sırasında hata: ' + e.message);
     } finally {
@@ -73,11 +73,11 @@ export const SettingsPage: React.FC = () => {
           Sistem Ayarları & Entegrasyon Yönetimi
         </h2>
         <p className="text-xs text-[#666560] mt-0.5">
-          ElevenLabs sunucu API durumu, video varsayılanları ve proje veri tabanı yönetimi.
+          Ses servisi durumu, video varsayılanları ve proje yedekleme.
         </p>
       </div>
 
-      {/* 1. ElevenLabs API Integration Card */}
+      {/* 1. Voice service card (Gemini primary, ElevenLabs fallback) */}
       <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
         <div className="flex items-center justify-between border-b border-[#EFEFEA] pb-3">
           <div className="flex items-center gap-2">
@@ -85,12 +85,8 @@ export const SettingsPage: React.FC = () => {
               <Waveform size={20} weight="bold" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-[#1C1917]">
-                ElevenLabs Sunucu Entegrasyonu
-              </h3>
-              <p className="text-[11px] text-[#787670]">
-                Çevre Değişkeni: <code className="font-mono-code">ELEVENLABS_API_KEY</code>
-              </p>
+              <h3 className="text-sm font-semibold text-[#1C1917]">Ses servisi</h3>
+              <p className="text-[11px] text-[#787670]">Seslendirme ve kelime zamanları otomatik hazırlanır</p>
             </div>
           </div>
 
@@ -105,28 +101,28 @@ export const SettingsPage: React.FC = () => {
 
         <div className="p-3.5 rounded bg-[#FAF9F5] border border-[#E5E4DC] text-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-[#666560]">Durum:</span>
-            <span
-              className={`font-mono-code font-bold px-2 py-0.5 rounded text-[11px] ${
-                status?.configured
-                  ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]'
-                  : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
-              }`}
-            >
-              {status?.configured ? 'CANLI API AKTİF' : 'DEMO / MOCK MODU AKTİF'}
-            </span>
+            <span className="text-[#666560]">Seslendirme:</span>
+            <span className={`font-mono-code font-bold px-2 py-0.5 rounded text-[11px] ${
+              status?.gemini?.configured ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
+            }`}>{status?.gemini?.configured ? 'HAZIR' : 'YAPILANDIRILMAMIŞ'}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-[#666560]">Yedek ses:</span>
+            <span className={`font-mono-code font-bold px-2 py-0.5 rounded text-[11px] ${
+              status?.configured && status.valid !== false ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
+            }`}>{status?.configured && status.valid !== false ? 'HAZIR' : 'KULLANILAMIYOR'}</span>
           </div>
           <p className="text-[#55544F] leading-relaxed text-[11px]">
-            {status?.message || 'ElevenLabs ses motoru hazır durumda.'}
+            Ana ses servisi kullanılamazsa yedek ses otomatik devreye girer. Ayrıca bir ayar yapmanız gerekmez.
           </p>
         </div>
 
         <div className="p-3 rounded bg-[#F8EEEE] border border-[#DFC8CB] text-xs text-[#8B1E2D] flex items-start gap-2">
           <ShieldCheck size={18} weight="fill" className="shrink-0 mt-0.5" />
           <div className="space-y-0.5">
-            <span className="font-semibold">Güvenlik İlkesi (Zero Client-Side Exposure)</span>
+            <span className="font-semibold">Güvenlik</span>
             <p className="text-[11px] text-[#6E1623] leading-relaxed">
-              API anahtarları hiçbir zaman tarayıcı kodunda açığa çıkmaz. Tüm istekler arka uçta çalışan <code>server.ts</code> Express servisi üzerinden yönlendirilir.
+              Ses servislerinin anahtarları yalnızca sunucuda tutulur; tarayıcıda hiçbir zaman görünmez.
             </p>
           </div>
         </div>

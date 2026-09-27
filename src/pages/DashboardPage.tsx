@@ -56,7 +56,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             Arapça YDT Soru & Video Çalışma Alanı
           </h2>
           <p className="text-xs text-[#666560] mt-0.5">
-            ÖSYM Arapça Yabancı Dil Testi soru incelemeleri ve ElevenLabs seslendirme projelerinizi yönetin.
+            ÖSYM Arapça Yabancı Dil Testi soru incelemeleri ve seslendirmeli video projelerinizi yönetin.
           </p>
         </div>
 

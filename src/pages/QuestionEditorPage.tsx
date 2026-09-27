@@ -14,12 +14,11 @@ import { prepareUploadedNarration } from '../services/narration/uploadedNarratio
 import { readDataUrl, readAudioDuration } from '../services/narration/browserMedia';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { narrationService } from '../services/narration/narrationService';
-import { STANDARD_VOICE_CONFIG, VoiceSettingsConfig, readSavedVoiceSettings, VOICE_SETTINGS_STORAGE_KEY } from '../config/voice';
+import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { ExportStep } from '../features/question-editor/steps/ExportStep';
 import { AudioStep } from '../features/question-editor/steps/AudioStep';
-import { VoiceSettingsPanel } from '../features/question-editor/steps/VoiceSettingsPanel';
 import { NarrationCheck } from '../features/question-editor/steps/NarrationCheck';
 import { SolutionStep } from '../features/question-editor/steps/SolutionStep';
 import { EditorStage } from '../features/question-editor/steps/EditorStage';
@@ -49,20 +48,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
   const [isTranscribingMp3, setIsTranscribingMp3] = useState(false);
   const [transcribeProgress, setTranscribeProgress] = useState<{ progress: number; message: string } | null>(null);
   const [audioError, setAudioError] = useState<string | null>(null);
-  const [voiceSettings, setVoiceSettings] = useState<VoiceSettingsConfig>(readSavedVoiceSettings);
-
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(VOICE_SETTINGS_STORAGE_KEY, JSON.stringify(voiceSettings));
-    } catch {
-      // Local preference persistence is optional; generation still works without it.
-    }
-  }, [voiceSettings]);
-
-  function setVoiceSetting<K extends keyof VoiceSettingsConfig>(key: K, value: VoiceSettingsConfig[K]) {
-    setVoiceSettings(previous => ({ ...previous, [key]: value }));
-  }
-  const resetVoiceSettings = () => setVoiceSettings({ ...STANDARD_VOICE_CONFIG.voiceSettings });
 
   // Audio preview playback in Step 3
   const [audioPlayTime, setAudioPlayTime] = useState(0);
@@ -213,7 +198,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId,
         outputFormat: STANDARD_VOICE_CONFIG.outputFormat,
-        voiceSettings,
       });
 
       const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
@@ -527,8 +511,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
           <ImageStep step={step} hasImage={hasImage} currentProject={currentProject} replaceImageInputRef={replaceImageInputRef} handleImageFile={handleImageFile} handleDeleteImage={handleDeleteImage} />
           <SolutionStep step={step} currentProject={currentProject} updateCurrentProject={updateCurrentProject} setVideoGenerated={setVideoGenerated} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} />
           <NarrationCheck step={step} check={check} currentProject={currentProject} />
-          <VoiceSettingsPanel step={step} voiceSettings={voiceSettings} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} setVoiceSetting={setVoiceSetting} resetVoiceSettings={resetVoiceSettings} />
-          {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy} voiceSettings={voiceSettings}/>}
+          {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy}/>}
           <AudioStep step={step} hasAudio={hasAudio} hasSolution={hasSolution} isUploadedAudio={isUploadedAudio} isAudioApproved={isAudioApproved} currentProject={currentProject} isAudioPlaying={isAudioPlaying} toggleStageAudio={toggleStageAudio} formatTime={formatTime} audioPlayTime={audioPlayTime} setAudioPlayTime={setAudioPlayTime} activeAudioDuration={activeAudioDuration} activeAudioUrl={activeAudioUrl} stageAudioRef={stageAudioRef} uploadMp3InputRef={uploadMp3InputRef} handleDownloadNarrationMp3={handleDownloadNarrationMp3} handleUploadMp3File={handleUploadMp3File} handleDeleteAudio={handleDeleteAudio} handleGenerateAudio={handleGenerateAudio} handleApproveVoice={handleApproveVoice} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} isTranscribingMp3={isTranscribingMp3} transcribeProgress={transcribeProgress} audioError={audioError} />
           {step===3&&<section className="space-y-3"><h2>İşaretleri kontrol edin</h2><p>Önizlemeyi dinleyin. Gerekirse görsel üzerindeki alanları veya işaretlerin zamanını düzeltin.</p><div className="flex flex-wrap gap-2"><button className="studio-secondary" aria-pressed={editRegions} onClick={()=>setEditRegions(true)}>Görseli düzenle</button><button className="studio-secondary" disabled={!videoGenerated} aria-pressed={!editRegions} onClick={()=>{setEditRegions(false);setPreviewMode('video');}}>Zamanlamayı düzenle</button></div>{!videoGenerated&&<p>Önce aşağıdaki düğmeyle mevcut sesinize uygun işaretleri hazırlayın.</p>}</section>}
           <ExportStep step={step} videoGenerated={videoGenerated} currentProject={currentProject} handleReadinessAction={handleReadinessAction} exportError={exportError} isExportingMp4={isExportingMp4} exportAbortRef={exportAbortRef} handleDownloadMp4={handleDownloadMp4} exportPercent={exportPercent} setIsVideoModalOpen={setIsVideoModalOpen} handleAttemptCreateVideo={handleAttemptCreateVideo} isAudioApproved={isAudioApproved} videoButtonWarning={videoButtonWarning} />

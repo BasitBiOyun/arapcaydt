@@ -270,12 +270,12 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
           })}
         </div>
 
-        {/* 2. Track A: ElevenLabs Narration Audio Track */}
+        {/* 2. Track A: narration audio track */}
         <div className="pt-2">
           <div className="flex items-center justify-between text-[10px] font-medium text-[#787670] pb-1">
             <div className="flex items-center gap-1">
               <Waveform size={13} className="text-[#8B1E2D]" />
-              <span>ElevenLabs Seslendirme Dalgası & Kelime Hizalaması:</span>
+              <span>Seslendirme ve kelime zamanları:</span>
             </div>
             {audioNarration && (
               <span className="font-mono-code text-[10px] text-[#8B1E2D] font-bold">

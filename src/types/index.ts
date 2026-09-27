@@ -220,8 +220,14 @@ export interface ElevenLabsVoice {
   recommended?: boolean;
 }
 
+/** Narration service status (Gemini TTS primary, ElevenLabs fallback). */
 export interface ElevenLabsStatus {
   configured: boolean;
-  mode: 'live' | 'mock';
+  mode: 'live' | 'mock' | 'unconfigured';
   message: string;
+  valid?: boolean;
+  remainingCharacters?: number | null;
+  tier?: string | null;
+  gemini?: { configured: boolean };
+  voiceReady?: boolean;
 }

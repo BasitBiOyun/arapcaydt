@@ -6,7 +6,6 @@ import {
   Export, 
   Check, 
   Info, 
-  Sparkle,
   WarningCircle 
 } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
@@ -25,13 +24,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 }) => {
   const { user } = useAuth();
   const { currentProject, saveCurrentProject } = useProjects();
-  const [elevenLabsStatus, setElevenLabsStatus] = useState<ElevenLabsStatus | null>(null);
+  const [voiceStatus, setVoiceStatus] = useState<ElevenLabsStatus | null>(null);
+  const voiceReady = Boolean(voiceStatus?.voiceReady ?? voiceStatus?.configured);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
 
   useEffect(() => {
-    elevenlabsService.checkStatus().then(setElevenLabsStatus);
+    elevenlabsService.checkStatus().then(setVoiceStatus);
   }, []);
 
   const handleSave = async () => {
@@ -73,7 +73,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       case 'settings':
         return {
           title: 'Sistem Ayarları & Entegrasyonlar',
-          subtitle: 'ElevenLabs API, Ses Modelleri ve Video Çıktı Ayarları',
+          subtitle: 'Ses servisi ve video çıktı ayarları',
         };
       default:
         return { title: 'Arapça YDT Stüdyosu', subtitle: '' };
@@ -104,19 +104,19 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
         {/* Right Action & Status Area */}
         <div className="flex items-center gap-3">
-          {/* ElevenLabs Status Pill */}
+          {/* Voice service status pill (Gemini primary, ElevenLabs fallback) */}
           <button
             onClick={() => setShowStatusModal(true)}
             className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium border transition-colors cursor-pointer ${
-              elevenLabsStatus?.configured
+              voiceReady
                 ? 'bg-[#EFF7F0] border-[#C5DAC8] text-[#1E562A] hover:bg-[#E5F2E6]'
                 : 'bg-[#FAF5E6] border-[#E5D7B0] text-[#78540E] hover:bg-[#F5EDD5]'
             }`}
-            title="ElevenLabs Entegrasyon Durumu"
+            title="Ses servisi durumu"
           >
-            <Waveform size={14} weight="bold" className={elevenLabsStatus?.configured ? 'text-[#2E7D32]' : 'text-[#B48419]'} />
+            <Waveform size={14} weight="bold" className={voiceReady ? 'text-[#2E7D32]' : 'text-[#B48419]'} />
             <span className="font-mono-code text-[11px]">
-              {elevenLabsStatus?.configured ? 'ElevenLabs: Bağlı' : 'ElevenLabs: Demo / Mock Modu'}
+              {voiceStatus === null ? 'Ses servisi…' : voiceReady ? 'Ses servisi: Hazır' : 'Ses servisi: Yapılandırılmamış'}
             </span>
             <Info size={12} className="opacity-70 ml-0.5" />
           </button>
@@ -146,7 +146,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
       </header>
 
-      {/* ElevenLabs Status Information Modal */}
+      {/* Voice service information */}
       {showStatusModal && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded border border-[#D5D4CC] shadow-lg max-w-md w-full p-5 space-y-4">
@@ -156,39 +156,24 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                   <Waveform size={20} weight="bold" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm text-[#1C1917]">
-                    ElevenLabs Ses Sentezi Durumu
-                  </h3>
-                  <p className="text-xs text-[#787670]">
-                    Sunucu Tarafı API Entegrasyon Yapısı
-                  </p>
+                  <h3 className="font-semibold text-sm text-[#1C1917]">Ses servisi</h3>
+                  <p className="text-xs text-[#787670]">Seslendirme ve kelime zamanları otomatik hazırlanır</p>
                 </div>
               </div>
             </div>
 
             <div className="p-3.5 rounded bg-[#FAF9F5] border border-[#E5E4DC] text-xs space-y-2">
               <div className="flex justify-between items-center pb-2 border-b border-[#E5E4DC]">
-                <span className="text-[#666560]">Çalışma Modu:</span>
-                <span className="font-mono-code font-bold text-[#1C1917]">
-                  {elevenLabsStatus?.configured ? 'CANLI API (Live Server)' : 'YÜKSEK DOĞRULUKLU MOCK / DEMO MODU'}
-                </span>
+                <span className="text-[#666560]">Seslendirme:</span>
+                <span className="font-semibold text-[#1C1917]">{voiceStatus?.gemini?.configured ? 'Hazır (Achernar sesi)' : 'Yapılandırılmamış'}</span>
               </div>
               <div className="flex justify-between items-center pb-2 border-b border-[#E5E4DC]">
-                <span className="text-[#666560]">Çevre Değişkeni:</span>
-                <span className="font-mono-code text-[#44423D]">ELEVENLABS_API_KEY</span>
+                <span className="text-[#666560]">Yedek ses:</span>
+                <span className="font-semibold text-[#1C1917]">{voiceStatus?.configured && voiceStatus.valid !== false ? 'Hazır' : 'Kullanılamıyor'}</span>
               </div>
               <p className="text-[#55544F] leading-relaxed pt-1">
-                {elevenLabsStatus?.configured
-                  ? 'Sunucuda güvenli şekilde yapılandırılmış ElevenLabs anahtarı bulundu. Arapça YDT seslendirmeleri gerçek zamanlı olarak ElevenLabs Multilingual v2 üzerinden kelime hizalama (word-level timestamps) ile üretilir.'
-                  : 'Sistem şu anda aktif Demo/Mock modundadır. Öğretmenler API anahtarı girmeden de seslendirme üretebilir, çalabilir, dalga formunu inceleyebilir ve soru üzerindeki zaman çizelgesi hizalamasını eksiksiz test edebilir.'}
+                Çözüm metninizi yazıp Seslendirme Oluştur'a basmanız yeterli. Ana ses servisi kullanılamazsa yedek otomatik devreye girer; animasyon için kelime zamanları da otomatik alınır.
               </p>
-            </div>
-
-            <div className="text-[11px] text-[#6E6D68] bg-[#F4F3ED] p-2.5 rounded border border-[#E2E1D9] flex items-start gap-2">
-              <Sparkle size={16} className="text-[#8B1E2D] shrink-0 mt-0.5" />
-              <span>
-                API anahtarı istemci tarayıcısında asla görünmez; yalnızca Node.js sunucu katmanında <code>/api/elevenlabs/generate</code> rotası üzerinden yönetilir.
-              </span>
             </div>
 
             <div className="flex justify-end pt-2">

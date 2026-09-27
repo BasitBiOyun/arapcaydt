@@ -18,7 +18,8 @@
 ## Yayın kontrolü ve yüklenen MP3
 
 - İşaretler ve İndir adımlarında **Yayın kontrolü** kartı görünür: bulunan şıklar, doğru cevaba tik, metin–cevap uyumu, zamanlama kalitesi, görselde bulunamayan Arapça kelimeler ve animasyon planının güncelliği. Kırmızı madde yayından önce düzeltilmelidir; sarı madde kontrol önerisidir. Her maddenin yanındaki düğme ilgili düzenleyiciyi açar.
-- ElevenLabs ile üretilen seste kelime zamanları doğrudan ElevenLabs'ten gelir.
+- Seslendirme: ana ses motoru Gemini TTS'dir (ücretsiz modeller arasında otomatik geçiş, Achernar sesi); Gemini kullanılamazsa ElevenLabs otomatik yedek olarak devreye girer. Öğretmen yalnız çözüm metnini yazıp **Seslendirme Oluştur**'a basar; ses ayarı yoktur.
+- Üretilen seste kelime zamanları sırasıyla Gemini Transcribe → ElevenLabs Forced Alignment → yerel Whisper ile alınır; hiçbiri olmazsa yaklaşık zamanlama kullanılır. ElevenLabs yedeğiyle üretilen seste zamanlar doğrudan ElevenLabs'ten gelir. Hangi motorun/modelin ve zaman kaynağının kullanıldığı öğretmene gösterilmez; yönetim panelinde izlenir.
 - Öğretmenin kendi MP3'ü yüklendiğinde yazılı çözüm metni sese sunucuda hizalanır (ElevenLabs forced alignment, `api/elevenlabs/align.ts`). Bu istek ses kullanım sınırına sayılır; yönetici panelinde "Ses hizalama" olarak görünür ve üretilen ses sayısına eklenmez. 3 MB'den büyük dosyalar, hizalama hatası veya boş metin durumunda tarayıcıdaki Whisper ile tahmin edilir ve öğretmene not gösterilir.
 
 ## Toplu üretim
@@ -30,3 +31,10 @@ Kenar menüdeki **Toplu Üretim** sayfası bir soru setini tek seferde hazırlar
 - **MP3 (isteğe bağlı):** Aynı adlandırmayla eşleşir ve metne hizalanır. MP3'ü olmayan sorular yalnız kutu işaretliyse ElevenLabs ile seslendirilir; başlamadan önce toplam karakter gösterilip onay istenir. İstekler arasında sunucunun 10 saniye kuralına uyulur.
 - **Sıra:** Her soru için proje oluşturma → ses → işaretler → (seçiliyse) MP4 indirme. Her adımdan sonra proje kaydedilir; hata yalnız o soruyu etkiler. Görseli veya metni eksik sorular atlanır. **Durdur** mevcut adımı bitirir, kalanları başlatmaz.
 - **Sonuç:** Her satırda yayın kontrolü sonucu (yayına hazır / kontrol önerilir / düzeltme gerekli) ve projeyi editörde açan düğme bulunur.
+
+## Yönetim paneli: ses ve kalite
+
+- **Ses ve zamanlama:** projelerin şu anki ses kaydına göre Gemini / ElevenLabs yedeği / yüklenen MP3 sayıları, Gemini hatası sonrası yedeğe düşen projeler, kullanılan Gemini modelleri, kelime zamanı kaynağı ve ElevenLabs yedek kotası (kalan karakter).
+- **Üretim hunisi ve kalite:** proje → sesli → işaretleri hazır → yayına hazır → indirilen MP4; yayın kontrolü sonuçları (hazır / kontrol önerilir / düzeltme gerekli). Kalite, editördeki yayın kontrolünün kayıtlı plan üzerindeki karşılığıdır.
+- **Dikkat gerektiren projeler:** Gemini'nin kullanılamadığı, kelime zamanı alınamayan veya düzeltme gereken son projeler; başlığa tıklayınca salt okunur önizleme açılır.
+- Üye tablosundaki ElevenLabs sütunları yalnız yedek ses isteklerini sayar (Gemini istekleri veritabanına işlem kaydı yazmaz). İstatistikler projelerin yalnız gerekli alanlarını okur; ses kelime listesi ve altyazılar indirilmez. Veritabanı değişikliği gerekmez.

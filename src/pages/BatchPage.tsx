@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Stack, Play, Stop, ArrowRight } from '@phosphor-icons/react';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../config/categories';
-import { STANDARD_VOICE_CONFIG, readSavedVoiceSettings } from '../config/voice';
+import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { buildBatchPlan } from '../features/batch/batchPlan';
 import { runBatch, type BatchDeps, type BatchRowState } from '../features/batch/batchRunner';
 import { projectRepository } from '../features/projects/projectRepository';
 import { useProjects } from '../features/projects/ProjectContext';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { narrationService } from '../services/narration/narrationService';
+import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { readAudioDuration, readDataUrl } from '../services/narration/browserMedia';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { localOcrService } from '../services/ocr/localOcrService';
@@ -60,18 +61,17 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
 
   const start = async () => {
     if (!runnable.length || running) return;
-    if (voiceChars > 0 && !window.confirm(`${runnable.filter(i => !i.audio).length} soru önce Gemini ücretsiz TTS havuzuyla seslendirilecek. Google modelleri kullanılamazsa ElevenLabs yedeği otomatik devreye girebilir. Devam edilsin mi?`)) return;
+    if (voiceChars > 0 && !window.confirm(`${runnable.filter(i => !i.audio).length} soru otomatik seslendirilecek. Devam edilsin mi?`)) return;
     setError('');
     setRunning(true);
     abort.current = new AbortController();
     setRows(Object.fromEntries(plan.items.map(i => [i.number, { stage: 'waiting' as const }])));
-    const voiceSettings = readSavedVoiceSettings();
     const deps: BatchDeps<File> = {
       readDataUrl,
       createProject: p => projectRepository.create(p),
       saveProject: p => projectRepository.save(p),
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
-        modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat, voiceSettings }),
+        modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat }),
       alignGeneratedVoice: p => narrationService.alignGeneratedNarration(p.id),
       alignGeneratedVoiceLocal: async p => {
         const audioUrl = p.narrationSource?.audioUrl || p.audioNarration?.audioUrl;
@@ -136,7 +136,7 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1" checked={generateVoice} disabled={running} onChange={e => setGenerateVoice(e.target.checked)} />
           <span>MP3'ü olmayan soruları otomatik seslendir{generateVoice && voiceChars > 0 && <> · <strong>{runnable.filter(i => !i.audio).length} soru</strong></>}
-            <span className="block text-xs text-[#787670]">Önce Gemini ücretsiz TTS modelleri ve ortak Achernar sesi kullanılır. Kotalar kullanılamazsa ElevenLabs yedeği devreye girer.</span></span>
+            <span className="block text-xs text-[#787670]">Kapalıysa bu sorular oluşturulur ve ses için editörde bekler.</span></span>
         </label>
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1" checked={exportVideo} disabled={running} onChange={e => setExportVideo(e.target.checked)} />
@@ -166,7 +166,7 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
           <td className="p-3">{item.image?.name || <span className="text-red-700">yok</span>}</td>
           <td className="p-3 max-w-xs"><span dir="auto" className="line-clamp-2 text-[#55544F]">{item.solution?.replace(/\s+/g, ' ').slice(0, 110) || <span className="text-red-700">yok</span>}</span></td>
           <td className="p-3">{item.answer || '—'}</td>
-          <td className="p-3">{item.audio?.name || (generateVoice ? 'Gemini → ElevenLabs' : 'Sonra')}</td>
+          <td className="p-3">{item.audio?.name || (generateVoice ? 'Otomatik' : 'Sonra')}</td>
           <td className="p-3 min-w-48">
             {row ? <>
               <strong className={row.stage === 'failed' ? 'text-red-700' : ''}>{stageLabels[row.stage]}{row.stage === 'video' && row.percent ? ` %${row.percent}` : ''}</strong>

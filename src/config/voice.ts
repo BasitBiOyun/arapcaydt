@@ -58,17 +58,3 @@ export const DEFAULT_VOICE_CONFIG: VoiceConfig = {
 
 /** Standard voice configuration */
 export const STANDARD_VOICE_CONFIG = DEFAULT_VOICE_CONFIG;
-
-export const VOICE_SETTINGS_STORAGE_KEY = 'arapcaydt.voiceSettings.v1';
-
-/** Teacher's saved voice settings (editor sliders), falling back to the standard voice. */
-export function readSavedVoiceSettings(): VoiceSettingsConfig {
-  const defaults = { ...STANDARD_VOICE_CONFIG.voiceSettings };
-  if (typeof window === 'undefined') return defaults;
-  try {
-    const saved = window.localStorage.getItem(VOICE_SETTINGS_STORAGE_KEY);
-    return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
-  } catch {
-    return defaults;
-  }
-}

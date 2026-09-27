@@ -45,9 +45,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               <span className="text-xs font-bold text-[#1C1917] truncate">
                 {isUploadedAudio
                   ? `Yüklenen Ses: ${currentProject.narrationSource?.fileName || 'seslendirme.mp3'}`
-                  : currentProject.narrationSource?.type === 'gemini'
-                    ? `Gemini · ${currentProject.narrationSource.modelId || 'TTS'} · ${currentProject.narrationSource.voiceName || 'Achernar'}`
-                    : `ElevenLabs · ${currentProject.narrationSource?.voiceName || 'Eğitmen Sesi'}`}
+                  : 'Eğitmen Sesi'}
               </span>
             </div>
 
@@ -169,21 +167,6 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </button>
             )}
           </div>
-          {currentProject.narrationSource?.type === 'gemini' && (
-            <p className="text-[10px] text-[#787670]">
-              Zamanlama: {{
-                'gemini-transcribe': 'Gemini 3.5 Transcribe kelime zaman damgaları',
-                'forced-alignment': 'ElevenLabs Forced Alignment kelime zaman damgaları',
-                'whisper': 'Yerel Whisper kelime zaman damgaları',
-                'none': 'kesin kelime zaman damgası yok',
-              }[currentProject.narrationSource.timingSource || 'none']}
-            </p>
-          )}
-          {currentProject.narrationSource?.type === 'elevenlabs' && currentProject.narrationSource.fallbackReason && (
-            <p className="text-[10px] text-[#B45309]">
-              Gemini denendi ancak yedeğe geçildi: {currentProject.narrationSource.fallbackReason}
-            </p>
-          )}
         </div>
       ) : (
         /* Two clean choices: Seslendirme Oluştur or MP3 Yükle */
