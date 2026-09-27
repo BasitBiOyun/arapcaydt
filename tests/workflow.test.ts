@@ -47,3 +47,34 @@ test('keyboard navigation jumps to the next and previous cue from the playhead',
   assert.ok(isTypingTarget({ tagName: 'TEXTAREA' } as any));
   assert.ok(!isTypingTarget({ tagName: 'CANVAS' } as any));
 });
+
+test('simple timing list: nudging keeps ✗/✓ marks to the end and other cues their length', async () => {
+  const { nudgeAction } = await import('../src/features/question-editor/workflow');
+  const mark = { id: 'm', type: 'reject' as const, targetRegionId: 'option-c', start: 10, duration: 20 };
+  const earlier = nudgeAction(mark, -0.3, 30);
+  assert.equal(earlier.start, 9.7);
+  assert.ok(Math.abs(earlier.start + earlier.duration - 30) < 1e-9, 'still visible until the end');
+  const later = nudgeAction(mark, 0.3, 30);
+  assert.ok(Math.abs(later.start + later.duration - 30) < 1e-9);
+  const underline = { id: 'u', type: 'underline' as const, targetRegionId: 'arabic-1', start: 4, duration: 1.2 };
+  assert.deepEqual([nudgeAction(underline, 0.3, 30).start, nudgeAction(underline, 0.3, 30).duration], [4.3, 1.2]);
+  assert.equal(nudgeAction(underline, -9, 30).start, 0, 'never before the start');
+  assert.ok(nudgeAction(underline, 99, 30).start <= 29.9, 'never past the end');
+  assert.equal(nudgeAction(mark, 0.3, 30).startTime, 10.3);
+});
+
+test('simple timing list shows the marks a teacher hears, in order, with plain titles', async () => {
+  const { listedCues, cueTitle } = await import('../src/features/question-editor/SimpleTimingList');
+  const actions = [
+    { id: '3', type: 'correct' as const, targetRegionId: 'option-d', start: 20, duration: 5, label: 'correct: doğru cevap D' },
+    { id: '1', type: 'focus' as const, targetRegionId: 'option-a', start: 2, duration: 3 },
+    { id: 'x', type: 'dim-others' as const, targetRegionId: 'option-a', start: 2, duration: 3 },
+    { id: '2', type: 'reject' as const, targetRegionId: 'option-a', start: 5, duration: 20 },
+    { id: '4', type: 'underline' as const, targetRegionId: 'ar-1', start: 1, duration: 1 },
+  ];
+  const regions = [{ id: 'ar-1', label: 'Arapça', type: 'custom' as const, content: 'ذَهَبَ الطَّالِبُ', x: 0, y: 0, width: .1, height: .1 }];
+  const cues = listedCues(actions);
+  assert.deepEqual(cues.map(c => c.id), ['4', '1', '2', '3']);
+  assert.deepEqual(cues.map(c => cueTitle(c, regions as any)),
+    ['Altı çizilir: ذَهَبَ الطَّالِبُ', 'Odak: A şıkkı', 'A şıkkı elenir', 'D şıkkı: doğru cevap']);
+});

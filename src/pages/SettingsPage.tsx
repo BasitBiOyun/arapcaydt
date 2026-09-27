@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Gear, 
   Waveform, 
-  Desktop, 
-  DeviceMobile, 
-  FloppyDisk, 
   ArrowCounterClockwise, 
   Sparkle, 
   ShieldCheck, 
@@ -22,9 +19,6 @@ export const SettingsPage: React.FC = () => {
   const [status, setStatus] = useState<ElevenLabsStatus | null>(null);
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<string | null>(null);
-  const [teacherBrand, setTeacherBrand] = useState('Arapça YDT Akademi');
-  const [defaultAspect, setDefaultAspect] = useState<'16:9' | '9:16'>('16:9');
-  const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
     elevenlabsService.checkStatus().then(setStatus);
@@ -42,15 +36,6 @@ export const SettingsPage: React.FC = () => {
     } finally {
       setIsTesting(false);
     }
-  };
-
-  const handleSavePreferences = () => {
-    localStorage.setItem(
-      'arabic_ydt_teacher_preferences',
-      JSON.stringify({ teacherBrand, defaultAspect })
-    );
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 2000);
   };
 
   const handleExportBackup = async () => {
@@ -77,7 +62,7 @@ export const SettingsPage: React.FC = () => {
           Sistem Ayarları & Entegrasyon Yönetimi
         </h2>
         <p className="text-xs text-[#666560] mt-0.5">
-          Ses servisi durumu, video varsayılanları ve proje yedekleme.
+          Ses servisi, Google anahtarınız ve proje yedekleme.
         </p>
       </div>
 
@@ -135,85 +120,14 @@ export const SettingsPage: React.FC = () => {
       {/* Teacher's own Google AI Studio key (used before the shared capacity) */}
       <TeacherKeyCard />
 
-      {/* 2. Video Defaults Card */}
-      <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
-        <div className="border-b border-[#EFEFEA] pb-3">
-          <h3 className="text-sm font-semibold text-[#1C1917]">
-            Video Prodüksiyon Varsayılanları
-          </h3>
-          <p className="text-[11px] text-[#787670]">
-            Yeni oluşturulan sorularda uygulanacak video ve kanal ayarları
-          </p>
-        </div>
-
-        <div className="space-y-3 text-xs">
-          <div className="space-y-1">
-            <label className="font-medium text-[#33322E]">
-              Kanal / Öğretmen Filigranı (Watermark):
-            </label>
-            <input
-              type="text"
-              value={teacherBrand}
-              onChange={(e) => setTeacherBrand(e.target.value)}
-              className="w-full px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white text-xs outline-none"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="font-medium text-[#33322E]">
-              Varsayılan En-Boy Oranı (Aspect Ratio):
-            </label>
-            <div className="flex items-center gap-3 pt-1">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="aspect"
-                  checked={defaultAspect === '16:9'}
-                  onChange={() => setDefaultAspect('16:9')}
-                  className="accent-[#8B1E2D]"
-                />
-                <span className="flex items-center gap-1 text-xs">
-                  <Desktop size={15} />
-                  <span>16:9 Yatay (YouTube / Akıllı Tahta)</span>
-                </span>
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="aspect"
-                  checked={defaultAspect === '9:16'}
-                  onChange={() => setDefaultAspect('9:16')}
-                  className="accent-[#8B1E2D]"
-                />
-                <span className="flex items-center gap-1 text-xs">
-                  <DeviceMobile size={15} />
-                  <span>9:16 Dikey (Shorts / Reels)</span>
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <div className="pt-2">
-            <button
-              onClick={handleSavePreferences}
-              className="px-4 py-1.5 rounded bg-[#8B1E2D] hover:bg-[#721824] text-white font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
-            >
-              <FloppyDisk size={14} weight="bold" />
-              <span>{savedSuccess ? 'Tercihler Kaydedildi!' : 'Tercihleri Kaydet'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Database & Backup */}
+      {/* Backup */}
       <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-3 shadow-xs">
         <div className="border-b border-[#EFEFEA] pb-2">
           <h3 className="text-sm font-semibold text-[#1C1917]">
-            Veri Depolama ve Yedekleme (Repository Altyapısı)
+            Yedekleme
           </h3>
           <p className="text-[11px] text-[#787670]">
-            Mevcut projeler tarayıcı yerel deposunda (LocalStorage) tutulmaktadır ve ileride veritabanı ile değiştirilebilir soyut katmana sahiptir.
+            Projeleriniz hesabınızda (bulutta) saklanır. İsterseniz tümünü bilgisayarınıza JSON dosyası olarak indirebilirsiniz.
           </p>
         </div>
 

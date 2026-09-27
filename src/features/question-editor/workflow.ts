@@ -37,3 +37,14 @@ export function isTypingTarget(target:EventTarget|null):boolean {
   const el=target as HTMLElement|null;
   return !!el&&(['INPUT','TEXTAREA','SELECT'].includes(el.tagName)||el.isContentEditable===true);
 }
+
+/**
+ * Simple timing list: move one cue earlier/later. A cue that lasts to the end of
+ * the video (✗ / ✓ marks) keeps lasting to the end; others keep their length.
+ */
+export function nudgeAction(action:VideoAction,delta:number,total:number):VideoAction {
+  const toEnd=action.start+action.duration>=total-.01;
+  const start=Math.max(0,Math.min(Math.max(0,total-.1),action.start+delta));
+  const duration=toEnd?total-start:Math.max(.05,Math.min(action.duration,total-start));
+  return {...action,start,startTime:start,duration};
+}

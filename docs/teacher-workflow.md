@@ -7,7 +7,7 @@
 - Kaydedilmemiş değişiklikler hesaba göre IndexedDB'de yedeklenir. Projeyi aynı cihazda tekrar açınca geri yüklenir. Bu, birden çok cihaz arasında eşzamanlı düzenleme/birleştirme sistemi değildir. Tarayıcı verisi silinirse cihaz yedeği de silinir.
 - Ses ön kontrolü eksik şık başlıklarını, belirlenebilen cevap uyuşmazlığını ve karakter sınırını gösterir; çözümün bilimsel doğruluğunu doğrulamaz.
 - Kısa telaffuz örneği isteğe bağlıdır ve ElevenLabs kotası tüketir. Asıl ses kaydının yerine geçmez. Video tarayıcıda üretilmeye devam eder.
-- Kutular ok tuşlarıyla taşınabilir; Shift daha büyük adım uygular. Geri al önceki kutu/zamanlama planını geri getirir. Zamanlama panelinde seçili işareti 0,2 saniye kaydırma ve ilgili anı dinleme vardır.
+- Kutular ok tuşlarıyla taşınabilir; Shift daha büyük adım uygular. Geri al önceki kutu/zamanlama planını geri getirir. **İşaretlerin zamanlamasını kontrol et** her işareti tek satırda gösterir (ör. "B şıkkı elenir · 5,0 sn" ve tetikleyen cümle): *Dinle* işaretten 1,5 sn önceden 3,5 sn çalar; *Biraz erken / Biraz geç* 0,3 sn kaydırır ve hemen yeniden çalar (✗/✓ işaretleri video sonuna kadar görünür kalır); *Kaldır* işareti siler; *Geri al* son değişikliği döndürür. Tam zaman çizelgesi "Gelişmiş" altında kalır (seçili işareti Shift+ok ile 0,2 sn kaydırma, kısayollar).
 - Kütüphanede koleksiyon, yıl, kategori, aşama ve metin filtreleri bulunur. Çoğaltma görsel, metin ve tasarım ayarlarını kopyalar; ses ve animasyon yeniden hazırlanır.
 
 ## Kontrol
