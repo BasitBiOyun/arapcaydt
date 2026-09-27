@@ -9,16 +9,6 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 class NoFallbackError extends Error {}
 
-function bufferToBase64(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode(...bytes.subarray(i, Math.min(bytes.length, i + chunk)));
-  }
-  return btoa(binary);
-}
-
 async function elevenLabsFallback(req: GenerateNarrationRequest, reason?: string): Promise<GenerateNarrationResponse> {
   const wait = lastElevenLabsFallbackAt + ELEVENLABS_FALLBACK_GAP_MS - Date.now();
   if (wait > 0) await sleep(wait);
@@ -32,21 +22,53 @@ async function elevenLabsFallback(req: GenerateNarrationRequest, reason?: string
   }
 }
 
+export interface GeneratedAlignmentResult {
+  words: Array<{ text: string; start: number; end: number }>;
+  timingSource: 'gemini-transcribe' | 'forced-alignment';
+  loss?: number | null;
+}
+
+async function requestAlignment(endpoint: string, projectId: string): Promise<{ ok: boolean; data: any; status: number }> {
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...await authHeaders() },
+    body: JSON.stringify({ projectId }),
+  });
+  const data = await res.json().catch(() => null);
+  return { ok: res.ok, data, status: res.status };
+}
+
 class NarrationService {
   private static instance: NarrationService;
+
   public static getInstance() {
     return this.instance || (this.instance = new NarrationService());
   }
 
-  async alignGeneratedNarration(projectId: string): Promise<Array<{ text: string; start: number; end: number }>> {
-    const res = await fetch('/api/gemini/align-project', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...await authHeaders() },
-      body: JSON.stringify({ projectId }),
-    });
-    const data = await res.json().catch(() => null);
-    if (!res.ok) throw new Error(data?.error || `Gemini zamanlama servisi hata döndürdü (HTTP ${res.status}).`);
-    return Array.isArray(data?.words) ? data.words : [];
+  async alignGeneratedNarration(projectId: string): Promise<GeneratedAlignmentResult> {
+    const failures: string[] = [];
+
+    const gemini = await requestAlignment('/api/gemini/align-project', projectId);
+    if (gemini.ok && Array.isArray(gemini.data?.words) && gemini.data.words.length) {
+      return {
+        words: gemini.data.words,
+        timingSource: 'gemini-transcribe',
+        loss: typeof gemini.data?.loss === 'number' ? gemini.data.loss : null,
+      };
+    }
+    failures.push(`Gemini Transcribe: ${gemini.data?.error || `HTTP ${gemini.status}`}`);
+
+    const eleven = await requestAlignment('/api/elevenlabs/align-project', projectId);
+    if (eleven.ok && Array.isArray(eleven.data?.words) && eleven.data.words.length) {
+      return {
+        words: eleven.data.words,
+        timingSource: 'forced-alignment',
+        loss: typeof eleven.data?.loss === 'number' ? eleven.data.loss : null,
+      };
+    }
+    failures.push(`ElevenLabs Forced Alignment: ${eleven.data?.error || `HTTP ${eleven.status}`}`);
+
+    throw new Error(failures.join(' · '));
   }
 
   async generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
@@ -81,7 +103,9 @@ class NarrationService {
     } catch (error) {
       if (error instanceof NoFallbackError) throw error;
       if (error instanceof Error && error.message.includes('ElevenLabs yedeği')) throw error;
-      const reason = error instanceof Error ? `Gemini TTS bağlantısı başarısız: ${error.message}.` : 'Gemini TTS bağlantısı başarısız.';
+      const reason = error instanceof Error
+        ? `Gemini TTS bağlantısı başarısız: ${error.message}.`
+        : 'Gemini TTS bağlantısı başarısız.';
       return await elevenLabsFallback(req, reason);
     }
   }
