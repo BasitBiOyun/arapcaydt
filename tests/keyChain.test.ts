@@ -21,6 +21,9 @@ interface World {
   keys: Row[];
   google: Array<{ key: string; what: string }>;
   eleven: number;
+  /** narrationSource.audioUrl as stored in the (teacher-editable) project JSON. */
+  audioUrl?: unknown;
+  downloads: string[];
   /** Google answer per key and model ("transcribe" for Transcribe). */
   answer(key: string, model: string): { status: number; body?: any };
 }
@@ -39,7 +42,7 @@ function install(world: World) {
       if (path === '/auth/v1/user') return json({ id: 't1', email: 't@x', email_confirmed_at: '2026-01-01T00:00:00Z', aud: 'authenticated' });
       if (path === '/rest/v1/profiles') return rows([{ role: world.role, status: 'approved' }]);
       if (path === '/rest/v1/projects') return rows([{ id: 'p1', owner_id: 't1', data: {
-        solutionText: 'Doğru cevap C.', narrationSource: { type: 'gemini', mimeType: 'audio/wav', audioUrl: { assetPath: 't1/p1/a.wav' } } } }]);
+        solutionText: 'Doğru cevap C.', narrationSource: { type: 'gemini', mimeType: 'audio/wav', audioUrl: world.audioUrl ?? { assetPath: 't1/p1/a.wav' } } } }]);
       if (path === '/rest/v1/activity') {
         if (method === 'POST') { world.activity.push(...JSON.parse(init.body)); return json(null, 201); }
         return rows(world.activity);
@@ -51,7 +54,10 @@ function install(world: World) {
         return rows(world.keys);
       }
       if (path.startsWith('/storage/v1/object/sign/')) return json({ signedURL: '/object/sign/x?token=1' });
-      if (path.startsWith('/storage/v1/object/')) return method === 'GET' ? new Response(new Uint8Array(64)) : json({ Key: 'x' });
+      if (path.startsWith('/storage/v1/object/')) {
+        if (method === 'GET') { world.downloads.push(decodeURIComponent(path.replace(/^\/storage\/v1\/object\/(authenticated\/)?project-assets\//, ''))); return new Response(new Uint8Array(64)); }
+        return json({ Key: 'x' });
+      }
       throw new Error(`unexpected Supabase call ${method} ${path}`);
     }
     if (url.hostname === 'generativelanguage.googleapis.com') {
@@ -67,6 +73,7 @@ function install(world: World) {
       if (model === 'transcribe') return json({ steps: [{ content: [{ annotations: [{ type: 'word_info', text: 'Doğru', start_offset: '0.1s', end_offset: '0.4s' }] }] }] });
       return json({ candidates: [{ content: { parts: [{ inlineData: { mimeType: 'audio/L16;rate=24000', data: Buffer.alloc(4800).toString('base64') } }] } }] });
     }
+    if (url.hostname === 'evil.example.test') throw new Error('the server must never fetch a URL taken from project data');
     if (url.hostname === 'api.elevenlabs.io') { world.eleven++; return json({ words: [{ text: 'Doğru', start: 0.1, end: 0.4 }] }); }
     throw new Error(`unexpected call ${url}`);
   }) as typeof fetch;
@@ -84,7 +91,7 @@ async function call(handler: (req: any, res: any) => Promise<any>, method: strin
 
 async function freshWorld(over: Partial<World> = {}): Promise<World> {
   const { encryptKey } = await import('../server/quota');
-  const world: World = { role: 'teacher', activity: [], google: [], eleven: 0,
+  const world: World = { role: 'teacher', activity: [], google: [], eleven: 0, downloads: [],
     keys: [{ owner_id: 't1', ciphertext: encryptKey(TEACHER_KEY), last4: 'TTTT', status: 'active', updated_at: '2026-09-27T10:00:00Z' }],
     answer: () => ok, ...over };
   install(world);
@@ -181,4 +188,29 @@ test('saving a key verifies it with Google, stores it encrypted and never return
   assert.deepEqual(saved.payload.today.shared, { used: 0, limit: 25, exhausted: false });
   const removed = await call(key, 'DELETE');
   assert.equal(removed.payload.key, null);
+});
+
+test('alignment only reads audio from the teacher’s own storage folder', async () => {
+  const { default: gemini } = await import('../api/gemini/align-project');
+  const { default: eleven } = await import('../api/elevenlabs/align-project');
+  for (const audioUrl of [
+    { assetPath: 'someone-else/p9/secret.wav' },
+    { assetPath: 't1/../someone-else/secret.wav' },
+    { assetPath: 't1' },
+    'https://evil.example.test/a.wav',
+    `${SUPABASE.replace('https://', 'http://')}/storage/v1/object/sign/project-assets/t1/p1/a.wav?token=x`,
+    `${SUPABASE}/storage/v1/object/sign/project-assets/someone-else/p1/a.wav?token=x`,
+  ]) {
+    for (const handler of [gemini, eleven]) {
+      const world = await freshWorld({ audioUrl });
+      const r = await call(handler, 'POST', { projectId: 'p1' });
+      assert.equal(r.status, 400, JSON.stringify(audioUrl));
+      assert.deepEqual(world.downloads, []);
+      assert.equal(world.google.length + world.eleven, 0);
+    }
+  }
+  // A signed link to the teacher's own file (older projects) still works.
+  const world = await freshWorld({ audioUrl: `${SUPABASE}/storage/v1/object/sign/project-assets/t1/p1/a.wav?token=x` });
+  assert.equal((await call(gemini, 'POST', { projectId: 'p1' })).status, 200);
+  assert.deepEqual(world.downloads, ['t1/p1/a.wav']);
 });

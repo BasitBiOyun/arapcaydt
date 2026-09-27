@@ -146,7 +146,22 @@ test('teacher key migration applies on the membership schema alone, is re-runnab
   await assert.rejects(db.query(`insert into public.activity(owner_id,kind,state,key_source) values ($1,'gemini_tts','x','someone-else')`, [id]));
   await db.query(`insert into public.teacher_gemini_keys(owner_id,ciphertext,last4) values ($1,'v1:a:b:c','a3F9')`, [id]);
   await assert.rejects(db.query(`insert into public.teacher_gemini_keys(owner_id,ciphertext,last4,status) values ($1,'x','y','stolen')`, [id]));
+  const noSvg = readFileSync(new URL('../supabase/migrations/20260929_no_svg_uploads.sql', import.meta.url), 'utf8');
+  await db.exec(noSvg);
+  await db.exec(noSvg);
+  const types = (await db.query<any>(`select allowed_mime_types from storage.buckets where id='project-assets'`)).rows[0].allowed_mime_types;
+  assert.ok(!types.includes('image/svg+xml') && types.includes('image/png') && types.includes('audio/mpeg'));
   await db.exec(`set role authenticated`);
   await assert.rejects(db.query(`select * from public.teacher_gemini_keys`), /permission denied/);
   await db.exec(`reset role`);
+});
+
+test('when every voice service fails the teacher sees one plain sentence, not the technical chain', async () => {
+  const { narrationService, VoiceUnavailableError } = await import('../src/services/narration/narrationService');
+  const error = await narrationService.generateNarration({ projectId: 'p1', text: 'Doğru cevap C.' } as any).catch(e => e);
+  assert.ok(error instanceof VoiceUnavailableError);
+  assert.equal(error.message, 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.');
+  assert.match(error.detail, /ElevenLabs yedeği de başarısız/);
+  assert.match(new VoiceUnavailableError('x', 'Günlük öğretmen ses sınırına ulaşıldı').message, /Bugünkü ses üretim hakları doldu/);
+  assert.equal(new VoiceUnavailableError('x', 'Oturumunuz sona erdi. Yeniden giriş yapın.').message, 'Oturumunuz sona erdi. Yeniden giriş yapın.');
 });

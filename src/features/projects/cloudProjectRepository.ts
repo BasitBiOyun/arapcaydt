@@ -8,6 +8,8 @@ const bucket = () => database().storage.from('project-assets');
 async function uploadAsset(url: string, owner: string, project: string) {
   if (resolvedPaths.has(url)) return { assetPath: resolvedPaths.get(url)! };
   if (!url.startsWith('data:') && !url.startsWith('blob:')) return url;
+  // Built-in sample slides are small inline SVGs; storage does not accept SVG uploads.
+  if (url.startsWith('data:image/svg+xml')) return url;
   const blob = await (await fetch(url)).blob();
   if(blob.size>25*1024*1024) throw new Error('Görsel veya ses dosyası 25 MB sınırını aşıyor.');
   const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer())),b=>b.toString(16).padStart(2,'0')).join('');

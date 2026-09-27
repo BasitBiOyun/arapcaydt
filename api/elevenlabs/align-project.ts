@@ -1,36 +1,14 @@
 import { ELEVENLABS_ALIGN_PER_TEACHER, elevenLabsAlignAllowed, isCapped, readDailyState } from '../../server/quota.js';
 import { recordUsage } from '../../server/usage.js';
+import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 
 export const config = { maxDuration: 120 };
-
-const MAX_AUDIO_BYTES = 25 * 1024 * 1024;
 
 function normalizeApiKey(value?: string): string {
   let key = (value || '').trim();
   if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) key = key.slice(1, -1).trim();
   return key;
-}
-
-async function loadProjectAudio(db: ReturnType<typeof serviceDatabase>, source: any): Promise<{ bytes: Buffer; mimeType: string }> {
-  const stored = source?.audioUrl;
-  const mimeType = typeof source?.mimeType === 'string' && /^audio\/[\w.+-]+$/.test(source.mimeType)
-    ? source.mimeType
-    : 'audio/wav';
-
-  if (stored && typeof stored === 'object' && typeof stored.assetPath === 'string') {
-    const { data, error } = await db.storage.from('project-assets').download(stored.assetPath);
-    if (error || !data) throw new Error('Kaydedilmiş ses dosyası okunamadı.');
-    return { bytes: Buffer.from(await data.arrayBuffer()), mimeType };
-  }
-
-  if (typeof stored === 'string' && /^https?:\/\//.test(stored)) {
-    const response = await fetch(stored, { signal: AbortSignal.timeout(30000) });
-    if (!response.ok) throw new Error(`Ses dosyası indirilemedi (HTTP ${response.status}).`);
-    return { bytes: Buffer.from(await response.arrayBuffer()), mimeType: response.headers.get('content-type')?.split(';')[0] || mimeType };
-  }
-
-  throw new Error('Zamanlama için kaydedilmiş ses dosyası bulunamadı.');
 }
 
 export default async function handler(req: any, res: any) {
@@ -76,10 +54,12 @@ export default async function handler(req: any, res: any) {
   const countAlignment = (state: 'succeeded' | 'failed', status: number | string) => recordUsage(member.user.id, projectId,
     [{ kind: 'elevenlabs_align', state, detail: `forced-alignment · ${status}`, characters: text.length }]);
   try {
-    const { bytes, mimeType } = await loadProjectAudio(db, source);
-    if (!bytes.length) return res.status(400).json({ error: 'Ses dosyası boş.' });
-    if (bytes.length > MAX_AUDIO_BYTES) {
-      return res.status(413).json({ error: 'Ses dosyası Forced Alignment için 25 MB sınırını aşıyor.' });
+    let bytes: Buffer, mimeType: string;
+    try {
+      ({ bytes, mimeType } = await loadProjectAudio(db, member.user.id, source));
+    } catch (error: any) {
+      if (error instanceof ProjectAudioError) return res.status(error.status).json({ error: error.message });
+      throw error;
     }
 
     const form = new FormData();

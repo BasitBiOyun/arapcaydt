@@ -1,11 +1,13 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage } from '../../server/usage.js';
+import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import {
   SHARED_TRANSCRIBE_PER_TEACHER, TRANSCRIBE_MODEL, isCapped, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid,
   normalizeApiKey, readDailyState, readTeacherKey, sharedTranscribeAllowed, usageDetail, type KeySource,
 } from '../../server/quota.js';
 
 export const config = { maxDuration: 120 };
+const REQUEST_BUDGET_MS = 100_000;
 
 function parseOffset(value: unknown): number | null {
   if (typeof value !== 'string' && typeof value !== 'number') return null;
@@ -16,6 +18,7 @@ function parseOffset(value: unknown): number | null {
 async function uploadGeminiFile(apiKey: string, bytes: Buffer, mimeType: string, displayName: string) {
   const start = await fetch('https://generativelanguage.googleapis.com/upload/v1beta/files', {
     method: 'POST',
+    signal: AbortSignal.timeout(20_000),
     headers: {
       'x-goog-api-key': apiKey,
       'X-Goog-Upload-Protocol': 'resumable',
@@ -32,6 +35,7 @@ async function uploadGeminiFile(apiKey: string, bytes: Buffer, mimeType: string,
 
   const upload = await fetch(uploadUrl, {
     method: 'POST',
+    signal: AbortSignal.timeout(30_000),
     headers: {
       'Content-Length': String(bytes.length),
       'X-Goog-Upload-Offset': '0',
@@ -82,23 +86,12 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Bu proje için Gemini tarafından üretilmiş bir ses bulunamadı.' });
   }
 
-  const stored = source.audioUrl;
-  const mimeType = typeof source.mimeType === 'string' ? source.mimeType : 'audio/wav';
-  let audioBlob: Blob | null = null;
-
-  if (stored && typeof stored === 'object' && typeof stored.assetPath === 'string') {
-    const { data, error } = await db.storage.from('project-assets').download(stored.assetPath);
-    if (error || !data) return res.status(502).json({ error: 'Kaydedilmiş ses dosyası okunamadı.' });
-    audioBlob = data;
-  } else if (typeof stored === 'string' && /^https?:\/\//.test(stored)) {
-    const audioResponse = await fetch(stored);
-    if (!audioResponse.ok) return res.status(502).json({ error: 'Ses dosyası indirilemedi.' });
-    audioBlob = await audioResponse.blob();
+  let bytes: Buffer, mimeType: string;
+  try {
+    ({ bytes, mimeType } = await loadProjectAudio(db, member.user.id, source));
+  } catch (error: any) {
+    return res.status(error instanceof ProjectAudioError ? error.status : 502).json({ error: error?.message || 'Ses dosyası okunamadı.' });
   }
-
-  if (!audioBlob) return res.status(400).json({ error: 'Zamanlama için ses dosyası bulunamadı.' });
-  const bytes = Buffer.from(await audioBlob.arrayBuffer());
-  if (!bytes.length) return res.status(400).json({ error: 'Ses dosyası boş.' });
 
   // Teacher's own Transcribe quota first, then the studio key (capped per teacher per day).
   // When neither is available the caller continues with ElevenLabs, then local Whisper.
@@ -116,8 +109,11 @@ export default async function handler(req: any, res: any) {
 
   const failures: string[] = [];
   let lastStatus = 502;
+  const deadline = Date.now() + REQUEST_BUDGET_MS;
   for (const lane of lanes) {
-    const result = await transcribe(lane.key, bytes, mimeType, projectId);
+    const remaining = deadline - Date.now();
+    if (remaining < 15_000) { failures.push('Süre doldu.'); break; }
+    const result = await transcribe(lane.key, bytes, mimeType, projectId, remaining);
     if (result.status) {
       await recordUsage(member.user.id, projectId, [{ kind: 'gemini_transcribe', state: result.words ? 'succeeded' : 'failed',
         detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw)), keySource: lane.source }]);
@@ -135,7 +131,8 @@ export default async function handler(req: any, res: any) {
 interface TranscribeResult { status: number; raw: string; error?: string; words?: Array<{ text: string; start: number; end: number }> }
 
 /** One Transcribe request with one key; status 0 means the model was never called (upload/network failure). */
-async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, projectId: string): Promise<TranscribeResult> {
+async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, projectId: string, budgetMs: number): Promise<TranscribeResult> {
+  const deadline = Date.now() + budgetMs;
   let uploadedName = '';
   let status = 0;
   try {
@@ -144,7 +141,7 @@ async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, proje
 
     const interaction = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
       method: 'POST',
-      signal: AbortSignal.timeout(100000),
+      signal: AbortSignal.timeout(Math.max(5_000, deadline - Date.now())),
       headers: {
         'x-goog-api-key': apiKey,
         'Content-Type': 'application/json',

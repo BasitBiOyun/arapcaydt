@@ -251,7 +251,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
             });
           } catch (localAlignError) {
             console.warn('Local Whisper timing unavailable:', localAlignError);
-            setAudioError('Ses Gemini ile oluşturuldu ancak kesin kelime zaman damgaları alınamadı. Animasyon yaklaşık zamanlamayla hazırlanabilir.');
+            setAudioError('Ses oluşturuldu ancak kelime zamanları alınamadı. Animasyon yaklaşık zamanlamayla hazırlanır; işaretleri kontrol edin.');
           }
         }
       }

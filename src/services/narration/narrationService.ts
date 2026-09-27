@@ -9,6 +9,19 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 class NoFallbackError extends Error {}
 
+/**
+ * Both Gemini and the ElevenLabs fallback failed. The teacher sees one plain
+ * sentence; the technical chain (models, HTTP codes) stays in `detail`, the
+ * console and the admin panel's request log.
+ */
+export class VoiceUnavailableError extends Error {
+  constructor(public detail: string, fallbackMessage = '') {
+    super(/oturum|giriş yap/i.test(fallbackMessage) ? fallbackMessage
+      : /sınır|doldu/i.test(fallbackMessage) ? 'Bugünkü ses üretim hakları doldu. Yarın tekrar deneyin veya yöneticinize haber verin.'
+      : 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.');
+  }
+}
+
 async function elevenLabsFallback(req: GenerateNarrationRequest, reason?: string): Promise<GenerateNarrationResponse> {
   const wait = lastElevenLabsFallbackAt + ELEVENLABS_FALLBACK_GAP_MS - Date.now();
   if (wait > 0) await sleep(wait);
@@ -18,7 +31,10 @@ async function elevenLabsFallback(req: GenerateNarrationRequest, reason?: string
     return { ...result, provider: 'elevenlabs', message: reason || result.message };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'ElevenLabs yedeği başarısız.';
-    throw new Error(reason ? `${reason} ElevenLabs yedeği de başarısız: ${message}` : message);
+    const detail = reason ? `${reason} ElevenLabs yedeği de başarısız: ${message}` : message;
+    console.warn('[Seslendirme]', detail);
+    // Only the fallback's own answer tells whether the session or today's allowance is the problem.
+    throw new VoiceUnavailableError(detail, message);
   }
 }
 
@@ -110,7 +126,7 @@ class NarrationService {
       return await elevenLabsFallback(req, err?.error || 'Gemini TTS kullanılamadı.');
     } catch (error) {
       if (error instanceof NoFallbackError) throw error;
-      if (error instanceof Error && error.message.includes('ElevenLabs yedeği')) throw error;
+      if (error instanceof VoiceUnavailableError) throw error;
       const reason = error instanceof Error
         ? `Gemini TTS bağlantısı başarısız: ${error.message}.`
         : 'Gemini TTS bağlantısı başarısız.';

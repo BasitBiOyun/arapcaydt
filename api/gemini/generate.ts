@@ -7,6 +7,8 @@ import {
 } from '../../server/quota.js';
 
 export const config = { maxDuration: 120 };
+export const REQUEST_BUDGET_MS = 95_000;
+const MIN_ATTEMPT_MS = 10_000;
 
 const VOICE_NAME = 'Achernar';
 const STYLE = [
@@ -162,15 +164,19 @@ export default async function handler(req: any, res: any) {
     return res.status(503).json({ error: 'Gemini ses servisi yapılandırılmamış.', code: 'MISSING_GEMINI_API_KEY', fallbackAllowed: true });
   }
 
+  // The function stops at 120 s: keep ~25 s for storing the audio and logging usage.
+  const deadline = Date.now() + REQUEST_BUDGET_MS;
   const attempts: Attempt[] = [];
-  for (const lane of lanes) {
+  lanes: for (const lane of lanes) {
     for (const model of modelOrder(projectId || member.user.id).filter(m => !lane.skip.includes(m))) {
+      const remaining = deadline - Date.now();
+      if (remaining < MIN_ATTEMPT_MS) break lanes;
       try {
         const upstream = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
           {
             method: 'POST',
-            signal: AbortSignal.timeout(105000),
+            signal: AbortSignal.timeout(remaining),
             headers: { 'x-goog-api-key': lane.key, 'Content-Type': 'application/json' },
             body: JSON.stringify(makeRequestBody(model, text)),
           }
