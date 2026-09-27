@@ -53,10 +53,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded bg-[#FFFFFF] border border-[#E5E4DC]">
         <div>
           <h2 className="text-base font-bold text-[#1C1917] tracking-tight">
-            Arapça YDT Soru & Video Çalışma Alanı
+            Soru & Video Çalışma Alanı
           </h2>
           <p className="text-xs text-[#666560] mt-0.5">
-            ÖSYM Arapça Yabancı Dil Testi soru incelemeleri ve seslendirmeli video projelerinizi yönetin.
+            Soru çözümlerinizi ve seslendirmeli video projelerinizi yönetin.
           </p>
         </div>
 

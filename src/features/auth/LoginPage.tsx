@@ -1,9 +1,11 @@
 import React,{useState} from 'react';
 import {useAuth} from './AuthContext';
 import {database,supabase} from '../../services/supabase';
-export const LoginPage:React.FC=()=>{
+import {BrandMark} from '../../components/common/BrandMark';
+import {APP_NAME} from '../../config/brand';
+export const LoginPage:React.FC<{initialMode?:'login'|'signup';onBack?:()=>void}>=({initialMode='login',onBack})=>{
  const {refresh,recovering,finishRecovery,logout,error:authError}=useAuth();
- const [mode,setMode]=useState<'login'|'signup'|'reset'>('login');
+ const [mode,setMode]=useState<'login'|'signup'|'reset'>(initialMode);
  const [name,setName]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState('');
  const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
  const submit=async(e:React.FormEvent)=>{
@@ -22,7 +24,8 @@ export const LoginPage:React.FC=()=>{
  };
  const title=recovering?'Yeni şifre belirle':mode==='signup'?'Öğretmen kaydı':mode==='reset'?'Şifremi unuttum':'Stüdyoya giriş';
  return <main className="min-h-screen bg-[#FAF9F5] flex items-center justify-center p-6"><div className="w-full max-w-md space-y-6">
-  <div><div className="text-4xl text-[#8B1E2D] mb-4">ض</div><h1 className="text-2xl font-bold">Arapça YDT Stüdyosu</h1><p className="text-sm text-stone-500 mt-2">Sorularınız, seslendirmeleriniz ve videolarınız tek yerde.</p></div>
+  {onBack&&!recovering&&<button type="button" onClick={onBack} className="text-sm text-[#55544F] hover:text-[#1C1917] inline-flex items-center gap-1.5">← Ana sayfa</button>}
+  <div><BrandMark size={48} className="mb-4"/><h1 className="text-2xl font-bold">{APP_NAME}</h1><p className="text-sm text-stone-500 mt-2">Sorularınız, seslendirmeleriniz ve videolarınız tek yerde.</p></div>
   <form onSubmit={submit} className="bg-white border border-stone-200 rounded-xl p-6 space-y-4">
    <h2 className="font-semibold text-lg">{title}</h2>
    {!supabase&&<p role="alert">Üyelik sistemi kurulumu tamamlanıyor. Lütfen daha sonra tekrar deneyin.</p>}

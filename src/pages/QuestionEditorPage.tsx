@@ -25,6 +25,7 @@ import { EditorStage } from '../features/question-editor/steps/EditorStage';
 import { ImageStep } from '../features/question-editor/steps/ImageStep';
 import { ArrowLeft, Check, Plus } from '@phosphor-icons/react';
 import type { LeaveGuard } from '../layouts/AppLayout';
+import { APP_NAME } from '../config/brand';
 
 function hasAnimationPlan(project: QuestionProject | null | undefined) {
   return Boolean(project && project.videoReady !== false &&
@@ -515,11 +516,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
 
           <div className="h-4 w-px bg-[#E5E4DC]" />
 
-          <span className="editor-brand">Arapça YDT Stüdyosu</span>
+          <span className="editor-brand">{APP_NAME}</span>
         </div>
 
         <h1 className="text-sm font-bold text-[#1C1917] tracking-tight hidden md:block">
-          {currentProject.title || 'Arapça YDT Stüdyosu'}
+          {currentProject.title || APP_NAME}
         </h1>
 
         <button

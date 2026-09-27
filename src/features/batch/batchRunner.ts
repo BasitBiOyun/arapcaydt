@@ -75,7 +75,7 @@ export async function runBatch<F extends { name: string }>(
         category: options.category, correctAnswer: item.answer || 'A', status: 'draft',
         imageUrl: await deps.readDataUrl(item.image), imageFileName: item.image.name, solutionText: item.solution,
         audioApproved: false, videoReady: false,
-        videoConfig: { aspectRatio: '16:9', fps: 30, backgroundColor: '#FFFFFF', showWatermark: true, teacherTag: 'Arapça YDT Soru Çözümü', annotations: [] },
+        videoConfig: { aspectRatio: '16:9', fps: 30, backgroundColor: '#FFFFFF', showWatermark: true, teacherTag: 'Soru Çözümü', annotations: [] },
       });
       const projectId = project.id;
       const step = (stage: BatchStage, message: string, percent?: number) => update(item.number, { stage, message, projectId, percent });

@@ -11,6 +11,8 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
+import { BrandMark } from './BrandMark';
+import { APP_NAME } from '../../config/brand';
 
 export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin';
 
@@ -35,12 +37,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     <aside className="studio-sidebar w-64 h-screen flex flex-col bg-[#FAF9F5] border-r border-[#E5E4DC] select-none shrink-0">
       {/* Brand / Header */}
       <div className="h-16 px-5 flex items-center gap-3 border-b border-[#E5E4DC]">
-        <div className="w-8 h-8 rounded bg-[#8B1E2D] flex items-center justify-center text-white font-bold text-base shadow-xs">
-          ض
-        </div>
+        <BrandMark size={32} />
         <div className="flex flex-col">
           <span className="font-semibold text-sm tracking-tight text-[#1C1917] leading-tight">
-            Arapça YDT Stüdyosu
+            {APP_NAME}
           </span>
           <span className="text-[11px] text-[#787670] font-mono-code leading-tight">
             Öğretmen Soru-Video Paneli

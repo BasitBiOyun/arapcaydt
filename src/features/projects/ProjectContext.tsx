@@ -117,7 +117,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if(!await flush())throw new Error('Mevcut proje kaydedilemedi. Önce tekrar kaydedin.');
     const nextNum = projects.length > 0 ? Math.max(...projects.map((p) => p.questionNumber || 0)) + 1 : 1;
     const initial: Omit<QuestionProject, 'id' | 'createdAt' | 'updatedAt'> = {
-      title: custom?.title || `Yeni Arapça YDT Soru Projesi #${nextNum}`,
+      title: custom?.title || `Yeni Soru Projesi #${nextNum}`,
       examYear: custom?.examYear || `${new Date().getFullYear()} YDT`,
       questionNumber: custom?.questionNumber || nextNum,
       category: custom?.category || DEFAULT_CATEGORY_ID,
@@ -134,7 +134,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         fps: 30,
         backgroundColor: '#FFFFFF',
         showWatermark: true,
-        teacherTag: 'Arapça YDT Soru Çözümü',
+        teacherTag: 'Soru Çözümü',
         annotations: [],
       },
       notes: '',

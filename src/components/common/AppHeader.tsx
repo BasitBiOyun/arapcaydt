@@ -9,6 +9,7 @@ import {
   WarningCircle 
 } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
+import { APP_NAME } from '../../config/brand';
 import { useProjects } from '../../features/projects/ProjectContext';
 import { elevenlabsService } from '../../services/elevenlabs/elevenlabsService';
 import { ElevenLabsStatus } from '../../types';
@@ -54,12 +55,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       case 'dashboard':
         return {
           title: 'Öğretmen Kontrol Paneli',
-          subtitle: 'Arapça YDT Soru Analiz & Video Üretim Merkezi',
+          subtitle: 'Soru analiz ve video üretim merkezi',
         };
       case 'questions':
         return {
           title: 'Soru ve Proje Havuzu',
-          subtitle: 'Kayıtlı ÖSYM YDT ve Özgün Arapça Soru Projeleri',
+          subtitle: 'Kayıtlı soru projeleriniz',
         };
       case 'editor':
         return {
@@ -76,7 +77,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           subtitle: 'Ses servisi ve video çıktı ayarları',
         };
       default:
-        return { title: 'Arapça YDT Stüdyosu', subtitle: '' };
+        return { title: APP_NAME, subtitle: '' };
     }
   };
 
