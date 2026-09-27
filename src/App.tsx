@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { ProjectProvider } from './features/projects/ProjectContext';
 import { LoginPage } from './features/auth/LoginPage';
 import { AppLayout } from './layouts/AppLayout';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, logout, refresh, recovering } = useAuth();
@@ -32,8 +33,10 @@ const AppContent: React.FC = () => {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

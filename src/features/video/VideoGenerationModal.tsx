@@ -74,6 +74,14 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
   const [statusDetail, setStatusDetail] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const isRunningRef = useRef(false);
+  /** Each run gets a number; a cancelled run's late result is ignored. */
+  const runIdRef = useRef(0);
+
+  const cancel = () => {
+    runIdRef.current++;
+    isRunningRef.current = false;
+    onClose();
+  };
 
   useEffect(() => {
     if (isOpen && !isRunningRef.current) {
@@ -84,6 +92,8 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
   const runPipeline = async () => {
     if (isRunningRef.current) return;
     isRunningRef.current = true;
+    const runId = ++runIdRef.current;
+    const live = () => runId === runIdRef.current;
     setErrorMessage(null);
     setStatusDetail(null);
     setCurrentStage('IMAGE_ANALYSIS');
@@ -126,6 +136,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
         },
       });
 
+      if (!live()) return;
       // Stage: ANIMATION_BUILD
       setCurrentStage('ANIMATION_BUILD');
       await new Promise((r) => setTimeout(r, 400));
@@ -138,9 +149,11 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       setCurrentStage('COMPLETED');
       await new Promise((r) => setTimeout(r, 300));
 
+      if (!live()) return;
       isRunningRef.current = false;
       onSuccess(result);
     } catch (err: any) {
+      if (!live()) return;
       isRunningRef.current = false;
       console.error('[Local Video Generation Error]:', err);
       setCurrentStage('ERROR');
@@ -180,12 +193,13 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
           <h2 className="text-sm font-bold text-[#1C1917] tracking-tight">
             Videonuz hazırlanıyor
           </h2>
-          {currentStage === 'ERROR' && (
+          {currentStage !== 'COMPLETED' && (
             <button
-              onClick={onClose}
-              className="text-[#787670] hover:text-[#1C1917] p-1 rounded hover:bg-[#EFEFEA]"
-              title="Kapat"
+              onClick={currentStage === 'ERROR' ? onClose : cancel}
+              className="text-[#787670] hover:text-[#1C1917] p-1 rounded hover:bg-[#EFEFEA] flex items-center gap-1 text-xs font-semibold"
+              title={currentStage === 'ERROR' ? 'Kapat' : 'İptal et'}
             >
+              {currentStage !== 'ERROR' && <span>İptal</span>}
               <X size={18} />
             </button>
           )}

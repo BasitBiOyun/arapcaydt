@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { LeaveGuard } from '../layouts/AppLayout';
 import { Stack, Play, Stop, ArrowRight } from '@phosphor-icons/react';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../config/categories';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
@@ -31,7 +32,7 @@ function download(blob: Blob, name: string) {
   setTimeout(() => URL.revokeObjectURL(url), 3000);
 }
 
-export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => void }) {
+export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject: (id: string) => void; registerLeaveGuard?: (guard: LeaveGuard | null) => void }) {
   const { loadProjects } = useProjects();
   const [images, setImages] = useState<File[]>([]);
   const [audios, setAudios] = useState<File[]>([]);
@@ -52,6 +53,17 @@ export function BatchPage({ onOpenProject }: { onOpenProject: (id: string) => vo
 
   // OCR models load while the teacher is still choosing files.
   useEffect(() => { if (images.length) localOcrService.warmUp(); }, [images.length]);
+  // Leaving the page while a batch runs stops it (asked first); finished questions stay saved.
+  useEffect(() => {
+    if (!registerLeaveGuard) return;
+    registerLeaveGuard(running ? () => {
+      if (!window.confirm('Toplu üretim sürüyor. Bu sayfadan çıkarsanız durdurulur; tamamlanan sorular kayıtlı kalır. Çıkılsın mı?')) return false;
+      abort.current?.abort();
+      return true;
+    } : null);
+    return () => registerLeaveGuard(null);
+  }, [running, registerLeaveGuard]);
+  useEffect(() => () => abort.current?.abort(), []);
   useEffect(() => {
     if (!running) return;
     const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ''; };

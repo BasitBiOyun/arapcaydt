@@ -23,7 +23,8 @@ import { NarrationCheck } from '../features/question-editor/steps/NarrationCheck
 import { SolutionStep } from '../features/question-editor/steps/SolutionStep';
 import { EditorStage } from '../features/question-editor/steps/EditorStage';
 import { ImageStep } from '../features/question-editor/steps/ImageStep';
-import { ArrowLeft, Check } from '@phosphor-icons/react';
+import { ArrowLeft, Check, Plus } from '@phosphor-icons/react';
+import type { LeaveGuard } from '../layouts/AppLayout';
 
 function hasAnimationPlan(project: QuestionProject | null | undefined) {
   return Boolean(project && project.videoReady !== false &&
@@ -32,9 +33,16 @@ function hasAnimationPlan(project: QuestionProject | null | undefined) {
 
 interface QuestionEditorPageProps {
   onBack: () => void;
+  /** Opens the new-question dialog (shown when no question is open). */
+  onNewQuestion?: () => void;
+  /** Lets the layout ask before leaving while audio or an MP4 is being prepared. */
+  registerLeaveGuard?: (guard: LeaveGuard | null) => void;
+  /** A question is being opened (first load or automatic selection). */
+  waitingForProject?: boolean;
+  loadError?: string;
 }
 
-export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }) => {
+export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, onNewQuestion, registerLeaveGuard, waitingForProject, loadError }) => {
   const { currentProject, updateCurrentProject, saveCurrentProject, saveStatus, error:saveError } = useProjects();
 
   const [step,setStep]=useState(()=>currentProject?resumeStep(currentProject):0);
@@ -118,10 +126,44 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
     };
   }, [activeAudioUrl]);
 
+  // Leaving while audio or an MP4 is being prepared would silently drop that work.
+  const working = isExportingMp4 ? 'export' : isGeneratingAudio || sampleBusy || isTranscribingMp3 ? 'audio' : null;
+  useEffect(() => {
+    if (!registerLeaveGuard) return;
+    registerLeaveGuard(working ? () => {
+      window.alert(working === 'export'
+        ? 'MP4 hazırlanıyor. İndirme bitene kadar bekleyin ya da İndir adımında “İptal” ile durdurun.'
+        : 'Ses hazırlanıyor. Bitince bu sayfadan çıkabilirsiniz.');
+      return false;
+    } : null);
+    return () => registerLeaveGuard(null);
+  }, [working, registerLeaveGuard]);
+
   if (!currentProject) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#FAF9F5] text-xs text-[#787670]">
-        Lütfen önce kontrol panelinden bir soru seçin.
+      <div className="h-screen flex items-center justify-center bg-[#FAF9F5] p-6">
+        <section className="bg-white border border-[#E5E4DC] rounded-xl p-8 max-w-md w-full text-center space-y-4 shadow-xs">
+          <h1 className="text-base font-bold text-[#1C1917]">
+            {waitingForProject ? 'Soru açılıyor…' : loadError ? 'Soru açılamadı' : 'Açık bir soru yok'}
+          </h1>
+          <p className="text-xs text-[#666560]">
+            {waitingForProject ? 'Birkaç saniye sürebilir.' : loadError
+              ? loadError
+              : 'Soru kütüphanenizden bir soru seçin ya da yeni bir soru oluşturun.'}
+          </p>
+          {!waitingForProject && (
+            <div className="flex flex-wrap justify-center gap-2">
+              <button type="button" onClick={onBack} className="studio-secondary flex items-center gap-1.5">
+                <ArrowLeft size={16} /> Soru kütüphanesine dön
+              </button>
+              {onNewQuestion && (
+                <button type="button" onClick={onNewQuestion} className="studio-primary flex items-center gap-1.5">
+                  <Plus size={16} /> Yeni soru
+                </button>
+              )}
+            </div>
+          )}
+        </section>
       </div>
     );
   }
@@ -463,8 +505,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack }
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={()=>{if(!busy)onBack();}}
-            disabled={busy}
+            onClick={onBack}
+            title={busy ? 'İşlem sürerken çıkmadan önce size sorulur' : undefined}
             className="flex items-center gap-1.5 text-xs font-semibold text-[#55544F] hover:text-[#1C1917] px-2.5 py-1.5 rounded hover:bg-[#F0EFEA] transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} />

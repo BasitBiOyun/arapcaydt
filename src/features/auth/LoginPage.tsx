@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {useAuth} from './AuthContext';
 import {database,supabase} from '../../services/supabase';
 export const LoginPage:React.FC=()=>{
- const {refresh,recovering,finishRecovery,error:authError}=useAuth();
+ const {refresh,recovering,finishRecovery,logout,error:authError}=useAuth();
  const [mode,setMode]=useState<'login'|'signup'|'reset'>('login');
  const [name,setName]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState('');
  const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
@@ -32,6 +32,7 @@ export const LoginPage:React.FC=()=>{
    {!recovering&&<label className="block text-sm">E-posta<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} className="block w-full border rounded p-2 mt-1"/></label>}
    {(recovering||mode!=='reset')&&<label className="block text-sm">Şifre<input required type="password" minLength={mode==='signup'||recovering?8:1} autoComplete={mode==='signup'||recovering?'new-password':'current-password'} value={password} onChange={e=>setPassword(e.target.value)} className="block w-full border rounded p-2 mt-1"/></label>}
    <button disabled={busy||!supabase} className="w-full rounded bg-[#8B1E2D] text-white p-3 disabled:opacity-50">{busy?'İşlem yapılıyor…':title}</button>
+   {recovering&&<button type="button" className="text-sm" onClick={()=>{setPassword('');setError('');void logout();}}>Vazgeç, giriş ekranına dön</button>}
    {!recovering&&<div className="flex flex-wrap gap-4 text-sm">{(['login','signup','reset'] as const).filter(m=>m!==mode).map(m=><button type="button" key={m} onClick={()=>{setMode(m);setError('');setMessage('');}}>{m==='login'?'Giriş yap':m==='signup'?'Hesap oluştur':'Şifremi unuttum'}</button>)}</div>}
   </form><p className="text-xs text-stone-500">Yeni öğretmen hesapları, e-posta doğrulaması ve yönetici onayından sonra açılır.</p>
  </div></main>;
