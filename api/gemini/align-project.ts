@@ -1,13 +1,11 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
-import { recordUsage, type UsageEvent } from '../../server/usage.js';
+import { recordUsage } from '../../server/usage.js';
+import {
+  SHARED_TRANSCRIBE_PER_TEACHER, TRANSCRIBE_MODEL, isCapped, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid,
+  normalizeApiKey, readDailyState, readTeacherKey, sharedTranscribeAllowed, usageDetail, type KeySource,
+} from '../../server/quota.js';
 
 export const config = { maxDuration: 120 };
-
-function normalizeApiKey(value?: string): string {
-  let key = (value || '').trim();
-  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) key = key.slice(1, -1).trim();
-  return key;
-}
 
 function parseOffset(value: unknown): number | null {
   if (typeof value !== 'string' && typeof value !== 'number') return null;
@@ -66,9 +64,6 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = normalizeApiKey(process.env.GEMINI_API_KEY);
-  if (!apiKey) return res.status(503).json({ error: 'Gemini API anahtarı yapılandırılmamış.' });
-
   const projectId = typeof req.body?.projectId === 'string' ? req.body.projectId.trim() : '';
   if (!projectId) return res.status(400).json({ error: 'Proje kimliği gerekli.' });
 
@@ -105,9 +100,44 @@ export default async function handler(req: any, res: any) {
   const bytes = Buffer.from(await audioBlob.arrayBuffer());
   if (!bytes.length) return res.status(400).json({ error: 'Ses dosyası boş.' });
 
+  // Teacher's own Transcribe quota first, then the studio key (capped per teacher per day).
+  // When neither is available the caller continues with ElevenLabs, then local Whisper.
+  const systemKey = normalizeApiKey(process.env.GEMINI_API_KEY);
+  const [teacherKey, today] = await Promise.all([readTeacherKey(db, member.user.id), readDailyState(db, member.user.id)]);
+  const lanes: Array<{ source: KeySource; key: string }> = [];
+  if (teacherKey && !today.own.transcribeExhausted) lanes.push({ source: 'teacher', key: teacherKey });
+  if (systemKey && sharedTranscribeAllowed(today, isCapped(member))) lanes.push({ source: 'system', key: systemKey });
+  if (!lanes.length) {
+    const reason = !systemKey && !teacherKey ? 'Gemini API anahtarı yapılandırılmamış.'
+      : today.shared.transcribeExhausted ? 'Bugünkü Gemini kelime zamanı kotaları doldu.'
+      : `Bugünkü Gemini kelime zamanı hakkınız doldu (ortak kotadan günlük ${SHARED_TRANSCRIBE_PER_TEACHER}).`;
+    return res.status(429).json({ error: reason, code: 'TRANSCRIBE_LIMIT' });
+  }
+
+  const failures: string[] = [];
+  let lastStatus = 502;
+  for (const lane of lanes) {
+    const result = await transcribe(lane.key, bytes, mimeType, projectId);
+    if (result.status) {
+      await recordUsage(member.user.id, projectId, [{ kind: 'gemini_transcribe', state: result.words ? 'succeeded' : 'failed',
+        detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw)), keySource: lane.source }]);
+    }
+    if (result.words?.length) {
+      return res.status(200).json({ words: result.words, modelId: TRANSCRIBE_MODEL, timingSource: 'gemini-transcribe', keySource: lane.source });
+    }
+    if (lane.source === 'teacher' && result.status && isInvalidKeyError(result.status, result.raw)) await markTeacherKeyInvalid(db, member.user.id);
+    failures.push(`${lane.source === 'teacher' ? 'Kendi anahtarınız' : 'Ortak anahtar'}: ${result.error}`);
+    lastStatus = result.status && result.status >= 400 ? result.status : 502;
+  }
+  return res.status(lastStatus).json({ error: failures.join(' · '), code: 'GEMINI_TRANSCRIBE_ERROR' });
+}
+
+interface TranscribeResult { status: number; raw: string; error?: string; words?: Array<{ text: string; start: number; end: number }> }
+
+/** One Transcribe request with one key; status 0 means the model was never called (upload/network failure). */
+async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, projectId: string): Promise<TranscribeResult> {
   let uploadedName = '';
-  // One row per Transcribe request (the Files API upload itself is not a model request).
-  let usage: UsageEvent | null = null;
+  let status = 0;
   try {
     const uploaded = await uploadGeminiFile(apiKey, bytes, mimeType, `narration-${projectId}.wav`);
     uploadedName = uploaded.name;
@@ -120,7 +150,7 @@ export default async function handler(req: any, res: any) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gemini-3.5-transcribe',
+        model: TRANSCRIBE_MODEL,
         input: [{
           type: 'audio',
           uri: uploaded.uri,
@@ -139,14 +169,11 @@ export default async function handler(req: any, res: any) {
     });
 
     const raw = await interaction.text();
-    usage = { kind: 'gemini_transcribe', state: interaction.ok ? 'succeeded' : 'failed', detail: `gemini-3.5-transcribe · ${interaction.status}` };
+    status = interaction.status;
     if (!interaction.ok) {
       let detail = '';
       try { detail = JSON.parse(raw)?.error?.message || ''; } catch {}
-      return res.status(interaction.status).json({
-        error: detail || `Gemini 3.5 Transcribe hata döndürdü (HTTP ${interaction.status}).`,
-        code: 'GEMINI_TRANSCRIBE_ERROR',
-      });
+      return { status, raw, error: detail || `Gemini 3.5 Transcribe hata döndürdü (HTTP ${status}).` };
     }
 
     const payload = JSON.parse(raw);
@@ -167,17 +194,12 @@ export default async function handler(req: any, res: any) {
       }
     }
 
-    if (!words.length) return res.status(502).json({ error: 'Gemini Transcribe kelime zaman damgası döndürmedi.' });
-    return res.status(200).json({
-      words,
-      modelId: 'gemini-3.5-transcribe',
-      timingSource: 'gemini-transcribe',
-    });
+    if (!words.length) return { status, raw: '', error: 'Gemini Transcribe kelime zaman damgası döndürmedi.' };
+    return { status, raw: '', words };
   } catch (error: any) {
     console.error('[Gemini Transcribe alignment]', error?.message || error);
-    return res.status(502).json({ error: error?.message || 'Gemini zamanlama servisine ulaşılamadı.' });
+    return { status, raw: '', error: error?.message || 'Gemini zamanlama servisine ulaşılamadı.' };
   } finally {
-    if (usage) await recordUsage(member.user.id, projectId, [usage]);
     await deleteGeminiFile(apiKey, uploadedName);
   }
 }

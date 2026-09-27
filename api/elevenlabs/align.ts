@@ -1,5 +1,6 @@
+import { ELEVENLABS_ALIGN_PER_TEACHER, elevenLabsAlignAllowed, isCapped, readDailyState } from '../../server/quota.js';
 import { recordUsage } from '../../server/usage.js';
-import { requireMember } from '../../server/auth.js';
+import { requireMember, serviceDatabase } from '../../server/auth.js';
 
 export const config = { maxDuration: 60 };
 
@@ -39,6 +40,11 @@ export default async function handler(req: any, res: any) {
   if (!audio.length) return res.status(400).json({ error: 'Ses dosyası okunamadı.', code: 'EMPTY_INPUT' });
   if (audio.length > MAX_ALIGN_AUDIO_BYTES) {
     return res.status(413).json({ error: 'Ses dosyası sunucu hizalaması için çok büyük.', code: 'AUDIO_TOO_LARGE' });
+  }
+
+  // Per-teacher daily cap on the shared ElevenLabs credits; the caller falls back to local Whisper.
+  if (!elevenLabsAlignAllowed(await readDailyState((() => { try { return serviceDatabase(); } catch { return null; } })(), member.user.id), isCapped(member))) {
+    return res.status(429).json({ error: `Bugünkü ElevenLabs hizalama hakkınız doldu (günlük ${ELEVENLABS_ALIGN_PER_TEACHER}).`, code: 'DAILY_LIMIT' });
   }
 
   // Every Forced Alignment request is counted, including failures (admin usage view).

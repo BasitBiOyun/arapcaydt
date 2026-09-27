@@ -9,7 +9,7 @@ test('emitted ElevenLabs handlers load in native Node ESM and reject anonymous r
  const root=resolve('verification-output');await mkdir(root,{recursive:true});
  const folder=await mkdtemp(join(root,'server-runtime-'));
  try {
-  for(const file of ['server/auth.ts','server/usage.ts','api/elevenlabs/status.ts','api/elevenlabs/voices.ts','api/elevenlabs/generate.ts','api/elevenlabs/align.ts','api/admin/analytics.ts','api/gemini/generate.ts','api/gemini/align-project.ts','api/elevenlabs/align-project.ts']){
+  for(const file of ['server/auth.ts','server/usage.ts','server/quota.ts','api/gemini/key.ts','api/elevenlabs/status.ts','api/elevenlabs/voices.ts','api/elevenlabs/generate.ts','api/elevenlabs/align.ts','api/admin/analytics.ts','api/gemini/generate.ts','api/gemini/align-project.ts','api/elevenlabs/align-project.ts']){
    const output=join(folder,file.replace(/\.ts$/,'.js'));
    await mkdir(resolve(output,'..'),{recursive:true});
    const source=await readFile(file,'utf8');
@@ -33,7 +33,7 @@ test('emitted ElevenLabs handlers load in native Node ESM and reject anonymous r
       await handler({method:'GET',headers:{}},res);
       assert.equal(status,401,'admin analytics must load and require sign-in');
     }
-    for(const path of ['gemini/generate','gemini/align-project','elevenlabs/align-project']){
+    for(const path of ['gemini/generate','gemini/align-project','gemini/key','elevenlabs/align-project']){
       const {default:handler}=await import('./api/'+path+'.js');
       let status;
       const res={status(code){status=code;return this;},json(){return this;},setHeader(){}};

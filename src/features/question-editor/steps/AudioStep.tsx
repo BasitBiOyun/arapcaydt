@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { QuestionProject } from '../../../types';
+import { capacityLine, geminiKeyService, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
 import { Check, Pause, Play, DownloadSimple, ArrowsClockwise, Trash, CircleNotch, Microphone, UploadSimple } from '@phosphor-icons/react';
 
 export interface AudioStepProps {
@@ -32,6 +33,16 @@ export interface AudioStepProps {
 
 /** STEP 3: Seslendirme */
 export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, formatTime, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError }: AudioStepProps) {
+  // Which Google key the next narration uses; refreshed after each generation.
+  const [keyStatus, setKeyStatus] = useState<TeacherKeyStatus | null>(null);
+  useEffect(() => {
+    if (isGeneratingAudio) return;
+    let alive = true;
+    geminiKeyService.status().then(s => { if (alive) setKeyStatus(s); }, () => undefined);
+    return () => { alive = false; };
+  }, [isGeneratingAudio]);
+  const capacity = capacityLine(keyStatus);
+
   return (
     <div hidden={step!==2} className="space-y-3">
       <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
@@ -215,6 +226,9 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             <p className="text-[11px] text-[#787670]">
               Seslendirme oluşturmak için önce çözüm metnini yazın.
             </p>
+          )}
+          {hasSolution && capacity && (
+            <p className="text-[11px] text-[#787670]">{capacity}</p>
           )}
         </div>
       )}

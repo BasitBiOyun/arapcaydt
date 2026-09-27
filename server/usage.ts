@@ -7,6 +7,8 @@ export interface UsageEvent {
   /** Model name and upstream HTTP status, e.g. "gemini-3.8-flash-tts · 429". */
   detail?: string;
   characters?: number;
+  /** Which Google key served the request: the teacher's own or the studio's shared key. */
+  keySource?: 'teacher' | 'system';
 }
 
 /**
@@ -18,10 +20,12 @@ export async function recordUsage(ownerId: string, projectId: string | undefined
   try {
     const db = serviceDatabase();
     const rows = events.map(e => ({ owner_id: ownerId, project_id: projectId || null, kind: e.kind, state: e.state,
-      characters: Math.max(0, Math.round(e.characters || 0)), detail: (e.detail || '').slice(0, 300) || null }));
+      characters: Math.max(0, Math.round(e.characters || 0)), detail: (e.detail || '').slice(0, 300) || null, ...(e.keySource ? { key_source: e.keySource } : {}) }));
     let { error } = await db.from('activity').insert(rows);
     // A project id that is not (yet) saved must not lose the count.
     if (error && projectId) ({ error } = await db.from('activity').insert(rows.map(r => ({ ...r, project_id: null }))));
+    // Before 20260928_teacher_keys.sql there is no key_source column.
+    if (error) ({ error } = await db.from('activity').insert(rows.map(({ key_source, ...r }: any) => ({ ...r, project_id: null }))));
     if (error) console.warn('[usage] not recorded:', error.message);
   } catch (error: any) {
     console.warn('[usage] not recorded:', error?.message || error);

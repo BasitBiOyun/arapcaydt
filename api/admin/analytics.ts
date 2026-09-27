@@ -1,4 +1,5 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { ELEVENLABS_ALIGN_PER_TEACHER, SHARED_TRANSCRIBE_PER_TEACHER, quotaDay, summarizeDay } from '../../server/quota.js';
 
 /**
  * One row per project with only the JSON fields the panel needs. Narration
@@ -121,13 +122,14 @@ export function summarizeProjects(rows: ProjectRow[]) {
   return { totalProjects: rows.length, categoryTotals, members, voice, funnel, quality: qualityTotals, issues: issues.slice(0, 40) };
 }
 
-export interface ActivityRow { owner_id: string; kind: string; state: string; detail?: string | null; created_at: string }
+export interface ActivityRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null; created_at: string }
 type Counter = { succeeded: number; failed: number };
 const SERVICES = ['gemini_tts', 'gemini_transcribe', 'elevenlabs_align', 'voice'] as const;
 type Service = typeof SERVICES[number];
 const emptyCounters = () => Object.fromEntries(SERVICES.map(k => [k, { succeeded: 0, failed: 0 }])) as Record<Service, Counter>;
-/** Gemini's per-day free quota resets at midnight Pacific time. */
-export const quotaDay = (iso: string) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date(iso));
+export { quotaDay };
+/** Today's per-teacher view of the key chain (Pacific quota day). */
+export interface MemberToday { ownTts: number; ownTranscribe: number; ownTranscribeExhausted: boolean; ownTtsExhausted: number; sharedTts: number; sharedTranscribe: number; elevenlabsAlign: number }
 
 /**
  * Request counts from the per-request usage log: every Gemini TTS model
@@ -158,20 +160,39 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
       if (recent) m.last30Days[outcome]++;
     }
   }
-  return { quotaDay: today, totals, geminiModels, members };
+  // Key chain today: the teacher's own key vs. the studio key, and what is already out of daily quota.
+  const todayRows = rows.filter(r => quotaDay(r.created_at) === today);
+  const studio = summarizeDay(todayRows, '').shared;
+  const membersToday: Record<string, MemberToday> = {};
+  for (const owner of new Set(todayRows.map(r => r.owner_id))) {
+    const day = summarizeDay(todayRows, owner);
+    const sharedTts = todayRows.filter(r => r.owner_id === owner && r.kind === 'gemini_tts' && r.key_source === 'system' && (r.detail || '').split(' · ')[1] !== '429').length;
+    membersToday[owner] = { ownTts: day.own.ttsUsed, ownTranscribe: day.own.transcribeUsed, ownTranscribeExhausted: day.own.transcribeExhausted,
+      ownTtsExhausted: day.own.ttsExhausted.length, sharedTts, sharedTranscribe: day.shared.transcribeUsed, elevenlabsAlign: day.elevenlabsAlignUsed };
+  }
+  return { quotaDay: today, totals, geminiModels, members, membersToday,
+    studio: { transcribeUsed: studio.transcribeUsedAll, transcribeExhausted: studio.transcribeExhausted, ttsExhausted: studio.ttsExhausted },
+    limits: { sharedTranscribePerTeacher: SHARED_TRANSCRIBE_PER_TEACHER, elevenlabsAlignPerTeacher: ELEVENLABS_ALIGN_PER_TEACHER } };
 }
 
 async function readUsage(db: any): Promise<{ rows: ActivityRow[]; migrationPending: boolean }> {
   const rows: ActivityRow[] = [];
   for (let from = 0; ; from += 1000) {
-    const { data, error } = await db.from('activity').select('owner_id,kind,state,detail,created_at')
+    const { data, error } = await db.from('activity').select('owner_id,kind,state,detail,key_source,created_at')
       .in('kind', SERVICES as unknown as string[]).order('created_at', { ascending: false }).range(from, from + 999);
-    // Before supabase/migrations/20260927_voice_usage.sql there is no detail column and no new kinds.
+    // Before supabase/migrations/20260928_teacher_keys.sql there is no detail/key_source column and no new kinds.
     if (error) return { rows: [], migrationPending: true };
     rows.push(...(data || []));
     if ((data || []).length < 1000) break;
   }
   return { rows, migrationPending: false };
+}
+
+/** Which teachers saved their own Google key: last four characters and state only, never the key. */
+async function readTeacherKeys(db: any): Promise<Record<string, { last4: string; status: string; updatedAt: string }>> {
+  const { data, error } = await db.from('teacher_gemini_keys').select('owner_id,last4,status,updated_at');
+  if (error) return {};
+  return Object.fromEntries((data || []).map((r: any) => [r.owner_id, { last4: r.last4, status: r.status, updatedAt: r.updated_at }]));
 }
 
 async function readAllProjects(db: any): Promise<ProjectRow[]> {
@@ -203,8 +224,9 @@ export default async function handler(req: any, res: any) {
 
   try {
     const db = serviceDatabase();
-    const [projects, usage] = await Promise.all([readAllProjects(db), readUsage(db)]);
-    return res.status(200).json({ ...summarizeProjects(projects), requests: { ...summarizeRequests(usage.rows), migrationPending: usage.migrationPending } });
+    const [projects, usage, teacherKeys] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db)]);
+    return res.status(200).json({ ...summarizeProjects(projects), teacherKeys,
+      requests: { ...summarizeRequests(usage.rows), migrationPending: usage.migrationPending } });
   } catch (error: any) {
     console.error('[Admin analytics]', error?.message || error);
     return res.status(500).json({ error: 'Yönetim istatistikleri hazırlanamadı.' });

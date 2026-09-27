@@ -15,7 +15,12 @@ interface Analytics {totalProjects:number;categoryTotals:Record<string,number>;m
  voice:{gemini:number;elevenlabs:number;geminiFallbacks:number;uploaded:number;none:number;models:Record<string,number>;timing:Record<string,number>};
  funnel:{total:number;withAudio:number;withMarkers:number;ready:number};quality:{ready:number;check:number;blocked:number};
  issues:Array<{projectId:string;ownerId:string;title:string;updatedAt:string;detail:string}>;
- requests?:{migrationPending:boolean;quotaDay:string;totals:Record<'today'|'last30Days'|'all',Record<RequestService,Counter>>;geminiModels:Record<string,{today:Counter;last30Days:Counter}>;members:Record<string,Record<RequestService,number>>};}
+ teacherKeys?:Record<string,{last4:string;status:string;updatedAt:string}>;
+ requests?:{migrationPending:boolean;quotaDay:string;totals:Record<'today'|'last30Days'|'all',Record<RequestService,Counter>>;geminiModels:Record<string,{today:Counter;last30Days:Counter}>;members:Record<string,Record<RequestService,number>>;
+  membersToday?:Record<string,MemberToday>;studio?:{transcribeUsed:number;transcribeExhausted:boolean;ttsExhausted:string[]};limits?:{sharedTranscribePerTeacher:number;elevenlabsAlignPerTeacher:number}};}
+interface MemberToday {ownTts:number;ownTranscribe:number;ownTranscribeExhausted:boolean;ownTtsExhausted:number;sharedTts:number;sharedTranscribe:number;elevenlabsAlign:number}
+/** The studio key's free Transcribe quota per day (Google AI Studio project of the studio owner). */
+const STUDIO_TRANSCRIBE_DAILY=100;
 type Counter={succeeded:number;failed:number};
 type RequestService='gemini_tts'|'gemini_transcribe'|'elevenlabs_align'|'voice';
 const requestLabels:Record<RequestService,string>={gemini_tts:'Gemini seslendirme',gemini_transcribe:'Gemini Transcribe',elevenlabs_align:'ElevenLabs Forced Alignment',voice:'ElevenLabs yedek sesi'};
@@ -71,12 +76,30 @@ export const AdminPage:React.FC=()=>{
   {message&&<p role="status" className="bg-green-50 text-green-800 p-3 rounded">{message}</p>}
   <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">{[['Öğretmen',data?.members.filter(m=>m.role==='teacher').length||0],['Onay bekleyen',data?.members.filter(m=>m.status==='pending').length||0],['Soru',analytics?.totalProjects??data?.members.reduce((s,m)=>s+m.questions,0)??0],['Seslendirilen soru',analytics?.funnel.withAudio??0],['Video hazır',totalVideoReady],['Yüklenen MP3',totalUploadedAudio]].map(([label,value])=><div key={label} className="bg-white border rounded-xl p-5"><p className="text-sm text-stone-500">{label}</p><strong className="text-3xl">{value}</strong></div>)}</div>
   {analytics?.requests&&<section className="bg-white border rounded-xl p-4"><h3 className="font-semibold">İstek sayaçları</h3><p className="text-xs text-stone-500 mt-1 mb-3">Her istek ayrı sayılır: her Gemini model denemesi, yeniden seslendirmeler ve başarısız istekler dahil. "Bugün", Gemini günlük kotasının sıfırlandığı Pasifik saatine göredir ({analytics.requests.quotaDay}).</p>
-   {analytics.requests.migrationPending?<p className="text-sm bg-amber-50 text-amber-900 border border-amber-200 rounded p-3">İstek sayacı için veritabanı güncellemesi bekleniyor: <code>supabase/migrations/20260927_voice_usage.sql</code> dosyasını Supabase SQL Editor'da bir kez çalıştırın. O zamana kadar istekler sayılmaz.</p>:<>
+   {analytics.requests.migrationPending?<p className="text-sm bg-amber-50 text-amber-900 border border-amber-200 rounded p-3">İstek sayacı için veritabanı güncellemesi bekleniyor: <code>supabase/migrations/20260928_teacher_keys.sql</code> dosyasını Supabase SQL Editor'da bir kez çalıştırın. O zamana kadar istekler sayılmaz, günlük haklar uygulanmaz ve öğretmenler anahtar kaydedemez.</p>:<>
    <div className="overflow-x-auto"><table className="w-full text-sm text-left"><thead className="bg-stone-50"><tr>{['Servis','Bugün','Son 30 gün','Toplam'].map(t=><th key={t} className="p-2 whitespace-nowrap">{t}</th>)}</tr></thead><tbody>
     {(Object.keys(requestLabels) as RequestService[]).map(k=><tr key={k} className="border-t"><td className="p-2">{requestLabels[k]}</td><td className="p-2">{counts(analytics.requests!.totals.today[k])}</td><td className="p-2">{counts(analytics.requests!.totals.last30Days[k])}</td><td className="p-2">{counts(analytics.requests!.totals.all[k])}</td></tr>)}
    </tbody></table></div>
    {Object.keys(analytics.requests.geminiModels).length>0&&<div className="mt-3"><p className="text-xs font-semibold text-stone-500 mb-1">Gemini seslendirme · model başına</p><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">{(Object.entries(analytics.requests.geminiModels) as Array<[string,{today:Counter;last30Days:Counter}]>).sort((a,b)=>(b[1].last30Days.succeeded+b[1].last30Days.failed)-(a[1].last30Days.succeeded+a[1].last30Days.failed)).map(([model,c])=><div key={model} className="border rounded-lg px-3 py-2 text-sm"><p className="font-mono-code text-xs break-all">{model}</p><p>Bugün {counts(c.today)}</p><p className="text-xs text-stone-500">Son 30 gün: {c.last30Days.succeeded+c.last30Days.failed}</p></div>)}</div></div>}
    </>}</section>}
+  {analytics?.requests&&!analytics.requests.migrationPending&&<section className="bg-white border rounded-xl p-4"><h3 className="font-semibold">Google anahtarları ve bugünkü haklar</h3>
+   <p className="text-xs text-stone-500 mt-1 mb-3">Sıra: öğretmenin kendi anahtarı → ortak anahtar (zamanlamada öğretmen başına günde {analytics.requests.limits?.sharedTranscribePerTeacher??25}) → ElevenLabs hizalama (öğretmen başına günde {analytics.requests.limits?.elevenlabsAlignPerTeacher??20}) → bilgisayarda Whisper. Yöneticiler sınırsızdır. Günlük kota dolan modeller Pasifik gece yarısına kadar atlanır.</p>
+   <div className="grid sm:grid-cols-3 gap-3 mb-3">
+    <div className="border rounded-lg p-3"><p className="text-xs text-stone-500">Kendi anahtarını bağlayan</p><strong className="text-2xl">{Object.values<{status:string}>(analytics.teacherKeys||{}).filter(k=>k.status==='active').length}</strong><span className="text-sm text-stone-500"> / {data?.members.filter(m=>m.status==='approved').length??0} üye</span></div>
+    <div className="border rounded-lg p-3"><p className="text-xs text-stone-500">Ortak anahtar · bugünkü zamanlama</p><strong className="text-2xl">{analytics.requests.studio?.transcribeUsed??0}</strong><span className="text-sm text-stone-500"> / ~{STUDIO_TRANSCRIBE_DAILY}</span>{analytics.requests.studio?.transcribeExhausted&&<p className="text-xs text-red-700">Bugünkü kota doldu</p>}</div>
+    <div className="border rounded-lg p-3"><p className="text-xs text-stone-500">Ortak anahtar · kotası dolan ses modelleri</p>{analytics.requests.studio?.ttsExhausted.length?analytics.requests.studio.ttsExhausted.map(m=><p key={m} className="font-mono-code text-xs break-all">{m}</p>):<p className="text-sm">Yok</p>}</div>
+   </div>
+   <div className="overflow-x-auto"><table className="w-full text-sm text-left"><thead className="bg-stone-50"><tr>{['Öğretmen','Kendi anahtarı','Kendi ses','Kendi zamanlama','Ortak ses','Ortak zamanlama','ElevenLabs hizalama'].map(t=><th key={t} className="p-2 whitespace-nowrap">{t}</th>)}</tr></thead><tbody>
+    {data?.members.filter(m=>m.status==='approved').map(m=>{const k=analytics.teacherKeys?.[m.id];const t=analytics.requests!.membersToday?.[m.id];const admin=m.role==='admin';return <tr key={m.id} className="border-t"><td className="p-2">{m.name}</td>
+     <td className="p-2 whitespace-nowrap">{k?(k.status==='active'?<span className="text-[#15803D] font-semibold">Bağlı · ••••{k.last4}</span>:<span className="text-red-700 font-semibold">Geçersiz</span>):<span className="text-stone-400">Yok</span>}</td>
+     <td className="p-2">{t?.ownTts??0}{t?.ownTtsExhausted?<span className="text-xs text-stone-500"> · {t.ownTtsExhausted} model doldu</span>:null}</td>
+     <td className="p-2">{t?.ownTranscribe??0}{t?.ownTranscribeExhausted&&<span className="text-xs text-red-700"> · doldu</span>}</td>
+     <td className="p-2">{t?.sharedTts??0}</td>
+     <td className="p-2">{t?.sharedTranscribe??0}{!admin&&<span className="text-stone-500"> / {analytics.requests!.limits?.sharedTranscribePerTeacher??25}</span>}</td>
+     <td className="p-2">{t?.elevenlabsAlign??0}{!admin&&<span className="text-stone-500"> / {analytics.requests!.limits?.elevenlabsAlignPerTeacher??20}</span>}</td></tr>;})}
+   </tbody></table></div>
+   <p className="text-xs text-stone-500 mt-2">"Bugün", {analytics.requests.quotaDay} Pasifik günüdür (Türkiye saatiyle 10:00–11:00 arası yenilenir). Sayılar kotadan düşen istekleri gösterir; 429 ile reddedilen istekler dahil değildir.</p>
+  </section>}
   {analytics&&<section className="bg-white border rounded-xl p-4"><h3 className="font-semibold">Ses ve zamanlama</h3><p className="text-xs text-stone-500 mt-1 mb-3">Her projenin şu anki ses kaydına göre. Ana ses Gemini, yedek ElevenLabs.</p>
    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
     <div className="border rounded-lg p-3 space-y-1.5 text-sm"><p className="text-xs font-semibold text-stone-500">Ses motoru</p>

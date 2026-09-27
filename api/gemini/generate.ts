@@ -1,15 +1,12 @@
 import { createHash } from 'node:crypto';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage, type UsageEvent } from '../../server/usage.js';
+import {
+  GEMINI_TTS_MODELS as GEMINI_MODELS, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid, normalizeApiKey,
+  readDailyState, readTeacherKey, usageDetail, type KeySource,
+} from '../../server/quota.js';
 
 export const config = { maxDuration: 120 };
-
-const GEMINI_MODELS = [
-  'gemini-3.8-flash-lite-tts',
-  'gemini-3.8-flash-tts',
-  'gemini-3.1-flash-tts-preview',
-  'gemini-2.5-flash-preview-tts',
-] as const;
 
 const VOICE_NAME = 'Achernar';
 const STYLE = [
@@ -22,12 +19,6 @@ const STYLE = [
   'Do not sound like an announcer.',
   'Read the transcript faithfully without adding, omitting, translating, paraphrasing or repeating words.',
 ].join(' ');
-
-function normalizeApiKey(value?: string): string {
-  let key = (value || '').trim();
-  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) key = key.slice(1, -1).trim();
-  return key;
-}
 
 function hashKey(value: string): number {
   let hash = 0;
@@ -130,9 +121,11 @@ async function saveGeneratedAudio(memberId: string, projectId: string, text: str
   return { path, signedUrl: data.signedUrl };
 }
 
-/** Each model attempt is its own request against that model's free-tier quota. */
-function failedUsage(attempts: Array<{ model: string; status: number }>, characters: number): UsageEvent[] {
-  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: `${a.model} · ${a.status}`, characters }));
+interface Attempt { model: string; status: number; detail?: string; daily?: boolean; keySource: KeySource }
+
+/** Each model attempt is its own request against that key's per-model free-tier quota. */
+function failedUsage(attempts: Attempt[], characters: number): UsageEvent[] {
+  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily), characters, keySource: a.keySource }));
 }
 
 export default async function handler(req: any, res: any) {
@@ -141,15 +134,6 @@ export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const apiKey = normalizeApiKey(process.env.GEMINI_API_KEY);
-  if (!apiKey) {
-    return res.status(503).json({
-      error: 'Gemini ses servisi yapılandırılmamış. Vercel Production ortamında GEMINI_API_KEY bulunamadı.',
-      code: 'MISSING_GEMINI_API_KEY',
-      fallbackAllowed: true,
-    });
   }
 
   const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
@@ -167,67 +151,84 @@ export default async function handler(req: any, res: any) {
     return res.status(403).json({ error: 'Gemini seslendirmesi için proje erişimi doğrulanamadı.', code: 'PROJECT_ACCESS_DENIED', fallbackAllowed: false });
   }
 
-  const attempts: Array<{ model: string; status: number; detail?: string }> = [];
-  for (const model of modelOrder(projectId || member.user.id)) {
-    try {
-      const upstream = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-        {
-          method: 'POST',
-          signal: AbortSignal.timeout(105000),
-          headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' },
-          body: JSON.stringify(makeRequestBody(model, text)),
+  // Teacher's own key first (their own free quota), then the studio key; models already
+  // out of daily quota on that key are skipped until the Pacific reset.
+  const systemKey = normalizeApiKey(process.env.GEMINI_API_KEY);
+  const [teacherKey, today] = await Promise.all([readTeacherKey(db, member.user.id), readDailyState(db, member.user.id)]);
+  const lanes: Array<{ source: KeySource; key: string; skip: string[] }> = [];
+  if (teacherKey) lanes.push({ source: 'teacher', key: teacherKey, skip: today.own.ttsExhausted });
+  if (systemKey) lanes.push({ source: 'system', key: systemKey, skip: today.shared.ttsExhausted });
+  if (!lanes.length) {
+    return res.status(503).json({ error: 'Gemini ses servisi yapılandırılmamış.', code: 'MISSING_GEMINI_API_KEY', fallbackAllowed: true });
+  }
+
+  const attempts: Attempt[] = [];
+  for (const lane of lanes) {
+    for (const model of modelOrder(projectId || member.user.id).filter(m => !lane.skip.includes(m))) {
+      try {
+        const upstream = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+          {
+            method: 'POST',
+            signal: AbortSignal.timeout(105000),
+            headers: { 'x-goog-api-key': lane.key, 'Content-Type': 'application/json' },
+            body: JSON.stringify(makeRequestBody(model, text)),
+          }
+        );
+
+        const raw = await upstream.text();
+        if (!upstream.ok) {
+          let detail = '';
+          try {
+            const parsed = JSON.parse(raw);
+            detail = parsed?.error?.message || parsed?.message || '';
+          } catch {
+            detail = raw.slice(0, 180);
+          }
+          attempts.push({ model, status: upstream.status, detail, daily: isDailyQuotaError(upstream.status, raw), keySource: lane.source });
+          if (lane.source === 'teacher' && isInvalidKeyError(upstream.status, raw)) await markTeacherKeyInvalid(db, member.user.id);
+          if (upstream.status === 401 || upstream.status === 403 || isInvalidKeyError(upstream.status, raw)) break;
+          continue;
         }
-      );
 
-      const raw = await upstream.text();
-      if (!upstream.ok) {
-        let detail = '';
-        try {
-          const parsed = JSON.parse(raw);
-          detail = parsed?.error?.message || parsed?.message || '';
-        } catch {
-          detail = raw.slice(0, 180);
+        const payload = JSON.parse(raw);
+        const audioPart = (payload?.candidates?.[0]?.content?.parts || []).find((part: any) => part?.inlineData?.data);
+        if (!audioPart?.inlineData?.data) {
+          attempts.push({ model, status: 502, detail: 'Gemini yanıtında ses verisi yok.', keySource: lane.source });
+          continue;
         }
-        attempts.push({ model, status: upstream.status, detail });
-        if (upstream.status === 401 || upstream.status === 403) break;
-        continue;
+
+        const upstreamMime = String(audioPart.inlineData.mimeType || '');
+        let audio = Buffer.from(audioPart.inlineData.data, 'base64');
+        if (audio.toString('ascii', 0, 4) !== 'RIFF') audio = pcmToWav(audio, sampleRateFromMime(upstreamMime));
+        const duration = wavDurationSeconds(audio);
+        const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio);
+
+        await recordUsage(member.user.id, projectId, [...failedUsage(attempts, text.length),
+          { kind: 'gemini_tts', state: 'succeeded', detail: model, characters: text.length, keySource: lane.source }]);
+        return res.status(200).json({
+          audioUrl: stored.signedUrl,
+          assetPath: stored.path,
+          mimeType: 'audio/wav',
+          mode: 'live',
+          durationSeconds: Number(duration.toFixed(3)),
+          provider: 'gemini',
+          modelId: model,
+          voiceId: VOICE_NAME,
+          voiceName: VOICE_NAME,
+          attempts: attempts.length + 1,
+          keySource: lane.source,
+        });
+      } catch (error: any) {
+        attempts.push({ model, status: 502, detail: error?.message || 'Ağ hatası', keySource: lane.source });
       }
-
-      const payload = JSON.parse(raw);
-      const audioPart = (payload?.candidates?.[0]?.content?.parts || []).find((part: any) => part?.inlineData?.data);
-      if (!audioPart?.inlineData?.data) {
-        attempts.push({ model, status: 502, detail: 'Gemini yanıtında ses verisi yok.' });
-        continue;
-      }
-
-      const upstreamMime = String(audioPart.inlineData.mimeType || '');
-      let audio = Buffer.from(audioPart.inlineData.data, 'base64');
-      if (audio.toString('ascii', 0, 4) !== 'RIFF') audio = pcmToWav(audio, sampleRateFromMime(upstreamMime));
-      const duration = wavDurationSeconds(audio);
-      const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio);
-
-      await recordUsage(member.user.id, projectId, [...failedUsage(attempts, text.length),
-        { kind: 'gemini_tts', state: 'succeeded', detail: model, characters: text.length }]);
-      return res.status(200).json({
-        audioUrl: stored.signedUrl,
-        assetPath: stored.path,
-        mimeType: 'audio/wav',
-        mode: 'live',
-        durationSeconds: Number(duration.toFixed(3)),
-        provider: 'gemini',
-        modelId: model,
-        voiceId: VOICE_NAME,
-        voiceName: VOICE_NAME,
-        attempts: attempts.length + 1,
-      });
-    } catch (error: any) {
-      attempts.push({ model, status: 502, detail: error?.message || 'Ağ hatası' });
     }
   }
 
   await recordUsage(member.user.id, projectId, failedUsage(attempts, text.length));
-  const compact = attempts.map(a => `${a.model}: HTTP ${a.status}${a.detail ? ` (${a.detail.slice(0, 120)})` : ''}`).join(' | ');
+  const compact = attempts.length
+    ? attempts.map(a => `${a.keySource === 'teacher' ? 'kendi anahtarı' : 'ortak anahtar'} ${a.model}: HTTP ${a.status}${a.detail ? ` (${a.detail.slice(0, 120)})` : ''}`).join(' | ')
+    : 'Bugünkü Gemini seslendirme kotaları dolu.';
   console.warn('[Gemini TTS] all free-tier models failed', attempts);
   return res.status(429).json({
     error: `Gemini TTS başarısız. ${compact || 'Model yanıtı alınamadı.'}`,

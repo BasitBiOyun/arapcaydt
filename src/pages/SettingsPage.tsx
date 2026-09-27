@@ -14,6 +14,7 @@ import {
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { ElevenLabsStatus } from '../types';
 import { useProjects } from '../features/projects/ProjectContext';
+import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
 
 export const SettingsPage: React.FC = () => {
   const { projects } = useProjects();
@@ -127,6 +128,9 @@ export const SettingsPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Teacher's own Google AI Studio key (used before the shared capacity) */}
+      <TeacherKeyCard />
 
       {/* 2. Video Defaults Card */}
       <div className="p-5 rounded bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
