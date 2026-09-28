@@ -149,6 +149,10 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
             <BrandMark size={20} />
             <span>{APP_NAME} · {APP_OWNER_LINE} · {new Date().getFullYear()}</span>
           </div>
+          <nav className="flex items-center gap-4" aria-label="Yasal">
+            <a href="/gizlilik.html" className="hover:text-[#1C1917]">Gizlilik</a>
+            <a href="/kullanim-kosullari.html" className="hover:text-[#1C1917]">Kullanım Koşulları</a>
+          </nav>
           <p className="text-[11px]">Made by Yunus Emre Yılmaz with <span role="img" aria-label="sevgi">❤️</span></p>
         </div>
       </footer>
