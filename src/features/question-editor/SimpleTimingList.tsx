@@ -30,6 +30,18 @@ export function cueTitle(action: VideoAction, regions: AnnotationRegion[]): stri
 }
 
 /** The phrase in the solution that triggers the cue ("reject: C şıkkı yanlış" → "C şıkkı yanlış"). */
+/** Options on the image with neither a cross nor the answer tick: candidates for "Çarpı ekle". */
+export function unmarkedOptions(actions: VideoAction[], regions: AnnotationRegion[]): string[] {
+  const marked = new Set(actions.filter(a => a.type === 'reject' || a.type === 'correct').map(a => a.targetRegionId));
+  return regions.filter(r => /^option-[a-e]$/.test(r.id) && !marked.has(r.id)).map(r => r.id).sort();
+}
+
+/** A cross from the given moment to the end, like the ones made from the narration. */
+export function manualCross(regionId: string, at: number, total: number): VideoAction {
+  const start = Math.max(0, Math.min(total - .1, at));
+  return { id: `manual-${regionId}-${Math.round(start * 1000)}`, type: 'reject', targetRegionId: regionId, start, startTime: start, duration: total - start, label: 'reject: elle eklendi' };
+}
+
 /** One line for the closed list: "3 şık elenir · 1 doğru cevap · 2 vurgu". */
 export function cueSummary(cues: VideoAction[]): string {
   const count = (types: VideoAction['type'][]) => cues.filter(c => types.includes(c.type)).length;
@@ -79,6 +91,8 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
   };
   /** "Buraya al": the mark starts at the paused preview's current moment. */
   const moveHere = (cue: VideoAction) => move(cue.id, currentTime - cue.start);
+  const addCross = (regionId: string) => { const cross = manualCross(regionId, currentTime, total); change([...actions, cross]); show(cross.start); };
+  const unmarked = unmarkedOptions(actions, regions);
   const remove = (id: string) => change(actions.filter(a => a.id !== id));
   const back = () => { const previous = undo.at(-1); if (previous) { onUpdateActions(previous); setUndo(undo.slice(0, -1)); } };
 
@@ -103,6 +117,17 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
         Önizlemeyi işaretin çıkması gereken anda durdurun ve <b>Buraya al</b>’a basın. İnce ayar için <b>Erken/Geç</b> ({NUDGE_SECONDS.toLocaleString('tr')} sn).
         <span className="block mt-0.5">Önizleme şu an: <b className="font-mono-code text-[#1C1917]">{clock(currentTime)}</b></span>
       </p>
+      {unmarked.length > 0 && (
+        <div className="px-3 py-2 border-t border-[#EFEFEA] flex flex-wrap items-center gap-1.5 text-xs text-[#55544F]">
+          <span>İşaretsiz şık:</span>
+          {unmarked.map(id => (
+            <button key={id} type="button" className={`${button} text-[#8B1E2D]`} onClick={() => addCross(id)}
+              title={`${clock(currentTime)} anından itibaren çarpı çiz`}>
+              ✗ {id.slice(-1).toUpperCase()} şıkkına buradan çarpı ekle
+            </button>
+          ))}
+        </div>
+      )}
       <ol className="divide-y divide-[#EFEFEA] border-t border-[#EFEFEA]">
         {cues.map(cue => {
           const kind = KIND[cue.type]!;

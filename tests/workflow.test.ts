@@ -88,3 +88,13 @@ test('player and marks list share one time format', async () => {
   assert.equal(clock(65.35), '01:05,4');
   assert.equal(clock(59.97), '01:00,0', 'rounding carries into the minute');
 });
+
+test('options without a cross or tick can be crossed by hand from the paused moment', async () => {
+  const { unmarkedOptions, manualCross } = await import('../src/features/question-editor/SimpleTimingList');
+  const regions = ['a', 'b', 'c', 'd', 'e'].map(l => ({ id: `option-${l}` })) as any;
+  const actions = [{ id: '1', type: 'reject', targetRegionId: 'option-a', start: 3, duration: 7 }, { id: '2', type: 'correct', targetRegionId: 'option-d', start: 8, duration: 2 },
+    { id: '3', type: 'focus', targetRegionId: 'option-b', start: 4, duration: 1 }] as any;
+  assert.deepEqual(unmarkedOptions(actions, regions), ['option-b', 'option-c', 'option-e']);
+  const cross = manualCross('option-b', 6.25, 10);
+  assert.deepEqual([cross.type, cross.start, cross.duration], ['reject', 6.25, 3.75], 'lasts to the end like narrated crosses');
+});

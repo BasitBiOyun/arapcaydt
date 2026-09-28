@@ -21,6 +21,8 @@ export interface SolutionParseResult {
   events: SemanticParsedEvent[];
   deducedCorrectAnswer?: 'A' | 'B' | 'C' | 'D' | 'E';
   optionStances: Record<'A' | 'B' | 'C' | 'D' | 'E', 'rejected' | 'correct' | 'neutral'>;
+  /** What triggers each option's mark; inferred = crossed because it was discussed and is not the answer. */
+  verdicts?: Partial<Record<'A' | 'B' | 'C' | 'D' | 'E', { stance: 'rejected' | 'correct'; trigger: string; inferred: boolean }>>;
 }
 
 export const REJECTION_PATTERNS = [
@@ -99,7 +101,34 @@ const NEGATED_CORRECT = /doğru\s+(?:cevap\s+|yanıt\s+|seçenek\s+|şık\s+)?(?
 /** Weak acceptance words are trusted only right after an option is named. */
 const LOCAL_CORRECT_PATTERNS = [...CORRECT_PATTERNS, /(?<!\p{L})uygundur/iu, /doğru\s+olan/i, /cevaptır/i, /gelmelidir/i];
 const EXTRA_REJECTION_PATTERNS = [/(?<!\p{L})uymaz/iu, /elemeliyiz/i, /eleriz/i, /eliyorum/i, /uymamaktadır/i, /uymadığı/i, /uygun\s+düşmez/i,
-  /uygun\s+olmadığı/i, /karşılamaz/i, /anlamı\s+boz/i, /çeldirici/i];
+  /uygun\s+olmadığı/i, /karşılamaz/i, /anlamı\s+boz/i, /çeldirici/i,
+  /(?<!\p{L})elen(?:ir|iyor|meli|mektedir|di|ecek)/iu, /(?<!\p{L})ele(?:yelim|yeceğiz|yebiliriz|memiz)/iu,
+];
+/**
+ * Descriptions that show an option is wrong without the explicit verdict
+ * ("ilgisi yoktur", "anlamsız bir ifade", "oluşturmamaktadır"). They cross the
+ * option only when no explicit verdict ("olmaz", "eliyoruz") follows in its explanation.
+ */
+const WEAK_REJECTION_PATTERNS = [
+  // "ilgisi yoktur", "alakası yok", "yeri yok", "karşılığı yok"
+  /(?<!\p{L})(?:ilgi|alaka|yer|karşılı[kğ]|bağlantı|ilişki)\p{L}*\s+(?:da\s+|de\s+|hiç\s+)?yok/iu,
+  /(?<!\p{L})(?:ilgisiz|alakasız|anlamsız|gereksiz|uyumsuz|yersiz|isabetsiz|aykırı)/iu,
+  /(?<!\p{L})çeliş/iu, /ters\s+düş/i, /(?<!\p{L})boz(?:ar|uyor|maktadır|duğu)/iu, /dışında\s+kal|dışarıda\s+kal/i,
+  // "anlamlı değildir", "uygun bir kullanım değil", "cevap değil"
+  /(?<!\p{L})(?:anlamlı|uygun|geçerli|mümkün|yerinde|isabetli|doğru)\s+(?:bir\s+\p{L}+\s+)?değil/iu,
+  /(?<!\p{L})(?:cevap|seçenek|karşılık|kullanım)\p{L}*\s+(?:olarak\s+)?değil/iu,
+];
+/** Words that end like a negative verb but are not one (DKAB and everyday vocabulary). */
+const NOT_NEGATIVE = new Set(['namaz', 'namazlar', 'cemaz']);
+/** Negative verb forms: uymaz, gelmez, karşılamıyor, taşımamaktadır, olmadığı, uymamış. */
+const NEGATIVE_VERB = /(?<!\p{L})\p{L}+?(?:m[ıiuü]yor(?:lar)?|m[ae]z(?:lar)?|m[ae]m[ae]kt[ae]d[ıiuü]r|m[ae]d[ıiuü][ğk]\p{L}*|m[ae]m[ıiuü]ş(?:tır|tir)?)(?!\p{L})/giu;
+/** A negative word that is itself negated means acceptance: "yanlış değildir", "hatalı sayılmaz". */
+const DOUBLE_NEGATIVE = /(?<!\p{L})(?:yanlış|hatalı|geçersiz|ilgisiz|anlamsız|uygunsuz)\s+(?:bir\s+\p{L}+\s+)?(?:değil|sayılmaz)/iu;
+
+function negativeVerb(text: string): { index: number; text: string } | null {
+  for (const m of text.matchAll(NEGATIVE_VERB)) if (!NOT_NEGATIVE.has(m[0].toLocaleLowerCase('tr-TR'))) return { index: m.index!, text: m[0] };
+  return null;
+}
 
 function findPattern(text: string, patterns: RegExp[]): { index: number; text: string } | null {
   let best: { index: number; text: string } | null = null;
@@ -114,10 +143,16 @@ function findPattern(text: string, patterns: RegExp[]): { index: number; text: s
 function stanceIn(segment: string, local: boolean) {
   const negated = segment.match(NEGATED_CORRECT);
   if (negated) return { stance: 'rejected' as const, index: negated.index!, text: negated[0] };
+  const accepted = segment.match(DOUBLE_NEGATIVE);
+  if (accepted) return local ? { stance: 'correct' as const, index: accepted.index!, text: accepted[0] } : null;
   const rejection = findPattern(segment, [...REJECTION_PATTERNS, ...EXTRA_REJECTION_PATTERNS]);
   if (rejection) return { stance: 'rejected' as const, ...rejection };
   const correct = findPattern(segment, local ? LOCAL_CORRECT_PATTERNS : CORRECT_PATTERNS);
   if (correct) return { stance: 'correct' as const, ...correct };
+  const listed = findPattern(segment, WEAK_REJECTION_PATTERNS);
+  const verb = negativeVerb(segment);
+  const weak = listed && verb ? (verb.index < listed.index ? verb : listed) : listed || verb;
+  if (weak) return { stance: 'rejected' as const, weak: true, ...weak };
   return null;
 }
 
@@ -220,7 +255,11 @@ export function parseSolutionSemantics(
   for (const sentence of sentences) for (const mention of findOptionMentions(sentence.text))
     if (mention.kind === 'answer' && !answerMentionNegated(sentence.text, mention)) textAnswer = mention.letters[0];
 
-  for (const sentenceSpan of sentences) {
+  // Last sentence of each option's own explanation: where an unjudged option is crossed.
+  const lastSentenceFor: Partial<Record<OptionLetter, number>> = {};
+  const inferred = new Set<OptionLetter>();
+  const pendingWeak: Partial<Record<OptionLetter, { trigger: string; sentence: string; sourceStart: number; sourceEnd: number; sentenceStart: number; sentenceEnd: number }>> = {};
+  for (const [sentenceIndex, sentenceSpan] of sentences.entries()) {
     const sentence = sentenceSpan.text;
     const eventStart = events.length;
     const attachOffsets = () => {
@@ -263,10 +302,14 @@ export function parseSolutionSemantics(
     const mentions = findOptionMentions(sentence);
     const at = (local: number, text: string) => ({ sourceStart: sentenceSpan.start + local, sourceEnd: sentenceSpan.start + local + text.length });
     const hasRegion = (letter: OptionLetter) => validRegionIds.has(`option-${letter.toLowerCase()}`);
-    const judge = (letter: OptionLetter, stance: 'rejected' | 'correct', trigger: string, local: number) => {
+    const judge = (letter: OptionLetter, stance: 'rejected' | 'correct', trigger: string, local: number, weak = false) => {
       if (!hasRegion(letter) || optionStances[letter] !== 'neutral') return;
+      if (weak) {
+        pendingWeak[letter] ??= { trigger, sentence, ...at(local, trigger), sentenceStart: sentenceSpan.start, sentenceEnd: sentenceSpan.end };
+        return;
+      }
       // The spoken answer is never crossed out; a known answer blocks praise of another option.
-      if (stance === 'rejected' && letter === textAnswer) return;
+      if (stance === 'rejected' && (letter === textAnswer || (!textAnswer && letter === declared))) return;
       if (stance === 'correct' && textAnswer && letter !== textAnswer) return;
       optionStances[letter] = stance;
       if (stance === 'correct') deducedCorrectAnswer = letter;
@@ -300,7 +343,7 @@ export function parseSolutionSemantics(
         activeLetters = [];
         const answer = currentAnswer();
         if (!stance || stance.stance !== 'rejected' || !answer) return;
-        for (const letter of LETTERS) if (letter !== answer) judge(letter, 'rejected', stance.text, stance.local);
+        for (const letter of LETTERS) if (letter !== answer) judge(letter, 'rejected', stance.text, stance.local, 'weak' in stance);
         return;
       }
       // A missing visual target must not leave the previous option active.
@@ -308,15 +351,28 @@ export function parseSolutionSemantics(
       for (const letter of mention.letters) if (hasRegion(letter) && optionStances[letter] === 'neutral') {
         pushOptionEvent(events, counter, letter, 'focus', mention.text, sentence, at(mention.start, mention.text));
       }
-      if (stance) for (const letter of mention.letters) judge(letter, stance.stance, stance.text, stance.local);
+      if (stance) for (const letter of mention.letters) judge(letter, stance.stance, stance.text, stance.local, 'weak' in stance);
     });
 
     // "A seçeneğine bakalım. Bu yapı burada kullanılamaz, eliyoruz." judges the option named before.
     if (!mentions.length && activeLetters.length) {
       const stance = stanceIn(sentence, false);
-      if (stance) for (const letter of activeLetters) judge(letter, stance.stance, stance.text, stance.index);
+      if (stance) for (const letter of activeLetters) judge(letter, stance.stance, stance.text, stance.index, 'weak' in stance);
     }
+    for (const letter of activeLetters) lastSentenceFor[letter] = sentenceIndex;
+    for (const mention of mentions) if (mention.kind === 'option') for (const letter of mention.letters) lastSentenceFor[letter] = sentenceIndex;
     attachOffsets();
+  }
+
+  // Descriptive verdicts count where the explanation gave no explicit one; never on the known answer.
+  const knownAnswer = textAnswer || deducedCorrectAnswer || (declared && optionStances[declared] !== 'rejected' ? declared : undefined);
+  for (const letter of LETTERS) {
+    const pending = pendingWeak[letter];
+    if (!pending || letter === knownAnswer || optionStances[letter] !== 'neutral') continue;
+    optionStances[letter] = 'rejected';
+    const { trigger, sentence, ...offsets } = pending;
+    pushOptionEvent(events, counter, letter, 'reject', trigger, sentence, offsets);
+    Object.assign(events[events.length - 1], { sourceText: solutionText });
   }
 
   // Declared/eliminated answer still gets its check when the script never says "doğru cevap".
@@ -345,6 +401,22 @@ export function parseSolutionSemantics(
     }
   }
 
+  // An option that was discussed but never judged is not the answer, so it is eliminated
+  // however the teacher phrased it ("ilgisi yoktur", "buraya oturmaz" …): the cross lands
+  // on the last word of that option's explanation.
+  const answer = LETTERS.find(letter => optionStances[letter] === 'correct');
+  if (answer) for (const letter of LETTERS) {
+    const index = lastSentenceFor[letter];
+    if (letter === answer || index === undefined || optionStances[letter] !== 'neutral' || !validRegionIds.has(`option-${letter.toLowerCase()}`)) continue;
+    const span = sentences[index];
+    const local = span.text.search(/\S+$/);
+    const trigger = span.text.slice(local);
+    optionStances[letter] = 'rejected';
+    inferred.add(letter);
+    pushOptionEvent(events, counter, letter, 'reject', trigger, span.text, { sourceStart: span.start + local, sourceEnd: span.start + local + trigger.length });
+    Object.assign(events[events.length - 1], { sentenceStart: span.start, sentenceEnd: span.end, sourceText: solutionText });
+  }
+
   // Root introduction was emitted before the sentence loop.
   for (const event of events) if (event.sourceStart === undefined) {
     event.sourceStart = solutionText.indexOf(event.semanticTriggerPhrase);
@@ -366,9 +438,17 @@ export function parseSolutionSemantics(
     return firstIndex === index;
   });
 
+  const verdicts: SolutionParseResult['verdicts'] = {};
+  for (const event of deduped) {
+    const letter = event.targetOptionLetter;
+    if (!letter || verdicts[letter] || (event.actionType !== 'reject' && event.actionType !== 'correct')) continue;
+    verdicts[letter] = { stance: event.actionType === 'reject' ? 'rejected' : 'correct', trigger: event.semanticTriggerPhrase, inferred: inferred.has(letter) };
+  }
+
   return {
     events: deduped.map((event, index) => ({ ...event, order: index + 1 })),
     deducedCorrectAnswer,
     optionStances,
+    verdicts,
   };
 }

@@ -14,6 +14,22 @@ export function NarrationCheck({ step, check, currentProject }: NarrationCheckPr
       <section className="narration-check" aria-label="Ses ön kontrolü">
         <strong>{check.characters.toLocaleString('tr')} / 5.000 karakter</strong>
         <p>Doğru cevap: {currentProject.correctAnswer}.</p>
+        {check.characters > 0 && (
+          <ul className="mt-2 space-y-0.5" aria-label="Şıkların işaretleri">
+            {(['A', 'B', 'C', 'D', 'E'] as const).map(letter => {
+              const v = check.verdicts[letter];
+              const trigger = v?.trigger.replace(/[.,;:!?]+$/, '');
+              return (
+                <li key={letter} className="flex gap-1.5">
+                  <b className="w-4">{letter}</b>
+                  {!v ? <span className="text-[#8A8780]">işaret yok (metinde geçmiyor)</span>
+                    : v.stance === 'correct' ? <span className="text-[#15803D] font-semibold">✓ doğru cevap</span>
+                      : <span className="text-[#8B1E2D]">✗ elenir{v.inferred ? ` · açıklamanın sonunda (“${trigger}”)` : ` · “${trigger}” denince`}</span>}
+                </li>
+              );
+            })}
+          </ul>
+        )}
         {check.characters > 5000 && <p role="alert">Tek ses için metni 5.000 karakterin altına kısaltın.</p>}
         {check.missing.length > 0 && <p>Metinde şık başlığı bulunamadı: {check.missing.join(', ')}. Açıklamalarınızı kontrol edin.</p>}
         {check.mismatch && (

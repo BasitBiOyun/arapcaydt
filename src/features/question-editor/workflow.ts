@@ -12,8 +12,11 @@ export function resumeStep(p:Pick<QuestionProject,'imageUrl'|'solutionText'|'aud
 export function checkNarration(text:string,answer:string) {
   const options=['A','B','C','D','E'];
   const regions=options.map(l=>({id:`option-${l.toLowerCase()}`,type:'option',label:l,x:0,y:0,width:.1,height:.1} as AnnotationRegion));
-  const parsed=parseSolutionSemantics(text,regions);
+  const letter=options.includes(answer)?answer as 'A'|'B'|'C'|'D'|'E':undefined;
+  const parsed=parseSolutionSemantics(text,regions,[],letter);
   return {
+    /** What each option will get in the video, before any audio is made. */
+    verdicts:parsed.verdicts||{},
     characters:text.trim().length,
     missing:options.filter(l=>!parsed.events.some(e=>e.targetOptionLetter===l)),
     mismatch:parsed.deducedCorrectAnswer && parsed.deducedCorrectAnswer!==answer ? parsed.deducedCorrectAnswer : undefined,
