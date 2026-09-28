@@ -13,6 +13,14 @@ import {
   Sparkle
 } from '@phosphor-icons/react';
 
+/** Preview speeds a teacher can step through when checking a video. */
+export const PREVIEW_SPEEDS = [1, 1.25, 1.5, 1.75, 2];
+const RATE_KEY = 'studio-preview-rate';
+export const speedLabel = (speed: number) => `${speed.toLocaleString('tr')}×`;
+function readRate(): number {
+  try { const saved = Number(localStorage.getItem(RATE_KEY)); return PREVIEW_SPEEDS.includes(saved) ? saved : 1; } catch { return 1; }
+}
+
 interface VideoPreviewCanvasProps {
   imageUrl: string;
   regions?: AnnotationRegion[];
@@ -63,6 +71,11 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
     return () => { active = false; };
   }, [imageUrl]);
 
+  // Preview speed (the exported MP4 always plays at normal speed); remembered on this device.
+  const [rate, setRate] = useState(readRate);
+  const changeRate = (next: number) => { setRate(next); try { localStorage.setItem(RATE_KEY, String(next)); } catch { /* per-device only */ } };
+  useEffect(() => { if (audioRef.current) audioRef.current.playbackRate = rate; }, [rate, audioUrl]);
+
   const seekRef = useRef(onSeek);
   const toggleRef = useRef(onPlayPause);
   const timeRef = useRef(currentTime);
@@ -79,25 +92,28 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
     if (!isPlaying) { audio?.pause(); return; }
     if (audio) {
       audio.currentTime = timeRef.current;
+      audio.playbackRate = rate;
       audio.play().catch(() => { if (!stopped) toggleRef.current(); });
     }
-    let origin = performance.now() / 1000 - timeRef.current;
+    // Wall clock (no audio, or the silent closing frame): time runs at the chosen speed too.
+    let wallStart = performance.now() / 1000, wallFrom = timeRef.current;
     // After the narration the silent closing frame runs on the wall clock.
     let onWallClock = !audio || timeRef.current >= duration - .02;
     const tick = () => {
       if (stopped) return;
       if (audio && !onWallClock && (audio.ended || audio.currentTime >= duration - .02) && totalDuration > duration) {
         onWallClock = true;
-        origin = performance.now() / 1000 - Math.max(audio.currentTime, duration);
+        wallStart = performance.now() / 1000;
+        wallFrom = Math.max(audio.currentTime, duration);
       }
-      const next = audio && !onWallClock ? audio.currentTime : performance.now() / 1000 - origin;
+      const next = audio && !onWallClock ? audio.currentTime : wallFrom + (performance.now() / 1000 - wallStart) * rate;
       if (next >= totalDuration) { toggleRef.current(); seekRef.current(totalDuration); return; }
       seekRef.current(next);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => { stopped = true; cancelAnimationFrame(raf); audio?.pause(); };
-  }, [isPlaying, audioUrl, duration, totalDuration]);
+  }, [isPlaying, audioUrl, duration, totalDuration, rate]);
   useEffect(() => {
     const audio = audioRef.current;
     // The closing frame has no audio: leave the ended track alone instead of re-seeking it every frame.
@@ -251,6 +267,15 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-md border border-[#D5D4CC] overflow-hidden text-[11px] font-semibold" role="group" aria-label="Oynatma hızı">
+              {PREVIEW_SPEEDS.map(speed => (
+                <button key={speed} type="button" onClick={() => changeRate(speed)} aria-pressed={rate === speed}
+                  title={speed === 1 ? 'Normal hız' : `${speedLabel(speed)} hızlı önizle`}
+                  className={`px-2 py-1 transition-colors ${rate === speed ? 'bg-[#8B1E2D] text-white' : 'bg-[#FAF9F5] text-[#55544F] hover:bg-[#EFEFEA]'}`}>
+                  {speedLabel(speed)}
+                </button>
+              ))}
+            </div>
             <button
               type="button"
               onClick={handleFullscreen}
