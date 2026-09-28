@@ -30,3 +30,38 @@ export function saveFile(source: Blob | string, name: string): void {
   // Revoking at once can cancel the download in some browsers.
   if (typeof source !== 'string') setTimeout(() => URL.revokeObjectURL(url), 3000);
 }
+
+/** Longest side kept for question images: above the 1920×1080 video and OCR needs. */
+export const MAX_IMAGE_SIDE = 2400;
+
+/** Size an image is drawn at: never enlarged, longest side at most `max`. */
+export function fittedSize(width: number, height: number, max = MAX_IMAGE_SIDE): { width: number; height: number } {
+  const scale = Math.min(1, max / Math.max(width, height, 1));
+  return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
+}
+
+/**
+ * A question image as a data URL, re-encoded as high-quality WebP (and scaled
+ * down if huge) to save storage. The original is kept when the browser cannot
+ * make WebP or when the result would not be smaller.
+ */
+export async function readCompressedImage(file: Blob): Promise<string> {
+  const original = await readDataUrl(file);
+  if (!/^image\/(png|jpeg|webp|bmp)$/.test(file.type)) return original;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const size = fittedSize(bitmap.width, bitmap.height);
+    const canvas = document.createElement('canvas');
+    canvas.width = size.width;
+    canvas.height = size.height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return original;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(bitmap, 0, 0, size.width, size.height);
+    bitmap.close();
+    const webp = canvas.toDataURL('image/webp', 0.92);
+    return webp.startsWith('data:image/webp') && webp.length < original.length ? webp : original;
+  } catch {
+    return original;
+  }
+}

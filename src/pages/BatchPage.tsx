@@ -13,7 +13,7 @@ import { newProjectDefaults } from '../features/settings/preferences';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { narrationService } from '../services/narration/narrationService';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
-import { readAudioDuration, readDataUrl, saveFile } from '../services/narration/browserMedia';
+import { readAudioDuration, readCompressedImage, readDataUrl, saveFile } from '../services/narration/browserMedia';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { localOcrService } from '../services/ocr/localOcrService';
 import { localVideoPipeline } from '../services/pipeline/localVideoPipeline';
@@ -78,7 +78,8 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
     abort.current = new AbortController();
     setRows(Object.fromEntries(plan.items.map(i => [i.number, { stage: 'waiting' as const }])));
     const deps: BatchDeps<File> = {
-      readDataUrl,
+      // Only question images go through this; MP3s use prepareUpload below.
+      readDataUrl: readCompressedImage,
       createProject: p => projectRepository.create(p),
       saveProject: p => projectRepository.save(p),
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,

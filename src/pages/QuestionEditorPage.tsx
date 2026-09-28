@@ -11,7 +11,7 @@ import { LocalPipelineResult } from '../services/pipeline/localVideoPipeline';
 import { localWhisperService } from '../services/whisper/localWhisperService';
 import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
-import { readDataUrl, readAudioDuration, saveFile } from '../services/narration/browserMedia';
+import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { narrationService } from '../services/narration/narrationService';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
@@ -223,7 +223,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setPreviewMode('image');
   };
   const handleImageFile = (file: File) => {
-    if (file.type.startsWith('image/')) void readDataUrl(file).then(url => setImage(url, file.name), () => undefined);
+    if (file.type.startsWith('image/')) void readCompressedImage(file).then(url => setImage(url, file.name), () => undefined);
   };
   const handleDeleteImage = () => setImage('', '');
 

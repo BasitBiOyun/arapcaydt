@@ -141,3 +141,18 @@ test('storage migration: object listing and audio replacement are server-only an
   await assert.rejects(db.query(`select public.replace_project_audio('p1','a','b','audio/mpeg')`), /permission denied/);
   await db.exec(`reset role`);
 });
+
+test('question images are never enlarged and at most 2400 px on the long side', async () => {
+  const { fittedSize } = await import('../src/services/narration/browserMedia');
+  assert.deepEqual(fittedSize(1600, 900), { width: 1600, height: 900 });
+  assert.deepEqual(fittedSize(4800, 2700), { width: 2400, height: 1350 });
+  assert.deepEqual(fittedSize(1000, 6000), { width: 400, height: 2400 });
+});
+
+test('automatic cleanup runs at most once a week per admin browser', async () => {
+  const { autoSweepDue } = await import('../src/features/admin/StorageSection');
+  const day = 24 * 3600 * 1000, now = 100 * day;
+  assert.equal(autoSweepDue(now, 0), true, 'never ran');
+  assert.equal(autoSweepDue(now, now - 3 * day), false);
+  assert.equal(autoSweepDue(now, now - 7 * day), true);
+});
