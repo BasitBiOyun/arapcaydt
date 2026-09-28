@@ -5,6 +5,7 @@ import { database } from '../../services/supabase';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categories';
 import { cleanPreferences, type UserPreferences } from './preferences';
 import { saveMyProfile } from './studioSettings';
+import { PASSWORD_HINT, authMessage, passwordProblem } from '../auth/LoginPage';
 
 export const card = 'p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs';
 export const field = 'w-full px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white text-xs outline-none';
@@ -47,11 +48,12 @@ export function ProfileCard() {
   };
   const savePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) return setPassState({ error: 'Şifre en az 8 karakter olmalı.' });
+    const weak = passwordProblem(password);
+    if (weak) return setPassState({ error: weak });
     if (password !== repeat) return setPassState({ error: 'Şifreler aynı değil.' });
     setPassState({ busy: true });
     const { error } = await database().auth.updateUser({ password }).catch((err: any) => ({ error: err }));
-    if (error) return setPassState({ error: /reauth|recent/i.test(error.message || '') ? 'Güvenlik için çıkış yapıp yeniden giriş yaptıktan sonra tekrar deneyin.' : 'Şifre değiştirilemedi: ' + error.message });
+    if (error) return setPassState({ error: /reauth|recent/i.test(error.message || '') ? 'Güvenlik için çıkış yapıp yeniden giriş yaptıktan sonra tekrar deneyin.' : 'Şifre değiştirilemedi: ' + authMessage(error.message || '') });
     setPassword(''); setRepeat(''); setPassState({ notice: 'Şifreniz değiştirildi.' });
   };
 
@@ -69,9 +71,10 @@ export function ProfileCard() {
       <form onSubmit={savePassword} className="space-y-2 text-xs border-t border-[#EFEFEA] pt-3">
         <p className="font-medium text-[#33322E]">Şifre değiştir</p>
         <div className="grid sm:grid-cols-2 gap-2">
-          <input aria-label="Yeni şifre" type="password" autoComplete="new-password" placeholder="Yeni şifre (en az 8 karakter)" className={field} value={password} onChange={e => setPassword(e.target.value)} />
+          <input aria-label="Yeni şifre" type="password" autoComplete="new-password" placeholder="Yeni şifre" className={field} value={password} onChange={e => setPassword(e.target.value)} />
           <input aria-label="Yeni şifre tekrar" type="password" autoComplete="new-password" placeholder="Yeni şifre tekrar" className={field} value={repeat} onChange={e => setRepeat(e.target.value)} />
         </div>
+        <p className="text-[11px] text-[#787670]">{PASSWORD_HINT}</p>
         <button className={primary} disabled={passState.busy || !password}>Şifreyi değiştir</button>
         <Result {...passState} />
       </form>

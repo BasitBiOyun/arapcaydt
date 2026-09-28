@@ -100,3 +100,14 @@ test('settings migration: own profile only, admin-only studio row, auto-approval
   await db.query(`delete from auth.users where id=$1`, [admin]);
   await db.query(`insert into auth.users values ($1,'YunusEmreYilmaz93@gmail.com',now(),'{}')`, [admin]);
 });
+
+test('password rules match Supabase (8+, a-z, A-Z, digit, symbol) and errors read in Turkish', async () => {
+  const { passwordProblem, authMessage } = await import('../src/features/auth/LoginPage');
+  assert.equal(passwordProblem('Kalem.2026'), null);
+  assert.equal(passwordProblem('kalem2026'), 'Şifrede eksik: büyük harf (A–Z), sembol.');
+  assert.equal(passwordProblem('şifre.2026ÇĞ'), 'Şifrede eksik: büyük harf (A–Z).', 'Turkish capitals are not A–Z for Supabase');
+  assert.match(passwordProblem('Ab1!')!, /en az 8 karakter/);
+  assert.equal(authMessage('Invalid login credentials'), 'E-posta ya da şifre hatalı.');
+  assert.match(authMessage('Password should contain at least one character of each: abc…'), /yeterince güçlü değil/);
+  assert.equal(authMessage('Something else'), 'Something else');
+});

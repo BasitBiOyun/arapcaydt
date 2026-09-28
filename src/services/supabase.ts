@@ -1,8 +1,34 @@
 import { createClient } from '@supabase/supabase-js';
 
 const env = (import.meta as any).env || {};
+const REMEMBER = 'studio-remember-me';
+
+/** "Beni hatırla": on (default) keeps the session after the browser closes; off keeps it for this browser session only. */
+export function rememberMe(): boolean {
+  try { return localStorage.getItem(REMEMBER) !== 'no'; } catch { return true; }
+}
+export function setRememberMe(remember: boolean) {
+  try { localStorage.setItem(REMEMBER, remember ? 'yes' : 'no'); } catch { /* private mode: default applies */ }
+}
+
+const sessionStore = {
+  getItem: (key: string) => {
+    try { return sessionStorage.getItem(key) ?? localStorage.getItem(key); } catch { return null; }
+  },
+  setItem: (key: string, value: string) => {
+    try {
+      const [keep, drop] = rememberMe() ? [localStorage, sessionStorage] : [sessionStorage, localStorage];
+      keep.setItem(key, value);
+      drop.removeItem(key);
+    } catch { /* storage unavailable */ }
+  },
+  removeItem: (key: string) => {
+    try { localStorage.removeItem(key); sessionStorage.removeItem(key); } catch { /* storage unavailable */ }
+  },
+};
+
 export const supabase = env.VITE_SUPABASE_URL && env.VITE_SUPABASE_ANON_KEY
-  ? createClient(env.VITE_SUPABASE_URL, env.VITE_SUPABASE_ANON_KEY)
+  ? createClient(env.VITE_SUPABASE_URL, env.VITE_SUPABASE_ANON_KEY, { auth: { storage: sessionStore } })
   : null;
 
 export function database() {

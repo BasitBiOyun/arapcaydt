@@ -1,9 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
-import { database, googleSignInEnabled, supabase } from '../../services/supabase';
+import { database, googleSignInEnabled, rememberMe, setRememberMe, supabase } from '../../services/supabase';
 import { BrandMark } from '../../components/common/BrandMark';
 import { APP_NAME, APP_OWNER_LINE } from '../../config/brand';
 import { useSignupsOpen } from '../settings/studioSettings';
+/** Same rules as Supabase (Authentication → Email): 8+ characters with a-z, A-Z, 0-9 and a symbol. */
+export const PASSWORD_HINT = 'En az 8 karakter; küçük harf, büyük harf (A–Z), rakam ve sembol (!, ?, *, . gibi) içermeli.';
+export function passwordProblem(password: string): string | null {
+  const missing = [
+    password.length < 8 && 'en az 8 karakter',
+    !/[a-z]/.test(password) && 'küçük harf',
+    !/[A-Z]/.test(password) && 'büyük harf (A–Z)',
+    !/[0-9]/.test(password) && 'rakam',
+    !/[!@#$%^&*()_+\-=[\]{};'\\:"|<>?,./`~]/.test(password) && 'sembol',
+  ].filter(Boolean);
+  return missing.length ? `Şifrede eksik: ${missing.join(', ')}.` : null;
+}
+/** Supabase's English auth errors, in plain Turkish. */
+export function authMessage(message: string): string {
+  if (/invalid login credentials/i.test(message)) return 'E-posta ya da şifre hatalı.';
+  if (/email not confirmed/i.test(message)) return 'Önce e-postanıza gelen doğrulama bağlantısına tıklayın.';
+  if (/already registered|already been registered/i.test(message)) return 'Bu e-postayla zaten bir hesap var. Giriş yapın ya da şifrenizi yenileyin.';
+  if (/password/i.test(message) && /(weak|at least|characters|contain)/i.test(message)) return `Şifre yeterince güçlü değil. ${PASSWORD_HINT}`;
+  if (/rate limit|too many/i.test(message)) return 'Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar deneyin.';
+  if (/same.*password|different from the old/i.test(message)) return 'Yeni şifre eskisinden farklı olmalı.';
+  return message;
+}
+
 function GoogleMark() {
   return (
     <svg aria-hidden width="18" height="18" viewBox="0 0 48 48">
@@ -28,6 +51,7 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'signup'; onBack?: ()
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState(initialError);
+  const [remember, setRemember] = useState(rememberMe);
   const signups = useSignupsOpen();
   const [google, setGoogle] = useState(false);
   useEffect(() => {
@@ -36,6 +60,7 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'signup'; onBack?: ()
   const continueWithGoogle = async () => {
     setBusy(true);
     setError('');
+    setRememberMe(remember);
     // Google accounts arrive with a verified address; approval works exactly as for e-mail sign-ups.
     const { error } = await database().auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
     if (error) {
@@ -54,6 +79,12 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'signup'; onBack?: ()
     setBusy(true);
     setError('');
     setMessage('');
+    const weak = (recovering || mode === 'signup') && passwordProblem(password);
+    if (weak) {
+      setError(weak);
+      setBusy(false);
+      return;
+    }
     try {
       const client = database();
       if (recovering) {
@@ -69,20 +100,21 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'signup'; onBack?: ()
           options: { data: { name: name.trim() }, emailRedirectTo: window.location.origin },
         });
         if (error) throw /database error saving new user/i.test(error.message) ? new Error('Yeni kayıtlar şu an kapalı.') : error;
-        setMessage('Doğrulama e-postası gönderildi. Adresinizi doğruladıktan sonra yönetici onayı beklenecek.');
+        setMessage('Doğrulama e-postası gönderildi; bağlantı 1 saat geçerlidir. Adresinizi doğruladıktan sonra yönetici onayı beklenecek.');
         setPassword('');
       } else if (mode === 'reset') {
         const { error } = await client.auth.resetPasswordForEmail(email.trim(), { redirectTo: window.location.origin });
         if (error) throw error;
-        setMessage('Bu adres kayıtlıysa şifre yenileme bağlantısı gönderildi.');
+        setMessage('Bu adres kayıtlıysa şifre yenileme bağlantısı gönderildi; bağlantı 1 saat geçerlidir.');
       } else {
+        setRememberMe(remember);
         const { error } = await client.auth.signInWithPassword({ email: email.trim(), password });
         if (error) throw error;
         setPassword('');
         await refresh();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'İşlem tamamlanamadı.');
+      setError(err instanceof Error ? authMessage(err.message) : 'İşlem tamamlanamadı.');
     } finally {
       setBusy(false);
     }
@@ -173,6 +205,14 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'signup'; onBack?: ()
                 onChange={e => setPassword(e.target.value)}
                 className="block w-full border rounded p-2 mt-1"
               />
+              {(mode === 'signup' || recovering) && <span className="block text-xs text-stone-500 mt-1">{PASSWORD_HINT}</span>}
+            </label>
+          )}
+          {mode === 'login' && !recovering && (
+            <label className="flex items-center gap-2 text-sm text-stone-600">
+              <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />
+              Beni hatırla
+              <span className="text-xs text-stone-400">(ortak bilgisayarda işaretlemeyin)</span>
             </label>
           )}
           <button disabled={busy || !supabase} className="w-full rounded bg-[#8B1E2D] text-white p-3 disabled:opacity-50">
