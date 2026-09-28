@@ -236,11 +236,12 @@ function fitLabelSlots(anchors: DetectedOptionMarker[], pool: DetectedOptionMark
       const hit = pool.filter(c => !used.has(c) && Math.abs(cy(c) - slot.y) < h * .7 && (slot.x === undefined || Math.abs(c.word.x - slot.x) < w * 1.2))
         .sort((a, b) => Math.abs(a.word.x - (slot.x ?? a.word.x)) - Math.abs(b.word.x - (slot.x ?? b.word.x)))[0];
       if (hit) { used.add(hit); result.set(letter, { ...hit, letter }); real++; return; }
-      if (slot.x === undefined) return;
+      const sx = slot.x;
+      if (sx === undefined) return;
       const text = words.some(word => word.y < .94 && word.height > h * .5 && Math.abs(cy(word) - slot.y) < h
-        && word.x + word.width > slot.x + w && word.x < slot.x + w * 4);
+        && word.x + word.width > sx + w && word.x < sx + w * 4);
       if (!text) return;
-      const label: OCRWord = { text: `${letter})`, confidence: 40, x: slot.x, y: slot.y - h / 2, width: w, height: h,
+      const label: OCRWord = { text: `${letter})`, confidence: 40, x: sx, y: slot.y - h / 2, width: w, height: h,
         pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 };
       result.set(letter, { letter, word: label, y: label.y, confidence: 40 });
     });
@@ -378,18 +379,3 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
   return { regions, detectedOptions, questionPromptRegion: regions.find((region) => region.id === 'question-root') };
 }
 
-/**
- * Legacy server-only fallback kept for compatibility. The browser production
- * pipeline does not call this function because guessed coordinates should not
- * be presented as if OCR had grounded them.
- */
-export function getYdtStandardGeometry(): AnnotationRegion[] {
-  return [
-    { id: 'question-root', label: 'Soru Kökü', type: 'question-root', x: 0.05, y: 0.06, width: 0.90, height: 0.32, content: 'Soru Metni ve Paragrafı' },
-    { id: 'option-a', label: 'A Seçeneği', type: 'option', x: 0.05, y: 0.42, width: 0.90, height: 0.09, content: 'A Şıkkı' },
-    { id: 'option-b', label: 'B Seçeneği', type: 'option', x: 0.05, y: 0.53, width: 0.90, height: 0.09, content: 'B Şıkkı' },
-    { id: 'option-c', label: 'C Seçeneği', type: 'option', x: 0.05, y: 0.64, width: 0.90, height: 0.09, content: 'C Şıkkı' },
-    { id: 'option-d', label: 'D Seçeneği', type: 'option', x: 0.05, y: 0.75, width: 0.90, height: 0.09, content: 'D Şıkkı' },
-    { id: 'option-e', label: 'E Seçeneği', type: 'option', x: 0.05, y: 0.86, width: 0.90, height: 0.09, content: 'E Şıkkı' },
-  ];
-}

@@ -11,23 +11,42 @@ export interface SolutionStepProps {
 }
 
 /** STEP 2: Çözüm Metni */
-export function SolutionStep({ step, currentProject, updateCurrentProject, setVideoGenerated, isGeneratingAudio, sampleBusy }: SolutionStepProps) {
+export function SolutionStep({
+  step,
+  currentProject,
+  updateCurrentProject,
+  setVideoGenerated,
+  isGeneratingAudio,
+  sampleBusy,
+}: SolutionStepProps) {
   return (
-    <div hidden={step!==1} className="space-y-2.5">
-      <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
-        Çözüm metnini hazırlayın
-      </h2>
-      <label className="flex items-center gap-3">Doğru cevap<select className="border rounded px-3 py-2" value={currentProject.correctAnswer} onChange={e=>{updateCurrentProject({correctAnswer:e.target.value as QuestionProject['correctAnswer'],videoReady:false});setVideoGenerated(false);}}>{['A','B','C','D','E'].map(l=><option key={l}>{l}</option>)}</select></label>
+    <div hidden={step !== 1} className="space-y-2.5">
+      <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">Çözüm metnini hazırlayın</h2>
+      <label className="flex items-center gap-3">
+        Doğru cevap
+        <select
+          className="border rounded px-3 py-2"
+          value={currentProject.correctAnswer}
+          onChange={e => {
+            updateCurrentProject({ correctAnswer: e.target.value as QuestionProject['correctAnswer'], videoReady: false });
+            setVideoGenerated(false);
+          }}
+        >
+          {['A', 'B', 'C', 'D', 'E'].map(l => (
+            <option key={l}>{l}</option>
+          ))}
+        </select>
+      </label>
       <textarea
         aria-label="Çözüm metni"
         disabled={isGeneratingAudio || sampleBusy}
         value={currentProject.solutionText}
-        onChange={(e) => {
+        onChange={e => {
           updateCurrentProject({
             solutionText: e.target.value,
             audioApproved: false,
-            narrationSource: currentProject.narrationSource ? {...currentProject.narrationSource,isApproved:false} : undefined,
-            audioNarration: currentProject.audioNarration ? {...currentProject.audioNarration,isApproved:false} : undefined,
+            narrationSource: currentProject.narrationSource ? { ...currentProject.narrationSource, isApproved: false } : undefined,
+            audioNarration: currentProject.audioNarration ? { ...currentProject.audioNarration, isApproved: false } : undefined,
             videoReady: false,
           });
           setVideoGenerated(false);

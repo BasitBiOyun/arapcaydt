@@ -13,11 +13,6 @@ export function easeOutBack(t: number): number {
   return 1 + (c + 1) * x * x * x + c * x * x;
 }
 
-export function easeInOutQuad(t: number): number {
-  const clamped = Math.max(0, Math.min(1, t));
-  return clamped < 0.5 ? 2 * clamped * clamped : 1 - Math.pow(-2 * clamped + 2, 2) / 2;
-}
-
 export function easeOutQuad(t: number): number {
   const clamped = Math.max(0, Math.min(1, t));
   return 1 - (1 - clamped) * (1 - clamped);

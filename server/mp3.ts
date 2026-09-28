@@ -74,8 +74,6 @@ export async function encodeMp3({ samples, sampleRate }: Pcm, kbps = MP3_KBPS): 
   return Buffer.concat(parts.map(p => Buffer.from(p.buffer, p.byteOffset, p.length)));
 }
 
-export const pcmSeconds = ({ samples, sampleRate }: Pcm) => sampleRate > 0 ? samples.length / sampleRate : 0;
-
 /**
  * The file to store for a narration WAV: MP3 when it can be encoded, the WAV
  * itself otherwise (an encoder problem must never lose a generated narration).

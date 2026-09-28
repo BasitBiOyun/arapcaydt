@@ -42,19 +42,6 @@ function isolateArabic(text: string) {
   return text.replace(/([\u0600-\u06ff][\u0600-\u06ff\s«»\-]*[\u0600-\u06ff])/g, '\u2067$1\u2069');
 }
 
-export function captionLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
-  const lines: string[] = [];
-  let line = '';
-  for (const word of text.trim().split(/\s+/)) {
-    const candidate = line ? line + ' ' + word : word;
-    if (line && ctx.measureText(isolateArabic(candidate)).width > maxWidth) {
-      lines.push(line); line = word;
-    } else line = candidate;
-  }
-  if (line) lines.push(line);
-  return lines;
-}
-
 const ARABIC = /[؀-ۿ]/;
 const LATIN = /[A-Za-zÇĞİÖŞÜçğıöşü0-9]/;
 

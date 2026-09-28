@@ -1,7 +1,7 @@
-import {steps,resumeStep,checkNarration} from '../features/question-editor/workflow';
-import {VoiceSample} from '../features/question-editor/VoiceSample';
-import {type ReadinessAction} from '../features/question-editor/readiness';
-import {applyPipelineResult, narrationFromTts} from '../features/question-editor/projectUpdates';
+import { steps, resumeStep, checkNarration } from '../features/question-editor/workflow';
+import { VoiceSample } from '../features/question-editor/VoiceSample';
+import { type ReadinessAction } from '../features/question-editor/readiness';
+import { applyPipelineResult, narrationFromTts } from '../features/question-editor/projectUpdates';
 import { database } from '../services/supabase';
 import React, { useState, useEffect, useRef } from 'react';
 import { QuestionProject, VideoConfig } from '../types';
@@ -29,8 +29,11 @@ import type { LeaveGuard } from '../layouts/AppLayout';
 import { APP_NAME } from '../config/brand';
 
 function hasAnimationPlan(project: QuestionProject | null | undefined) {
-  return Boolean(project && project.videoReady !== false &&
-    (project.videoReady || (project.videoConfig.timelineActions && project.videoConfig.timelineActions.length > 0)));
+  return Boolean(
+    project &&
+    project.videoReady !== false &&
+    (project.videoReady || (project.videoConfig.timelineActions && project.videoConfig.timelineActions.length > 0)),
+  );
 }
 
 interface QuestionEditorPageProps {
@@ -44,13 +47,19 @@ interface QuestionEditorPageProps {
   loadError?: string;
 }
 
-export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, onNewQuestion, registerLeaveGuard, waitingForProject, loadError }) => {
-  const { currentProject, updateCurrentProject, saveCurrentProject, saveStatus, error:saveError } = useProjects();
+export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
+  onBack,
+  onNewQuestion,
+  registerLeaveGuard,
+  waitingForProject,
+  loadError,
+}) => {
+  const { currentProject, updateCurrentProject, saveCurrentProject, saveStatus, error: saveError } = useProjects();
 
-  const [step,setStep]=useState(()=>currentProject?resumeStep(currentProject):0);
-  const [editRegions,setEditRegions]=useState(false);
-  const [regionHistory,setRegionHistory]=useState<VideoConfig[]>([]);
-  const [sampleBusy,setSampleBusy]=useState(false);
+  const [step, setStep] = useState(() => (currentProject ? resumeStep(currentProject) : 0));
+  const [editRegions, setEditRegions] = useState(false);
+  const [regionHistory, setRegionHistory] = useState<VideoConfig[]>([]);
+  const [sampleBusy, setSampleBusy] = useState(false);
   // Navigation & Save state
 
   // Audio generation state
@@ -70,7 +79,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [videoGenerated, setVideoGenerated] = useState(() => hasAnimationPlan(currentProject));
   const [videoButtonWarning, setVideoButtonWarning] = useState<string | null>(null);
-  const [previewMode, setPreviewMode] = useState<'video' | 'image'>(() => hasAnimationPlan(currentProject) ? 'video' : 'image');
+  const [previewMode, setPreviewMode] = useState<'video' | 'image'>(() => (hasAnimationPlan(currentProject) ? 'video' : 'image'));
 
   // Video preview player state (HTML5 Canvas + Audio Sync)
   const [currentPreviewTime, setCurrentPreviewTime] = useState(0);
@@ -96,18 +105,15 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
     if (!needsOcrSoon) return;
     const idle = (window as any).requestIdleCallback as undefined | ((cb: () => void, o?: { timeout: number }) => number);
     const handle = idle ? idle(() => localOcrService.warmUp(), { timeout: 4000 }) : window.setTimeout(() => localOcrService.warmUp(), 1500);
-    return () => { if (idle) (window as any).cancelIdleCallback?.(handle); else window.clearTimeout(handle); };
+    return () => {
+      if (idle) (window as any).cancelIdleCallback?.(handle);
+      else window.clearTimeout(handle);
+    };
   }, [needsOcrSoon]);
 
   // Audio playback updates
-  const activeAudioUrl =
-    currentProject?.narrationSource?.audioUrl ||
-    currentProject?.audioNarration?.audioUrl ||
-    '';
-  const activeAudioDuration =
-    currentProject?.narrationSource?.duration ||
-    currentProject?.audioNarration?.duration ||
-    0;
+  const activeAudioUrl = currentProject?.narrationSource?.audioUrl || currentProject?.audioNarration?.audioUrl || '';
+  const activeAudioDuration = currentProject?.narrationSource?.duration || currentProject?.audioNarration?.duration || 0;
 
   useEffect(() => {
     const audio = stageAudioRef.current;
@@ -132,12 +138,18 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
   const working = isExportingMp4 ? 'export' : isGeneratingAudio || sampleBusy || isTranscribingMp3 ? 'audio' : null;
   useEffect(() => {
     if (!registerLeaveGuard) return;
-    registerLeaveGuard(working ? () => {
-      window.alert(working === 'export'
-        ? 'MP4 hazırlanıyor. İndirme bitene kadar bekleyin ya da İndir adımında “İptal” ile durdurun.'
-        : 'Ses hazırlanıyor. Bitince bu sayfadan çıkabilirsiniz.');
-      return false;
-    } : null);
+    registerLeaveGuard(
+      working
+        ? () => {
+            window.alert(
+              working === 'export'
+                ? 'MP4 hazırlanıyor. İndirme bitene kadar bekleyin ya da İndir adımında “İptal” ile durdurun.'
+                : 'Ses hazırlanıyor. Bitince bu sayfadan çıkabilirsiniz.',
+            );
+            return false;
+          }
+        : null,
+    );
     return () => registerLeaveGuard(null);
   }, [working, registerLeaveGuard]);
 
@@ -149,9 +161,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
             {waitingForProject ? 'Soru açılıyor…' : loadError ? 'Soru açılamadı' : 'Açık bir soru yok'}
           </h1>
           <p className="text-xs text-[#666560]">
-            {waitingForProject ? 'Birkaç saniye sürebilir.' : loadError
-              ? loadError
-              : 'Sorularım listesinden bir soru seçin ya da yeni bir soru oluşturun.'}
+            {waitingForProject
+              ? 'Birkaç saniye sürebilir.'
+              : loadError
+                ? loadError
+                : 'Sorularım listesinden bir soru seçin ya da yeni bir soru oluşturun.'}
           </p>
           {!waitingForProject && (
             <div className="flex flex-wrap justify-center gap-2">
@@ -172,8 +186,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
 
   // Handle Save
   const handleSave = async () => {
-    const saved=await saveCurrentProject();
-    if(!saved) {setAudioError('Kayıt tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');return;}
+    const saved = await saveCurrentProject();
+    if (!saved) {
+      setAudioError('Kayıt tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');
+      return;
+    }
   };
 
   const finishRegionEditing = async () => {
@@ -190,7 +207,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
   const handleImageFile = (file: File) => {
     if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       const dataUrl = e.target?.result as string;
       updateCurrentProject({
         imageUrl: dataUrl,
@@ -235,7 +252,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
     setIsGeneratingAudio(true);
 
     try {
-      if(!await saveCurrentProject())throw new Error('Önce proje kaydedilmelidir.');
+      if (!(await saveCurrentProject())) throw new Error('Önce proje kaydedilmelidir.');
       const result = await narrationService.generateNarration({
         projectId: currentProject.id,
         text: currentProject.solutionText,
@@ -246,30 +263,34 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
 
       const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
 
-      const persisted=await saveCurrentProject({
+      const persisted = await saveCurrentProject({
         narrationSource: newNarrationSource,
         audioNarration: compatNarration,
         status: 'audio_generated',
         audioApproved: false,
         videoReady: false,
       });
-      if(!persisted) {
+      if (!persisted) {
         setAudioError('Ses üretildi ama kaydedilemedi. Ses dosyasını indirip Kaydet düğmesini tekrar deneyin.');
       } else if (result.provider === 'gemini') {
         try {
           const alignment = await narrationService.alignGeneratedNarration(persisted.id);
           if (alignment.words.length) {
             await saveCurrentProject({
-              narrationSource: persisted.narrationSource ? {
-                ...persisted.narrationSource,
-                words: alignment.words,
-                timingSource: alignment.timingSource,
-              } : persisted.narrationSource,
-              audioNarration: persisted.audioNarration ? {
-                ...persisted.audioNarration,
-                words: alignment.words,
-                wordAlignments: alignment.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
-              } : persisted.audioNarration,
+              narrationSource: persisted.narrationSource
+                ? {
+                    ...persisted.narrationSource,
+                    words: alignment.words,
+                    timingSource: alignment.timingSource,
+                  }
+                : persisted.narrationSource,
+              audioNarration: persisted.audioNarration
+                ? {
+                    ...persisted.audioNarration,
+                    words: alignment.words,
+                    wordAlignments: alignment.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+                  }
+                : persisted.audioNarration,
             });
           }
         } catch (exactAlignError) {
@@ -282,20 +303,26 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
             const local = await localWhisperService.transcribeAudioLocally(await audioResponse.arrayBuffer());
             if (!local.words.length) throw new Error('Whisper kelime zaman damgası döndürmedi.');
             await saveCurrentProject({
-              narrationSource: persisted.narrationSource ? {
-                ...persisted.narrationSource,
-                words: local.words,
-                timingSource: 'whisper',
-              } : persisted.narrationSource,
-              audioNarration: persisted.audioNarration ? {
-                ...persisted.audioNarration,
-                words: local.words,
-                wordAlignments: local.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
-              } : persisted.audioNarration,
+              narrationSource: persisted.narrationSource
+                ? {
+                    ...persisted.narrationSource,
+                    words: local.words,
+                    timingSource: 'whisper',
+                  }
+                : persisted.narrationSource,
+              audioNarration: persisted.audioNarration
+                ? {
+                    ...persisted.audioNarration,
+                    words: local.words,
+                    wordAlignments: local.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+                  }
+                : persisted.audioNarration,
             });
           } catch (localAlignError) {
             console.warn('Local Whisper timing unavailable:', localAlignError);
-            setAudioError('Ses oluşturuldu ancak kelime zamanları alınamadı. Animasyon yaklaşık zamanlamayla hazırlanır; işaretleri kontrol edin.');
+            setAudioError(
+              'Ses oluşturuldu ancak kelime zamanları alınamadı. Animasyon yaklaşık zamanlamayla hazırlanır; işaretleri kontrol edin.',
+            );
           }
         }
       }
@@ -320,13 +347,18 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
     try {
       const text = currentProject.solutionText.trim();
       // The server reserves usage against the saved project, so save before aligning.
-      const canAlign = text.length > 0 && text.length <= 5000 && await saveCurrentProject();
+      const canAlign = text.length > 0 && text.length <= 5000 && (await saveCurrentProject());
       const result = await prepareUploadedNarration(file, {
-        readDataUrl, readDuration: readAudioDuration,
-        align: canAlign ? (audioBase64, mimeType) =>
-          elevenlabsService.alignUploadedNarration({ projectId: currentProject.id, text, audioBase64, mimeType }) : undefined,
-        transcribe: async upload => localWhisperService.transcribeAudioLocally(await upload.arrayBuffer(),
-          p => setTranscribeProgress({ progress: p.progress, message: p.message })),
+        readDataUrl,
+        readDuration: readAudioDuration,
+        align: canAlign
+          ? (audioBase64, mimeType) =>
+              elevenlabsService.alignUploadedNarration({ projectId: currentProject.id, text, audioBase64, mimeType })
+          : undefined,
+        transcribe: async upload =>
+          localWhisperService.transcribeAudioLocally(await upload.arrayBuffer(), p =>
+            setTranscribeProgress({ progress: p.progress, message: p.message }),
+          ),
         onProgress: (progress, message) => setTranscribeProgress({ progress, message }),
       });
       updateCurrentProject({
@@ -378,17 +410,21 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
 
   // Approve Voice
   const handleApproveVoice = () => {
-    const currentSource = currentProject.narrationSource || (currentProject.audioNarration ? {
-      type: currentProject.audioNarration.modelId?.startsWith('gemini-') ? 'gemini' as const : 'elevenlabs' as const,
-      audioUrl: currentProject.audioNarration.audioUrl,
-      audioBase64: currentProject.audioNarration.audioBase64,
-      duration: currentProject.audioNarration.duration,
-      voiceId: currentProject.audioNarration.voiceId,
-      voiceName: currentProject.audioNarration.voiceName,
-      words: currentProject.audioNarration.words,
-      alignment: currentProject.audioNarration.alignment,
-      isApproved: true,
-    } : undefined);
+    const currentSource =
+      currentProject.narrationSource ||
+      (currentProject.audioNarration
+        ? {
+            type: currentProject.audioNarration.modelId?.startsWith('gemini-') ? ('gemini' as const) : ('elevenlabs' as const),
+            audioUrl: currentProject.audioNarration.audioUrl,
+            audioBase64: currentProject.audioNarration.audioBase64,
+            duration: currentProject.audioNarration.duration,
+            voiceId: currentProject.audioNarration.voiceId,
+            voiceName: currentProject.audioNarration.voiceName,
+            words: currentProject.audioNarration.words,
+            alignment: currentProject.audioNarration.alignment,
+            isApproved: true,
+          }
+        : undefined);
 
     if (!currentSource) return;
 
@@ -398,10 +434,12 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
         ...currentSource,
         isApproved: true,
       },
-      audioNarration: currentProject.audioNarration ? {
-        ...currentProject.audioNarration,
-        isApproved: true,
-      } : undefined,
+      audioNarration: currentProject.audioNarration
+        ? {
+            ...currentProject.audioNarration,
+            isApproved: true,
+          }
+        : undefined,
     });
   };
 
@@ -426,7 +464,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
     setPreviewMode('video');
     setCurrentPreviewTime(0);
     setIsVideoModalOpen(false);
-    setStep(3);setEditRegions(false);
+    setStep(3);
+    setEditRegions(false);
   };
 
   // Handle direct MP4 Export & Download using local browser engine (1080p @ 30fps)
@@ -450,8 +489,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
-      const {error:activityError}=await database().rpc('record_video_export',{project_id:currentProject.id});
-      if(activityError)setExportError('Video indirildi; üretim kaydı kaydedilemedi.');
+      const { error: activityError } = await database().rpc('record_video_export', { project_id: currentProject.id });
+      if (activityError) setExportError('Video indirildi; üretim kaydı kaydedilemedi.');
     } catch (err) {
       console.error('Local MP4 Export error:', err);
       setExportError(err instanceof Error ? err.message : 'Video oluşturulamadı.');
@@ -472,9 +511,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
   const hasSolution = Boolean(currentProject.solutionText && currentProject.solutionText.trim().length > 0);
   const hasAudio = Boolean(activeAudioUrl);
   const isAudioApproved = Boolean(
-    currentProject.audioApproved ||
-    currentProject.narrationSource?.isApproved ||
-    currentProject.audioNarration?.isApproved
+    currentProject.audioApproved || currentProject.narrationSource?.isApproved || currentProject.audioNarration?.isApproved,
   );
   const isUploadedAudio = currentProject.narrationSource?.type === 'uploaded';
 
@@ -488,18 +525,31 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
   };
 
   const handleReadinessAction = (action: ReadinessAction) => {
-    if (action === 'regenerate') { setIsVideoModalOpen(true); return; }
-    if (action === 'text') { go(1); return; }
+    if (action === 'regenerate') {
+      setIsVideoModalOpen(true);
+      return;
+    }
+    if (action === 'text') {
+      go(1);
+      return;
+    }
     setStep(3);
     setIsPlayingPreview(false);
     setEditRegions(action === 'regions');
     if (action === 'timing') setPreviewMode('video');
   };
 
-  const check=checkNarration(currentProject.solutionText,currentProject.correctAnswer);
-  const enabled=[true,hasImage,hasImage&&hasSolution,isAudioApproved,videoGenerated&&isAudioApproved];
-  const busy=isGeneratingAudio||sampleBusy||isTranscribingMp3||isExportingMp4;
-  const go=(next:number)=>{if(!busy&&enabled[next]){setStep(next);setIsPlayingPreview(false);if(stageAudioRef.current)stageAudioRef.current.pause();setIsAudioPlaying(false);}};
+  const check = checkNarration(currentProject.solutionText, currentProject.correctAnswer);
+  const enabled = [true, hasImage, hasImage && hasSolution, isAudioApproved, videoGenerated && isAudioApproved];
+  const busy = isGeneratingAudio || sampleBusy || isTranscribingMp3 || isExportingMp4;
+  const go = (next: number) => {
+    if (!busy && enabled[next]) {
+      setStep(next);
+      setIsPlayingPreview(false);
+      if (stageAudioRef.current) stageAudioRef.current.pause();
+      setIsAudioPlaying(false);
+    }
+  };
   return (
     <div className="studio-editor flex flex-col h-screen w-screen overflow-hidden bg-[#FAF9F5]">
       {/* TOP BAR */}
@@ -520,56 +570,244 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
           <span className="editor-brand">{APP_NAME}</span>
         </div>
 
-        <h1 className="text-sm font-bold text-[#1C1917] tracking-tight hidden md:block">
-          {currentProject.title || APP_NAME}
-        </h1>
+        <h1 className="text-sm font-bold text-[#1C1917] tracking-tight hidden md:block">{currentProject.title || APP_NAME}</h1>
 
         <button
           type="button"
-          onClick={handleSave} aria-label="Projeyi kaydet"
+          onClick={handleSave}
+          aria-label="Projeyi kaydet"
           className="px-4 py-1.5 rounded text-xs font-semibold bg-[#FAF9F5] border border-[#D5D4CC] text-[#1C1917] hover:bg-[#F0EFEA] transition-colors flex items-center gap-1.5 cursor-pointer"
         >
-          {saveStatus==='saved' ? (
+          {saveStatus === 'saved' ? (
             <>
               <Check size={14} className="text-[#15803D]" />
-              <span role="status" className="text-[#15803D]">Kaydedildi</span>
+              <span role="status" className="text-[#15803D]">
+                Kaydedildi
+              </span>
             </>
           ) : (
-            <span>{({saved:'Kaydedildi',pending:'Değişiklikler bekliyor',saving:'Kaydediliyor…',error:'Kaydı tekrar dene'})[saveStatus]}</span>
+            <span>
+              {{ saved: 'Kaydedildi', pending: 'Değişiklikler bekliyor', saving: 'Kaydediliyor…', error: 'Kaydı tekrar dene' }[saveStatus]}
+            </span>
           )}
         </button>
       </header>
 
-      <nav className="workflow-nav" aria-label="Video hazırlama adımları">{steps.map((label,i)=><button key={label} disabled={!enabled[i]||busy} aria-current={step===i?'step':undefined} onClick={()=>go(i)}><span className="step-number">{i+1}</span><span>{label}</span></button>)}</nav>
-      {saveError&&<div role="alert" className="save-alert">{saveError} <button onClick={()=>void handleSave()}>Tekrar kaydet</button></div>}
+      <nav className="workflow-nav" aria-label="Video hazırlama adımları">
+        {steps.map((label, i) => (
+          <button key={label} disabled={!enabled[i] || busy} aria-current={step === i ? 'step' : undefined} onClick={() => go(i)}>
+            <span className="step-number">{i + 1}</span>
+            <span>{label}</span>
+          </button>
+        ))}
+      </nav>
+      {saveError && (
+        <div role="alert" className="save-alert">
+          {saveError} <button onClick={() => void handleSave()}>Tekrar kaydet</button>
+        </div>
+      )}
       {/* TWO MAIN COLUMNS */}
       <div className="editor-columns flex-1 flex min-h-0 overflow-hidden">
         {/* LEFT COLUMN: ~68% Large Visual / Video Preview */}
         <section className="editor-stage flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 pt-16 flex flex-col items-center overflow-y-auto relative">
-          <EditorStage videoGenerated={videoGenerated} hasImage={hasImage} previewMode={previewMode} setPreviewMode={setPreviewMode} step={step} editRegions={editRegions} currentProject={currentProject} updateCurrentProject={updateCurrentProject} currentPreviewTime={currentPreviewTime} setCurrentPreviewTime={setCurrentPreviewTime} isPlayingPreview={isPlayingPreview} setIsPlayingPreview={setIsPlayingPreview} activeAudioDuration={activeAudioDuration} activeAudioUrl={activeAudioUrl} setIsVideoModalOpen={setIsVideoModalOpen} saveStatus={saveStatus} finishRegionEditing={finishRegionEditing} selectedRegionId={selectedRegionId} setSelectedRegionId={setSelectedRegionId} regionHistory={regionHistory} setRegionHistory={setRegionHistory} />
+          <EditorStage
+            videoGenerated={videoGenerated}
+            hasImage={hasImage}
+            previewMode={previewMode}
+            setPreviewMode={setPreviewMode}
+            step={step}
+            editRegions={editRegions}
+            currentProject={currentProject}
+            updateCurrentProject={updateCurrentProject}
+            currentPreviewTime={currentPreviewTime}
+            setCurrentPreviewTime={setCurrentPreviewTime}
+            isPlayingPreview={isPlayingPreview}
+            setIsPlayingPreview={setIsPlayingPreview}
+            activeAudioDuration={activeAudioDuration}
+            activeAudioUrl={activeAudioUrl}
+            setIsVideoModalOpen={setIsVideoModalOpen}
+            saveStatus={saveStatus}
+            finishRegionEditing={finishRegionEditing}
+            selectedRegionId={selectedRegionId}
+            setSelectedRegionId={setSelectedRegionId}
+            regionHistory={regionHistory}
+            setRegionHistory={setRegionHistory}
+          />
         </section>
 
         {/* RIGHT COLUMN: ~32% Progressive 4-Step Workflow Panel */}
         <aside className="editor-panel flex-[32] h-full bg-white overflow-y-auto p-6 flex flex-col space-y-6">
-          <details hidden={step>1} className="border rounded-lg p-3 text-sm"><summary className="cursor-pointer font-semibold">Proje bilgileri</summary><div className="space-y-3 pt-3"><label className="block">Proje adı<input value={currentProject.title} onChange={e=>updateCurrentProject({title:e.target.value})} className="block w-full border rounded p-2"/></label><label className="block">Kategori<select className="block w-full border rounded p-2" value={currentProject.category} onChange={e=>updateCurrentProject({category:e.target.value})}>{QUESTION_CATEGORIES.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select></label><label className="block">Sınav / yıl<input value={currentProject.examYear} onChange={e=>updateCurrentProject({examYear:e.target.value})} className="block w-full border rounded p-2"/></label>{<label className="block">Koleksiyon / deneme adı<input placeholder="Örnek: Eylül Denemesi 1" value={currentProject.examName||''} onChange={e=>updateCurrentProject({examName:e.target.value})} className="block w-full border rounded p-2"/></label>}</div></details>
-          <ImageStep step={step} hasImage={hasImage} currentProject={currentProject} replaceImageInputRef={replaceImageInputRef} handleImageFile={handleImageFile} handleDeleteImage={handleDeleteImage} />
-          <SolutionStep step={step} currentProject={currentProject} updateCurrentProject={updateCurrentProject} setVideoGenerated={setVideoGenerated} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} />
+          <details hidden={step > 1} className="border rounded-lg p-3 text-sm">
+            <summary className="cursor-pointer font-semibold">Proje bilgileri</summary>
+            <div className="space-y-3 pt-3">
+              <label className="block">
+                Proje adı
+                <input
+                  value={currentProject.title}
+                  onChange={e => updateCurrentProject({ title: e.target.value })}
+                  className="block w-full border rounded p-2"
+                />
+              </label>
+              <label className="block">
+                Kategori
+                <select
+                  className="block w-full border rounded p-2"
+                  value={currentProject.category}
+                  onChange={e => updateCurrentProject({ category: e.target.value })}
+                >
+                  {QUESTION_CATEGORIES.map(c => (
+                    <option key={c.id} value={c.id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block">
+                Sınav / yıl
+                <input
+                  value={currentProject.examYear}
+                  onChange={e => updateCurrentProject({ examYear: e.target.value })}
+                  className="block w-full border rounded p-2"
+                />
+              </label>
+              {
+                <label className="block">
+                  Koleksiyon / deneme adı
+                  <input
+                    placeholder="Örnek: Eylül Denemesi 1"
+                    value={currentProject.examName || ''}
+                    onChange={e => updateCurrentProject({ examName: e.target.value })}
+                    className="block w-full border rounded p-2"
+                  />
+                </label>
+              }
+            </div>
+          </details>
+          <ImageStep
+            step={step}
+            hasImage={hasImage}
+            currentProject={currentProject}
+            replaceImageInputRef={replaceImageInputRef}
+            handleImageFile={handleImageFile}
+            handleDeleteImage={handleDeleteImage}
+          />
+          <SolutionStep
+            step={step}
+            currentProject={currentProject}
+            updateCurrentProject={updateCurrentProject}
+            setVideoGenerated={setVideoGenerated}
+            isGeneratingAudio={isGeneratingAudio}
+            sampleBusy={sampleBusy}
+          />
           <NarrationCheck step={step} check={check} currentProject={currentProject} />
-          {step===2&&<VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio||isTranscribingMp3} onBusy={setSampleBusy}/>}
-          <AudioStep step={step} hasAudio={hasAudio} hasSolution={hasSolution} isUploadedAudio={isUploadedAudio} isAudioApproved={isAudioApproved} currentProject={currentProject} isAudioPlaying={isAudioPlaying} toggleStageAudio={toggleStageAudio} formatTime={formatTime} audioPlayTime={audioPlayTime} setAudioPlayTime={setAudioPlayTime} activeAudioDuration={activeAudioDuration} activeAudioUrl={activeAudioUrl} stageAudioRef={stageAudioRef} uploadMp3InputRef={uploadMp3InputRef} handleDownloadNarrationMp3={handleDownloadNarrationMp3} handleUploadMp3File={handleUploadMp3File} handleDeleteAudio={handleDeleteAudio} handleGenerateAudio={handleGenerateAudio} handleApproveVoice={handleApproveVoice} isGeneratingAudio={isGeneratingAudio} sampleBusy={sampleBusy} isTranscribingMp3={isTranscribingMp3} transcribeProgress={transcribeProgress} audioError={audioError} />
-          {step===3&&<section className="space-y-3">
-            <h2>İşaretleri kontrol edin</h2>
-            <p>{editRegions ? 'Soldaki görselde kutuları düzenleyin; bitince önizlemeye dönün.' : videoGenerated ? 'İşaretler sesinize göre yerleştirildi. Önizlemeyi izleyin; kayan bir işaret varsa listeyi açıp düzeltin, yoksa indirmeye geçin.' : 'Önce aşağıdaki düğmeyle sesinize uygun işaretleri hazırlayın.'}</p>
-            {videoGenerated && !editRegions && <SimpleTimingList actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
-              duration={activeAudioDuration || 15} currentTime={currentPreviewTime}
-              onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
-              onSeek={setCurrentPreviewTime} setPlaying={playing => { if (playing) setPreviewMode('video'); setIsPlayingPreview(playing); }} />}
-            {hasImage && (editRegions
-              ? <button className="studio-primary w-full" onClick={()=>void finishRegionEditing()}>Kaydet ve önizlemeye dön</button>
-              : <button className="studio-secondary w-full" onClick={()=>setEditRegions(true)}>Görseldeki kutuları düzenle</button>)}
-          </section>}
-          <ExportStep step={step} videoGenerated={videoGenerated} currentProject={currentProject} handleReadinessAction={handleReadinessAction} exportError={exportError} isExportingMp4={isExportingMp4} exportAbortRef={exportAbortRef} handleDownloadMp4={handleDownloadMp4} exportPercent={exportPercent} setIsVideoModalOpen={setIsVideoModalOpen} handleAttemptCreateVideo={handleAttemptCreateVideo} isAudioApproved={isAudioApproved} videoButtonWarning={videoButtonWarning} />
-          <footer className="workflow-footer"><p>{['Görseli yükleyin; özgün tasarımı videoda korunur.','Arapça ifadeleri harekeli yazın.','Sesi dinleyip “Bu Sesi Kullan” ile devam edin.','Kutuları ve zamanlamayı son kez kontrol edin.','MP4 bu tarayıcıda hazırlanır. İndirme bitene kadar sekmeyi açık tutun.'][step]}</p><div className="flex gap-2">{step>0&&<button className="studio-secondary" disabled={busy} onClick={()=>go(step-1)}>Geri</button>}{step<4&&<button className="studio-primary" disabled={busy||!enabled[step+1]} onClick={()=>go(step+1)}>{['Metne geç','Sese geç','İşaretlere geç','İndirmeye geç'][step]}</button>}</div></footer>
+          {step === 2 && (
+            <VoiceSample text={currentProject.solutionText} disabled={isGeneratingAudio || isTranscribingMp3} onBusy={setSampleBusy} />
+          )}
+          <AudioStep
+            step={step}
+            hasAudio={hasAudio}
+            hasSolution={hasSolution}
+            isUploadedAudio={isUploadedAudio}
+            isAudioApproved={isAudioApproved}
+            currentProject={currentProject}
+            isAudioPlaying={isAudioPlaying}
+            toggleStageAudio={toggleStageAudio}
+            formatTime={formatTime}
+            audioPlayTime={audioPlayTime}
+            setAudioPlayTime={setAudioPlayTime}
+            activeAudioDuration={activeAudioDuration}
+            activeAudioUrl={activeAudioUrl}
+            stageAudioRef={stageAudioRef}
+            uploadMp3InputRef={uploadMp3InputRef}
+            handleDownloadNarrationMp3={handleDownloadNarrationMp3}
+            handleUploadMp3File={handleUploadMp3File}
+            handleDeleteAudio={handleDeleteAudio}
+            handleGenerateAudio={handleGenerateAudio}
+            handleApproveVoice={handleApproveVoice}
+            isGeneratingAudio={isGeneratingAudio}
+            sampleBusy={sampleBusy}
+            isTranscribingMp3={isTranscribingMp3}
+            transcribeProgress={transcribeProgress}
+            audioError={audioError}
+          />
+          {step === 3 && (
+            <section className="space-y-3">
+              <h2>İşaretleri kontrol edin</h2>
+              <p>
+                {editRegions
+                  ? 'Soldaki görselde kutuları düzenleyin; bitince önizlemeye dönün.'
+                  : videoGenerated
+                    ? 'İşaretler sesinize göre yerleştirildi. Önizlemeyi izleyin; kayan bir işaret varsa listeyi açıp düzeltin, yoksa indirmeye geçin.'
+                    : 'Önce aşağıdaki düğmeyle sesinize uygun işaretleri hazırlayın.'}
+              </p>
+              {videoGenerated && !editRegions && (
+                <SimpleTimingList
+                  actions={currentProject.videoConfig.timelineActions || []}
+                  regions={currentProject.videoConfig.regions || []}
+                  duration={activeAudioDuration || 15}
+                  currentTime={currentPreviewTime}
+                  onUpdateActions={actions =>
+                    updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })
+                  }
+                  onSeek={setCurrentPreviewTime}
+                  setPlaying={playing => {
+                    if (playing) setPreviewMode('video');
+                    setIsPlayingPreview(playing);
+                  }}
+                />
+              )}
+              {hasImage &&
+                (editRegions ? (
+                  <button className="studio-primary w-full" onClick={() => void finishRegionEditing()}>
+                    Kaydet ve önizlemeye dön
+                  </button>
+                ) : (
+                  <button className="studio-secondary w-full" onClick={() => setEditRegions(true)}>
+                    Görseldeki kutuları düzenle
+                  </button>
+                ))}
+            </section>
+          )}
+          <ExportStep
+            step={step}
+            videoGenerated={videoGenerated}
+            currentProject={currentProject}
+            handleReadinessAction={handleReadinessAction}
+            exportError={exportError}
+            isExportingMp4={isExportingMp4}
+            exportAbortRef={exportAbortRef}
+            handleDownloadMp4={handleDownloadMp4}
+            exportPercent={exportPercent}
+            setIsVideoModalOpen={setIsVideoModalOpen}
+            handleAttemptCreateVideo={handleAttemptCreateVideo}
+            isAudioApproved={isAudioApproved}
+            videoButtonWarning={videoButtonWarning}
+          />
+          <footer className="workflow-footer">
+            <p>
+              {
+                [
+                  'Görseli yükleyin; özgün tasarımı videoda korunur.',
+                  'Arapça ifadeleri harekeli yazın.',
+                  'Sesi dinleyip “Bu Sesi Kullan” ile devam edin.',
+                  'Kutuları ve zamanlamayı son kez kontrol edin.',
+                  'MP4 bu tarayıcıda hazırlanır. İndirme bitene kadar sekmeyi açık tutun.',
+                ][step]
+              }
+            </p>
+            <div className="flex gap-2">
+              {step > 0 && (
+                <button className="studio-secondary" disabled={busy} onClick={() => go(step - 1)}>
+                  Geri
+                </button>
+              )}
+              {step < 4 && (
+                <button className="studio-primary" disabled={busy || !enabled[step + 1]} onClick={() => go(step + 1)}>
+                  {['Metne geç', 'Sese geç', 'İşaretlere geç', 'İndirmeye geç'][step]}
+                </button>
+              )}
+            </div>
+          </footer>
         </aside>
       </div>
 
@@ -583,4 +821,3 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({ onBack, 
     </div>
   );
 };
-

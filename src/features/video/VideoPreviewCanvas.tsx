@@ -14,8 +14,8 @@ import {
 
 interface VideoPreviewCanvasProps {
   imageUrl: string;
-  regions: AnnotationRegion[];
-  actions: VideoAction[];
+  regions?: AnnotationRegion[];
+  actions?: VideoAction[];
   currentTime: number;
   duration: number;
   isPlaying: boolean;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkle, X, Check, BookOpen, GraduationCap, FileText } from 'lucide-react';
+import { Sparkle, X, Check, BookOpen, GraduationCap, FileText } from '@phosphor-icons/react';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categories';
 
 interface NewProjectCategoryModalProps {
@@ -33,11 +33,11 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
   if (!isOpen) return null;
 
   const getCategoryIcon = (id: string) => {
-    if (id === 'soru-coz') return <BookOpen className="w-[18px] h-[18px]" />;
-    if (id === 'cikmis-soru') return <GraduationCap className="w-[18px] h-[18px]" />;
-    if (id === 'deneme') return <FileText className="w-[18px] h-[18px]" />;
-    if (id.startsWith('dkab-')) return <FileText className="w-[18px] h-[18px]" />;
-    return <Sparkle className="w-[18px] h-[18px]" />;
+    if (id === 'soru-coz') return <BookOpen size={18} />;
+    if (id === 'cikmis-soru') return <GraduationCap size={18} />;
+    if (id === 'deneme') return <FileText size={18} />;
+    if (id.startsWith('dkab-')) return <FileText size={18} />;
+    return <Sparkle size={18} />;
   };
 
   return (
@@ -55,7 +55,7 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
             aria-label="Kapat"
             className="w-8 h-8 rounded-lg text-[#787670] hover:text-[#1C1917] hover:bg-[#F0EFEA] transition-colors flex items-center justify-center"
           >
-            <X className="w-4 h-4" />
+            <X size={16} />
           </button>
         </div>
 
@@ -105,7 +105,7 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
                         : 'border-[#D5D4CC] bg-white'
                     }`}
                   >
-                    {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                    {isSelected && <Check size={12} weight="bold" />}
                   </div>
                 </button>
               );

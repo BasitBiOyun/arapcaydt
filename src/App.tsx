@@ -30,10 +30,29 @@ const AppContent: React.FC = () => {
     return <LoginPage key={authView || 'login'} initialMode={authView || 'login'} onBack={() => setAuthView(null)} />;
   }
 
-  if(user?.status !== 'approved') return <main className="min-h-screen flex items-center justify-center bg-[#FAF9F5]"><section className="bg-white rounded-xl border p-8 max-w-md space-y-4"><h1 className="text-xl font-semibold">{user?.status==='blocked'?'Hesabınızın erişimi durduruldu':'Yönetici onayı bekleniyor'}</h1><p>{user?.email}</p><p>Hesabınız onaylandığında kendi soru ve video panelinize erişebilirsiniz.</p><button onClick={()=>void refresh()} className="border rounded p-2 mr-3">Durumu yenile</button><button onClick={()=>void logout()}>Çıkış yap</button></section></main>;
+  if (user?.status !== 'approved')
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-[#FAF9F5]">
+        <section className="bg-white rounded-xl border p-8 max-w-md space-y-4">
+          <h1 className="text-xl font-semibold">
+            {user?.status === 'blocked' ? 'Hesabınızın erişimi durduruldu' : 'Yönetici onayı bekleniyor'}
+          </h1>
+          <p>{user?.email}</p>
+          <p>Hesabınız onaylandığında kendi soru ve video panelinize erişebilirsiniz.</p>
+          <button onClick={() => void refresh()} className="border rounded p-2 mr-3">
+            Durumu yenile
+          </button>
+          <button onClick={() => void logout()}>Çıkış yap</button>
+        </section>
+      </main>
+    );
   return (
     <ProjectProvider key={user?.id}>
-      <React.Suspense fallback={<div className="min-h-screen bg-[#FAF9F5] flex items-center justify-center text-xs text-[#787670]">{APP_NAME} açılıyor…</div>}>
+      <React.Suspense
+        fallback={
+          <div className="min-h-screen bg-[#FAF9F5] flex items-center justify-center text-xs text-[#787670]">{APP_NAME} açılıyor…</div>
+        }
+      >
         <AppLayout />
       </React.Suspense>
     </ProjectProvider>
