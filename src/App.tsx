@@ -7,10 +7,13 @@ import { LandingPage, type AuthMode } from './features/landing/LandingPage';
 const AppLayout = React.lazy(() => import('./layouts/AppLayout').then(m => ({ default: m.AppLayout })));
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { APP_NAME } from './config/brand';
+import { takeOAuthError } from './services/supabase';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, logout, refresh, recovering } = useAuth();
-  const [authView, setAuthView] = React.useState<AuthMode | null>(null);
+  // A failed Google sign-in returns to the site; show its message on the sign-in form.
+  const [oauthError] = React.useState(takeOAuthError);
+  const [authView, setAuthView] = React.useState<AuthMode | null>(oauthError ? 'login' : null);
 
   if (isLoading) {
     return (
@@ -27,7 +30,7 @@ const AppContent: React.FC = () => {
   if (!isAuthenticated) {
     // Visitors see the landing page; the form (with any sign-in message) opens from its buttons.
     if (!authView) return <LandingPage onAuth={setAuthView} />;
-    return <LoginPage key={authView || 'login'} initialMode={authView || 'login'} onBack={() => setAuthView(null)} />;
+    return <LoginPage key={authView || 'login'} initialMode={authView || 'login'} initialError={oauthError || ''} onBack={() => setAuthView(null)} />;
   }
 
   if (user?.status !== 'approved')
