@@ -67,3 +67,8 @@ export async function prepareUploadedNarration(file: File, deps: UploadedNarrati
     return { ...build([], 'none', duration), notice: 'Sesten kelime zamanı çıkarılamadı. İşaretlerin zamanlamasını önizlemede kontrol edin.' };
   }
 }
+
+/** Solution text recovered from a teacher's recording, when they uploaded the MP3 before writing it. */
+export function transcriptText(words: Array<{ text: string }>): string {
+  return words.map(w => w.text.trim()).filter(Boolean).join(' ').replace(/\s+([.,;:!?،؛؟])/g, '$1').trim();
+}

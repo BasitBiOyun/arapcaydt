@@ -10,7 +10,7 @@ import { VideoGenerationModal } from '../features/video/VideoGenerationModal';
 import { LocalPipelineResult } from '../services/pipeline/localVideoPipeline';
 import { localWhisperService } from '../services/whisper/localWhisperService';
 import { localOcrService } from '../services/ocr/localOcrService';
-import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
+import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
 import { narrationService } from '../services/narration/narrationService';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
@@ -69,6 +69,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const [isTranscribingMp3, setIsTranscribingMp3] = useState(false);
   const [transcribeProgress, setTranscribeProgress] = useState<{ progress: number; message: string } | null>(null);
   const [audioError, setAudioError] = useState<string | null>(null);
+  const [audioInfo, setAudioInfo] = useState<string | null>(null);
 
   // Audio preview playback in Step 3
   const [audioPlayTime, setAudioPlayTime] = useState(0);
@@ -234,6 +235,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     }
 
     setAudioError(null);
+    setAudioInfo(null);
     setIsGeneratingAudio(true);
 
     try {
@@ -285,6 +287,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       return;
     }
     setAudioError(null);
+    setAudioInfo(null);
     setIsTranscribingMp3(true);
     setTranscribeProgress({ progress: 10, message: 'Ses dosyası taranıyor...' });
     try {
@@ -306,14 +309,19 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
         onProgress: (progress, message) => setTranscribeProgress({ progress, message }),
       });
       const stored = saved as QuestionProject | null;
+      // Recorded before any text was written: the solution text comes from the recording itself.
+      const heard = currentProject.solutionText.trim() ? '' : transcriptText(result.source.words || []);
       updateCurrentProject({
         ...(stored
           ? withWordTimings(stored, result.source.words || [], result.source.timingSource || 'none')
           : { narrationSource: result.source, audioNarration: result.compat }),
+        ...(heard ? { solutionText: heard } : {}),
         audioApproved: false,
         videoReady: false,
       });
       if (result.notice) setAudioError(result.notice);
+      else if (heard) setAudioInfo('Çözüm metni sesinizden çıkarıldı. Doğru cevabı ve metni 2. adımda kontrol edebilirsiniz.');
+      else if (!currentProject.solutionText.trim()) setAudioError('Sesinizden metin çıkarılamadı. İşaretler için 2. adımda çözüm metnini yazın.');
       setVideoGenerated(false);
     } catch (err) {
       setAudioError(err instanceof Error ? err.message : 'Ses dosyası okunamadı.');
@@ -451,7 +459,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   };
 
   const check = checkNarration(currentProject.solutionText, currentProject.correctAnswer);
-  const enabled = [true, hasImage, hasImage && hasSolution, isAudioApproved, videoGenerated && isAudioApproved];
+  const enabled = [true, hasImage, hasImage, isAudioApproved, videoGenerated && isAudioApproved];
   const busy = isGeneratingAudio || sampleBusy || isTranscribingMp3 || isExportingMp4;
   const go = (next: number) => {
     if (!busy && enabled[next]) {
@@ -636,6 +644,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             isTranscribingMp3={isTranscribingMp3}
             transcribeProgress={transcribeProgress}
             audioError={audioError}
+            audioInfo={audioInfo}
           />
           {step === 3 && (
             <section className="space-y-3">

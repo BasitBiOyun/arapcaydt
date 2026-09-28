@@ -28,13 +28,15 @@ export interface AudioStepProps {
   isTranscribingMp3: boolean;
   transcribeProgress: { progress: number; message: string } | null;
   audioError: string | null;
+  /** A plain note after an upload (e.g. the solution text was taken from the recording). */
+  audioInfo?: string | null;
 }
 
 /** STEP 3: Seslendirme */
 const formatTime = (secs: number) =>
   `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
 
-export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError }: AudioStepProps) {
+export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo }: AudioStepProps) {
   // Which Google key the next narration uses; refreshed after each generation.
   const [keyStatus, setKeyStatus] = useState<TeacherKeyStatus | null>(null);
   useEffect(() => {
@@ -226,7 +228,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
           </div>
           {!hasSolution && (
             <p className="text-[11px] text-[#787670]">
-              Seslendirme oluşturmak için önce çözüm metnini yazın.
+              Seslendirme oluşturmak için önce çözüm metnini yazın. Hazır sesiniz varsa MP3 Yükle’ye basın; çözüm metni ve işaretler sesinizden çıkarılır.
             </p>
           )}
           {hasSolution && capacity && (
@@ -251,6 +253,9 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
         </div>
       )}
 
+      {audioInfo && !audioError && (
+        <p className="text-[11px] text-[#1E562A] font-medium">{audioInfo}</p>
+      )}
       {audioError && (
         <p className="text-[11px] text-red-600 font-medium">
           {audioError}

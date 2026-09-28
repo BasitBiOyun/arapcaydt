@@ -56,6 +56,11 @@ export function SolutionStep({
         dir="auto"
         className="w-full p-3.5 rounded-lg border border-[#D5D4CC] focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] text-xs text-[#1C1917] leading-relaxed bg-white outline-none resize-y placeholder:text-[#A8A69E]"
       />
+      {!currentProject.solutionText.trim() && (
+        <p className="text-[11px] text-[#787670]">
+          Hazır ses kaydınız (MP3) varsa metni yazmadan devam edin; bir sonraki adımda MP3’ü yükleyince çözüm metni sesinizden çıkarılır. Doğru cevabı seçmeyi unutmayın.
+        </p>
+      )}
     </div>
   );
 }

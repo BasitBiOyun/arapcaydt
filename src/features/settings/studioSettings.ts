@@ -22,6 +22,8 @@ export async function saveMyProfile(name: string, preferences: UserPreferences):
 export interface StudioSettings {
   announcement: string;
   announcement_active: boolean;
+  /** When the announcement stops showing; null = until withdrawn (column added by 20261004_announcement_until.sql). */
+  announcement_until?: string | null;
   shared_transcribe_per_teacher: number;
   elevenlabs_align_per_teacher: number;
   auto_approve: string[];
@@ -48,9 +50,40 @@ export async function loadStudioSettings(): Promise<{ settings: StudioSettings |
   return { settings: data as StudioSettings | null, pending: !data };
 }
 
-export async function saveStudioSettings(settings: Omit<StudioSettings, 'updated_at'>): Promise<void> {
+export async function saveStudioSettings(settings: Partial<Omit<StudioSettings, 'updated_at'>>): Promise<void> {
   const { error } = await database().from('studio_settings').update({ ...settings, updated_at: new Date().toISOString() }).eq('id', true);
   if (error) throw new Error(friendly(error));
+}
+
+export const ANNOUNCEMENT_DURATIONS = [
+  { label: '24 saat', hours: 24 },
+  { label: '3 gün', hours: 72 },
+  { label: '7 gün', hours: 168 },
+  { label: 'Süresiz', hours: 0 },
+] as const;
+
+export const announcementUntil = (hours: number, now = Date.now()) => hours > 0 ? new Date(now + hours * 3600_000).toISOString() : null;
+
+/** What members see right now: live, expired (still switched on but past its end) or off. */
+export function announcementState(s: Pick<StudioSettings, 'announcement' | 'announcement_active' | 'announcement_until'>, now = Date.now()): 'live' | 'expired' | 'off' {
+  if (!s.announcement_active || !s.announcement.trim()) return 'off';
+  return s.announcement_until && Date.parse(s.announcement_until) <= now ? 'expired' : 'live';
+}
+
+/**
+ * Publish, withdraw or delete the announcement without touching the other settings.
+ * Before the expiry migration the end time is dropped and the announcement stays until withdrawn.
+ */
+export async function updateAnnouncement(patch: Pick<StudioSettings, 'announcement' | 'announcement_active' | 'announcement_until'>): Promise<{ patch: Partial<StudioSettings>; expiryPending: boolean }> {
+  const row = { ...patch, updated_at: new Date().toISOString() };
+  let { error } = await database().from('studio_settings').update(row).eq('id', true);
+  if (error && isMigrationPending(error) && 'announcement_until' in row) {
+    const { announcement_until: _dropped, ...rest } = row;
+    ({ error } = await database().from('studio_settings').update(rest).eq('id', true));
+    if (!error) return { patch: { ...rest, announcement_until: null }, expiryPending: true };
+  }
+  if (error) throw new Error(friendly(error));
+  return { patch: row, expiryPending: false };
 }
 
 /** The active announcement for approved members, or null (also before the migration). */

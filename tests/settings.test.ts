@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { cleanPreferences, newProjectDefaults } from '../src/features/settings/preferences';
-import { isMigrationPending, parseAutoApprove } from '../src/features/settings/studioSettings';
+import { announcementState, announcementUntil, isMigrationPending, parseAutoApprove } from '../src/features/settings/studioSettings';
+import { transcriptText } from '../src/services/narration/uploadedNarration';
 
 test('stored preferences keep only known, well-formed fields', () => {
   assert.deepEqual(cleanPreferences(null), {});
@@ -74,6 +75,22 @@ test('settings migration: own profile only, admin-only studio row, auto-approval
   await as(teacher);
   assert.equal((await db.query<any>(`select announcement from public.studio_announcement()`)).rows[0].announcement, 'Cuma teslim');
 
+  // With the expiry migration an announcement disappears on its own once its time is up.
+  await db.exec(`reset role`);
+  const expiry = readFileSync(new URL('../supabase/migrations/20261004_announcement_until.sql', import.meta.url), 'utf8');
+  await db.exec(expiry);
+  await db.exec(expiry);
+  await as(teacher);
+  assert.equal((await db.query(`select * from public.studio_announcement()`)).rows.length, 1, 'no end time: shown until withdrawn');
+  await as(admin);
+  await db.query(`update public.studio_settings set announcement_until=now() + interval '1 day'`);
+  await as(teacher);
+  assert.equal((await db.query(`select * from public.studio_announcement()`)).rows.length, 1);
+  await as(admin);
+  await db.query(`update public.studio_settings set announcement_until=now() - interval '1 minute'`);
+  await as(teacher);
+  assert.deepEqual((await db.query(`select * from public.studio_announcement()`)).rows, [], 'expired');
+
   // Listed addresses and domains are approved on confirmation; others wait; look-alike domains do not match.
   await db.exec(`reset role`);
   const ids = [1, 2, 3, 4].map(n => `00000000-0000-4000-8000-0000000000c${n}`);
@@ -110,4 +127,22 @@ test('password rules match Supabase (8+, a-z, A-Z, digit, symbol) and errors rea
   assert.equal(authMessage('Invalid login credentials'), 'E-posta ya da şifre hatalı.');
   assert.match(authMessage('Password should contain at least one character of each: abc…'), /yeterince güçlü değil/);
   assert.equal(authMessage('Something else'), 'Something else');
+});
+
+test('announcements run for a chosen time and report whether members see them', () => {
+  const now = Date.parse('2026-09-28T09:00:00Z');
+  assert.equal(announcementUntil(24, now), '2026-09-29T09:00:00.000Z');
+  assert.equal(announcementUntil(0, now), null, 'süresiz');
+  const note = { announcement: 'Cuma teslim', announcement_active: true, announcement_until: '2026-09-29T09:00:00.000Z' };
+  assert.equal(announcementState(note, now), 'live');
+  assert.equal(announcementState(note, Date.parse('2026-09-30T00:00:00Z')), 'expired');
+  assert.equal(announcementState({ ...note, announcement_until: null }, Date.parse('2030-01-01T00:00:00Z')), 'live');
+  assert.equal(announcementState({ ...note, announcement_active: false }, now), 'off');
+  assert.equal(announcementState({ ...note, announcement: '  ' }, now), 'off');
+});
+
+test('a recording uploaded before any text gives its words back as the solution text', () => {
+  assert.equal(transcriptText([{ text: 'Doğru' }, { text: 'cevap' }, { text: 'B' }, { text: '.' }, { text: 'الكتاب' }, { text: ' ' }, { text: 'مفيد' }]),
+    'Doğru cevap B. الكتاب مفيد');
+  assert.equal(transcriptText([]), '');
 });

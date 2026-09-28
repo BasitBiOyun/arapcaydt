@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Buildings } from '@phosphor-icons/react';
 import { CardHeader, Result, card, field, primary } from './MySettingsCards';
-import { MIGRATION_PENDING, loadStudioSettings, parseAutoApprove, saveStudioSettings, type StudioSettings } from './studioSettings';
+import {
+  ANNOUNCEMENT_DURATIONS, MIGRATION_PENDING, announcementState, announcementUntil, loadStudioSettings, parseAutoApprove,
+  saveStudioSettings, updateAnnouncement, type StudioSettings,
+} from './studioSettings';
+
+const endsAt = (iso: string) => new Date(iso).toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
 /** Admin-only studio settings: announcement, daily limits, auto-approval and sign-ups. */
 export function StudioSettingsCard() {
   const [settings, setSettings] = useState<StudioSettings | null>(null);
   const [approveText, setApproveText] = useState('');
+  const [hours, setHours] = useState<number>(24);
   const [state, setState] = useState<{ notice?: string; error?: string; busy?: boolean; loading?: boolean; pending?: boolean }>({ loading: true });
 
   useEffect(() => {
@@ -24,12 +30,23 @@ export function StudioSettingsCard() {
     if (parsed.invalid.length) return setState({ error: `Okunamayan satırlar: ${parsed.invalid.join(', ')}. Her satıra bir e-posta ya da @alan adı yazın.` });
     setState({ busy: true });
     try {
-      const { updated_at: _ignored, ...rest } = settings;
-      await saveStudioSettings({ ...rest, announcement: rest.announcement.trim(), auto_approve: parsed.entries });
+      // The announcement has its own buttons; this saves only the other settings.
+      const { updated_at: _u, announcement: _a, announcement_active: _on, announcement_until: _until, ...rest } = settings;
+      await saveStudioSettings({ ...rest, auto_approve: parsed.entries });
       setApproveText(parsed.entries.join('\n'));
       setState({ notice: 'Stüdyo ayarları kaydedildi.' });
     } catch (err: any) { setState({ error: err.message }); }
   };
+
+  const announce = async (patch: Pick<StudioSettings, 'announcement' | 'announcement_active' | 'announcement_until'>, done: string) => {
+    setState({ busy: true });
+    try {
+      const result = await updateAnnouncement(patch);
+      setSettings(s => s && { ...s, ...result.patch });
+      setState({ notice: result.expiryPending ? `${done} Süre için veritabanı güncellemesi bekleniyor (supabase/migrations/20261004_announcement_until.sql); o zamana kadar siz kaldırana dek görünür.` : done });
+    } catch (err: any) { setState({ error: err.message }); }
+  };
+  const live = settings ? announcementState(settings) : 'off';
 
   const number = (key: 'shared_transcribe_per_teacher' | 'elevenlabs_align_per_teacher', max: number) => (
     <input type="number" min={0} max={max} className={`${field} !w-24`} value={settings?.[key] ?? 0}
@@ -47,7 +64,28 @@ export function StudioSettingsCard() {
             <legend className="font-medium mb-1">Duyuru</legend>
             <textarea aria-label="Duyuru metni" className={`${field} min-h-16`} maxLength={500} placeholder="Örnek: Cuma akşamına kadar Eylül denemesinin videolarını tamamlayalım."
               value={settings.announcement} onChange={e => set({ announcement: e.target.value })} />
-            <label className="flex items-center gap-2"><input type="checkbox" checked={settings.announcement_active} onChange={e => set({ announcement_active: e.target.checked })} /> Duyuruyu herkese göster</label>
+            <p className="text-[11px]" role="status">
+              {live === 'live' ? <span className="text-[#1E562A] font-semibold">● Yayında{settings.announcement_until ? ` · ${endsAt(settings.announcement_until)} tarihine kadar` : ' · siz kaldırana kadar'}</span>
+                : live === 'expired' ? <span className="text-[#78540E] font-semibold">Süresi doldu; öğretmenler artık görmüyor.</span>
+                : <span className="text-[#787670]">Yayında değil.</span>}
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="flex items-center gap-1.5">Süre
+                <select className={`${field} !w-auto !py-1`} value={hours} onChange={e => setHours(Number(e.target.value))}>
+                  {ANNOUNCEMENT_DURATIONS.map(d => <option key={d.hours} value={d.hours}>{d.label}</option>)}
+                </select>
+              </label>
+              <button type="button" className={primary} disabled={state.busy || !settings.announcement.trim()}
+                onClick={() => void announce({ announcement: settings.announcement.trim(), announcement_active: true, announcement_until: announcementUntil(hours) },
+                  live === 'live' ? 'Duyuru güncellendi ve yeniden yayınlandı.' : 'Duyuru yayınlandı.')}>
+                {live === 'live' ? 'Güncelle ve yayınla' : 'Yayınla'}
+              </button>
+              {live !== 'off' && <button type="button" className="px-3 py-1.5 rounded border border-[#D5D4CC] bg-white hover:bg-[#F2F1EB] font-semibold" disabled={state.busy}
+                onClick={() => void announce({ announcement: settings.announcement, announcement_active: false, announcement_until: settings.announcement_until ?? null }, 'Duyuru yayından kaldırıldı.')}>Yayından kaldır</button>}
+              {settings.announcement.trim() && <button type="button" className="px-3 py-1.5 rounded text-red-600 hover:bg-red-50 font-semibold" disabled={state.busy}
+                onClick={() => { if (window.confirm('Duyuru metni silinsin mi?')) void announce({ announcement: '', announcement_active: false, announcement_until: null }, 'Duyuru silindi.'); }}>Sil</button>}
+            </div>
+            <p className="text-[11px] text-[#787670]">Yayınlanan duyuru tüm sayfaların üstünde görünür; öğretmen kapatırsa o duyuruyu bir daha görmez. Yeniden yayınlarsanız herkese yeniden görünür.</p>
           </fieldset>
           <fieldset className="space-y-2 border-t border-[#EFEFEA] pt-3">
             <legend className="font-medium mb-1">Öğretmen başına günlük sınırlar</legend>
