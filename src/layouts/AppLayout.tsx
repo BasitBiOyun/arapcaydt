@@ -4,6 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppSidebar, AppPage } from '../components/common/AppSidebar';
 import { AppHeader } from '../components/common/AppHeader';
 import { AnnouncementBanner } from '../features/settings/AnnouncementBanner';
+import { setReportContext } from '../features/feedback/feedback';
+import { PAGE_LABELS } from '../config/pages';
 import { DashboardPage } from '../pages/DashboardPage';
 import { QuestionsPage } from '../pages/QuestionsPage';
 import { QuestionEditorPage } from '../pages/QuestionEditorPage';
@@ -20,6 +22,8 @@ export const AppLayout: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<AppPage>(user?.role==='admin'?'admin':'dashboard');
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const { selectProject, createNewProject, currentProject, projects, error, loadProjects, isLoading } = useProjects();
+  // The editor reports its own question and step.
+  useEffect(() => { if (currentPage !== 'editor') setReportContext({ page: PAGE_LABELS[currentPage] }); }, [currentPage]);
   const pageRef = useRef(currentPage);
   pageRef.current = currentPage;
   const leaveGuard = useRef<LeaveGuard | null>(null);

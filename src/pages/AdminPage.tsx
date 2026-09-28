@@ -1,6 +1,7 @@
 import { readProjectForOverview } from '../features/projects/cloudProjectRepository';
 import { ProjectViewer } from '../features/projects/ProjectViewer';
 import { StorageSection } from '../features/admin/StorageSection';
+import { FeedbackSection } from '../features/admin/FeedbackSection';
 import type { QuestionProject } from '../types';
 import { projectRepository } from '../features/projects/projectRepository';
 import { useProjects } from '../features/projects/ProjectContext';
@@ -380,6 +381,7 @@ export const AdminPage: React.FC = () => {
 
       {tab === 'overview' && (
         <div className="space-y-6">
+          <FeedbackSection who={who} />
           {pending.length > 0 && (
             <section className="rounded-xl border border-[#E5D7B0] bg-[#FFF8E6] p-5">
               <SectionTitle title={`Onay bekleyen hesaplar (${pending.length})`} note="E-postasını doğrulamış ve onayınızı bekleyen öğretmenler." />

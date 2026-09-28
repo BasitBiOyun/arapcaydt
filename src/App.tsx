@@ -8,6 +8,9 @@ const AppLayout = React.lazy(() => import('./layouts/AppLayout').then(m => ({ de
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { APP_NAME } from './config/brand';
 import { takeOAuthError } from './services/supabase';
+import { installErrorBuffer } from './features/feedback/feedback';
+
+installErrorBuffer();
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, logout, refresh, recovering } = useAuth();

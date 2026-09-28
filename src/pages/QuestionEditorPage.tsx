@@ -27,6 +27,9 @@ import { ImageStep } from '../features/question-editor/steps/ImageStep';
 import { ArrowLeft, Check, Plus } from '@phosphor-icons/react';
 import type { LeaveGuard } from '../layouts/AppLayout';
 import { APP_NAME } from '../config/brand';
+import { ReportProblem } from '../features/feedback/ReportProblem';
+import { setReportContext } from '../features/feedback/feedback';
+import { useAuth } from '../features/auth/AuthContext';
 
 function hasAnimationPlan(project: QuestionProject | null | undefined) {
   return Boolean(
@@ -55,6 +58,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   loadError,
 }) => {
   const { currentProject, updateCurrentProject, saveCurrentProject, saveStatus, error: saveError } = useProjects();
+  const { user } = useAuth();
 
   const [step, setStep] = useState(() => (currentProject ? resumeStep(currentProject) : 0));
   const [editRegions, setEditRegions] = useState(false);
@@ -151,6 +155,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     );
     return () => registerLeaveGuard(null);
   }, [working, registerLeaveGuard]);
+
+  // A problem report says which question and step the teacher was on.
+  useEffect(() => {
+    setReportContext({ page: 'Soru editörü', projectId: currentProject?.id, projectTitle: currentProject?.title, step: steps[step] });
+  }, [currentProject?.id, currentProject?.title, step]);
 
   if (!currentProject) {
     return (
@@ -471,6 +480,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
 
         <h1 className="text-sm font-bold text-[#1C1917] tracking-tight hidden md:block">{currentProject.title || APP_NAME}</h1>
 
+        <div className="flex items-center gap-2">
+        <ReportProblem variant="compact" sender={user?.name} />
         <button
           type="button"
           onClick={handleSave}
@@ -490,6 +501,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             </span>
           )}
         </button>
+        </div>
       </header>
 
       <nav className="workflow-nav" aria-label="Video hazırlama adımları">

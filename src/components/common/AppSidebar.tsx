@@ -5,6 +5,7 @@ import { useProjects } from '../../features/projects/ProjectContext';
 import { BrandMark } from './BrandMark';
 import { APP_NAME } from '../../config/brand';
 import { PAGE_LABELS } from '../../config/pages';
+import { ReportProblem } from '../../features/feedback/ReportProblem';
 
 export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin';
 
@@ -74,6 +75,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <div className="text-[11px] uppercase font-semibold text-[#8C8A82] tracking-wider">Sistem</div>
         </div>
         {link({ page: 'settings', label: PAGE_LABELS.settings, icon: Gear })}
+        <ReportProblem sender={user?.name} />
         <button className="mobile-signout" onClick={logout}><SignOut size={18}/>Çıkış</button>
       </nav>
 

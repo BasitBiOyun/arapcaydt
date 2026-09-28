@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReportProblem } from '../../features/feedback/ReportProblem';
 
 /**
  * Last line of defence: an unexpected render error shows a way forward instead
@@ -27,6 +28,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             <button type="button" className="studio-primary" onClick={() => window.location.reload()}>Sayfayı yenile</button>
+            <ReportProblem variant="button" />
           </div>
         </section>
       </main>
