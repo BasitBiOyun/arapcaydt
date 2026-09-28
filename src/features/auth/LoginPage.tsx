@@ -1,20 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { database, googleSignInEnabled, rememberMe, setRememberMe, supabase } from '../../services/supabase';
+import { CheckCircle, Circle } from '@phosphor-icons/react';
 import { BrandMark } from '../../components/common/BrandMark';
 import { APP_NAME, APP_OWNER_LINE } from '../../config/brand';
 import { useSignupsOpen } from '../settings/studioSettings';
 /** Same rules as Supabase (Authentication → Email): 8+ characters with a-z, A-Z, 0-9 and a symbol. */
+export const PASSWORD_RULES: Array<{ label: string; missing: string; test: (password: string) => boolean }> = [
+  { label: 'En az 8 karakter', missing: 'en az 8 karakter', test: p => p.length >= 8 },
+  { label: 'Küçük harf (a–z)', missing: 'küçük harf', test: p => /[a-z]/.test(p) },
+  { label: 'Büyük harf (A–Z; Ç, Ş gibi Türkçe harfler sayılmaz)', missing: 'büyük harf (A–Z)', test: p => /[A-Z]/.test(p) },
+  { label: 'Rakam (0–9)', missing: 'rakam', test: p => /[0-9]/.test(p) },
+  { label: 'Sembol (!, ?, *, . gibi)', missing: 'sembol', test: p => /[!@#$%^&*()_+\-=[\]{};'\\:"|<>?,./`~]/.test(p) },
+];
 export const PASSWORD_HINT = 'En az 8 karakter; küçük harf, büyük harf (A–Z), rakam ve sembol (!, ?, *, . gibi) içermeli.';
 export function passwordProblem(password: string): string | null {
-  const missing = [
-    password.length < 8 && 'en az 8 karakter',
-    !/[a-z]/.test(password) && 'küçük harf',
-    !/[A-Z]/.test(password) && 'büyük harf (A–Z)',
-    !/[0-9]/.test(password) && 'rakam',
-    !/[!@#$%^&*()_+\-=[\]{};'\\:"|<>?,./`~]/.test(password) && 'sembol',
-  ].filter(Boolean);
+  const missing = PASSWORD_RULES.filter(rule => !rule.test(password)).map(rule => rule.missing);
   return missing.length ? `Şifrede eksik: ${missing.join(', ')}.` : null;
+}
+
+/** The password rules as a live checklist: a green tick as each one is met. */
+export function PasswordChecklist({ password }: { password: string }) {
+  return (
+    <ul className="mt-2 space-y-1 text-xs" aria-label="Şifre kuralları">
+      {PASSWORD_RULES.map(rule => {
+        const ok = rule.test(password);
+        return (
+          <li key={rule.label} className={`flex items-center gap-1.5 ${ok ? 'text-[#15803D]' : 'text-stone-500'}`}>
+            {ok ? <CheckCircle size={15} weight="fill" aria-hidden /> : <Circle size={15} aria-hidden />}
+            <span>{rule.label}</span>
+            <span className="sr-only">{ok ? '(tamam)' : '(eksik)'}</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 /** Supabase's English auth errors, in plain Turkish. */
 export function authMessage(message: string): string {
@@ -205,9 +225,9 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'signup'; onBack?: ()
                 onChange={e => setPassword(e.target.value)}
                 className="block w-full border rounded p-2 mt-1"
               />
-              {(mode === 'signup' || recovering) && <span className="block text-xs text-stone-500 mt-1">{PASSWORD_HINT}</span>}
             </label>
           )}
+          {(mode === 'signup' || recovering) && <PasswordChecklist password={password} />}
           {mode === 'login' && !recovering && (
             <label className="flex items-center gap-2 text-sm text-stone-600">
               <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />

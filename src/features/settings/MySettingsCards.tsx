@@ -5,7 +5,7 @@ import { database } from '../../services/supabase';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categories';
 import { cleanPreferences, type UserPreferences } from './preferences';
 import { saveMyProfile } from './studioSettings';
-import { PASSWORD_HINT, authMessage, passwordProblem } from '../auth/LoginPage';
+import { PasswordChecklist, authMessage, passwordProblem } from '../auth/LoginPage';
 
 export const card = 'p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs';
 export const field = 'w-full px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white text-xs outline-none';
@@ -74,7 +74,7 @@ export function ProfileCard() {
           <input aria-label="Yeni şifre" type="password" autoComplete="new-password" placeholder="Yeni şifre" className={field} value={password} onChange={e => setPassword(e.target.value)} />
           <input aria-label="Yeni şifre tekrar" type="password" autoComplete="new-password" placeholder="Yeni şifre tekrar" className={field} value={repeat} onChange={e => setRepeat(e.target.value)} />
         </div>
-        <p className="text-[11px] text-[#787670]">{PASSWORD_HINT}</p>
+        {password && <PasswordChecklist password={password} />}
         <button className={primary} disabled={passState.busy || !password}>Şifreyi değiştir</button>
         <Result {...passState} />
       </form>
