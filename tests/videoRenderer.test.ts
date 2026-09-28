@@ -101,3 +101,9 @@ test('"Doğru cevap" label never covers the question stem',async()=>{
   assert.ok(draw([option]).includes('Doğru cevap'));
   assert.ok(!draw([option,{id:'question-root',type:'paragraph',label:'k',x:.44,y:.38,width:.33,height:.06}]).includes('Doğru cevap'));
 });
+test('MP4 tracks only take increasing timestamps (a packet one frame early is dropped, not fatal)',async()=>{
+  const {monotonicGate}=await import('../src/features/video/engine/exporter');
+  const gate=monotonicGate();
+  // The macOS AAC encoder after a restart: 2 773 333 µs, then one frame back to 2 752 000 µs.
+  assert.deepEqual([2730667,2752000,2773333,2752000,2773333,2794667].map(gate),[true,true,true,false,false,true]);
+});

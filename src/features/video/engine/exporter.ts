@@ -9,6 +9,20 @@ export function exportDimensions(config: ExportConfig) {
 }
 const yieldToUI = () => new Promise<void>(resolve => setTimeout(resolve, 0));
 
+/**
+ * MP4 needs strictly increasing timestamps per track. Some platform encoders
+ * (macOS AAC) can hand back a packet one frame early; dropping that one packet
+ * (21 ms of audio) is inaudible, while passing it on aborts the whole export.
+ */
+export function monotonicGate(): (timestamp: number) => boolean {
+  let last = -Infinity;
+  return timestamp => {
+    if (timestamp <= last) return false;
+    last = timestamp;
+    return true;
+  };
+}
+
 export class BrowserVideoExporter implements IVideoExporter {
   private static instance: BrowserVideoExporter;
   public static getInstance() {
@@ -79,8 +93,10 @@ export class BrowserVideoExporter implements IVideoExporter {
         fastStart: 'in-memory', firstTimestampBehavior: 'offset',
       });
       const failed = (error: DOMException) => { encodingError = error; };
+      const videoInOrder = monotonicGate(), audioInOrder = monotonicGate();
       videoEncoder = new VideoEncoder({
         output: (chunk, metadata) => {
+          if (!videoInOrder(chunk.timestamp)) return;
           try { muxer.addVideoChunk(chunk, metadata); } catch (error) { encodingError = error as Error; }
         }, error: failed,
       });
@@ -95,6 +111,7 @@ export class BrowserVideoExporter implements IVideoExporter {
           throw new Error('Bu cihaz AAC sesi kodlayamıyor. Güncel masaüstü Chrome veya Edge kullanın.');
         audioEncoder = new AudioEncoder({
           output: (chunk, metadata) => {
+            if (!audioInOrder(chunk.timestamp)) return;
             try { muxer.addAudioChunk(chunk, metadata); } catch (error) { encodingError = error as Error; }
           }, error: failed,
         });
@@ -112,7 +129,12 @@ export class BrowserVideoExporter implements IVideoExporter {
             timestamp: Math.round(offset / audioBuffer.sampleRate * 1_000_000), data: samples,
           });
           try { audioEncoder.encode(data); } finally { data.close(); }
-          if (block % 32 === 31) { await audioEncoder.flush(); await yieldToUI(); }
+          // One continuous stream: a flush mid-way restarts the macOS AAC encoder and
+          // its next packet goes back one frame. Wait for the queue to drain instead.
+          if (block % 32 === 31) {
+            while (audioEncoder.encodeQueueSize > 16) { check(); await yieldToUI(); }
+            await yieldToUI();
+          }
         }
         await audioEncoder.flush(); check();
       }
