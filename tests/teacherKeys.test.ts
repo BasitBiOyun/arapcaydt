@@ -4,7 +4,7 @@ import {
   DEFAULT_LIMITS, ELEVENLABS_ALIGN_PER_TEACHER, SHARED_TRANSCRIBE_PER_TEACHER, decryptKey, elevenLabsAlignAllowed, encryptKey, isCapped,
   isDailyQuotaError, isInvalidKeyError, pacificDayStart, readDailyState, readLimits, sharedTranscribeAllowed, summarizeDay, usageDetail, type DayRow,
 } from '../server/quota';
-import { isGoogleKeyShape } from '../api/gemini/key';
+import { isGoogleKeyShape, keySaveMessage } from '../api/gemini/key';
 import { summarizeRequests } from '../api/admin/analytics';
 import { capacityLine, type TeacherKeyStatus } from '../src/services/narration/geminiKeyService';
 
@@ -179,4 +179,13 @@ test('when every voice service fails the teacher sees one plain sentence, not th
   assert.match(error.detail, /ElevenLabs yedeği de başarısız/);
   assert.match(new VoiceUnavailableError('x', 'Günlük öğretmen ses sınırına ulaşıldı').message, /Bugünkü ses üretim hakları doldu/);
   assert.equal(new VoiceUnavailableError('x', 'Oturumunuz sona erdi. Yeniden giriş yapın.').message, 'Oturumunuz sona erdi. Yeniden giriş yapın.');
+});
+
+test('a failed key save says why: the real cause for admins, a plain message and code for teachers', () => {
+  const denied = { code: '42501', message: 'permission denied for table teacher_gemini_keys' };
+  assert.match(keySaveMessage(denied, true), /SUPABASE_SERVICE_ROLE_KEY.*kod 42501/);
+  assert.equal(keySaveMessage(denied, false), 'Anahtar kaydedilemedi. Lütfen yöneticiye haber verin. (kod 42501)');
+  assert.match(keySaveMessage({ code: '42P01', message: 'relation does not exist' }, true), /20260928_teacher_keys\.sql/);
+  assert.match(keySaveMessage({ code: 'XX000', message: 'boom' }, true), /Veritabanı hatası: boom \(kod XX000\)/);
+  assert.match(keySaveMessage({ code: '23503', message: 'fk' }, false), /yeniden giriş/);
 });

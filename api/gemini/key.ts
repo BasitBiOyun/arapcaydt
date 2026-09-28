@@ -14,6 +14,23 @@ export const config = { maxDuration: 30 };
 export const isGoogleKeyShape = (key: string) => /^[0-9A-Za-z._-]{30,256}$/.test(key) && !/^sk-/i.test(key);
 
 /**
+ * Why a key could not be stored, in plain Turkish. Admins also see the database's
+ * own message so the cause can be fixed without reading server logs.
+ */
+export function keySaveMessage(error: { code?: string; message?: string }, admin: boolean): string {
+  const code = error.code || '';
+  const reason = code === '42P01' || /does not exist|could not find the table/i.test(error.message || '')
+    ? 'Veritabanında anahtar tablosu yok; supabase/migrations/20260928_teacher_keys.sql çalıştırılmalı.'
+    : code === '42501' || /permission denied|row-level security/i.test(error.message || '')
+      ? 'Sunucunun veritabanı yetkisi yetersiz; Vercel’deki SUPABASE_SERVICE_ROLE_KEY, Supabase’in gizli (service_role / secret) anahtarı olmalı.'
+      : code === '23503'
+        ? 'Profil kaydı bulunamadı; çıkış yapıp yeniden giriş yapın.'
+        : null;
+  if (admin) return `Anahtar kaydedilemedi. ${reason || `Veritabanı hatası: ${error.message || 'bilinmiyor'}`}${code ? ` (kod ${code})` : ''}`;
+  return `Anahtar kaydedilemedi. ${code === '23503' ? reason : 'Lütfen yöneticiye haber verin.'}${code ? ` (kod ${code})` : ''}`;
+}
+
+/**
  * The signed-in teacher's own Google AI Studio key: GET status and today's
  * usage, POST {apiKey} to verify and save it, DELETE to remove it. The key is
  * encrypted on the server and never sent back to any browser; only its last
@@ -54,8 +71,8 @@ export default async function handler(req: any, res: any) {
       owner_id: ownerId, ciphertext: encryptKey(apiKey), last4: apiKey.slice(-4), status: 'active', updated_at: new Date().toISOString(),
     }, { onConflict: 'owner_id' });
     if (error) {
-      console.error('[Teacher key save]', error.message);
-      return res.status(503).json({ error: 'Anahtar kaydedilemedi. Veritabanı güncellemesi bekleniyor olabilir.', code: 'KEY_SAVE_FAILED' });
+      console.error('[Teacher key save]', error.code, error.message);
+      return res.status(503).json({ error: keySaveMessage(error, member.profile?.role === 'admin'), code: 'KEY_SAVE_FAILED' });
     }
   }
 
