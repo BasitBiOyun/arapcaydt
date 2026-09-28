@@ -169,6 +169,13 @@ test('teacher key migration applies on the membership schema alone, is re-runnab
   await db.exec(`set role authenticated`);
   await assert.rejects(db.query(`select * from public.teacher_gemini_keys`), /permission denied/);
   await db.exec(`reset role`);
+  // The server writes with the service role; this project gives it no table rights by default.
+  await db.exec(`revoke all on public.teacher_gemini_keys from service_role`);
+  await db.exec(readFileSync(new URL('../supabase/migrations/20261002_service_role_grants.sql', import.meta.url), 'utf8'));
+  await db.exec(`set role service_role`);
+  await db.query(`insert into public.teacher_gemini_keys(owner_id,ciphertext,last4) values ($1,'v1:a:b:c','x9Q.') on conflict (owner_id) do update set last4=excluded.last4`, [id]);
+  await db.query(`select * from public.teacher_gemini_keys`);
+  await db.exec(`reset role`);
 });
 
 test('when every voice service fails the teacher sees one plain sentence, not the technical chain', async () => {

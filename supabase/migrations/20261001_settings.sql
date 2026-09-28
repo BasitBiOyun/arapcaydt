@@ -33,6 +33,7 @@ insert into public.studio_settings (id) values (true) on conflict (id) do nothin
 alter table public.studio_settings enable row level security;
 revoke all on public.studio_settings from anon, authenticated;
 grant select, update on public.studio_settings to authenticated;
+grant all on public.studio_settings to service_role;
 drop policy if exists studio_settings_admin_read on public.studio_settings;
 create policy studio_settings_admin_read on public.studio_settings for select to authenticated using (public.is_admin());
 drop policy if exists studio_settings_admin_write on public.studio_settings;

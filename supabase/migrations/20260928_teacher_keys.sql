@@ -25,3 +25,4 @@ create table if not exists public.teacher_gemini_keys (
 );
 alter table public.teacher_gemini_keys enable row level security;
 revoke all on public.teacher_gemini_keys from anon, authenticated;
+grant all on public.teacher_gemini_keys to service_role;
