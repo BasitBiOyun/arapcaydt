@@ -68,22 +68,15 @@ test('X / check glyphs are drawn once: no drop-shadow offset leaks into the whit
   renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,2,{width:1920,height:1080,aspectRatio:'16:9'});
   assert.deepEqual(leaks,[]);
 });
-test('camera pushes in only on long questions, eases in, and never shows past the slide',async()=>{
-  const {cameraAt,isLongQuestion}=await import('../src/features/video/engine/renderer');
-  const fit={x:0,y:0,width:1920,height:1080};
-  const opt=(l:string,y:number,w:number)=>({id:`option-${l}`,type:`option-${l}`,label:l,x:.26,y,width:w,height:.08}) as any;
-  const long=[opt('a',.4,.35),opt('b',.5,.35),opt('c',.6,.35)];
-  const short=[opt('a',.4,.09),opt('b',.5,.09),{id:'question-root',type:'paragraph',label:'k',x:.4,y:.3,width:.3,height:.07} as any];
+test('the slide is never zoomed: long questions stay whole while an option is examined',async()=>{
+  const {renderQuestionVideoFrame}=await import('../src/features/video/engine/renderer');
+  const scales:number[]=[];
+  const ctx:any=new Proxy({} as Record<string,unknown>,{get:(t,k)=>k in t?t[k as string]:k==='measureText'?()=>({width:10}):k==='scale'?(x:number)=>scales.push(x):()=>{},set:(t,k,v)=>{t[k as string]=v;return true;}});
+  const opt=(l:string,y:number)=>({id:`option-${l}`,type:`option-${l}`,label:l,x:.26,y,width:.35,height:.08}) as any;
+  const regions=[opt('a',.4),opt('b',.5),opt('c',.6)];
   const actions:VideoAction[]=[{id:'f',type:'focus',targetRegionId:'option-c',start:4,duration:3}];
-  assert.ok(isLongQuestion(long));assert.ok(!isLongQuestion(short));
-  assert.equal(cameraAt(6,actions,short,fit,1920,1080).zoom,1);
-  assert.equal(cameraAt(3,actions,long,fit,1920,1080).zoom,1);
-  const easing=cameraAt(4.2,actions,long,fit,1920,1080), settled=cameraAt(5.5,actions,long,fit,1920,1080);
-  assert.ok(easing.zoom>1&&easing.zoom<settled.zoom,'zoom ramps in');
-  assert.ok(settled.zoom<=1.22);
-  const hx=1920/(2*settled.zoom);assert.ok(settled.cx>=hx&&settled.cx<=1920-hx);
-  assert.equal(cameraAt(8,actions,long,fit,1920,1080).zoom,1,'returns to the full slide after the focus');
-  assert.deepEqual(cameraAt(5,actions,long,fit,1920,1080),cameraAt(5,actions,long,fit,1920,1080));
+  for(const time of [4.2,5.5,6.5]) renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,time,{width:1920,height:1080,aspectRatio:'16:9',duration:10});
+  assert.deepEqual(scales.filter(x=>x>1),[]);
 });
 test('closing frame restates the checked answer only after the narration ends',async()=>{
   const {renderQuestionVideoFrame,outroSeconds}=await import('../src/features/video/engine/renderer');

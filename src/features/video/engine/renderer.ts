@@ -218,48 +218,6 @@ function drawOutroCard(ctx: CanvasRenderingContext2D, width: number, height: num
   ctx.restore();
 }
 
-/** Paragraph/dialogue stems or sentence-long options: small text worth a closer look. */
-export function isLongQuestion(regions: AnnotationRegion[]): boolean {
-  const root = regions.find(r => r.id === 'question-root');
-  const widths = regions.filter(r => /^option-[a-e]$/.test(r.id)).map(r => r.width).sort((a, b) => a - b);
-  return (root?.height ?? 0) >= .18 || (widths.length > 0 && widths[Math.floor(widths.length / 2)] >= .3);
-}
-
-export interface Camera { zoom: number; cx: number; cy: number }
-
-/**
- * Gentle push-in on the option being examined in long questions. A pure
- * function of time (moving average of the per-instant target), so preview,
- * scrubbing and every exported frame agree. Never zooms past 1.22 and never
- * shows past the slide's edges.
- */
-export function cameraAt(time: number, actions: VideoAction[], regions: AnnotationRegion[], fit: FitRect, width: number, height: number): Camera {
-  const rest = { zoom: 1, cx: width / 2, cy: height / 2 };
-  if (!actions.length || !isLongQuestion(regions)) return rest;
-  const byId = new Map(regions.map(r => [r.id, r]));
-  const target = (t: number) => {
-    if (t < 0) return rest;
-    const state = computeTimelineVisualState(t, actions, regions);
-    const ids = state.activeFocus.filter(f => !state.correctRegions[f.regionId] && !state.rejectedRegions[f.regionId]).map(f => f.regionId);
-    const rects = ids.map(id => byId.get(id)).filter(Boolean).map(r => regionCanvasRect(r!, fit));
-    if (!rects.length) return rest;
-    const x0 = Math.min(...rects.map(r => r.x)), y0 = Math.min(...rects.map(r => r.y));
-    const x1 = Math.max(...rects.map(r => r.x + r.width)), y1 = Math.max(...rects.map(r => r.y + r.height));
-    const margin = 160 * Math.min(width / 1920, height / 1080);
-    const zoom = Math.max(1, Math.min(1.22, .9 * width / (x1 - x0 + 2 * margin), .9 * height / (y1 - y0 + 2 * margin)));
-    return { zoom, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
-  };
-  const samples = 12, span = .66;
-  let zoom = 0, cx = 0, cy = 0;
-  for (let k = 0; k < samples; k++) {
-    const c = target(time - span * k / (samples - 1));
-    zoom += c.zoom / samples; cx += c.cx / samples; cy += c.cy / samples;
-  }
-  if (zoom < 1.001) return rest;
-  const hx = width / (2 * zoom), hy = height / (2 * zoom);
-  return { zoom, cx: Math.max(hx, Math.min(width - hx, cx)), cy: Math.max(hy, Math.min(height - hy, cy)) };
-}
-
 /** One deterministic painter for editing, playback, and every encoded frame. */
 export function renderQuestionVideoFrame(
   ctx: CanvasRenderingContext2D, width: number, height: number,
@@ -269,12 +227,8 @@ export function renderQuestionVideoFrame(
   const scale = Math.min(width / 1920, height / 1080);
   ctx.save(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, width, height);
   const fit = calculateFitRect(imageElement?.naturalWidth || width, imageElement?.naturalHeight || height, width, height);
-  // Slide and its marks move with the camera; captions and the progress bar stay put.
-  const camera = options.interactiveMode ? null : cameraAt(currentTime, actions, regions, fit, width, height);
+  // The slide is always shown whole (no zoom on the examined option).
   ctx.save();
-  if (camera && camera.zoom > 1) {
-    ctx.translate(width / 2, height / 2); ctx.scale(camera.zoom, camera.zoom); ctx.translate(-camera.cx, -camera.cy);
-  }
   if (imageElement?.complete && imageElement.naturalWidth > 0)
     ctx.drawImage(imageElement, fit.x, fit.y, fit.width, fit.height);
   const state = computeTimelineVisualState(currentTime, actions, regions, options.selectedRegionId);
