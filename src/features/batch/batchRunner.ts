@@ -3,7 +3,7 @@ import type { GenerateNarrationResponse } from '../../services/elevenlabs/types'
 import type { LocalPipelineResult } from '../../services/pipeline/localVideoPipeline';
 import type { UploadedNarrationResult } from '../../services/narration/uploadedNarration';
 import { assessReadiness, type Readiness } from '../question-editor/readiness';
-import { applyPipelineResult, narrationFromTts } from '../question-editor/projectUpdates';
+import { applyPipelineResult, narrationFromTts, timeGeneratedNarration, withWordTimings } from '../question-editor/projectUpdates';
 import type { BatchItem } from './batchPlan';
 
 export type BatchStage = 'waiting' | 'creating' | 'voice' | 'markers' | 'video' | 'done' | 'failed' | 'skipped' | 'stopped';
@@ -96,43 +96,9 @@ export async function runBatch<F extends { name: string }>(
         project = await deps.saveProject({ ...project, ...narration, audioApproved: true, status: 'audio_approved' });
         if (generated.provider === 'gemini' && deps.alignGeneratedVoice) {
           step('voice', 'Kelime zaman damgaları alınıyor');
-          try {
-            const alignment = await deps.alignGeneratedVoice(project);
-            if (alignment.words.length) {
-              project = await deps.saveProject({
-                ...project,
-                narrationSource: project.narrationSource ? {
-                  ...project.narrationSource,
-                  words: alignment.words,
-                  timingSource: alignment.timingSource,
-                } : project.narrationSource,
-                audioNarration: project.audioNarration ? {
-                  ...project.audioNarration,
-                  words: alignment.words,
-                  wordAlignments: alignment.words.map(word => ({ word: word.text, start: word.start, end: word.end })),
-                } : project.audioNarration,
-              });
-            }
-          } catch {
-            if (deps.alignGeneratedVoiceLocal) {
-              try {
-                const words = await deps.alignGeneratedVoiceLocal(project);
-                if (words.length) {
-                  project = await deps.saveProject({
-                    ...project,
-                    narrationSource: project.narrationSource ? { ...project.narrationSource, words, timingSource: 'whisper' } : project.narrationSource,
-                    audioNarration: project.audioNarration ? {
-                      ...project.audioNarration,
-                      words,
-                      wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
-                    } : project.audioNarration,
-                  });
-                }
-              } catch {
-                // Exact services and local Whisper failed; the video pipeline can still use approximate timing.
-              }
-            }
-          }
+          // When both fail the video pipeline still uses approximate timing.
+          const timing = await timeGeneratedNarration(project, deps.alignGeneratedVoice, deps.alignGeneratedVoiceLocal);
+          if (timing?.words.length) project = await deps.saveProject({ ...project, ...withWordTimings(project, timing.words, timing.timingSource) });
         }
       } else {
         update(item.number, { stage: 'done', message: 'Proje oluşturuldu; ses bekleniyor', projectId, readiness: assessReadiness(project).level });

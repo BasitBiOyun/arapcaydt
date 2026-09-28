@@ -13,7 +13,7 @@ import { newProjectDefaults } from '../features/settings/preferences';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { narrationService } from '../services/narration/narrationService';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
-import { readAudioDuration, readDataUrl } from '../services/narration/browserMedia';
+import { readAudioDuration, readDataUrl, saveFile } from '../services/narration/browserMedia';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { localOcrService } from '../services/ocr/localOcrService';
 import { localVideoPipeline } from '../services/pipeline/localVideoPipeline';
@@ -27,13 +27,6 @@ const stageLabels: Record<BatchRowState['stage'], string> = {
 const readinessLabels = { ready: 'Yayına hazır', check: 'Kontrol önerilir', blocked: 'Düzeltme gerekli' };
 const readinessTones = { ready: 'text-[#15803D]', check: 'text-[#B45309]', blocked: 'text-red-700' };
 
-function download(blob: Blob, name: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = name;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 3000);
-}
 
 export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject: (id: string) => void; registerLeaveGuard?: (guard: LeaveGuard | null) => void }) {
   const { loadProjects } = useProjects();
@@ -91,13 +84,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat }),
       alignGeneratedVoice: p => narrationService.alignGeneratedNarration(p.id),
-      alignGeneratedVoiceLocal: async p => {
-        const audioUrl = p.narrationSource?.audioUrl || p.audioNarration?.audioUrl;
-        if (!audioUrl) throw new Error('Ses dosyası bağlantısı bulunamadı.');
-        const response = await fetch(audioUrl);
-        if (!response.ok) throw new Error(`Ses dosyası indirilemedi (HTTP ${response.status}).`);
-        return (await localWhisperService.transcribeAudioLocally(await response.arrayBuffer())).words;
-      },
+      alignGeneratedVoiceLocal: p => localWhisperService.transcribeNarrationAudio(p),
       prepareUpload: (p, file) => prepareUploadedNarration(file, {
         readDataUrl, readDuration: readAudioDuration,
         align: (audioBase64, mimeType) => elevenlabsService.alignUploadedNarration({ projectId: p.id, text: p.solutionText.trim(), audioBase64, mimeType }),
@@ -106,7 +93,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       runPipeline: (p, declared) => localVideoPipeline.executePipeline({ imageUrl: p.imageUrl, solutionText: p.solutionText,
         narrationSource: p.narrationSource!, correctAnswer: declared }),
       exportVideo: (p, onPercent, signal) => exportProjectVideo(p, onPercent, signal),
-      download: (blob, p) => download(blob, videoFileName(p)),
+      download: (blob, p) => saveFile(blob, videoFileName(p)),
       recordExport: async p => { await database().rpc('record_video_export', { project_id: p.id }); },
       wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
       now: () => Date.now(),

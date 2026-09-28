@@ -13,6 +13,7 @@ import { ElevenLabsStatus } from '../types';
 import { useProjects } from '../features/projects/ProjectContext';
 import { projectRepository } from '../features/projects/projectRepository';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
+import { saveFile } from '../services/narration/browserMedia';
 import { DefaultsCard, ProfileCard } from '../features/settings/MySettingsCards';
 import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
 import { useAuth } from '../features/auth/AuthContext';
@@ -51,12 +52,7 @@ export const SettingsPage: React.FC = () => {
       projects: full,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `arapca_ydt_soru_yedek_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    saveFile(blob, `arapca_ydt_soru_yedek_${new Date().toISOString().split('T')[0]}.json`);
   };
 
   return (

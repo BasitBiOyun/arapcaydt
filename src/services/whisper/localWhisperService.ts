@@ -125,6 +125,15 @@ class LocalWhisperService {
     }
   }
 
+  /** Word timings for a saved narration: downloads its audio and transcribes it here. */
+  public async transcribeNarrationAudio(project: { narrationSource?: { audioUrl?: string }; audioNarration?: { audioUrl?: string } }): Promise<NarrationWord[]> {
+    const audioUrl = project.narrationSource?.audioUrl || project.audioNarration?.audioUrl;
+    if (!audioUrl) throw new Error('Ses dosyası bağlantısı bulunamadı.');
+    const response = await fetch(audioUrl);
+    if (!response.ok) throw new Error(`Ses dosyası indirilemedi (HTTP ${response.status}).`);
+    return (await this.transcribeAudioLocally(await response.arrayBuffer())).words;
+  }
+
   /**
    * Performs in-browser speech-to-text with word-level timestamps using Whisper.
    * Never calls external AI APIs.

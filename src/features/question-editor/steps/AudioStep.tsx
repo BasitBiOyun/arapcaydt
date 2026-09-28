@@ -12,7 +12,6 @@ export interface AudioStepProps {
   currentProject: QuestionProject;
   isAudioPlaying: boolean;
   toggleStageAudio: () => void;
-  formatTime: (secs: number) => string;
   audioPlayTime: number;
   setAudioPlayTime: (time: number) => void;
   activeAudioDuration: number;
@@ -32,7 +31,10 @@ export interface AudioStepProps {
 }
 
 /** STEP 3: Seslendirme */
-export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, formatTime, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError }: AudioStepProps) {
+const formatTime = (secs: number) =>
+  `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
+
+export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError }: AudioStepProps) {
   // Which Google key the next narration uses; refreshed after each generation.
   const [keyStatus, setKeyStatus] = useState<TeacherKeyStatus | null>(null);
   useEffect(() => {

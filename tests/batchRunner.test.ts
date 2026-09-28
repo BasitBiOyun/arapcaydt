@@ -74,3 +74,30 @@ test('stop leaves remaining questions untouched', async () => {
   assert.equal(rows.get(2)!.stage, 'stopped');
   assert.ok(!calls.includes('create 2'));
 });
+
+test('generated speech gets exact timings, falls back to Whisper, and survives both failing', async () => {
+  const gemini = { provider: 'gemini' as const, audioBase64: 'AA', mimeType: 'audio/wav', mode: 'live' as const, durationSeconds: 10, words: [] };
+  const words = [{ text: 'Doğru', start: 1, end: 1.4 }];
+  const run = async (overrides: Partial<BatchDeps<F>>) => {
+    const saved: QuestionProject[] = [];
+    const { deps } = fakeDeps({ generateVoice: async () => gemini, saveProject: async p => { saved.push(p); return p; }, ...overrides });
+    await runBatch([item(1)], { ...options, exportVideo: false }, deps, collect().update);
+    return saved.map(p => p.narrationSource?.timingSource);
+  };
+  const exact = await run({ alignGeneratedVoice: async () => ({ words, timingSource: 'gemini-transcribe' }) });
+  assert.ok(exact.includes('gemini-transcribe'));
+  const local = await run({ alignGeneratedVoice: async () => { throw new Error('429'); }, alignGeneratedVoiceLocal: async () => words });
+  assert.ok(local.includes('whisper'));
+  const none = await run({ alignGeneratedVoice: async () => { throw new Error('429'); }, alignGeneratedVoiceLocal: async () => { throw new Error('no model'); } });
+  assert.ok(!none.includes('whisper') && !none.includes('gemini-transcribe'), 'approximate timing; the batch still finishes');
+});
+
+test('word timings land on both the narration and its legacy copy', async () => {
+  const { withWordTimings } = await import('../src/features/question-editor/projectUpdates');
+  const words = [{ text: 'ذَهَبَ', start: 0.5, end: 0.9 }];
+  const project = { narrationSource: { type: 'gemini', audioUrl: 'u', duration: 3, words: [] }, audioNarration: { audioUrl: 'u', words: [] } } as any;
+  const next = withWordTimings(project, words, 'forced-alignment');
+  assert.equal(next.narrationSource?.timingSource, 'forced-alignment');
+  assert.deepEqual(next.audioNarration?.wordAlignments, [{ word: 'ذَهَبَ', start: 0.5, end: 0.9 }]);
+  assert.deepEqual(withWordTimings({} as any, words, 'whisper'), { narrationSource: undefined, audioNarration: undefined });
+});

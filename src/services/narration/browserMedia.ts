@@ -17,3 +17,16 @@ export function readAudioDuration(url: string): Promise<number> {
     audio.src = url;
   });
 }
+
+/** Saves a blob or URL as a file on the teacher's computer. */
+export function saveFile(source: Blob | string, name: string): void {
+  const url = typeof source === 'string' ? source : URL.createObjectURL(source);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  // Revoking at once can cancel the download in some browsers.
+  if (typeof source !== 'string') setTimeout(() => URL.revokeObjectURL(url), 3000);
+}

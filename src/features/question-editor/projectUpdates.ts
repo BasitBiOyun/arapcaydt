@@ -1,4 +1,4 @@
-import type { AudioNarration, NarrationSource, QuestionProject } from '../../types';
+import type { AudioNarration, NarrationSource, NarrationWord, QuestionProject } from '../../types';
 import type { GenerateNarrationResponse } from '../../services/elevenlabs/types';
 import type { LocalPipelineResult } from '../../services/pipeline/localVideoPipeline';
 import { STANDARD_VOICE_CONFIG } from '../../config/voice';
@@ -27,6 +27,45 @@ export function narrationFromTts(result: GenerateNarrationResponse, approved = f
       generatedAt, isApproved: approved, mode: result.mode, words: result.words, alignment: result.alignment,
     },
   };
+}
+
+type TimingSource = NonNullable<NarrationSource['timingSource']>;
+
+/** The narration with new word timings, on both the source and the legacy copy. */
+export function withWordTimings(project: QuestionProject, words: NarrationWord[], timingSource: TimingSource): Pick<QuestionProject, 'narrationSource' | 'audioNarration'> {
+  return {
+    narrationSource: project.narrationSource && { ...project.narrationSource, words, timingSource },
+    audioNarration: project.audioNarration && {
+      ...project.audioNarration,
+      words,
+      wordAlignments: words.map(word => ({ word: word.text, start: word.start, end: word.end })),
+    },
+  };
+}
+
+/**
+ * Word timings for freshly generated speech: the exact server alignment first,
+ * then local Whisper. An empty answer from the server keeps approximate timing;
+ * null means neither could time the audio.
+ */
+export async function timeGeneratedNarration(
+  project: QuestionProject,
+  exact: (project: QuestionProject) => Promise<{ words: NarrationWord[]; timingSource: TimingSource }>,
+  local?: (project: QuestionProject) => Promise<NarrationWord[]>,
+): Promise<{ words: NarrationWord[]; timingSource: TimingSource } | null> {
+  try {
+    return await exact(project);
+  } catch (exactError) {
+    console.warn('Exact server alignment unavailable; trying local Whisper:', exactError);
+  }
+  if (!local) return null;
+  try {
+    const words = await local(project);
+    return words.length ? { words, timingSource: 'whisper' } : null;
+  } catch (localError) {
+    console.warn('Local Whisper timing unavailable:', localError);
+    return null;
+  }
 }
 
 /** Project fields once the animation plan is prepared from the current audio. */
