@@ -1,6 +1,6 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import {
-  GEMINI_TTS_MODELS, encryptKey, isCapped, keyStorageReady,
+  FREE_TRANSCRIBE_PER_DAY, FREE_TTS_PER_MODEL, GEMINI_TTS_MODELS, encryptKey, isCapped, keyStorageReady,
   normalizeApiKey, readDailyState,
 } from '../../server/quota.js';
 
@@ -92,9 +92,13 @@ export default async function handler(req: any, res: any) {
     key: row ? { last4: row.last4, status: row.status, updatedAt: row.updated_at } : null,
     today: {
       tracking: today.tracking,
-      tts: { used: today.own.ttsUsed, exhaustedModels: today.own.ttsExhausted.length, models: GEMINI_TTS_MODELS.length },
-      transcribe: { used: today.own.transcribeUsed, exhausted: today.own.transcribeExhausted },
-      shared: { used: today.shared.transcribeUsed, limit: capped ? today.limits.sharedTranscribe : null, exhausted: today.shared.transcribeExhausted },
+      tts: { used: today.own.ttsUsed, limit: GEMINI_TTS_MODELS.length * FREE_TTS_PER_MODEL, exhaustedModels: today.own.ttsExhausted.length, models: GEMINI_TTS_MODELS.length },
+      transcribe: { used: today.own.transcribeUsed, limit: FREE_TRANSCRIBE_PER_DAY, exhausted: today.own.transcribeExhausted },
+      shared: {
+        used: today.shared.transcribeUsed, limit: capped ? today.limits.sharedTranscribe : null, exhausted: today.shared.transcribeExhausted,
+        ttsUsedAll: today.shared.ttsUsedAll, ttsLimit: GEMINI_TTS_MODELS.length * FREE_TTS_PER_MODEL,
+        ttsExhausted: today.shared.ttsExhausted.length >= GEMINI_TTS_MODELS.length,
+      },
       elevenlabs: { used: today.elevenlabsAlignUsed, limit: capped ? today.limits.elevenlabsAlign : null },
     },
   });

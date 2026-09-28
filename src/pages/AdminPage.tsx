@@ -86,7 +86,7 @@ interface Analytics {
 }
 
 /** The studio key's Transcribe quota per day on the free tier (billing off on the studio owner's AI Studio project). */
-const STUDIO_TRANSCRIBE_DAILY = 10;
+const STUDIO_TRANSCRIBE_DAILY = 25;
 const requestLabels: Record<RequestService, string> = {
   gemini_tts: 'Gemini seslendirme',
   gemini_transcribe: 'Gemini Transcribe',

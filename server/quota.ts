@@ -20,6 +20,9 @@ export const GEMINI_TTS_MODELS = [
   'gemini-3.1-flash-tts-preview',
 ] as const;
 export const TRANSCRIBE_MODEL = 'gemini-3.5-transcribe';
+/** Google's free-tier daily requests per project (shown to teachers; the real limit is whatever Google enforces). */
+export const FREE_TTS_PER_MODEL = 10;
+export const FREE_TRANSCRIBE_PER_DAY = 25;
 
 export type KeySource = 'teacher' | 'system';
 
@@ -95,7 +98,7 @@ export interface DailyState {
   /** False when the usage log could not be read (migration pending): nothing is skipped or capped. */
   tracking: boolean;
   own: { ttsUsed: number; ttsExhausted: string[]; transcribeUsed: number; transcribeExhausted: boolean };
-  shared: { transcribeUsed: number; transcribeUsedAll: number; ttsExhausted: string[]; transcribeExhausted: boolean };
+  shared: { transcribeUsed: number; transcribeUsedAll: number; ttsUsedAll: number; ttsExhausted: string[]; transcribeExhausted: boolean };
   elevenlabsAlignUsed: number;
   limits: Limits;
 }
@@ -109,7 +112,7 @@ export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = D
   const state: DailyState = {
     tracking: true,
     own: { ttsUsed: 0, ttsExhausted: [], transcribeUsed: 0, transcribeExhausted: false },
-    shared: { transcribeUsed: 0, transcribeUsedAll: 0, ttsExhausted: [], transcribeExhausted: false },
+    shared: { transcribeUsed: 0, transcribeUsedAll: 0, ttsUsedAll: 0, ttsExhausted: [], transcribeExhausted: false },
     elevenlabsAlignUsed: 0,
     limits,
   };
@@ -127,7 +130,10 @@ export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = D
         if (isDaily(row)) state.own.transcribeExhausted = true;
       }
     } else if (row.key_source === 'system') {
-      if (row.kind === 'gemini_tts' && isDaily(row) && !state.shared.ttsExhausted.includes(model)) state.shared.ttsExhausted.push(model);
+      if (row.kind === 'gemini_tts') {
+        if (consumed(row)) state.shared.ttsUsedAll++;
+        if (isDaily(row) && !state.shared.ttsExhausted.includes(model)) state.shared.ttsExhausted.push(model);
+      }
       if (row.kind === 'gemini_transcribe') {
         if (consumed(row)) { state.shared.transcribeUsedAll++; if (mine) state.shared.transcribeUsed++; }
         if (isDaily(row)) state.shared.transcribeExhausted = true;

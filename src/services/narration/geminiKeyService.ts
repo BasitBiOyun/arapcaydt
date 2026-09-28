@@ -6,10 +6,11 @@ export interface TeacherKeyStatus {
   key: { last4: string; status: 'active' | 'invalid'; updatedAt: string } | null;
   today: {
     tracking: boolean;
-    tts: { used: number; exhaustedModels: number; models: number };
-    transcribe: { used: number; exhausted: boolean };
-    /** limit is null for admins (not capped). */
-    shared: { used: number; limit: number | null; exhausted: boolean };
+    /** limit: Google's free daily allowance for the teacher's own key (3 models × 10 voices, 25 timings). */
+    tts: { used: number; limit?: number; exhaustedModels: number; models: number };
+    transcribe: { used: number; limit?: number; exhausted: boolean };
+    /** Shared (studio) key: the teacher's timings with their cap (null for admins), and voices used by everyone today. */
+    shared: { used: number; limit: number | null; exhausted: boolean; ttsUsedAll?: number; ttsLimit?: number; ttsExhausted?: boolean };
     elevenlabs: { used: number; limit: number | null };
   };
 }
@@ -32,13 +33,18 @@ export const geminiKeyService = {
   remove: () => call('DELETE'),
 };
 
-/** One plain sentence for the audio step: which capacity the next narration will use. */
+/** One plain sentence for the audio step: which capacity the next narration will use and how much is left today. */
 export function capacityLine(status: TeacherKeyStatus | null): string | null {
   if (!status) return null;
   const { key, today } = status;
-  if (!key) return 'Ortak kapasite kullanılacak. Kendi Google anahtarınızı Ayarlar’dan ekleyebilirsiniz.';
-  if (key.status === 'invalid') return 'Google anahtarınız geçersiz görünüyor; ortak kapasite kullanılıyor. Ayarlar’dan yenileyin.';
-  if (today.tts.exhaustedModels >= today.tts.models) return 'Bugünkü seslendirme hakkınız doldu, ortak kapasite kullanılıyor.';
-  if (today.transcribe.exhausted) return 'Kendi anahtarınızla seslendirilecek. Bugünkü zamanlama hakkınız doldu; ortak kapasite kullanılıyor.';
-  return 'Kendi Google anahtarınızla seslendirilecek.';
+  const of = (used: number, limit?: number) => limit ? `${used} / ${limit}` : `${used}`;
+  const pool = today.shared.ttsExhausted
+    ? 'Ortak kapasitenin bugünkü ses hakkı doldu.'
+    : today.shared.ttsLimit ? `Ortak kapasitede bugün herkes için toplam ${of(today.shared.ttsUsedAll ?? 0, today.shared.ttsLimit)} ses kullanıldı.` : '';
+  if (!key) return `Ortak kapasite kullanılacak. ${pool} Kendi Google anahtarınızı Ayarlar’dan eklerseniz günde ${today.tts.limit ?? 30} ses ve ${today.transcribe.limit ?? 25} kelime zamanı yalnız sizin olur.`.replace(/\s+/g, ' ');
+  if (key.status === 'invalid') return `Google anahtarınız geçersiz görünüyor; ortak kapasite kullanılıyor. Ayarlar’dan yenileyin. ${pool}`.trim();
+  if (today.tts.exhaustedModels >= today.tts.models) return `Bugünkü seslendirme hakkınız doldu (${of(today.tts.used, today.tts.limit)}), ortak kapasite kullanılıyor. ${pool}`.trim();
+  const usage = `Bugün: ${of(today.tts.used, today.tts.limit)} ses · ${of(today.transcribe.used, today.transcribe.limit)} kelime zamanı.`;
+  if (today.transcribe.exhausted) return `Kendi Google anahtarınızla seslendirilecek. ${usage} Zamanlama hakkınız doldu; ortak kapasite kullanılıyor.`;
+  return `Kendi Google anahtarınızla seslendirilecek. ${usage}`;
 }

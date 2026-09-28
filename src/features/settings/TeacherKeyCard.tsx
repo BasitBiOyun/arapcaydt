@@ -54,7 +54,7 @@ export const TeacherKeyCard: React.FC = () => {
             {key && <div className="flex items-center justify-between">
               <span className="text-[#666560]">Bugün kendi anahtarınızla:</span>
               <span className="text-[#33322E]">
-                {today.tts.used} seslendirme · {today.transcribe.used} zamanlama
+                {today.tts.used}{today.tts.limit ? ` / ${today.tts.limit}` : ''} ses · {today.transcribe.used}{today.transcribe.limit ? ` / ${today.transcribe.limit}` : ''} zamanlama
                 {today.transcribe.exhausted ? ' (zamanlama hakkı doldu)' : ''}
               </span>
             </div>}
@@ -67,7 +67,7 @@ export const TeacherKeyCard: React.FC = () => {
               <span className="text-[#33322E]">{today.elevenlabs.used}{today.elevenlabs.limit != null ? ` / ${today.elevenlabs.limit}` : ''}</span>
             </div>
             <p className="text-[#55544F] leading-relaxed text-[11px]">
-              Haklar her gün Türkiye saatiyle 10:00–11:00 arasında yenilenir. Hepsi dolsa da ses ve video üretimi durmaz; zamanlama bilgisayarınızda yapılır.
+              Kendi anahtarınızla günde {today.tts.limit ?? 30} ses (3 ses modeli × 10) ve {today.transcribe.limit ?? 25} kelime zamanı ücretsizdir; yani günde yaklaşık {today.tts.limit ?? 30} soru. Bunlar bitince herkesin paylaştığı ortak kapasiteye, kelime zamanları için de yedek servise geçilir. Haklar her gün Türkiye saatiyle 10:00–11:00 arasında yenilenir. Hepsi dolsa da video üretimi durmaz; zamanlama bilgisayarınızda yapılır.
             </p>
           </>
         )}

@@ -45,8 +45,10 @@ const rows: DayRow[] = [
 test('daily state separates the teacher key, the studio key and ElevenLabs', () => {
   const t1 = summarizeDay(rows, 't1');
   assert.deepEqual(t1.own, { ttsUsed: 2, ttsExhausted: ['gemini-3.8-flash-lite-tts'], transcribeUsed: 1, transcribeExhausted: true });
-  assert.deepEqual(t1.shared, { transcribeUsed: 2, transcribeUsedAll: 3, ttsExhausted: ['gemini-2.5-flash-preview-tts'], transcribeExhausted: false });
+  assert.deepEqual(t1.shared, { transcribeUsed: 2, transcribeUsedAll: 3, ttsUsedAll: 0, ttsExhausted: ['gemini-2.5-flash-preview-tts'], transcribeExhausted: false });
   assert.equal(t1.elevenlabsAlignUsed, 1);
+  const voice = { owner_id: 't2', kind: 'gemini_tts', state: 'succeeded', detail: 'gemini-3.8-flash-tts · 200', key_source: 'system' };
+  assert.equal(summarizeDay([...rows, voice], 't1').shared.ttsUsedAll, 1, 'shared voices are counted for everyone');
   const t2 = summarizeDay(rows, 't2');
   assert.equal(t2.own.transcribeExhausted, true);
   assert.equal(t2.own.ttsUsed, 0);
@@ -139,6 +141,10 @@ test('the audio step tells the teacher in one sentence which capacity is used', 
   assert.match(capacityLine({ ...base, key: { ...base.key!, status: 'invalid' } })!, /geçersiz/);
   assert.match(capacityLine({ ...base, today: { ...base.today, tts: { used: 40, exhaustedModels: 4, models: 4 } } })!, /seslendirme hakkınız doldu/);
   assert.equal(capacityLine(null), null);
+  const counted = { ...base, today: { ...base.today, tts: { ...base.today.tts, used: 12, limit: 30 }, transcribe: { used: 8, limit: 25, exhausted: false },
+    shared: { ...base.today.shared, ttsUsedAll: 7, ttsLimit: 30 } } };
+  assert.match(capacityLine(counted)!, /12 \/ 30 ses · 8 \/ 25 kelime zamanı/);
+  assert.match(capacityLine({ ...counted, key: null })!, /herkes için toplam 7 \/ 30 ses.*günde 30 ses ve 25 kelime zamanı/);
 });
 
 test('teacher key migration applies on the membership schema alone, is re-runnable and hides keys from browsers', async () => {
