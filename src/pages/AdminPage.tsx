@@ -77,7 +77,7 @@ interface Analytics {
     migrationPending: boolean;
     quotaDay: string;
     totals: Record<'today' | 'last30Days' | 'all', Record<RequestService, Counter>>;
-    geminiModels: Record<string, { today: Counter; last30Days: Counter }>;
+    geminiModels: Record<string, { today: Counter; last30Days: Counter; sharedToday?: number; lastQuota?: string }>;
     members: Record<string, Record<RequestService, number>>;
     membersToday?: Record<string, MemberToday>;
     studio?: { transcribeUsed: number; transcribeExhausted: boolean; ttsExhausted: string[] };
@@ -602,13 +602,15 @@ export const AdminPage: React.FC = () => {
                   <div className="mt-4">
                     <p className="text-xs font-semibold text-[#666560] mb-2">Gemini seslendirme · model başına</p>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
-                      {(Object.entries(requests.geminiModels) as Array<[string, { today: Counter; last30Days: Counter }]>)
+                      {(Object.entries(requests.geminiModels) as Array<[string, { today: Counter; last30Days: Counter; sharedToday?: number; lastQuota?: string }]>)
                         .sort((a, b) => b[1].last30Days.succeeded + b[1].last30Days.failed - (a[1].last30Days.succeeded + a[1].last30Days.failed))
                         .map(([model, c]) => (
                           <div key={model} className="border rounded-lg px-3 py-2 text-sm">
                             <p className="font-mono-code text-xs break-all">{model}</p>
                             <p>Bugün {counts(c.today)}</p>
                             <p className="text-xs text-[#787670]">Son 30 gün: {c.last30Days.succeeded + c.last30Days.failed}</p>
+                            {c.sharedToday !== undefined && <p className="text-xs text-[#55544F]">Ortak anahtarla bugün: {c.sharedToday}</p>}
+                            {c.lastQuota && <p className="text-xs text-[#8B1E2D]">Son kota hatası · {c.lastQuota}</p>}
                           </div>
                         ))}
                     </div>

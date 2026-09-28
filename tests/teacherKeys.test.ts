@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   DEFAULT_LIMITS, ELEVENLABS_ALIGN_PER_TEACHER, SHARED_TRANSCRIBE_PER_TEACHER, decryptKey, elevenLabsAlignAllowed, encryptKey, isCapped,
-  isDailyQuotaError, isInvalidKeyError, pacificDayStart, readDailyState, readLimits, sharedTranscribeAllowed, summarizeDay, usageDetail, type DayRow,
+  isDailyQuotaError, isInvalidKeyError, quotaTag, pacificDayStart, readDailyState, readLimits, sharedTranscribeAllowed, summarizeDay, usageDetail, type DayRow,
 } from '../server/quota';
 import { isGoogleKeyShape, keySaveMessage } from '../api/gemini/key';
 import { summarizeRequests } from '../api/admin/analytics';
@@ -178,14 +178,19 @@ test('teacher key migration applies on the membership schema alone, is re-runnab
   await db.exec(`reset role`);
 });
 
-test('when every voice service fails the teacher sees one plain sentence, not the technical chain', async () => {
-  const { narrationService, VoiceUnavailableError } = await import('../src/services/narration/narrationService');
-  const error = await narrationService.generateNarration({ projectId: 'p1', text: 'Doğru cevap C.' } as any).catch(e => e);
-  assert.ok(error instanceof VoiceUnavailableError);
-  assert.equal(error.message, 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.');
-  assert.match(error.detail, /ElevenLabs yedeği de başarısız/);
-  assert.match(new VoiceUnavailableError('x', 'Günlük öğretmen ses sınırına ulaşıldı').message, /Bugünkü ses üretim hakları doldu/);
-  assert.equal(new VoiceUnavailableError('x', 'Oturumunuz sona erdi. Yeniden giriş yapın.').message, 'Oturumunuz sona erdi. Yeniden giriş yapın.');
+test('voice comes only from Gemini: no ElevenLabs voice, and a plain sentence when Gemini cannot', async () => {
+  const { voiceFailure, VOICE_QUOTA_MESSAGE, VOICE_RETRY_MESSAGE, allDailyQuota } = await import('../src/services/narration/narrationService');
+  const daily = (model: string) => ({ model, status: 429, daily: true });
+  assert.equal(voiceFailure(429, { code: 'GEMINI_TTS_EXHAUSTED', attempts: [daily('a'), daily('b'), daily('c')] }).message, VOICE_QUOTA_MESSAGE);
+  assert.equal(voiceFailure(429, { code: 'GEMINI_TTS_EXHAUSTED', attempts: [] }).message, VOICE_QUOTA_MESSAGE, 'every model already skipped for today');
+  assert.equal(voiceFailure(429, { code: 'GEMINI_TTS_EXHAUSTED', attempts: [daily('a'), { model: 'b', status: 502 }] }).message, VOICE_RETRY_MESSAGE,
+    'a network error or minute limit is not "today is over"');
+  assert.equal(voiceFailure(400, { error: 'Seslendirme metni 1–5000 karakter arasında olmalıdır.', fallbackAllowed: false }).message, 'Seslendirme metni 1–5000 karakter arasında olmalıdır.');
+  assert.match(voiceFailure(429, { error: 'Gemini TTS başarısız. ortak anahtar …', attempts: [daily('a')] }).detail, /ortak anahtar/, 'the technical chain stays in detail');
+  assert.equal(allDailyQuota([]), false);
+  const { readFileSync } = await import('node:fs');
+  const source = readFileSync(new URL('../src/services/narration/narrationService.ts', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /elevenlabsService|api\/elevenlabs\/generate/, 'narration never asks ElevenLabs for a voice');
 });
 
 test('a failed key save says why: the real cause for admins, a plain message and code for teachers', () => {
@@ -195,4 +200,18 @@ test('a failed key save says why: the real cause for admins, a plain message and
   assert.match(keySaveMessage({ code: '42P01', message: 'relation does not exist' }, true), /20260928_teacher_keys\.sql/);
   assert.match(keySaveMessage({ code: 'XX000', message: 'boom' }, true), /Veritabanı hatası: boom \(kod XX000\)/);
   assert.match(keySaveMessage({ code: '23503', message: 'fk' }, false), /yeniden giriş/);
+});
+
+test('only Google\'s own daily quota skips a model for the day, and the quota is recorded', () => {
+  const body = (id: string, value: string) => JSON.stringify({ error: { code: 429, status: 'RESOURCE_EXHAUSTED',
+    message: `Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: ${value}. Please retry in 20s. See the per day and per minute limits.`,
+    details: [{ '@type': 'type.googleapis.com/google.rpc.QuotaFailure', violations: [{ quotaId: id, quotaValue: value }] }] } });
+  const minute = body('GenerateRequestsPerMinutePerProjectPerModel-FreeTier', '3');
+  const day = body('GenerateRequestsPerDayPerProjectPerModel-FreeTier', '100');
+  assert.equal(isDailyQuotaError(429, minute), false, 'a minute limit is not the end of the day, even if the text mentions "per day"');
+  assert.equal(isDailyQuotaError(429, day), true);
+  assert.equal(quotaTag(429, minute), 'PerMinute sınır 3');
+  assert.equal(quotaTag(429, day), 'PerDay sınır 100');
+  assert.equal(quotaTag(500, day), '');
+  assert.equal(usageDetail('m', 429, true, 'PerDay sınır 100'), 'm · 429 · PerDay sınır 100 · daily');
 });

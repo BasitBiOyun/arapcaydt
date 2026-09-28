@@ -1,4 +1,3 @@
-import voiceHandler from './api/elevenlabs/generate';
 import geminiVoiceHandler from './api/gemini/generate';
 import geminiAlignHandler from './api/gemini/align-project';
 import geminiKeyHandler from './api/gemini/key';
@@ -32,7 +31,6 @@ app.use(express.json({ limit: '50mb' }));
 
 app.get('/api/elevenlabs/status', voiceStatusHandler);
 app.get('/api/elevenlabs/voices', voiceListHandler);
-app.post('/api/elevenlabs/generate', voiceHandler);
 app.post('/api/gemini/generate', geminiVoiceHandler);
 app.post('/api/gemini/align-project', geminiAlignHandler);
 app.all('/api/gemini/key', geminiKeyHandler);

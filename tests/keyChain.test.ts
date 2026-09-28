@@ -124,7 +124,7 @@ test('narration uses the teacher key first and skips its exhausted models afterw
   const { GEMINI_TTS_MODELS } = await import('../server/quota');
   assert.deepEqual(world.google.map(g => g.key === TEACHER_KEY ? 'teacher' : 'studio'), [...GEMINI_TTS_MODELS.map(() => 'teacher'), 'studio']);
   assert.deepEqual(world.google.slice(0, GEMINI_TTS_MODELS.length).map(g => g.what), [...GEMINI_TTS_MODELS], 'strict quality order');
-  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · daily$/.test(a.detail)).length, GEMINI_TTS_MODELS.length);
+  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · PerDay · daily$/.test(a.detail)).length, GEMINI_TTS_MODELS.length);
   assert.equal(world.activity.filter(a => a.key_source === 'system' && a.state === 'succeeded').length, 1);
 
   // Same day: the teacher's exhausted models are not called again.
@@ -160,7 +160,7 @@ test('timestamps: teacher Transcribe → studio Transcribe → per-teacher cap',
   assert.equal(r.status, 200);
   assert.equal(r.payload.keySource, 'system');
   assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [
-    ['teacher', 'gemini-3.5-transcribe · 429 · daily'], ['system', 'gemini-3.5-transcribe · 200']]);
+    ['teacher', 'gemini-3.5-transcribe · 429 · PerDay · daily'], ['system', 'gemini-3.5-transcribe · 200']]);
 
   // Teacher's own Transcribe is skipped for the rest of the day; 24 more studio requests fill the cap of 25.
   world.activity = world.activity.map(today);

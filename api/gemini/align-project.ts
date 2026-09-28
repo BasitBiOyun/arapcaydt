@@ -2,7 +2,7 @@ import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import {
-  TRANSCRIBE_MODEL, isCapped, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid,
+  TRANSCRIBE_MODEL, isCapped, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid, quotaTag,
   normalizeApiKey, readDailyState, readTeacherKey, sharedTranscribeAllowed, usageDetail, type KeySource,
 } from '../../server/quota.js';
 
@@ -116,7 +116,7 @@ export default async function handler(req: any, res: any) {
     const result = await transcribe(lane.key, bytes, mimeType, projectId, remaining);
     if (result.status) {
       await recordUsage(member.user.id, projectId, [{ kind: 'gemini_transcribe', state: result.words ? 'succeeded' : 'failed',
-        detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw)), keySource: lane.source }]);
+        detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw), result.words ? '' : quotaTag(result.status, result.raw)), keySource: lane.source }]);
     }
     if (result.words?.length) {
       return res.status(200).json({ words: result.words, modelId: TRANSCRIBE_MODEL, timingSource: 'gemini-transcribe', keySource: lane.source });

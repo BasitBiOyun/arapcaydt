@@ -43,5 +43,4 @@ export interface GenerateNarrationResponse {
 export interface IElevenLabsService {
   checkStatus(): Promise<ElevenLabsStatus>;
   getVoices(): Promise<ElevenLabsVoice[]>;
-  generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse>;
 }

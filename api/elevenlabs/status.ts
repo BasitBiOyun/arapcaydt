@@ -27,7 +27,8 @@ export default async function handler(req: any, res: any) {
     ...body,
     gemini: { configured: geminiConfigured },
     // Narration works when either engine is available.
-    voiceReady: geminiConfigured || (configured && body.valid !== false),
+    // Voice comes only from Gemini; ElevenLabs is used for word timings only.
+    voiceReady: geminiConfigured,
   });
 
   if (!configured) {

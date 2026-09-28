@@ -35,7 +35,7 @@ export const SettingsPage: React.FC = () => {
     try {
       const s = await elevenlabsService.checkStatus();
       setStatus(s);
-      setTestResult(s.voiceReady ?? s.configured ? 'Ses servisi hazır.' : 'Ses servisi şu anda kullanılamıyor.');
+      setTestResult(s.voiceReady ?? s.gemini?.configured ? 'Ses servisi hazır.' : 'Ses servisi şu anda kullanılamıyor.');
     } catch (e: any) {
       setTestResult('Bağlantı kontrolü sırasında hata: ' + e.message);
     } finally {
@@ -67,7 +67,7 @@ export const SettingsPage: React.FC = () => {
       <ProfileCard />
       <DefaultsCard />
 
-      {/* Voice service card (Gemini primary, ElevenLabs fallback) */}
+      {/* Voice service card: Gemini voice, ElevenLabs only as the word-timing fallback */}
       <div className="p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs">
         <div className="flex items-center justify-between border-b border-[#EFEFEA] pb-3">
           <div className="flex items-center gap-2">
@@ -97,13 +97,13 @@ export const SettingsPage: React.FC = () => {
             }`}>{status?.gemini?.configured ? 'Hazır' : 'Yapılandırılmamış'}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[#666560]">Yedek ses:</span>
+            <span className="text-[#666560]">Kelime zamanları (yedek):</span>
             <span className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
               status?.configured && status.valid !== false ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
             }`}>{status?.configured && status.valid !== false ? 'Hazır' : 'Kullanılamıyor'}</span>
           </div>
           <p className="text-[#55544F] leading-relaxed text-[11px]">
-            Ana ses servisi kullanılamazsa yedek ses otomatik devreye girer. Ayrıca bir ayar yapmanız gerekmez.
+            Ses yalnızca Google Gemini ile üretilir. Kelime zamanları önce Gemini ile alınır, olmazsa yedek servis devreye girer. Günlük ücretsiz ses hakkı biterse kendi Google anahtarınızı ekleyebilirsiniz.
           </p>
         </div>
 

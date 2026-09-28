@@ -13,7 +13,7 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ currentPage }) => {
   const [voiceStatus, setVoiceStatus] = useState<ElevenLabsStatus | null>(null);
-  const voiceReady = Boolean(voiceStatus?.voiceReady ?? voiceStatus?.configured);
+  const voiceReady = Boolean(voiceStatus?.voiceReady ?? voiceStatus?.gemini?.configured);
   const [showStatusModal, setShowStatusModal] = useState(false);
 
   useEffect(() => {
@@ -65,11 +65,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ currentPage }) => {
                 <span className="font-semibold text-[#1C1917]">{voiceStatus?.gemini?.configured ? 'Hazır (Achernar sesi)' : 'Yapılandırılmamış'}</span>
               </div>
               <div className="flex justify-between items-center pb-2 border-b border-[#E5E4DC]">
-                <span className="text-[#666560]">Yedek ses:</span>
+                <span className="text-[#666560]">Kelime zamanları (yedek):</span>
                 <span className="font-semibold text-[#1C1917]">{voiceStatus?.configured && voiceStatus.valid !== false ? 'Hazır' : 'Kullanılamıyor'}</span>
               </div>
               <p className="text-[#55544F] leading-relaxed pt-1">
-                Çözüm metninizi yazıp Seslendirme Oluştur'a basmanız yeterli. Ana ses servisi kullanılamazsa yedek otomatik devreye girer; animasyon için kelime zamanları da otomatik alınır.
+                Çözüm metninizi yazıp Seslendirme Oluştur'a basmanız yeterli; ses Google Gemini ile üretilir ve animasyon için kelime zamanları otomatik alınır. Günlük ücretsiz ses hakkı biterse Ayarlar'dan kendi Google anahtarınızı ekleyebilirsiniz.
               </p>
             </div>
 

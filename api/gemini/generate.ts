@@ -3,7 +3,7 @@ import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage, type UsageEvent } from '../../server/usage.js';
 import { storedNarrationAudio } from '../../server/mp3.js';
 import {
-  GEMINI_TTS_MODELS as GEMINI_MODELS, isDailyQuotaError, isInvalidKeyError, markTeacherKeyInvalid, normalizeApiKey,
+  GEMINI_TTS_MODELS as GEMINI_MODELS, isDailyQuotaError, isInvalidKeyError, quotaTag, markTeacherKeyInvalid, normalizeApiKey,
   readDailyState, readTeacherKey, usageDetail, type KeySource,
 } from '../../server/quota.js';
 
@@ -113,11 +113,11 @@ async function saveGeneratedAudio(memberId: string, projectId: string, text: str
   return { path, signedUrl: data.signedUrl };
 }
 
-interface Attempt { model: string; status: number; detail?: string; daily?: boolean; keySource: KeySource }
+interface Attempt { model: string; status: number; detail?: string; daily?: boolean; quota?: string; keySource: KeySource }
 
 /** Each model attempt is its own request against that key's per-model free-tier quota. */
 function failedUsage(attempts: Attempt[], characters: number): UsageEvent[] {
-  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily), characters, keySource: a.keySource }));
+  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily, a.quota), characters, keySource: a.keySource }));
 }
 
 export default async function handler(req: any, res: any) {
@@ -181,7 +181,7 @@ export default async function handler(req: any, res: any) {
           } catch {
             detail = raw.slice(0, 180);
           }
-          attempts.push({ model, status: upstream.status, detail, daily: isDailyQuotaError(upstream.status, raw), keySource: lane.source });
+          attempts.push({ model, status: upstream.status, detail, daily: isDailyQuotaError(upstream.status, raw), quota: quotaTag(upstream.status, raw), keySource: lane.source });
           if (lane.source === 'teacher' && isInvalidKeyError(upstream.status, raw)) await markTeacherKeyInvalid(db, member.user.id);
           if (upstream.status === 401 || upstream.status === 403 || isInvalidKeyError(upstream.status, raw)) break;
           continue;

@@ -1,41 +1,33 @@
 import { authHeaders } from '../supabase';
-import { elevenlabsService } from '../elevenlabs/elevenlabsService';
 import type { GenerateNarrationRequest, GenerateNarrationResponse } from '../elevenlabs/types';
 
-const ELEVENLABS_FALLBACK_GAP_MS = 11_000;
-let lastElevenLabsFallbackAt = -Infinity;
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-class NoFallbackError extends Error {}
+export const VOICE_QUOTA_MESSAGE = 'Bugünkü ücretsiz ses hakkı doldu. Kendi Google anahtarınızı ekleyin (Ayarlar → Google anahtarım) ya da yarın saat 10:00’dan sonra tekrar deneyin.';
+export const VOICE_RETRY_MESSAGE = 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.';
 
 /**
- * Both Gemini and the ElevenLabs fallback failed. The teacher sees one plain
- * sentence; the technical chain (models, HTTP codes) stays in `detail`, the
- * console and the admin panel's request log.
+ * Gemini could not make the voice. Voice comes only from the three Gemini
+ * models (ElevenLabs is used for word timings only). The teacher sees one plain
+ * sentence; the technical chain stays in `detail` and the admin request log.
  */
 export class VoiceUnavailableError extends Error {
-  constructor(public detail: string, fallbackMessage = '') {
-    super(/oturum|giriş yap/i.test(fallbackMessage) ? fallbackMessage
-      : /sınır|doldu/i.test(fallbackMessage) ? 'Bugünkü ses üretim hakları doldu. Yarın tekrar deneyin veya yöneticinize haber verin.'
-      : 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.');
+  constructor(public detail: string, message = VOICE_RETRY_MESSAGE) {
+    super(message);
   }
 }
 
-async function elevenLabsFallback(req: GenerateNarrationRequest, reason?: string): Promise<GenerateNarrationResponse> {
-  const wait = lastElevenLabsFallbackAt + ELEVENLABS_FALLBACK_GAP_MS - Date.now();
-  if (wait > 0) await sleep(wait);
-  lastElevenLabsFallbackAt = Date.now();
-  try {
-    const result = await elevenlabsService.generateNarration(req);
-    return { ...result, provider: 'elevenlabs', message: reason || result.message };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'ElevenLabs yedeği başarısız.';
-    const detail = reason ? `${reason} ElevenLabs yedeği de başarısız: ${message}` : message;
-    console.warn('[Seslendirme]', detail);
-    // Only the fallback's own answer tells whether the session or today's allowance is the problem.
-    throw new VoiceUnavailableError(detail, message);
-  }
+/** What the teacher is told when /api/gemini/generate refuses. */
+export function voiceFailure(status: number, err: any): VoiceUnavailableError {
+  const detail = err?.error || `Gemini ses servisi hata döndürdü (HTTP ${status}).`;
+  // Input and permission problems are the teacher's to fix; say exactly what.
+  if (err?.fallbackAllowed === false || status === 401) return new VoiceUnavailableError(detail, err?.error || VOICE_RETRY_MESSAGE);
+  // "No model left today" includes every model having been skipped already for its daily quota.
+  const exhausted = allDailyQuota(err?.attempts) || (err?.code === 'GEMINI_TTS_EXHAUSTED' && Array.isArray(err?.attempts) && !err.attempts.length);
+  return new VoiceUnavailableError(detail, exhausted ? VOICE_QUOTA_MESSAGE : VOICE_RETRY_MESSAGE);
+}
+
+/** Every model on every key refused for today's quota (not a minute limit or a network error). */
+export function allDailyQuota(attempts: unknown): boolean {
+  return Array.isArray(attempts) && attempts.length > 0 && attempts.every(a => (a as { daily?: boolean })?.daily === true);
 }
 
 export interface GeneratedAlignmentResult {
@@ -96,42 +88,34 @@ class NarrationService {
   }
 
   async generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
+    let res: Response;
     try {
-      const res = await fetch('/api/gemini/generate', {
+      res = await fetch('/api/gemini/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...await authHeaders() },
         body: JSON.stringify({ projectId: req.projectId, text: req.text }),
       });
-
-      if (res.ok) {
-        const data = await res.json().catch(() => null);
-        if (!data?.audioUrl || !data?.assetPath) throw new Error('Gemini ses servisi ses dosyası konumu döndürmedi.');
-        return {
-          audioUrl: data.audioUrl,
-          assetPath: data.assetPath,
-          mimeType: data.mimeType || 'audio/wav',
-          mode: 'live',
-          durationSeconds: Number(data.durationSeconds) > 0 ? Number(data.durationSeconds) : 15,
-          provider: 'gemini',
-          modelId: data.modelId || 'gemini-tts',
-          voiceId: data.voiceId || 'Achernar',
-          voiceName: data.voiceName || 'Achernar',
-        };
-      }
-
-      const err = await res.json().catch(() => null);
-      if (err?.fallbackAllowed === false) {
-        throw new NoFallbackError(err?.error || `Gemini ses servisi hata döndürdü (HTTP ${res.status}).`);
-      }
-      return await elevenLabsFallback(req, err?.error || 'Gemini TTS kullanılamadı.');
     } catch (error) {
-      if (error instanceof NoFallbackError) throw error;
-      if (error instanceof VoiceUnavailableError) throw error;
-      const reason = error instanceof Error
-        ? `Gemini TTS bağlantısı başarısız: ${error.message}.`
-        : 'Gemini TTS bağlantısı başarısız.';
-      return await elevenLabsFallback(req, reason);
+      throw new VoiceUnavailableError(`Gemini TTS bağlantısı başarısız: ${error instanceof Error ? error.message : 'ağ hatası'}`);
     }
+    if (res.ok) {
+      const data = await res.json().catch(() => null);
+      if (!data?.audioUrl || !data?.assetPath) throw new VoiceUnavailableError('Gemini ses servisi ses dosyası konumu döndürmedi.');
+      return {
+        audioUrl: data.audioUrl,
+        assetPath: data.assetPath,
+        mimeType: data.mimeType || 'audio/wav',
+        mode: 'live',
+        durationSeconds: Number(data.durationSeconds) > 0 ? Number(data.durationSeconds) : 15,
+        provider: 'gemini',
+        modelId: data.modelId || 'gemini-tts',
+        voiceId: data.voiceId || 'Achernar',
+        voiceName: data.voiceName || 'Achernar',
+      };
+    }
+    const failure = voiceFailure(res.status, await res.json().catch(() => null));
+    console.warn('[Seslendirme]', failure.detail);
+    throw failure;
   }
 }
 

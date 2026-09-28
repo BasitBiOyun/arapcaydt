@@ -140,7 +140,8 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
   const today = quotaDay(nowIso);
   const monthAgo = new Date(new Date(nowIso).getTime() - 30 * 86400_000).toISOString();
   const totals = { today: emptyCounters(), last30Days: emptyCounters(), all: emptyCounters() };
-  const geminiModels: Record<string, { today: Counter; last30Days: Counter }> = {};
+  /** Per voice model: all keys, plus the studio key's own use today and the last quota Google reported. */
+  const geminiModels: Record<string, { today: Counter; last30Days: Counter; sharedToday: number; lastQuota?: string }> = {};
   const members: Record<string, Record<Service, number>> = {};
   for (const row of rows) {
     if (!(SERVICES as readonly string[]).includes(row.kind)) continue;
@@ -155,8 +156,13 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
     (members[row.owner_id] ??= { gemini_tts: 0, gemini_transcribe: 0, elevenlabs_align: 0, voice: 0 })[kind]++;
     if (kind === 'gemini_tts') {
       const model = (row.detail || 'bilinmiyor').split(' · ')[0];
-      const m = geminiModels[model] ??= { today: { succeeded: 0, failed: 0 }, last30Days: { succeeded: 0, failed: 0 } };
+      const m = geminiModels[model] ??= { today: { succeeded: 0, failed: 0 }, last30Days: { succeeded: 0, failed: 0 }, sharedToday: 0 };
       if (isToday) m.today[outcome]++;
+      const [, status, tag] = (row.detail || '').split(' · ');
+      if (isToday && row.key_source === 'system' && status !== '429') m.sharedToday++;
+      // Rows come newest first, so the first tagged 429 today is the latest one.
+      if (isToday && status === '429' && tag && tag !== 'daily' && !m.lastQuota)
+        m.lastQuota = `${row.key_source === 'system' ? 'ortak anahtar' : 'öğretmen anahtarı'}: ${tag}`;
       if (recent) m.last30Days[outcome]++;
     }
   }

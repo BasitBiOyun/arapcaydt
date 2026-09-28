@@ -46,12 +46,29 @@ export function pacificDayStart(nowIso = new Date().toISOString()): string {
  * exhausted until the Pacific reset; per-minute 429s are retried next time.
  */
 export function isDailyQuotaError(status: number, raw: string): boolean {
-  return status === 429 && /PerDay|per[ _-]?day|limit:\s*0\b/i.test(raw || '');
+  if (status !== 429) return false;
+  // Google names the violated quota; trust it over words elsewhere in the message.
+  const ids = Array.from((raw || '').matchAll(/"quotaId"\s*:\s*"([^"]+)"/g), m => m[1]);
+  if (ids.length) return ids.some(id => /PerDay/i.test(id)) || /limit:\s*0\b/.test(raw);
+  return /PerDay|per[ _-]?day|limit:\s*0\b/i.test(raw || '');
 }
 
-/** Usage row detail: "model · status" plus " · daily" for a daily-quota 429. */
-export function usageDetail(model: string, status: number | string, daily = false): string {
-  return `${model} · ${status}${daily ? ' · daily' : ''}`;
+/**
+ * Which Google quota a 429 hit, for the admin panel: "PerDay sınır 100",
+ * "PerMinute sınır 3". Empty when Google did not say.
+ */
+export function quotaTag(status: number, raw: string): string {
+  if (status !== 429) return '';
+  const ids = Array.from((raw || '').matchAll(/"quotaId"\s*:\s*"([^"]+)"/g), m => m[1]).join(' ');
+  const text = ids || raw || '';
+  const window = /PerDay|per[ _-]?day/i.test(text) ? 'PerDay' : /PerMinute|per[ _-]?minute/i.test(text) ? 'PerMinute' : '';
+  const limit = (raw || '').match(/"quotaValue"\s*:\s*"?(\d+)/)?.[1] ?? (raw || '').match(/limit:\s*(\d+)/)?.[1];
+  return [window, limit !== undefined ? `sınır ${limit}` : ''].filter(Boolean).join(' ');
+}
+
+/** Usage row detail: "model · status", Google's quota for a 429, and " · daily" for a daily-quota 429. */
+export function usageDetail(model: string, status: number | string, daily = false, tag = ''): string {
+  return `${model} · ${status}${tag ? ` · ${tag}` : ''}${daily ? ' · daily' : ''}`;
 }
 
 export interface DayRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null }
