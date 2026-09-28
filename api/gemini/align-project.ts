@@ -82,8 +82,9 @@ export default async function handler(req: any, res: any) {
   if (projectError || !row) return res.status(404).json({ error: 'Proje bulunamadı.' });
 
   const source = row.data?.narrationSource;
-  if (!source || source.type !== 'gemini') {
-    return res.status(400).json({ error: 'Bu proje için Gemini tarafından üretilmiş bir ses bulunamadı.' });
+  // Generated voices and the teacher's own recordings, once stored with the project.
+  if (!source || !['gemini', 'uploaded'].includes(source.type)) {
+    return res.status(400).json({ error: 'Bu proje için kayıtlı bir ses bulunamadı.' });
   }
 
   let bytes: Buffer, mimeType: string;

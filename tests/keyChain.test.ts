@@ -23,6 +23,8 @@ interface World {
   eleven: number;
   /** narrationSource.audioUrl as stored in the (teacher-editable) project JSON. */
   audioUrl?: unknown;
+  /** narrationSource.type: 'gemini' (default) or a teacher's own 'uploaded' MP3. */
+  sourceType?: string;
   downloads: string[];
   uploads: Array<{ path: string; type: string; bytes: number }>;
   /** Stored file contents by path (downloads of other paths return 64 zero bytes). */
@@ -52,7 +54,7 @@ function install(world: World) {
       if (path === '/rest/v1/profiles') return rows([{ role: world.role, status: 'approved' }]);
       if (path === '/rest/v1/projects' && (url.searchParams.get('select') || '').includes('nsAudio')) return rows(world.assetRows || []);
       if (path === '/rest/v1/projects') return rows([{ id: 'p1', owner_id: 't1', data: {
-        solutionText: 'Doğru cevap C.', narrationSource: { type: 'gemini', mimeType: 'audio/wav', audioUrl: world.audioUrl ?? { assetPath: 't1/p1/a.wav' } } } }]);
+        solutionText: 'Doğru cevap C.', narrationSource: { type: world.sourceType ?? 'gemini', mimeType: world.sourceType === 'uploaded' ? 'audio/mpeg' : 'audio/wav', audioUrl: world.audioUrl ?? { assetPath: 't1/p1/a.wav' } } } }]);
       if (path === '/rest/v1/activity') {
         if (method === 'POST') { world.activity.push(...JSON.parse(init.body)); return json(null, 201); }
         return rows(world.activity);
@@ -282,4 +284,16 @@ test('admin storage: convert WAV narrations to MP3, then remove the unused WAV f
 
   world.role = 'teacher';
   assert.equal((await call(storage, 'GET')).status, 403);
+});
+
+test('a teacher\'s own MP3 stored with the project is timed like a generated voice', async () => {
+  const { default: gemini } = await import('../api/gemini/align-project');
+  const { default: eleven } = await import('../api/elevenlabs/align-project');
+  const world = await freshWorld({ sourceType: 'uploaded', audioUrl: { assetPath: 't1/p1/kayit.mp3' } });
+  const timed = await call(gemini, 'POST', { projectId: 'p1' });
+  assert.equal(timed.status, 200);
+  assert.equal((await call(eleven, 'POST', { projectId: 'p1' })).status, 200);
+  assert.equal(world.eleven, 1);
+  world.sourceType = 'none';
+  assert.equal((await call(gemini, 'POST', { projectId: 'p1' })).status, 400);
 });

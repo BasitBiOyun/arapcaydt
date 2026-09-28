@@ -12,7 +12,6 @@ import { useAuth } from '../features/auth/AuthContext';
 import { newProjectDefaults } from '../features/settings/preferences';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
 import { narrationService } from '../services/narration/narrationService';
-import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { readAudioDuration, readCompressedImage, readDataUrl, saveFile } from '../services/narration/browserMedia';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { localOcrService } from '../services/ocr/localOcrService';
@@ -88,7 +87,8 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       alignGeneratedVoiceLocal: p => localWhisperService.transcribeNarrationAudio(p),
       prepareUpload: (p, file) => prepareUploadedNarration(file, {
         readDataUrl, readDuration: readAudioDuration,
-        align: (audioBase64, mimeType) => elevenlabsService.alignUploadedNarration({ projectId: p.id, text: p.solutionText.trim(), audioBase64, mimeType }),
+        // Stored with the project first, then timed on the server from storage.
+        align: async untimed => narrationService.alignGeneratedNarration((await projectRepository.save({ ...p, narrationSource: untimed.source, audioNarration: untimed.compat })).id),
         transcribe: async upload => localWhisperService.transcribeAudioLocally(await upload.arrayBuffer()),
       }),
       runPipeline: (p, declared) => localVideoPipeline.executePipeline({ imageUrl: p.imageUrl, solutionText: p.solutionText,

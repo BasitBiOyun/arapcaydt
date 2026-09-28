@@ -12,7 +12,6 @@ import { localWhisperService } from '../services/whisper/localWhisperService';
 import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
-import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { narrationService } from '../services/narration/narrationService';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
@@ -289,25 +288,28 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setIsTranscribingMp3(true);
     setTranscribeProgress({ progress: 10, message: 'Ses dosyası taranıyor...' });
     try {
-      const text = currentProject.solutionText.trim();
-      // The server reserves usage against the saved project, so save before aligning.
-      const canAlign = text.length > 0 && text.length <= 5000 && (await saveCurrentProject());
+      let saved: QuestionProject | null = null;
       const result = await prepareUploadedNarration(file, {
         readDataUrl,
         readDuration: readAudioDuration,
-        align: canAlign
-          ? (audioBase64, mimeType) =>
-              elevenlabsService.alignUploadedNarration({ projectId: currentProject.id, text, audioBase64, mimeType })
-          : undefined,
+        // The MP3 is stored with the project first; the server reads it from storage
+        // (no upload size limit) and tries Gemini Transcribe, then ElevenLabs alignment.
+        align: async untimed => {
+          saved = await saveCurrentProject({ narrationSource: untimed.source, audioNarration: untimed.compat, audioApproved: false, videoReady: false });
+          if (!saved) throw new Error('Ses dosyası kaydedilemedi.');
+          return narrationService.alignGeneratedNarration(saved.id);
+        },
         transcribe: async upload =>
           localWhisperService.transcribeAudioLocally(await upload.arrayBuffer(), p =>
             setTranscribeProgress({ progress: p.progress, message: p.message }),
           ),
         onProgress: (progress, message) => setTranscribeProgress({ progress, message }),
       });
+      const stored = saved as QuestionProject | null;
       updateCurrentProject({
-        narrationSource: result.source,
-        audioNarration: result.compat,
+        ...(stored
+          ? withWordTimings(stored, result.source.words || [], result.source.timingSource || 'none')
+          : { narrationSource: result.source, audioNarration: result.compat }),
         audioApproved: false,
         videoReady: false,
       });
