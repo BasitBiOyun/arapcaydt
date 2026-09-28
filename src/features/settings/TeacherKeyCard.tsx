@@ -88,7 +88,7 @@ export const TeacherKeyCard: React.FC = () => {
               type="password"
               autoComplete="off"
               spellCheck={false}
-              placeholder="AIza…"
+              placeholder="AI Studio anahtarınızı yapıştırın"
               value={value}
               onChange={e => setValue(e.target.value)}
               className="flex-1 min-w-56 px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white text-xs outline-none font-mono-code"

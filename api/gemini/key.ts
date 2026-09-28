@@ -6,8 +6,12 @@ import {
 
 export const config = { maxDuration: 30 };
 
-/** Google AI Studio keys look like "AIza" + 35 URL-safe characters. */
-export const isGoogleKeyShape = (key: string) => /^AIza[0-9A-Za-z_-]{35}$/.test(key);
+/**
+ * A plausible Google AI Studio key: older keys are "AIza" + 35 characters, newer
+ * ones start differently (e.g. "AQ."). Only obvious mistakes are rejected here
+ * (spaces, other providers' keys); Google itself confirms the key before saving.
+ */
+export const isGoogleKeyShape = (key: string) => /^[0-9A-Za-z._-]{30,256}$/.test(key) && !/^sk-/i.test(key);
 
 /**
  * The signed-in teacher's own Google AI Studio key: GET status and today's
@@ -32,7 +36,7 @@ export default async function handler(req: any, res: any) {
     }
     const apiKey = normalizeApiKey(typeof req.body?.apiKey === 'string' ? req.body.apiKey : '');
     if (!isGoogleKeyShape(apiKey)) {
-      return res.status(400).json({ error: 'Bu bir Google AI Studio anahtarına benzemiyor. Anahtar "AIza" ile başlar ve 39 karakterdir.', code: 'INVALID_KEY_FORMAT' });
+      return res.status(400).json({ error: 'Bu bir Google AI Studio anahtarına benzemiyor. Anahtarı AI Studio’daki kopyala düğmesiyle, boşluksuz ve eksiksiz yapıştırın.', code: 'INVALID_KEY_FORMAT' });
     }
     // Listing models is free and does not use any generation quota.
     let check: Response;

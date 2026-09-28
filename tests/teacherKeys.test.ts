@@ -111,6 +111,8 @@ test('teacher keys are encrypted with a random IV and tampering is rejected', ()
   assert.equal(isGoogleKeyShape('AIza' + 'A1_-'.repeat(8) + 'abc'), true);
   assert.equal(isGoogleKeyShape('sk-' + 'x'.repeat(40)), false);
   assert.equal(isGoogleKeyShape('AIza short'), false);
+  assert.equal(isGoogleKeyShape('AQ.' + 'Ab3_-x'.repeat(8)), true, 'newer AI Studio keys start with AQ.');
+  assert.equal(isGoogleKeyShape('AQ.abc'), false, 'too short to be a key');
 });
 
 test('admin request summary shows each teacher’s key chain for today', () => {
