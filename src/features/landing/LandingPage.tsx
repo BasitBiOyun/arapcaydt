@@ -153,7 +153,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
             <a href="/gizlilik.html" className="hover:text-[#1C1917]">Gizlilik</a>
             <a href="/kullanim-kosullari.html" className="hover:text-[#1C1917]">Kullanım Koşulları</a>
           </nav>
-          <p className="text-[11px]">Made by Yunus Emre Yılmaz with <span role="img" aria-label="sevgi">❤️</span></p>
+          <p className="text-[11px]">Geliştiren: Yunus Emre Yılmaz</p>
         </div>
       </footer>
     </div>
