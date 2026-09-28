@@ -48,3 +48,10 @@ export function nudgeAction(action:VideoAction,delta:number,total:number):VideoA
   const duration=toEnd?total-start:Math.max(.05,Math.min(action.duration,total-start));
   return {...action,start,startTime:start,duration};
 }
+
+/** One time format for the player and the marks list: "01:05,3" (minutes:seconds,tenths). */
+export function clock(t: number): string {
+  const tenths = Math.max(0, Math.round(t * 10));
+  const m = Math.floor(tenths / 600), s = Math.floor((tenths % 600) / 10);
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')},${tenths % 10}`;
+}

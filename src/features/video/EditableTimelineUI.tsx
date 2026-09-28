@@ -8,6 +8,7 @@ import {
   AudioNarration 
 } from '../../types';
 import { generateAutomaticTimeline } from './engine/timeline';
+import { clock } from '../question-editor/workflow';
 import { 
   Clock, 
   Play, 
@@ -194,7 +195,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
   return (
     <div className="p-3.5 rounded bg-white border border-[#E5E4DC] space-y-3 select-none">
       <div className="space-y-3">
-        <label className="block text-sm font-semibold">Düzenlenecek işaret<select className="block w-full border rounded-lg p-2 mt-2" value={selectedActionId||''} onChange={e=>{setSelectedActionId(e.target.value);const action=actions.find(a=>a.id===e.target.value);if(action)onSeek(action.start);}}><option value="">Bir kelime veya şık seçin</option>{actions.map(a=><option key={a.id} value={a.id}>{a.start.toFixed(1)} sn · {regions.find(r=>r.id===a.targetRegionId)?.content || regions.find(r=>r.id===a.targetRegionId)?.label} · {ACTION_TYPES.find(t=>t.type===a.type)?.label}</option>)}</select></label>
+        <label className="block text-sm font-semibold">Düzenlenecek işaret<select className="block w-full border rounded-lg p-2 mt-2" value={selectedActionId||''} onChange={e=>{setSelectedActionId(e.target.value);const action=actions.find(a=>a.id===e.target.value);if(action)onSeek(action.start);}}><option value="">Bir kelime veya şık seçin</option>{actions.map(a=><option key={a.id} value={a.id}>{clock(a.start)} · {regions.find(r=>r.id===a.targetRegionId)?.content || regions.find(r=>r.id===a.targetRegionId)?.label} · {ACTION_TYPES.find(t=>t.type===a.type)?.label}</option>)}</select></label>
         <div className="flex flex-wrap gap-2">{[-.2,.2].map(delta=><button className="studio-secondary" key={delta} disabled={!selectedActionId} onClick={()=>{commit(actions.map(a=>a.id===selectedActionId?shiftAction(a,delta,effectiveDuration):a));const a=actions.find(a=>a.id===selectedActionId);if(a)onSeek(shiftAction(a,delta,effectiveDuration).start);}}>{delta<0?'0,2 sn erken':'0,2 sn geç'}</button>)}
           <button className="studio-secondary" disabled={!selectedActionId} onClick={()=>{const a=actions.find(a=>a.id===selectedActionId);if(a){onSeek(Math.max(0,a.start-.5));if(!isPlaying)onPlayPause();}}}>Bu anı dinle</button>
           <button className="studio-secondary" disabled={!undo.length} onClick={()=>{if(undo.length){onUpdateActions(undo[undo.length-1]);setUndo(undo.slice(0,-1));}}}>Geri al</button>
@@ -323,7 +324,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
           <div className="flex items-center justify-between text-[10px] font-medium text-[#787670] pb-1">
             <span>Görsel Animasyon Eylemleri:</span>
             <span className="text-[10px] font-mono-code text-[#787670]">
-              Mevcut An: <strong className="text-[#8B1E2D]">{currentTime.toFixed(1)}s</strong>
+              Mevcut An: <strong className="text-[#8B1E2D]">{clock(currentTime)}</strong>
             </span>
           </div>
 
@@ -531,7 +532,7 @@ export const EditableTimelineUI: React.FC<EditableTimelineUIProps> = ({
                           }`}
                         >
                           <td className="py-1.5 px-3 font-mono-code font-bold text-[#8B1E2D]">
-                            {act.start.toFixed(1)}s
+                            {clock(act.start)}
                           </td>
                           <td className="py-1.5 px-3">
                             <span className="font-semibold text-[#1C1917]">

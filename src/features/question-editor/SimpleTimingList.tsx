@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowCounterClockwise, CaretDown, CaretLeft, CaretRight, SpeakerHigh, Trash } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, CaretDown, CaretLeft, CaretRight, MapPin, SpeakerHigh, Trash } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
-import { nudgeAction } from './workflow';
+import { clock, nudgeAction } from './workflow';
 
 /** How far one "Biraz erken / Biraz geç" click moves a cue. */
 export const NUDGE_SECONDS = 0.3;
@@ -41,8 +41,6 @@ export function cueSummary(cues: VideoAction[]): string {
 
 const cuePhrase = (action: VideoAction) => (action.label || '').replace(/^[a-z-]+:\s*/, '').slice(0, 60);
 
-const seconds = (t: number) => `${t.toLocaleString('tr', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} sn`;
-
 interface Props {
   actions: VideoAction[];
   regions: AnnotationRegion[];
@@ -71,12 +69,16 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
     stopTimer.current = setTimeout(() => setPlaying(false), LISTEN_FOR * 1000);
   };
   const change = (next: VideoAction[]) => { setUndo(h => [...h.slice(-29), actions]); onUpdateActions(next); };
-  const nudge = (id: string, delta: number) => {
+  // Show a frame without playing: moving a mark never makes the preview jump and play on its own.
+  const show = (at: number) => { clearTimeout(stopTimer.current); setPlaying(false); onSeek(at); };
+  const move = (id: string, delta: number) => {
     const moved = actions.map(a => a.id === id ? nudgeAction(a, delta, total) : a);
     change(moved);
     const cue = moved.find(a => a.id === id);
-    if (cue) listen(cue.start);
+    if (cue) show(cue.start);
   };
+  /** "Buraya al": the mark starts at the paused preview's current moment. */
+  const moveHere = (cue: VideoAction) => move(cue.id, currentTime - cue.start);
   const remove = (id: string) => change(actions.filter(a => a.id !== id));
   const back = () => { const previous = undo.at(-1); if (previous) { onUpdateActions(previous); setUndo(undo.slice(0, -1)); } };
 
@@ -97,6 +99,10 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
         <span>{open ? 'Listeyi kapat' : 'İşaretleri tek tek kontrol et'}</span>
         <CaretDown size={14} weight="bold" className="transition-transform group-open:rotate-180" />
       </summary>
+      <p className="px-3 py-2 border-t border-[#EFEFEA] bg-[#FAF9F5] text-xs text-[#55544F] leading-relaxed">
+        Önizlemeyi işaretin çıkması gereken anda durdurun ve <b>Buraya al</b>’a basın. İnce ayar için <b>Erken/Geç</b> ({NUDGE_SECONDS.toLocaleString('tr')} sn).
+        <span className="block mt-0.5">Önizleme şu an: <b className="font-mono-code text-[#1C1917]">{clock(currentTime)}</b></span>
+      </p>
       <ol className="divide-y divide-[#EFEFEA] border-t border-[#EFEFEA]">
         {cues.map(cue => {
           const kind = KIND[cue.type]!;
@@ -106,21 +112,25 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
             <li key={cue.id} className={`px-3 py-2.5 space-y-2 transition-colors ${active ? 'bg-[#FAF5E6]' : ''}`}>
               <div className="flex items-start gap-2">
                 <span aria-hidden className="w-5 text-center font-bold leading-5" style={{ color: kind.color }}>{kind.icon}</span>
-                <div className="min-w-0 flex-1">
+                <button type="button" className="min-w-0 flex-1 text-left" onClick={() => show(cue.start)} title="Önizlemede bu işaretin anına git">
                   <p className="text-sm font-semibold text-[#1C1917] truncate">{title}</p>
                   {cuePhrase(cue) && <p className="text-xs text-[#787670] truncate">“{cuePhrase(cue)}”</p>}
-                </div>
-                <span className="font-mono-code text-xs text-[#55544F] whitespace-nowrap leading-5">{seconds(cue.start)}</span>
+                </button>
+                <span className="font-mono-code text-xs text-[#55544F] whitespace-nowrap leading-5">{clock(cue.start)}</span>
               </div>
               <div className="flex flex-wrap gap-1.5 pl-7">
                 <button type="button" className={button} onClick={() => listen(cue.start)} aria-label={`${title}: dinle`}>
                   <SpeakerHigh size={13} /> Dinle
                 </button>
-                <button type="button" className={button} onClick={() => nudge(cue.id, -NUDGE_SECONDS)} aria-label={`${title}: biraz erken`} title={`${NUDGE_SECONDS.toLocaleString('tr')} sn erkene al`}>
+                <button type="button" className={button} onClick={() => move(cue.id, -NUDGE_SECONDS)} aria-label={`${title}: biraz erken`} title={`${NUDGE_SECONDS.toLocaleString('tr')} sn erkene al`}>
                   <CaretLeft size={13} /> Erken
                 </button>
-                <button type="button" className={button} onClick={() => nudge(cue.id, NUDGE_SECONDS)} aria-label={`${title}: biraz geç`} title={`${NUDGE_SECONDS.toLocaleString('tr')} sn geçe al`}>
+                <button type="button" className={button} onClick={() => move(cue.id, NUDGE_SECONDS)} aria-label={`${title}: biraz geç`} title={`${NUDGE_SECONDS.toLocaleString('tr')} sn geçe al`}>
                   Geç <CaretRight size={13} />
+                </button>
+                <button type="button" className={button} onClick={() => moveHere(cue)} disabled={Math.abs(currentTime - cue.start) < .05}
+                  style={{ opacity: Math.abs(currentTime - cue.start) < .05 ? .45 : 1 }} aria-label={`${title}: buraya al`} title={`İşareti ${clock(currentTime)} anına taşı`}>
+                  <MapPin size={13} /> Buraya al
                 </button>
                 <button type="button" className={`${button} text-[#8B1E2D] ml-auto`} onClick={() => remove(cue.id)} aria-label={`${title}: kaldır`} title="İşareti kaldır">
                   <Trash size={13} />

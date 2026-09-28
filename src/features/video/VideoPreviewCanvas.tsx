@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { AnnotationRegion, VideoAction, VideoConfig } from '../../types';
 import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
+import { clock } from '../question-editor/workflow';
 import { 
   Play, 
   Pause, 
@@ -243,15 +244,9 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
             </button>
 
             <div className="text-xs font-mono text-[#55544F] ml-1">
-              <span className="font-semibold text-[#1C1917]">
-                {Math.floor(currentTime / 60).toString().padStart(2, '0')}:
-                {Math.floor(currentTime % 60).toString().padStart(2, '0')}
-              </span>
+              <span className="font-semibold text-[#1C1917]">{clock(currentTime)}</span>
               <span> / </span>
-              <span>
-                {Math.floor(effectiveDuration / 60).toString().padStart(2, '0')}:
-                {Math.floor(effectiveDuration % 60).toString().padStart(2, '0')}
-              </span>
+              <span>{clock(effectiveDuration)}</span>
             </div>
           </div>
 

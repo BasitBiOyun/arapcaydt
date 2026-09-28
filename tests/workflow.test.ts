@@ -80,3 +80,11 @@ test('simple timing list shows the marks a teacher hears, in order, with plain t
   assert.equal(cueSummary(cues), '1 şık elenir · 1 doğru cevap · 2 vurgu', 'the closed list still says what will happen');
   assert.equal(cueSummary([]), '');
 });
+
+test('player and marks list share one time format', async () => {
+  const { clock } = await import('../src/features/question-editor/workflow');
+  assert.equal(clock(0), '00:00,0');
+  assert.equal(clock(39.24), '00:39,2');
+  assert.equal(clock(65.35), '01:05,4');
+  assert.equal(clock(59.97), '01:00,0', 'rounding carries into the minute');
+});
