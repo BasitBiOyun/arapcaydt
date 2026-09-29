@@ -59,9 +59,28 @@ export function captionStrip(options: Pick<RenderOptions, 'captions' | 'showCapt
   return y >= .7 ? { edge: 'bottom', size } : y <= .3 ? { edge: 'top', size } : null;
 }
 
-/** The image is fitted into what the caption strip leaves free, shrinking only when it has to. */
-export function imageFitRect(imgWidth: number, imgHeight: number, width: number, height: number, strip: ReturnType<typeof captionStrip>): FitRect {
-  if (!strip) return calculateFitRect(imgWidth, imgHeight, width, height);
+/**
+ * Where the question image goes. Automatic: the whole frame, unless an option or a marked
+ * phrase would lie under the caption strip; only then it is fitted into the free part.
+ * `imageScale` is the teacher's own size (0.6–1 of the whole frame), kept clear of the strip side.
+ */
+export function imageFitRect(imgWidth: number, imgHeight: number, width: number, height: number,
+  strip: ReturnType<typeof captionStrip>, regions: AnnotationRegion[] = [], imageScale?: number): FitRect {
+  const full = calculateFitRect(imgWidth, imgHeight, width, height);
+  if (imageScale !== undefined) {
+    const s = Math.max(.5, Math.min(1, imageScale));
+    const w = full.width * s, h = full.height * s;
+    const y = !strip ? (height - h) / 2 : strip.edge === 'bottom' ? Math.max(0, Math.min((height - h) / 2, height - strip.size - h)) : Math.min(height - h, Math.max((height - h) / 2, strip.size));
+    return { x: (width - w) / 2, y, width: w, height: h };
+  }
+  if (!strip) return full;
+  // Options and marked phrases count; the frame around the whole question does not.
+  const covered = regions.some(r => {
+    if (r.id === 'question-root' || r.height > .5) return false;
+    const box = regionCanvasRect(r, full);
+    return strip.edge === 'bottom' ? box.y + box.height > height - strip.size : box.y < strip.size;
+  });
+  if (!covered) return full;
   const fit = calculateFitRect(imgWidth, imgHeight, width, height - strip.size);
   return { ...fit, y: fit.y + (strip.edge === 'top' ? strip.size : 0) };
 }
@@ -254,7 +273,8 @@ export function renderQuestionVideoFrame(
 ): FitRect {
   const scale = Math.min(width / 1920, height / 1080);
   ctx.save(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, width, height);
-  const fit = imageFitRect(imageElement?.naturalWidth || width, imageElement?.naturalHeight || height, width, height, captionStrip(options, height));
+  const fit = imageFitRect(imageElement?.naturalWidth || width, imageElement?.naturalHeight || height, width, height,
+    captionStrip(options, height), regions, options.imageScale);
   // The slide is always shown whole (no zoom on the examined option).
   ctx.save();
   if (imageElement?.complete && imageElement.naturalWidth > 0)

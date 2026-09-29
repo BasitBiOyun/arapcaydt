@@ -27,6 +27,7 @@ export async function exportProjectVideo(project: QuestionProject, onProgress: (
         showCaptions: config.showCaptions,
         captionY: config.captionY,
         underlineOffset: config.underlineOffset,
+        imageScale: config.imageScale,
         showOutro: config.showOutro,
         duration,
       });

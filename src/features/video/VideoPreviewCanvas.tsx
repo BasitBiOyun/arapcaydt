@@ -148,6 +148,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         showCaptions: videoConfig.showCaptions,
         captionY: videoConfig.captionY,
         underlineOffset: videoConfig.underlineOffset,
+        imageScale: videoConfig.imageScale,
         showOutro: videoConfig.showOutro,
         duration,
       }

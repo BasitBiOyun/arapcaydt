@@ -62,6 +62,8 @@ export interface RenderOptions {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
+  /** Teacher's question size (share of the whole frame); automatic when unset. */
+  imageScale?: number;
   /** Moves every underline up (−) or down (+), in heights of its text line. */
   underlineOffset?: number;
   /** Closing "Doğru cevap" card after the narration (on unless false). */
