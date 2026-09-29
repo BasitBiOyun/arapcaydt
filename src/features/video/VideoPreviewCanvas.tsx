@@ -202,7 +202,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
   };
 
   return (
-    <div ref={containerRef} className="flex flex-col space-y-2 select-none w-full">
+    <div ref={containerRef} className="flex flex-col space-y-1.5 select-none w-full">
       {audioUrl && (
         <audio
           ref={audioRef}
@@ -219,7 +219,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
       )}
 
       {/* Canvas Display Viewport */}
-      <div className="relative w-full aspect-video bg-[#1C1917] rounded-xl border border-[#D5D4CC] overflow-hidden shadow-sm flex items-center justify-center group">
+      <div data-preview-picture className="relative w-full aspect-video bg-[#1C1917] rounded-xl border border-[#D5D4CC] overflow-hidden shadow-sm flex items-center justify-center group">
         <canvas
           ref={canvasRef}
           width={1920}
@@ -246,12 +246,32 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         )}
       </div>
 
-      {/* Scrubber and Controls */}
-      <div className="flex flex-col gap-2 p-3 rounded-lg bg-white border border-[#E5E4DC] text-xs shadow-xs">
-        {/* Scrubber progress bar */}
+      {/* Controls in one row, so the picture keeps as much of the screen as possible. */}
+      <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-white border border-[#E5E4DC] text-xs shadow-xs">
+        <button
+          type="button"
+          onClick={onPlayPause}
+          className="p-1.5 rounded-md bg-[#FAF9F5] hover:bg-[#8B1E2D] hover:text-white border border-[#D5D4CC] text-[#1C1917] transition-colors cursor-pointer"
+          title={isPlaying ? 'Durdur' : 'Oynat'}
+        >
+          {isPlaying ? <Pause size={15} weight="bold" /> : <Play size={15} weight="bold" />}
+        </button>
+        <button
+          type="button"
+          onClick={handleRestart}
+          className="p-1.5 rounded-md bg-[#FAF9F5] hover:bg-[#EFEFEA] border border-[#D5D4CC] text-[#55544F] transition-colors cursor-pointer"
+          title="Başa Dön"
+        >
+          <ArrowCounterClockwise size={15} weight="bold" />
+        </button>
+        <div className="text-xs font-mono text-[#55544F] whitespace-nowrap">
+          <span className="font-semibold text-[#1C1917]">{clock(currentTime)}</span>
+          <span> / </span>
+          <span>{clock(effectiveDuration)}</span>
+        </div>
         <div
           onClick={handleScrubberClick}
-          className="w-full h-3 bg-[#FAF9F5] border border-[#E5E4DC] rounded-full cursor-pointer relative overflow-hidden flex items-center"
+          className="flex-1 min-w-16 h-3 bg-[#FAF9F5] border border-[#E5E4DC] rounded-full cursor-pointer relative overflow-hidden flex items-center"
           title="Zaman Çizelgesi"
         >
           <div
@@ -259,54 +279,23 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
             style={{ width: `${Math.min(100, (currentTime / effectiveDuration) * 100)}%` }}
           />
         </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onPlayPause}
-              className="p-1.5 rounded-md bg-[#FAF9F5] hover:bg-[#8B1E2D] hover:text-white border border-[#D5D4CC] text-[#1C1917] transition-colors cursor-pointer"
-              title={isPlaying ? 'Durdur' : 'Oynat'}
-            >
-              {isPlaying ? <Pause size={15} weight="bold" /> : <Play size={15} weight="bold" />}
+        <div className="flex items-center rounded-md border border-[#D5D4CC] overflow-hidden text-[11px] font-semibold" role="group" aria-label="Oynatma hızı">
+          {PREVIEW_SPEEDS.map(speed => (
+            <button key={speed} type="button" onClick={() => changeRate(speed)} aria-pressed={rate === speed}
+              title={speed === 1 ? 'Normal hız' : `${speedLabel(speed)} hızlı önizle`}
+              className={`px-1.5 py-1 transition-colors ${rate === speed ? 'bg-[#8B1E2D] text-white' : 'bg-[#FAF9F5] text-[#55544F] hover:bg-[#EFEFEA]'}`}>
+              {speedLabel(speed)}
             </button>
-
-            <button
-              type="button"
-              onClick={handleRestart}
-              className="p-1.5 rounded-md bg-[#FAF9F5] hover:bg-[#EFEFEA] border border-[#D5D4CC] text-[#55544F] transition-colors cursor-pointer"
-              title="Başa Dön"
-            >
-              <ArrowCounterClockwise size={15} weight="bold" />
-            </button>
-
-            <div className="text-xs font-mono text-[#55544F] ml-1">
-              <span className="font-semibold text-[#1C1917]">{clock(currentTime)}</span>
-              <span> / </span>
-              <span>{clock(effectiveDuration)}</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="flex items-center rounded-md border border-[#D5D4CC] overflow-hidden text-[11px] font-semibold" role="group" aria-label="Oynatma hızı">
-              {PREVIEW_SPEEDS.map(speed => (
-                <button key={speed} type="button" onClick={() => changeRate(speed)} aria-pressed={rate === speed}
-                  title={speed === 1 ? 'Normal hız' : `${speedLabel(speed)} hızlı önizle`}
-                  className={`px-2 py-1 transition-colors ${rate === speed ? 'bg-[#8B1E2D] text-white' : 'bg-[#FAF9F5] text-[#55544F] hover:bg-[#EFEFEA]'}`}>
-                  {speedLabel(speed)}
-                </button>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={handleFullscreen}
-              className="p-1.5 rounded-md bg-[#FAF9F5] hover:bg-[#EFEFEA] border border-[#D5D4CC] text-[#55544F] transition-colors cursor-pointer"
-              title="Tam Ekran"
-            >
-              <CornersOut size={16} />
-            </button>
-          </div>
+          ))}
         </div>
+        <button
+          type="button"
+          onClick={handleFullscreen}
+          className="p-1.5 rounded-md bg-[#FAF9F5] hover:bg-[#EFEFEA] border border-[#D5D4CC] text-[#55544F] transition-colors cursor-pointer"
+          title="Tam Ekran"
+        >
+          <CornersOut size={16} />
+        </button>
       </div>
     </div>
   );

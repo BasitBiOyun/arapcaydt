@@ -14,7 +14,7 @@ const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; n
 /** Crosses and ticks stay to the end of the video: only their start moves. */
 const lasting = (a: VideoAction) => a.type === 'reject' || a.type === 'correct';
 const MIN_SECONDS = .3;
-const LANE = 30, PILL_PX = 30, WAVE = 56, RULER = 18;
+const LANE = 27, PILL_PX = 30, WAVE = 44, RULER = 16;
 /** Zoom steps, as multiples of "the whole narration fits". */
 const ZOOMS = [1, 2, 4, 8, 16];
 
@@ -207,10 +207,10 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
   const button = 'inline-flex items-center gap-1 px-2 py-1 rounded-md border border-[#D5D4CC] bg-white hover:bg-[#F2F1EB] disabled:opacity-40';
 
   return (
-    <div className="rounded-xl border border-[#E5E4DC] bg-white p-3 space-y-2 select-none">
+    <div className="rounded-xl border border-[#E5E4DC] bg-white px-3 py-2 space-y-1.5 select-none">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <p className="text-[#55544F]">
-          <b className="text-[#1C1917] text-sm">Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)
+          <b className="text-[#1C1917] text-sm" title={keyboard ? 'Klavye: Boşluk oynat/durdur · ←/→ önceki/sonraki işaret · Shift+←/→ seçili işareti 0,1 sn kaydır · Delete sil' : undefined}>Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)
         </p>
         <span className="flex items-center gap-1" role="group" aria-label="Yakınlaştırma">
           <button type="button" className={button} onClick={() => setZoomStep(zoom - 1)} disabled={zoom === 0} title="Uzaklaştır"><MagnifyingGlassMinus size={14} /></button>
@@ -247,7 +247,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
         <span className="absolute top-0 bottom-0 w-0.5 -ml-px bg-[#8B1E2D] pointer-events-none" style={{ left: px(currentTime) }} />
       </div>
 
-      <div className="min-h-9 flex flex-wrap items-center gap-2 text-xs">
+      <div className="min-h-8 flex flex-wrap items-center gap-2 text-xs">
         {selected ? (
           <>
             <span style={{ color: MARK[selected.type]!.color }} className="font-semibold text-sm">{MARK[selected.type]!.icon} {MARK[selected.type]!.name} {label(selected)}</span>
@@ -268,7 +268,6 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
           <span className="text-[#A8A69E]">Bir işarete tıklayın: erken/geç, kısa/uzun ve sil butonları burada çıkar.</span>
         )}
       </div>
-      {keyboard && <p className="text-[10px] text-[#A8A69E]">Boşluk: oynat/durdur · ←/→: önceki/sonraki işaret · Shift+←/→: seçili işareti 0,1 sn kaydır · Delete: sil</p>}
     </div>
   );
 }

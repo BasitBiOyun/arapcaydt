@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import type { QuestionProject, VideoConfig } from '../../../types';
 import { FilmStrip, Image as ImageIcon } from '@phosphor-icons/react';
 import { VideoPreviewCanvas } from '../../video/VideoPreviewCanvas';
@@ -30,8 +30,41 @@ export interface EditorStageProps {
   setRegionHistory: React.Dispatch<React.SetStateAction<VideoConfig[]>>;
 }
 
+/** Narrowest the picture gets to leave room for the controls and the strip, in pixels. */
+const MIN_PICTURE = 480;
+
+/**
+ * The widest preview whose picture, controls and mark strip all fit the column's height, so a
+ * teacher sees the whole question while editing without scrolling. Re-measured when the column,
+ * the window or the strip (more rows of marks) changes size.
+ */
+function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: boolean): number | undefined {
+  const [width, setWidth] = useState<number>();
+  useLayoutEffect(() => {
+    const el = frame.current, stage = el?.closest('.editor-stage') as HTMLElement | null;
+    if (!active || !el || !stage) return;
+    const fit = () => {
+      const picture = el.querySelector('[data-preview-picture]') as HTMLElement | null;
+      if (!picture) return;
+      const style = getComputedStyle(stage);
+      const room = stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+      const rest = el.offsetHeight - picture.offsetHeight;
+      const across = stage.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const next = Math.round(Math.max(MIN_PICTURE, Math.min(across, (room - rest - 4) * 16 / 9)));
+      setWidth(previous => previous !== undefined && Math.abs(previous - next) < 3 ? previous : next);
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(stage); observer.observe(el);
+    return () => observer.disconnect();
+  }, [frame, active]);
+  return width;
+}
+
 /** Left column: question image or animated preview, timing editor and box editor. */
 export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, editRegions, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, saveStatus, finishRegionEditing, selectedRegionId, setSelectedRegionId, regionHistory, setRegionHistory }: EditorStageProps) {
+  const frame = useRef<HTMLDivElement>(null);
+  const fitWidth = useFitWidth(frame, previewMode === 'video' && videoGenerated);
   return (
     <>
     {videoGenerated && hasImage && (
@@ -66,8 +99,9 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
     <div className="preview-content" hidden={step===3&&editRegions}>
     {previewMode === 'video' && videoGenerated ? (
       /* Generated Video Player powered by local Canvas engine */
-      /* As wide as the column allows while the picture still fits the window height (never below the old 56rem). */
-      <div className="flex flex-col gap-4 p-4" style={{ width: 'min(100%, max(56rem, calc((100vh - 300px) * 16 / 9)))' }}>
+      <div ref={frame} className="w-full flex flex-col items-center gap-2 px-2 pb-2">
+        {/* Only the picture and its controls are sized to fit; settings and the strip keep the full width. */}
+        <div style={{ width: fitWidth ? `${fitWidth}px` : '100%', maxWidth: '100%' }}>
         <VideoPreviewCanvas
           imageUrl={currentProject.imageUrl}
           regions={currentProject.videoConfig.regions}
@@ -91,7 +125,8 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             },
           } : undefined}
         />
-        <div className="flex flex-wrap gap-2 items-center text-xs">
+        </div>
+        <div className="w-full flex flex-wrap gap-x-3 gap-y-1 items-center text-xs">
           <label className="flex gap-2 items-center">
           <input type="checkbox" checked={currentProject.videoConfig.showCaptions !== false}
             onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, showCaptions: e.target.checked } })} />
@@ -127,10 +162,10 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
         </div>
 
         {step === 3 && !editRegions && (
-          <MarkTimeline actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
+          <div className="w-full"><MarkTimeline actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
             duration={activeAudioDuration || 15} currentTime={currentPreviewTime} audioUrl={activeAudioUrl}
             onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard
-            onActions={actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} />
+            onActions={actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} /></div>
         )}
       </div>
     ) : hasImage ? (
