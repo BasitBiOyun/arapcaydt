@@ -88,7 +88,7 @@ function install(world: World) {
       world.google.push({ key, what: model });
       const { status, body } = world.answer(key, model);
       if (status !== 200) return json(body || { error: { message: 'err' } }, status);
-      if (model === 'transcribe') return json({ steps: [{ content: [{ annotations: [{ type: 'word_info', text: 'Doğru', start_offset: '0.1s', end_offset: '0.4s' }] }] }] });
+      if (model === 'transcribe') return json(body || { steps: [{ content: [{ annotations: [{ type: 'word_info', text: 'Doğru', start_offset: '0.1s', end_offset: '0.4s' }] }] }] });
       return json({ candidates: [{ content: { parts: [{ inlineData: { mimeType: 'audio/L16;rate=24000', data: Buffer.alloc(4800).toString('base64') } }] } }] });
     }
     if (url.hostname === 'evil.example.test') throw new Error('the server must never fetch a URL taken from project data');
@@ -189,6 +189,18 @@ test('a passing error on the teacher key is retried there once, before the share
   assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [
     ['teacher', 'gemini-3.5-transcribe · 503 · neden: The model is overloaded.'], ['teacher', 'gemini-3.5-transcribe · 200']]);
   assert.ok(!world.google.some(g => g.key === STUDIO_KEY), 'the shared quota is not touched');
+});
+
+test('a Transcribe reply without word timings is logged with its shape, not its text', async () => {
+  const { default: align } = await import('../api/gemini/align-project');
+  const noWords = { status: 200, body: { status: 'completed', steps: [{ content: [{ type: 'text', text: 'Doğru cevap C' }] }] } };
+  const world = await freshWorld({ answer: () => noWords });
+  const r = await call(align, 'POST', { projectId: 'p1' });
+  assert.equal(r.payload.code, 'GEMINI_TRANSCRIBE_ERROR');
+  const reason = 'neden: Gemini Transcribe kelime zaman damgası döndürmedi (durum completed, steps 1, içerik text, işaret -, metin 13 karakter).';
+  assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [
+    ['teacher', `gemini-3.5-transcribe · 200 · ${reason}`], ['system', `gemini-3.5-transcribe · 200 · ${reason}`]]);
+  assert.ok(!world.activity.some(a => a.detail.includes('Doğru cevap')), 'no transcript text is stored');
 });
 
 test('ElevenLabs Forced Alignment stops at the per-teacher daily cap', async () => {
