@@ -17,6 +17,7 @@ import { saveFile } from '../services/narration/browserMedia';
 import { DefaultsCard, ProfileCard } from '../features/settings/MySettingsCards';
 import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
 import { useAuth } from '../features/auth/AuthContext';
+import { toast } from 'sonner';
 
 export const SettingsPage: React.FC = () => {
   const { projects } = useProjects();
@@ -137,7 +138,7 @@ export const SettingsPage: React.FC = () => {
             Kayıtlı Soru Projesi Sayısı: <strong>{projects.length}</strong>
           </div>
           <button
-            onClick={() => void handleExportBackup().catch(() => window.alert('Yedek hazırlanamadı. Bağlantınızı kontrol edip tekrar deneyin.'))}
+            onClick={() => void handleExportBackup().catch(() => toast.error('Yedek hazırlanamadı.', { description: 'Bağlantınızı kontrol edip tekrar deneyin.' }))}
             className="px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] hover:bg-[#F2F1EB] text-xs font-semibold text-[#33322E] flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <DownloadSimple size={14} />

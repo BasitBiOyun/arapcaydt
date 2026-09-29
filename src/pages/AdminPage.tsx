@@ -12,6 +12,7 @@ import { getCategoryLabel } from '../config/categories';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import type { ElevenLabsStatus } from '../types';
 import { ArrowClockwise, CheckCircle, UserPlus } from '@phosphor-icons/react';
+import { useConfirm } from '../components/common/ConfirmDialog';
 
 interface Member {
   id: string;
@@ -180,6 +181,7 @@ const Chip: React.FC<{ tone: 'green' | 'amber' | 'red' | 'gray' | 'brand'; child
 );
 
 export const AdminPage: React.FC = () => {
+  const confirm = useConfirm();
   const { loadProjects } = useProjects();
   const [tab, setTab] = useState<Tab>('overview');
   const [viewing, setViewing] = useState<QuestionProject | null>(null);
@@ -194,24 +196,25 @@ export const AdminPage: React.FC = () => {
 
   const load = useCallback(async () => {
     setBusy(true);
-    try {
-      const [overviewResult, analyticsResponse, voiceStatus] = await Promise.all([
-        database().rpc('admin_overview'),
-        fetch('/api/admin/analytics', { headers: await authHeaders(), cache: 'no-store' }),
-        elevenlabsService.checkStatus(),
-      ]);
-      setVoice(voiceStatus);
-      if (overviewResult.error) throw overviewResult.error;
-      const analyticsPayload = await analyticsResponse.json().catch(() => null);
-      if (!analyticsResponse.ok) throw new Error(analyticsPayload?.error || 'Yönetim istatistikleri alınamadı.');
-      setData(overviewResult.data);
-      setAnalytics(analyticsPayload);
-      setError('');
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Yönetim bilgileri alınamadı.');
-    } finally {
-      setBusy(false);
-    }
+    // Each part loads on its own: a failed statistics call never hides members waiting for approval.
+    const problems: string[] = [];
+    const [overview, analyticsResult, voiceResult] = await Promise.allSettled([
+      database().rpc('admin_overview'),
+      (async () => {
+        const response = await fetch('/api/admin/analytics', { headers: await authHeaders(), cache: 'no-store' });
+        const payload = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(payload?.error || 'Yönetim istatistikleri alınamadı.');
+        return payload;
+      })(),
+      elevenlabsService.checkStatus(),
+    ]);
+    if (overview.status === 'fulfilled' && !overview.value.error) setData(overview.value.data);
+    else problems.push('Üye ve proje listesi alınamadı.');
+    if (analyticsResult.status === 'fulfilled') setAnalytics(analyticsResult.value);
+    else problems.push(analyticsResult.reason instanceof Error ? analyticsResult.reason.message : 'Yönetim istatistikleri alınamadı.');
+    if (voiceResult.status === 'fulfilled') setVoice(voiceResult.value);
+    setError(problems.join(' '));
+    setBusy(false);
   }, []);
   useEffect(() => {
     void load();
@@ -231,7 +234,7 @@ export const AdminPage: React.FC = () => {
   };
 
   const change = async (member: Member, status: string) => {
-    if (status === 'blocked' && !window.confirm(`${member.name || member.email} için erişim durdurulsun mu? Projeleri silinmez.`)) return;
+    if (status === 'blocked' && !await confirm({ title: 'Erişim durdurulsun mu?', message: `${member.name || member.email} artık giriş yapamaz. Projeleri silinmez.`, confirmLabel: 'Erişimi durdur', danger: true })) return;
     setBusy(true);
     setMessage('');
     try {
@@ -247,12 +250,7 @@ export const AdminPage: React.FC = () => {
   };
 
   const promote = async (member: Member) => {
-    if (
-      !window.confirm(
-        `${member.name || member.email} kullanıcısına tam yönetici yetkisi verilsin mi? Yönetici tüm öğretmenleri ve projeleri görüntüleyebilir, üyelik erişimini yönetebilir.`,
-      )
-    )
-      return;
+    if (!await confirm({ title: 'Yönetici yapılsın mı?', message: `${member.name || member.email} tüm öğretmenleri ve projeleri görebilir, üyelikleri yönetebilir.`, confirmLabel: 'Yönetici yap' })) return;
     setBusy(true);
     setMessage('');
     setError('');

@@ -5,11 +5,13 @@ import {
   ANNOUNCEMENT_DURATIONS, MIGRATION_PENDING, announcementState, announcementUntil, loadStudioSettings, parseAutoApprove,
   saveStudioSettings, updateAnnouncement, type StudioSettings,
 } from './studioSettings';
+import { useConfirm } from '../../components/common/ConfirmDialog';
 
 const endsAt = (iso: string) => new Date(iso).toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
 /** Admin-only studio settings: announcement, daily limits, auto-approval and sign-ups. */
 export function StudioSettingsCard() {
+  const confirm = useConfirm();
   const [settings, setSettings] = useState<StudioSettings | null>(null);
   const [approveText, setApproveText] = useState('');
   const [hours, setHours] = useState<number>(24);
@@ -83,7 +85,7 @@ export function StudioSettingsCard() {
               {live !== 'off' && <button type="button" className="px-3 py-1.5 rounded border border-[#D5D4CC] bg-white hover:bg-[#F2F1EB] font-semibold" disabled={state.busy}
                 onClick={() => void announce({ announcement: settings.announcement, announcement_active: false, announcement_until: settings.announcement_until ?? null }, 'Duyuru yayından kaldırıldı.')}>Yayından kaldır</button>}
               {settings.announcement.trim() && <button type="button" className="px-3 py-1.5 rounded text-red-600 hover:bg-red-50 font-semibold" disabled={state.busy}
-                onClick={() => { if (window.confirm('Duyuru metni silinsin mi?')) void announce({ announcement: '', announcement_active: false, announcement_until: null }, 'Duyuru silindi.'); }}>Sil</button>}
+                onClick={async () => { if (await confirm({ title: 'Duyuru silinsin mi?', confirmLabel: 'Sil', danger: true })) void announce({ announcement: '', announcement_active: false, announcement_until: null }, 'Duyuru silindi.'); }}>Sil</button>}
             </div>
             <p className="text-[11px] text-[#787670]">Yayınlanan duyuru tüm sayfaların üstünde görünür; öğretmen kapatırsa o duyuruyu bir daha görmez. Yeniden yayınlarsanız herkese yeniden görünür.</p>
           </fieldset>

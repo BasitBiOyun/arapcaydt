@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Key, Trash, FloppyDisk, CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import { geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../services/narration/geminiKeyService';
+import { useConfirm } from '../../components/common/ConfirmDialog';
 
 const badge = (ok: boolean) => `font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
   ok ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'}`;
 
 /** Settings card: the teacher pastes their own Google AI Studio key; it is verified, stored encrypted and never shown again. */
 export const TeacherKeyCard: React.FC = () => {
+  const confirm = useConfirm();
   const [status, setStatus] = useState<TeacherKeyStatus | null>(null);
   const [value, setValue] = useState('');
   const [busy, setBusy] = useState(false);
@@ -22,8 +24,8 @@ export const TeacherKeyCard: React.FC = () => {
     finally { setBusy(false); }
   };
   const save = () => run(() => geminiKeyService.save(value), 'Anahtar doğrulandı ve kaydedildi.');
-  const remove = () => {
-    if (window.confirm('Google anahtarınız kaldırılsın mı? Sonraki seslendirmeler ortak kapasiteyle yapılır.')) void run(geminiKeyService.remove, 'Anahtar kaldırıldı.');
+  const remove = async () => {
+    if (await confirm({ title: 'Google anahtarınız kaldırılsın mı?', message: 'Sonraki seslendirmeler ortak kapasiteyle yapılır.', confirmLabel: 'Anahtarı kaldır', danger: true })) void run(geminiKeyService.remove, 'Anahtar kaldırıldı.');
   };
 
   const key = status?.key;

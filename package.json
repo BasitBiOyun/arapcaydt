@@ -27,6 +27,7 @@
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-moveable": "^0.56.0",
+    "sonner": "^2.0.8",
     "tesseract.js": "^7.0.0",
     "vite": "^6.2.3",
     "wavesurfer.js": "^8.0.1"

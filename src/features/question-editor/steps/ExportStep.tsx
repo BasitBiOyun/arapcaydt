@@ -3,6 +3,7 @@ import type { QuestionProject } from '../../../types';
 import { CheckCircle, CircleNotch, DownloadSimple, Sparkle, WarningCircle } from '@phosphor-icons/react';
 import { ReadinessCard } from '../ReadinessCard';
 import type { ReadinessAction } from '../readiness';
+import { useConfirm } from '../../../components/common/ConfirmDialog';
 
 export interface ExportStepProps {
   step: number;
@@ -22,6 +23,7 @@ export interface ExportStepProps {
 
 /** STEP 4: Video Oluştur */
 export function ExportStep({ step, videoGenerated, currentProject, handleReadinessAction, exportError, isExportingMp4, exportAbortRef, handleDownloadMp4, exportPercent, setIsVideoModalOpen, handleAttemptCreateVideo, isAudioApproved, videoButtonWarning }: ExportStepProps) {
+  const confirm = useConfirm();
   return (
     <div hidden={step<3} className="space-y-3 pt-2 border-t border-[#E5E4DC]">
       <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
@@ -65,8 +67,8 @@ export function ExportStep({ step, videoGenerated, currentProject, handleReadine
           <div className="pt-1 text-center">
             <button
               type="button"
-              onClick={() => {
-                if (window.confirm('İşaretler görsel ve sese göre baştan hazırlanır. Elle yaptığınız zamanlama düzeltmeleri kaybolur. Devam edilsin mi?')) setIsVideoModalOpen(true);
+              onClick={async () => {
+                if (await confirm({ title: 'İşaretler baştan hazırlansın mı?', message: 'İşaretler görsel ve sese göre yeniden oluşturulur. Elle yaptığınız zamanlama düzeltmeleri kaybolur.', confirmLabel: 'Baştan hazırla', danger: true })) setIsVideoModalOpen(true);
               }}
               className="text-xs font-semibold text-[#55544F] hover:text-[#1C1917] underline-offset-2 hover:underline transition-colors"
             >
