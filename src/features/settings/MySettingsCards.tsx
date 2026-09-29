@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, FilePlus, IdentificationCard, WarningCircle } from '@phosphor-icons/react';
+import { CheckCircle, FilePlus, IdentificationCard, TextAa, WarningCircle } from '@phosphor-icons/react';
 import { useAuth } from '../auth/AuthContext';
 import { database } from '../../services/supabase';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categories';
-import { cleanPreferences, type UserPreferences } from './preferences';
+import { TEXT_SIZES, applyTextSize, cleanPreferences, type UserPreferences } from './preferences';
 import { saveMyProfile } from './studioSettings';
 import { PasswordChecklist, authMessage, passwordProblem } from '../auth/LoginPage';
 import { CollectionInput } from '../projects/CollectionInput';
@@ -80,6 +80,41 @@ export function ProfileCard() {
         <Result {...passState} />
       </form>
     </div>
+  );
+}
+
+/** Text and button size for this teacher: applied at once, remembered with the profile. */
+export function TextSizeCard() {
+  const { user, refresh } = useAuth();
+  const [state, setState] = useState<{ notice?: string; error?: string }>({});
+  if (!user) return null;
+  const current = user.preferences?.textSize;
+  const choose = async (size: UserPreferences['textSize']) => {
+    applyTextSize(size);
+    setState({});
+    try {
+      await saveMyProfile(user.name, cleanPreferences({ ...user.preferences, textSize: size }));
+      await refresh();
+      setState({ notice: 'Yazı boyutu kaydedildi; bu hesapla girdiğiniz her cihazda kullanılır.' });
+    } catch (err: any) { setState({ error: err.message }); }
+  };
+  return (
+    <section className={card}>
+      <CardHeader icon={TextAa} title="Yazı boyutu" hint="Yazılar ve düğmeler tüm stüdyoda büyür; hemen görürsünüz" />
+      <div role="radiogroup" aria-label="Yazı boyutu" className="grid grid-cols-3 gap-2">
+        {TEXT_SIZES.map(size => {
+          const active = (current || undefined) === size.id;
+          return (
+            <button key={size.label} type="button" role="radio" aria-checked={active} onClick={() => void choose(size.id)}
+              className={`rounded-xl border-2 px-3 py-3 text-left transition-colors ${active ? 'border-[#8B1E2D] bg-[#8B1E2D]/5' : 'border-[#E5E4DC] hover:border-[#C9C7BE] bg-white'}`}>
+              <span className="block font-semibold text-[#1C1917]" style={{ fontSize: `${15 * size.scale}px` }}>Aa</span>
+              <span className="block text-sm text-[#55544F]">{size.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      <Result {...state} />
+    </section>
   );
 }
 

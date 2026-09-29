@@ -13,15 +13,25 @@ import { SettingsPage } from '../pages/SettingsPage';
 import { BatchPage } from '../pages/BatchPage';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
+import { pageHash, parseHash } from './route';
 
 /** A page that must not be left silently (MP4 export, batch run): returns true when leaving is fine. */
 export type LeaveGuard = () => boolean;
 
 export const AppLayout: React.FC = () => {
   const {user}=useAuth();
-  const [currentPage, setCurrentPage] = useState<AppPage>(user?.role==='admin'?'admin':'dashboard');
+  // The address decides where the studio opens: a reload stays on the same page and question.
+  const opening = useRef(parseHash(window.location.hash));
+  const [currentPage, setCurrentPage] = useState<AppPage>(() => {
+    const { page } = opening.current;
+    if (page === 'admin' && user?.role !== 'admin') return 'dashboard';
+    if (page === 'dashboard' && !window.location.hash.replace(/^#\/?/, '') && user?.role === 'admin') return 'admin';
+    return page;
+  });
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const { selectProject, createNewProject, currentProject, projects, error, loadProjects, isLoading } = useProjects();
+  const currentProjectId = useRef(currentProject?.id);
+  currentProjectId.current = currentProject?.id;
   // The editor reports its own question and step.
   useEffect(() => { if (currentPage !== 'editor') setReportContext({ page: PAGE_LABELS[currentPage] }); }, [currentPage]);
   const pageRef = useRef(currentPage);
@@ -39,13 +49,20 @@ export const AppLayout: React.FC = () => {
     }
     leaveGuard.current = null;
     setCurrentPage(page);
-    if (!fromHistory) window.history.pushState({ studioPage: page }, '');
+    if (!fromHistory) window.history.pushState({ studioPage: page }, '', pageHash(page));
   }, []);
   useEffect(() => {
-    window.history.replaceState({ ...(window.history.state || {}), studioPage: pageRef.current }, '');
+    window.history.replaceState({ ...(window.history.state || {}), studioPage: pageRef.current }, '',
+      pageRef.current === 'editor' ? window.location.hash || pageHash('editor') : pageHash(pageRef.current));
     const onPop = (event: PopStateEvent) => {
-      const page = event.state?.studioPage as AppPage | undefined;
-      if (page) navigate(page === 'admin' && user?.role !== 'admin' ? 'dashboard' : page, true);
+      // A typed or pasted address has no saved state: read the page from the address itself.
+      const target = parseHash(window.location.hash);
+      const page = (event.state?.studioPage as AppPage | undefined) ?? target.page;
+      if (page === 'editor' && target.projectId && target.projectId !== currentProjectId.current) {
+        void selectProject(target.projectId).then(found => navigate(found ? 'editor' : 'questions', true));
+        return;
+      }
+      navigate(page === 'admin' && user?.role !== 'admin' ? 'dashboard' : page, true);
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -68,12 +85,19 @@ export const AppLayout: React.FC = () => {
     navigate('editor');
   };
 
-  // If on editor page and no current project is selected, pick the first one
+  // On the editor without an open question: the one in the address, else the latest one.
   React.useEffect(() => {
-    if (currentPage === 'editor' && !currentProject && projects.length > 0) {
-      selectProject(projects[0].id);
-    }
-  }, [currentPage, currentProject, projects, selectProject]);
+    if (currentPage !== 'editor' || currentProject || isLoading) return;
+    const wanted = opening.current.projectId;
+    opening.current = { page: 'editor' };
+    if (wanted) void selectProject(wanted).then(found => { if (!found) navigate('questions'); });
+    else if (projects.length > 0) void selectProject(projects[0].id);
+  }, [currentPage, currentProject, projects, selectProject, isLoading, navigate]);
+  // The editor's address names the open question, so a reload or a shared bookmark opens it again.
+  useEffect(() => {
+    if (currentPage === 'editor' && currentProject?.id && window.location.hash !== pageHash('editor', currentProject.id))
+      window.history.replaceState({ ...(window.history.state || {}), studioPage: 'editor' }, '', pageHash('editor', currentProject.id));
+  }, [currentPage, currentProject?.id]);
 
   if (currentPage === 'editor') {
     return (

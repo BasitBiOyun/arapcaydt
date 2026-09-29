@@ -1,6 +1,10 @@
 import React from 'react';
 import { Toaster } from 'sonner';
 import { ConfirmProvider } from './components/common/ConfirmDialog';
+import { applyTextSize } from './features/settings/preferences';
+
+// The size chosen on this device applies before sign-in finishes, so the page never jumps.
+applyTextSize();
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { ProjectProvider } from './features/projects/ProjectContext';
 import { LoginPage } from './features/auth/LoginPage';

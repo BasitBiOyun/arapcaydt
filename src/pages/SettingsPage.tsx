@@ -14,7 +14,7 @@ import { useProjects } from '../features/projects/ProjectContext';
 import { projectRepository } from '../features/projects/projectRepository';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
 import { saveFile } from '../services/narration/browserMedia';
-import { DefaultsCard, ProfileCard } from '../features/settings/MySettingsCards';
+import { DefaultsCard, ProfileCard, TextSizeCard } from '../features/settings/MySettingsCards';
 import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
 import { useAuth } from '../features/auth/AuthContext';
 import { toast } from 'sonner';
@@ -66,6 +66,7 @@ export const SettingsPage: React.FC = () => {
       </header>
 
       <ProfileCard />
+      <TextSizeCard />
       <DefaultsCard />
 
       {/* Voice service card: Gemini voice, ElevenLabs only as the word-timing fallback */}
