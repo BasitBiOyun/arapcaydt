@@ -29,6 +29,7 @@ import { APP_NAME } from '../config/brand';
 import { ReportProblem } from '../features/feedback/ReportProblem';
 import { setReportContext } from '../features/feedback/feedback';
 import { useAuth } from '../features/auth/AuthContext';
+import { CollectionInput } from '../features/projects/CollectionInput';
 
 function hasAnimationPlan(project: QuestionProject | null | undefined) {
   return Boolean(
@@ -590,10 +591,10 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
               </label>
               <label className="block">
                 Koleksiyon / deneme adı
-                <input
+                <CollectionInput
                   placeholder="Örnek: Eylül Denemesi 1"
                   value={currentProject.examName || ''}
-                  onChange={e => updateCurrentProject({ examName: e.target.value })}
+                  onChange={examName => updateCurrentProject({ examName })}
                   className="block w-full border rounded p-2"
                 />
               </label>

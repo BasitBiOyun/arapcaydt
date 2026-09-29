@@ -62,3 +62,15 @@ test('a summary keeps no heavy data', () => {
   assert.equal(s.narrationSource.audioUrl, undefined);
   assert.ok(JSON.stringify(s).length < JSON.stringify(full).length);
 });
+
+test('earlier collection names are offered most recent first, each once', async () => {
+  const { recentCollections } = await import('../src/features/projects/CollectionInput');
+  assert.deepEqual(recentCollections([
+    { examName: 'Eylül Denemesi 1', updatedAt: '2026-09-20T10:00:00Z' },
+    { examName: ' Ekim Denemesi ', updatedAt: '2026-09-28T10:00:00Z' },
+    { examName: 'Eylül Denemesi 1', updatedAt: '2026-09-29T08:00:00Z' },
+    { examName: '', updatedAt: '2026-09-29T09:00:00Z' },
+    { updatedAt: '2026-09-29T09:00:00Z' },
+    { examName: 'Ağustos' },
+  ]), ['Eylül Denemesi 1', 'Ekim Denemesi', 'Ağustos']);
+});

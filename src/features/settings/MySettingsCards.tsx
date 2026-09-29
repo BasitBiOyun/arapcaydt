@@ -6,6 +6,7 @@ import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categorie
 import { cleanPreferences, type UserPreferences } from './preferences';
 import { saveMyProfile } from './studioSettings';
 import { PasswordChecklist, authMessage, passwordProblem } from '../auth/LoginPage';
+import { CollectionInput } from '../projects/CollectionInput';
 
 export const card = 'p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs';
 export const field = 'w-full px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white text-xs outline-none';
@@ -110,7 +111,7 @@ export function DefaultsCard() {
           </select>
         </label>
         <label className="space-y-1 block"><span className="font-medium text-[#33322E]">Koleksiyon / deneme adı</span>
-          <input className={field} maxLength={120} placeholder="Örnek: Eylül Denemesi 1" value={prefs.examName || ''} onChange={e => set({ examName: e.target.value })} />
+          <CollectionInput className={field} maxLength={120} placeholder="Örnek: Eylül Denemesi 1" value={prefs.examName || ''} onChange={examName => set({ examName })} />
         </label>
         <label className="space-y-1 block"><span className="font-medium text-[#33322E]">Sınav / yıl</span>
           <input className={field} maxLength={40} placeholder={`${new Date().getFullYear()} YDT`} value={prefs.examYear || ''} onChange={e => set({ examYear: e.target.value })} />

@@ -8,6 +8,7 @@ import { buildBatchPlan } from '../features/batch/batchPlan';
 import { runBatch, type BatchDeps, type BatchRowState } from '../features/batch/batchRunner';
 import { projectRepository } from '../features/projects/projectRepository';
 import { useProjects } from '../features/projects/ProjectContext';
+import { CollectionInput } from '../features/projects/CollectionInput';
 import { useAuth } from '../features/auth/AuthContext';
 import { newProjectDefaults } from '../features/settings/preferences';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
@@ -130,7 +131,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
             <select className={field} value={category} disabled={running} onChange={e => setCategory(e.target.value)}>{QUESTION_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}</select>
           </label>
           <label className="block text-sm font-semibold">Koleksiyon / deneme
-            <input className={field} placeholder="Örnek: Eylül Denemesi 1" value={examName} disabled={running} onChange={e => setExamName(e.target.value)} />
+            <CollectionInput className={field} placeholder="Örnek: Eylül Denemesi 1" value={examName} disabled={running} onChange={setExamName} />
           </label>
           <label className="block text-sm font-semibold">Sınav / yıl
             <input className={field} value={examYear} disabled={running} onChange={e => setExamYear(e.target.value)} />
