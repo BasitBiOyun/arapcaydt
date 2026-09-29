@@ -2,7 +2,7 @@ import React from 'react';
 import type { QuestionProject, VideoConfig } from '../../../types';
 import { FilmStrip, Image as ImageIcon } from '@phosphor-icons/react';
 import { VideoPreviewCanvas } from '../../video/VideoPreviewCanvas';
-import { EditableTimelineUI } from '../../video/EditableTimelineUI';
+import { MarkTimeline } from '../../video/MarkTimeline';
 import { RegionEditorCanvas } from '../RegionEditorCanvas';
 import { applyRegionEdits } from '../../../services/analysis/regionEdits';
 
@@ -31,7 +31,7 @@ export interface EditorStageProps {
 }
 
 /** Left column: question image or animated preview, timing editor and box editor. */
-export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, editRegions, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, setIsVideoModalOpen, saveStatus, finishRegionEditing, selectedRegionId, setSelectedRegionId, regionHistory, setRegionHistory }: EditorStageProps) {
+export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, editRegions, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, saveStatus, finishRegionEditing, selectedRegionId, setSelectedRegionId, regionHistory, setRegionHistory }: EditorStageProps) {
   return (
     <>
     {videoGenerated && hasImage && (
@@ -125,14 +125,12 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
           </label>
         </div>
 
-        <details hidden={step!==3||editRegions} className="w-full text-xs bg-white rounded-xl p-3 border">
-          <summary className="cursor-pointer font-semibold text-[#55544F]">Gelişmiş: zaman çizelgesi</summary>
-          <EditableTimelineUI duration={activeAudioDuration} currentTime={currentPreviewTime} isPlaying={isPlayingPreview}
-            onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} onSeek={setCurrentPreviewTime}
-            regions={currentProject.videoConfig.regions || []} actions={currentProject.videoConfig.timelineActions || []}
-            onUpdateActions={actions => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })}
-            onRequestAutoGenerate={() => setIsVideoModalOpen(true)} keyboardEnabled={step===3&&!editRegions} />
-        </details>
+        {step === 3 && !editRegions && (
+          <MarkTimeline actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
+            duration={activeAudioDuration || 15} currentTime={currentPreviewTime} audioUrl={activeAudioUrl}
+            onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard
+            onActions={actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} />
+        )}
       </div>
     ) : hasImage ? (
       /* Large, high-clarity question image preview */

@@ -90,3 +90,25 @@ test('toolbar marks: added at the paused moment; a tick replaces the cross; a dr
     [{ ...box, id: 'manual-box-1' }], 'metin', [], 40);
   assert.equal(config.regions!.length, 1, 'a drawn box is kept like any other');
 });
+
+test('mark strip: marks never overlap on screen; dragging moves a mark or one of its edges', async () => {
+  const { laneLayout, dragPill, stripMarks } = await import('../src/features/video/MarkTimeline');
+  const marks = stripMarks([
+    { id: 'u', type: 'underline', targetRegionId: 'p', start: 1, duration: 3, drawDuration: 1 },
+    { id: 'f', type: 'focus', targetRegionId: 'option-a', start: 2, duration: 2 },
+    { id: 'x', type: 'reject', targetRegionId: 'option-a', start: 4.5, duration: 35.5 },
+    { id: 'd', type: 'dim-others', targetRegionId: 'option-a', start: 0, duration: 40 },
+  ] as any);
+  assert.deepEqual(marks.map(m => m.id), ['u', 'f', 'x'], 'background effects are not marks');
+  const lanes = laneLayout(marks, 1.8);
+  assert.deepEqual([lanes.get('u'), lanes.get('f'), lanes.get('x')], [0, 1, 0]);
+  const u = marks[0];
+  assert.deepEqual([dragPill(u, 'move', 2, 40).start, dragPill(u, 'move', 2, 40).duration], [3, 3]);
+  const later = dragPill(u, 'start', 1, 40);
+  assert.deepEqual([later.start, later.duration], [2, 2], 'the end stays put');
+  assert.ok(Math.abs(dragPill(u, 'start', 5, 40).duration - .3) < 1e-9, 'never shorter than 0.3 s');
+  const shorter = dragPill(u, 'end', -2.5, 40);
+  assert.equal(shorter.duration, .5); assert.ok(shorter.drawDuration! <= .3 + 1e-9, 'drawn within its time');
+  const cross = dragPill(marks[2], 'end', 3, 40);
+  assert.deepEqual([cross.start, cross.start + cross.duration], [7.5, 40], 'a cross only moves its start and still lasts to the end');
+});
