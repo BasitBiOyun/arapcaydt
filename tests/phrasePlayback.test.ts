@@ -23,7 +23,7 @@ test('full reading draws once, the second word once at its first own reading; re
  const state=computeTimelineVisualState(2,actions);
  assert.equal(state.activeUnderlines.length,1);
  // Word by word: once the first word is said the line has passed under it (6 of 10 letters), not the whole phrase.
- assert.ok(Math.abs(state.activeUnderlines[0].progress-.6)<.01 && state.activeUnderlines[0].stepped);
+ assert.ok(Math.abs(state.activeUnderlines[0].progress-.6)<.01);
  const half=computeTimelineVisualState(2.5,actions).activeUnderlines[0].progress;
  assert.ok(half>.75 && half<.85,'halfway through the second word, halfway under it');
  assert.equal(computeTimelineVisualState(3,actions).activeUnderlines[0].progress,1);
@@ -94,16 +94,18 @@ test('a word found twice in the question is underlined inside the quote being ex
 });
 test('an underline never flashes past: readable draw, a moment on screen, adjustable by the teacher',async()=>{
  const {withStay,withLineOffset}=await import('../src/features/question-editor/SimpleTimingList');
- const {UNDERLINE_HOLD}=await import('../src/services/analysis/timelineAligner');
+ const {underlineDrawTime}=await import('../src/features/video/engine/timeline');
  const matches=findBestArabicMatches('كتاب ve قلم.',[word('كتاب',.7),word('قلم',.5)]);
  const parsed=parseSolutionSemantics('كتاب ve قلم.',matches.map(m=>m.region),matches);
  // Spoken quickly: 0.2 s per word, the next underline right after.
  const actions=alignEventsWithNarration(parsed.events,[{text:'كتاب',start:1,end:1.2},{text:'ve',start:1.2,end:1.3},{text:'قلم',start:1.3,end:1.5}],10,'كتاب ve قلم.');
  const first=actions.find(a=>a.type==='underline')!;
- assert.ok(first.drawDuration!>=.6,'drawn at a readable pace');
- assert.ok(first.duration>=first.drawDuration!+UNDERLINE_HOLD-1e-9,'stays after it is drawn');
+ assert.ok(underlineDrawTime(first.duration)>=.6-1e-9,'drawn at a readable pace');
+ assert.ok(first.duration>underlineDrawTime(first.duration),'shows a moment once drawn');
  const stay=withStay(first,5,10);
  assert.equal(stay.duration,5);
+ // The drawing follows the mark's length: a 5 s mark is half drawn 2.1 s in (draw time 4.2 s).
+ assert.ok(Math.abs(computeTimelineVisualState(first.start+2.1,[stay]).activeUnderlines[0].progress-.5)<.01);
  assert.equal(withStay(first,8,3).duration,3-first.start,'never past the end of the video');
  assert.equal(withLineOffset(withLineOffset(first,-.15),-.15).lineOffset,-.3);
  const state=computeTimelineVisualState(first.start+.7,[{...first,lineOffset:-.3}]);

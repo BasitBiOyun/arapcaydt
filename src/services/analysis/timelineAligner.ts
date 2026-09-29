@@ -1,5 +1,6 @@
 import { VideoAction, NarrationWord } from '../../types';
 import { SemanticParsedEvent } from './solutionParser';
+import { underlineSpanFor } from '../../features/video/engine/timeline';
 
 export interface SourceNarrationWord extends NarrationWord {
   sourceStart: number;
@@ -205,8 +206,6 @@ export function underlineSteps(words: NarrationWord[], start: number): Array<{ a
   return steps;
 }
 
-/** Seconds a finished underline stays at least, even when the next cue follows quickly. */
-export const UNDERLINE_HOLD = 1.2;
 
 /** Preserves the legacy three-argument call; new callers should pass the script. */
 export function alignEventsWithNarration(
@@ -260,8 +259,8 @@ export function alignEventsWithNarration(
       const next = timed.find(other => other.start > start + 0.05
         && ['highlight', 'underline', 'focus'].includes(other.event.actionType));
       end = Math.min(Math.max(item.end, start + 0.7), next?.start ?? duration);
-      // Never flash past: the line is drawn at a readable pace and stays a moment once drawn.
-      if (event.actionType === 'underline') end = Math.max(end, start + draw + UNDERLINE_HOLD);
+      // The mark is as long as its drawing: the line keeps pace with the words, then shows a moment.
+      if (event.actionType === 'underline') end = start + underlineSpanFor(draw);
     }
     end = Math.min(duration, Math.max(start, end));
     return {
@@ -269,7 +268,7 @@ export function alignEventsWithNarration(
       targetRegionId: event.targetRegionId, regionId: event.targetRegionId,
       type: event.actionType, start, startTime: start, duration: end - start,
       label: `${event.actionType}: ${event.semanticTriggerPhrase}`,
-      ...(event.actionType === 'underline' ? {drawDuration: draw, ...(steps ? {drawSteps: steps} : {})} : {}),
+      ...(steps ? {drawSteps: steps} : {}),
     };
   }).filter(action => action.duration > 0).sort((a, b) => a.start - b.start);
 }

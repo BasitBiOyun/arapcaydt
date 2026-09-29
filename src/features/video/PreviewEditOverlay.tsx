@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Moveable from 'react-moveable';
 import { ArrowCounterClockwise, MapPin, Trash, X } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import type { FitRect } from './engine/types';
@@ -49,7 +50,7 @@ export function addMark(actions: VideoAction[], regionId: string, tool: Tool, ti
   const lasting = tool === 'reject' || tool === 'correct';
   const duration = lasting ? total - start : Math.min(tool === 'focus' ? 2.5 : 2, total - start);
   const mark: VideoAction = { id: `manual-${regionId}-${tool}-${Math.round(start * 1000)}-${actions.length}`, type: tool, targetRegionId: regionId,
-    regionId, start, startTime: start, duration, label: `${tool}: elle eklendi`, ...(tool === 'underline' ? { drawDuration: 1.2 } : {}) };
+    regionId, start, startTime: start, duration, label: `${tool}: elle eklendi` };
   // A box has one verdict: a new cross or tick replaces whichever it had.
   return [...actions.filter(a => !(lasting && a.targetRegionId === regionId && (a.type === 'reject' || a.type === 'correct'))), mark]
     .sort((a, b) => a.start - b.start);
@@ -164,9 +165,30 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         onRegions([...regions, { ...place, id }], addMark([], id, tool, time, total));
         setSelectedId(id); setTool(null);
       } else if (gesture.boxId) markBox(gesture.boxId);
-    } else if (draft && 'x' in draft) onRegions(regions.map(r => r.id === draft.id ? draft : r));
-    else if (draft) onActions(actions.map(a => a.id === draft.id ? draft as VideoAction : a));
-    setGesture(null); setDraft(null);
+    } else if (gesture && draft && 'x' in draft) onRegions(regions.map(r => r.id === draft.id ? draft : r));
+    else if (gesture && draft) onActions(actions.map(a => a.id === draft.id ? draft as VideoAction : a));
+    // A box moved with the selection frame (react-moveable) is saved by its own end handlers.
+    if (gesture) { setGesture(null); setDraft(null); }
+  };
+
+  /** The selected box on screen, which the selection frame (react-moveable) moves and resizes. */
+  const boxes = useRef(new Map<string, HTMLDivElement>());
+  const latest = useRef<AnnotationRegion | null>(null);
+  /** The box's own size styles while react-moveable resizes it on screen. */
+  const resizing = useRef<{ width: string; height: string } | null>(null);
+  /** A box from its on-screen position and size (overlay pixels), kept on the image. */
+  const fromScreen = (region: AnnotationRegion, left: number, top: number, width: number, height: number): AnnotationRegion => {
+    const px = pxPerCanvas();
+    const x = (left / px - fit.x) / fit.width, y = (top / px - fit.y) / fit.height;
+    const w = width / px / fit.width, h = height / px / fit.height;
+    const clampedX = Math.max(0, Math.min(1 - Math.min(1, w), x)), clampedY = Math.max(0, Math.min(1 - Math.min(1, h), y));
+    return { ...region, x: clampedX, y: clampedY, width: Math.min(1, w), height: Math.min(1, h), manuallyAdjusted: true };
+  };
+  const preview = (next: AnnotationRegion) => { latest.current = next; setDraft(next); };
+  const commit = () => {
+    const next = latest.current;
+    latest.current = null; setDraft(null);
+    if (next) onRegions(regions.map(r => r.id === next.id ? next : r));
   };
 
   const removeMark = (id: string) => onActions(actions.filter(a => a.id !== id));
@@ -183,6 +205,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   return (
     <div ref={box} className={`absolute inset-0 z-10 ${tool ? 'cursor-crosshair' : ''}`} onPointerMove={drag} onPointerUp={end} onPointerCancel={end}
       onPointerDown={e => {
+        // The selection frame's handles sit on this layer: pressing one keeps the box selected.
+        if ((e.target as HTMLElement).closest('.moveable-control-box')) return;
         setSelectedId(null);
         if (!tool) return;
         const { ix, iy } = onImage(e);
@@ -220,23 +244,33 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             title="Seç: taşımak için sürükleyin"
             className={`absolute rounded-[3px] ${tool ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${tool ? '' : isSelected ? 'border-2 border-[#2563EB] bg-[#2563EB]/5' : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
             style={{ ...pct(rect), ...(isSelected || !color ? {} : { borderColor: `${color}AA` }) }}
+            ref={el => { if (el) boxes.current.set(region.id, el); else boxes.current.delete(region.id); }}
             onPointerDown={e => {
               if (tool) { setSelectedId(null); begin(e, { mode: 'draw', x: e.clientX, y: e.clientY, ...onImage(e), boxId: region.id }); return; }
+              // The selected box is moved by its selection frame; another box is picked and dragged at once.
+              if (isSelected) { e.stopPropagation(); return; }
               setSelectedId(region.id); begin(e, { mode: 'move', x: e.clientX, y: e.clientY, region });
-            }}>
-            {isSelected && (['n', 's', 'w', 'e'] as const).map(side => (
-              <span key={side} aria-label="Kenardan boyutlandır" onPointerDown={e => begin(e, { mode: side, x: e.clientX, y: e.clientY, region })}
-                className={`absolute ${side === 'n' || side === 's' ? `left-1.5 right-1.5 h-2 cursor-ns-resize ${side === 'n' ? '-top-1' : '-bottom-1'}` : `top-1.5 bottom-1.5 w-2 cursor-ew-resize ${side === 'w' ? '-left-1' : '-right-1'}`}`}>
-                <span className={`absolute bg-white border-2 border-[#2563EB] rounded-sm ${side === 'n' || side === 's' ? 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-2' : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-3'}`} />
-              </span>
-            ))}
-            {isSelected && (['nw', 'ne', 'sw', 'se'] as Corner[]).map(corner => (
-              <span key={corner} aria-label="Boyutlandır" onPointerDown={e => begin(e, { mode: corner, x: e.clientX, y: e.clientY, region })}
-                className={`absolute w-3 h-3 bg-white border-2 border-[#2563EB] rounded-sm ${corner.includes('n') ? '-top-1.5' : '-bottom-1.5'} ${corner.includes('w') ? '-left-1.5' : '-right-1.5'} ${corner === 'nw' || corner === 'se' ? 'cursor-nwse-resize' : 'cursor-nesw-resize'}`} />
-            ))}
-          </div>
+            }} />
         );
       })}
+
+      {selected && !tool && boxes.current.get(selected.id) && (
+        <Moveable key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={false}
+          renderDirections={['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']} throttleDrag={0} throttleResize={0}
+          snappable snapThreshold={6} isDisplaySnapDigit={false} elementGuidelines={[...boxes.current.entries()].filter(([id]) => id !== selected.id).map(([, el]) => el)}
+          onDrag={e => preview(fromScreen(selected, e.left, e.top, e.width, e.height))}
+          onDragEnd={commit}
+          // Resizing follows react-moveable's own pattern: the box is sized on screen, then saved once.
+          onResizeStart={e => { resizing.current = { width: e.target.style.width, height: e.target.style.height }; }}
+          onResize={e => { e.target.style.width = `${e.width}px`; e.target.style.height = `${e.height}px`; e.target.style.transform = e.drag.transform; }}
+          onResizeEnd={e => {
+            const el = e.target as HTMLElement, rect = el.getBoundingClientRect(), frame = box.current!.getBoundingClientRect();
+            Object.assign(el.style, resizing.current ?? {}, { transform: '' });
+            resizing.current = null;
+            if (e.lastEvent) preview(fromScreen(selected, rect.left - frame.left, rect.top - frame.top, rect.width, rect.height));
+            commit();
+          }} />
+      )}
 
       {gesture?.mode === 'draw' && draft && 'x' in draft && (
         <div className="absolute border-2 border-dashed rounded-[3px] pointer-events-none" style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : '#2563EB' }} />
@@ -249,15 +283,10 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             top: `${(underlineY(selectedRect, scale, underlineOffset + (lineAction.lineOffset ?? 0)) - 8 * scale) / canvasHeight * 100}%`, height: `${16 * scale / canvasHeight * 100}%` }}
           onPointerDown={e => begin(e, { mode: 'line', x: e.clientX, y: e.clientY, action: line!, heightPx: selectedRect.height })}>
           <span className="w-full h-[3px] rounded bg-[#D97706] shadow-[0_0_0_2px_white]" />
-          {(['w', 'e'] as const).map(side => (
-            <span key={side} aria-label={side === 'w' ? 'Çizginin sol ucunu çekin' : 'Çizginin sağ ucunu çekin'} title="Ucundan çekerek uzatın ya da kısaltın"
-              onPointerDown={e => begin(e, { mode: side, x: e.clientX, y: e.clientY, region: selected })}
-              className={`absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#D97706] cursor-ew-resize ${side === 'w' ? '-left-1.5' : '-right-1.5'}`} />
-          ))}
         </div>
       )}
 
-      {selected && selectedRect && !gesture && (
+      {selected && selectedRect && !gesture && !draft && (
         <div className="absolute w-64 max-w-[70%] rounded-lg bg-white shadow-lg border border-[#D5D4CC] text-xs text-[#33322E] p-2 space-y-1.5"
           style={{ left: `${Math.min(selectedRect.x / canvasWidth * 100, 60)}%`,
             ...(menuBelow ? { top: `calc(${(selectedRect.y + selectedRect.height) / canvasHeight * 100}% + 8px)` }
@@ -279,7 +308,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             </div>
           ))}
           <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-[11px] text-[#787670]">
-            <span>{line ? 'Çizgi: ortası yukarı-aşağı · uçları boy' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
+            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
             <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline">Kutuyu kaldır</button>
           </div>
         </div>

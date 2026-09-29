@@ -94,6 +94,7 @@ export type VideoActionType =
   | 'reset';
 
 export interface VideoAction {
+  /** No longer used: an underline is drawn over its whole duration (see underlineDrawTime). */
   drawDuration?: number;
   /**
    * Underline only: the line follows the spoken words. Each point says how far along the box

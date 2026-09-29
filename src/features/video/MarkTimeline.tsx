@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import WaveSurfer from 'wavesurfer.js';
+import TimelinePlugin from 'wavesurfer.js/plugins/timeline';
+import HoverPlugin from 'wavesurfer.js/plugins/hover';
+import { ArrowsOutLineHorizontal, CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus, MapPin, Minus, Plus, Trash } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import { adjacentAction, clock, isTypingTarget, nudgeAction } from '../question-editor/workflow';
-import { fitSteps } from './engine/timeline';
 
 const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; name: string }>> = {
   reject: { icon: '✗', color: '#8B1E2D', name: 'Çarpı' }, correct: { icon: '✓', color: '#15803D', name: 'Doğru' },
@@ -11,7 +14,9 @@ const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; n
 /** Crosses and ticks stay to the end of the video: only their start moves. */
 const lasting = (a: VideoAction) => a.type === 'reject' || a.type === 'correct';
 const MIN_SECONDS = .3;
-const LANE = 24, RULER = 16, WAVE = 36;
+const LANE = 30, PILL_PX = 30, WAVE = 56, RULER = 18;
+/** Zoom steps, as multiples of "the whole narration fits". */
+const ZOOMS = [1, 2, 4, 8, 16];
 
 /** Marks shown on the strip, in time order. */
 export const stripMarks = (actions: VideoAction[]) => actions.filter(a => MARK[a.type]).sort((a, b) => a.start - b.start);
@@ -42,51 +47,12 @@ export function dragPill(action: VideoAction, mode: PillDrag, delta: number, tot
   const end = action.start + action.duration;
   if (mode === 'start') {
     const start = Math.max(0, Math.min(end - MIN_SECONDS, action.start + delta));
-    return fitDraw({ ...action, start, startTime: start, duration: end - start }, start - action.start);
+    return { ...action, start, startTime: start, duration: end - start };
   }
-  return fitDraw({ ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)) }, 0);
-}
-/** An underline is drawn within its own time on screen; its word steps stay on their words when the start moves. */
-function fitDraw(a: VideoAction, shift: number): VideoAction {
-  if (a.type !== 'underline') return a;
-  const maxDraw = Math.max(.2, a.duration - .2);
-  if (a.drawSteps?.length) {
-    const drawSteps = fitSteps(a.drawSteps, shift, maxDraw);
-    return { ...a, drawSteps, drawDuration: Math.max(.05, drawSteps.at(-1)!.at) };
-  }
-  return a.drawDuration !== undefined ? { ...a, drawDuration: Math.min(a.drawDuration, maxDraw) } : a;
+  return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)) };
 }
 
-const peaksCache = new Map<string, number[]>();
-/** Loudness outline of the narration (200 bars), decoded once per audio file. */
-function usePeaks(audioUrl?: string): number[] | null {
-  const [peaks, setPeaks] = useState<number[] | null>(audioUrl ? peaksCache.get(audioUrl) ?? null : null);
-  useEffect(() => {
-    if (!audioUrl) { setPeaks(null); return; }
-    if (peaksCache.has(audioUrl)) { setPeaks(peaksCache.get(audioUrl)!); return; }
-    let live = true;
-    (async () => {
-      try {
-        const bytes = await (await fetch(audioUrl)).arrayBuffer();
-        const context = new AudioContext();
-        const buffer = await context.decodeAudioData(bytes);
-        void context.close();
-        const data = buffer.getChannelData(0), bars = 200, size = Math.max(1, Math.floor(data.length / bars));
-        const values = Array.from({ length: bars }, (_, i) => {
-          let peak = 0;
-          for (let j = i * size; j < Math.min(data.length, (i + 1) * size); j += 8) peak = Math.max(peak, Math.abs(data[j]));
-          return peak;
-        });
-        const top = Math.max(...values, .01);
-        const result = values.map(v => v / top);
-        peaksCache.set(audioUrl, result);
-        if (live) setPeaks(result);
-      } catch { /* the strip works without the outline */ }
-    })();
-    return () => { live = false; };
-  }, [audioUrl]);
-  return peaks;
-}
+const seconds = (s: number) => `${s.toLocaleString('tr', { maximumFractionDigits: 1 })} sn`;
 
 interface Props {
   actions: VideoAction[];
@@ -102,32 +68,82 @@ interface Props {
 }
 
 /**
- * The narration as a strip with every mark on it: click to jump, drag a mark to change
- * when it appears, drag its edge to change how long it stays. Crosses and ticks stay to
- * the end, so only their start moves.
+ * The narration as a waveform (wavesurfer.js) with every mark under it: click or drag on the
+ * waveform to move the playhead, drag a mark to change when it appears, drag its edge to change
+ * how long it stays (an underline is drawn over that whole time). Crosses and ticks stay to the
+ * end, so only their start moves. Zoom in for fine timing; the marks follow the zoom and scroll.
  */
 export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard }: Props) {
-  const strip = useRef<HTMLDivElement>(null);
+  const waveBox = useRef<HTMLDivElement>(null);
+  const lanesBox = useRef<HTMLDivElement>(null);
+  const surfer = useRef<WaveSurfer | null>(null);
+  const seekRef = useRef(onSeek);
+  seekRef.current = onSeek;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drag, setDrag] = useState<{ id: string; mode: PillDrag; x: number; moved: boolean } | null>(null);
   const [draft, setDraft] = useState<VideoAction | null>(null);
-  /** The playhead follows the pointer while the strip is held down. */
+  /** Horizontal scale and scroll of the waveform, which the marks follow. */
+  const [view, setView] = useState({ width: 0, scroll: 0, visible: 0 });
+  const [zoom, setZoom] = useState(0);
   const scrubbing = useRef(false);
-  const peaks = usePeaks(audioUrl);
   const total = Math.max(1, duration);
+
+  useEffect(() => {
+    if (!waveBox.current) return;
+    const ws = WaveSurfer.create({
+      container: waveBox.current, height: WAVE, waveColor: '#D5D4CC', progressColor: '#C98A93', cursorColor: '#8B1E2D', cursorWidth: 2,
+      barWidth: 2, barGap: 1, barRadius: 2, normalize: true, dragToSeek: true, autoScroll: false, hideScrollbar: false,
+      // The strip works without the narration file too: a flat outline of the video's length.
+      ...(audioUrl ? { url: audioUrl } : { peaks: [new Array(400).fill(.08)], duration: total }),
+      plugins: [
+        TimelinePlugin.create({ height: RULER, formatTimeCallback: s => clock(s).replace(/,\d$/, ''), style: { fontSize: '10px', color: '#8A8880' } }),
+        HoverPlugin.create({ lineColor: '#8B1E2D66', lineWidth: 1, labelBackground: '#1C1917', labelColor: '#fff', labelSize: '11px', formatTimeCallback: clock }),
+      ],
+    });
+    surfer.current = ws;
+    const sync = () => {
+      const width = ws.getWrapper().clientWidth;
+      setView({ width, scroll: ws.getScroll(), visible: waveBox.current?.clientWidth || width });
+    };
+    ws.on('ready', sync); ws.on('redrawcomplete', sync); ws.on('zoom', sync); ws.on('resize', sync);
+    ws.on('scroll', (_from, _to, left) => setView(v => ({ ...v, scroll: left })));
+    ws.on('interaction', time => { setSelectedId(null); seekRef.current(time); });
+    return () => { surfer.current = null; ws.destroy(); };
+  }, [audioUrl, total]);
+
+  // The waveform's playhead follows the preview; when zoomed in it keeps the playhead in sight.
+  useEffect(() => {
+    const ws = surfer.current;
+    if (!ws || !ws.getDuration()) return;
+    if (Math.abs(ws.getCurrentTime() - currentTime) > .02) ws.setTime(Math.min(currentTime, ws.getDuration()));
+    if (zoom > 0 && view.width) {
+      const x = currentTime / total * view.width;
+      if (x < view.scroll || x > view.scroll + view.visible - 20) ws.setScroll(Math.max(0, x - view.visible * .2));
+    }
+  }, [currentTime, zoom, view.width, view.visible, total]);
+
+  const setZoomStep = (step: number) => {
+    const next = Math.max(0, Math.min(ZOOMS.length - 1, step));
+    setZoom(next);
+    const ws = surfer.current;
+    if (ws) ws.zoom(next === 0 ? 0 : (waveBox.current!.clientWidth / total) * ZOOMS[next]);
+  };
+
+  const pxPerSec = (view.width || lanesBox.current?.clientWidth || 800) / total;
   const marks = stripMarks(actions).map(a => draft && a.id === draft.id ? draft : a);
-  const minSeconds = total * .045;
+  const minSeconds = PILL_PX / pxPerSec;
   const lanes = laneLayout(marks, minSeconds, total);
   const laneCount = Math.max(1, ...[...lanes.values()].map(l => l + 1));
-  const at = (t: number) => `${Math.max(0, Math.min(100, t / total * 100))}%`;
-  const secondsPerPx = () => total / (strip.current?.clientWidth || 1);
+  const px = (t: number) => t * pxPerSec - view.scroll;
 
   const label = (a: VideoAction) => {
     const option = /^option-([a-e])$/.exec(a.targetRegionId);
     if (option) return option[1].toUpperCase();
     const region = regions.find(r => r.id === a.targetRegionId);
-    return (region?.content || region?.label || '').replace(/\s+/g, ' ').trim().slice(0, 14);
+    return (region?.content || region?.label || '').replace(/\s+/g, ' ').trim().slice(0, 18);
   };
+  const replace = (next: VideoAction) => onActions(actions.map(a => a.id === next.id ? next : a));
+  const remove = (id: string) => { onActions(actions.filter(a => a.id !== id)); setSelectedId(null); };
 
   useEffect(() => {
     if (!keyboard) return;
@@ -138,15 +154,13 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
         e.preventDefault(); onPlayPause(); return;
       }
       const selected = actions.find(a => a.id === selectedId);
-      if ((e.key === 'Delete' || e.key === 'Backspace') && selected) {
-        e.preventDefault(); onActions(actions.filter(a => a.id !== selected.id)); setSelectedId(null); return;
-      }
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selected) { e.preventDefault(); remove(selected.id); return; }
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
       const direction = e.key === 'ArrowRight' ? 1 : -1;
       if (e.shiftKey && selected) {
         const moved = nudgeAction(selected, direction * .1, total);
-        onActions(actions.map(a => a.id === selected.id ? moved : a)); onSeek(moved.start); return;
+        replace(moved); onSeek(moved.start); return;
       }
       const next = adjacentAction(stripMarks(actions), currentTime, direction);
       if (next) { setSelectedId(next.id); onSeek(next.start); }
@@ -161,8 +175,8 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     setDrag({ id, mode, x: e.clientX, moved: false });
   };
   const timeAt = (e: React.PointerEvent) => {
-    const bounds = strip.current!.getBoundingClientRect();
-    return Math.max(0, Math.min(total, (e.clientX - bounds.left) / bounds.width * total));
+    const bounds = lanesBox.current!.getBoundingClientRect();
+    return Math.max(0, Math.min(total, (e.clientX - bounds.left + view.scroll) / pxPerSec));
   };
   const move = (e: React.PointerEvent) => {
     if (scrubbing.current) { onSeek(timeAt(e)); return; }
@@ -170,73 +184,89 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     const action = actions.find(a => a.id === drag.id);
     if (!action || Math.abs(e.clientX - drag.x) < 3 && !drag.moved) return;
     if (!drag.moved) setDrag({ ...drag, moved: true });
-    const delta = Math.round((e.clientX - drag.x) * secondsPerPx() * 10) / 10;
+    const delta = Math.round((e.clientX - drag.x) / pxPerSec * 10) / 10;
     setDraft(dragPill(action, drag.mode, delta, total));
   };
   const end = () => {
     scrubbing.current = false;
     if (!drag) return;
     const action = actions.find(a => a.id === drag.id);
-    if (drag.moved && draft) { onActions(actions.map(a => a.id === draft.id ? draft : a)); onSeek(draft.start); }
+    if (drag.moved && draft) { replace(draft); onSeek(draft.start); }
     else if (action) { setSelectedId(action.id); onSeek(action.start); }
     setDrag(null); setDraft(null);
   };
-  const seekAt = (e: React.PointerEvent) => {
+  const scrub = (e: React.PointerEvent) => {
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     scrubbing.current = true;
     onSeek(timeAt(e));
     setSelectedId(null);
   };
 
-  const step = total <= 20 ? 2 : total <= 60 ? 5 : total <= 180 ? 15 : 30;
-  const selected = marks.find(a => a.id === selectedId);
+  // While a mark is dragged, the bar under the strip shows its time as it changes.
+  const selected = drag?.moved && draft ? draft : marks.find(a => a.id === selectedId);
+  const button = 'inline-flex items-center gap-1 px-2 py-1 rounded-md border border-[#D5D4CC] bg-white hover:bg-[#F2F1EB] disabled:opacity-40';
 
   return (
     <div className="rounded-xl border border-[#E5E4DC] bg-white p-3 space-y-2 select-none">
-      <div className="flex items-center justify-between gap-2 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <p className="text-[#55544F]">
-          <b className="text-[#1C1917]">Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın · boş yeri basılı tutup kaydırın: sarın
+          <b className="text-[#1C1917] text-sm">Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)
         </p>
-        {selected && (
-          <span className="flex items-center gap-1.5 whitespace-nowrap">
-            <span style={{ color: MARK[selected.type]!.color }} className="font-semibold">{MARK[selected.type]!.name} {label(selected)}</span>
-            <span className="font-mono-code text-[#55544F]">{clock(selected.start)}{lasting(selected) ? '' : ` · ${selected.duration.toLocaleString('tr', { maximumFractionDigits: 1 })} sn`}</span>
-            <button type="button" className="px-2 py-0.5 rounded border text-[#8B1E2D] hover:bg-red-50"
-              onClick={() => { onActions(actions.filter(a => a.id !== selected.id)); setSelectedId(null); }}>Sil</button>
-          </span>
-        )}
+        <span className="flex items-center gap-1" role="group" aria-label="Yakınlaştırma">
+          <button type="button" className={button} onClick={() => setZoomStep(zoom - 1)} disabled={zoom === 0} title="Uzaklaştır"><MagnifyingGlassMinus size={14} /></button>
+          <span className="w-10 text-center font-semibold text-[#55544F]">{ZOOMS[zoom]}×</span>
+          <button type="button" className={button} onClick={() => setZoomStep(zoom + 1)} disabled={zoom === ZOOMS.length - 1} title="Yakınlaştır: ince ayar için"><MagnifyingGlassPlus size={14} /></button>
+          <button type="button" className={button} onClick={() => setZoomStep(0)} disabled={zoom === 0} title="Tüm sesi göster"><ArrowsOutLineHorizontal size={14} /> Tümü</button>
+        </span>
       </div>
-      <div ref={strip} className="relative cursor-pointer" style={{ height: RULER + WAVE + laneCount * LANE + 4 }}
-        onPointerDown={seekAt} onPointerMove={move} onPointerUp={end} onPointerCancel={end}>
-        {Array.from({ length: Math.floor(total / step) + 1 }, (_, i) => i * step).map(t => (
-          <span key={t} className={`absolute top-0 text-[10px] text-[#A8A69E] font-mono-code ${t === 0 ? "" : "-translate-x-1/2"}`} style={{ left: at(t) }}>{clock(t).replace(/,\d$/, '')}</span>
-        ))}
-        <div className="absolute left-0 right-0 flex items-center gap-px rounded bg-[#FAF9F5]" style={{ top: RULER, height: WAVE }}>
-          {(peaks || Array.from({ length: 200 }, () => .15)).map((v, i) => (
-            <span key={i} className="flex-1 rounded-full" style={{ height: `${Math.max(6, v * 100)}%`, background: i / 200 * total <= currentTime ? '#8B1E2D66' : '#D5D4CC' }} />
-          ))}
-        </div>
+
+      <div ref={waveBox} className="rounded-md bg-[#FAF9F5] cursor-pointer" title="Tıklayın ya da sürükleyin: o ana gidin" />
+
+      <div ref={lanesBox} className="relative overflow-hidden cursor-pointer rounded-md bg-[#FCFBF8]" style={{ height: laneCount * LANE + 8 }}
+        onPointerDown={scrub} onPointerMove={move} onPointerUp={end} onPointerCancel={end}>
         {marks.map(mark => {
           const style = MARK[mark.type]!;
-          const width = pillSeconds(mark, minSeconds);
+          const width = pillSeconds(mark, minSeconds) * pxPerSec;
+          const left = px(pillStart(mark, minSeconds, total));
+          const top = 4 + lanes.get(mark.id)! * LANE;
           const isSelected = mark.id === selectedId;
           return (
             <React.Fragment key={mark.id}>
-              {lasting(mark) && <span className="absolute h-px pointer-events-none" style={{ left: at(mark.start), right: 0, top: RULER + WAVE + 4 + lanes.get(mark.id)! * LANE + 10, background: `${style.color}55` }} />}
+              {lasting(mark) && <span className="absolute h-px pointer-events-none" style={{ left: px(mark.start), right: 0, top: top + 12, background: `${style.color}55` }} />}
               <div role="button" aria-label={`${style.name} ${label(mark)} · ${clock(mark.start)}`} title={`${style.name} ${label(mark)} · ${clock(mark.start)} — sürükleyin`}
-                className={`absolute h-5 rounded-full text-[11px] font-semibold text-white flex items-center gap-1 px-1.5 overflow-hidden cursor-grab active:cursor-grabbing shadow-xs ${isSelected ? 'ring-2 ring-offset-1 ring-[#2563EB]' : ''}`}
-                style={{ left: `min(${at(pillStart(mark, minSeconds, total))}, calc(100% - max(26px, ${width / total * 100}%)))`, width: `max(26px, ${width / total * 100}%)`, top: RULER + WAVE + 4 + lanes.get(mark.id)! * LANE, background: style.color }}
+                className={`absolute h-6 rounded-md text-xs font-semibold text-white flex items-center gap-1 px-2 overflow-hidden cursor-grab active:cursor-grabbing shadow-sm ${isSelected ? 'ring-2 ring-offset-1 ring-[#2563EB]' : 'hover:brightness-110'}`}
+                style={{ left, width, top, background: style.color }}
                 onPointerDown={e => begin(e, mark.id, 'move')}>
-                {!lasting(mark) && <span className="absolute left-0 top-0 bottom-0 w-1.5 cursor-ew-resize" onPointerDown={e => begin(e, mark.id, 'start')} />}
-                <span>{style.icon}</span><span className="truncate">{label(mark)}</span>
-                {!lasting(mark) && <span className="absolute right-0 top-0 bottom-0 w-1.5 cursor-ew-resize bg-white/30" onPointerDown={e => begin(e, mark.id, 'end')} />}
+                {!lasting(mark) && <span className="absolute left-0 top-0 bottom-0 w-2.5 cursor-ew-resize bg-black/15 hover:bg-black/30" title="Başını çekin" onPointerDown={e => begin(e, mark.id, 'start')} />}
+                <span className="pl-1">{style.icon}</span><span className="truncate">{label(mark)}</span>
+                {!lasting(mark) && <span className="absolute right-0 top-0 bottom-0 w-2.5 cursor-ew-resize bg-white/25 hover:bg-white/50" title="Sonunu çekin: ne kadar kalsın" onPointerDown={e => begin(e, mark.id, 'end')} />}
               </div>
             </React.Fragment>
           );
         })}
-        <span className="absolute top-0 bottom-0 w-0.5 -ml-px bg-[#8B1E2D] pointer-events-none" style={{ left: at(currentTime) }}>
-          <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#8B1E2D] shadow" />
-        </span>
+        <span className="absolute top-0 bottom-0 w-0.5 -ml-px bg-[#8B1E2D] pointer-events-none" style={{ left: px(currentTime) }} />
+      </div>
+
+      <div className="min-h-9 flex flex-wrap items-center gap-2 text-xs">
+        {selected ? (
+          <>
+            <span style={{ color: MARK[selected.type]!.color }} className="font-semibold text-sm">{MARK[selected.type]!.icon} {MARK[selected.type]!.name} {label(selected)}</span>
+            <span className="font-mono-code text-[#55544F]">{clock(selected.start)}{lasting(selected) ? ' · sona kadar' : ` · ${seconds(selected.duration)}`}</span>
+            <span className="flex items-center gap-1 ml-auto flex-wrap">
+              <button type="button" className={button} onClick={() => { const m = nudgeAction(selected, -.1, total); replace(m); onSeek(m.start); }} title="0,1 saniye erken"><CaretLeft size={12} /> Erken</button>
+              <button type="button" className={button} onClick={() => { const m = nudgeAction(selected, .1, total); replace(m); onSeek(m.start); }} title="0,1 saniye geç">Geç <CaretRight size={12} /></button>
+              {!lasting(selected) && <>
+                <button type="button" className={button} onClick={() => replace(dragPill(selected, 'end', -.5, total))} title="Yarım saniye kısalt"><Minus size={12} /> Kısa</button>
+                <button type="button" className={button} onClick={() => replace(dragPill(selected, 'end', .5, total))} title="Yarım saniye uzat"><Plus size={12} /> Uzun</button>
+              </>}
+              <button type="button" className={button} onClick={() => replace(nudgeAction(selected, currentTime - selected.start, total))} disabled={Math.abs(selected.start - currentTime) < .05}
+                title={`${clock(currentTime)} anında başlasın`}><MapPin size={12} /> Kırmızı çizginin olduğu yere al</button>
+              <button type="button" className={`${button} text-[#8B1E2D]`} onClick={() => remove(selected.id)}><Trash size={12} /> Sil</button>
+            </span>
+          </>
+        ) : (
+          <span className="text-[#A8A69E]">Bir işarete tıklayın: erken/geç, kısa/uzun ve sil butonları burada çıkar.</span>
+        )}
       </div>
       {keyboard && <p className="text-[10px] text-[#A8A69E]">Boşluk: oynat/durdur · ←/→: önceki/sonraki işaret · Shift+←/→: seçili işareti 0,1 sn kaydır · Delete: sil</p>}
     </div>
