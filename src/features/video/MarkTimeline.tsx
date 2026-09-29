@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import { adjacentAction, clock, isTypingTarget, nudgeAction } from '../question-editor/workflow';
+import { fitSteps } from './engine/timeline';
 
 const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; name: string }>> = {
   reject: { icon: '✗', color: '#8B1E2D', name: 'Çarpı' }, correct: { icon: '✓', color: '#15803D', name: 'Doğru' },
@@ -15,15 +16,20 @@ const LANE = 24, RULER = 16, WAVE = 36;
 /** Marks shown on the strip, in time order. */
 export const stripMarks = (actions: VideoAction[]) => actions.filter(a => MARK[a.type]).sort((a, b) => a.start - b.start);
 
-/** Rows so no two marks overlap on screen; a pill is at least `minSeconds` wide. */
-export function laneLayout(marks: VideoAction[], minSeconds: number): Map<string, number> {
+const pillSeconds = (mark: VideoAction, minSeconds: number) => lasting(mark) ? minSeconds : Math.max(minSeconds, mark.duration);
+/** Where a pill is drawn: at its start, pulled left near the end so it never sticks out of the strip. */
+export const pillStart = (mark: VideoAction, minSeconds: number, total: number) =>
+  Math.max(0, Math.min(mark.start, total - pillSeconds(mark, minSeconds)));
+
+/** Rows so no two marks overlap on screen; a pill is at least `minSeconds` wide and stays within `total`. */
+export function laneLayout(marks: VideoAction[], minSeconds: number, total = Infinity): Map<string, number> {
   const ends: number[] = [];
   const lanes = new Map<string, number>();
   for (const mark of marks) {
-    const width = lasting(mark) ? minSeconds : Math.max(minSeconds, mark.duration);
-    let lane = ends.findIndex(end => end <= mark.start);
+    const start = pillStart(mark, minSeconds, total);
+    let lane = ends.findIndex(end => end <= start + 1e-9);
     if (lane < 0) { lane = ends.length; ends.push(0); }
-    ends[lane] = mark.start + width;
+    ends[lane] = start + pillSeconds(mark, minSeconds);
     lanes.set(mark.id, lane);
   }
   return lanes;
@@ -36,13 +42,20 @@ export function dragPill(action: VideoAction, mode: PillDrag, delta: number, tot
   const end = action.start + action.duration;
   if (mode === 'start') {
     const start = Math.max(0, Math.min(end - MIN_SECONDS, action.start + delta));
-    return fitDraw({ ...action, start, startTime: start, duration: end - start });
+    return fitDraw({ ...action, start, startTime: start, duration: end - start }, start - action.start);
   }
-  return fitDraw({ ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)) });
+  return fitDraw({ ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)) }, 0);
 }
-/** An underline is drawn within its own time on screen. */
-const fitDraw = (a: VideoAction): VideoAction => a.type === 'underline' && a.drawDuration !== undefined
-  ? { ...a, drawDuration: Math.min(a.drawDuration, Math.max(.2, a.duration - .2)) } : a;
+/** An underline is drawn within its own time on screen; its word steps stay on their words when the start moves. */
+function fitDraw(a: VideoAction, shift: number): VideoAction {
+  if (a.type !== 'underline') return a;
+  const maxDraw = Math.max(.2, a.duration - .2);
+  if (a.drawSteps?.length) {
+    const drawSteps = fitSteps(a.drawSteps, shift, maxDraw);
+    return { ...a, drawSteps, drawDuration: Math.max(.05, drawSteps.at(-1)!.at) };
+  }
+  return a.drawDuration !== undefined ? { ...a, drawDuration: Math.min(a.drawDuration, maxDraw) } : a;
+}
 
 const peaksCache = new Map<string, number[]>();
 /** Loudness outline of the narration (200 bars), decoded once per audio file. */
@@ -98,11 +111,13 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drag, setDrag] = useState<{ id: string; mode: PillDrag; x: number; moved: boolean } | null>(null);
   const [draft, setDraft] = useState<VideoAction | null>(null);
+  /** The playhead follows the pointer while the strip is held down. */
+  const scrubbing = useRef(false);
   const peaks = usePeaks(audioUrl);
   const total = Math.max(1, duration);
   const marks = stripMarks(actions).map(a => draft && a.id === draft.id ? draft : a);
   const minSeconds = total * .045;
-  const lanes = laneLayout(marks, minSeconds);
+  const lanes = laneLayout(marks, minSeconds, total);
   const laneCount = Math.max(1, ...[...lanes.values()].map(l => l + 1));
   const at = (t: number) => `${Math.max(0, Math.min(100, t / total * 100))}%`;
   const secondsPerPx = () => total / (strip.current?.clientWidth || 1);
@@ -145,7 +160,12 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     setDrag({ id, mode, x: e.clientX, moved: false });
   };
+  const timeAt = (e: React.PointerEvent) => {
+    const bounds = strip.current!.getBoundingClientRect();
+    return Math.max(0, Math.min(total, (e.clientX - bounds.left) / bounds.width * total));
+  };
   const move = (e: React.PointerEvent) => {
+    if (scrubbing.current) { onSeek(timeAt(e)); return; }
     if (!drag) return;
     const action = actions.find(a => a.id === drag.id);
     if (!action || Math.abs(e.clientX - drag.x) < 3 && !drag.moved) return;
@@ -154,6 +174,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     setDraft(dragPill(action, drag.mode, delta, total));
   };
   const end = () => {
+    scrubbing.current = false;
     if (!drag) return;
     const action = actions.find(a => a.id === drag.id);
     if (drag.moved && draft) { onActions(actions.map(a => a.id === draft.id ? draft : a)); onSeek(draft.start); }
@@ -161,8 +182,9 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     setDrag(null); setDraft(null);
   };
   const seekAt = (e: React.PointerEvent) => {
-    const bounds = e.currentTarget.getBoundingClientRect();
-    onSeek(Math.max(0, Math.min(total, (e.clientX - bounds.left) / bounds.width * total)));
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    scrubbing.current = true;
+    onSeek(timeAt(e));
     setSelectedId(null);
   };
 
@@ -173,7 +195,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     <div className="rounded-xl border border-[#E5E4DC] bg-white p-3 space-y-2 select-none">
       <div className="flex items-center justify-between gap-2 text-xs">
         <p className="text-[#55544F]">
-          <b className="text-[#1C1917]">Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın
+          <b className="text-[#1C1917]">Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın · boş yeri basılı tutup kaydırın: sarın
         </p>
         {selected && (
           <span className="flex items-center gap-1.5 whitespace-nowrap">
@@ -196,14 +218,14 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
         </div>
         {marks.map(mark => {
           const style = MARK[mark.type]!;
-          const width = lasting(mark) ? minSeconds : Math.max(minSeconds, mark.duration);
+          const width = pillSeconds(mark, minSeconds);
           const isSelected = mark.id === selectedId;
           return (
             <React.Fragment key={mark.id}>
               {lasting(mark) && <span className="absolute h-px pointer-events-none" style={{ left: at(mark.start), right: 0, top: RULER + WAVE + 4 + lanes.get(mark.id)! * LANE + 10, background: `${style.color}55` }} />}
               <div role="button" aria-label={`${style.name} ${label(mark)} · ${clock(mark.start)}`} title={`${style.name} ${label(mark)} · ${clock(mark.start)} — sürükleyin`}
                 className={`absolute h-5 rounded-full text-[11px] font-semibold text-white flex items-center gap-1 px-1.5 overflow-hidden cursor-grab active:cursor-grabbing shadow-xs ${isSelected ? 'ring-2 ring-offset-1 ring-[#2563EB]' : ''}`}
-                style={{ left: at(mark.start), width: `max(26px, ${width / total * 100}%)`, top: RULER + WAVE + 4 + lanes.get(mark.id)! * LANE, background: style.color }}
+                style={{ left: `min(${at(pillStart(mark, minSeconds, total))}, calc(100% - max(26px, ${width / total * 100}%)))`, width: `max(26px, ${width / total * 100}%)`, top: RULER + WAVE + 4 + lanes.get(mark.id)! * LANE, background: style.color }}
                 onPointerDown={e => begin(e, mark.id, 'move')}>
                 {!lasting(mark) && <span className="absolute left-0 top-0 bottom-0 w-1.5 cursor-ew-resize" onPointerDown={e => begin(e, mark.id, 'start')} />}
                 <span>{style.icon}</span><span className="truncate">{label(mark)}</span>
@@ -212,7 +234,9 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
             </React.Fragment>
           );
         })}
-        <span className="absolute top-0 bottom-0 w-0.5 bg-[#8B1E2D] pointer-events-none" style={{ left: at(currentTime) }} />
+        <span className="absolute top-0 bottom-0 w-0.5 -ml-px bg-[#8B1E2D] pointer-events-none" style={{ left: at(currentTime) }}>
+          <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#8B1E2D] shadow" />
+        </span>
       </div>
       {keyboard && <p className="text-[10px] text-[#A8A69E]">Boşluk: oynat/durdur · ←/→: önceki/sonraki işaret · Shift+←/→: seçili işareti 0,1 sn kaydır · Delete: sil</p>}
     </div>

@@ -302,7 +302,7 @@ export function renderQuestionVideoFrame(
   // Arabic is underlined as it is read (right-to-left), just below the word's own box.
   for (const u of state.activeUnderlines) {
     const r = rectFor(u.regionId); if (!r || u.progress <= 0) continue;
-    const swept = r.width * easeOutQuad(u.progress);
+    const swept = r.width * (u.stepped ? u.progress : easeOutQuad(u.progress));
     const y = underlineY(r, scale, (options.underlineOffset ?? 0) + (u.offset ?? 0));
     ctx.save(); ctx.globalAlpha = u.opacity ?? 1;
     ctx.strokeStyle = '#D97706'; ctx.lineWidth = 5 * scale; ctx.lineCap = 'round'; ctx.beginPath();

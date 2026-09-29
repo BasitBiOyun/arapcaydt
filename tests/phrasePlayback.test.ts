@@ -22,7 +22,11 @@ test('full reading draws once, the second word once at its first own reading; re
  assert.deepEqual(actions.map(a=>Math.round(a.start)),[1,5]);
  const state=computeTimelineVisualState(2,actions);
  assert.equal(state.activeUnderlines.length,1);
- assert.ok(state.activeUnderlines[0].progress>.45 && state.activeUnderlines[0].progress<.6);
+ // Word by word: once the first word is said the line has passed under it (6 of 10 letters), not the whole phrase.
+ assert.ok(Math.abs(state.activeUnderlines[0].progress-.6)<.01 && state.activeUnderlines[0].stepped);
+ const half=computeTimelineVisualState(2.5,actions).activeUnderlines[0].progress;
+ assert.ok(half>.75 && half<.85,'halfway through the second word, halfway under it');
+ assert.equal(computeTimelineVisualState(3,actions).activeUnderlines[0].progress,1);
  assert.equal(state.activeHighlights.length,0);
 });
 test('short Arabic word never matches a longer Arabic word; option gets only a box',()=>{

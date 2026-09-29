@@ -7,6 +7,8 @@ import { clock, moveRegion, nudgeAction } from '../question-editor/workflow';
 import { cueTitle, withLineOffset } from '../question-editor/SimpleTimingList';
 
 type Corner = 'nw' | 'ne' | 'sw' | 'se';
+/** A corner, or one side: 'w' / 'e' move only the left / right edge, 'n' / 's' only the top / bottom. */
+type Handle = Corner | 'n' | 's' | 'e' | 'w';
 const MIN_SIZE = .01;
 const ICON: Partial<Record<VideoAction['type'], { icon: string; color: string; name: string }>> = {
   reject: { icon: '✗', color: '#8B1E2D', name: 'Çarpı' }, correct: { icon: '✓', color: '#15803D', name: 'Doğru işareti' },
@@ -24,13 +26,13 @@ export const pickableRegions = (regions: AnnotationRegion[]) => regions.filter(r
 export const marksAt = (actions: VideoAction[], regionId: string, time: number) =>
   actions.filter(a => a.targetRegionId === regionId && ICON[a.type] && time >= a.start - .01 && time <= a.start + a.duration + .01);
 
-/** Drags one corner; the opposite corner stays put and the box never turns inside out or leaves the image. */
-export function resizeRegion(region: AnnotationRegion, corner: Corner, dx: number, dy: number): AnnotationRegion {
+/** Drags one corner or side; the opposite edge stays put and the box never turns inside out or leaves the image. */
+export function resizeRegion(region: AnnotationRegion, handle: Handle, dx: number, dy: number): AnnotationRegion {
   let left = region.x, top = region.y, right = region.x + region.width, bottom = region.y + region.height;
-  if (corner.includes('w')) left = Math.max(0, Math.min(right - MIN_SIZE, left + dx));
-  else right = Math.min(1, Math.max(left + MIN_SIZE, right + dx));
-  if (corner.includes('n')) top = Math.max(0, Math.min(bottom - MIN_SIZE, top + dy));
-  else bottom = Math.min(1, Math.max(top + MIN_SIZE, bottom + dy));
+  if (handle.includes('w')) left = Math.max(0, Math.min(right - MIN_SIZE, left + dx));
+  else if (handle.includes('e')) right = Math.min(1, Math.max(left + MIN_SIZE, right + dx));
+  if (handle.includes('n')) top = Math.max(0, Math.min(bottom - MIN_SIZE, top + dy));
+  else if (handle.includes('s')) bottom = Math.min(1, Math.max(top + MIN_SIZE, bottom + dy));
   return { ...region, x: left, y: top, width: right - left, height: bottom - top, manuallyAdjusted: true };
 }
 
@@ -47,7 +49,7 @@ export function addMark(actions: VideoAction[], regionId: string, tool: Tool, ti
   const lasting = tool === 'reject' || tool === 'correct';
   const duration = lasting ? total - start : Math.min(tool === 'focus' ? 2.5 : 2, total - start);
   const mark: VideoAction = { id: `manual-${regionId}-${tool}-${Math.round(start * 1000)}-${actions.length}`, type: tool, targetRegionId: regionId,
-    regionId, start, startTime: start, duration, label: `${tool}: elle eklendi`, ...(tool === 'underline' ? { drawDuration: .6 } : {}) };
+    regionId, start, startTime: start, duration, label: `${tool}: elle eklendi`, ...(tool === 'underline' ? { drawDuration: 1.2 } : {}) };
   // A box has one verdict: a new cross or tick replaces whichever it had.
   return [...actions.filter(a => !(lasting && a.targetRegionId === regionId && (a.type === 'reject' || a.type === 'correct'))), mark]
     .sort((a, b) => a.start - b.start);
@@ -62,9 +64,28 @@ export function drawnRegion(id: string, x1: number, y1: number, x2: number, y2: 
 }
 
 type Gesture =
-  | { mode: 'move' | Corner; x: number; y: number; region: AnnotationRegion }
+  | { mode: 'move' | Handle; x: number; y: number; region: AnnotationRegion }
   | { mode: 'line'; x: number; y: number; action: VideoAction; heightPx: number }
-  | { mode: 'draw'; x: number; y: number; ix: number; iy: number };
+  /** A new place drawn with a tool; started on a box, a plain click marks that box instead. */
+  | { mode: 'draw'; x: number; y: number; ix: number; iy: number; boxId?: string };
+
+/**
+ * The place a drawn stroke becomes: a box as drawn, or, for a flat stroke drawn with the underline
+ * tool, the text line it sits under (one usual text height above the stroke). Null for a stray click.
+ */
+export function placeFromStroke(drawn: AnnotationRegion, tool: Tool, fit: FitRect, lineHeight: number): AnnotationRegion | null {
+  const wide = drawn.width * fit.width > 12, tall = drawn.height * fit.height > 8;
+  if (wide && tall) return drawn;
+  if (!wide || tool !== 'underline') return null;
+  const bottom = drawn.y + drawn.height, top = Math.max(0, bottom - lineHeight);
+  return { ...drawn, y: top, height: bottom - top };
+}
+
+/** The usual height of a text line on this question: the median phrase box, else 5% of the image. */
+export function typicalLineHeight(regions: AnnotationRegion[]): number {
+  const heights = regions.filter(r => r.content && !r.type.startsWith('option') && r.height > 0 && r.height <= .2).map(r => r.height).sort((a, b) => a - b);
+  return heights.length ? heights[Math.floor(heights.length / 2)] : .05;
+}
 
 interface Props {
   fit: FitRect;
@@ -136,12 +157,13 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   };
   const end = () => {
     if (gesture?.mode === 'draw') {
-      // A real box (not a stray click): it becomes a new place with the chosen mark.
-      if (tool && draft && 'x' in draft && draft.width * fit.width > 12 && draft.height * fit.height > 8) {
+      // A drawn place (anywhere, even over a found box) gets the chosen mark; a click on a box marks that box.
+      const place = tool && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, typicalLineHeight(regions)) : null;
+      if (tool && place) {
         const id = `manual-box-${Date.now()}`;
-        onRegions([...regions, { ...draft, id }], addMark([], id, tool, time, total));
+        onRegions([...regions, { ...place, id }], addMark([], id, tool, time, total));
         setSelectedId(id); setTool(null);
-      }
+      } else if (gesture.boxId) markBox(gesture.boxId);
     } else if (draft && 'x' in draft) onRegions(regions.map(r => r.id === draft.id ? draft : r));
     else if (draft) onActions(actions.map(a => a.id === draft.id ? draft as VideoAction : a));
     setGesture(null); setDraft(null);
@@ -179,7 +201,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       </div>
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
         <span className="px-2 py-1 rounded-md bg-black/60 text-white text-[11px]">
-          {tool ? `${ICON[tool]!.name}: bir kutuya tıklayın ya da yeni alan çizin · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
+          {tool ? `${ICON[tool]!.name}: ${tool === 'underline' ? 'kelimelerin altına sürükleyip çizin' : 'istediğiniz yere sürükleyip alan çizin'} ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
         </span>
         {onUndo && <button type="button" disabled={!canUndo} onClick={onUndo} title="Son değişikliği geri al"
           className="px-2 py-1 rounded-md bg-white/90 text-[11px] font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
@@ -196,12 +218,18 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         return (
           <div key={region.id} role="button" aria-label={`${boxName(region, regions)} kutusu`}
             title="Seç: taşımak için sürükleyin"
-            className={`absolute rounded-[3px] ${tool ? 'cursor-copy border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${tool ? '' : isSelected ? 'border-2 border-[#2563EB] bg-[#2563EB]/5' : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
+            className={`absolute rounded-[3px] ${tool ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${tool ? '' : isSelected ? 'border-2 border-[#2563EB] bg-[#2563EB]/5' : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
             style={{ ...pct(rect), ...(isSelected || !color ? {} : { borderColor: `${color}AA` }) }}
             onPointerDown={e => {
-              if (tool) { e.stopPropagation(); markBox(region.id); return; }
+              if (tool) { setSelectedId(null); begin(e, { mode: 'draw', x: e.clientX, y: e.clientY, ...onImage(e), boxId: region.id }); return; }
               setSelectedId(region.id); begin(e, { mode: 'move', x: e.clientX, y: e.clientY, region });
             }}>
+            {isSelected && (['n', 's', 'w', 'e'] as const).map(side => (
+              <span key={side} aria-label="Kenardan boyutlandır" onPointerDown={e => begin(e, { mode: side, x: e.clientX, y: e.clientY, region })}
+                className={`absolute ${side === 'n' || side === 's' ? `left-1.5 right-1.5 h-2 cursor-ns-resize ${side === 'n' ? '-top-1' : '-bottom-1'}` : `top-1.5 bottom-1.5 w-2 cursor-ew-resize ${side === 'w' ? '-left-1' : '-right-1'}`}`}>
+                <span className={`absolute bg-white border-2 border-[#2563EB] rounded-sm ${side === 'n' || side === 's' ? 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-2' : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-3'}`} />
+              </span>
+            ))}
             {isSelected && (['nw', 'ne', 'sw', 'se'] as Corner[]).map(corner => (
               <span key={corner} aria-label="Boyutlandır" onPointerDown={e => begin(e, { mode: corner, x: e.clientX, y: e.clientY, region })}
                 className={`absolute w-3 h-3 bg-white border-2 border-[#2563EB] rounded-sm ${corner.includes('n') ? '-top-1.5' : '-bottom-1.5'} ${corner.includes('w') ? '-left-1.5' : '-right-1.5'} ${corner === 'nw' || corner === 'se' ? 'cursor-nwse-resize' : 'cursor-nesw-resize'}`} />
@@ -221,6 +249,11 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             top: `${(underlineY(selectedRect, scale, underlineOffset + (lineAction.lineOffset ?? 0)) - 8 * scale) / canvasHeight * 100}%`, height: `${16 * scale / canvasHeight * 100}%` }}
           onPointerDown={e => begin(e, { mode: 'line', x: e.clientX, y: e.clientY, action: line!, heightPx: selectedRect.height })}>
           <span className="w-full h-[3px] rounded bg-[#D97706] shadow-[0_0_0_2px_white]" />
+          {(['w', 'e'] as const).map(side => (
+            <span key={side} aria-label={side === 'w' ? 'Çizginin sol ucunu çekin' : 'Çizginin sağ ucunu çekin'} title="Ucundan çekerek uzatın ya da kısaltın"
+              onPointerDown={e => begin(e, { mode: side, x: e.clientX, y: e.clientY, region: selected })}
+              className={`absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#D97706] cursor-ew-resize ${side === 'w' ? '-left-1.5' : '-right-1.5'}`} />
+          ))}
         </div>
       )}
 
@@ -246,7 +279,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             </div>
           ))}
           <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-[11px] text-[#787670]">
-            <span>{line ? 'Çizgiyi sürükleyerek taşıyın' : 'Sürükle: taşı · köşe: boyut'}</span>
+            <span>{line ? 'Çizgi: ortası yukarı-aşağı · uçları boy' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
             <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline">Kutuyu kaldır</button>
           </div>
         </div>
