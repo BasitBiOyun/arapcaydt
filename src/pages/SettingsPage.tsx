@@ -78,7 +78,7 @@ export const SettingsPage: React.FC = () => {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-[#1C1917]">Ses servisi</h3>
-              <p className="text-[11px] text-[#787670]">Seslendirme ve kelime zamanları otomatik hazırlanır</p>
+              <p className="text-xs text-[#787670]">Seslendirme ve kelime zamanları otomatik hazırlanır</p>
             </div>
           </div>
 
@@ -94,17 +94,17 @@ export const SettingsPage: React.FC = () => {
         <div className="p-3.5 rounded bg-[#FAF9F5] border border-[#E5E4DC] text-xs space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[#666560]">Seslendirme:</span>
-            <span className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
+            <span className={`font-semibold px-2.5 py-0.5 rounded-full text-xs ${
               status?.gemini?.configured ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
             }`}>{status?.gemini?.configured ? 'Hazır' : 'Yapılandırılmamış'}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-[#666560]">Kelime zamanları (yedek):</span>
-            <span className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
+            <span className={`font-semibold px-2.5 py-0.5 rounded-full text-xs ${
               status?.configured && status.valid !== false ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'
             }`}>{status?.configured && status.valid !== false ? 'Hazır' : 'Kullanılamıyor'}</span>
           </div>
-          <p className="text-[#55544F] leading-relaxed text-[11px]">
+          <p className="text-[#55544F] leading-relaxed text-xs">
             Ses yalnızca Google Gemini ile üretilir. Kelime zamanları önce Gemini ile alınır, olmazsa yedek servis devreye girer. Günlük ücretsiz ses hakkı biterse kendi Google anahtarınızı ekleyebilirsiniz.
           </p>
         </div>
@@ -113,7 +113,7 @@ export const SettingsPage: React.FC = () => {
           <ShieldCheck size={18} weight="fill" className="shrink-0 mt-0.5" />
           <div className="space-y-0.5">
             <span className="font-semibold">Güvenlik</span>
-            <p className="text-[11px] text-[#6E1623] leading-relaxed">
+            <p className="text-xs text-[#6E1623] leading-relaxed">
               Ses servislerinin anahtarları yalnızca sunucuda tutulur; tarayıcıda hiçbir zaman görünmez.
             </p>
           </div>
@@ -129,7 +129,7 @@ export const SettingsPage: React.FC = () => {
           <h3 className="text-sm font-semibold text-[#1C1917]">
             Yedekleme
           </h3>
-          <p className="text-[11px] text-[#787670]">
+          <p className="text-xs text-[#787670]">
             Projeleriniz hesabınızda (bulutta) saklanır. İsterseniz tümünü bilgisayarınıza JSON dosyası olarak indirebilirsiniz.
           </p>
         </div>

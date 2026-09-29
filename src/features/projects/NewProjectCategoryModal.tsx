@@ -87,11 +87,11 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
                     </div>
 
                     <div className="min-w-0 pt-0.5">
-                      <div className="text-[13px] font-bold text-[#1C1917] leading-snug">
+                      <div className="text-sm font-bold text-[#1C1917] leading-snug">
                         {cat.label}
                       </div>
                       {cat.description && (
-                        <div className="text-[11.5px] text-[#787670] mt-1.5 leading-[1.45]">
+                        <div className="text-xs text-[#787670] mt-1.5 leading-[1.45]">
                           {cat.description}
                         </div>
                       )}

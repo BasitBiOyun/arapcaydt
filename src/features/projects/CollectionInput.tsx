@@ -31,7 +31,7 @@ export function CollectionInput({ value, onChange, disabled, ...input }: Props) 
       <input {...input} disabled={disabled} list={listId} value={value} onChange={e => onChange(e.target.value)} autoComplete="off" />
       <datalist id={listId}>{names.map(name => <option key={name} value={name} />)}</datalist>
       {chips.length > 0 && (
-        <span className="flex flex-wrap items-center gap-1 mt-1.5 text-[11px] text-[#787670] font-normal">
+        <span className="flex flex-wrap items-center gap-1 mt-1.5 text-xs text-[#787670] font-normal">
           Önceki:
           {chips.map(name => (
             <button key={name} type="button" disabled={disabled} onClick={() => onChange(name)} title={`“${name}” koleksiyonunu seç`}

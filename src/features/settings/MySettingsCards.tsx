@@ -18,15 +18,15 @@ export function CardHeader({ icon: Icon, title, hint }: { icon: React.ElementTyp
       <div className="w-8 h-8 rounded bg-[#8B1E2D]/10 text-[#8B1E2D] flex items-center justify-center"><Icon size={20} weight="bold" /></div>
       <div>
         <h3 className="text-sm font-semibold text-[#1C1917]">{title}</h3>
-        <p className="text-[11px] text-[#787670]">{hint}</p>
+        <p className="text-xs text-[#787670]">{hint}</p>
       </div>
     </div>
   );
 }
 
 export function Result({ notice, error }: { notice?: string; error?: string }) {
-  if (error) return <p role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1"><WarningCircle size={14} weight="fill" />{error}</p>;
-  if (notice) return <p role="status" className="text-[11px] text-[#1E562A] flex items-center gap-1"><CheckCircle size={14} weight="fill" />{notice}</p>;
+  if (error) return <p role="alert" className="text-xs text-red-600 font-medium flex items-center gap-1"><WarningCircle size={14} weight="fill" />{error}</p>;
+  if (notice) return <p role="status" className="text-xs text-[#1E562A] flex items-center gap-1"><CheckCircle size={14} weight="fill" />{notice}</p>;
   return null;
 }
 
@@ -87,10 +87,13 @@ export function ProfileCard() {
 export function TextSizeCard() {
   const { user, refresh } = useAuth();
   const [state, setState] = useState<{ notice?: string; error?: string }>({});
+  // The pressed size shows as chosen at once, before the profile save returns.
+  const [chosen, setChosen] = useState<{ size: UserPreferences['textSize'] } | null>(null);
   if (!user) return null;
-  const current = user.preferences?.textSize;
+  const current = chosen ? chosen.size : user.preferences?.textSize;
   const choose = async (size: UserPreferences['textSize']) => {
     applyTextSize(size);
+    setChosen({ size });
     setState({});
     try {
       await saveMyProfile(user.name, cleanPreferences({ ...user.preferences, textSize: size }));
@@ -132,7 +135,8 @@ export function DefaultsCard() {
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
     setState({ busy: true });
-    try { await saveMyProfile(user.name, cleanPreferences(prefs)); await refresh(); setState({ notice: 'Varsayılanlar kaydedildi; yeni sorularda kullanılacak.' }); }
+    // The text size is saved by its own card; keep whatever it holds now.
+    try { await saveMyProfile(user.name, cleanPreferences({ ...prefs, textSize: user.preferences?.textSize })); await refresh(); setState({ notice: 'Varsayılanlar kaydedildi; yeni sorularda kullanılacak.' }); }
     catch (err: any) { setState({ error: err.message }); }
   };
 

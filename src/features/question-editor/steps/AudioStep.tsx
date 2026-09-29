@@ -57,7 +57,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
 
   return (
     <div hidden={step!==2} className="space-y-3">
-      <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">
+      <h2 className="text-sm font-bold text-[#1C1917] tracking-tight">
         Seslendirmeyi dinleyin
       </h2>
 
@@ -65,7 +65,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
         <div className="p-3.5 rounded-lg border border-[#E5E4DC] bg-[#FAF9F5] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-xs font-bold text-[#1C1917] truncate">
+              <span className="text-sm font-bold text-[#1C1917] truncate">
                 {isUploadedAudio
                   ? `Yüklenen Ses: ${currentProject.narrationSource?.fileName || 'seslendirme.mp3'}`
                   : 'Eğitmen Sesi'}
@@ -73,17 +73,17 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             </div>
 
             {isAudioApproved ? (
-              <span className="text-[11px] font-semibold text-[#15803D] flex items-center gap-1 shrink-0 bg-green-50 px-2 py-0.5 rounded border border-green-200">
+              <span className="text-sm font-semibold text-[#15803D] flex items-center gap-1 shrink-0 bg-green-50 px-2 py-0.5 rounded border border-green-200">
                 <Check size={12} weight="bold" /> Onaylandı
               </span>
             ) : (
-              <span className="text-[11px] font-medium text-[#B45309] bg-amber-50 px-2 py-0.5 rounded border border-amber-200 shrink-0">
+              <span className="text-sm font-medium text-[#B45309] bg-amber-50 px-2 py-0.5 rounded border border-amber-200 shrink-0">
                 Onay Bekliyor
               </span>
             )}
           </div>
           {drift && (drift.added.length > 0 || drift.skipped.length > 0) && (
-            <div role="alert" className="p-2.5 rounded border border-[#E5D7B0] bg-[#FAF5E6] text-[11px] text-[#5C420B] space-y-1">
+            <div role="alert" className="p-2.5 rounded border border-[#E5D7B0] bg-[#FAF5E6] text-sm text-[#5C420B] space-y-1">
               <p className="font-semibold">Ses metinden sapmış olabilir; ilgili yerleri dinleyin:</p>
               {drift.added.slice(0, 3).map(d => <p key={`a${d.start}`}>{clock(d.start)} · metinde olmayan: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
               {drift.skipped.slice(0, 3).map(d => <p key={`s${d.start}`}>{clock(d.start)} · okunmamış: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
@@ -105,7 +105,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               )}
             </button>
 
-            <div className="text-[11px] font-mono-code text-[#55544F] shrink-0">
+            <div className="text-sm font-mono-code text-[#55544F] shrink-0">
               {formatTime(audioPlayTime)}
             </div>
 
@@ -125,7 +125,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               className="flex-1 h-1.5 bg-[#E5E4DC] rounded-lg appearance-none cursor-pointer accent-[#8B1E2D]"
             />
 
-            <div className="text-[11px] font-mono-code text-[#787670] shrink-0">
+            <div className="text-sm font-mono-code text-[#787670] shrink-0">
               {formatTime(activeAudioDuration)}
             </div>
 
@@ -142,7 +142,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               type="button"
               onClick={handleDownloadNarrationMp3}
               title="Oluşturulan veya yüklenen MP3 dosyasını indirin"
-              className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
+              className="py-1.5 px-2.5 rounded text-sm font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
             >
               <DownloadSimple size={13} weight="bold" />
               <span>Ses Dosyasını İndir</span>
@@ -150,7 +150,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
 
             {isUploadedAudio ? (
               <>
-                <label className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0">
+                <label className="py-1.5 px-2.5 rounded text-sm font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0">
                   <ArrowsClockwise size={13} />
                   <span>MP3 Değiştir</span>
                   <input
@@ -166,7 +166,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
                 <button
                   type="button"
                   onClick={handleDeleteAudio}
-                  className="py-1.5 px-2 rounded text-[11px] font-semibold text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition-colors cursor-pointer flex items-center gap-1 shrink-0"
+                  className="py-1.5 px-2 rounded text-sm font-semibold text-red-600 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition-colors cursor-pointer flex items-center gap-1 shrink-0"
                 >
                   <Trash size={13} />
                   <span>Sil</span>
@@ -177,7 +177,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
                 type="button"
                 onClick={handleGenerateAudio}
                 disabled={isGeneratingAudio || sampleBusy}
-                className="py-1.5 px-2.5 rounded text-[11px] font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
+                className="py-1.5 px-2.5 rounded text-sm font-semibold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#55544F] hover:text-[#1C1917] transition-colors cursor-pointer flex items-center gap-1 shrink-0"
               >
                 {isGeneratingAudio ? (
                   <CircleNotch size={13} className="animate-spin" />
@@ -192,7 +192,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               <button
                 type="button"
                 onClick={handleApproveVoice}
-                className="ml-auto py-1.5 px-3 rounded text-[11px] font-bold bg-[#15803D] hover:bg-[#116630] text-white transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs shrink-0"
+                className="ml-auto py-1.5 px-3 rounded text-sm font-bold bg-[#15803D] hover:bg-[#116630] text-white transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs shrink-0"
               >
                 <Check size={13} weight="bold" />
                 <span>Bu Sesi Kullan</span>
@@ -213,7 +213,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               type="button"
               onClick={handleGenerateAudio}
               disabled={isGeneratingAudio || sampleBusy || !hasSolution || currentProject.solutionText.trim().length > SPOKEN_LIMIT}
-              className={`py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs ${
+              className={`py-2.5 px-3 rounded-lg text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs ${
                 hasSolution
                   ? 'bg-[#8B1E2D] hover:bg-[#721824] text-white'
                   : 'bg-[#E5E4DC] text-[#8C8A82] cursor-not-allowed'
@@ -233,7 +233,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             </button>
 
             <label
-              className="py-2.5 px-3 rounded-lg text-xs font-bold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#1C1917] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs text-center"
+              className="py-2.5 px-3 rounded-lg text-sm font-bold border border-[#D5D4CC] bg-white hover:bg-[#F0EFEA] text-[#1C1917] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs text-center"
             >
               <UploadSimple size={15} weight="bold" />
               <span>MP3 Yükle</span>
@@ -250,19 +250,19 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             </label>
           </div>
           {!hasSolution && (
-            <p className="text-[11px] text-[#787670]">
+            <p className="text-sm text-[#787670]">
               Seslendirme oluşturmak için önce çözüm metnini yazın. Hazır sesiniz varsa MP3 Yükle’ye basın; çözüm metni ve işaretler sesinizden çıkarılır.
             </p>
           )}
           {hasSolution && capacity && (
-            <p className="text-[11px] text-[#787670]">{capacity}</p>
+            <p className="text-sm text-[#787670]">{capacity}</p>
           )}
         </div>
       )}
 
       {/* Whisper Local Transcription Progress */}
       {isTranscribingMp3 && (
-        <div className="p-3 rounded-lg bg-[#FAF9F5] border border-[#E5E4DC] text-xs space-y-2">
+        <div className="p-3 rounded-lg bg-[#FAF9F5] border border-[#E5E4DC] text-sm space-y-2">
           <div className="flex items-center gap-2 text-[#1C1917] font-semibold">
             <CircleNotch size={15} className="animate-spin text-[#8B1E2D] shrink-0" />
             <span className="truncate">{transcribeProgress?.message || 'Whisper ile ses çözümleniyor...'}</span>
@@ -277,10 +277,10 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
       )}
 
       {audioInfo && !audioError && (
-        <p className="text-[11px] text-[#1E562A] font-medium">{audioInfo}</p>
+        <p className="text-sm text-[#1E562A] font-medium">{audioInfo}</p>
       )}
       {audioError && (
-        <p className="text-[11px] text-red-600 font-medium">
+        <p className="text-sm text-red-600 font-medium">
           {audioError}
         </p>
       )}

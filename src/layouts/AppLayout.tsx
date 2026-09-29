@@ -14,6 +14,7 @@ import { BatchPage } from '../pages/BatchPage';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
 import { pageHash, parseHash } from './route';
+import { toast } from 'sonner';
 
 /** A page that must not be left silently (MP4 export, batch run): returns true when leaving is fine. */
 export type LeaveGuard = () => boolean;
@@ -25,7 +26,8 @@ export const AppLayout: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<AppPage>(() => {
     const { page } = opening.current;
     if (page === 'admin' && user?.role !== 'admin') return 'dashboard';
-    if (page === 'dashboard' && !window.location.hash.replace(/^#\/?/, '') && user?.role === 'admin') return 'admin';
+    // No studio address (a fresh visit or a sign-in callback): admins start on their panel.
+    if (page === 'dashboard' && !window.location.hash.startsWith('#/') && user?.role === 'admin') return 'admin';
     return page;
   });
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
@@ -39,18 +41,40 @@ export const AppLayout: React.FC = () => {
   const leaveGuard = useRef<LeaveGuard | null>(null);
   const registerLeaveGuard = useCallback((guard: LeaveGuard | null) => { leaveGuard.current = guard; }, []);
 
+  // The address of where the teacher is now (the editor names its open question).
+  const hereHash = () => pageHash(pageRef.current, pageRef.current === 'editor' ? currentProjectId.current : undefined);
+  /** A running job blocks leaving; after a Back/Forward the address is put back to where the teacher still is. */
+  const mayLeave = (fromHistory: boolean) => {
+    if (leaveGuard.current && !leaveGuard.current()) {
+      if (fromHistory) window.history.pushState({ studioPage: pageRef.current }, '', hereHash());
+      return false;
+    }
+    leaveGuard.current = null;
+    return true;
+  };
+
   // Every page change goes through here, so the browser's Back button moves between
   // studio pages (instead of leaving the site) and a running job is never dropped silently.
   const navigate = useCallback((page: AppPage, fromHistory = false) => {
-    if (page === pageRef.current) return;
-    if (leaveGuard.current && !leaveGuard.current()) {
-      if (fromHistory) window.history.pushState({ studioPage: pageRef.current }, '');
-      return;
-    }
-    leaveGuard.current = null;
+    if (page === pageRef.current || !mayLeave(fromHistory)) return;
     setCurrentPage(page);
     if (!fromHistory) window.history.pushState({ studioPage: page }, '', pageHash(page));
   }, []);
+
+  // A question named in the address: open it, or fall back to the list when it is gone or not this teacher's.
+  const addressOpening = useRef(false);
+  const openFromAddress = useCallback(async (id: string, fromHistory = false) => {
+    if (!mayLeave(fromHistory)) return;
+    addressOpening.current = true;
+    try {
+      const found = await selectProject(id);
+      if (found) { navigate('editor', fromHistory); return; }
+      navigate('questions', true);
+      window.history.replaceState({ studioPage: 'questions' }, '', pageHash('questions'));
+      toast.error('Bu soru bulunamadı. Soru listesi açıldı.');
+    } finally { addressOpening.current = false; }
+  }, [selectProject, navigate]);
+
   useEffect(() => {
     window.history.replaceState({ ...(window.history.state || {}), studioPage: pageRef.current }, '',
       pageRef.current === 'editor' ? window.location.hash || pageHash('editor') : pageHash(pageRef.current));
@@ -59,14 +83,14 @@ export const AppLayout: React.FC = () => {
       const target = parseHash(window.location.hash);
       const page = (event.state?.studioPage as AppPage | undefined) ?? target.page;
       if (page === 'editor' && target.projectId && target.projectId !== currentProjectId.current) {
-        void selectProject(target.projectId).then(found => navigate(found ? 'editor' : 'questions', true));
+        void openFromAddress(target.projectId, true);
         return;
       }
       navigate(page === 'admin' && user?.role !== 'admin' ? 'dashboard' : page, true);
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
-  }, [navigate, user?.role]);
+  }, [navigate, openFromAddress, user?.role]);
 
   const handleSelectProject = async (id: string) => {
     if (leaveGuard.current && !leaveGuard.current()) return;
@@ -87,12 +111,12 @@ export const AppLayout: React.FC = () => {
 
   // On the editor without an open question: the one in the address, else the latest one.
   React.useEffect(() => {
-    if (currentPage !== 'editor' || currentProject || isLoading) return;
+    if (currentPage !== 'editor' || currentProject || isLoading || addressOpening.current) return;
     const wanted = opening.current.projectId;
     opening.current = { page: 'editor' };
-    if (wanted) void selectProject(wanted).then(found => { if (!found) navigate('questions'); });
+    if (wanted) void openFromAddress(wanted, true);
     else if (projects.length > 0) void selectProject(projects[0].id);
-  }, [currentPage, currentProject, projects, selectProject, isLoading, navigate]);
+  }, [currentPage, currentProject, projects, selectProject, isLoading, openFromAddress]);
   // The editor's address names the open question, so a reload or a shared bookmark opens it again.
   useEffect(() => {
     if (currentPage === 'editor' && currentProject?.id && window.location.hash !== pageHash('editor', currentProject.id))

@@ -224,11 +224,11 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         ))}
       </div>
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
-        <span className="px-2 py-1 rounded-md bg-black/60 text-white text-[11px]">
+        <span className="px-2 py-1 rounded-md bg-black/60 text-white text-xs">
           {tool ? `${ICON[tool]!.name}: ${tool === 'underline' ? 'kelimelerin altına sürükleyip çizin' : 'istediğiniz yere sürükleyip alan çizin'} ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
         </span>
         {onUndo && <button type="button" disabled={!canUndo} onClick={onUndo} title="Son değişikliği geri al"
-          className="px-2 py-1 rounded-md bg-white/90 text-[11px] font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
+          className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
           <ArrowCounterClockwise size={12} /> Geri al
         </button>}
       </div>
@@ -307,7 +307,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
                 className="p-1 rounded border text-[#8B1E2D] hover:bg-red-50"><Trash size={12} /></button>
             </div>
           ))}
-          <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-[11px] text-[#787670]">
+          <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-xs text-[#787670]">
             <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
             <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline">Kutuyu kaldır</button>
           </div>

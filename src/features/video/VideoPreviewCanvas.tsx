@@ -279,7 +279,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
             style={{ width: `${Math.min(100, (currentTime / effectiveDuration) * 100)}%` }}
           />
         </div>
-        <div className="flex items-center rounded-md border border-[#D5D4CC] overflow-hidden text-[11px] font-semibold" role="group" aria-label="Oynatma hızı">
+        <div className="flex items-center rounded-md border border-[#D5D4CC] overflow-hidden text-xs font-semibold" role="group" aria-label="Oynatma hızı">
           {PREVIEW_SPEEDS.map(speed => (
             <button key={speed} type="button" onClick={() => changeRate(speed)} aria-pressed={rate === speed}
               title={speed === 1 ? 'Normal hız' : `${speedLabel(speed)} hızlı önizle`}

@@ -19,12 +19,20 @@ export const TEXT_SIZES: Array<{ id: TextSize | undefined; label: string; scale:
 ];
 const TEXT_SIZE_KEY = 'studio-text-size';
 
+/** The text size last chosen on this device (before sign-in the profile is not known yet). */
+export function savedTextSize(): TextSize | undefined {
+  try {
+    const saved = localStorage.getItem(TEXT_SIZE_KEY);
+    return saved === 'large' || saved === 'xlarge' ? saved : undefined;
+  } catch { return undefined; }
+}
+
 /**
  * Scales the whole studio's text and spacing (everything sized in rem) on this device right away.
  * Remembered locally too, so the next visit opens at the chosen size before sign-in finishes.
  */
-export function applyTextSize(size: TextSize | undefined | null = (() => { try { return localStorage.getItem(TEXT_SIZE_KEY) as TextSize | null; } catch { return null; } })()) {
-  const scale = TEXT_SIZES.find(s => s.id === (size || undefined))?.scale ?? 1;
+export function applyTextSize(size: TextSize | undefined) {
+  const scale = TEXT_SIZES.find(s => s.id === size)?.scale ?? 1;
   document.documentElement.style.fontSize = scale === 1 ? '' : `${scale * 100}%`;
   try { if (size) localStorage.setItem(TEXT_SIZE_KEY, size); else localStorage.removeItem(TEXT_SIZE_KEY); } catch { /* per-device only */ }
 }

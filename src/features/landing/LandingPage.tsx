@@ -79,7 +79,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
               <div className="rounded-2xl border border-[#E5E4DC] bg-white shadow-[0_30px_80px_-30px_rgba(28,25,23,.35)] overflow-hidden">
                 <div className="flex items-center justify-between gap-3 px-4 h-10 border-b border-[#EFEFEA] bg-[#FAF9F5]">
                   <div className="flex gap-1.5" aria-hidden><span className="w-2.5 h-2.5 rounded-full bg-[#E5E4DC]" /><span className="w-2.5 h-2.5 rounded-full bg-[#E5E4DC]" /><span className="w-2.5 h-2.5 rounded-full bg-[#E5E4DC]" /></div>
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#8B1E2D]">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8B1E2D]">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#8B1E2D] animate-pulse" /> Canlı önizleme
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
             <a href="/gizlilik.html" className="hover:text-[#1C1917]">Gizlilik</a>
             <a href="/kullanim-kosullari.html" className="hover:text-[#1C1917]">Kullanım Koşulları</a>
           </nav>
-          <p className="text-[11px]">Geliştiren: Yunus Emre Yılmaz</p>
+          <p className="text-xs">Geliştiren: Yunus Emre Yılmaz</p>
         </div>
       </footer>
     </div>

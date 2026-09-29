@@ -249,7 +249,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
 
           {/* Local pipeline status detail */}
           {statusDetail && currentStage !== 'ERROR' && currentStage !== 'COMPLETED' && (
-            <div className="p-2.5 rounded-lg bg-[#FAF9F5] border border-[#E5E4DC] text-[11px] text-[#55544F] flex items-center gap-2">
+            <div className="p-2.5 rounded-lg bg-[#FAF9F5] border border-[#E5E4DC] text-xs text-[#55544F] flex items-center gap-2">
               <CircleNotch size={14} className="animate-spin shrink-0 text-[#8B1E2D]" />
               <span className="truncate">{statusDetail}</span>
             </div>

@@ -72,7 +72,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       <nav aria-label="Ana menü" className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
         {items.map(link)}
         <div className="pt-4 pb-1 px-3">
-          <div className="text-[11px] uppercase font-semibold text-[#8C8A82] tracking-wider">Sistem</div>
+          <div className="text-xs uppercase font-semibold text-[#8C8A82] tracking-wider">Sistem</div>
         </div>
         {link({ page: 'settings', label: PAGE_LABELS.settings, icon: Gear })}
         <ReportProblem sender={user?.name} />
@@ -90,7 +90,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <div className="text-xs font-semibold text-[#1C1917] truncate leading-tight">
                 {user?.name || 'Öğretmen'}
               </div>
-              <div className="text-[10px] text-[#787670] truncate leading-tight">
+              <div className="text-xs text-[#787670] truncate leading-tight">
                 {user?.title || 'Öğretmen'}
               </div>
             </div>
