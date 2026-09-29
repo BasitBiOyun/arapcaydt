@@ -66,7 +66,8 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
     <div className="preview-content" hidden={step===3&&editRegions}>
     {previewMode === 'video' && videoGenerated ? (
       /* Generated Video Player powered by local Canvas engine */
-      <div className="w-full max-w-4xl flex flex-col gap-4 p-4">
+      /* As wide as the column allows while the picture still fits the window height (never below the old 56rem). */
+      <div className="flex flex-col gap-4 p-4" style={{ width: 'min(100%, max(56rem, calc((100vh - 300px) * 16 / 9)))' }}>
         <VideoPreviewCanvas
           imageUrl={currentProject.imageUrl}
           regions={currentProject.videoConfig.regions}
