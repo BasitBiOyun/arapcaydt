@@ -23,6 +23,27 @@ export function monotonicGate(): (timestamp: number) => boolean {
   };
 }
 
+/**
+ * Audio packets are never dropped: one stamped at or before the previous packet (an encoder
+ * that restarts or repeats its clock) is moved to right after it. Dropping instead once left
+ * whole videos silent without any error.
+ */
+export function sequentialStamp(): (timestamp: number, duration: number) => number {
+  let next = -Infinity;
+  return (timestamp, duration) => {
+    const at = timestamp >= next ? timestamp : next;
+    next = at + Math.max(1, duration);
+    return at;
+  };
+}
+
+/** Loudest sample (0–1) of a decoded narration, sampled sparsely. */
+export function peakLevel(channels: Float32Array[], step = 16): number {
+  let peak = 0;
+  for (const data of channels) for (let i = 0; i < data.length; i += step) peak = Math.max(peak, Math.abs(data[i]));
+  return peak;
+}
+
 export class BrowserVideoExporter implements IVideoExporter {
   private static instance: BrowserVideoExporter;
   public static getInstance() {
@@ -78,6 +99,8 @@ export class BrowserVideoExporter implements IVideoExporter {
         await audioContext.close();
         audioContext = undefined;
         if (audioBuffer.numberOfChannels > 2) throw new Error('Lütfen mono veya stereo ses yükleyin.');
+        if (peakLevel(Array.from({ length: audioBuffer.numberOfChannels }, (_, c) => audioBuffer!.getChannelData(c))) < 1e-4)
+          throw new Error('Bu sorunun ses dosyası sessiz görünüyor. Ses adımında sesi dinleyin; gerekirse yeniden seslendirin ya da MP3’ü yeniden yükleyin.');
       }
       check();
       const totalSeconds = Math.max(duration, audioBuffer?.duration || 0);
@@ -93,7 +116,8 @@ export class BrowserVideoExporter implements IVideoExporter {
         fastStart: 'in-memory', firstTimestampBehavior: 'offset',
       });
       const failed = (error: DOMException) => { encodingError = error; };
-      const videoInOrder = monotonicGate(), audioInOrder = monotonicGate();
+      const videoInOrder = monotonicGate(), audioStamp = sequentialStamp();
+      let audioMicros = 0;
       videoEncoder = new VideoEncoder({
         output: (chunk, metadata) => {
           if (!videoInOrder(chunk.timestamp)) return;
@@ -111,8 +135,14 @@ export class BrowserVideoExporter implements IVideoExporter {
           throw new Error('Bu cihaz AAC sesi kodlayamıyor. Güncel masaüstü Chrome veya Edge kullanın.');
         audioEncoder = new AudioEncoder({
           output: (chunk, metadata) => {
-            if (!audioInOrder(chunk.timestamp)) return;
-            try { muxer.addAudioChunk(chunk, metadata); } catch (error) { encodingError = error as Error; }
+            const length = chunk.duration ?? Math.round(1024 / audioBuffer!.sampleRate * 1_000_000);
+            const at = audioStamp(chunk.timestamp, length);
+            let packet = chunk;
+            if (at !== chunk.timestamp) {
+              const bytes = new Uint8Array(chunk.byteLength); chunk.copyTo(bytes);
+              packet = new EncodedAudioChunk({ type: chunk.type, timestamp: at, duration: length, data: bytes });
+            }
+            try { muxer.addAudioChunk(packet, metadata); audioMicros += length; } catch (error) { encodingError = error as Error; }
           }, error: failed,
         });
         audioEncoder.configure(audioConfig);
@@ -137,6 +167,9 @@ export class BrowserVideoExporter implements IVideoExporter {
           }
         }
         await audioEncoder.flush(); check();
+        // Never hand out a video whose narration did not make it in.
+        if (audioMicros < audioBuffer.duration * 1_000_000 * .9)
+          throw new Error('Ses videoya eklenemedi. Sayfayı yenileyip tekrar deneyin; sürerse güncel Chrome ile deneyin ve “Sorun bildir” ile haber verin.');
       }
       for (let i = 0; i < totalFrames; i++) {
         check();

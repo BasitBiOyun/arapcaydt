@@ -134,3 +134,15 @@ test('underlines sit right under their words and move with the teacher’s nudge
   assert.equal(underlineY(line, 1, -.2), 242);
   assert.equal(underlineY(line, 1, .3), 267);
 });
+
+test('audio is never silently lost: out-of-order packets are restamped, silent or missing narration is reported', async () => {
+  const { sequentialStamp, peakLevel } = await import('../src/features/video/engine/exporter');
+  const stamp = sequentialStamp();
+  // An encoder that restarts its clock or repeats a stamp: every packet is kept, in order.
+  assert.deepEqual([0, 21333, 21333, 0, 64000].map(t => stamp(t, 21333)), [0, 21333, 42666, 63999, 85332]);
+  assert.equal(peakLevel([new Float32Array(1000)]), 0);
+  const speech = new Float32Array(1000); speech[320] = .4;
+  assert.ok(Math.abs(peakLevel([speech]) - .4) < 1e-6);
+  const { exportProjectVideo } = await import('../src/features/video/exportProjectVideo');
+  await assert.rejects(exportProjectVideo({ imageUrl: 'x', videoConfig: {} } as any, () => {}), /sesi bulunamadı/);
+});

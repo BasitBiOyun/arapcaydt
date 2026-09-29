@@ -4,6 +4,9 @@ import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
 
 /** Renders one project to a 1080p MP4 in this browser (single editor download and batch queue share it). */
 export async function exportProjectVideo(project: QuestionProject, onProgress: (percent: number) => void, signal?: AbortSignal): Promise<Blob> {
+  const audioUrl = project.narrationSource?.audioUrl || project.audioNarration?.audioUrl || '';
+  // A question video always has narration; never produce a silent file without saying so.
+  if (!audioUrl) throw new Error('Bu sorunun sesi bulunamadı. Ses adımında sesi yeniden oluşturun ya da MP3 yükleyin.');
   const img = new Image();
   img.crossOrigin = 'anonymous';
   await new Promise<void>((resolve, reject) => {
@@ -13,7 +16,6 @@ export async function exportProjectVideo(project: QuestionProject, onProgress: (
   });
 
   const duration = project.narrationSource?.duration || project.audioNarration?.duration || 15;
-  const audioUrl = project.narrationSource?.audioUrl || project.audioNarration?.audioUrl || '';
   const config = project.videoConfig;
   return videoExporter.exportVideo(
     (ctx, time) => {
