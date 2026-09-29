@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import Moveable from 'react-moveable';
 import { moveRegion } from './workflow';
 import { AnnotationRegion, RegionType, VideoAction, VideoActionType } from '../../types';
 
@@ -21,8 +22,10 @@ const types: { type: RegionType; label: string }[] = [
   { type: 'keyword', label: 'Kelime / İfade' },
   { type: 'paragraph', label: 'Soru Metni' },
 ];
-const field = 'border rounded px-2 py-1 bg-white text-xs';
-const button = 'border rounded px-3 py-2 bg-white hover:bg-stone-100 text-xs cursor-pointer';
+const field = 'border rounded px-2 py-1.5 bg-white text-sm';
+const button = 'border rounded px-3 py-2 bg-white hover:bg-stone-100 text-sm cursor-pointer';
+/** Smallest box side, as a share of the image. */
+const MIN_SIDE = 0.008;
 
 export function RegionEditorCanvas({
   imageUrl,
@@ -49,9 +52,8 @@ export function RegionEditorCanvas({
   const [drawing, setDrawing] = useState(false);
   const [newType, setNewType] = useState<RegionType>('keyword');
   const [phrase, setPhrase] = useState('');
-  const [gesture, setGesture] = useState<{ mode: 'draw' | 'move' | 'resize'; x: number; y: number; region?: AnnotationRegion } | null>(
-    null,
-  );
+  // Drawing a new box, or dragging a box that was not selected yet; the selected box is moved by its frame (react-moveable).
+  const [gesture, setGesture] = useState<{ mode: 'draw' | 'move'; x: number; y: number; region?: AnnotationRegion } | null>(null);
   const [draft, setDraft] = useState<AnnotationRegion | null>(null);
   const selected = regions.find(r => r.id === selectedRegionId);
   const selectedActions = selected ? actions.filter(a => a.targetRegionId === selected.id) : [];
@@ -109,7 +111,7 @@ export function RegionEditorCanvas({
       y: Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height)),
     };
   };
-  const begin = (e: React.PointerEvent, mode: 'draw' | 'move' | 'resize', region?: AnnotationRegion) => {
+  const begin = (e: React.PointerEvent, mode: 'draw' | 'move', region?: AnnotationRegion) => {
     if (e.button !== 0) return;
     e.stopPropagation();
     stage.current!.setPointerCapture(e.pointerId);
@@ -135,15 +137,11 @@ export function RegionEditorCanvas({
     } else if (r) {
       const dx = p.x - gesture.x,
         dy = p.y - gesture.y;
-      setDraft(
-        gesture.mode === 'move'
-          ? { ...r, x: Math.max(0, Math.min(1 - r.width, r.x + dx)), y: Math.max(0, Math.min(1 - r.height, r.y + dy)) }
-          : { ...r, width: Math.max(0.008, Math.min(1 - r.x, r.width + dx)), height: Math.max(0.008, Math.min(1 - r.y, r.height + dy)) },
-      );
+      setDraft({ ...r, x: Math.max(0, Math.min(1 - r.width, r.x + dx)), y: Math.max(0, Math.min(1 - r.height, r.y + dy)) });
     }
   };
   const finish = (e: React.PointerEvent) => {
-    if (gesture && draft && draft.width > 0.008 && draft.height > 0.008) {
+    if (gesture && draft && draft.width > MIN_SIDE && draft.height > MIN_SIDE) {
       if (gesture.mode === 'draw') {
         const id = newType.startsWith('option-') ? newType : `manual-${crypto.randomUUID()}`;
         const region = {
@@ -163,6 +161,53 @@ export function RegionEditorCanvas({
     setGesture(null);
     setDraft(null);
   };
+  /** Box elements on the image, so the selection frame (react-moveable) can hold the selected one. */
+  const boxes = useRef(new Map<string, HTMLDivElement>());
+  // A box drawn just now exists on screen only after its first render; this brings its selection frame right after.
+  const [, setBoxCount] = useState(0);
+  const latest = useRef<AnnotationRegion | null>(null);
+  /** The box's own size styles while react-moveable resizes it on screen. */
+  const resizing = useRef<{ width: string; height: string } | null>(null);
+  /**
+   * A box from its on-screen position and size (pixels inside the image), kept on the image.
+   * Moveable's own `bounds` is not used: in this layout it shrank boxes to nothing.
+   */
+  const fromScreen = (
+    region: AnnotationRegion,
+    left: number,
+    top: number,
+    width: number,
+    height: number,
+    mode: 'move' | 'resize',
+  ): AnnotationRegion => {
+    const el = stage.current!;
+    const x = left / el.clientWidth,
+      y = top / el.clientHeight,
+      w = width / el.clientWidth,
+      h = height / el.clientHeight;
+    if (mode === 'move') {
+      // A moved box keeps its size and stops at the image's edges.
+      const width = Math.min(1, w),
+        height = Math.min(1, h);
+      return { ...region, x: Math.max(0, Math.min(1 - width, x)), y: Math.max(0, Math.min(1 - height, y)), width, height, manuallyAdjusted: true };
+    }
+    // A resized box is cut at the image's edges; the far side stays where it was.
+    const x0 = Math.max(0, Math.min(1 - MIN_SIDE, x)),
+      y0 = Math.max(0, Math.min(1 - MIN_SIDE, y));
+    const width2 = Math.max(MIN_SIDE, Math.min(1, x + w) - x0),
+      height2 = Math.max(MIN_SIDE, Math.min(1, y + h) - y0);
+    return { ...region, x: x0, y: y0, width: Math.min(1 - x0, width2), height: Math.min(1 - y0, height2), manuallyAdjusted: true };
+  };
+  const preview = (next: AnnotationRegion) => {
+    latest.current = next;
+    setDraft(next);
+  };
+  const save = () => {
+    const next = latest.current;
+    latest.current = null;
+    setDraft(null);
+    if (next) commit(regions.map(r => (r.id === next.id ? next : r)));
+  };
   const update = (patch: Partial<AnnotationRegion>) => {
     if (!selected) return;
     const updated = { ...selected, ...patch, manuallyAdjusted: true };
@@ -174,12 +219,12 @@ export function RegionEditorCanvas({
     onSelectRegion(updated.id);
   };
   return (
-    <div className="space-y-3 mt-3 text-xs">
+    <div className="space-y-3 mt-3 text-sm">
       <div className="rounded-xl border border-[#E5E4DC] bg-[#FAF9F5] p-3 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
             <p className="font-semibold text-[#1C1917]">Görsel düzenleyici</p>
-            <p className="text-[11px] text-[#787670] mt-0.5">
+            <p className="text-xs text-[#787670] mt-0.5">
               Bir aracı seçin, sonra görsel üzerinde sürükleyerek alanı belirleyin. Mevcut kutular doğrudan taşınabilir ve
               boyutlandırılabilir.
             </p>
@@ -205,7 +250,7 @@ export function RegionEditorCanvas({
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-[10px] uppercase tracking-wide font-semibold text-[#8C8A82] mr-1">Şık kutusu</span>
+          <span className="text-xs uppercase tracking-wide font-semibold text-[#8C8A82] mr-1">Şık kutusu</span>
           {(['A', 'B', 'C', 'D', 'E'] as const).map(letter => {
             const type = `option-${letter.toLowerCase()}` as RegionType;
             const active = drawing && newType === type;
@@ -245,7 +290,7 @@ export function RegionEditorCanvas({
         </div>
 
         {drawing && (
-          <div role="status" className="rounded-lg border border-[#E7D5B2] bg-[#FFF9E8] px-3 py-2 text-[11px] text-[#6F5316]">
+          <div role="status" className="rounded-lg border border-[#E7D5B2] bg-[#FFF9E8] px-3 py-2 text-xs text-[#6F5316]">
             {types.find(t => t.type === newType)?.label || 'Alan'} için görselde basılı tutup sürükleyin.
           </div>
         )}
@@ -254,7 +299,7 @@ export function RegionEditorCanvas({
       {solutionText && (
         <details className="rounded-xl border border-[#E5E4DC] bg-white p-3">
           <summary className="cursor-pointer font-semibold text-[#1C1917]">Kelime veya ifadeyi elle işaretle</summary>
-          <p className="text-[11px] text-[#787670] mt-2">
+          <p className="text-xs text-[#787670] mt-2">
             Çözüm metninde istediğiniz kelimeyi seçin. Ardından butona basıp görselde o kelimenin alanını çizin. Sistem mümkünse zamanı ses
             kaydından eşleştirir.
           </p>
@@ -283,7 +328,7 @@ export function RegionEditorCanvas({
               Seçili ifadeyi görselde işaretle
             </button>
             {phrase && (
-              <span className="max-w-full truncate rounded bg-[#F4F3ED] px-2 py-1 text-[11px]" dir="auto">
+              <span className="max-w-full truncate rounded bg-[#F4F3ED] px-2 py-1 text-xs" dir="auto">
                 Seçili: {phrase}
               </span>
             )}
@@ -304,12 +349,18 @@ export function RegionEditorCanvas({
           />
         </label>
       )}
+      {/* Always shown, so selecting a box never pushes the image down in the middle of a drag. */}
+      {!selected && (
+        <div className="sticky top-0 z-30 min-h-16 rounded-xl border border-[#E5E4DC] bg-white/95 p-2.5 flex items-center text-[#787670]">
+          Taşımak veya boyutlandırmak için görselde bir kutuya tıklayın.
+        </div>
+      )}
       {selected && (
-        <div className="sticky top-0 z-30 rounded-xl border border-[#DCC9CB] bg-white/95 backdrop-blur-sm shadow-sm p-2.5 flex flex-wrap items-center gap-2">
+        <div className="sticky top-0 z-30 min-h-16 rounded-xl border border-[#DCC9CB] bg-white/95 backdrop-blur-sm shadow-sm p-2.5 flex flex-wrap items-center gap-2">
           <div className="min-w-0 mr-auto">
             <p className="font-semibold text-[#1C1917] truncate">Seçili: {selected.label}</p>
             {selected.content && (
-              <p className="text-[10px] text-[#787670] truncate max-w-sm" dir="auto">
+              <p className="text-xs text-[#787670] truncate max-w-sm" dir="auto">
                 {selected.content}
               </p>
             )}
@@ -324,7 +375,7 @@ export function RegionEditorCanvas({
                 type="button"
                 aria-pressed={hasAction(type)}
                 onClick={() => toggleAction(type)}
-                className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold transition-all ${hasAction(type) ? 'bg-[#8B1E2D] border-[#8B1E2D] text-white shadow-sm' : 'bg-white border-[#D5D4CC] text-[#44423D] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}
+                className={`rounded-lg border px-2.5 py-1.5 text-sm font-semibold transition-all ${hasAction(type) ? 'bg-[#8B1E2D] border-[#8B1E2D] text-white shadow-sm' : 'bg-white border-[#D5D4CC] text-[#44423D] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}
               >
                 {actionLabel[type]}
                 {hasAction(type) ? ' ✓' : ''}
@@ -371,7 +422,10 @@ export function RegionEditorCanvas({
         style={{ aspectRatio: aspect, touchAction: 'none' }}
         className={`relative w-full border rounded bg-white select-none ${drawing ? 'cursor-crosshair' : ''}`}
         onPointerDown={e => {
+          // The selection frame's handles sit inside this area: pressing one keeps the box selected.
+          if ((e.target as HTMLElement).closest('.moveable-control-box')) return;
           if (drawing) begin(e, 'draw');
+          else if (e.button === 0) onSelectRegion(null);
         }}
         onPointerMove={move}
         onPointerUp={finish}
@@ -388,10 +442,17 @@ export function RegionEditorCanvas({
           onLoad={e => setAspect(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight)}
         />
         {regions.map(region => {
-          const r = gesture?.region?.id === region.id && draft ? draft : region;
+          const r = draft?.id === region.id ? draft : region;
+          const isSelected = r.id === selectedRegionId;
           return (
             <div
               key={r.id}
+              ref={el => {
+                if (el && boxes.current.get(r.id) !== el) {
+                  boxes.current.set(r.id, el);
+                  setBoxCount(boxes.current.size);
+                } else if (!el) boxes.current.delete(r.id);
+              }}
               style={{
                 left: `${r.x * 100}%`,
                 top: `${r.y * 100}%`,
@@ -400,20 +461,66 @@ export function RegionEditorCanvas({
                 pointerEvents: drawing ? 'none' : 'auto',
                 zIndex: r.id === selectedRegionId ? 20 : 1,
               }}
-              className={`absolute border-2 cursor-move ${r.id === selectedRegionId ? 'border-red-700 bg-red-800/10' : 'border-amber-600 bg-amber-300/10'}`}
-              onPointerDown={e => begin(e, 'move', r)}
+              title={isSelected ? 'Taşımak için sürükleyin; boyut için kenarlardaki tutamaçları çekin' : 'Seçmek için tıklayın'}
+              className={`absolute border-2 cursor-move ${isSelected ? 'border-red-700 bg-red-800/10' : 'border-amber-600 bg-amber-300/10'}`}
+              onPointerDown={e => {
+                // The selected box is moved by its selection frame; another box is picked and dragged at once.
+                if (isSelected) {
+                  e.stopPropagation();
+                  return;
+                }
+                begin(e, 'move', r);
+              }}
             >
-              <span className="absolute -top-4 left-0 text-[10px] bg-white text-stone-900 whitespace-nowrap">{r.label}</span>
-              {r.id === selectedRegionId && (
-                <div
-                  aria-label="Kutuyu boyutlandır"
-                  className="absolute -bottom-2 -right-2 w-4 h-4 bg-red-800 cursor-nwse-resize"
-                  onPointerDown={e => begin(e, 'resize', r)}
-                />
-              )}
+              <span className="absolute -top-5 left-0 text-xs bg-white text-stone-900 whitespace-nowrap px-0.5">{r.label}</span>
             </div>
           );
         })}
+        {selected && !drawing && !gesture && boxes.current.get(selected.id) && (
+          <Moveable
+            key={selected.id}
+            className="region-moveable"
+            target={boxes.current.get(selected.id)!}
+            draggable
+            resizable
+            origin={false}
+            keepRatio={false}
+            renderDirections={['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']}
+            throttleDrag={0}
+            throttleResize={0}
+            onDrag={e => preview(fromScreen(selected, e.left, e.top, e.width, e.height, 'move'))}
+            onDragEnd={save}
+            // Resizing follows react-moveable's own pattern: the box is sized on screen, then saved once.
+            onResizeStart={e => {
+              resizing.current = { width: e.target.style.width, height: e.target.style.height };
+            }}
+            onResize={e => {
+              e.target.style.width = `${e.width}px`;
+              e.target.style.height = `${e.height}px`;
+              e.target.style.transform = e.drag.transform;
+            }}
+            onResizeEnd={e => {
+              const el = e.target as HTMLElement,
+                rect = el.getBoundingClientRect(),
+                frame = stage.current!.getBoundingClientRect(),
+                border = stage.current!;
+              Object.assign(el.style, resizing.current ?? {}, { transform: '' });
+              resizing.current = null;
+              if (e.lastEvent)
+                preview(
+                  fromScreen(
+                    selected,
+                    rect.left - frame.left - border.clientLeft,
+                    rect.top - frame.top - border.clientTop,
+                    rect.width,
+                    rect.height,
+                    'resize',
+                  ),
+                );
+              save();
+            }}
+          />
+        )}
         {gesture?.mode === 'draw' && draft && (
           <div
             className="absolute pointer-events-none border-2 border-red-700 bg-yellow-200/30"
@@ -431,7 +538,7 @@ export function RegionEditorCanvas({
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <p className="font-semibold text-[#1C1917]">Seçili alan: {selected.label}</p>
-              <p className="text-[11px] text-[#787670] truncate max-w-xl" dir="auto">
+              <p className="text-xs text-[#787670] truncate max-w-xl" dir="auto">
                 {selected.content || 'Bu alan için eşleşen metin tanımlı değil.'}
               </p>
             </div>
@@ -441,14 +548,14 @@ export function RegionEditorCanvas({
           </div>
 
           {onUpdateActions && (
-            <p className="text-[10px] text-[#787670]">
+            <p className="text-xs text-[#787670]">
               Üstteki hızlı araçlardan eklenen yeni işaret, varsa bu alanın mevcut ses zamanını kullanır. Yoksa önizlemedeki{' '}
               {currentTime.toFixed(1)}. saniyeye eklenir. Zamanı daha sonra “Zamanlamayı düzenle” bölümünden ince ayarlayabilirsiniz.
             </p>
           )}
 
           <details>
-            <summary className="cursor-pointer font-semibold text-[11px] text-[#55544F]">İnce ayar ve koordinatlar</summary>
+            <summary className="cursor-pointer font-semibold text-xs text-[#55544F]">İnce ayar ve koordinatlar</summary>
             <div className="flex flex-wrap gap-2 items-end mt-3">
               <label className="flex flex-col gap-1">
                 Alan türü
@@ -507,13 +614,13 @@ export function RegionEditorCanvas({
           </details>
         </div>
       ) : (
-        <div className="rounded-lg border border-dashed border-[#D5D4CC] bg-[#FAF9F5] px-3 py-2 text-[11px] text-[#787670]">
+        <div className="rounded-lg border border-dashed border-[#D5D4CC] bg-[#FAF9F5] px-3 py-2 text-xs text-[#787670]">
           Düzenlemek için görselde bir kutuya tıklayın. Ok tuşlarıyla ince, Shift + ok ile daha büyük hareket yapabilirsiniz.
         </div>
       )}
 
       <details className="rounded-lg border border-[#E5E4DC] bg-white p-3">
-        <summary className="cursor-pointer font-semibold text-[11px]">Tüm alanlar ({regions.length})</summary>
+        <summary className="cursor-pointer font-semibold text-xs">Tüm alanlar ({regions.length})</summary>
         <label className="flex flex-col gap-1 mt-2">
           Düzenlenecek alan
           <select

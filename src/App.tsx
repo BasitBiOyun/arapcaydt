@@ -1,6 +1,7 @@
 import React from 'react';
 import { Toaster } from 'sonner';
 import { ConfirmProvider } from './components/common/ConfirmDialog';
+import { applyTextSize, savedTextSize } from './features/settings/preferences';
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { ProjectProvider } from './features/projects/ProjectContext';
 import { LoginPage } from './features/auth/LoginPage';
@@ -13,12 +14,17 @@ import { takeOAuthError } from './services/supabase';
 import { installErrorBuffer } from './features/feedback/feedback';
 
 installErrorBuffer();
+// The size chosen on this device applies before sign-in finishes, so the page never jumps.
+applyTextSize(savedTextSize());
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, logout, refresh, recovering, offline } = useAuth();
   // A failed Google sign-in returns to the site; show its message on the sign-in form.
   const [oauthError] = React.useState(takeOAuthError);
   const [authView, setAuthView] = React.useState<AuthMode | null>(oauthError ? 'login' : null);
+  // After sign-in the profile decides the text size, so it follows the teacher to every device.
+  const textSize = user?.preferences?.textSize;
+  React.useEffect(() => { if (user?.id) applyTextSize(textSize); }, [user?.id, textSize]);
 
   if (isLoading) {
     return (
@@ -81,7 +87,7 @@ export default function App() {
         <AuthProvider>
           <AppContent />
         </AuthProvider>
-        <Toaster position="bottom-right" richColors closeButton toastOptions={{ style: { fontSize: '15px' } }} />
+        <Toaster position="bottom-right" richColors closeButton toastOptions={{ style: { fontSize: '0.9375rem' } }} />
       </ConfirmProvider>
     </ErrorBoundary>
   );

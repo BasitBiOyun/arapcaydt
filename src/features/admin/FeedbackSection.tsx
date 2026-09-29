@@ -74,7 +74,7 @@ export function FeedbackSection({ who }: { who: (ownerId: string) => string }) {
                   <ul className="mt-1 space-y-0.5 font-mono-code break-all">{c.recentErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>
                 </details>
               )}
-              {c.browser && <p className="text-[11px] text-[#8A8780] break-all">{c.browser} · {c.screen}</p>}
+              {c.browser && <p className="text-xs text-[#8A8780] break-all">{c.browser} · {c.screen}</p>}
             </li>
           );
         })}

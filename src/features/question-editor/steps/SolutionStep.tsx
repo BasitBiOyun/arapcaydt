@@ -24,7 +24,7 @@ export function SolutionStep({
 }: SolutionStepProps) {
   return (
     <div hidden={step !== 1} className="space-y-2.5">
-      <h2 className="text-xs font-bold text-[#1C1917] tracking-tight">Çözüm metnini hazırlayın</h2>
+      <h2 className="text-sm font-bold text-[#1C1917] tracking-tight">Çözüm metnini hazırlayın</h2>
       <label className="flex items-center gap-3">
         Doğru cevap
         <select
@@ -57,7 +57,7 @@ export function SolutionStep({
         placeholder="Sorunun çözümünü buraya yazın..."
         rows={12}
         dir="auto"
-        className="w-full p-3.5 rounded-lg border border-[#D5D4CC] focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] text-xs text-[#1C1917] leading-relaxed bg-white outline-none resize-y placeholder:text-[#A8A69E]"
+        className="w-full p-3.5 rounded-lg border border-[#D5D4CC] focus:border-[#8B1E2D] focus:ring-1 focus:ring-[#8B1E2D] text-sm text-[#1C1917] leading-relaxed bg-white outline-none resize-y placeholder:text-[#A8A69E]"
       />
       <div className="flex flex-wrap items-start justify-between gap-2 text-sm">
         {currentProject.narrationSource?.spokenText !== undefined
@@ -72,7 +72,7 @@ export function SolutionStep({
         </span>
       </div>
       {!currentProject.solutionText.trim() && (
-        <p className="text-[11px] text-[#787670]">
+        <p className="text-sm text-[#787670]">
           Hazır ses kaydınız (MP3) varsa metni yazmadan devam edin; bir sonraki adımda MP3’ü yükleyince çözüm metni sesinizden çıkarılır. Doğru cevabı seçmeyi unutmayın.
         </p>
       )}

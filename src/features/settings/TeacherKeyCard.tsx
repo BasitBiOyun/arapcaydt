@@ -3,7 +3,7 @@ import { Key, Trash, FloppyDisk, CheckCircle, WarningCircle } from '@phosphor-ic
 import { geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../services/narration/geminiKeyService';
 import { useConfirm } from '../../components/common/ConfirmDialog';
 
-const badge = (ok: boolean) => `font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
+const badge = (ok: boolean) => `font-semibold px-2.5 py-0.5 rounded-full text-xs ${
   ok ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'}`;
 
 /** Settings card: the teacher pastes their own Google AI Studio key; it is verified, stored encrypted and never shown again. */
@@ -40,7 +40,7 @@ export const TeacherKeyCard: React.FC = () => {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-[#1C1917]">Google anahtarım</h3>
-          <p className="text-[11px] text-[#787670]">Seslendirme ve kelime zamanları önce sizin ücretsiz Google kotanızdan yapılır</p>
+          <p className="text-xs text-[#787670]">Seslendirme ve kelime zamanları önce sizin ücretsiz Google kotanızdan yapılır</p>
         </div>
       </div>
 
@@ -68,7 +68,7 @@ export const TeacherKeyCard: React.FC = () => {
               <span className="text-[#666560]">Bugün yedek zamanlama:</span>
               <span className="text-[#33322E]">{today.elevenlabs.used}{today.elevenlabs.limit != null ? ` / ${today.elevenlabs.limit}` : ''}</span>
             </div>
-            <p className="text-[#55544F] leading-relaxed text-[11px]">
+            <p className="text-[#55544F] leading-relaxed text-xs">
               Kendi anahtarınızla günde {today.tts.limit ?? 30} ses (3 ses modeli × 10) ve {today.transcribe.limit ?? 25} kelime zamanı ücretsizdir; yani günde yaklaşık {today.tts.limit ?? 30} soru. Bunlar bitince herkesin paylaştığı ortak kapasiteye, kelime zamanları için de yedek servise geçilir. Haklar her gün saat {quotaResetClock()} itibarıyla yenilenir (Türkiye saati). Hepsi dolsa da video üretimi durmaz; zamanlama bilgisayarınızda yapılır.
             </p>
           </>
@@ -76,7 +76,7 @@ export const TeacherKeyCard: React.FC = () => {
       </div>
 
       {status && !status.storageReady ? (
-        <p className="p-3 rounded bg-[#FAF5E6] border border-[#E5D7B0] text-[11px] text-[#78540E]">
+        <p className="p-3 rounded bg-[#FAF5E6] border border-[#E5D7B0] text-xs text-[#78540E]">
           Anahtar kaydı henüz açılmadı; yöneticinin sunucu ayarını tamamlaması bekleniyor.
         </p>
       ) : (
@@ -114,8 +114,8 @@ export const TeacherKeyCard: React.FC = () => {
               </button>
             )}
           </div>
-          {notice && <p className="text-[11px] text-[#1E562A] flex items-center gap-1"><CheckCircle size={14} weight="fill" />{notice}</p>}
-          {error && <p className="text-[11px] text-red-600 font-medium flex items-center gap-1"><WarningCircle size={14} weight="fill" />{error}</p>}
+          {notice && <p className="text-xs text-[#1E562A] flex items-center gap-1"><CheckCircle size={14} weight="fill" />{notice}</p>}
+          {error && <p className="text-xs text-red-600 font-medium flex items-center gap-1"><WarningCircle size={14} weight="fill" />{error}</p>}
         </div>
       )}
 
@@ -129,7 +129,7 @@ export const TeacherKeyCard: React.FC = () => {
           <li>“Create API key” (API anahtarı oluştur) düğmesine basın; sorarsa yeni bir proje oluşturun.</li>
           <li>Oluşan anahtarı kopyalayıp yukarıya yapıştırın ve Kaydet’e basın.</li>
         </ol>
-        <p className="mt-2 text-[11px] text-[#6E1623]">
+        <p className="mt-2 text-xs text-[#6E1623]">
           Faturalandırmayı (billing) açmayın: anahtar ücretsiz kotayla çalışır, size hiçbir ücret yansımaz.
           Anahtarınız yalnızca sizin sorularınız için kullanılır, sunucuda şifreli saklanır ve bir daha gösterilmez.
         </p>

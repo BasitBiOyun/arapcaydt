@@ -9,6 +9,32 @@ export interface UserPreferences {
   showCaptions?: boolean;
   captionY?: number;
   showOutro?: boolean;
+  /** Larger text and buttons across the studio; normal when unset. */
+  textSize?: TextSize;
+}
+
+export type TextSize = 'large' | 'xlarge';
+export const TEXT_SIZES: Array<{ id: TextSize | undefined; label: string; scale: number }> = [
+  { id: undefined, label: 'Normal', scale: 1 }, { id: 'large', label: 'Büyük', scale: 1.125 }, { id: 'xlarge', label: 'Çok büyük', scale: 1.25 },
+];
+const TEXT_SIZE_KEY = 'studio-text-size';
+
+/** The text size last chosen on this device (before sign-in the profile is not known yet). */
+export function savedTextSize(): TextSize | undefined {
+  try {
+    const saved = localStorage.getItem(TEXT_SIZE_KEY);
+    return saved === 'large' || saved === 'xlarge' ? saved : undefined;
+  } catch { return undefined; }
+}
+
+/**
+ * Scales the whole studio's text and spacing (everything sized in rem) on this device right away.
+ * Remembered locally too, so the next visit opens at the chosen size before sign-in finishes.
+ */
+export function applyTextSize(size: TextSize | undefined) {
+  const scale = TEXT_SIZES.find(s => s.id === size)?.scale ?? 1;
+  document.documentElement.style.fontSize = scale === 1 ? '' : `${scale * 100}%`;
+  try { if (size) localStorage.setItem(TEXT_SIZE_KEY, size); else localStorage.removeItem(TEXT_SIZE_KEY); } catch { /* per-device only */ }
 }
 
 const text = (value: unknown, max: number) => typeof value === 'string' && value.trim() ? value.trim().slice(0, max) : undefined;
@@ -24,6 +50,7 @@ export function cleanPreferences(raw: unknown): UserPreferences {
   if (typeof r.showCaptions === 'boolean') prefs.showCaptions = r.showCaptions;
   if (typeof r.captionY === 'number' && Number.isFinite(r.captionY)) prefs.captionY = Math.min(.93, Math.max(.08, r.captionY));
   if (typeof r.showOutro === 'boolean') prefs.showOutro = r.showOutro;
+  if (r.textSize === 'large' || r.textSize === 'xlarge') prefs.textSize = r.textSize;
   return prefs;
 }
 

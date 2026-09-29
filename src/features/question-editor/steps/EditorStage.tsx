@@ -186,7 +186,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
         <p className="text-xs font-medium text-[#55544F]">
           Soru görseli henüz yüklenmedi
         </p>
-        <p className="text-[11px] text-[#8C8A82] mt-1">
+        <p className="text-xs text-[#8C8A82] mt-1">
           Sağdaki panelden görseli yüklediğinizde burada net ve büyük boyutta görüntülenecektir.
         </p>
       </div>
@@ -196,10 +196,10 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E5E4DC]">
         <div>
           <h3 className="font-semibold text-[#1C1917]">Görsel işaretleri düzenle</h3>
-          <p className="text-[11px] text-[#787670] mt-0.5">Kutuları, kelime vurgularını ve temel animasyonları doğrudan soru üzerinde düzenleyin.</p>
+          <p className="text-xs text-[#787670] mt-0.5">Kutuları, kelime vurgularını ve temel animasyonları doğrudan soru üzerinde düzenleyin.</p>
         </div>
         <div className="flex items-center gap-2">
-          <span role="status" className={`text-[10px] px-2 py-1 rounded-full border font-semibold ${
+          <span role="status" className={`text-xs px-2 py-1 rounded-full border font-semibold ${
             saveStatus==='saved'
               ? 'bg-[#EFF7F0] border-[#C5DAC8] text-[#1E562A]'
               : saveStatus==='error'
@@ -209,7 +209,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             {({saved:'Kaydedildi',pending:'Değişiklikler bekliyor',saving:'Kaydediliyor…',error:'Kayıt hatası'})[saveStatus]}
           </span>
           <button type="button" onClick={()=>void finishRegionEditing()}
-            className="px-3 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white text-[11px] font-semibold transition-colors cursor-pointer">
+            className="px-3 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white text-xs font-semibold transition-colors cursor-pointer">
             Düzenlemeyi Bitir ve Önizlemeye Dön
           </button>
         </div>

@@ -364,7 +364,7 @@ export const AdminPage: React.FC = () => {
             }`}
           >
             {t.label}
-            {t.badge ? <span className="ml-2 rounded-full bg-[#8B1E2D] text-white text-[11px] px-1.5 py-0.5">{t.badge}</span> : null}
+            {t.badge ? <span className="ml-2 rounded-full bg-[#8B1E2D] text-white text-xs px-1.5 py-0.5">{t.badge}</span> : null}
           </button>
         ))}
       </div>
