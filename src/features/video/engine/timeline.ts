@@ -15,14 +15,21 @@ export function stepProgress(steps: Array<{ at: number; to: number }>, elapsed: 
 }
 
 /**
- * The same word steps after the mark's start moved by `shift` seconds (the words stay where they
- * are spoken), squeezed to fit within `maxDraw` seconds.
+ * An underline is drawn over its whole length on the strip: a 1 s mark draws in about 1 s, a 5 s
+ * mark in about 5 s. Only a short moment at the end shows the finished line (a fifth, at most 0.8 s).
  */
-export function fitSteps(steps: Array<{ at: number; to: number }>, shift: number, maxDraw: number): Array<{ at: number; to: number }> {
-  const moved = steps.map(s => ({ at: Math.max(0, s.at - shift), to: s.to }));
-  const last = moved.at(-1)?.at ?? 0;
-  const squeeze = last > maxDraw && last > 0 ? maxDraw / last : 1;
-  return moved.map(s => ({ at: Math.round(s.at * squeeze * 1000) / 1000, to: s.to }));
+export const underlineDrawTime = (duration: number) => Math.max(.05, duration - Math.min(.8, duration * .2));
+/** The strip length whose drawing takes `draw` seconds (the inverse of underlineDrawTime). */
+export const underlineSpanFor = (draw: number) => draw + .8 >= 4 ? draw + .8 : draw / .8;
+
+/** How far an underline is drawn `elapsed` seconds in: evenly over its draw time, or word by word. */
+export function underlineProgress(action: VideoAction, elapsed: number): number {
+  const draw = underlineDrawTime(action.duration);
+  const steps = action.drawSteps;
+  if (!steps?.length) return Math.max(0, Math.min(1, elapsed / draw));
+  // Word steps are stretched or squeezed with the mark, so a longer mark draws each word slower.
+  const scale = draw / Math.max(.05, steps[steps.length - 1].at);
+  return stepProgress(steps.map(s => ({ at: s.at * scale, to: s.to })), elapsed);
 }
 
 /**
@@ -107,12 +114,9 @@ export function computeTimelineVisualState(
         // Underline draws along line, stays for duration, then clears
         const duration = action.duration ?? 3.5;
         if (currentTime <= action.start + duration) {
-          const stepped = !!action.drawSteps?.length;
-          const progress = stepped ? stepProgress(action.drawSteps!, elapsed) : Math.min(1, elapsed / Math.max(.05, action.drawDuration ?? .4));
           state.activeUnderlines.push({
             regionId: action.targetRegionId,
-            progress,
-            stepped,
+            progress: underlineProgress(action, elapsed),
             isRtl: true, // Arabic YDT default is right-to-left
             offset: action.lineOffset,
             opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .18) : 1,

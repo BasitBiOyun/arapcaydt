@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowCounterClockwise, CaretDown, CaretLeft, CaretRight, MapPin, SpeakerHigh, Trash } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import { clock, nudgeAction } from './workflow';
+import { underlineDrawTime } from '../video/engine/timeline';
 
 /** How far one "Biraz erken / Biraz geç" click moves a cue. */
 export const NUDGE_SECONDS = 0.3;
@@ -47,10 +48,9 @@ export const UNDERLINE_STAYS = [1, 2, 3, 5, 8];
 /** One "Yukarı / Aşağı" click moves a line by this share of its text line. */
 export const LINE_STEP = .15;
 
-/** Stays for `seconds` (never past the end), drawn within it. */
+/** Stays for `seconds` (never past the end); an underline is drawn over that time. */
 export function withStay(action: VideoAction, seconds: number, total: number): VideoAction {
-  const duration = Math.max(.3, Math.min(seconds, total - action.start));
-  return { ...action, duration, drawDuration: Math.min(action.drawDuration ?? .6, Math.max(.2, duration - .3)) };
+  return { ...action, duration: Math.max(.3, Math.min(seconds, total - action.start)) };
 }
 export const withLineOffset = (action: VideoAction, delta: number): VideoAction =>
   ({ ...action, lineOffset: Math.round(Math.max(-1.5, Math.min(1.5, (action.lineOffset ?? 0) + delta)) * 100) / 100 });
@@ -107,7 +107,7 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
   const addCross = (regionId: string) => { const cross = manualCross(regionId, currentTime, total); change([...actions, cross]); show(cross.start); };
   const unmarked = unmarkedOptions(actions, regions);
   const remove = (id: string) => change(actions.filter(a => a.id !== id));
-  const update = (cue: VideoAction, next: VideoAction) => { change(actions.map(a => a.id === cue.id ? next : a)); show(cue.start + Math.min(next.duration, (next.drawDuration ?? .6) + .1)); };
+  const update = (cue: VideoAction, next: VideoAction) => { change(actions.map(a => a.id === cue.id ? next : a)); show(cue.start + (next.type === 'underline' ? underlineDrawTime(next.duration) : Math.min(next.duration, .7))); };
   const back = () => { const previous = undo.at(-1); if (previous) { onUpdateActions(previous); setUndo(undo.slice(0, -1)); } };
 
   const cues = listedCues(actions);

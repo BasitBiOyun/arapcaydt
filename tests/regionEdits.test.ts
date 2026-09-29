@@ -81,7 +81,7 @@ test('toolbar marks: added at the paused moment; a tick replaces the cross; a dr
   assert.equal(addMark(cross, 'option-c', 'reject', 5, 40).length, 2, 'other options keep theirs');
   const both = addMark(addMark([], 'phrase', 'underline', 39.95, 40), 'option-a', 'focus', 5, 40);
   assert.deepEqual(both.map(a => a.type), ['focus', 'underline'], 'sorted by time');
-  assert.ok(both[1].duration > 0 && both[1].drawDuration === 1.2);
+  assert.ok(both[1].duration > 0);
   assert.equal(both[0].duration, 2.5);
   const box = drawnRegion('n', .9, .8, 1.2, .6);
   assert.deepEqual([box.x, box.y, +box.width.toFixed(2), +box.height.toFixed(2)], [.9, .6, .1, .2]);
@@ -108,7 +108,7 @@ test('mark strip: marks never overlap on screen; dragging moves a mark or one of
   assert.deepEqual([later.start, later.duration], [2, 2], 'the end stays put');
   assert.ok(Math.abs(dragPill(u, 'start', 5, 40).duration - .3) < 1e-9, 'never shorter than 0.3 s');
   const shorter = dragPill(u, 'end', -2.5, 40);
-  assert.equal(shorter.duration, .5); assert.ok(shorter.drawDuration! <= .3 + 1e-9, 'drawn within its time');
+  assert.equal(shorter.duration, .5);
   const cross = dragPill(marks[2], 'end', 3, 40);
   assert.deepEqual([cross.start, cross.start + cross.duration], [7.5, 40], 'a cross only moves its start and still lasts to the end');
 });
@@ -142,15 +142,21 @@ test('picture editing: sides resize one edge; a flat underline stroke becomes th
   assert.equal(typicalLineHeight([{ ...box, content: 'a', height: .04 }, { ...box, content: 'b', height: .06 }, { ...box, content: 'c', height: .05 }]), .05);
 });
 
-test('underlines follow the spoken words and keep them when the mark is moved', async () => {
+test('underlines follow the spoken words, drawn over the whole length of the mark', async () => {
   const { underlineSteps } = await import('../src/services/analysis/timelineAligner');
-  const { fitSteps, stepProgress } = await import('../src/features/video/engine/timeline');
+  const { stepProgress, underlineProgress, underlineDrawTime, underlineSpanFor } = await import('../src/features/video/engine/timeline');
   const steps = underlineSteps([{ text: 'ٱلْحَلِيبَ', start: 10, end: 11 }, { text: 'بَارِدٌ', start: 11.5, end: 12 }], 10)!;
   assert.deepEqual(steps.map(s => s.at), [1, 1.5, 2], 'the second word starts after a pause');
   assert.equal(stepProgress(steps, .5), steps[0].to / 2);
   assert.equal(stepProgress(steps, 1.25), steps[0].to, 'the line waits during the pause');
   assert.equal(stepProgress(steps, 2), 1);
   assert.equal(underlineSteps([{ text: 'tek', start: 1, end: 2 }], 1), undefined, 'one word sweeps as before');
-  assert.deepEqual(fitSteps(steps, .5, 10).map(s => s.at), [.5, 1, 1.5], 'a later start keeps the words where they are spoken');
-  assert.equal(fitSteps(steps, 0, 1).at(-1)!.at, 1, 'a shorter mark squeezes the drawing into its time');
+  for (const d of [.5, 1, 3, 5, 10]) assert.ok(Math.abs(underlineSpanFor(underlineDrawTime(d)) - d) < 1e-9, `span ↔ draw time at ${d} s`);
+  const line = { id: 'u', type: 'underline', targetRegionId: 'p', start: 0, duration: 5 } as any;
+  assert.ok(Math.abs(underlineDrawTime(5) - 4.2) < 1e-9, 'a 5 s mark draws for 4.2 s and shows the full line 0.8 s');
+  assert.ok(Math.abs(underlineProgress(line, 2.1) - .5) < 1e-9, 'even pace over the mark');
+  assert.ok(Math.abs(underlineProgress({ ...line, duration: 1 }, .4) - .5) < 1e-9, 'a 1 s mark draws in 0.8 s');
+  const worded = { ...line, duration: underlineSpanFor(2), drawSteps: steps };
+  assert.equal(underlineProgress(worded, 1.25), steps[0].to, 'at its natural length the words keep their spoken times');
+  assert.equal(underlineProgress({ ...worded, duration: underlineSpanFor(4) }, 2.5), steps[0].to, 'a twice as long mark draws each word twice as slowly');
 });
