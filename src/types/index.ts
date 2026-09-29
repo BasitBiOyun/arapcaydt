@@ -95,6 +95,8 @@ export type VideoActionType =
 
 export interface VideoAction {
   drawDuration?: number;
+  /** Underline only: moves this line up (−) or down (+), in heights of its text line. */
+  lineOffset?: number;
   id: string;
   start: number; // seconds
   startTime?: number; // alias
@@ -143,6 +145,8 @@ export interface VideoConfig {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
+  /** Every underline in this video moves up (−) or down (+), in heights of its text line. */
+  underlineOffset?: number;
   showOutro?: boolean;
   timingQuality?: 'word-aligned' | 'anchored' | 'approximate';
   pipelineVersion?: number;

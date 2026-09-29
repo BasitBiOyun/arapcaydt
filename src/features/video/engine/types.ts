@@ -13,6 +13,8 @@ export interface ActiveUnderline {
   color?: string;
   /** Fades the marker out at the end of its spoken span. */
   opacity?: number;
+  /** Teacher's nudge for this line, in heights of its text line. */
+  offset?: number;
 }
 
 export interface ActiveFocus {
@@ -60,6 +62,8 @@ export interface RenderOptions {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
+  /** Moves every underline up (−) or down (+), in heights of its text line. */
+  underlineOffset?: number;
   /** Closing "Doğru cevap" card after the narration (on unless false). */
   showOutro?: boolean;
   /** Narration length; draws the thin progress bar in exported frames. */

@@ -47,6 +47,30 @@ const LATIN = /[A-Za-zÇĞİÖŞÜçğıöşü0-9]/;
 
 interface CaptionToken { text: string; from: number; to: number; rtl: boolean; width: number; start?: number; glued?: boolean }
 
+/**
+ * Captions get their own strip so they never cover the question: at the bottom when the
+ * caption sits low, at the top when it sits high, none for a caption placed mid-screen
+ * (the teacher's explicit choice) or when there are no captions. Sized for two lines.
+ */
+export function captionStrip(options: Pick<RenderOptions, 'captions' | 'showCaptions' | 'captionY'>, height: number): { edge: 'top' | 'bottom'; size: number } | null {
+  if (options.showCaptions === false || !options.captions?.length) return null;
+  const y = options.captionY ?? .85;
+  const size = 160 * height / 1080;
+  return y >= .7 ? { edge: 'bottom', size } : y <= .3 ? { edge: 'top', size } : null;
+}
+
+/** The image is fitted into what the caption strip leaves free, shrinking only when it has to. */
+export function imageFitRect(imgWidth: number, imgHeight: number, width: number, height: number, strip: ReturnType<typeof captionStrip>): FitRect {
+  if (!strip) return calculateFitRect(imgWidth, imgHeight, width, height);
+  const fit = calculateFitRect(imgWidth, imgHeight, width, height - strip.size);
+  return { ...fit, y: fit.y + (strip.edge === 'top' ? strip.size : 0) };
+}
+
+/** Where an underline sits: just under its text (OCR boxes already include the vowel marks), plus the teacher's nudges. */
+export function underlineY(rect: FitRect, scale: number, offset = 0): number {
+  return rect.y + rect.height + 2 * scale + offset * rect.height;
+}
+
 /** Lays out words in visual order: Arabic runs read right-to-left inside a Turkish (LTR) line. */
 function layoutCaptionLine(tokens: CaptionToken[], rtlBase: boolean, space: number) {
   const placed: Array<CaptionToken & { x: number }> = [];
@@ -120,7 +144,9 @@ function drawCaption(ctx: CanvasRenderingContext2D, width: number, height: numbe
   const lineHeight = size * 1.6;
   const boxHeight = lines.length * lineHeight + 24 * scale;
   const boxWidth = Math.min(maxWidth, Math.max(...layouts.map(l => l.width)) + padX * 2);
-  const centerY = Math.max(boxHeight / 2, Math.min(height - boxHeight / 2, height * (options.captionY ?? .85)));
+  const strip = captionStrip(options, height);
+  const centerY = strip ? (strip.edge === 'top' ? strip.size / 2 : height - strip.size / 2)
+    : Math.max(boxHeight / 2, Math.min(height - boxHeight / 2, height * (options.captionY ?? .85)));
   ctx.globalAlpha = Math.max(0, fade);
   ctx.shadowColor = 'rgba(15,23,42,.35)'; ctx.shadowBlur = 24 * scale; ctx.shadowOffsetY = 6 * scale;
   ctx.fillStyle = 'rgba(24,16,20,.86)'; ctx.beginPath();
@@ -207,7 +233,9 @@ function drawOutroCard(ctx: CanvasRenderingContext2D, width: number, height: num
   const r = 26 * scale, gap = 18 * scale, padX = 34 * scale, h = 84 * scale;
   const w = padX * 2 + r * 2 + gap + ctx.measureText(text).width;
   const x = (width - w) / 2;
-  const cy = Math.max(h / 2, Math.min(height - h / 2, height * (options.captionY ?? .85))) + (1 - reveal) * 24 * scale;
+  const strip = captionStrip(options, height);
+  const cy = (strip ? (strip.edge === 'top' ? strip.size / 2 : height - strip.size / 2)
+    : Math.max(h / 2, Math.min(height - h / 2, height * (options.captionY ?? .85)))) + (1 - reveal) * 24 * scale;
   ctx.globalAlpha = reveal;
   ctx.shadowColor = 'rgba(15,23,42,.3)'; ctx.shadowBlur = 24 * scale; ctx.shadowOffsetY = 6 * scale;
   ctx.fillStyle = '#16A34A'; ctx.beginPath(); ctx.roundRect(x, cy - h / 2, w, h, h / 2); ctx.fill();
@@ -226,7 +254,7 @@ export function renderQuestionVideoFrame(
 ): FitRect {
   const scale = Math.min(width / 1920, height / 1080);
   ctx.save(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, width, height);
-  const fit = calculateFitRect(imageElement?.naturalWidth || width, imageElement?.naturalHeight || height, width, height);
+  const fit = imageFitRect(imageElement?.naturalWidth || width, imageElement?.naturalHeight || height, width, height, captionStrip(options, height));
   // The slide is always shown whole (no zoom on the examined option).
   ctx.save();
   if (imageElement?.complete && imageElement.naturalWidth > 0)
@@ -261,12 +289,11 @@ export function renderQuestionVideoFrame(
     ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = h.opacity;
     ctx.fillStyle = '#FFD860'; ctx.beginPath(); ctx.roundRect(r.x, r.y, r.width, r.height, 5 * scale); ctx.fill(); ctx.restore();
   }
-  // Arabic is underlined as it is read (right-to-left). The line sits below the
-  // lowest harakat, so no box ever cuts through the vowel marks.
+  // Arabic is underlined as it is read (right-to-left), just below the word's own box.
   for (const u of state.activeUnderlines) {
     const r = rectFor(u.regionId); if (!r || u.progress <= 0) continue;
     const swept = r.width * easeOutQuad(u.progress);
-    const y = r.y + r.height + Math.max(5 * scale, r.height * .12);
+    const y = underlineY(r, scale, (options.underlineOffset ?? 0) + (u.offset ?? 0));
     ctx.save(); ctx.globalAlpha = u.opacity ?? 1;
     ctx.strokeStyle = '#D97706'; ctx.lineWidth = 5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
     ctx.moveTo(u.isRtl ? r.x + r.width : r.x, y);

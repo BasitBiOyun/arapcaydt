@@ -89,6 +89,7 @@ export function computeTimelineVisualState(
             regionId: action.targetRegionId,
             progress,
             isRtl: true, // Arabic YDT default is right-to-left
+            offset: action.lineOffset,
             opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .18) : 1,
           });
         }

@@ -107,3 +107,32 @@ test('MP4 tracks only take increasing timestamps (a packet one frame early is dr
   // The macOS AAC encoder after a restart: 2 773 333 µs, then one frame back to 2 752 000 µs.
   assert.deepEqual([2730667,2752000,2773333,2752000,2773333,2794667].map(gate),[true,true,true,false,false,true]);
 });
+
+test('captions get their own strip: a tall question never lies under the caption', async () => {
+  const { captionStrip, imageFitRect, calculateFitRect } = await import('../src/features/video/engine/renderer');
+  const captions = [{ text: 'Doğru cevap E şıkkıdır.', start: 0, end: 2 }];
+  const tall = { w: 1000, h: 1400 };
+  const bottom = captionStrip({ captions, captionY: .85 }, 1080)!;
+  assert.equal(bottom.edge, 'bottom');
+  const fit = imageFitRect(tall.w, tall.h, 1920, 1080, bottom);
+  assert.ok(fit.y + fit.height <= 1080 - bottom.size + .5, 'option E ends above the caption strip');
+  const top = imageFitRect(tall.w, tall.h, 1920, 1080, captionStrip({ captions, captionY: .15 }, 1080));
+  assert.ok(top.y >= bottom.size - .5, 'a caption at the top pushes the question down');
+  // A wide slide that already leaves room only moves up; it does not shrink.
+  const wide = imageFitRect(1920, 700, 1920, 1080, bottom);
+  assert.equal(Math.round(wide.width), 1920);
+  assert.ok(wide.y + wide.height <= 1080 - bottom.size + .5);
+  // No captions, captions off, or a caption placed mid-screen: the image uses the whole frame as before.
+  assert.equal(captionStrip({ captions: [], captionY: .85 }, 1080), null);
+  assert.equal(captionStrip({ captions, showCaptions: false }, 1080), null);
+  assert.equal(captionStrip({ captions, captionY: .5 }, 1080), null);
+  assert.deepEqual(imageFitRect(tall.w, tall.h, 1920, 1080, null), calculateFitRect(tall.w, tall.h, 1920, 1080));
+});
+
+test('underlines sit right under their words and move with the teacher’s nudges', async () => {
+  const { underlineY } = await import('../src/features/video/engine/renderer');
+  const line = { x: 100, y: 200, width: 400, height: 50 };
+  assert.equal(underlineY(line, 1), 252, 'two pixels under the box, no longer a line-height gap');
+  assert.equal(underlineY(line, 1, -.2), 242);
+  assert.equal(underlineY(line, 1, .3), 267);
+});

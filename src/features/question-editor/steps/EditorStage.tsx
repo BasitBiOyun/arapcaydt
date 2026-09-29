@@ -89,6 +89,13 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             value={currentProject.videoConfig.captionY ?? .85}
             onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, captionY: Number(e.target.value) } })} />
           Altyazı konumu
+          <label className="flex gap-2 items-center ml-2" title="Bu videodaki tüm altı çizgileri yukarı ya da aşağı kaydırır">
+          Altı çizgi
+          <input aria-label="Altı çizgi yüksekliği" type="range" min="-0.8" max="0.8" step="0.05"
+            value={currentProject.videoConfig.underlineOffset ?? 0}
+            onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, underlineOffset: Number(e.target.value) } })} />
+          <span className="text-[#787670] w-12">{(currentProject.videoConfig.underlineOffset ?? 0) < -0.02 ? 'yukarıda' : (currentProject.videoConfig.underlineOffset ?? 0) > 0.02 ? 'aşağıda' : 'normal'}</span>
+          </label>
           <label className="flex gap-2 items-center ml-2">
           <input type="checkbox" checked={currentProject.videoConfig.showOutro !== false}
             onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, showOutro: e.target.checked } })} />

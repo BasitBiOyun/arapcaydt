@@ -42,6 +42,19 @@ export function manualCross(regionId: string, at: number, total: number): VideoA
   return { id: `manual-${regionId}-${Math.round(start * 1000)}`, type: 'reject', targetRegionId: regionId, start, startTime: start, duration: total - start, label: 'reject: elle eklendi' };
 }
 
+/** How long an underline stays, chosen by the teacher. */
+export const UNDERLINE_STAYS = [1, 2, 3, 5, 8];
+/** One "Yukarı / Aşağı" click moves a line by this share of its text line. */
+export const LINE_STEP = .15;
+
+/** Stays for `seconds` (never past the end), drawn within it. */
+export function withStay(action: VideoAction, seconds: number, total: number): VideoAction {
+  const duration = Math.max(.3, Math.min(seconds, total - action.start));
+  return { ...action, duration, drawDuration: Math.min(action.drawDuration ?? .6, Math.max(.2, duration - .3)) };
+}
+export const withLineOffset = (action: VideoAction, delta: number): VideoAction =>
+  ({ ...action, lineOffset: Math.round(Math.max(-1.5, Math.min(1.5, (action.lineOffset ?? 0) + delta)) * 100) / 100 });
+
 /** One line for the closed list: "3 şık elenir · 1 doğru cevap · 2 vurgu". */
 export function cueSummary(cues: VideoAction[]): string {
   const count = (types: VideoAction['type'][]) => cues.filter(c => types.includes(c.type)).length;
@@ -94,6 +107,7 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
   const addCross = (regionId: string) => { const cross = manualCross(regionId, currentTime, total); change([...actions, cross]); show(cross.start); };
   const unmarked = unmarkedOptions(actions, regions);
   const remove = (id: string) => change(actions.filter(a => a.id !== id));
+  const update = (cue: VideoAction, next: VideoAction) => { change(actions.map(a => a.id === cue.id ? next : a)); show(cue.start + Math.min(next.duration, (next.drawDuration ?? .6) + .1)); };
   const back = () => { const previous = undo.at(-1); if (previous) { onUpdateActions(previous); setUndo(undo.slice(0, -1)); } };
 
   const cues = listedCues(actions);
@@ -157,6 +171,17 @@ export function SimpleTimingList({ actions, regions, duration, currentTime, onUp
                   style={{ opacity: Math.abs(currentTime - cue.start) < .05 ? .45 : 1 }} aria-label={`${title}: buraya al`} title={`İşareti ${clock(currentTime)} anına taşı`}>
                   <MapPin size={13} /> Buraya al
                 </button>
+                {cue.type === 'underline' && <>
+                  <label className="inline-flex items-center gap-1 text-xs text-[#55544F]">Kalsın
+                    <select className="border rounded-lg px-1.5 py-1 bg-white text-xs" value={UNDERLINE_STAYS.includes(Math.round(cue.duration)) ? Math.round(cue.duration) : ''}
+                      onChange={e => update(cue, withStay(cue, Number(e.target.value), total))} aria-label={`${title}: ne kadar kalsın`}>
+                      {!UNDERLINE_STAYS.includes(Math.round(cue.duration)) && <option value="">{cue.duration.toLocaleString('tr', { maximumFractionDigits: 1 })} sn</option>}
+                      {UNDERLINE_STAYS.map(s => <option key={s} value={s}>{s} sn</option>)}
+                    </select>
+                  </label>
+                  <button type="button" className={button} onClick={() => update(cue, withLineOffset(cue, -LINE_STEP))} aria-label={`${title}: çizgiyi yukarı al`} title="Çizgiyi biraz yukarı al">↑ Çizgi</button>
+                  <button type="button" className={button} onClick={() => update(cue, withLineOffset(cue, LINE_STEP))} aria-label={`${title}: çizgiyi aşağı al`} title="Çizgiyi biraz aşağı al">↓ Çizgi</button>
+                </>}
                 <button type="button" className={`${button} text-[#8B1E2D] ml-auto`} onClick={() => remove(cue.id)} aria-label={`${title}: kaldır`} title="İşareti kaldır">
                   <Trash size={13} />
                 </button>

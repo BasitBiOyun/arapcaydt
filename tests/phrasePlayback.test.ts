@@ -88,3 +88,20 @@ test('a word found twice in the question is underlined inside the quote being ex
  assert.equal(findBestArabicMatches('جديد yeni demektir.',ocr).length,1,'one place: drawn');
  assert.deepEqual(findBestArabicMatches('في burada harf-i cerdir.',[word('في',.5,.5)]),[],'a lone particle is not underlined');
 });
+test('an underline never flashes past: readable draw, a moment on screen, adjustable by the teacher',async()=>{
+ const {withStay,withLineOffset}=await import('../src/features/question-editor/SimpleTimingList');
+ const {UNDERLINE_HOLD}=await import('../src/services/analysis/timelineAligner');
+ const matches=findBestArabicMatches('كتاب ve قلم.',[word('كتاب',.7),word('قلم',.5)]);
+ const parsed=parseSolutionSemantics('كتاب ve قلم.',matches.map(m=>m.region),matches);
+ // Spoken quickly: 0.2 s per word, the next underline right after.
+ const actions=alignEventsWithNarration(parsed.events,[{text:'كتاب',start:1,end:1.2},{text:'ve',start:1.2,end:1.3},{text:'قلم',start:1.3,end:1.5}],10,'كتاب ve قلم.');
+ const first=actions.find(a=>a.type==='underline')!;
+ assert.ok(first.drawDuration!>=.6,'drawn at a readable pace');
+ assert.ok(first.duration>=first.drawDuration!+UNDERLINE_HOLD-1e-9,'stays after it is drawn');
+ const stay=withStay(first,5,10);
+ assert.equal(stay.duration,5);
+ assert.equal(withStay(first,8,3).duration,3-first.start,'never past the end of the video');
+ assert.equal(withLineOffset(withLineOffset(first,-.15),-.15).lineOffset,-.3);
+ const state=computeTimelineVisualState(first.start+.7,[{...first,lineOffset:-.3}]);
+ assert.equal(state.activeUnderlines[0].offset,-.3);
+});
