@@ -70,3 +70,23 @@ test('on-picture editing: corners resize without flipping or leaving the image; 
   assert.deepEqual(marksAt(actions, 'option-b', 10).map((a: any) => a.id), ['x']);
   assert.deepEqual(pickableRegions([box, { ...box, id: 'question-root', height: .8 }]).map(r => r.id), ['option-b']);
 });
+
+test('toolbar marks: added at the paused moment; a tick replaces the cross; a drawn box stays on the image', async () => {
+  const { addMark, drawnRegion } = await import('../src/features/video/PreviewEditOverlay');
+  const cross = addMark([], 'option-b', 'reject', 12, 40);
+  assert.deepEqual(cross.map(a => [a.type, a.start, a.duration]), [['reject', 12, 28]], 'a cross stays to the end');
+  const tick = addMark(cross, 'option-b', 'correct', 15, 40);
+  assert.deepEqual(tick.map(a => a.type), ['correct'], 'the tick replaces the cross on the same option');
+  assert.deepEqual(addMark(cross, 'option-b', 'reject', 5, 40).map(a => [a.type, a.start]), [['reject', 5]], 'one cross per option: the new one moves it');
+  assert.equal(addMark(cross, 'option-c', 'reject', 5, 40).length, 2, 'other options keep theirs');
+  const both = addMark(addMark([], 'phrase', 'underline', 39.95, 40), 'option-a', 'focus', 5, 40);
+  assert.deepEqual(both.map(a => a.type), ['focus', 'underline'], 'sorted by time');
+  assert.ok(both[1].duration > 0 && both[1].drawDuration === .6);
+  assert.equal(both[0].duration, 2.5);
+  const box = drawnRegion('n', .9, .8, 1.2, .6);
+  assert.deepEqual([box.x, box.y, +box.width.toFixed(2), +box.height.toFixed(2)], [.9, .6, .1, .2]);
+  const { applyRegionEdits } = await import('../src/services/analysis/regionEdits');
+  const config = applyRegionEdits({ aspectRatio: '16:9', fps: 30, backgroundColor: '#fff', showWatermark: false, annotations: [], regions: [], timelineActions: [] } as any,
+    [{ ...box, id: 'manual-box-1' }], 'metin', [], 40);
+  assert.equal(config.regions!.length, 1, 'a drawn box is kept like any other');
+});
