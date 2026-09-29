@@ -1,5 +1,5 @@
 import React from 'react';
-import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck } from '@phosphor-icons/react';
+import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck, Question } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 import { BrandMark } from './BrandMark';
@@ -7,7 +7,7 @@ import { APP_NAME } from '../../config/brand';
 import { PAGE_LABELS } from '../../config/pages';
 import { ReportProblem } from '../../features/feedback/ReportProblem';
 
-export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin';
+export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin' | 'help';
 
 interface AppSidebarProps {
   currentPage: AppPage;
@@ -75,6 +75,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <div className="text-xs uppercase font-semibold text-[#8C8A82] tracking-wider">Sistem</div>
         </div>
         {link({ page: 'settings', label: PAGE_LABELS.settings, icon: Gear })}
+        {link({ page: 'help', label: PAGE_LABELS.help, icon: Question })}
         <ReportProblem sender={user?.name} />
         <button className="mobile-signout" onClick={logout}><SignOut size={18}/>Çıkış</button>
       </nav>

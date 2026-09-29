@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { LeaveGuard } from '../layouts/AppLayout';
-import { Stack, Play, Stop, ArrowRight, ImageSquare, MusicNotes, FileText } from '@phosphor-icons/react';
+import { Stack, Play, Stop, ArrowRight, ImageSquare, MusicNotes, FileText, FileZip, DownloadSimple } from '@phosphor-icons/react';
 import { FileDrop } from '../components/common/FileDrop';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../config/categories';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
@@ -21,12 +21,18 @@ import { database } from '../services/supabase';
 import { localWhisperService } from '../services/whisper/localWhisperService';
 import { toast } from 'sonner';
 import { useConfirm } from '../components/common/ConfirmDialog';
+import { createZip, zipSafeName } from '../services/zip';
 
 const stageLabels: Record<BatchRowState['stage'], string> = {
   waiting: 'Sırada', creating: 'Oluşturuluyor', voice: 'Ses', markers: 'İşaretler', video: 'MP4',
   done: 'Tamamlandı', failed: 'Hata', skipped: 'Atlandı', stopped: 'Durduruldu',
 };
 const readinessLabels = { ready: 'Yayına hazır', check: 'Kontrol önerilir', blocked: 'Düzeltme gerekli' };
+/** A batch video's name inside the ZIP, e.g. "Eylül Denemesi 1 – Soru 05.mp4". */
+export function batchVideoName(collection: string, number: number, title: string) {
+  const label = collection.trim() || title.trim() || 'Soru';
+  return `${zipSafeName(label)} – Soru ${String(number).padStart(2, '0')}.mp4`;
+}
 const readinessTones = { ready: 'text-[#15803D]', check: 'text-[#B45309]', blocked: 'text-red-700' };
 
 
@@ -44,6 +50,9 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
   const [examYear, setExamYear] = useState(defaults.examYear || `${new Date().getFullYear()} YDT`);
   const [generateVoice, setGenerateVoice] = useState(false);
   const [exportVideo, setExportVideo] = useState(true);
+  // Finished videos wait here and come as one ZIP at the end, unless the teacher wants each one at once.
+  const [asZip, setAsZip] = useState(true);
+  const [videos, setVideos] = useState<Record<number, { name: string; blob: Blob }>>({});
   const [rows, setRows] = useState<Record<number, BatchRowState>>({});
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
@@ -99,6 +108,9 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       ? { ...previous, ...Object.fromEntries(items.map(i => [i.number, { stage: 'waiting' as const, projectId: previous[i.number]?.projectId }])) }
       : Object.fromEntries(plan.items.map(i => [i.number, { stage: 'waiting' as const }])));
     const outcome: Record<number, BatchRowState['stage']> = {};
+    if (!onlyUnfinished) setVideos({});
+    const finished: Record<number, { name: string; blob: Blob }> = {};
+    const zipMode = asZip;
     const deps: BatchDeps<File> = {
       // Only question images go through this; MP3s use prepareUpload below.
       readDataUrl: readCompressedImage,
@@ -118,7 +130,12 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       runPipeline: (p, declared) => localVideoPipeline.executePipeline({ imageUrl: p.imageUrl, solutionText: p.solutionText,
         narrationSource: p.narrationSource!, correctAnswer: declared }),
       exportVideo: (p, onPercent, signal) => exportProjectVideo(p, onPercent, signal),
-      download: (blob, p) => saveFile(blob, videoFileName(p)),
+      download: (blob, p) => {
+        const name = batchVideoName(p.examName || examName, p.questionNumber, p.title);
+        finished[p.questionNumber] = { name, blob };
+        setVideos(previous => ({ ...previous, [p.questionNumber]: { name, blob } }));
+        if (!zipMode) saveFile(blob, videoFileName(p));
+      },
       recordExport: async p => { await database().rpc('record_video_export', { project_id: p.id }); },
       wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
       now: () => Date.now(),
@@ -129,7 +146,8 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       const done = Object.values(outcome).filter(stage => stage === 'done').length;
       const left = Object.values(outcome).filter(stage => stage === 'failed' || stage === 'stopped').length;
       if (left) toast.warning(`${done} soru hazır, ${left} soru yarım kaldı.`, { description: 'Hata nedenleri tabloda. “Yarım kalanları tamamla” ile kaldıkları yerden devam edebilirsiniz.', duration: 12000 });
-      else if (done) toast.success(`${done} soru hazır.`, { description: exportVideo ? 'MP4 dosyaları indirildi.' : 'Sorular listenizde.' });
+      else if (done) toast.success(`${done} soru hazır.`, { description: exportVideo ? (zipMode ? 'Videolar tek ZIP dosyası olarak indiriliyor.' : 'MP4 dosyaları indirildi.') : 'Sorular listenizde.' });
+      if (zipMode && Object.keys(finished).length) downloadZip(finished);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Toplu üretim tamamlanamadı.');
     } finally {
@@ -137,6 +155,16 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       void loadProjects();
     }
   };
+
+  /** All finished videos as one ZIP, named by collection and question number. */
+  function downloadZip(list: Record<number, { name: string; blob: Blob }> = videos) {
+    void (async () => {
+      const entries = await Promise.all(Object.values(list).map(async v => ({ name: v.name, data: new Uint8Array(await v.blob.arrayBuffer()) })));
+      entries.sort((a, b) => a.name.localeCompare(b.name, 'tr', { numeric: true }));
+      saveFile(createZip(entries), `${zipSafeName(examName.trim() || 'Toplu üretim')} – videolar.zip`);
+    })().catch(() => toast.error('ZIP dosyası hazırlanamadı.', { description: 'Videoları tablodaki MP4 düğmeleriyle tek tek indirebilirsiniz.' }));
+  }
+  const videoCount = Object.keys(videos).length;
 
   const field = 'block w-full border rounded-lg p-2.5 mt-1 text-sm bg-white';
   return <section className="studio-library">
@@ -174,9 +202,14 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
         </label>
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1" checked={exportVideo} disabled={running} onChange={e => setExportVideo(e.target.checked)} />
-          <span>Hazır olan soruların MP4'ünü sırayla indir
-            <span className="block text-xs text-[#787670]">Tarayıcı ilk dosyada birden çok indirmeye izin isteyebilir. İşlem bitene kadar bu sekmeyi açık tutun.</span></span>
+          <span>Hazır olan soruların MP4 videosunu da hazırla
+            <span className="block text-xs text-[#787670]">İşlem bitene kadar bu sekmeyi açık tutun.</span></span>
         </label>
+        {exportVideo && <label className="flex items-start gap-2 text-sm ml-6">
+          <input type="checkbox" className="mt-1" checked={asZip} disabled={running} onChange={e => setAsZip(e.target.checked)} />
+          <span>Videoları sonunda tek ZIP dosyası olarak indir
+            <span className="block text-xs text-[#787670]">Kapalıysa her video hazır olunca ayrı indirilir (tarayıcı birden çok indirmeye izin isteyebilir).</span></span>
+        </label>}
       </div>
       <div className="space-y-3">
       <label className="block text-sm font-semibold">Çözüm metinleri
@@ -190,6 +223,11 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
     </div>
 
     {error && <p role="alert" className="save-alert">{error}</p>}
+    {videoCount > 0 && !running && <div className="mt-4 flex flex-wrap items-center gap-3 p-4 rounded-xl bg-[#F4EDEB] border border-[#E5D5D2]">
+      <FileZip size={24} className="text-[#8B1E2D]" />
+      <span className="mr-auto text-base font-semibold">{videoCount} video hazır.</span>
+      <button className="studio-primary" onClick={() => downloadZip()}><DownloadSimple size={18} />Hepsini ZIP olarak indir</button>
+    </div>}
     {plan.unmatched.length > 0 && <p className="text-xs text-[#B45309] mt-4">Eşleşmeyen dosyalar: {plan.unmatched.join(' · ')}</p>}
     <p className="library-count" role="status">{plan.items.length ? `${plan.items.length} soru bulundu · ${runnable.length} tanesi hazırlanabilir` : 'Dosyaları seçip çözüm metnini ekleyin.'}</p>
 
@@ -214,7 +252,10 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
               {!item.problems.length && !item.notes.length && <span className="text-xs text-[#15803D]">Hazır</span>}
             </>}
           </td>
-          <td className="p-3">{row?.projectId && !running && <button className="studio-secondary" onClick={() => onOpenProject(row.projectId!)}>Aç<ArrowRight size={16} /></button>}</td>
+          <td className="p-3"><span className="flex flex-wrap gap-2">
+            {videos[item.number] && <button className="studio-secondary" title="Bu videoyu ayrı indir" onClick={() => saveFile(videos[item.number].blob, videos[item.number].name)}><DownloadSimple size={16} />MP4</button>}
+            {row?.projectId && !running && <button className="studio-secondary" onClick={() => onOpenProject(row.projectId!)}>Aç<ArrowRight size={16} /></button>}
+          </span></td>
         </tr>;
       })}</tbody>
     </table></div>}

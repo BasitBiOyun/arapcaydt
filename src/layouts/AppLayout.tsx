@@ -11,6 +11,8 @@ import { QuestionsPage } from '../pages/QuestionsPage';
 import { QuestionEditorPage } from '../pages/QuestionEditorPage';
 import { SettingsPage } from '../pages/SettingsPage';
 import { BatchPage } from '../pages/BatchPage';
+import { HelpPage } from '../pages/HelpPage';
+import { FirstRunGuide, guideSeen } from '../features/help/FirstRunGuide';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
 import { pageHash, parseHash } from './route';
@@ -31,6 +33,8 @@ export const AppLayout: React.FC = () => {
     return page;
   });
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
+  // A short picture tour the first time a teacher signs in on this device.
+  const [showGuide, setShowGuide] = useState(() => !!user && !guideSeen(user.id));
   const { selectProject, createNewProject, currentProject, projects, error, loadProjects, isLoading } = useProjects();
   const currentProjectId = useRef(currentProject?.id);
   currentProjectId.current = currentProject?.id;
@@ -76,8 +80,9 @@ export const AppLayout: React.FC = () => {
   }, [selectProject, navigate]);
 
   useEffect(() => {
+    // The address keeps what it names (the editor's question, the help topic) when it already points here.
     window.history.replaceState({ ...(window.history.state || {}), studioPage: pageRef.current }, '',
-      pageRef.current === 'editor' ? window.location.hash || pageHash('editor') : pageHash(pageRef.current));
+      parseHash(window.location.hash).page === pageRef.current && window.location.hash.startsWith('#/') ? window.location.hash : pageHash(pageRef.current));
     const onPop = (event: PopStateEvent) => {
       // A typed or pasted address has no saved state: read the page from the address itself.
       const target = parseHash(window.location.hash);
@@ -180,6 +185,7 @@ export const AppLayout: React.FC = () => {
 
           {currentPage === 'batch' && <BatchPage onOpenProject={id => void handleSelectProject(id)} registerLeaveGuard={registerLeaveGuard} />}
           {currentPage === 'settings' && <SettingsPage />}
+          {currentPage === 'help' && <HelpPage onShowGuide={() => setShowGuide(true)} />}
         </main>
       </div>
 
@@ -188,6 +194,7 @@ export const AppLayout: React.FC = () => {
         onClose={() => setIsNewModalOpen(false)}
         onCreate={handleConfirmCreate}
       />
+      {showGuide && user && <FirstRunGuide userId={user.id} onClose={() => setShowGuide(false)} />}
     </div>
   );
 };

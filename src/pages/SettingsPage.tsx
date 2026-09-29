@@ -5,22 +5,17 @@ import {
   ArrowCounterClockwise, 
   Sparkle, 
   ShieldCheck, 
-  Info,
-  DownloadSimple
+  Info
 } from '@phosphor-icons/react';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { ElevenLabsStatus } from '../types';
-import { useProjects } from '../features/projects/ProjectContext';
-import { projectRepository } from '../features/projects/projectRepository';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
-import { saveFile } from '../services/narration/browserMedia';
 import { DefaultsCard, ProfileCard, TextSizeCard } from '../features/settings/MySettingsCards';
 import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
+import { BackupCard } from '../features/settings/BackupCard';
 import { useAuth } from '../features/auth/AuthContext';
-import { toast } from 'sonner';
 
 export const SettingsPage: React.FC = () => {
-  const { projects } = useProjects();
   const { user } = useAuth();
   const [status, setStatus] = useState<ElevenLabsStatus | null>(null);
   const [isTesting, setIsTesting] = useState(false);
@@ -42,18 +37,6 @@ export const SettingsPage: React.FC = () => {
     } finally {
       setIsTesting(false);
     }
-  };
-
-  const handleExportBackup = async () => {
-    // The shared list holds summaries only; the backup needs every full project.
-    const full = await projectRepository.getAll();
-    const data = {
-      exportedAt: new Date().toISOString(),
-      projectsCount: full.length,
-      projects: full,
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    saveFile(blob, `arapca_ydt_soru_yedek_${new Date().toISOString().split('T')[0]}.json`);
   };
 
   return (
@@ -123,30 +106,7 @@ export const SettingsPage: React.FC = () => {
       {/* Teacher's own Google AI Studio key (used before the shared capacity) */}
       <TeacherKeyCard />
 
-      {/* Backup */}
-      <div className="p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-3 shadow-xs">
-        <div className="border-b border-[#EFEFEA] pb-2">
-          <h3 className="text-sm font-semibold text-[#1C1917]">
-            Yedekleme
-          </h3>
-          <p className="text-xs text-[#787670]">
-            Projeleriniz hesabınızda (bulutta) saklanır. İsterseniz tümünü bilgisayarınıza JSON dosyası olarak indirebilirsiniz.
-          </p>
-        </div>
-
-        <div className="flex items-center justify-between pt-1">
-          <div className="text-xs text-[#55544F]">
-            Kayıtlı Soru Projesi Sayısı: <strong>{projects.length}</strong>
-          </div>
-          <button
-            onClick={() => void handleExportBackup().catch(() => toast.error('Yedek hazırlanamadı.', { description: 'Bağlantınızı kontrol edip tekrar deneyin.' }))}
-            className="px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] hover:bg-[#F2F1EB] text-xs font-semibold text-[#33322E] flex items-center gap-1.5 transition-colors cursor-pointer"
-          >
-            <DownloadSimple size={14} />
-            <span>Tüm Projeleri JSON Olarak Yedekle</span>
-          </button>
-        </div>
-      </div>
+      <BackupCard />
 
       {user?.role === 'admin' && <StudioSettingsCard />}
     </div>
