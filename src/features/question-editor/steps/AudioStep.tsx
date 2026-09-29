@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { QuestionProject } from '../../../types';
+import { narrationDrift } from '../../../services/analysis/timelineAligner';
 import { capacityLine, geminiKeyService, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
 import { Check, Pause, Play, DownloadSimple, ArrowsClockwise, Trash, CircleNotch, Microphone, UploadSimple } from '@phosphor-icons/react';
 
@@ -46,6 +47,12 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
     return () => { alive = false; };
   }, [isGeneratingAudio]);
   const capacity = capacityLine(keyStatus);
+  // A generated voice can leave the script (older models add or skip words). The word
+  // transcript taken for timing shows where; forced alignment and Whisper cannot tell.
+  const source = currentProject.narrationSource;
+  const drift = useMemo(() => source?.type === 'gemini' && source.timingSource === 'gemini-transcribe'
+    ? narrationDrift(currentProject.solutionText, source.words || []) : null, [source, currentProject.solutionText]);
+  const clock = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
 
   return (
     <div hidden={step!==2} className="space-y-3">
@@ -74,6 +81,14 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </span>
             )}
           </div>
+          {drift && (drift.added.length > 0 || drift.skipped.length > 0) && (
+            <div role="alert" className="p-2.5 rounded border border-[#E5D7B0] bg-[#FAF5E6] text-[11px] text-[#5C420B] space-y-1">
+              <p className="font-semibold">Ses metinden sapmış olabilir; ilgili yerleri dinleyin:</p>
+              {drift.added.slice(0, 3).map(d => <p key={`a${d.start}`}>{clock(d.start)} · metinde olmayan: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
+              {drift.skipped.slice(0, 3).map(d => <p key={`s${d.start}`}>{clock(d.start)} · okunmamış: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
+              <p>Hatalıysa “Yeniden seslendir” deyin. Arapça kelimeler bazen farklı yazıya dökülür; sesi dinleyip karar verin.</p>
+            </div>
+          )}
 
           {/* Minimalist Audio player bar */}
           <div className="flex items-center gap-3 bg-white p-2.5 rounded-lg border border-[#E5E4DC]">

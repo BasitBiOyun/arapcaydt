@@ -12,14 +12,14 @@ import originalOcr from './fixtures/soru4-ocr.json';
 import arabicStem from './fixtures/soru4-arabic-stem.json';
 const word=(text:string,x:number,y=.3,height=.05):OCRWord=>({text,x,y,width:.09,height,confidence:90,pixelX:x*1920,pixelY:y*1080,pixelWidth:.09*1920,pixelHeight:height*1080});
 
-test('full reading draws once, then second word and repeated words get their own spoken spans',()=>{
+test('full reading draws once, the second word once at its first own reading; repeats add no marks',()=>{
  const text='الْقِطَارُ سَرِيعٌ. سَرِيعٌ demektir. سَرِيعٌ ve سَرِيعٌ.';
  const matches=findBestArabicMatches(text,[word('القطار',.7),word('سريع',.59)]);
  const parsed=parseSolutionSemantics(text,matches.map(m=>m.region),matches);
- assert.deepEqual(parsed.events.map(e=>e.semanticTriggerPhrase),['الْقِطَارُ سَرِيعٌ','سَرِيعٌ','سَرِيعٌ','سَرِيعٌ']);
+ assert.deepEqual(parsed.events.map(e=>e.semanticTriggerPhrase),['الْقِطَارُ سَرِيعٌ','سَرِيعٌ']);
  const spoken=[{text:'الْقِطَارُ',start:1,end:2},{text:'سَرِيعٌ',start:2,end:3},{text:'سَرِيعٌ',start:5,end:6},{text:'demektir',start:6,end:7},{text:'سَرِيعٌ',start:8,end:9},{text:'ve',start:9,end:10},{text:'سَرِيعٌ',start:10,end:11}];
  const actions=alignEventsWithNarration(parsed.events,spoken,12,text);
- assert.deepEqual(actions.map(a=>Math.round(a.start)),[1,5,8,10]);
+ assert.deepEqual(actions.map(a=>Math.round(a.start)),[1,5]);
  const state=computeTimelineVisualState(2,actions);
  assert.equal(state.activeUnderlines.length,1);
  assert.ok(state.activeUnderlines[0].progress>.45 && state.activeUnderlines[0].progress<.6);
@@ -77,4 +77,14 @@ test('Turkish letter pronunciation spellings retain option targeting and timesta
  assert.equal(parsed.events.find(e=>e.targetOptionLetter==='C')?.semanticTriggerPhrase,'Ce şıkkına');
  const actions=alignEventsWithNarration(parsed.events,words,12,text);
  assert.ok(Math.abs(actions.find(a=>a.type==='focus' && a.targetRegionId==='option-c')!.start-3)<.1);
+});
+test('a word found twice in the question is underlined inside the quote being explained, never at random',()=>{
+ // The stem has كتاب twice: in the quoted sentence (row 1) and elsewhere (row 2).
+ const ocr=[word('قرأت',.8,.2),word('كتاب',.7,.2),word('كتاب',.6,.5),word('جديد',.5,.5)];
+ const quoted=findBestArabicMatches('قرأت كتاب. كتاب kitap demektir.',ocr);
+ const single=quoted.find(m=>m.phrase==='كتاب')!;
+ assert.equal(single.region.y<.3,true,'the word inside the underlined sentence');
+ assert.deepEqual(findBestArabicMatches('كتاب kitap demektir.',ocr),[],'two places, no quote: left to the teacher');
+ assert.equal(findBestArabicMatches('جديد yeni demektir.',ocr).length,1,'one place: drawn');
+ assert.deepEqual(findBestArabicMatches('في burada harf-i cerdir.',[word('في',.5,.5)]),[],'a lone particle is not underlined');
 });

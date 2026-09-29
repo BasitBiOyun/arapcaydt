@@ -67,14 +67,22 @@ export interface ArabicMatchResult {
 
 /** Pick the better OCR pass per phrase without mixing overlapping word boxes. */
 export function findBestArabicMatches(text: string, primary: OCRWord[], alternative: OCRWord[] = []): ArabicMatchResult[] {
+  // Words already underlined as part of a longer quote (longest phrases come first): a
+  // shorter phrase repeated elsewhere in the question is looked for inside that quote.
+  const context = { primary: new Set<OCRWord>(), alternative: new Set<OCRWord>() };
   return extractArabicPhrases(text).flatMap((phrase, index) => {
-    const a = findArabicMatchesInOcr(phrase, primary);
-    const b = findArabicMatchesInOcr(phrase, alternative);
+    const a = findArabicMatchesInOcr(phrase, primary, context.primary);
+    const b = findArabicMatchesInOcr(phrase, alternative, context.alternative);
     const coverage = (items: ArabicMatchResult[]) => items.reduce((sum, item) => sum + normalizeArabic(item.phrase).split(' ').length, 0);
+    for (const item of a) item.matchedWords.forEach(w => context.primary.add(w));
+    for (const item of b) item.matchedWords.forEach(w => context.alternative.add(w));
     return (coverage(b) > coverage(a) ? b : a).map((item, line) => ({...item,
       region: {...item.region, id: `arabic-grounded-${index + 1}-${line + 1}`}}));
   });
 }
+
+/** Particles too common to underline on their own; inside a longer quote they are still drawn. */
+const PARTICLES = new Set(['في', 'من', 'الي', 'علي', 'عن', 'ان', 'لا', 'ما', 'لم', 'لن', 'قد', 'ثم', 'او', 'ام', 'هو', 'هي', 'هم', 'هذا', 'هذه', 'ذلك', 'تلك', 'التي', 'الذي', 'و', 'ف', 'ب', 'ل', 'ك', 'يا', 'مع', 'كل', 'بل', 'لكن']);
 
 /**
  * Searches for Arabic expressions found in the solution text inside OCR words.
@@ -96,7 +104,8 @@ export function groupOcrWordsIntoLines(words: OCRWord[]): OCRWord[][] {
 
 export function findArabicMatchesInOcr(
   solutionText: string,
-  ocrWords: OCRWord[]
+  ocrWords: OCRWord[],
+  context: Set<OCRWord> = new Set(),
 ): ArabicMatchResult[] {
   const phrases = extractArabicPhrases(solutionText);
   if (!phrases.length || !ocrWords.length) return [];
@@ -110,7 +119,8 @@ export function findArabicMatchesInOcr(
   for (const phrase of phrases) {
     const expected = normalizeArabic(phrase).split(' ').filter(Boolean);
     if (!expected.length) continue;
-    let match: typeof tokens = [];
+    if (expected.length === 1 && PARTICLES.has(expected[0])) continue;
+    const found: Array<typeof tokens> = [];
     for (let i = 0; i <= tokens.length - expected.length; i++) {
       const candidate = tokens.slice(i, i + expected.length);
       if (!candidate.every((token, index) => token.norm === expected[index])) continue;
@@ -123,8 +133,14 @@ export function findArabicMatchesInOcr(
         return token.rowIndex === previous.rowIndex + 1 &&
           token.word.y - previous.word.y < Math.max(token.word.height, previous.word.height) * 2.8;
       });
-      if (connected) { match = candidate; break; }
+      if (connected) found.push(candidate);
     }
+    // One place in the question: draw it. Several: only inside the quote the teacher just
+    // underlined; otherwise leave it for the teacher rather than underline a random one.
+    const inContext = found.filter(candidate => candidate.every(token => context.has(token.word)));
+    const match = found.length === 1 ? found[0] : inContext.length === 1 ? inContext[0] : [];
+    if (found.length > 1 && !match.length) continue;
+    match.forEach(token => context.add(token.word));
     if (!match.length) {
       // Recover proven subphrases on either side of an unread word. Never draw
       // a single large box across missing OCR evidence or disconnected columns.
@@ -135,7 +151,7 @@ export function findArabicMatchesInOcr(
         for (let i = 0; i <= expected.length; i++) {
           if (i < expected.length && !missing[i]) continue;
           if (i > begin) {
-            for (const partial of findArabicMatchesInOcr(parts.slice(begin,i).join(' '), ocrWords)) {
+            for (const partial of findArabicMatchesInOcr(parts.slice(begin,i).join(' '), ocrWords, context)) {
               partial.region.id = `arabic-partial-${matchIndex++}-${partial.region.id}`;
               results.push(partial);
             }

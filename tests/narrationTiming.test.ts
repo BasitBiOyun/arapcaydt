@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseSolutionSemantics } from '../src/services/analysis/solutionParser';
-import { alignEventsWithNarration, alignSolutionNarration } from '../src/services/analysis/timelineAligner';
+import { narrationDrift, alignEventsWithNarration, alignSolutionNarration } from '../src/services/analysis/timelineAligner';
 import type { AnnotationRegion, NarrationWord } from '../src/types';
 import type { ArabicMatchResult } from '../src/services/ocr/arabicMatcher';
 const regions: AnnotationRegion[] = ['A','B','C','D','E'].map(letter => ({id: `option-${letter.toLowerCase()}`,type:'option',label:letter,x:0,y:0,width:.2,height:.1}));
@@ -40,7 +40,7 @@ test('Konak: captions preserve supplied Arabic; Whisper Turkish phonetics are ne
   assert.ok(firstA && firstA.start > 51 && firstA.start < 53);
 });
 
-test('repeated Arabic phrases align to their own occurrence with a single underline', () => {
+test('a repeated Arabic phrase is underlined once, at its first reading', () => {
   const phrase = 'بُرْجُ السَّاعَةِ';
   const text = `${phrase} yer alır. Şimdi tekrar ${phrase} ifadesini açıklayalım.`;
   const narration: NarrationWord[] = [
@@ -55,9 +55,8 @@ test('repeated Arabic phrases align to their own occurrence with a single underl
   const highlights = actions.filter(a => a.type === 'highlight');
   const underlines = actions.filter(a => a.type === 'underline');
   assert.equal(highlights.length, 0);
-  assert.equal(underlines.length, 2);
+  assert.equal(underlines.length, 1);
   assert.ok(Math.abs(underlines[0].start - 1) < .1);
-  assert.ok(Math.abs(underlines[1].start - 9) < .1);
 });
 
 test('missing timing uses the complete script length, independent of animation event count', () => {
@@ -85,4 +84,19 @@ test('negative correctness never marks a wrong option; standalone Olmaz rejects 
 test('word-aligned and chunk-aligned timing quality remain distinguishable', () => {
   assert.equal(alignSolutionNarration('A şıkkı.', [{text:'A',start:0,end:1},{text:'şıkkı',start:1,end:2}], 3).quality, 'word-aligned');
   assert.equal(alignSolutionNarration('A şıkkı.', [{text:'A şıkkı',start:0,end:2}], 3).quality, 'anchored');
+});
+
+test('a generated voice that adds or skips words is caught from the timing transcript', () => {
+  const script = 'A şıkkına bakalım. Bu kelime yazdı demektir, anlama uymaz. Doğru cevap E şıkkıdır.';
+  const say = (text: string) => text.split(' ').map((t, i) => ({ text: t, start: i * .5, end: i * .5 + .4 }));
+  assert.deepEqual(narrationDrift(script, say(script)), { added: [], skipped: [] }, 'faithful reading');
+  const added = narrationDrift(script, say('A şıkkına bakalım. Sevgili öğrenciler şimdi hep birlikte bakalım. Bu kelime yazdı demektir, anlama uymaz. Doğru cevap E şıkkıdır.'));
+  assert.equal(added.added.length, 1);
+  assert.match(added.added[0].text, /Sevgili öğrenciler/);
+  const skipped = narrationDrift(script, say('A şıkkına bakalım. Doğru cevap E şıkkıdır.'));
+  assert.equal(skipped.skipped.length, 1);
+  assert.match(skipped.skipped[0].text, /yazdı demektir/);
+  // Arabic heard as Latin letters is a substitution, not an addition.
+  const arabic = 'الكتاب مفيد demektir. Doğru cevap E şıkkıdır.';
+  assert.deepEqual(narrationDrift(arabic, say('elkitabu mufid demektir. Doğru cevap E şıkkıdır.')), { added: [], skipped: [] });
 });

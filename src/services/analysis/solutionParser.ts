@@ -207,6 +207,25 @@ function pushOptionEvent(
 }
 
 /**
+ * "A şıkkına bakalım … A şıkkı elenir": the option is still framed, so naming it
+ * again adds no new mark. A frame ends when its option is judged or another is framed.
+ */
+function refocused(events: SemanticParsedEvent[]): Set<SemanticParsedEvent> {
+  const repeat = new Set<SemanticParsedEvent>();
+  let framed: string | undefined;
+  for (const event of [...events].sort((a, b) => (a.sourceStart ?? 0) - (b.sourceStart ?? 0) || a.order - b.order)) {
+    if (!event.targetOptionLetter) continue;
+    if (event.actionType === 'focus') {
+      if (framed === event.targetRegionId) repeat.add(event);
+      framed = event.targetRegionId;
+    } else if ((event.actionType === 'reject' || event.actionType === 'correct') && framed === event.targetRegionId) {
+      framed = undefined;
+    }
+  }
+  return repeat;
+}
+
+/**
  * Local deterministic parser for the common language teachers naturally use
  * while solving YDT questions. It deliberately follows the most recently
  * mentioned option so a two-sentence explanation such as
@@ -258,6 +277,8 @@ export function parseSolutionSemantics(
   // Last sentence of each option's own explanation: where an unjudged option is crossed.
   const lastSentenceFor: Partial<Record<OptionLetter, number>> = {};
   const inferred = new Set<OptionLetter>();
+  // Each place on the question is underlined once, at its first reading; later mentions only talk about it.
+  const underlined = new Set<string>();
   const pendingWeak: Partial<Record<OptionLetter, { trigger: string; sentence: string; sourceStart: number; sourceEnd: number; sentenceStart: number; sentenceEnd: number }>> = {};
   for (const [sentenceIndex, sentenceSpan] of sentences.entries()) {
     const sentence = sentenceSpan.text;
@@ -287,6 +308,8 @@ export function parseSolutionSemantics(
     });
     for (const {am, start, end} of candidates.filter(c => !candidates.some(other =>
       other.start <= c.start && other.end >= c.end && other.end-other.start > c.end-c.start))) {
+        if (underlined.has(am.region.id)) continue;
+        underlined.add(am.region.id);
         events.push({
           id: `event-${counter.value++}`,
           targetRegionId: am.region.id,
@@ -427,7 +450,7 @@ export function parseSolutionSemantics(
   }
 
   // Deduplicate accidental identical events while preserving order.
-  const deduped = events.filter((event, index, arr) => {
+  const unique = events.filter((event, index, arr) => {
     const firstIndex = arr.findIndex(
       (other) =>
         other.targetRegionId === event.targetRegionId &&
@@ -437,6 +460,8 @@ export function parseSolutionSemantics(
     );
     return firstIndex === index;
   });
+  const repeats = refocused(unique);
+  const deduped = unique.filter(event => !repeats.has(event));
 
   const verdicts: SolutionParseResult['verdicts'] = {};
   for (const event of deduped) {

@@ -49,6 +49,62 @@ function spokenTokens(words: NarrationWord[], duration: number) {
 }
 
 /**
+ * Monotonic word matches (script index → spoken index). Bound memory for accidentally
+ * book-length input: such inputs fall back to approximate timing rather than freezing the browser.
+ */
+function sequenceAnchors(source: Array<{ norm: string }>, spoken: Array<{ norm: string }>): Map<number, number> {
+  const anchors = new Map<number, number>();
+  if (!source.length || !spoken.length || source.length * spoken.length > 8_000_000) return anchors;
+  const cols = spoken.length + 1;
+  const table = new Uint16Array((source.length + 1) * cols);
+  for (let i = source.length - 1; i >= 0; i--) {
+    for (let j = spoken.length - 1; j >= 0; j--) {
+      table[i * cols + j] = matches(source[i].norm, spoken[j].norm)
+        ? 1 + table[(i + 1) * cols + j + 1]
+        : Math.max(table[(i + 1) * cols + j], table[i * cols + j + 1]);
+    }
+  }
+  let i = 0; let j = 0;
+  while (i < source.length && j < spoken.length) {
+    if (matches(source[i].norm, spoken[j].norm)) { anchors.set(i++, j++); }
+    else if (table[(i + 1) * cols + j] > table[i * cols + j + 1]) i++;
+    else j++;
+  }
+  return anchors;
+}
+
+export interface NarrationDrift {
+  /** Spoken passages with no counterpart in the script (the voice added words). */
+  added: Array<{ text: string; start: number }>;
+  /** Script passages the voice skipped. */
+  skipped: Array<{ text: string; start: number }>;
+}
+
+/**
+ * Where a generated voice left the script, read from the word transcript already taken for
+ * timing. Only clear gaps count: a word heard differently (Arabic transcribed in Latin letters)
+ * is a substitution, not an addition, so a gap is reported only when one side is at least
+ * `minWords` longer than the other.
+ */
+export function narrationDrift(solutionText: string, narration: NarrationWord[] = [], duration = 3600, minWords = 3): NarrationDrift {
+  const source = tokens(solutionText);
+  const spoken = spokenTokens(narration, duration);
+  const drift: NarrationDrift = { added: [], skipped: [] };
+  const anchors = sequenceAnchors(source, spoken);
+  if (!source.length || !spoken.length || anchors.size / source.length < 0.5) return drift;
+  let si = -1, sj = -1;
+  for (const [i, j] of [...anchors, [source.length, spoken.length] as [number, number]]) {
+    const heard = spoken.slice(sj + 1, j), written = source.slice(si + 1, i);
+    if (heard.length - written.length >= minWords)
+      drift.added.push({ text: heard.map(w => w.text).join(' '), start: heard[0].start });
+    else if (written.length - heard.length >= minWords + 1)
+      drift.skipped.push({ text: solutionText.slice(written[0].sourceStart, written[written.length - 1].sourceEnd), start: spoken[sj]?.end ?? 0 });
+    si = i; sj = j;
+  }
+  return drift;
+}
+
+/**
  * Align the complete supplied script, not just animation triggers. A monotonic
  * sequence match prevents repeated phrases from jumping to the first occurrence.
  * Unrecognized Arabic stays original Unicode; Turkish anchors estimate its time.
@@ -61,26 +117,7 @@ export function alignSolutionNarration(
   const duration = Number.isFinite(totalDuration) && totalDuration > 0 ? totalDuration : 15;
   const source = tokens(solutionText);
   const spoken = spokenTokens(narration, duration);
-  const anchors = new Map<number, number>();
-  // Bound memory for accidentally book-length input. Such inputs explicitly
-  // fall back to approximate timing rather than freezing the teacher's browser.
-  if (source.length && spoken.length && source.length * spoken.length <= 8_000_000) {
-    const cols = spoken.length + 1;
-    const table = new Uint16Array((source.length + 1) * cols);
-    for (let i = source.length - 1; i >= 0; i--) {
-      for (let j = spoken.length - 1; j >= 0; j--) {
-        table[i * cols + j] = matches(source[i].norm, spoken[j].norm)
-          ? 1 + table[(i + 1) * cols + j + 1]
-          : Math.max(table[(i + 1) * cols + j], table[i * cols + j + 1]);
-      }
-    }
-    let i = 0; let j = 0;
-    while (i < source.length && j < spoken.length) {
-      if (matches(source[i].norm, spoken[j].norm)) { anchors.set(i++, j++); }
-      else if (table[(i + 1) * cols + j] > table[i * cols + j + 1]) i++;
-      else j++;
-    }
-  }
+  const anchors = sequenceAnchors(source, spoken);
   const matchedRatio = source.length ? anchors.size / source.length : 0;
   if (matchedRatio < 0.18) anchors.clear();
   const words: SourceNarrationWord[] = source.map(part => ({ ...part, start: 0, end: 0, matched: false }));

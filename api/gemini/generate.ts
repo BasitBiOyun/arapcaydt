@@ -20,25 +20,21 @@ const STYLE = [
   'Naturally emphasize important clues, eliminated choices, contrasts and the final correct answer.',
   'Use brief natural pauses between reasoning steps.',
   'Do not sound like an announcer.',
-  'Read the transcript faithfully without adding, omitting, translating, paraphrasing or repeating words.',
+  'Speak only the given text, word for word and exactly once: never add, omit, translate, paraphrase or repeat words, and add no greeting or closing remark.',
 ].join(' ');
 
+/**
+ * Older TTS models (3.1) read a director's prompt. No classroom scene: a scene invites the
+ * model to improvise teacher talk. Fidelity comes first and the notes say they are not spoken.
+ */
 function legacyPrompt(text: string) {
-  return `# AUDIO PROFILE: Achernar
-## "Experienced Exam Teacher"
+  return `# AUDIO PROFILE: Achernar, experienced exam teacher
 
-## THE SCENE
-A teacher is solving an exam question in a quiet classroom.
-
-### SAMPLE CONTEXT
-There is an exam question on the board and the teacher is explaining the solution clearly to students.
-
-### DIRECTOR'S NOTES
-Style: Natural, clear, confident and instructional. Sound like an experienced teacher, not an announcer.
-Pace: Moderate and steady. Use brief natural pauses between reasoning steps.
-Pronunciation: Use native pronunciation for Turkish and Arabic. Switch languages naturally without carrying one language's accent into the other.
-Emphasis: Naturally emphasize important clues, eliminated choices, contrasts and the final correct answer.
-Fidelity: Read the transcript faithfully. Do not add, omit, translate, paraphrase or repeat words.
+### DIRECTOR'S NOTES (never read these notes aloud)
+Fidelity (most important): Speak only the transcript below, word for word, exactly once, from its first word to its last word. Do not add, drop, reorder, repeat, translate, summarize or explain anything. No greeting, no introduction, no closing remark, no words of your own.
+Pronunciation: Read Turkish with native Turkish pronunciation and Arabic with native Arabic pronunciation, exactly as written, including Arabic vowel marks and Turkish circumflex letters (â, î, û). Switch languages without carrying one accent into the other.
+Style: Natural, clear, calm and instructional, like a teacher explaining a solution. Not an announcer.
+Pace: Moderate and steady, with brief natural pauses between reasoning steps.
 
 #### TRANSCRIPT
 ${text}`;
