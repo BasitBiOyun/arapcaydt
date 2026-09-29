@@ -126,7 +126,7 @@ test('narration uses the teacher key first and skips its exhausted models afterw
   const { GEMINI_TTS_MODELS } = await import('../server/quota');
   assert.deepEqual(world.google.map(g => g.key === TEACHER_KEY ? 'teacher' : 'studio'), [...GEMINI_TTS_MODELS.map(() => 'teacher'), 'studio']);
   assert.deepEqual(world.google.slice(0, GEMINI_TTS_MODELS.length).map(g => g.what), [...GEMINI_TTS_MODELS], 'strict quality order');
-  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · PerDay · daily$/.test(a.detail)).length, GEMINI_TTS_MODELS.length);
+  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · PerDay · neden: .+ · daily$/.test(a.detail)).length, GEMINI_TTS_MODELS.length);
   assert.equal(world.activity.filter(a => a.key_source === 'system' && a.state === 'succeeded').length, 1);
 
   // Same day: the teacher's exhausted models are not called again.
@@ -162,7 +162,7 @@ test('timestamps: teacher Transcribe → studio Transcribe → per-teacher cap',
   assert.equal(r.status, 200);
   assert.equal(r.payload.keySource, 'system');
   assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [
-    ['teacher', 'gemini-3.5-transcribe · 429 · PerDay · daily'], ['system', 'gemini-3.5-transcribe · 200']]);
+    ['teacher', 'gemini-3.5-transcribe · 429 · PerDay · neden: Quota exceeded · daily'], ['system', 'gemini-3.5-transcribe · 200']]);
 
   // Teacher's own Transcribe is skipped for the rest of the day; 24 more studio requests fill the cap of 25.
   world.activity = world.activity.map(today);
@@ -178,6 +178,17 @@ test('timestamps: teacher Transcribe → studio Transcribe → per-teacher cap',
   const admin = await call(align, 'POST', { projectId: 'p1' });
   assert.equal(admin.status, 200);
   assert.deepEqual(world.google.map(g => g.key), [STUDIO_KEY]);
+});
+
+test('a passing error on the teacher key is retried there once, before the shared key is used', async () => {
+  const { default: align } = await import('../api/gemini/align-project');
+  let calls = 0;
+  const world = await freshWorld({ answer: key => key === TEACHER_KEY && calls++ === 0 ? { status: 503, body: { error: { message: 'The model is overloaded.' } } } : ok });
+  const r = await call(align, 'POST', { projectId: 'p1' });
+  assert.equal(r.payload.keySource, 'teacher');
+  assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [
+    ['teacher', 'gemini-3.5-transcribe · 503 · neden: The model is overloaded.'], ['teacher', 'gemini-3.5-transcribe · 200']]);
+  assert.ok(!world.google.some(g => g.key === STUDIO_KEY), 'the shared quota is not touched');
 });
 
 test('ElevenLabs Forced Alignment stops at the per-teacher daily cap', async () => {

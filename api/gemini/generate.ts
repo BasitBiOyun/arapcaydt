@@ -12,16 +12,8 @@ export const REQUEST_BUDGET_MS = 95_000;
 const MIN_ATTEMPT_MS = 10_000;
 
 const VOICE_NAME = 'Achernar';
-const STYLE = [
-  'Experienced teacher solving an exam question in a quiet classroom.',
-  'Natural, clear, confident and instructional delivery at a moderate pace.',
-  'Use native pronunciation for every language in the transcript, including Turkish and Arabic,',
-  'and switch languages naturally without carrying the accent of one language into the other.',
-  'Naturally emphasize important clues, eliminated choices, contrasts and the final correct answer.',
-  'Use brief natural pauses between reasoning steps.',
-  'Do not sound like an announcer.',
-  'Speak only the given text, word for word and exactly once: never add, omit, translate, paraphrase or repeat words, and add no greeting or closing remark.',
-].join(' ');
+// 3.8 models read naturally on their own; the only instruction is fidelity.
+const STYLE = 'Read the text exactly as written. Do not add anything.';
 
 /**
  * Older TTS models (3.1) read a director's prompt. No classroom scene: a scene invites the
@@ -113,7 +105,7 @@ interface Attempt { model: string; status: number; detail?: string; daily?: bool
 
 /** Each model attempt is its own request against that key's per-model free-tier quota. */
 function failedUsage(attempts: Attempt[], characters: number): UsageEvent[] {
-  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily, a.quota), characters, keySource: a.keySource }));
+  return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily, a.quota, a.detail), characters, keySource: a.keySource }));
 }
 
 export default async function handler(req: any, res: any) {

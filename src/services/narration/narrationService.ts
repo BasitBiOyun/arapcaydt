@@ -1,7 +1,8 @@
 import { authHeaders } from '../supabase';
+import { quotaResetClock } from './geminiKeyService';
 import type { GenerateNarrationRequest, GenerateNarrationResponse } from '../elevenlabs/types';
 
-export const VOICE_QUOTA_MESSAGE = 'Bugünkü ücretsiz ses hakkı doldu. Kendi Google anahtarınızı ekleyin (Ayarlar → Google anahtarım) ya da yarın saat 10:00’dan sonra tekrar deneyin.';
+export const VOICE_QUOTA_MESSAGE = `Bugünkü ücretsiz ses hakkı doldu. Kendi Google anahtarınızı ekleyin (Ayarlar → Google anahtarım) ya da haklar yenilenince (her gün saat ${quotaResetClock()}) tekrar deneyin.`;
 export const VOICE_RETRY_MESSAGE = 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.';
 
 /**

@@ -1,4 +1,5 @@
 import { readProjectForOverview } from '../features/projects/cloudProjectRepository';
+import { quotaResetClock } from '../services/narration/geminiKeyService';
 import { ProjectViewer } from '../features/projects/ProjectViewer';
 import { StorageSection } from '../features/admin/StorageSection';
 import { FeedbackSection } from '../features/admin/FeedbackSection';
@@ -76,6 +77,8 @@ interface Analytics {
   requests?: {
     migrationPending: boolean;
     quotaDay: string;
+    resetsAt?: string;
+    failures?: Array<{ at: string; ownerId: string; kind: RequestService; keySource: string | null; model: string; status: string; reason: string }>;
     totals: Record<'today' | 'last30Days' | 'all', Record<RequestService, Counter>>;
     geminiModels: Record<string, { today: Counter; last30Days: Counter; sharedToday?: number; lastQuota?: string }>;
     members: Record<string, Record<RequestService, number>>;
@@ -468,7 +471,7 @@ export const AdminPage: React.FC = () => {
             <div>
               <h3 className="font-bold">Öğretmenler</h3>
               <p className="text-xs text-[#787670] mt-1">
-                “Bugün” Gemini kotasının yenilendiği Pasifik günüdür (Türkiye saatiyle 10:00–11:00). Ortak zamanlama öğretmen başına günde {limits.shared}, ElevenLabs hizalama {limits.eleven}; yöneticiler sınırsız.
+                “Bugün”: Google haklarının yenilendiği saat {quotaResetClock()} (Türkiye saati) itibarıyla sayılır. Ses ve zamanlama ayrı sayılır; “ortak” ortak anahtardan alınanı gösterir. Ortak zamanlama öğretmen başına günde {limits.shared}, ElevenLabs hizalama {limits.eleven}; yöneticiler sınırsız.
               </p>
             </div>
             <input aria-label="Öğretmen ara" placeholder="Ad veya e-posta ara" value={filter} onChange={(e) => setFilter(e.target.value)}
@@ -523,9 +526,9 @@ export const AdminPage: React.FC = () => {
                         <td className="px-4 py-3 text-xs whitespace-nowrap text-[#55544F]">
                           {requests?.migrationPending ? '—' : (
                             <>
-                              <div>Ses {(today?.ownTts ?? 0) + (today?.sharedTts ?? 0)} · zamanlama {(today?.ownTranscribe ?? 0) + (today?.sharedTranscribe ?? 0)}</div>
+                              <div>Ses: kendi {today?.ownTts ?? 0}{today?.sharedTts ? ` · ortak ${today.sharedTts}` : ''}{today?.ownTtsExhausted ? <span className="text-red-700"> · {today.ownTtsExhausted} model doldu</span> : ''}</div>
                               <div className="text-[#787670]">
-                                ortak {today?.sharedTranscribe ?? 0}{admin ? '' : `/${limits.shared}`} · ElevenLabs {today?.elevenlabsAlign ?? 0}{admin ? '' : `/${limits.eleven}`}
+                                Zamanlama: kendi {today?.ownTranscribe ?? 0} · ortak {today?.sharedTranscribe ?? 0}{admin ? '' : `/${limits.shared}`} · ElevenLabs {today?.elevenlabsAlign ?? 0}{admin ? '' : `/${limits.eleven}`}
                                 {today?.ownTranscribeExhausted && <span className="text-red-700"> · kendi kotası doldu</span>}
                               </div>
                             </>
@@ -574,13 +577,13 @@ export const AdminPage: React.FC = () => {
               <div className="grid sm:grid-cols-3 gap-3">
                 <Stat label="Kendi anahtarını bağlayan" value={activeKeys} hint={`${members.filter((m) => m.status === 'approved').length} onaylı üyeden`} />
                 <Stat label="Ortak anahtar · bugünkü zamanlama" value={<>{requests.studio?.transcribeUsed ?? 0}<span className="text-base text-[#787670] font-semibold"> / ~{STUDIO_TRANSCRIBE_DAILY}</span></>}
-                  tone={requests.studio?.transcribeExhausted ? 'text-red-700' : undefined} hint={requests.studio?.transcribeExhausted ? 'Bugünkü kota doldu' : `Pasifik günü ${requests.quotaDay}`} />
+                  tone={requests.studio?.transcribeExhausted ? 'text-red-700' : undefined} hint={requests.studio?.transcribeExhausted ? `Bugünkü kota doldu · saat ${quotaResetClock()} itibarıyla yenilenir` : `Her gün saat ${quotaResetClock()} itibarıyla yenilenir`} />
                 <Stat label="Ortak anahtar · kotası dolan ses modeli" value={requests.studio?.ttsExhausted.length ?? 0}
                   hint={requests.studio?.ttsExhausted.length ? requests.studio.ttsExhausted.join(', ') : 'Hepsi kullanılabilir'} />
               </div>
 
               <section className={card}>
-                <SectionTitle title="İstek sayaçları" note={<>Her istek ayrı sayılır: her Gemini model denemesi, yeniden seslendirmeler ve başarısız istekler dahil. “Bugün” Pasifik gününe göredir ({requests.quotaDay}).</>} />
+                <SectionTitle title="İstek sayaçları" note={<>Her istek ayrı sayılır: her Gemini model denemesi, yeniden seslendirmeler ve başarısız istekler dahil. “Bugün”: Google haklarının yenilendiği saat {quotaResetClock()} (Türkiye saati) itibarıyla sayılır.</>} />
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left">
                     <thead className="bg-[#FAF9F5] text-xs text-[#666560]">
@@ -614,6 +617,32 @@ export const AdminPage: React.FC = () => {
                           </div>
                         ))}
                     </div>
+                  </div>
+                )}
+              </section>
+
+              <section className={card}>
+                <SectionTitle title="Son başarısız istekler" note="Son 7 gün, en yeni üstte; servisin verdiği neden ile. Dakikalık sınır ve geçici hatalar kendiliğinden tekrar denenir." />
+                {!requests.failures?.length ? <p className="text-sm text-[#787670]">Son 7 günde başarısız istek yok.</p> : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs text-left">
+                      <thead className="bg-[#FAF9F5] text-[#666560]">
+                        <tr>{['Zaman', 'Öğretmen', 'Servis', 'Anahtar', 'Model', 'Kod', 'Neden'].map((t) => <th key={t} className="px-3 py-2 font-semibold whitespace-nowrap">{t}</th>)}</tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#EFEFEA]">
+                        {requests.failures.map((f, i) => (
+                          <tr key={i}>
+                            <td className="px-3 py-2 whitespace-nowrap">{new Date(f.at).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">{who(f.ownerId)}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">{requestLabels[f.kind]}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">{f.keySource === 'teacher' ? 'kendi' : f.keySource === 'system' ? 'ortak' : '—'}</td>
+                            <td className="px-3 py-2 font-mono-code whitespace-nowrap">{f.model}</td>
+                            <td className="px-3 py-2">{f.status === '0' ? 'bağlantı' : f.status}</td>
+                            <td className="px-3 py-2 text-[#55544F]">{f.reason || '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </section>

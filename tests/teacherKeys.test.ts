@@ -221,3 +221,25 @@ test('only Google\'s own daily quota skips a model for the day, and the quota is
   assert.equal(quotaTag(500, day), '');
   assert.equal(usageDetail('m', 429, true, 'PerDay sınır 100'), 'm · 429 · PerDay sınır 100 · daily');
 });
+
+test('quota renewal is shown in Turkish time: 10:00 in summer, 11:00 in winter', async () => {
+  const { quotaResetClock } = await import('../src/services/narration/geminiKeyService');
+  assert.equal(quotaResetClock(new Date('2026-09-29T12:00:00Z')), '10:00');
+  assert.equal(quotaResetClock(new Date('2026-12-15T12:00:00Z')), '11:00');
+  const { nextQuotaReset } = await import('../server/quota');
+  assert.equal(nextQuotaReset('2026-09-29T12:00:00Z'), '2026-09-30T07:00:00.000Z', 'next midnight in California = 10:00 in Türkiye');
+});
+
+test('admins see why a request failed; retired models get no card', async () => {
+  const { summarizeRequests } = await import('../api/admin/analytics');
+  const now = '2026-09-29T12:00:00Z';
+  const s = summarizeRequests([
+    { owner_id: 't1', kind: 'gemini_transcribe', state: 'failed', detail: 'gemini-3.5-transcribe · 503 · neden: The model is overloaded.', key_source: 'teacher', created_at: '2026-09-29T11:00:00Z' },
+    { owner_id: 't1', kind: 'gemini_tts', state: 'failed', detail: 'gemini-3.8-flash-tts · 429 · PerDay sınır 10 · neden: Quota exceeded · daily', key_source: 'teacher', created_at: '2026-09-29T10:00:00Z' },
+    { owner_id: 't1', kind: 'gemini_tts', state: 'succeeded', detail: 'gemini-2.5-flash-preview-tts', key_source: 'system', created_at: '2026-09-20T10:00:00Z' },
+  ], now);
+  assert.deepEqual(s.failures.map(f => [f.kind, f.status, f.reason]), [
+    ['gemini_transcribe', '503', 'The model is overloaded.'], ['gemini_tts', '429', 'Quota exceeded']]);
+  assert.deepEqual(Object.keys(s.geminiModels), ['gemini-3.8-flash-tts']);
+  assert.equal(s.geminiModels['gemini-3.8-flash-tts'].lastQuota, 'öğretmen anahtarı: PerDay sınır 10', 'the reason never replaces the quota note');
+});

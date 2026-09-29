@@ -69,9 +69,23 @@ export function quotaTag(status: number, raw: string): string {
   return [window, limit !== undefined ? `sınır ${limit}` : ''].filter(Boolean).join(' ');
 }
 
-/** Usage row detail: "model · status", Google's quota for a 429, and " · daily" for a daily-quota 429. */
-export function usageDetail(model: string, status: number | string, daily = false, tag = ''): string {
-  return `${model} · ${status}${tag ? ` · ${tag}` : ''}${daily ? ' · daily' : ''}`;
+/** One line of an upstream error, safe to store: no separators, no line breaks, short. */
+export const cleanReason = (text = '') => text.replace(/\s*·\s*/g, ' - ').replace(/\s+/g, ' ').trim().slice(0, 160);
+
+/**
+ * Usage row detail: "model · status", Google's quota for a 429, "neden: …" for a failure
+ * (shown to admins), and " · daily" last for a daily-quota 429.
+ */
+export function usageDetail(model: string, status: number | string, daily = false, tag = '', reason = ''): string {
+  const why = cleanReason(reason);
+  return [model, String(status), tag, why && `neden: ${why}`, daily && 'daily'].filter(Boolean).join(' · ');
+}
+
+/** When Google's free quota renews next (midnight Pacific), as an ISO instant. */
+export function nextQuotaReset(nowIso = new Date().toISOString()): string {
+  const start = pacificDayStart(nowIso);
+  // 25 h later is always inside the next Pacific day (DST days are 23–25 h); take that day's start.
+  return pacificDayStart(new Date(new Date(start).getTime() + 25 * 3600_000).toISOString());
 }
 
 export interface DayRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null }
@@ -105,8 +119,8 @@ export interface DailyState {
 
 const parts = (detail?: string | null) => (detail || '').split(' · ');
 const isDaily = (row: DayRow) => row.state === 'failed' && / · daily$/.test(row.detail || '');
-/** A request rejected with 429 never consumed quota; everything else did. */
-const consumed = (row: DayRow) => parts(row.detail)[1] !== '429';
+/** A request rejected with 429, or one that never reached Google (status 0), consumed no quota. */
+const consumed = (row: DayRow) => !['429', '0'].includes(parts(row.detail)[1]);
 
 export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = DEFAULT_LIMITS): DailyState {
   const state: DailyState = {

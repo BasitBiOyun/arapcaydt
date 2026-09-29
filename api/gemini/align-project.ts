@@ -112,13 +112,20 @@ export default async function handler(req: any, res: any) {
   let lastStatus = 502;
   const deadline = Date.now() + REQUEST_BUDGET_MS;
   for (const lane of lanes) {
-    const remaining = deadline - Date.now();
-    if (remaining < 15_000) { failures.push('Süre doldu.'); break; }
-    const result = await transcribe(lane.key, bytes, mimeType, projectId, remaining);
-    if (result.status) {
+    let result: TranscribeResult | undefined;
+    // A passing hiccup on the teacher's own key (network, 5xx, per-minute 429) is retried once
+    // there before the shared key is used; a daily quota or a bad key moves on at once.
+    for (let attempt = 0; attempt < (lane.source === 'teacher' ? 2 : 1); attempt++) {
+      const remaining = deadline - Date.now();
+      if (remaining < 15_000) break;
+      if (attempt) await new Promise(resolve => setTimeout(resolve, retryDelayMs(result!.raw)));
+      result = await transcribe(lane.key, bytes, mimeType, projectId, deadline - Date.now());
       await recordUsage(member.user.id, projectId, [{ kind: 'gemini_transcribe', state: result.words ? 'succeeded' : 'failed',
-        detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw), result.words ? '' : quotaTag(result.status, result.raw)), keySource: lane.source }]);
+        detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw),
+          result.words ? '' : quotaTag(result.status, result.raw), result.words ? '' : result.error), keySource: lane.source }]);
+      if (result.words?.length || !transient(result)) break;
     }
+    if (!result) { failures.push('Süre doldu.'); break; }
     if (result.words?.length) {
       return res.status(200).json({ words: result.words, modelId: TRANSCRIBE_MODEL, timingSource: 'gemini-transcribe', keySource: lane.source });
     }
@@ -127,6 +134,19 @@ export default async function handler(req: any, res: any) {
     lastStatus = result.status && result.status >= 400 ? result.status : 502;
   }
   return res.status(lastStatus).json({ error: failures.join(' · '), code: 'GEMINI_TRANSCRIBE_ERROR' });
+}
+
+/** Worth one more try on the same key: no answer, a server error, or a per-minute (not daily) 429. */
+function transient(result: TranscribeResult): boolean {
+  if (result.words?.length) return false;
+  if (!result.status || result.status >= 500) return true;
+  return result.status === 429 && !isDailyQuotaError(429, result.raw);
+}
+
+/** Google's suggested wait ("retryDelay": "7s"), kept between 2 and 12 seconds. */
+function retryDelayMs(raw = ''): number {
+  const seconds = Number(/"retryDelay"\s*:\s*"(\d+(?:\.\d+)?)s"/.exec(raw)?.[1] ?? 3);
+  return Math.min(12, Math.max(2, seconds)) * 1000;
 }
 
 interface TranscribeResult { status: number; raw: string; error?: string; words?: Array<{ text: string; start: number; end: number }> }

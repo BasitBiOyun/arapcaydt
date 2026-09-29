@@ -1,5 +1,5 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
-import { DEFAULT_LIMITS, readLimits, quotaDay, summarizeDay, type Limits } from '../../server/quota.js';
+import { DEFAULT_LIMITS, GEMINI_TTS_MODELS, nextQuotaReset, readLimits, quotaDay, summarizeDay, type Limits } from '../../server/quota.js';
 
 /**
  * One row per project with only the JSON fields the panel needs. Narration
@@ -143,6 +143,9 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
   /** Per voice model: all keys, plus the studio key's own use today and the last quota Google reported. */
   const geminiModels: Record<string, { today: Counter; last30Days: Counter; sharedToday: number; lastQuota?: string }> = {};
   const members: Record<string, Record<Service, number>> = {};
+  /** The latest failed requests of the last 7 days, with the reason the service gave. */
+  const failures: Array<{ at: string; ownerId: string; kind: Service; keySource: string | null; model: string; status: string; reason: string }> = [];
+  const weekAgo = new Date(new Date(nowIso).getTime() - 7 * 86400_000).toISOString();
   for (const row of rows) {
     if (!(SERVICES as readonly string[]).includes(row.kind)) continue;
     const kind = row.kind as Service;
@@ -154,14 +157,20 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
     if (recent) totals.last30Days[kind][outcome]++;
     if (isToday) totals.today[kind][outcome]++;
     (members[row.owner_id] ??= { gemini_tts: 0, gemini_transcribe: 0, elevenlabs_align: 0, voice: 0 })[kind]++;
-    if (kind === 'gemini_tts') {
+    if (outcome === 'failed' && row.created_at >= weekAgo && failures.length < 25) {
+      const [model, status, ...rest] = (row.detail || '').split(' · ');
+      failures.push({ at: row.created_at, ownerId: row.owner_id, kind, keySource: row.key_source || null, model: model || '', status: status || '',
+        reason: rest.find(p => p.startsWith('neden: '))?.slice(7) || (rest.includes('daily') ? 'Günlük kota doldu' : status === '429' ? 'Dakikalık sınır (kısa süre bekleyip tekrar denenir)' : '') });
+    }
+    // Retired voice models (older experiments) are not shown as model cards.
+    if (kind === 'gemini_tts' && (GEMINI_TTS_MODELS as readonly string[]).includes((row.detail || '').split(' · ')[0])) {
       const model = (row.detail || 'bilinmiyor').split(' · ')[0];
       const m = geminiModels[model] ??= { today: { succeeded: 0, failed: 0 }, last30Days: { succeeded: 0, failed: 0 }, sharedToday: 0 };
       if (isToday) m.today[outcome]++;
       const [, status, tag] = (row.detail || '').split(' · ');
       if (isToday && row.key_source === 'system' && status !== '429') m.sharedToday++;
       // Rows come newest first, so the first tagged 429 today is the latest one.
-      if (isToday && status === '429' && tag && tag !== 'daily' && !m.lastQuota)
+      if (isToday && status === '429' && tag && tag !== 'daily' && !tag.startsWith('neden:') && !m.lastQuota)
         m.lastQuota = `${row.key_source === 'system' ? 'ortak anahtar' : 'öğretmen anahtarı'}: ${tag}`;
       if (recent) m.last30Days[outcome]++;
     }
@@ -176,7 +185,7 @@ export function summarizeRequests(rows: ActivityRow[], nowIso = new Date().toISO
     membersToday[owner] = { ownTts: day.own.ttsUsed, ownTranscribe: day.own.transcribeUsed, ownTranscribeExhausted: day.own.transcribeExhausted,
       ownTtsExhausted: day.own.ttsExhausted.length, sharedTts, sharedTranscribe: day.shared.transcribeUsed, elevenlabsAlign: day.elevenlabsAlignUsed };
   }
-  return { quotaDay: today, totals, geminiModels, members, membersToday,
+  return { quotaDay: today, resetsAt: nextQuotaReset(nowIso), failures, totals, geminiModels, members, membersToday,
     studio: { transcribeUsed: studio.transcribeUsedAll, transcribeExhausted: studio.transcribeExhausted, ttsExhausted: studio.ttsExhausted },
     limits: { sharedTranscribePerTeacher: limits.sharedTranscribe, elevenlabsAlignPerTeacher: limits.elevenlabsAlign } };
 }

@@ -1,4 +1,4 @@
-import { elevenLabsAlignAllowed, isCapped, readDailyState } from '../../server/quota.js';
+import { elevenLabsAlignAllowed, isCapped, readDailyState, usageDetail } from '../../server/quota.js';
 import { recordUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
@@ -53,8 +53,8 @@ export default async function handler(req: any, res: any) {
 
   // Every Forced Alignment request is counted, including failures (admin usage view).
   let alignmentRequested = false;
-  const countAlignment = (state: 'succeeded' | 'failed', status: number | string) => recordUsage(member.user.id, projectId,
-    [{ kind: 'elevenlabs_align', state, detail: `forced-alignment · ${status}`, characters: text.length }]);
+  const countAlignment = (state: 'succeeded' | 'failed', status: number | string, reason = '') => recordUsage(member.user.id, projectId,
+    [{ kind: 'elevenlabs_align', state, detail: usageDetail('forced-alignment', status, false, '', reason), characters: text.length }]);
   try {
     let bytes: Buffer, mimeType: string;
     try {
@@ -78,15 +78,17 @@ export default async function handler(req: any, res: any) {
 
     const raw = await upstream.text();
     alignmentRequested = false;
-    await countAlignment(upstream.ok ? 'succeeded' : 'failed', upstream.status);
+    let detail = '';
     if (!upstream.ok) {
-      let detail = '';
       try {
         const parsed = JSON.parse(raw);
-        detail = parsed?.detail?.message || parsed?.detail || parsed?.message || '';
+        detail = String(parsed?.detail?.message || parsed?.detail?.status || parsed?.message || '');
       } catch {
         detail = raw.slice(0, 240);
       }
+    }
+    await countAlignment(upstream.ok ? 'succeeded' : 'failed', upstream.status, detail);
+    if (!upstream.ok) {
       console.warn('[ElevenLabs Forced Alignment]', upstream.status, detail);
       return res.status(upstream.status).json({
         error: detail || `ElevenLabs Forced Alignment hata döndürdü (HTTP ${upstream.status}).`,
@@ -120,7 +122,7 @@ export default async function handler(req: any, res: any) {
       loss: Number.isFinite(result?.loss) ? Number(result.loss.toFixed(4)) : null,
     });
   } catch (error: any) {
-    if (alignmentRequested) await countAlignment('failed', 'network');
+    if (alignmentRequested) await countAlignment('failed', 'network', error?.message);
     console.error('[ElevenLabs Forced Alignment project]', error?.message || error);
     return res.status(502).json({ error: error?.message || 'ElevenLabs Forced Alignment servisine ulaşılamadı.' });
   }

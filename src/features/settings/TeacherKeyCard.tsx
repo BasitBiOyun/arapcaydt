@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Key, Trash, FloppyDisk, CheckCircle, WarningCircle } from '@phosphor-icons/react';
-import { geminiKeyService, type TeacherKeyStatus } from '../../services/narration/geminiKeyService';
+import { geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../services/narration/geminiKeyService';
 
 const badge = (ok: boolean) => `font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
   ok ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'}`;
@@ -67,7 +67,7 @@ export const TeacherKeyCard: React.FC = () => {
               <span className="text-[#33322E]">{today.elevenlabs.used}{today.elevenlabs.limit != null ? ` / ${today.elevenlabs.limit}` : ''}</span>
             </div>
             <p className="text-[#55544F] leading-relaxed text-[11px]">
-              Kendi anahtarınızla günde {today.tts.limit ?? 30} ses (3 ses modeli × 10) ve {today.transcribe.limit ?? 25} kelime zamanı ücretsizdir; yani günde yaklaşık {today.tts.limit ?? 30} soru. Bunlar bitince herkesin paylaştığı ortak kapasiteye, kelime zamanları için de yedek servise geçilir. Haklar her gün Türkiye saatiyle 10:00–11:00 arasında yenilenir. Hepsi dolsa da video üretimi durmaz; zamanlama bilgisayarınızda yapılır.
+              Kendi anahtarınızla günde {today.tts.limit ?? 30} ses (3 ses modeli × 10) ve {today.transcribe.limit ?? 25} kelime zamanı ücretsizdir; yani günde yaklaşık {today.tts.limit ?? 30} soru. Bunlar bitince herkesin paylaştığı ortak kapasiteye, kelime zamanları için de yedek servise geçilir. Haklar her gün saat {quotaResetClock()} itibarıyla yenilenir (Türkiye saati). Hepsi dolsa da video üretimi durmaz; zamanlama bilgisayarınızda yapılır.
             </p>
           </>
         )}

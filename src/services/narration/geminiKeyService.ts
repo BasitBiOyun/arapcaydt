@@ -33,6 +33,17 @@ export const geminiKeyService = {
   remove: () => call('DELETE'),
 };
 
+/**
+ * Turkish clock time at which Google's free quota renews: midnight in California,
+ * which is 10:00 in Türkiye in summer time there and 11:00 in winter.
+ */
+export function quotaResetClock(now = new Date()): string {
+  const zone = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', timeZoneName: 'shortOffset' })
+    .formatToParts(now).find(part => part.type === 'timeZoneName')?.value || 'GMT-7';
+  const hour = 3 - Number(/GMT([+-]\d+)/.exec(zone)?.[1] ?? -7);
+  return `${String(hour).padStart(2, '0')}:00`;
+}
+
 /** One plain sentence for the audio step: which capacity the next narration will use and how much is left today. */
 export function capacityLine(status: TeacherKeyStatus | null): string | null {
   if (!status) return null;
