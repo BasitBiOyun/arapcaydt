@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { AnnotationRegion, VideoAction, VideoConfig } from '../../types';
 import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
 import { clock } from '../question-editor/workflow';
+import { PreviewEditOverlay } from './PreviewEditOverlay';
+import type { FitRect } from './engine/types';
 import { 
   Play, 
   Pause, 
@@ -33,6 +35,13 @@ interface VideoPreviewCanvasProps {
   videoConfig: VideoConfig;
   selectedRegionId?: string | null;
   audioUrl?: string;
+  /** On-picture editing while paused (boxes, marks, underline position). */
+  editing?: {
+    onRegions: (regions: AnnotationRegion[]) => void;
+    onActions: (actions: VideoAction[]) => void;
+    onUndo?: () => void;
+    canUndo?: boolean;
+  };
 }
 
 export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
@@ -47,7 +56,9 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
   videoConfig,
   selectedRegionId = null,
   audioUrl,
+  editing,
 }) => {
+  const [fit, setFit] = useState<FitRect | null>(null);
   const totalDuration = duration + outroSeconds(actions, videoConfig.showOutro !== false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -128,7 +139,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    renderQuestionVideoFrame(
+    const drawn = renderQuestionVideoFrame(
       ctx,
       canvas.width,
       canvas.height,
@@ -153,6 +164,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         duration,
       }
     );
+    setFit(previous => previous && ['x', 'y', 'width', 'height'].every(k => previous[k as keyof FitRect] === drawn[k as keyof FitRect]) ? previous : drawn);
   }, [currentTime, imageElement, regions, actions, videoConfig, selectedRegionId, duration]);
 
   useEffect(() => {
@@ -213,6 +225,12 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
           height={1080}
           className="w-full h-full object-contain"
         />
+
+        {editing && !isPlaying && fit && imageElement && (
+          <PreviewEditOverlay fit={fit} canvasWidth={1920} canvasHeight={1080} regions={regions} actions={actions}
+            time={currentTime} total={duration} underlineOffset={videoConfig.underlineOffset}
+            onRegions={editing.onRegions} onActions={editing.onActions} onUndo={editing.onUndo} canUndo={editing.canUndo} />
+        )}
 
         {/* Center overlay play button when paused */}
         {!isPlaying && currentTime === 0 && (

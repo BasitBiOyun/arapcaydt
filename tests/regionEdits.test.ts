@@ -48,3 +48,25 @@ test('missing visual B does not apply its rejection to the preceding A', async()
  const result=parseSolutionSemantics('A şıkkı. B şıkkı. Olmaz.',[region('option-a')]);
  assert.ok(!result.events.some(e=>e.actionType==='reject'));
 });
+
+test('on-picture editing: corners resize without flipping or leaving the image; only marks on screen count', async () => {
+  const { resizeRegion, marksAt, pickableRegions } = await import('../src/features/video/PreviewEditOverlay');
+  const box = { id: 'option-b', type: 'option-b', label: 'B', x: .2, y: .4, width: .3, height: .1 } as any;
+  const grown = resizeRegion(box, 'se', .1, .05);
+  assert.deepEqual([grown.x, grown.y, +grown.width.toFixed(3), +grown.height.toFixed(3), grown.manuallyAdjusted], [.2, .4, .4, .15, true]);
+  const moved = resizeRegion(box, 'nw', -.05, 0);
+  assert.equal(+moved.x.toFixed(3), .15);
+  assert.equal(+(moved.x + moved.width).toFixed(3), .5, 'the opposite corner stays put');
+  const flipped = resizeRegion(box, 'se', -.9, -.9);
+  assert.ok(flipped.width > 0 && flipped.height > 0, 'never inside out');
+  const outside = resizeRegion(box, 'ne', 2, -2);
+  assert.equal(outside.x + outside.width, 1); assert.equal(outside.y, 0);
+  const actions = [
+    { id: 'f', type: 'focus', targetRegionId: 'option-b', start: 2, duration: 1 },
+    { id: 'x', type: 'reject', targetRegionId: 'option-b', start: 3, duration: 20 },
+    { id: 'd', type: 'dim-others', targetRegionId: 'option-b', start: 0, duration: 30 },
+  ] as any;
+  assert.deepEqual(marksAt(actions, 'option-b', 2.5).map((a: any) => a.id), ['f']);
+  assert.deepEqual(marksAt(actions, 'option-b', 10).map((a: any) => a.id), ['x']);
+  assert.deepEqual(pickableRegions([box, { ...box, id: 'question-root', height: .8 }]).map(r => r.id), ['option-b']);
+});

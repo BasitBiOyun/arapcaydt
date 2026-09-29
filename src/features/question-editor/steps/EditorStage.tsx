@@ -78,6 +78,14 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
           onSeek={(t) => setCurrentPreviewTime(t)}
           videoConfig={currentProject.videoConfig}
           audioUrl={activeAudioUrl}
+          editing={step === 3 ? {
+            canUndo: regionHistory.length > 0,
+            onUndo: () => { const previous = regionHistory.at(-1); if (previous) { updateCurrentProject({ videoConfig: previous }); setRegionHistory(regionHistory.slice(0, -1)); } },
+            onActions: actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); },
+            onRegions: regions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: applyRegionEdits(
+              currentProject.videoConfig, regions, currentProject.solutionText,
+              currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15) }); },
+          } : undefined}
         />
         <div className="flex flex-wrap gap-2 items-center text-xs">
           <label className="flex gap-2 items-center">
