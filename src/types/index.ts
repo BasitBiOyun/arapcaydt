@@ -95,6 +95,11 @@ export type VideoActionType =
 
 export interface VideoAction {
   drawDuration?: number;
+  /**
+   * Underline only: the line follows the spoken words. Each point says how far along the box
+   * (`to`, 0–1) the line is `at` seconds after the mark starts; between points it moves evenly.
+   */
+  drawSteps?: Array<{ at: number; to: number }>;
   /** Underline only: moves this line up (−) or down (+), in heights of its text line. */
   lineOffset?: number;
   id: string;

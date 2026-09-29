@@ -9,6 +9,8 @@ export interface ActiveHighlight {
 export interface ActiveUnderline {
   regionId: string;
   progress: number; // 0 to 1
+  /** Progress already follows the spoken words: drawn as is, without easing. */
+  stepped?: boolean;
   isRtl: boolean;
   color?: string;
   /** Fades the marker out at the end of its spoken span. */

@@ -2,6 +2,29 @@ import { AnnotationRegion, VideoAction } from '../../../types';
 import { RenderState, MarkerState } from './types';
 import { easeOutCubic } from './animations';
 
+/** How far an underline is drawn `elapsed` seconds in, following its word steps (0–1). */
+export function stepProgress(steps: Array<{ at: number; to: number }>, elapsed: number): number {
+  let previous = { at: 0, to: 0 };
+  for (const step of steps) {
+    if (elapsed <= step.at) {
+      return step.at <= previous.at ? step.to : previous.to + (step.to - previous.to) * (elapsed - previous.at) / (step.at - previous.at);
+    }
+    previous = step;
+  }
+  return 1;
+}
+
+/**
+ * The same word steps after the mark's start moved by `shift` seconds (the words stay where they
+ * are spoken), squeezed to fit within `maxDraw` seconds.
+ */
+export function fitSteps(steps: Array<{ at: number; to: number }>, shift: number, maxDraw: number): Array<{ at: number; to: number }> {
+  const moved = steps.map(s => ({ at: Math.max(0, s.at - shift), to: s.to }));
+  const last = moved.at(-1)?.at ?? 0;
+  const squeeze = last > maxDraw && last > 0 ? maxDraw / last : 1;
+  return moved.map(s => ({ at: Math.round(s.at * squeeze * 1000) / 1000, to: s.to }));
+}
+
 /**
  * Deterministic pure function: Computes the exact visual render state at timestamp `currentTime`.
  * Seeking backward or forward calculates from scratch based on actions up to `currentTime`.
@@ -84,10 +107,12 @@ export function computeTimelineVisualState(
         // Underline draws along line, stays for duration, then clears
         const duration = action.duration ?? 3.5;
         if (currentTime <= action.start + duration) {
-          const progress = Math.min(1, elapsed / Math.max(.05, action.drawDuration ?? .4));
+          const stepped = !!action.drawSteps?.length;
+          const progress = stepped ? stepProgress(action.drawSteps!, elapsed) : Math.min(1, elapsed / Math.max(.05, action.drawDuration ?? .4));
           state.activeUnderlines.push({
             regionId: action.targetRegionId,
             progress,
+            stepped,
             isRtl: true, // Arabic YDT default is right-to-left
             offset: action.lineOffset,
             opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .18) : 1,

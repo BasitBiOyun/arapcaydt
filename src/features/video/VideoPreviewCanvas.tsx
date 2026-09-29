@@ -73,7 +73,8 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
     }
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    setImageElement(null);
+    // The previous picture stays until the new one is ready: a changed link never blanks the
+    // preview or closes the on-picture editor in the middle of a drag.
     let active = true;
     img.onload = () => {
       if (active) setImageElement(img);

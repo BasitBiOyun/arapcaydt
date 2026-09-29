@@ -181,6 +181,30 @@ function spanTime(words: SourceNarrationWord[], start: number, end: number) {
 /** An underline is drawn over the spoken phrase, never faster than 0.6 s nor slower than 2.5 s. */
 const underlineDraw = (item: { start: number; triggerEnd?: number }) =>
   Math.min(2.5, Math.max(.6, (item.triggerEnd ?? item.start + .6) - item.start));
+/** Letters that take width on screen: vowel marks and tatweel are left out. */
+const visibleLength = (text: string) => Math.max(1, text.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, '').replace(/[^\p{L}\p{N}]/gu, '').length);
+
+/**
+ * Word by word: the line reaches the end of each spoken word as it is said, each word taking
+ * its share of the box by its letters. Needs at least two timed words; seconds are from `start`.
+ */
+export function underlineSteps(words: NarrationWord[], start: number): Array<{ at: number; to: number }> | undefined {
+  const timed = words.filter(w => Number.isFinite(w.start) && Number.isFinite(w.end) && w.end > w.start);
+  if (timed.length < 2) return undefined;
+  const total = timed.reduce((sum, w) => sum + visibleLength(w.text), 0);
+  const steps: Array<{ at: number; to: number }> = [];
+  let reached = 0, at = 0;
+  for (const word of timed) {
+    const from = Math.max(at, word.start - start);
+    if (from > at) steps.push({ at: Math.round(from * 1000) / 1000, to: reached });
+    reached += visibleLength(word.text) / total;
+    at = Math.max(from, word.end - start);
+    steps.push({ at: Math.round(at * 1000) / 1000, to: Math.min(1, Math.round(reached * 10000) / 10000) });
+  }
+  steps[steps.length - 1].to = 1;
+  return steps;
+}
+
 /** Seconds a finished underline stays at least, even when the next cue follows quickly. */
 export const UNDERLINE_HOLD = 1.2;
 
@@ -201,8 +225,9 @@ export function alignEventsWithNarration(
     const sourceEnd = event.sourceEnd ?? sourceStart + event.semanticTriggerPhrase.length;
     const trigger = spanTime(alignment.words, sourceStart, sourceEnd);
     const sentence = spanTime(alignment.words, event.sentenceStart ?? sourceStart, event.sentenceEnd ?? sourceEnd);
+    const spoken = alignment.words.filter(word => word.sourceEnd > sourceStart && word.sourceStart < sourceEnd);
     return { event, start: Math.min(duration, Math.max(0, (trigger?.start ?? 0) - 0.04)),
-      triggerEnd: trigger?.end, end: sentence?.end ?? trigger?.end ?? duration };
+      triggerEnd: trigger?.end, end: sentence?.end ?? trigger?.end ?? duration, spoken };
   }).sort((a, b) => a.start - b.start || a.event.order - b.event.order);
 
   return timed.map((item, index) => {
@@ -221,6 +246,9 @@ export function alignEventsWithNarration(
       start = Math.min(duration, start + 0.14 * siblings.indexOf(item));
     }
     let end = item.end;
+    // An underline follows its words as they are read; without word timings it sweeps at a readable pace.
+    const steps = event.actionType === 'underline' ? underlineSteps(item.spoken, start) : undefined;
+    const draw = steps ? Math.max(.3, steps[steps.length - 1].at) : underlineDraw(item);
     if (event.actionType === 'reject' || event.actionType === 'correct') end = duration;
     else if (event.actionType === 'focus') {
       // Options named together ("A ve B şıkları") share the frame instead of cancelling each other.
@@ -233,7 +261,7 @@ export function alignEventsWithNarration(
         && ['highlight', 'underline', 'focus'].includes(other.event.actionType));
       end = Math.min(Math.max(item.end, start + 0.7), next?.start ?? duration);
       // Never flash past: the line is drawn at a readable pace and stays a moment once drawn.
-      if (event.actionType === 'underline') end = Math.max(end, start + underlineDraw(item) + UNDERLINE_HOLD);
+      if (event.actionType === 'underline') end = Math.max(end, start + draw + UNDERLINE_HOLD);
     }
     end = Math.min(duration, Math.max(start, end));
     return {
@@ -241,7 +269,7 @@ export function alignEventsWithNarration(
       targetRegionId: event.targetRegionId, regionId: event.targetRegionId,
       type: event.actionType, start, startTime: start, duration: end - start,
       label: `${event.actionType}: ${event.semanticTriggerPhrase}`,
-      ...(event.actionType === 'underline' ? {drawDuration: underlineDraw(item)} : {}),
+      ...(event.actionType === 'underline' ? {drawDuration: draw, ...(steps ? {drawSteps: steps} : {})} : {}),
     };
   }).filter(action => action.duration > 0).sort((a, b) => a.start - b.start);
 }

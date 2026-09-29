@@ -81,7 +81,7 @@ test('toolbar marks: added at the paused moment; a tick replaces the cross; a dr
   assert.equal(addMark(cross, 'option-c', 'reject', 5, 40).length, 2, 'other options keep theirs');
   const both = addMark(addMark([], 'phrase', 'underline', 39.95, 40), 'option-a', 'focus', 5, 40);
   assert.deepEqual(both.map(a => a.type), ['focus', 'underline'], 'sorted by time');
-  assert.ok(both[1].duration > 0 && both[1].drawDuration === .6);
+  assert.ok(both[1].duration > 0 && both[1].drawDuration === 1.2);
   assert.equal(both[0].duration, 2.5);
   const box = drawnRegion('n', .9, .8, 1.2, .6);
   assert.deepEqual([box.x, box.y, +box.width.toFixed(2), +box.height.toFixed(2)], [.9, .6, .1, .2]);
@@ -111,4 +111,46 @@ test('mark strip: marks never overlap on screen; dragging moves a mark or one of
   assert.equal(shorter.duration, .5); assert.ok(shorter.drawDuration! <= .3 + 1e-9, 'drawn within its time');
   const cross = dragPill(marks[2], 'end', 3, 40);
   assert.deepEqual([cross.start, cross.start + cross.duration], [7.5, 40], 'a cross only moves its start and still lasts to the end');
+});
+
+test('mark strip: a mark near the end is pulled inside the strip and gets its own row', async () => {
+  const { laneLayout, pillStart, stripMarks } = await import('../src/features/video/MarkTimeline');
+  const marks = stripMarks([
+    { id: 'e', type: 'reject', targetRegionId: 'option-e', start: 80, duration: 6 },
+    { id: 'a', type: 'correct', targetRegionId: 'option-a', start: 85, duration: 1 },
+  ] as any);
+  const min = 86 * .045;
+  assert.ok(Math.abs(pillStart(marks[1], min, 86) - (86 - min)) < 1e-9, 'the last tick ends at the strip end, not past it');
+  assert.equal(pillStart(marks[0], min, 86), 80, 'marks with room stay at their start');
+  const lanes = laneLayout(marks, min, 86);
+  assert.notEqual(lanes.get('e'), lanes.get('a'), 'a pulled-in pill never covers its neighbour');
+});
+
+test('picture editing: sides resize one edge; a flat underline stroke becomes the line above it', async () => {
+  const { resizeRegion, placeFromStroke, typicalLineHeight } = await import('../src/features/video/PreviewEditOverlay');
+  const box = { id: 'b', type: 'keyword', label: '', x: .2, y: .2, width: .2, height: .1 } as any;
+  const wider = resizeRegion(box, 'e', .1, .3);
+  assert.deepEqual([wider.x, +wider.width.toFixed(2), wider.y, +wider.height.toFixed(2)], [.2, .3, .2, .1], 'the right side moves only the right edge');
+  const lower = resizeRegion(box, 's', .3, .05);
+  assert.deepEqual([lower.x, +lower.width.toFixed(2), +lower.height.toFixed(2)], [.2, .2, .15], 'the bottom side moves only the bottom edge');
+  const fit = { x: 0, y: 0, width: 1000, height: 500 };
+  const stroke = { ...box, x: .5, y: .6, width: .2, height: .004 };
+  const line = placeFromStroke(stroke, 'underline', fit, .05)!;
+  assert.deepEqual([line.x, +line.y.toFixed(3), +(line.y + line.height).toFixed(3)], [.5, .554, .604], 'the words sit just above the stroke');
+  assert.equal(placeFromStroke(stroke, 'focus', fit, .05), null, 'a flat stroke is not a frame');
+  assert.equal(placeFromStroke({ ...stroke, width: .005 }, 'underline', fit, .05), null, 'a click is not a line');
+  assert.equal(typicalLineHeight([{ ...box, content: 'a', height: .04 }, { ...box, content: 'b', height: .06 }, { ...box, content: 'c', height: .05 }]), .05);
+});
+
+test('underlines follow the spoken words and keep them when the mark is moved', async () => {
+  const { underlineSteps } = await import('../src/services/analysis/timelineAligner');
+  const { fitSteps, stepProgress } = await import('../src/features/video/engine/timeline');
+  const steps = underlineSteps([{ text: 'ٱلْحَلِيبَ', start: 10, end: 11 }, { text: 'بَارِدٌ', start: 11.5, end: 12 }], 10)!;
+  assert.deepEqual(steps.map(s => s.at), [1, 1.5, 2], 'the second word starts after a pause');
+  assert.equal(stepProgress(steps, .5), steps[0].to / 2);
+  assert.equal(stepProgress(steps, 1.25), steps[0].to, 'the line waits during the pause');
+  assert.equal(stepProgress(steps, 2), 1);
+  assert.equal(underlineSteps([{ text: 'tek', start: 1, end: 2 }], 1), undefined, 'one word sweeps as before');
+  assert.deepEqual(fitSteps(steps, .5, 10).map(s => s.at), [.5, 1, 1.5], 'a later start keeps the words where they are spoken');
+  assert.equal(fitSteps(steps, 0, 1).at(-1)!.at, 1, 'a shorter mark squeezes the drawing into its time');
 });

@@ -19,12 +19,21 @@ async function uploadAsset(url: string, owner: string, project: string) {
   if(error && (error as any).statusCode!=='409' && (error as any).statusCode!==409 && (error as any).error!=='Duplicate' && error.message!=='The resource already exists') throw error;
   return {assetPath:path};
 }
+/**
+ * A file keeps the link it was given for five of its six hours, so an autosave does not hand the
+ * open editor a new image and audio address (which reloads the preview mid-edit).
+ */
+const SIGNED_SECONDS = 21600, REUSE_MS = 5 * 3600_000;
+const signedAt = new Map<string, { url: string; at: number }>();
 async function resolveAsset(value: any): Promise<string> {
   if(!value || typeof value==='string') return value || '';
   if(typeof value.assetPath!=='string') throw new Error('Dosya kaydı okunamadı.');
-  const {data,error}=await bucket().createSignedUrl(value.assetPath,21600);
+  const recent=signedAt.get(value.assetPath);
+  if(recent && Date.now()-recent.at<REUSE_MS) return recent.url;
+  const {data,error}=await bucket().createSignedUrl(value.assetPath,SIGNED_SECONDS);
   if(error) throw error;
   resolvedPaths.set(data.signedUrl,value.assetPath);
+  signedAt.set(value.assetPath,{url:data.signedUrl,at:Date.now()});
   return data.signedUrl;
 }
 async function hydrate(row: any): Promise<QuestionProject> {
