@@ -101,3 +101,15 @@ test('word timings land on both the narration and its legacy copy', async () => 
   assert.deepEqual(next.audioNarration?.wordAlignments, [{ word: 'ذَهَبَ', start: 0.5, end: 0.9 }]);
   assert.deepEqual(withWordTimings({} as any, words, 'whisper'), { narrationSource: undefined, audioNarration: undefined });
 });
+
+test('continuing a stopped batch reuses its questions and keeps their approved voice', async () => {
+  const saved: Record<string, QuestionProject> = {
+    p7: { id: 'p7', questionNumber: 1, solutionText: 'x', imageUrl: 'img', audioApproved: true, narrationSource: { type: 'gemini', audioUrl: 'a', duration: 9, isApproved: true } } as any,
+  };
+  const { deps, calls } = fakeDeps({ loadProject: async id => saved[id] ?? null });
+  const { rows, update } = collect();
+  await runBatch([item(1), item(2)], options, deps, update, undefined, { 1: 'p7', 2: 'gone' });
+  assert.deepEqual(calls, ['markers 1 B', 'export 1', 'download 1', 'create 2', 'voice 2', 'markers 2 B', 'export 2', 'download 2'],
+    'question 1 continues without a new project or voice request; a deleted one is created again');
+  assert.equal(rows.get(1)!.projectId, 'p7');
+});

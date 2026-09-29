@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, BookOpenText, CheckCircle, CircleDashed, FilmStrip, Plus, Waveform } from '@phosphor-icons/react';
 import { useProjects } from '../features/projects/ProjectContext';
 import { useAuth } from '../features/auth/AuthContext';
-import { StatusBadge } from '../components/common/StatusBadge';
+import { resumeStep, stageLabels } from '../features/question-editor/workflow';
 import { AppPage } from '../components/common/AppSidebar';
 import { getCategoryLabel } from '../config/categories';
 
@@ -27,9 +27,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onSele
 
   const stats = [
     { label: 'Toplam soru', value: projects.length, icon: BookOpenText, tone: 'text-[#1C1917]', iconTone: 'text-[#8B1E2D]' },
-    { label: 'Video hazır', value: projects.filter(p => p.status === 'video_ready' || p.videoReady).length, icon: FilmStrip, tone: 'text-[#8B1E2D]', iconTone: 'text-[#8B1E2D]' },
-    { label: 'Ses onaylı', value: projects.filter(p => p.status === 'audio_approved').length, icon: CheckCircle, tone: 'text-[#1E562A]', iconTone: 'text-[#1E562A]' },
-    { label: 'Taslak', value: projects.filter(p => p.status === 'draft').length, icon: CircleDashed, tone: 'text-[#55544F]', iconTone: 'text-[#787670]' },
+    // Counted by where each question really stands (the same rule as the question list).
+    { label: 'Video hazır', value: projects.filter(p => resumeStep(p) === 4).length, icon: FilmStrip, tone: 'text-[#8B1E2D]', iconTone: 'text-[#8B1E2D]' },
+    { label: 'Ses onaylı, işaret bekliyor', value: projects.filter(p => resumeStep(p) === 3).length, icon: CheckCircle, tone: 'text-[#1E562A]', iconTone: 'text-[#1E562A]' },
+    { label: 'Hazırlanıyor', value: projects.filter(p => resumeStep(p) < 3).length, icon: CircleDashed, tone: 'text-[#55544F]', iconTone: 'text-[#787670]' },
   ];
   const recent = projects.slice(0, 6);
   const firstName = (user?.name || '').trim();
@@ -103,7 +104,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onSele
                       <td className="py-3 px-3 text-center">
                         <span className="w-6 h-6 rounded-full bg-[#8B1E2D]/10 text-[#8B1E2D] font-bold inline-flex items-center justify-center text-xs">{p.correctAnswer}</span>
                       </td>
-                      <td className="py-3 px-3"><StatusBadge status={p.status} /></td>
+                      <td className="py-3 px-3"><span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-semibold ${resumeStep(p) === 4 ? 'bg-[#DCFCE7] text-[#166534]' : 'bg-[#F2F1EB] text-[#55544F]'}`}>{stageLabels[resumeStep(p)]}</span></td>
                       <td className="py-3 px-3 text-[#666560] tabular-nums">
                         {p.narrationSource?.duration || p.audioNarration?.duration
                           ? <span className="inline-flex items-center gap-1.5"><Waveform size={14} className="text-[#8B1E2D]" />{formatDuration(p.narrationSource?.duration || p.audioNarration?.duration || 0)}</span>

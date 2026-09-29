@@ -1,3 +1,4 @@
+import { SPOKEN_LIMIT } from './SolutionStep';
 import React, { useEffect, useMemo, useState } from 'react';
 import type { QuestionProject } from '../../../types';
 import { narrationDrift } from '../../../services/analysis/timelineAligner';
@@ -158,6 +159,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
                     className="hidden"
                     onChange={(e) => {
                       if (e.target.files?.[0]) handleUploadMp3File(e.target.files[0]);
+                      e.target.value = ''; // the same file can be picked again
                     }}
                   />
                 </label>
@@ -201,11 +203,16 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
       ) : (
         /* Two clean choices: Seslendirme Oluştur or MP3 Yükle */
         <div className="space-y-2.5">
+          {currentProject.solutionText.trim().length > SPOKEN_LIMIT && (
+            <p role="alert" className="text-sm text-[#B91C1C] bg-red-50 border border-red-200 rounded-md px-2.5 py-1.5">
+              Çözüm metni {currentProject.solutionText.trim().length.toLocaleString('tr')} karakter; seslendirme en fazla {SPOKEN_LIMIT.toLocaleString('tr')} karakter okuyabilir. 2. adımda metni kısaltın ya da MP3 yükleyin.
+            </p>
+          )}
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
               onClick={handleGenerateAudio}
-              disabled={isGeneratingAudio || sampleBusy || !hasSolution || currentProject.solutionText.trim().length>5000}
+              disabled={isGeneratingAudio || sampleBusy || !hasSolution || currentProject.solutionText.trim().length > SPOKEN_LIMIT}
               className={`py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs ${
                 hasSolution
                   ? 'bg-[#8B1E2D] hover:bg-[#721824] text-white'
@@ -237,6 +244,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
                 className="hidden"
                 onChange={(e) => {
                   if (e.target.files?.[0]) handleUploadMp3File(e.target.files[0]);
+                      e.target.value = ''; // the same file can be picked again
                 }}
               />
             </label>

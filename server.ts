@@ -28,17 +28,29 @@ app.use((_req, res, next) => {
 });
 app.use(express.json({ limit: '50mb' }));
 
-app.get('/api/elevenlabs/status', voiceStatusHandler);
-app.get('/api/elevenlabs/voices', voiceListHandler);
-app.post('/api/gemini/generate', geminiVoiceHandler);
-app.post('/api/gemini/align-project', geminiAlignHandler);
-app.all('/api/gemini/key', geminiKeyHandler);
-app.post('/api/elevenlabs/align-project', elevenLabsProjectAlignHandler);
+/**
+ * Express 4 does not catch a rejected async handler: the request would never be answered and the
+ * teacher's spinner would turn forever. Every API handler's failure becomes a plain 500 instead.
+ */
+const safe = (handler: (req: any, res: any) => unknown) => (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  Promise.resolve().then(() => handler(req, res)).catch(next);
+};
+
+app.get('/api/elevenlabs/status', safe(voiceStatusHandler));
+app.get('/api/elevenlabs/voices', safe(voiceListHandler));
+app.post('/api/gemini/generate', safe(geminiVoiceHandler));
+app.post('/api/gemini/align-project', safe(geminiAlignHandler));
+app.all('/api/gemini/key', safe(geminiKeyHandler));
+app.post('/api/elevenlabs/align-project', safe(elevenLabsProjectAlignHandler));
 // Same handlers Vercel serves from api/, so the admin panel also works in local development.
-app.get('/api/admin/analytics', analyticsHandler);
-app.all('/api/admin/storage', storageHandler);
-app.post('/api/admin/set-role', setRoleHandler);
-app.use('/api', async(req,res,next)=>{if(await requireMember(req,res))next();});
+app.get('/api/admin/analytics', safe(analyticsHandler));
+app.all('/api/admin/storage', safe(storageHandler));
+app.post('/api/admin/set-role', safe(setRoleHandler));
+app.use('/api', safe(async(req,res)=>{if(await requireMember(req,res))res.status(404).json({ error: 'Bulunamadı.' });}));
+app.use('/api', (error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('[api]', error instanceof Error ? error.message : error);
+  if (!res.headersSent) res.status(500).json({ error: 'Sunucuda beklenmeyen bir hata oldu. Biraz sonra tekrar deneyin.' });
+});
 
 // Production / Dev Vite static serving
 async function startServer() {

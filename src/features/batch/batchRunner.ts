@@ -30,6 +30,8 @@ export interface BatchOptions {
 export interface BatchDeps<F> {
   readDataUrl(file: F): Promise<string>;
   createProject(project: Omit<QuestionProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<QuestionProject>;
+  /** A question this batch already created (continuing after a stop or failure); null when it is gone. */
+  loadProject?(id: string): Promise<QuestionProject | null>;
   saveProject(project: QuestionProject): Promise<QuestionProject>;
   generateVoice(project: QuestionProject): Promise<GenerateNarrationResponse>;
   alignGeneratedVoice?(project: QuestionProject): Promise<{ words: Array<{ text: string; start: number; end: number }>; timingSource: 'gemini-transcribe' | 'forced-alignment' }>;
@@ -55,6 +57,8 @@ export const VOICE_SPACING_MS = 1_700;
 export async function runBatch<F extends { name: string }>(
   items: BatchItem<F>[], options: BatchOptions, deps: BatchDeps<F>,
   update: (number: number, state: BatchRowState) => void, signal?: AbortSignal,
+  /** Question number → project an earlier run created: continued instead of created again. */
+  resume: Record<number, string> = {},
 ): Promise<void> {
   let lastVoiceAt = -Infinity;
   const spaceVoice = async () => {
@@ -71,8 +75,9 @@ export async function runBatch<F extends { name: string }>(
     }
     let project: QuestionProject | undefined;
     try {
-      update(item.number, { stage: 'creating', message: 'Proje oluşturuluyor' });
-      project = await deps.createProject({
+      const earlier = resume[item.number] && deps.loadProject ? await deps.loadProject(resume[item.number]) : null;
+      update(item.number, { stage: 'creating', message: earlier ? 'Kaldığı yerden devam ediliyor' : 'Proje oluşturuluyor' });
+      project = earlier ?? await deps.createProject({
         title: `Soru ${item.number}`, questionNumber: item.number, examYear: options.examYear, examName: options.examName,
         category: options.category, correctAnswer: item.answer || 'A', status: 'draft',
         imageUrl: await deps.readDataUrl(item.image), imageFileName: item.image.name, solutionText: item.solution,
@@ -82,7 +87,11 @@ export async function runBatch<F extends { name: string }>(
       const projectId = project.id;
       const step = (stage: BatchStage, message: string, percent?: number) => update(item.number, { stage, message, projectId, percent });
 
-      if (item.audio) {
+      // A continued question keeps the voice it already has (no second voice request).
+      const voiced = !!(earlier && (earlier.narrationSource?.isApproved || earlier.audioApproved));
+      if (voiced) {
+        step('voice', 'Ses hazır');
+      } else if (item.audio) {
         step('voice', 'MP3 metne hizalanıyor');
         await spaceVoice();
         const uploaded = await deps.prepareUpload(project, item.audio);

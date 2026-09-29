@@ -19,6 +19,8 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { localVideoPipeline } from '../services/pipeline/localVideoPipeline';
 import { database } from '../services/supabase';
 import { localWhisperService } from '../services/whisper/localWhisperService';
+import { toast } from 'sonner';
+import { useConfirm } from '../components/common/ConfirmDialog';
 
 const stageLabels: Record<BatchRowState['stage'], string> = {
   waiting: 'Sırada', creating: 'Oluşturuluyor', voice: 'Ses', markers: 'İşaretler', video: 'MP4',
@@ -31,6 +33,7 @@ const readinessTones = { ready: 'text-[#15803D]', check: 'text-[#B45309]', block
 export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject: (id: string) => void; registerLeaveGuard?: (guard: LeaveGuard | null) => void }) {
   const { loadProjects } = useProjects();
   const { user } = useAuth();
+  const confirm = useConfirm();
   const defaults = newProjectDefaults(user?.preferences);
   const [images, setImages] = useState<File[]>([]);
   const [audios, setAudios] = useState<File[]>([]);
@@ -70,17 +73,37 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
     return () => window.removeEventListener('beforeunload', warn);
   }, [running]);
 
-  const start = async () => {
+  // Questions an earlier run left half done (stopped or failed); they can be continued, not created again.
+  const unfinished = runnable.filter(i => ['failed', 'stopped'].includes(rows[i.number]?.stage ?? ''));
+  const created = plan.items.filter(i => rows[i.number]?.projectId).length;
+
+  const start = async (onlyUnfinished = false) => {
     if (!runnable.length || running) return;
-    if (voiceChars > 0 && !window.confirm(`${runnable.filter(i => !i.audio).length} soru otomatik seslendirilecek. Devam edilsin mi?`)) return;
+    const items = onlyUnfinished ? unfinished : plan.items;
+    if (!onlyUnfinished && created > 0 && !await confirm({
+      title: 'Baştan başlatılsın mı?',
+      message: `Önceki çalıştırmada ${created} soru zaten oluşturuldu. Baştan başlatırsanız bunlar yeniden oluşturulur ve listenizde iki kez görünür. Yalnız yarım kalanlar için “Yarım kalanları tamamla”yı kullanın.`,
+      confirmLabel: 'Yine de baştan başlat', danger: true,
+    })) return;
+    const toVoice = items.filter(i => !i.audio && !i.problems.length && !(onlyUnfinished && rows[i.number]?.projectId)).length;
+    if (generateVoice && toVoice > 0 && !await confirm({
+      title: 'Otomatik seslendirme',
+      message: `${toVoice} soru otomatik seslendirilecek; her biri bir ses hakkı kullanır. Sesler dinlenmeden onaylanır, sonra editörde kontrol edebilirsiniz.`,
+      confirmLabel: 'Başlat',
+    })) return;
     setError('');
     setRunning(true);
     abort.current = new AbortController();
-    setRows(Object.fromEntries(plan.items.map(i => [i.number, { stage: 'waiting' as const }])));
+    const resume = onlyUnfinished ? Object.fromEntries(items.flatMap(i => rows[i.number]?.projectId ? [[i.number, rows[i.number].projectId!]] : [])) : {};
+    setRows(previous => onlyUnfinished
+      ? { ...previous, ...Object.fromEntries(items.map(i => [i.number, { stage: 'waiting' as const, projectId: previous[i.number]?.projectId }])) }
+      : Object.fromEntries(plan.items.map(i => [i.number, { stage: 'waiting' as const }])));
+    const outcome: Record<number, BatchRowState['stage']> = {};
     const deps: BatchDeps<File> = {
       // Only question images go through this; MP3s use prepareUpload below.
       readDataUrl: readCompressedImage,
       createProject: p => projectRepository.create(p),
+      loadProject: id => projectRepository.getById(id),
       saveProject: p => projectRepository.save(p),
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat }),
@@ -101,8 +124,12 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       now: () => Date.now(),
     };
     try {
-      await runBatch(plan.items, { category, examName: examName.trim(), examYear: examYear.trim(), generateVoice, exportVideo, video: defaults.video }, deps,
-        (number, state) => setRows(previous => ({ ...previous, [number]: state })), abort.current.signal);
+      await runBatch(items, { category, examName: examName.trim(), examYear: examYear.trim(), generateVoice, exportVideo, video: defaults.video }, deps,
+        (number, state) => { outcome[number] = state.stage; setRows(previous => ({ ...previous, [number]: state })); }, abort.current.signal, resume);
+      const done = Object.values(outcome).filter(stage => stage === 'done').length;
+      const left = Object.values(outcome).filter(stage => stage === 'failed' || stage === 'stopped').length;
+      if (left) toast.warning(`${done} soru hazır, ${left} soru yarım kaldı.`, { description: 'Hata nedenleri tabloda. “Yarım kalanları tamamla” ile kaldıkları yerden devam edebilirsiniz.', duration: 12000 });
+      else if (done) toast.success(`${done} soru hazır.`, { description: exportVideo ? 'MP4 dosyaları indirildi.' : 'Sorular listenizde.' });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Toplu üretim tamamlanamadı.');
     } finally {
@@ -117,7 +144,10 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       <div><h2>Toplu üretim</h2><p>Birden çok soru görselini, tek bir çözüm metnini ve isteğe bağlı MP3'leri soru numarasına göre eşleştirip sırayla hazırlayın.</p></div>
       {running
         ? <button className="studio-secondary" onClick={() => abort.current?.abort()}><Stop size={18} />Durdur</button>
-        : <button className="studio-primary" disabled={!runnable.length} onClick={() => void start()}><Play size={18} />Başlat ({runnable.length} soru)</button>}
+        : <span className="flex flex-wrap gap-2">
+            {unfinished.length > 0 && <button className="studio-primary" onClick={() => void start(true)}><Play size={18} />Yarım kalanları tamamla ({unfinished.length})</button>}
+            <button className={unfinished.length ? 'studio-secondary' : 'studio-primary'} disabled={!runnable.length} onClick={() => void start()}><Play size={18} />{created ? 'Baştan başlat' : 'Başlat'} ({runnable.length} soru)</button>
+          </span>}
     </header>
 
     <div className="grid gap-4 md:grid-cols-2 pb-6 border-b border-[#E5E4DC]">

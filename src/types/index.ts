@@ -188,6 +188,8 @@ export interface NarrationSource {
     character_end_times_seconds: number[];
   };
   transcript?: string;
+  /** The solution text this voice was generated from, to tell when the text has changed since. */
+  spokenText?: string;
   /** How word timings were obtained. */
   timingSource?: 'gemini-transcribe' | 'forced-alignment' | 'whisper' | 'none';
   generatedAt?: string;

@@ -37,10 +37,15 @@ export interface GeneratedAlignmentResult {
   loss?: number | null;
 }
 
+/** Voice and timing requests end on the server within 120 s; the browser never waits much longer. */
+export const REQUEST_TIMEOUT_MS = 135_000;
+const timedOut = (error: unknown) => error instanceof DOMException && (error.name === 'TimeoutError' || error.name === 'AbortError');
+
 async function requestAlignment(endpoint: string, projectId: string): Promise<{ ok: boolean; data: any; status: number }> {
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       headers: { 'Content-Type': 'application/json', ...await authHeaders() },
       body: JSON.stringify({ projectId }),
     });
@@ -50,7 +55,7 @@ async function requestAlignment(endpoint: string, projectId: string): Promise<{ 
     return {
       ok: false,
       status: 0,
-      data: { error: error instanceof Error ? error.message : 'Zamanlama servisine ulaşılamadı.' },
+      data: { error: timedOut(error) ? 'Zamanlama servisi zamanında yanıt vermedi.' : error instanceof Error ? error.message : 'Zamanlama servisine ulaşılamadı.' },
     };
   }
 }
@@ -93,11 +98,14 @@ class NarrationService {
     try {
       res = await fetch('/api/gemini/generate', {
         method: 'POST',
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         headers: { 'Content-Type': 'application/json', ...await authHeaders() },
         body: JSON.stringify({ projectId: req.projectId, text: req.text }),
       });
     } catch (error) {
-      throw new VoiceUnavailableError(`Gemini TTS bağlantısı başarısız: ${error instanceof Error ? error.message : 'ağ hatası'}`);
+      throw new VoiceUnavailableError(timedOut(error)
+        ? 'Seslendirme servisi zamanında yanıt vermedi. İnternet bağlantınızı kontrol edip birkaç dakika sonra tekrar deneyin.'
+        : `Gemini TTS bağlantısı başarısız: ${error instanceof Error ? error.message : 'ağ hatası'}`);
     }
     if (res.ok) {
       const data = await res.json().catch(() => null);

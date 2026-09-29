@@ -28,6 +28,8 @@ import type { LeaveGuard } from '../layouts/AppLayout';
 import { APP_NAME } from '../config/brand';
 import { ReportProblem } from '../features/feedback/ReportProblem';
 import { setReportContext } from '../features/feedback/feedback';
+import { toast } from 'sonner';
+import { useConfirm } from '../components/common/ConfirmDialog';
 import { useAuth } from '../features/auth/AuthContext';
 import { CollectionInput } from '../features/projects/CollectionInput';
 
@@ -59,6 +61,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
 }) => {
   const { currentProject, updateCurrentProject, saveCurrentProject, saveStatus, error: saveError } = useProjects();
   const { user } = useAuth();
+  const confirm = useConfirm();
 
   const [step, setStep] = useState(() => (currentProject ? resumeStep(currentProject) : 0));
   const [editRegions, setEditRegions] = useState(false);
@@ -145,11 +148,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     registerLeaveGuard(
       working
         ? () => {
-            window.alert(
-              working === 'export'
-                ? 'MP4 hazırlanıyor. İndirme bitene kadar bekleyin ya da İndir adımında “İptal” ile durdurun.'
-                : 'Ses hazırlanıyor. Bitince bu sayfadan çıkabilirsiniz.',
-            );
+            toast.warning(working === 'export' ? 'MP4 hazırlanıyor.' : 'Ses hazırlanıyor.', {
+              description: working === 'export'
+                ? 'İndirme bitene kadar bekleyin ya da İndir adımında “İptal” ile durdurun.'
+                : 'Bitince bu sayfadan çıkabilirsiniz.',
+            });
             return false;
           }
         : null,
@@ -223,10 +226,33 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setVideoGenerated(false);
     setPreviewMode('image');
   };
-  const handleImageFile = (file: File) => {
-    if (file.type.startsWith('image/')) void readCompressedImage(file).then(url => setImage(url, file.name), () => undefined);
+  /** Work that a new or removed image throws away, said plainly; empty when there is none. */
+  const imageLosses = () => {
+    const config = currentProject.videoConfig;
+    const parts = [
+      (config.regions?.length || 0) > 0 && 'görsel üzerindeki kutular',
+      (config.timelineActions?.length || 0) > 0 && 'videodaki işaretler',
+    ].filter(Boolean);
+    return parts.join(' ve ');
   };
-  const handleDeleteImage = () => setImage('', '');
+  const handleImageFile = async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      toast.error('Bu dosya bir görsel değil.', { description: 'PNG, JPG ya da WEBP biçiminde bir soru görseli seçin.' });
+      return;
+    }
+    const losses = currentProject.imageUrl ? imageLosses() : '';
+    if (losses && !await confirm({ title: 'Görsel değiştirilsin mi?', message: `Yeni görselle birlikte ${losses} ${losses.endsWith('işaretler') ? 'de' : 'da'} silinir. Bu işlem geri alınamaz.`, confirmLabel: 'Görseli değiştir', danger: true })) return;
+    try {
+      setImage(await readCompressedImage(file), file.name);
+    } catch {
+      toast.error('Görsel açılamadı.', { description: 'Dosya bozuk olabilir. Başka bir görsel deneyin ya da ekran görüntüsü alıp onu yükleyin.' });
+    }
+  };
+  const handleDeleteImage = async () => {
+    const losses = imageLosses();
+    if (!await confirm({ title: 'Görsel silinsin mi?', message: losses ? `Görselle birlikte ${losses} ${losses.endsWith('işaretler') ? 'de' : 'da'} silinir. Bu işlem geri alınamaz.` : 'Soru görseli kaldırılır.', confirmLabel: 'Görseli sil', danger: true })) return;
+    setImage('', '');
+  };
 
   // Generate audio with Gemini free-tier TTS first; ElevenLabs remains the automatic fallback.
   const handleGenerateAudio = async () => {
@@ -234,6 +260,12 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       setAudioError('Lütfen önce çözüm metnini yazın.');
       return;
     }
+    // A new narration replaces the one there is and uses one of the day's voice requests.
+    if (activeAudioUrl && !await confirm({
+      title: 'Yeniden seslendirilsin mi?',
+      message: `Şu anki ses silinir ve yerine yenisi üretilir. Bugünkü ses haklarınızdan biri kullanılır.${currentProject.audioApproved ? ' Onayladığınız sesin yerine geçer.' : ''}`,
+      confirmLabel: 'Yeniden seslendir',
+    })) return;
 
     setAudioError(null);
     setAudioInfo(null);
@@ -252,7 +284,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
 
       const persisted = await saveCurrentProject({
-        narrationSource: newNarrationSource,
+        narrationSource: { ...newNarrationSource, spokenText: currentProject.solutionText },
         audioNarration: compatNarration,
         status: 'audio_generated',
         audioApproved: false,
@@ -333,7 +365,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   };
 
   // Delete audio
-  const handleDeleteAudio = () => {
+  const handleDeleteAudio = async () => {
+    if (!await confirm({ title: 'Ses silinsin mi?', message: 'Bu sorunun sesi kaldırılır. Yeniden seslendirmek ses hakkı kullanır.', confirmLabel: 'Sesi sil', danger: true })) return;
     if (isAudioPlaying && stageAudioRef.current) {
       stageAudioRef.current.pause();
       setIsAudioPlaying(false);

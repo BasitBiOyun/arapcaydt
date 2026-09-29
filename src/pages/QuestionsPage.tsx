@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass } from '@phosphor-icons/react';
 import { useProjects } from '../features/projects/ProjectContext';
 import { QUESTION_CATEGORIES, getCategoryLabel } from '../config/categories';
-import { resumeStep, steps } from '../features/question-editor/workflow';
+import { resumeStep, stageLabels, steps } from '../features/question-editor/workflow';
 import type { ProjectSummary } from '../types';
 import { projectRepository } from '../features/projects/projectRepository';
 import type { AppPage } from '../components/common/AppSidebar';
+import { useConfirm } from '../components/common/ConfirmDialog';
 interface Props {
   onNavigate: (page: AppPage) => void;
   onSelectProject: (id: string) => void;
   onNewQuestion: () => void;
 }
 export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Props) {
+  const confirm = useConfirm();
   const { projects, deleteProjectById, createNewProject, isLoading } = useProjects();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
@@ -83,7 +85,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
     }
   };
   const remove = async (p: ProjectSummary) => {
-    if (!confirm(`“${p.title}” silinsin mi?`)) return;
+    if (!await confirm({ title: 'Soru silinsin mi?', message: `“${p.title}” görseli, sesi ve videosu ile birlikte kalıcı olarak silinir. Bu işlem geri alınamaz.`, confirmLabel: 'Soruyu sil', danger: true })) return;
     setBusy(p.id);
     try {
       if (!(await deleteProjectById(p.id))) throw new Error('Silinemedi');
@@ -197,7 +199,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               </span>
             </button>
             <span className="project-stage">
-              {['Görsel bekliyor', 'Metin bekliyor', 'Ses kontrolü', 'İşaret kontrolü', 'Video hazır'][resumeStep(p)]}
+              {stageLabels[resumeStep(p)]}
             </span>
             <div className="row-actions">
               <button

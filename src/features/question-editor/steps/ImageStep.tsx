@@ -50,6 +50,7 @@ export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef
                 className="hidden"
                 onChange={(e) => {
                   if (e.target.files?.[0]) handleImageFile(e.target.files[0]);
+                  e.target.value = ''; // the same file can be picked again
                 }}
               />
             </label>
@@ -87,6 +88,7 @@ export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef
             className="hidden"
             onChange={(e) => {
               if (e.target.files?.[0]) handleImageFile(e.target.files[0]);
+                  e.target.value = ''; // the same file can be picked again
             }}
           />
         </label>

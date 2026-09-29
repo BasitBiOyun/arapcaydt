@@ -1,6 +1,8 @@
 import type {QuestionProject,VideoAction,AnnotationRegion} from '../../types';
 import {parseSolutionSemantics} from '../../services/analysis/solutionParser';
 export const steps=['Soru','Metin','Ses','İşaretler','İndir'];
+/** Where a question stands, by resumeStep: the same words on every list and count. */
+export const stageLabels=['Görsel bekliyor','Metin bekliyor','Ses kontrolü','İşaret kontrolü','Video hazır'];
 /** Works on a full project or a list summary (only these fields are read). */
 export function resumeStep(p:Pick<QuestionProject,'imageUrl'|'solutionText'|'audioApproved'|'videoReady'>&{narrationSource?:{isApproved?:boolean};audioNarration?:{isApproved?:boolean}}) {
   if(!p.imageUrl)return 0;

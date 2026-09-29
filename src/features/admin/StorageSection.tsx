@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { authHeaders } from '../../services/supabase';
+import { useConfirm } from '../../components/common/ConfirmDialog';
 
 type Bucket = { count: number; bytes: number };
 interface StorageInfo {
@@ -35,6 +36,7 @@ const markAutoSweep = () => { try { localStorage.setItem(AUTO_SWEEP_KEY, String(
 
 /** Admin panel: Supabase storage usage, WAV → MP3 conversion and removal of files no project uses. */
 export const StorageSection: React.FC = () => {
+  const confirm = useConfirm();
   const [info, setInfo] = useState<StorageInfo | null>(null);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState('');
@@ -59,7 +61,7 @@ export const StorageSection: React.FC = () => {
   }, [load]);
 
   const convertAll = async () => {
-    if (!info || !window.confirm(`${info.convertible} WAV ses MP3'e çevrilecek. Kelime zamanlamaları değişmez. Devam edilsin mi?`)) return;
+    if (!info || !await confirm({ title: 'WAV sesler MP3’e çevrilsin mi?', message: `${info.convertible} ses çevrilecek. Kelime zamanlamaları değişmez.`, confirmLabel: 'Çevir' })) return;
     setBusy(true); setError('');
     const skip: string[] = [];
     let done = 0;
@@ -82,7 +84,7 @@ export const StorageSection: React.FC = () => {
   };
 
   const sweepAll = async () => {
-    if (!info || !window.confirm(`Hiçbir projenin kullanmadığı ${info.orphans.count} dosya (${mb(info.orphans.bytes)}) kalıcı olarak silinecek. Son 7 günde oluşan dosyalara dokunulmaz. Devam edilsin mi?`)) return;
+    if (!info || !await confirm({ title: 'Kullanılmayan dosyalar silinsin mi?', message: `Hiçbir projenin kullanmadığı ${info.orphans.count} dosya (${mb(info.orphans.bytes)}) kalıcı olarak silinir. Son 7 günde oluşan dosyalara dokunulmaz.`, confirmLabel: 'Sil', danger: true })) return;
     setBusy(true); setError('');
     try {
       const r = await call({ action: 'sweep', scope: 'all' });
