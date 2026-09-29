@@ -223,6 +223,8 @@ export interface QuestionProject {
   renderedVideoUrl?: string;
   isOutdated?: boolean;
   notes?: string;
+  /** When the teacher moved it to the recycle bin; it is deleted for good 30 days later. */
+  deletedAt?: string;
 }
 
 /**
@@ -231,7 +233,8 @@ export interface QuestionProject {
  */
 export type ProjectSummary = Pick<QuestionProject,
   'id' | 'ownerId' | 'createdAt' | 'updatedAt' | 'title' | 'examYear' | 'examName' | 'questionNumber' | 'category'
-  | 'correctAnswer' | 'status' | 'audioApproved' | 'videoReady' | 'imageUrl' | 'imageFileName' | 'arabicQuestionSnippet' | 'solutionText'> & {
+  | 'correctAnswer' | 'status' | 'audioApproved' | 'videoReady' | 'imageUrl' | 'imageFileName' | 'arabicQuestionSnippet' | 'solutionText'
+  | 'deletedAt'> & {
   narrationSource?: Pick<NarrationSource, 'type' | 'isApproved' | 'duration'>;
   audioNarration?: Pick<AudioNarration, 'isApproved' | 'duration'>;
 };

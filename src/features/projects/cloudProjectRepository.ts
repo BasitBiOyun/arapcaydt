@@ -89,7 +89,19 @@ export class CloudProjectRepository implements IProjectRepository {
   async getById(id:string){
     const owner=await ownerId();
     const {data,error}=await database().from('projects').select('*').eq('id',id).eq('owner_id',owner).maybeSingle();
-    if(error)throw error;return data?hydrate(data):null;
+    // A question in the recycle bin opens only after it is restored.
+    if(error)throw error;return data&&!data.data?.deletedAt?hydrate(data):null;
+  }
+  async setDeleted(id:string,deletedAt:string|null){
+    const owner=await ownerId();
+    const {data:row,error}=await database().from('projects').select('data').eq('id',id).eq('owner_id',owner).maybeSingle();
+    if(error)throw error;
+    if(!row)return false;
+    const next={...row.data};
+    if(deletedAt)next.deletedAt=deletedAt;else delete next.deletedAt;
+    const {data:updated,error:saveError}=await database().from('projects').update({data:next}).eq('id',id).eq('owner_id',owner).select('id');
+    if(saveError)throw saveError;
+    return !!updated?.length;
   }
   async save(project:QuestionProject){
     const owner=await ownerId();

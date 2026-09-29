@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { ProjectSummary, QuestionProject } from '../../types';
 import { toSummary } from './projectSummary';
 import { projectRepository } from './projectRepository';
@@ -7,6 +7,7 @@ import {draftStore} from './draftStore';
 import {createSaveQueue} from './saveQueue';
 import { DEFAULT_CATEGORY_ID } from '../../config/categories';
 import { newProjectDefaults } from '../settings/preferences';
+import { trashExpired } from './trash';
 
 interface ProjectContextType {
   error: string;
@@ -24,7 +25,17 @@ interface ProjectContextType {
   createNewProject: (custom?: Partial<QuestionProject>) => Promise<QuestionProject>;
   saveCurrentProject: (updates?: Partial<QuestionProject>) => Promise<QuestionProject | null>;
   updateCurrentProject: (updates: Partial<QuestionProject>) => void;
-  deleteProjectById: (id: string) => Promise<boolean>;
+  /** Questions in the recycle bin (deleted for good after 30 days). */
+  trash: ProjectSummary[];
+  /** Moves questions to the recycle bin; returns how many moved. */
+  moveToTrash: (ids: string[]) => Promise<number>;
+  restoreFromTrash: (ids: string[]) => Promise<number>;
+  /** Deletes questions for good, with their pictures and voices. */
+  deleteForever: (ids: string[]) => Promise<number>;
+  /** Puts questions into a collection ('' takes them out of any collection). */
+  moveToCollection: (ids: string[], examName: string) => Promise<number>;
+  /** Saves questions read from a backup as new questions of this account. */
+  importProjects: (list: QuestionProject[], onProgress?: (done: number) => void) => Promise<number>;
   setCurrentProject: React.Dispatch<React.SetStateAction<QuestionProject | null>>;
 }
 
@@ -38,7 +49,10 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const confirmed=useRef(new Map<string,string>());
   const enqueue=useRef(createSaveQueue<QuestionProject>(p=>projectRepository.save(p)));
   const localWrites=useRef(Promise.resolve<unknown>(undefined));
-  const [projects, setProjects] = useState<ProjectSummary[]>([]);
+  // Every question of the account, the recycle bin included; lists read `projects` and `trash`.
+  const [allProjects, setProjects] = useState<ProjectSummary[]>([]);
+  const projects = useMemo(() => allProjects.filter(p => !p.deletedAt), [allProjects]);
+  const trash = useMemo(() => allProjects.filter(p => p.deletedAt).sort((a, b) => b.deletedAt!.localeCompare(a.deletedAt!)), [allProjects]);
   const [currentProject, setCurrentProject] = useState<QuestionProject | null>(null);
   const projectRef=useRef(currentProject);
   projectRef.current=currentProject;
@@ -79,7 +93,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       setError('');
       // Summaries only: `confirmed` tracks full projects and is set when one is opened.
-      setProjects(await projectRepository.getSummaries());
+      const list = await projectRepository.getSummaries();
+      // Questions whose 30 days in the recycle bin are over are deleted for good now.
+      const expired = list.filter(p => trashExpired(p.deletedAt));
+      const gone = new Set<string>();
+      for (const p of expired) if (await projectRepository.delete(p.id).catch(() => false)) gone.add(p.id);
+      setProjects(list.filter(p => !gone.has(p.id)));
     } catch (e) {
       setError('Projeler yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.');
     } finally {
@@ -170,18 +189,71 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return ()=>{window.removeEventListener('online',reconnect);window.removeEventListener('beforeunload',warn);};
   },[saveCurrentProject]);
 
-  const deleteProjectById = useCallback(async (id: string): Promise<boolean> => {
+  /** Runs one change per question, keeps going past a failure and returns the ids that worked. */
+  const eachQuestion = useCallback(async (ids: string[], change: (id: string) => Promise<boolean>) => {
     if(!await flush())throw new Error('Bekleyen değişiklikler kaydedilemedi.');
-    const ok = await projectRepository.delete(id);
-    if (ok) {
-      await localWrites.current;await draftStore.remove(owner,id).catch(()=>undefined);
-      setProjects((prev) => prev.filter((p) => p.id !== id));
-      if (currentProject?.id === id) {
-        projectRef.current=null;setCurrentProject(null);
-      }
+    const done: string[] = [];
+    for (const id of ids) if (await change(id).catch(() => false)) done.push(id);
+    // An open question that changed here is loaded again when it is next opened.
+    if (projectRef.current && done.includes(projectRef.current.id)) { projectRef.current = null; setCurrentProject(null); }
+    return done;
+  }, [flush]);
+
+  const moveToTrash = useCallback(async (ids: string[]) => {
+    const at = new Date().toISOString();
+    const done = await eachQuestion(ids, id => projectRepository.setDeleted(id, at));
+    setProjects(prev => prev.map(p => done.includes(p.id) ? { ...p, deletedAt: at } : p));
+    return done.length;
+  }, [eachQuestion]);
+
+  const restoreFromTrash = useCallback(async (ids: string[]) => {
+    const done = await eachQuestion(ids, id => projectRepository.setDeleted(id, null));
+    setProjects(prev => prev.map(p => {
+      if (!done.includes(p.id)) return p;
+      const { deletedAt: _, ...rest } = p;
+      return rest;
+    }));
+    return done.length;
+  }, [eachQuestion]);
+
+  const deleteForever = useCallback(async (ids: string[]) => {
+    const done = await eachQuestion(ids, id => projectRepository.delete(id));
+    await localWrites.current;
+    for (const id of done) await draftStore.remove(owner, id).catch(() => undefined);
+    setProjects(prev => prev.filter(p => !done.includes(p.id)));
+    return done.length;
+  }, [eachQuestion, owner]);
+
+  const moveToCollection = useCallback(async (ids: string[], examName: string) => {
+    const name = examName.trim();
+    const saved: ProjectSummary[] = [];
+    const done = await eachQuestion(ids, async id => {
+      const full = await projectRepository.getById(id);
+      if (!full) return false;
+      const next = await projectRepository.save({ ...full, examName: name || undefined });
+      confirmed.current.set(next.id, JSON.stringify(next));
+      saved.push(toSummary(next));
+      return true;
+    });
+    setProjects(prev => prev.map(p => saved.find(s => s.id === p.id) ?? p));
+    return done.length;
+  }, [eachQuestion]);
+
+  const importProjects = useCallback(async (list: QuestionProject[], onProgress?: (done: number) => void) => {
+    if(!await flush())throw new Error('Bekleyen değişiklikler kaydedilemedi.');
+    const taken = new Set(allProjects.map(p => p.id));
+    const added: ProjectSummary[] = [];
+    for (const project of list) {
+      // A question that is still in the account is never overwritten: it comes back as a copy.
+      const id = taken.has(project.id) ? crypto.randomUUID() : project.id;
+      taken.add(id);
+      const saved = await projectRepository.save({ ...project, id });
+      added.push(toSummary(saved));
+      onProgress?.(added.length);
     }
-    return ok;
-  }, [currentProject,owner,flush]);
+    setProjects(prev => [...added, ...prev].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)));
+    return added.length;
+  }, [allProjects, flush]);
 
   return (
     <ProjectContext.Provider
@@ -189,6 +261,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         error,
         saveStatus,
         projects,
+        trash,
         currentProject,
         isLoading,
         activeFilter,
@@ -200,7 +273,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         createNewProject,
         saveCurrentProject,
         updateCurrentProject,
-        deleteProjectById,
+        moveToTrash,
+        restoreFromTrash,
+        deleteForever,
+        moveToCollection,
+        importProjects,
         setCurrentProject,
       }}
     >

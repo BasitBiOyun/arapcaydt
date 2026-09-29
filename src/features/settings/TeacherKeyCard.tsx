@@ -129,6 +129,7 @@ export const TeacherKeyCard: React.FC = () => {
           <li>“Create API key” (API anahtarı oluştur) düğmesine basın; sorarsa yeni bir proje oluşturun.</li>
           <li>Oluşan anahtarı kopyalayıp yukarıya yapıştırın ve Kaydet’e basın.</li>
         </ol>
+        <a href="#/yardim/google-anahtari" className="inline-block mt-2 text-sm font-semibold text-[#8B1E2D] underline">Resimli, adım adım anlatım için tıklayın</a>
         <p className="mt-2 text-xs text-[#6E1623]">
           Faturalandırmayı (billing) açmayın: anahtar ücretsiz kotayla çalışır, size hiçbir ücret yansımaz.
           Anahtarınız yalnızca sizin sorularınız için kullanılır, sunucuda şifreli saklanır ve bir daha gösterilmez.
