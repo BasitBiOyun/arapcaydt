@@ -108,36 +108,23 @@ test('MP4 tracks only take increasing timestamps (a packet one frame early is dr
   assert.deepEqual([2730667,2752000,2773333,2752000,2773333,2794667].map(gate),[true,true,true,false,false,true]);
 });
 
-test('captions get their own strip: a tall question never lies under the caption', async () => {
+test('the question stays full size; the teacher may shrink it clear of the caption strip', async () => {
   const { captionStrip, imageFitRect, calculateFitRect } = await import('../src/features/video/engine/renderer');
   const captions = [{ text: 'Doğru cevap E şıkkıdır.', start: 0, end: 2 }];
   const tall = { w: 1000, h: 1400 };
   const bottom = captionStrip({ captions, captionY: .85 }, 1080)!;
   assert.equal(bottom.edge, 'bottom');
-  const optionE = { id: 'option-e', type: 'option-e', label: 'E', x: .1, y: .9, width: .8, height: .08 } as any;
-  const optionA = { id: 'option-a', type: 'option-a', label: 'A', x: .1, y: .05, width: .8, height: .08 } as any;
-  const fit = imageFitRect(tall.w, tall.h, 1920, 1080, bottom, [optionE]);
-  assert.ok(fit.y + fit.height <= 1080 - bottom.size + .5, 'option E ends above the caption strip');
-  // Nothing marked lies under the strip (option E ends higher): the question keeps its full size.
-  const roomy = { ...optionE, y: .7 };
-  assert.deepEqual(imageFitRect(tall.w, tall.h, 1920, 1080, bottom, [roomy, { id: 'question-root', type: 'paragraph', label: '', x: 0, y: 0, width: 1, height: 1 } as any]),
-    calculateFitRect(tall.w, tall.h, 1920, 1080));
-  const top = imageFitRect(tall.w, tall.h, 1920, 1080, captionStrip({ captions, captionY: .15 }, 1080), [optionA]);
-  assert.ok(top.y >= bottom.size - .5, 'a caption at the top pushes the question down');
-  // A wide slide that already leaves room only moves up; it does not shrink.
-  const wide = imageFitRect(1920, 700, 1920, 1080, bottom, [{ ...optionE, y: .95, height: .04 }]);
-  assert.equal(Math.round(wide.width), 1920);
-  assert.ok(wide.y + wide.height <= 1080 - bottom.size + .5);
-  // No captions, captions off, or a caption placed mid-screen: the image uses the whole frame as before.
+  assert.deepEqual(imageFitRect(tall.w, tall.h, 1920, 1080, bottom), calculateFitRect(tall.w, tall.h, 1920, 1080), 'full size by default');
+  assert.deepEqual(imageFitRect(tall.w, tall.h, 1920, 1080, bottom, 1), calculateFitRect(tall.w, tall.h, 1920, 1080));
+  const own = imageFitRect(tall.w, tall.h, 1920, 1080, bottom, .8);
+  assert.equal(Math.round(own.height), 864);
+  assert.ok(own.y + own.height <= 1080 - bottom.size + .5, 'a shrunk question ends above the caption strip');
+  assert.equal(Math.round(own.x + own.width / 2), 960);
+  const top = imageFitRect(tall.w, tall.h, 1920, 1080, captionStrip({ captions, captionY: .15 }, 1080), .8);
+  assert.ok(top.y >= bottom.size - .5, 'a caption at the top: the shrunk question sits below it');
   assert.equal(captionStrip({ captions: [], captionY: .85 }, 1080), null);
   assert.equal(captionStrip({ captions, showCaptions: false }, 1080), null);
   assert.equal(captionStrip({ captions, captionY: .5 }, 1080), null);
-  assert.deepEqual(imageFitRect(tall.w, tall.h, 1920, 1080, null), calculateFitRect(tall.w, tall.h, 1920, 1080));
-  // The teacher's own size wins and stays clear of the strip.
-  const own = imageFitRect(tall.w, tall.h, 1920, 1080, bottom, [], .8);
-  assert.equal(Math.round(own.height), 864);
-  assert.ok(own.y + own.height <= 1080 - bottom.size + .5);
-  assert.equal(Math.round(own.x + own.width / 2), 960);
 });
 
 test('underlines sit right under their words and move with the teacher’s nudges', async () => {

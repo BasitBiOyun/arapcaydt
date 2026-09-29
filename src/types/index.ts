@@ -145,7 +145,7 @@ export interface VideoConfig {
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;
-  /** Question image size as a share of the whole frame; unset = automatic (shrinks only if the caption would cover it). */
+  /** Question image size as a share of the whole frame; unset = whole frame. */
   imageScale?: number;
   /** Every underline in this video moves up (−) or down (+), in heights of its text line. */
   underlineOffset?: number;

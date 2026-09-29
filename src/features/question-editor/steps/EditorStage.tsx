@@ -89,16 +89,16 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             value={currentProject.videoConfig.captionY ?? .85}
             onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, captionY: Number(e.target.value) } })} />
           Altyazı konumu
-          <span className="flex gap-1 items-center ml-2" title="Otomatik: soru yalnız altyazı bir şıkkı kapatacaksa küçülür">
+          <span className="flex gap-1 items-center ml-2" title="Altyazı bir şıkkı kapatıyorsa soruyu küçültün; küçülen soru altyazının üstünde durur">
             Soru boyutu
             <button type="button" className="w-6 h-6 rounded border bg-white hover:bg-[#F2F1EB] font-bold" aria-label="Soruyu küçült"
               onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, imageScale: Math.max(.6, Math.round(((currentProject.videoConfig.imageScale ?? 1) - .05) * 100) / 100) } })}>−</button>
             <button type="button" className={`px-2 h-6 rounded border ${currentProject.videoConfig.imageScale === undefined ? 'bg-[#8B1E2D] text-white border-[#8B1E2D]' : 'bg-white hover:bg-[#F2F1EB]'}`}
-              title="Otomatik boyuta dön" onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, imageScale: undefined } })}>
-              {currentProject.videoConfig.imageScale === undefined ? 'Otomatik' : `%${Math.round(currentProject.videoConfig.imageScale * 100)}`}
+              title="Tam boya dön" onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, imageScale: undefined } })}>
+              {currentProject.videoConfig.imageScale === undefined ? 'Tam boy' : `%${Math.round(currentProject.videoConfig.imageScale * 100)}`}
             </button>
             <button type="button" className="w-6 h-6 rounded border bg-white hover:bg-[#F2F1EB] font-bold" aria-label="Soruyu büyüt"
-              onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, imageScale: Math.min(1, Math.round(((currentProject.videoConfig.imageScale ?? .95) + .05) * 100) / 100) } })}>+</button>
+              onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, imageScale: (currentProject.videoConfig.imageScale ?? 1) + .05 >= .999 ? undefined : Math.round(((currentProject.videoConfig.imageScale ?? 1) + .05) * 100) / 100 } })}>+</button>
           </span>
           <label className="flex gap-2 items-center ml-2" title="Bu videodaki tüm altı çizgileri yukarı ya da aşağı kaydırır">
           Altı çizgi
