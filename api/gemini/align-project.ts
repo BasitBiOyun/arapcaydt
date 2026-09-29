@@ -149,6 +149,29 @@ function retryDelayMs(raw = ''): number {
   return Math.min(12, Math.max(2, seconds)) * 1000;
 }
 
+/**
+ * Shape of a Transcribe reply that gave no word timings, for the admin failure list:
+ * status, steps, content types, annotation types, bad offsets and text length. No transcript text.
+ */
+export function describeResponse(payload: any): string {
+  const steps: any[] = Array.isArray(payload?.steps) ? payload.steps : [];
+  const contents = steps.flatMap(step => Array.isArray(step?.content) ? step.content : []);
+  const annotations = contents.flatMap(content => Array.isArray(content?.annotations) ? content.annotations : []);
+  const words = annotations.filter(a => a?.type === 'word_info');
+  const badOffsets = words.filter(a => parseOffset(a?.start_offset) == null || parseOffset(a?.end_offset) == null).length;
+  const textLength = contents.reduce((n, content) => n + (typeof content?.text === 'string' ? content.text.length : 0), 0);
+  const kinds = (items: any[]) => Array.from(new Set(items.map(i => String(i?.type ?? '?')))).join('/') || '-';
+  return [
+    payload?.status && `durum ${payload.status}`,
+    `steps ${steps.length}`,
+    `içerik ${kinds(contents)}`,
+    `işaret ${kinds(annotations)}`,
+    badOffsets && `${badOffsets} kelimenin zamanı okunamadı`,
+    `metin ${textLength} karakter`,
+    !steps.length && `alanlar ${Object.keys(payload || {}).slice(0, 5).join('/') || '-'}`,
+  ].filter(Boolean).join(', ');
+}
+
 interface TranscribeResult { status: number; raw: string; error?: string; words?: Array<{ text: string; start: number; end: number }> }
 
 /** One Transcribe request with one key; status 0 means the model was never called (upload/network failure). */
@@ -194,7 +217,8 @@ async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, proje
       return { status, raw, error: detail || `Gemini 3.5 Transcribe hata döndürdü (HTTP ${status}).` };
     }
 
-    const payload = JSON.parse(raw);
+    let payload: any;
+    try { payload = JSON.parse(raw); } catch { return { status, raw: '', error: `Gemini Transcribe yanıtı JSON değil: ${raw.slice(0, 80)}` }; }
     const words: Array<{ text: string; start: number; end: number }> = [];
     for (const step of payload?.steps || []) {
       for (const content of step?.content || []) {
@@ -212,7 +236,7 @@ async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, proje
       }
     }
 
-    if (!words.length) return { status, raw: '', error: 'Gemini Transcribe kelime zaman damgası döndürmedi.' };
+    if (!words.length) return { status, raw: '', error: `Gemini Transcribe kelime zaman damgası döndürmedi (${describeResponse(payload)}).` };
     return { status, raw: '', words };
   } catch (error: any) {
     console.error('[Gemini Transcribe alignment]', error?.message || error);
