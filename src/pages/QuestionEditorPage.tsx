@@ -16,7 +16,7 @@ import { narrationService } from '../services/narration/narrationService';
 import { moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
 import { NARRATION_RATE, decodeAudio, encodeMp3 } from '../services/narration/audioCodec';
 import { alignSolutionNarration } from '../services/analysis/timelineAligner';
-import { splitNarration } from '../services/narration/narrationParts';
+import { splitNarration, spokenLength } from '../services/narration/narrationParts';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
@@ -54,6 +54,9 @@ interface QuestionEditorPageProps {
   waitingForProject?: boolean;
   loadError?: string;
 }
+
+/** Longer than this (spoken letters, about four sentences), a re-voice is confirmed first. */
+const REVOICE_ASK_CHARS = 400;
 
 export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   onBack,
@@ -153,6 +156,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const activeAudioDuration = currentProject?.narrationSource?.duration || currentProject?.audioNarration?.duration || 0;
   // The narration before the last "Sesi düzelt" change, so the teacher can take it back.
   const [revoiceUndo, setRevoiceUndo] = useState<Pick<QuestionProject, 'narrationSource' | 'audioNarration' | 'videoConfig'> | null>(null);
+  /** Where the last fix sits in the new narration: the Ses şeridi plays it and asks "Oldu mu?". */
+  const [lastFix, setLastFix] = useState<{ start: number; end: number; at: number } | null>(null);
   useEffect(() => setRevoiceUndo(null), [currentProject?.id]);
 
   useEffect(() => {
@@ -346,7 +351,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     const span = spokenSpan(currentProject.solutionText, source?.words || [], activeAudioDuration, range);
     if (!span) { setAudioError('Bu sesin kelime zamanları yok; seçili yer bulunamadı. Sesi yeniden oluşturun.'); return; }
     const excerpt = range.text.length > 160 ? `${range.text.slice(0, 160)}…` : range.text;
-    if (!await confirm({
+    // A sentence or two is fixed at once ("Olmadı, geri al" is right there); a long stretch is asked first.
+    if (spokenLength(range.text) > REVOICE_ASK_CHARS && !await confirm({
       title: span.skipped ? 'Okunmayan yer eklensin mi?' : 'Seçili yer yeniden seslendirilsin mi?',
       message: `“${excerpt}” yeniden seslendirilip sesin ${span.skipped ? 'atlanan yerine eklenir' : 'bu yerine konur'}. Sesin geri kalanı ve işaretleriniz korunur. Bugünkü ses haklarınızdan biri kullanılır.`,
       confirmLabel: span.skipped ? 'Ekle' : 'Yeniden seslendir',
@@ -354,6 +360,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setAudioError(null);
     setAudioInfo('Seçili yer seslendiriliyor…');
     setIsGeneratingAudio(true);
+    setLastFix(null);
     stageAudioRef.current?.pause();
     const before = { narrationSource: currentProject.narrationSource, audioNarration: currentProject.audioNarration, videoConfig: currentProject.videoConfig };
     try {
@@ -381,6 +388,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       });
       if (!persisted) throw new Error('Düzeltilmiş ses kaydedilemedi. Tekrar deneyin.');
       setRevoiceUndo(before);
+      setLastFix({ start: joined.newStart, end: joined.newEnd, at: Date.now() });
       setAudioInfo('Kelime zamanları güncelleniyor…');
       const timing = await timeGeneratedNarration(persisted, project => narrationService.alignGeneratedNarration(project.id));
       if (timing?.words.length) {
@@ -389,9 +397,10 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
           ? alignSolutionNarration(persisted.solutionText, timing.words, duration).captions : persisted.videoConfig.captions;
         await saveCurrentProject({ ...timed, videoConfig: { ...persisted.videoConfig, captions } });
       }
-      setAudioInfo(`${span.skipped ? 'Okunmayan yer eklendi' : 'Seçili yer yeniden seslendirildi'} (${Math.floor(joined.newStart / 60)}:${String(Math.floor(joined.newStart % 60)).padStart(2, '0')}). Dinleyip kontrol edin; beğenmezseniz “Son düzeltmeyi geri al”.`);
+      setAudioInfo(null);
     } catch (err) {
       setAudioInfo(null);
+      setLastFix(null);
       setAudioError(err instanceof Error ? err.message : 'Seçili yer yeniden seslendirilemedi.');
     } finally {
       setIsGeneratingAudio(false);
@@ -400,7 +409,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const handleUndoRevoice = async () => {
     if (!revoiceUndo) return;
     stageAudioRef.current?.pause();
-    if (await saveCurrentProject(revoiceUndo)) { setRevoiceUndo(null); setAudioInfo('Son düzeltme geri alındı; önceki ses geri geldi.'); }
+    if (await saveCurrentProject(revoiceUndo)) { setRevoiceUndo(null); setLastFix(null); setAudioInfo('Son düzeltme geri alındı; önceki ses geri geldi.'); }
   };
 
   // Uploaded MP3: align the written solution to the audio; Whisper stays as fallback.
@@ -697,6 +706,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
               onRevoice: range => void handleRevoice(range),
               canUndo: !!revoiceUndo,
               onUndo: () => void handleUndoRevoice(),
+              lastFix,
+              onKeepFix: () => setLastFix(null),
             } : undefined}
           />
         </section>
@@ -773,6 +784,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             isUploadedAudio={isUploadedAudio}
             isAudioApproved={isAudioApproved}
             currentProject={currentProject}
+            stripShown={hasImage && hasAudio && !isUploadedAudio && (currentProject.narrationSource?.words?.length ?? 0) > 0}
             isAudioPlaying={isAudioPlaying}
             toggleStageAudio={toggleStageAudio}
             audioPlayTime={audioPlayTime}

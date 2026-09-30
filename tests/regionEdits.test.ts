@@ -202,3 +202,16 @@ test('Ctrl+V: a copied box sits a little aside, its marks start at the paused mo
   assert.deepEqual(copied.map(m => [m.type, m.targetRegionId, m.start, m.duration]), [['focus', 'manual-box-9', 20, 2], ['reject', 'manual-box-9', 21, 19]]);
   assert.ok(new Set(copied.map(m => m.id)).size === 2 && !copied.some(m => marks.some((o: any) => o.id === m.id)), 'new ids');
 });
+
+test('"Burada hata var" on the mark strip picks the mark that just appeared', async () => {
+  const { markJustSeen } = await import('../src/features/video/MarkTimeline');
+  const marks = [
+    { id: 'u', type: 'underline', targetRegionId: 'p', start: 3, duration: 2 },
+    { id: 'x', type: 'reject', targetRegionId: 'option-a', start: 6, duration: 30 },
+    { id: 'f', type: 'focus', targetRegionId: 'option-b', start: 20, duration: 2 },
+  ] as any;
+  assert.equal(markJustSeen(marks, 7.5)?.id, 'x', 'the last one before the pause');
+  assert.equal(markJustSeen(marks, 5.95)?.id, 'x', 'a mark appearing right at the pause counts');
+  assert.equal(markJustSeen(marks, 15), null, 'nothing within the last seconds');
+  assert.equal(markJustSeen([{ ...marks[0], duration: 12 }], 14)?.id, 'u', 'an underline still on screen counts');
+});

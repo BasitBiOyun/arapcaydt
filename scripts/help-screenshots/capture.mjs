@@ -122,11 +122,11 @@ const scenes = {
     await mark(['.editor-panel select:visible', '.editor-panel textarea']);
   },
   async 'ses-olustur'() { await go('#/soru/ornek-8', 2500); await step(3); await mark(['button:has-text("Seslendirme Oluştur")', 'label:has-text("MP3 Yükle")']); },
-  async 'ses-onay'() { await go('#/soru/ornek-5', 2500); await step(3); await mark([page.getByText('Eğitmen Sesi').first().locator('xpath=ancestor::div[2]'), 'button:has-text("Bu Sesi Kullan")']); },
+  async 'ses-onay'() { await go('#/soru/ornek-5', 2500); await step(3); await page.waitForTimeout(800); await mark([page.locator('.narration-strip').getByRole('button', { name: 'Oynat' }), 'button:has-text("Bu Sesi Kullan")']); },
   async 'sesi-duzelt'() {
     await go('#/soru/ornek-4', 2500); await step(3); await page.waitForTimeout(1200);
     await page.locator('.narration-pill').nth(3).click(); await page.waitForTimeout(300);
-    await mark([page.locator('.narration-pill').nth(3), page.getByRole('button', { name: 'Seçili yeri yeniden seslendir' })]);
+    await mark([page.getByRole('button', { name: 'Burada hata var' }), page.locator('.narration-pill').nth(3), page.locator('.narration-strip').getByRole('button', { name: 'Yeniden seslendir' })]);
     return page.locator('.narration-strip');
   },
   async isaretler() {
