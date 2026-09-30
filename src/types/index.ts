@@ -90,6 +90,8 @@ export type VideoActionType =
   | 'reject'
   | 'correct'
   | 'focus'
+  /** A hand-drawn ring around a word or an option, drawn in and kept for its duration. */
+  | 'circle'
   | 'dim-others'
   | 'reset';
 
@@ -101,6 +103,8 @@ export interface VideoAction {
    * (`to`, 0–1) the line is `at` seconds after the mark starts; between points it moves evenly.
    */
   drawSteps?: Array<{ at: number; to: number }>;
+  /** Underline only: drawn left-to-right (the way the teacher dragged it); otherwise right-to-left, as Arabic is read. */
+  fromLeft?: boolean;
   /** Underline only: moves this line up (−) or down (+), in heights of its text line. */
   lineOffset?: number;
   /** Underline only: seconds the finished line stays at the end of the mark (older passage lines; no longer made). */
