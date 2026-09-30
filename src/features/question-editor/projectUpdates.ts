@@ -4,6 +4,29 @@ import type { LocalPipelineResult } from '../../services/pipeline/localVideoPipe
 import { STANDARD_VOICE_CONFIG } from '../../config/voice';
 import { CURRENT_PIPELINE_VERSION } from './readiness';
 
+/** What "İşaretleri hazırla" works from: the approved voice, and the boxes the teacher drew or removed. */
+export function pipelineParams(project: QuestionProject) {
+  const narrationSource: NarrationSource = project.narrationSource || (project.audioNarration ? {
+    type: 'elevenlabs',
+    audioUrl: project.audioNarration.audioUrl,
+    audioBase64: project.audioNarration.audioBase64,
+    duration: project.audioNarration.duration,
+    voiceId: project.audioNarration.voiceId,
+    voiceName: project.audioNarration.voiceName,
+    words: project.audioNarration.words,
+    alignment: project.audioNarration.alignment,
+    isApproved: true,
+  } : { type: 'elevenlabs', audioUrl: '', duration: 15, words: [], isApproved: true });
+  return {
+    imageUrl: project.imageUrl,
+    solutionText: project.solutionText,
+    correctAnswer: project.correctAnswer,
+    narrationSource,
+    existingRegions: project.videoConfig?.regions?.length ? project.videoConfig.regions : undefined,
+    suppressedRegionIds: project.videoConfig?.suppressedRegionIds,
+  };
+}
+
 /** Project fields for a fresh TTS narration (Gemini primary, ElevenLabs fallback). */
 export function narrationFromTts(result: GenerateNarrationResponse, approved = false): { narrationSource: NarrationSource; audioNarration: AudioNarration } {
   const audioUrl = result.audioUrl || (result.audioBase64 ? `data:${result.mimeType};base64,${result.audioBase64}` : '');

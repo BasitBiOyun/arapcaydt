@@ -827,9 +827,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
                   {currentProject.videoConfig.passageNote && <> {currentProject.videoConfig.passageNote}</>}
                 </p>
               )}
-              {videoGenerated && currentProject.videoConfig.warnings?.filter(w => w.startsWith('Çözümdeki Arapça paragraf')).map(w => (
-                <p key={w} className="text-sm text-amber-800">{w}</p>
-              ))}
               {videoGenerated && pipelineDiagnostics() && (
                 <button type="button" className="text-sm font-semibold text-[#8B1E2D] hover:underline"
                   title="Görselde okunan kelimeler ve çözüm metni: işaretler yanlış çıktıysa bu dosyayı bize gönderin"

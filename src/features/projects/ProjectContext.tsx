@@ -34,6 +34,8 @@ interface ProjectContextType {
   deleteForever: (ids: string[]) => Promise<number>;
   /** Puts questions into a collection ('' takes them out of any collection). */
   moveToCollection: (ids: string[], examName: string) => Promise<number>;
+  /** Changes questions one by one (null leaves one as it is); returns the ids that were saved. */
+  updateQuestions: (ids: string[], change: (project: QuestionProject) => Promise<QuestionProject | null>) => Promise<string[]>;
   /** Saves questions read from a backup as new questions of this account. */
   importProjects: (list: QuestionProject[], onProgress?: (done: number) => void) => Promise<number>;
   setCurrentProject: React.Dispatch<React.SetStateAction<QuestionProject | null>>;
@@ -224,20 +226,21 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return done.length;
   }, [eachQuestion, owner]);
 
+  const updateQuestions = useCallback((ids: string[], change: (project: QuestionProject) => Promise<QuestionProject | null>) =>
+    eachQuestion(ids, async id => {
+      const full = await projectRepository.getById(id);
+      const changed = full && await change(full);
+      if (!changed) return false;
+      const next = await projectRepository.save(changed);
+      confirmed.current.set(next.id, JSON.stringify(next));
+      setProjects(prev => prev.map(p => p.id === next.id ? toSummary(next) : p));
+      return true;
+    }), [eachQuestion]);
+
   const moveToCollection = useCallback(async (ids: string[], examName: string) => {
     const name = examName.trim();
-    const saved: ProjectSummary[] = [];
-    const done = await eachQuestion(ids, async id => {
-      const full = await projectRepository.getById(id);
-      if (!full) return false;
-      const next = await projectRepository.save({ ...full, examName: name || undefined });
-      confirmed.current.set(next.id, JSON.stringify(next));
-      saved.push(toSummary(next));
-      return true;
-    });
-    setProjects(prev => prev.map(p => saved.find(s => s.id === p.id) ?? p));
-    return done.length;
-  }, [eachQuestion]);
+    return (await updateQuestions(ids, async full => ({ ...full, examName: name || undefined }))).length;
+  }, [updateQuestions]);
 
   const importProjects = useCallback(async (list: QuestionProject[], onProgress?: (done: number) => void) => {
     if(!await flush())throw new Error('Bekleyen değişiklikler kaydedilemedi.');
@@ -277,6 +280,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         restoreFromTrash,
         deleteForever,
         moveToCollection,
+        updateQuestions,
         importProjects,
         setCurrentProject,
       }}

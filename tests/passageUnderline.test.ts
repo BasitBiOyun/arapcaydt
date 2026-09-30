@@ -147,7 +147,7 @@ test('passage: numbered sentences ("I. …", "II. …") are read as one passage,
 
 test('passage: the real Google Vision reading under the ÖSYM watermark gives one underline per printed line, on that line', async () => {
   const { readFileSync } = await import('node:fs');
-  const data = JSON.parse(readFileSync(new URL('./fixtures/passage-watermark-vision.json', import.meta.url), 'utf8'));
+  const data = JSON.parse(readFileSync(new URL('./fixtures/teshis/numarali-cumleler-filigran.json', import.meta.url), 'utf8'));
   const options = data.regions.filter((r: any) => r.id.startsWith('option-'));
   const inOption = (w: any) => options.some((r: any) => w.x + w.width / 2 >= r.x && w.x + w.width / 2 <= r.x + r.width && w.y + w.height / 2 >= r.y && w.y + w.height / 2 <= r.y + r.height);
   const lines = findPassageMatches(data.solutionText, data.words.filter((w: any) => !inOption(w)));
@@ -167,7 +167,7 @@ test('passage: the real Google Vision reading under the ÖSYM watermark gives on
 test('phrases: a three-word-or-longer phrase with a word the reader lost is still found, once, and option quotes are not looked for', async () => {
   const { readFileSync } = await import('node:fs');
   const { findTolerantly, withTolerantPhrases } = await import('../src/services/ocr/passageMatcher');
-  const data = JSON.parse(readFileSync(new URL('./fixtures/passage-watermark-vision.json', import.meta.url), 'utf8'));
+  const data = JSON.parse(readFileSync(new URL('./fixtures/teshis/numarali-cumleler-filigran.json', import.meta.url), 'utf8'));
   const words = data.words.filter((w: any) => w.y < .7);
   // Vision did not read تحضر: the exact search misses this phrase.
   assert.deepEqual(findBestArabicMatches('الَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ', words).filter(m => m.phrase.includes('تُحَضِّرُ')), []);

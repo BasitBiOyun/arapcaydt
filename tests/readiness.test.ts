@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { assessReadiness, CURRENT_PIPELINE_VERSION } from '../src/features/question-editor/readiness';
+import { adviceFor, assessReadiness, CURRENT_PIPELINE_VERSION } from '../src/features/question-editor/readiness';
 import type { QuestionProject, VideoAction } from '../src/types';
 
 const option = (l: string) => ({ id: `option-${l}`, type: `option-${l}`, label: l, x: 0, y: 0, width: .1, height: .1 }) as any;
@@ -55,4 +55,17 @@ test('ticks on premises (I, II, III) do not count as a second answer', () => {
   }));
   assert.equal(r.items.find(i => i.id === 'answer')!.status, 'ok');
   assert.equal(r.level, 'ready');
+});
+
+test('notes from "İşaretleri hazırla" become one plain line with a button, never twice', () => {
+  const paragraph = 'Çözümdeki Arapça paragraf (“مُنْذُ سِنٍّ مُبَكِّرَةٍ…”, 42 kelime) görselde bulunamadı; görselde 12 Arapça kelime okundu (Google Vision). Altını ▁ aracıyla satır satır çizebilirsiniz.';
+  const r = assessReadiness(project({ warnings: [paragraph, 'Şu şıklar bulunamadı: E. Önizlemede…', 'Bazı ifadelerin süreleri komşu ses kelimelerinden hesaplandı.'] }));
+  const notes = r.items.filter(i => i.id === 'paragraph' || i.id === 'note');
+  assert.equal(notes.length, 1, 'options and timing are already said by their own checks');
+  assert.equal(notes[0].label, 'Arapça paragrafın (“مُنْذُ سِنٍّ مُبَكِّرَةٍ…”) altı çizilemedi. Görselde satır satır çizebilirsiniz.');
+  assert.equal(notes[0].action, 'regions');
+  assert.equal(r.level, 'check');
+  assert.equal(adviceFor('Çözüm metni D diyor; seçili cevap C idi. Video sesle uyumlu olması için D şıkkını işaretler.')!.label,
+    'Seçili cevap C idi; çözüm metni D dediği için D işaretlendi.');
+  assert.equal(adviceFor('Yeni bir not.')!.label, 'Yeni bir not.', 'an unknown note is still shown');
 });

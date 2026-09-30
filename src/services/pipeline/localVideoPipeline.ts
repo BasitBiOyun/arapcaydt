@@ -1,8 +1,9 @@
 import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCaption } from '../../types';
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
-import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
-import { findPassageMatches, findPassages, withPassageReferences, withTolerantPhrases } from '../ocr/passageMatcher';
+import { extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
+import { findPassages } from '../ocr/passageMatcher';
+import { planArabicMarks, wordsOutside } from './arabicMarks';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
@@ -134,10 +135,8 @@ export class LocalVideoPipeline {
     });
 
     const options = finalRegions.filter(r => r.type.startsWith('option'));
-    const stemWords = ocrResult.words.filter(w => !options.some(r => w.x+w.width/2 >= r.x && w.x+w.width/2 <= r.x+r.width && w.y+w.height/2 >= r.y && w.y+w.height/2 <= r.y+r.height));
-    // A passage read in full is found as a whole (one underline per printed line); the shorter
-    // phrases are looked for without it, and a later mention of its words points into it.
-    const passageMatches = findPassageMatches(solutionText, stemWords, ocrResult.arabicStemWords);
+    const stemWords = wordsOutside(ocrResult.words, options);
+    const { passageMatches, arabicMatches } = planArabicMarks(solutionText, stemWords, ocrResult.arabicStemWords, suppressed);
     const passages = findPassages(solutionText);
     const missedPassages = passages.filter(p => !passageMatches.some(m => m.passageEnd === p[p.length - 1].to));
     const round = (v: number) => Math.round(v * 10000) / 10000;
@@ -151,14 +150,6 @@ export class LocalVideoPipeline {
       passages: passages.map(p => ({ from: p[0].from, to: p[p.length - 1].to, words: p.length })),
       passageLines: passageMatches.map(m => ({ id: m.region.id, y: round(m.region.y), phrase: m.phrase })),
     };
-    const passageRanges = [...new Map(passageMatches.map(m => [m.passageEnd, m])).values()]
-      .map(m => [Math.min(...passageMatches.filter(o => o.passageEnd === m.passageEnd).map(o => o.sourceStart)), m.passageEnd] as const);
-    const withoutPassages = passageRanges.reduce((text, [from, to]) => text.slice(0, from) + ' '.repeat(to - from) + text.slice(to), solutionText);
-    const arabicMatches = [
-      ...passageMatches,
-      ...withTolerantPhrases(withoutPassages, withPassageReferences(withoutPassages,
-        findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)), passageMatches), stemWords),
-    ].filter(m => !suppressed.has(m.region.id) || m.region.id.startsWith('arabic-passage-'));
     // Passage lines are always planned again: a line deleted once (for example to draw it by
     // hand) must not keep the passage from being underlined when the marks are prepared again.
     for (const match of arabicMatches) {
