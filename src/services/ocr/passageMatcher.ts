@@ -21,19 +21,26 @@ const ARABIC_WORD = /[ء-غف-يً-ٰٟـٱ-ۓ]+/g;
 
 interface PassageToken { norm: string; from: number; to: number }
 
-/** Solution lines that are an Arabic passage, with each word's place in the text. */
+/**
+ * The Arabic passages of the solution, with each word's place in the text: runs of ten or more
+ * Arabic words with no Turkish word between them. A passage may share its line with Turkish
+ * ("Önce paragrafı okuyalım. اِسْتَخْرَجَ …").
+ */
 export function findPassages(solutionText: string): PassageToken[][] {
   const passages: PassageToken[][] = [];
-  let at = 0;
-  for (const line of solutionText.split('\n')) {
-    const tokens = [...line.matchAll(ARABIC_WORD)]
-      .map(m => ({ norm: normalizeArabic(m[0]), from: at + m.index!, to: at + m.index! + m[0].length }))
-      .filter(t => t.norm);
-    const arabic = tokens.reduce((n, t) => n + t.norm.length, 0);
-    const latin = (line.match(/[A-Za-zÇĞİÖŞÜçğıöşü]/g) || []).length;
-    if (tokens.length >= PASSAGE_MIN_WORDS && latin <= arabic * .15) passages.push(tokens);
-    at += line.length + 1;
+  let run: PassageToken[] = [];
+  const close = () => { if (run.length >= PASSAGE_MIN_WORDS) passages.push(run); run = []; };
+  for (const m of solutionText.matchAll(/\S+/g)) {
+    const word = m[0];
+    if (/[A-Za-zÇĞİÖŞÜçğıöşü]/.test(word)) { close(); continue; }
+    // A line break between Arabic lines keeps the passage; a blank line ends it.
+    if (/\n[ \t]*\n/.test(solutionText.slice(run.length ? run[run.length - 1].to : m.index!, m.index!))) close();
+    for (const a of word.matchAll(ARABIC_WORD)) {
+      const norm = normalizeArabic(a[0]);
+      if (norm) run.push({ norm, from: m.index! + a.index!, to: m.index! + a.index! + a[0].length });
+    }
   }
+  close();
   return passages;
 }
 

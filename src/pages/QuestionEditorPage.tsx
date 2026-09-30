@@ -822,6 +822,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
                     : `Görsel tarayıcıdaki okuyucuyla okundu${currentProject.videoConfig.ocrNote ? ` (${currentProject.videoConfig.ocrNote})` : ''}.`}
                 </p>
               )}
+              {videoGenerated && currentProject.videoConfig.warnings?.filter(w => w.startsWith('Çözümdeki Arapça paragraf')).map(w => (
+                <p key={w} className="text-sm text-amber-800">{w}</p>
+              ))}
             </section>
           )}
           <ExportStep
