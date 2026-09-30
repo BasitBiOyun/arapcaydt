@@ -15,8 +15,6 @@ export interface SemanticParsedEvent {
   sentenceStart?: number;
   sentenceEnd?: number;
   sourceText?: string;
-  /** A passage line: stays on screen until the narration reaches this place (the passage's end). */
-  holdUntil?: number;
 }
 
 export interface SolutionParseResult {
@@ -306,7 +304,7 @@ export function parseSolutionSemantics(
         id: `event-${counter.value++}`, targetRegionId: am.region.id, actionType: 'underline',
         semanticTriggerPhrase: am.phrase, sentenceText: sentence,
         sourceStart: am.sourceStart, sourceEnd: am.sourceEnd ?? am.sourceStart + am.phrase.length,
-        holdUntil: am.passageEnd, order: events.length + 1,
+        order: events.length + 1,
       });
     }
     // Choose the longest phrase at EACH spoken occurrence. A later single-word

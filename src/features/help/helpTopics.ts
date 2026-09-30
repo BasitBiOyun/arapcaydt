@@ -96,7 +96,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       'Görselde seçili kutuyu **Kopyala** / **Yapıştır** düğmeleriyle ya da **Ctrl+C** / **Ctrl+V** ile çoğaltabilirsiniz: kopya biraz yanda çıkar, işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun. **Delete** seçili kutuyu siler, **Esc** seçimi bırakır.',
       '**İşaretleri yeniden hazırla** elle yaptığınız düzeltmeleri siler; bu yüzden önce onayınızı ister.',
       'Önizleme hızını 1× ile 2× arasında seçerek videoyu hızlıca kontrol edebilirsiniz.',
-      'Çözümde uzun bir Arapça paragrafı baştan sona okuyorsanız, stüdyo paragrafı görselde bulur ve okundukça satır satır altını çizer; çizilen satırlar paragraf bitene kadar kalır. Paragrafı çözüm metninde tek satırda (araya Türkçe koymadan) yazın.',
+      'Çözümde uzun bir Arapça paragrafı baştan sona okuyorsanız, stüdyo paragrafı görselde bulur ve her satırın altını o satır okunurken çizer. Paragrafı çözüm metninde tek satırda (araya Türkçe koymadan) yazın.',
       'Altını elle çizmeniz gerekirse ▁ aracını seçin ve satırların altına sırayla çizin: araç açık kalır, her yeni çizgi bir öncekinin ardından gelir. Bitince Esc’ye basın; zamanlarını şeritten ayarlayabilirsiniz.',
       'Altı çizgiler kelimelere göre fazla aşağıdaysa önizlemenin altındaki **Altı çizgi ↑ Yukarı** düğmesine birkaç kez basın; bütün çizgiler birlikte kayar.',
       'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, ikisi de kaydırmadan ekrana sığar. Esc ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
