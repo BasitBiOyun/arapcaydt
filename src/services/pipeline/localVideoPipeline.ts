@@ -15,6 +15,13 @@ export interface LocalPipelineProgress {
   message: string;
 }
 
+/**
+ * What the last preparation of marks saw (this session only): the words read on the picture and
+ * what was made of them. Downloaded by the teacher as a file to report a question that goes wrong.
+ */
+let lastDiagnostics: Record<string, unknown> | null = null;
+export const pipelineDiagnostics = () => lastDiagnostics;
+
 export interface LocalPipelineResult {
   success: boolean;
   regions: AnnotationRegion[];
@@ -133,6 +140,17 @@ export class LocalVideoPipeline {
     const passageMatches = findPassageMatches(solutionText, stemWords, ocrResult.arabicStemWords);
     const passages = findPassages(solutionText);
     const missedPassages = passages.filter(p => !passageMatches.some(m => m.passageEnd === p[p.length - 1].to));
+    const round = (v: number) => Math.round(v * 10000) / 10000;
+    lastDiagnostics = {
+      at: new Date().toISOString(), engine: rawOcr.engine, cloudIssue: rawOcr.cloudIssue,
+      image: { width: rawOcr.imageWidth, height: rawOcr.imageHeight },
+      solutionText,
+      words: rawOcr.words.map(w => ({ text: w.text, confidence: w.confidence, x: round(w.x), y: round(w.y), width: round(w.width), height: round(w.height) })),
+      stemWordCount: stemWords.length,
+      regions: finalRegions.map(r => ({ id: r.id, type: r.type, x: round(r.x), y: round(r.y), width: round(r.width), height: round(r.height) })),
+      passages: passages.map(p => ({ from: p[0].from, to: p[p.length - 1].to, words: p.length })),
+      passageLines: passageMatches.map(m => ({ id: m.region.id, y: round(m.region.y), phrase: m.phrase })),
+    };
     const passageRanges = [...new Map(passageMatches.map(m => [m.passageEnd, m])).values()]
       .map(m => [Math.min(...passageMatches.filter(o => o.passageEnd === m.passageEnd).map(o => o.sourceStart)), m.passageEnd] as const);
     const withoutPassages = passageRanges.reduce((text, [from, to]) => text.slice(0, from) + ' '.repeat(to - from) + text.slice(to), solutionText);

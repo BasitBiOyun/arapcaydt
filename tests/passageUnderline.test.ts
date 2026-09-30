@@ -136,7 +136,9 @@ test('passage: numbered sentences ("I. …", "II. …") are read as one passage,
     'من الطاقة.',
   ];
   const words = printed.flatMap((row, i) => line(row, .70, .32 + i * .06))
-    .concat(line("ÖSYM'nin yazılı izni olmadan", .62, .5), line('A) I B) II C) III D) IV E) V', .66, .74));
+    .concat(line("ÖSYM'nin yazılı izni olmadan", .62, .5), line('A) I B) II C) III D) IV E) V', .66, .74))
+    // A watermark stripe read as one many-lines-tall "word".
+    .concat([{ text: 'لا', confidence: 40, x: .45, y: .3, width: .04, height: .35, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 }]);
   const found = findPassageMatches(text, words);
   assert.equal(found.length, printed.length, 'one underline per printed line');
   found.forEach((l, i) => assert.ok(Math.abs(l.region.y - (.32 + i * .06)) < .01, `line ${i + 1} on printed line ${i + 1}`));
