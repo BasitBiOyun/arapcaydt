@@ -46,18 +46,16 @@ function useShortScreen(): boolean {
 }
 
 /** Narrowest the picture gets to leave room for the controls and the strip, in pixels. */
-const MIN_PICTURE = 480;
+const MIN_PICTURE = 420;
 /** Below this column height (a 13–15" laptop) the strip goes compact so the question stays large. */
 const SHORT_ROOM = 760;
-/** The question always gets at least this share of the column's height; the strip scrolls below it if needed. */
-const PICTURE_SHARE = 0.55;
 
 /**
  * The widest preview whose picture, controls and mark strip all fit the column's height, so a
  * teacher sees the whole question while editing without scrolling. Re-measured when the column,
  * the window or the strip (more rows of marks) changes size.
  */
-function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: boolean): { width?: number; short: boolean } {
+function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: boolean, step: number): { width?: number; short: boolean } {
   const [width, setWidth] = useState<number>();
   const [short, setShort] = useState(false);
   useLayoutEffect(() => {
@@ -71,22 +69,24 @@ function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: bool
       const rest = el.offsetHeight - picture.offsetHeight;
       const across = stage.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
       setShort(room < SHORT_ROOM);
-      const fits = (room - rest - 4) * 16 / 9, share = room * PICTURE_SHARE * 16 / 9;
-      const next = Math.round(Math.max(MIN_PICTURE, Math.min(across, Math.max(fits, share))));
+      // The whole editor fits without scrolling: the question gives way to the strip, down to a readable size.
+      const fits = (room - rest - 4) * 16 / 9;
+      const next = Math.round(Math.max(MIN_PICTURE, Math.min(across, fits)));
       setWidth(previous => previous !== undefined && Math.abs(previous - next) < 3 ? previous : next);
     };
     fit();
     const observer = new ResizeObserver(fit);
     observer.observe(stage); observer.observe(el);
     return () => observer.disconnect();
-  }, [frame, active]);
+    // The step matters: the Ses step shows its own layout, so the preview is a new element when the teacher comes back.
+  }, [frame, active, step]);
   return { width, short };
 }
 
 /** Left column: question image or animated preview, timing editor and box editor. */
 export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, drawOption, setDrawOption, regionHistory, setRegionHistory, narration }: EditorStageProps) {
   const frame = useRef<HTMLDivElement>(null);
-  const { width: fitWidth, short } = useFitWidth(frame, previewMode === 'video' && videoGenerated);
+  const { width: fitWidth, short } = useFitWidth(frame, previewMode === 'video' && videoGenerated, step);
   const shortScreen = useShortScreen();
   useEffect(() => { if (step !== 3) setDrawOption(null); }, [step, setDrawOption]);
   if (step === 2 && narration && hasImage) return (

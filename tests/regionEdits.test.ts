@@ -189,3 +189,16 @@ test('underlines follow the spoken words, drawn over the whole length of the mar
   assert.equal(underlineProgress(worded, 1.25), steps[0].to, 'at its natural length the words keep their spoken times');
   assert.equal(underlineProgress({ ...worded, duration: underlineSpanFor(4) }, 2.5), steps[0].to, 'a twice as long mark draws each word twice as slowly');
 });
+
+test('Ctrl+V: a copied box sits a little aside, its marks start at the paused moment', async () => {
+  const { pastedBox } = await import('../src/features/video/PreviewEditOverlay');
+  const box = { id: 'option-b', type: 'option-b', label: 'B', content: 'metin', x: .2, y: .97, width: .3, height: .03 } as any;
+  const marks = [
+    { id: 'f', type: 'focus', targetRegionId: 'option-b', start: 4, duration: 2 },
+    { id: 'x', type: 'reject', targetRegionId: 'option-b', start: 5, duration: 35 },
+  ] as any;
+  const { region, marks: copied } = pastedBox(box, marks, 'manual-box-9', 20, 40);
+  assert.deepEqual([region.id, region.type, region.content, +region.x.toFixed(2), region.y + region.height <= 1], ['manual-box-9', 'keyword', undefined, .22, true]);
+  assert.deepEqual(copied.map(m => [m.type, m.targetRegionId, m.start, m.duration]), [['focus', 'manual-box-9', 20, 2], ['reject', 'manual-box-9', 21, 19]]);
+  assert.ok(new Set(copied.map(m => m.id)).size === 2 && !copied.some(m => marks.some((o: any) => o.id === m.id)), 'new ids');
+});

@@ -152,7 +152,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
   useEffect(() => {
     if (!keyboard) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey || isTypingTarget(e.target)) return;
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || isTypingTarget(e.target)) return;
       if (e.key === ' ' || e.code === 'Space') {
         if ((e.target as HTMLElement | null)?.tagName === 'BUTTON') return;
         e.preventDefault(); onPlayPause(); return;

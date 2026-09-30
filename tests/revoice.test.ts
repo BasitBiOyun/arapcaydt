@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { moveTimeline, movedTime, partRanges, sentenceRanges, spliceAudio, spokenSpan, wholeSentences } from '../src/services/narration/revoice';
+import { moveTimeline, movedTime, nextPick, partRanges, sentenceRanges, spliceAudio, spokenSpan, wholeSentences } from '../src/services/narration/revoice';
 import type { NarrationWord } from '../src/types';
 
 const solution = 'Soru 3. Öğrenciler kitap okur.\nA şıkkı olmaz. B şıkkını eliyoruz!\nDoğru cevap D şıkkı.';
@@ -73,4 +73,17 @@ test('marks, captions and words follow the new narration', () => {
   assert.equal(moved.captions[0].start, 9.5);
   assert.equal(moved.captions[0].words![0].end, 10);
   assert.deepEqual(moved.words.map(w => [w.text, w.start]), [['A', 3], ['Doğru', 9.5]]);
+});
+
+test('Ses şeridi: clicking back through a selection takes sentences out one by one', () => {
+  let pick = nextPick(null, 3);
+  assert.deepEqual(pick, [3, 3]);
+  pick = nextPick(pick, 6);
+  assert.deepEqual(pick, [3, 6], 'a second sentence selects everything between');
+  assert.deepEqual(nextPick(pick, 1), [1, 6], 'one before adds the sentences up to it');
+  pick = nextPick(pick, 6); assert.deepEqual(pick, [3, 5], 'the last one clicked again goes out');
+  pick = nextPick(pick, 5); pick = nextPick(pick, 4); assert.deepEqual(pick, [3, 3]);
+  assert.equal(nextPick(pick, 3), null, 'the only one clicked again: nothing selected');
+  assert.deepEqual(nextPick([3, 6], 3), [4, 6], 'the first one clicked again goes out');
+  assert.deepEqual(nextPick([2, 8], 5), [2, 5], 'a click inside cuts the selection there');
 });

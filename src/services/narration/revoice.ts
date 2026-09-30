@@ -61,6 +61,20 @@ export function wholeSentences(text: string, from: number, to: number): TextRang
   return { from: start, to: end, text: text.slice(start, end) };
 }
 
+/**
+ * The selection after a click on sentence `i` (in the Ses şeridi): a click outside it adds the sentences up to `i`; a
+ * click on its first or last sentence takes that one out (so clicking back through a selection
+ * undoes it); a click inside cuts it there.
+ */
+export function nextPick(pick: [number, number] | null, i: number): [number, number] | null {
+  if (!pick) return [i, i];
+  const [a, b] = pick;
+  if (i < a || i > b) return [Math.min(a, i), Math.max(b, i)];
+  if (a === b) return null;
+  if (i === b) return [a, b - 1];
+  if (i === a) return [a + 1, b];
+  return [a, i];
+}
 export interface SpokenSpan {
   /** Where the new audio goes in (seconds): in the pauses around the sentences. */
   start: number;

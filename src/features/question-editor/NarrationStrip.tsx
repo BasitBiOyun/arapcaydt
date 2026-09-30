@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/plugins/timeline';
-import { ArrowCounterClockwise, ArrowsOutLineHorizontal, ListBullets, MagnifyingGlassMinus, MagnifyingGlassPlus, Microphone, Play, PlusCircle, Stop, WarningCircle, X } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, ArrowsOutLineHorizontal, ListBullets, MagnifyingGlassMinus, MagnifyingGlassPlus, Microphone, Pause, Play, PlusCircle, Stop, WarningCircle, X } from '@phosphor-icons/react';
 import type { NarrationWord } from '../../types';
 import { alignSolutionNarration, narrationDrift } from '../../services/analysis/timelineAligner';
 import { PART_CHARS, spokenLength } from '../../services/narration/narrationParts';
-import { partRanges, sentenceRanges, spokenSpan, wholeSentences, type TextRange } from '../../services/narration/revoice';
+import { nextPick, partRanges, sentenceRanges, spokenSpan, wholeSentences, type TextRange } from '../../services/narration/revoice';
 import { clock } from './workflow';
 
 interface Props {
@@ -27,6 +27,8 @@ const ZOOMS = [1, 2, 4, 8];
 /** Mostly Arabic (letters), so the block is shown in the Arabic face; a Turkish sentence quoting a word stays Turkish. */
 const mostlyArabic = (text: string) => (text.match(/[\u0621-\u064A]/g)?.length ?? 0) > (text.match(/[A-Za-zÇĞİÖŞÜçğıöşü]/g)?.length ?? 0);
 const short = (text: string, n: number) => (text.length > n ? `${text.slice(0, n)}…` : text);
+const typing = (target: EventTarget | null) => target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+
 /** "2:05", "125" or "2.05" → seconds. */
 function seconds(value: string): number | null {
   const m = /^\s*(?:(\d+)\s*[:.,]\s*)?(\d{1,2}(?:[.,]\d+)?)\s*$/.exec(value);
@@ -51,6 +53,8 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [note, setNote] = useState('');
+  const [now, setNow] = useState(0);
+  const [running, setRunning] = useState(false);
   const total = Math.max(1, duration);
 
   const sentences = useMemo(() => sentenceRanges(solutionText), [solutionText]);
@@ -74,8 +78,9 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
     const sync = () => setView({ width: ws.getWrapper().clientWidth, scroll: ws.getScroll() });
     ws.on('ready', sync); ws.on('redrawcomplete', sync); ws.on('zoom', sync); ws.on('resize', sync);
     ws.on('scroll', (_a, _b, left) => setView(v => ({ ...v, scroll: left })));
-    ws.on('timeupdate', t => { if (stopAt.current !== null && t >= stopAt.current) { ws.pause(); stopAt.current = null; } });
-    ws.on('pause', () => setPlaying(null));
+    ws.on('timeupdate', t => { setNow(t); if (stopAt.current !== null && t >= stopAt.current) { ws.pause(); stopAt.current = null; } });
+    ws.on('play', () => setRunning(true));
+    ws.on('pause', () => { setPlaying(null); setRunning(false); });
     return () => { surfer.current = null; ws.destroy(); };
   }, [audioUrl, compact]);
 
@@ -101,10 +106,47 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
   };
   const choose = (i: number) => {
     setNote('');
-    setPick(p => (!p ? [i, i] : p[0] === p[1] && p[0] === i ? null : [Math.min(p[0], i), Math.max(p[1], i)]));
+    setPick(p => nextPick(p, i));
     const t = times[i];
-    if (t) surfer.current?.setTime(t.start);
+    if (t && !running) surfer.current?.setTime(t.start);
   };
+  /** Play or pause the whole narration from the red line. */
+  const toggle = () => {
+    const ws = surfer.current;
+    if (!ws) return;
+    stopAt.current = null; setPlaying(null);
+    if (ws.isPlaying()) ws.pause(); else void ws.play();
+  };
+  /** The sentence being spoken now, shown while playing. */
+  const speaking = running ? times.findIndex(t => t && now >= t.start && now < t.end + .15) : -1;
+
+  // Keys: Space plays or pauses, ←/→ picks the previous or next sentence (Shift adds it), Enter
+  // listens to the choice, Esc lets it go.
+  const keys = useRef<(e: KeyboardEvent) => void>(() => {});
+  keys.current = e => {
+    if (e.ctrlKey || e.metaKey || e.altKey || typing(e.target) || busy) return;
+    if (e.key === 'Escape' && pick) { e.preventDefault(); setPick(null); return; }
+    if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggle(); return; }
+    if (e.key === 'Enter' && chosen) { e.preventDefault(); play(chosen, 'chosen'); return; }
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    const heard = times.map((t, i) => (t ? i : -1)).filter(i => i >= 0);
+    if (!heard.length) return;
+    e.preventDefault();
+    const step = e.key === 'ArrowRight' ? 1 : -1;
+    const next = !pick ? heard[0]
+      : step > 0 ? heard.find(i => i > pick[1]) : [...heard].reverse().find(i => i < pick[0]);
+    if (next === undefined) return;
+    setNote('');
+    setPick(e.shiftKey && pick ? [Math.min(pick[0], next), Math.max(pick[1], next)] : [next, next]);
+    const t = times[next];
+    if (t && !running) surfer.current?.setTime(t.start);
+  };
+  useEffect(() => {
+    // Before the page's own Esc (leaving full screen): a choice is let go first.
+    const onKey = (e: KeyboardEvent) => keys.current(e);
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, []);
   const pickByTime = () => {
     const a = seconds(from), b = seconds(to);
     if (a === null || b === null || b <= a) { setNote('Başlangıç ve bitişi dakika:saniye olarak yazın, örneğin 2:00 ve 2:10.'); return; }
@@ -121,6 +163,10 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
       <header>
         <p><b>Ses şeridi</b> · yanlış okunan cümleye tıklayın, dinleyin, yalnız onu yeniden seslendirin</p>
         <span className="flex items-center gap-1">
+          <button type="button" className={button} onClick={toggle} title="Boşluk tuşu: oynat / durdur">
+            {running && !playing ? <Pause size={16} /> : <Play size={16} />} {running && !playing ? 'Durdur' : 'Oynat'}
+          </button>
+          <span className="font-mono-code text-[#55544F] mr-2">{clock(now).replace(/,\d$/, '')} / {clock(total).replace(/,\d$/, '')}</span>
           <button type="button" className={button} onClick={() => setZoomStep(zoom - 1)} disabled={zoom === 0} aria-label="Uzaklaştır"><MagnifyingGlassMinus size={16} /></button>
           <span className="w-9 text-center font-semibold text-[#55544F]">{ZOOMS[zoom]}×</span>
           <button type="button" className={button} onClick={() => setZoomStep(zoom + 1)} disabled={zoom === ZOOMS.length - 1} aria-label="Yakınlaştır"><MagnifyingGlassPlus size={16} /></button>
@@ -132,16 +178,18 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
       <div ref={waveBox} className="narration-strip-wave" title="Tıklayın ya da sürükleyin: o andan dinleyin" />
 
       {!listView && (
-        <div className="narration-strip-lane" style={{ height: compact ? 34 : 40 }}>
+        <div className="narration-strip-lane" style={{ height: compact ? 34 : 40 }}
+          onClick={e => { if (e.target === e.currentTarget && !busy) setPick(null); }}>
           {sentences.map((s, i) => {
             const t = times[i];
             if (!t) return null;
             const on = !!pick && i >= pick[0] && i <= pick[1];
             return (
               <button key={s.from} type="button" aria-pressed={on} disabled={busy} onClick={() => choose(i)}
-                className={`narration-pill ${mostlyArabic(s.text) ? 'is-arabic' : ''}`}
+                onDoubleClick={() => play(s, `s${i}`)}
+                className={`narration-pill ${mostlyArabic(s.text) ? 'is-arabic' : ''} ${i === speaking ? 'is-speaking' : ''}`}
                 style={{ left: px(t.start), width: Math.max(10, (t.end - t.start) * pxPerSec - 2) }}
-                title={`${clock(t.start)} · ${s.text}`}>
+                title={`${clock(t.start)} · ${s.text}\nÇift tıklayın: dinleyin`}>
                 <span dir="auto">{s.text}</span>
               </button>
             );
@@ -160,7 +208,7 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
             const on = !!pick && i >= pick[0] && i <= pick[1];
             return (
               <li key={s.from}>
-                <button type="button" aria-pressed={on} disabled={busy} onClick={() => choose(i)}>
+                <button type="button" aria-pressed={on} disabled={busy} onClick={() => choose(i)} className={i === speaking ? 'is-speaking' : ''}>
                   <span className="revoice-time">{times[i] ? clock(times[i]!.start).replace(/,\d$/, '') : '–'}</span>
                   <span dir="auto">{s.text}</span>
                 </button>
@@ -180,11 +228,11 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
               <button type="button" className={`${button} is-primary`} disabled={busy || !!tooLong} onClick={() => onRevoice(chosen)}>
                 <Microphone size={16} /> Seçili yeri yeniden seslendir
               </button>
-              <button type="button" className={button} disabled={busy} onClick={() => setPick(null)}><X size={16} /> Seçimi kaldır</button>
+              <button type="button" className={button} disabled={busy} onClick={() => setPick(null)} title="Esc"><X size={16} /> Seçimi kaldır</button>
             </span>
           </>
         ) : (
-          <p className="text-[#787670]">Bir cümleye tıklayın: dinleyip yalnız onu yeniden seslendirebilirsiniz. Birden çok cümle için ilk ve son cümleye tıklayın.</p>
+          <p className="text-[#787670]">Bir cümleye tıklayın: dinleyip yalnız onu yeniden seslendirebilirsiniz. Birden çok cümle için ilk ve son cümleye tıklayın; seçili bir cümleye yeniden tıklamak onu seçimden çıkarır.</p>
         )}
         <span className="narration-strip-actions ml-auto">
           <span className="narration-time-pick">

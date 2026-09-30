@@ -56,6 +56,23 @@ export function addMark(actions: VideoAction[], regionId: string, tool: Tool, ti
     .sort((a, b) => a.start - b.start);
 }
 
+/**
+ * A copy of a box (Ctrl+V): a little down and to the right so it can be seen and dragged, with the
+ * box's marks starting at the paused moment (crosses and ticks still last to the end).
+ */
+export function pastedBox(region: AnnotationRegion, marks: VideoAction[], id: string, time: number, total: number) {
+  const nudge = (v: number, size: number) => Math.max(0, Math.min(1 - size, v + .02));
+  const copy: AnnotationRegion = { ...region, id, type: 'keyword', label: 'Kopya', content: undefined, x: nudge(region.x, region.width), y: nudge(region.y, region.height), manuallyAdjusted: true };
+  const first = marks.length ? Math.min(...marks.map(m => m.start)) : time;
+  const copiedMarks = marks.map((m, i) => {
+    const start = Math.max(0, Math.min(total - .1, time + (m.start - first)));
+    const lasting = m.type === 'reject' || m.type === 'correct';
+    return { ...m, id: `manual-${id}-${m.type}-${i}`, targetRegionId: id, regionId: id, start, startTime: start,
+      duration: lasting ? total - start : Math.max(.3, Math.min(m.duration, total - start)), label: `${m.type}: kopya` };
+  });
+  return { region: copy, marks: copiedMarks };
+}
+
 /** A box drawn from one corner to the other, in image coordinates (0–1), kept on the image. */
 export function drawnRegion(id: string, x1: number, y1: number, x2: number, y2: number): AnnotationRegion {
   const clamp = (v: number) => Math.max(0, Math.min(1, v));
@@ -122,11 +139,19 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const [gesture, setGesture] = useState<Gesture | null>(null);
   const [draft, setDraft] = useState<AnnotationRegion | VideoAction | null>(null);
   const [tool, setTool] = useState<Tool | null>(null);
+  /** A copied box and its marks (Ctrl+C), pasted with Ctrl+V. */
+  const copied = useRef<{ region: AnnotationRegion; marks: VideoAction[] } | null>(null);
+  const keys = useRef<(e: KeyboardEvent) => void>(() => {});
+  const onPicture = useRef(false);
   useEffect(() => {
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { setSelectedId(null); setTool(null); onDrawOptionDone?.(); } };
-    window.addEventListener('keydown', key);
-    return () => window.removeEventListener('keydown', key);
-  }, [onDrawOptionDone]);
+    // Capture: runs before the page's Esc (leaving full screen), so Esc first lets go of a box or tool.
+    const key = (e: KeyboardEvent) => keys.current(e);
+    // Delete and copy act on the picture only when the teacher last clicked there (not on the strip's marks).
+    const click = (e: PointerEvent) => { onPicture.current = !!box.current?.contains(e.target as Node); };
+    window.addEventListener('keydown', key, true);
+    window.addEventListener('pointerdown', click, true);
+    return () => { window.removeEventListener('keydown', key, true); window.removeEventListener('pointerdown', click, true); };
+  }, []);
   // Showing a missing option puts the tools aside.
   useEffect(() => { if (drawOption) { setTool(null); setSelectedId(null); } }, [drawOption]);
   const drawing = !!tool || !!drawOption;
@@ -216,6 +241,32 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const markHere = (action: VideoAction) => onActions(actions.map(a => a.id === action.id ? nudgeAction(a, time - a.start, total) : a));
   const removeBox = (id: string) => { setSelectedId(null); onRegions(regions.filter(r => r.id !== id)); };
   const markBox = (id: string) => { if (tool) { onActions(addMark(actions, id, tool, time, total)); setSelectedId(id); setTool(null); } };
+  const paste = () => {
+    const source = copied.current;
+    if (!source) return;
+    const pasted = pastedBox(source.region, source.marks, `manual-box-${Date.now()}`, time, total);
+    onRegions([...regions, pasted.region], pasted.marks);
+    setSelectedId(pasted.region.id);
+  };
+  keys.current = e => {
+    const target = e.target as HTMLElement | null;
+    if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (e.key === 'Escape') {
+      if (selectedId || tool || drawOption) { e.preventDefault(); setSelectedId(null); setTool(null); onDrawOptionDone?.(); }
+      return;
+    }
+    if (!ctrl && (e.key === 'Delete' || e.key === 'Backspace') && selected && onPicture.current) { e.preventDefault(); removeBox(selected.id); return; }
+    if (!ctrl || e.altKey || e.shiftKey) return;
+    const k = e.key.toLowerCase();
+    if (k === 'z' && onUndo && canUndo) { e.preventDefault(); onUndo(); return; }
+    if (k === 'c' && selected && onPicture.current && !window.getSelection()?.toString()) {
+      e.preventDefault();
+      copied.current = { region: selected, marks: actions.filter(a => a.targetRegionId === selected.id && ICON[a.type]) };
+      return;
+    }
+    if (k === 'v' && copied.current) { e.preventDefault(); paste(); }
+  };
 
   const selectedRect = selected ? regionCanvasRect(shown(selected), fit) : null;
   const selectedMarks = selected ? actions.filter(a => a.targetRegionId === selected.id && ICON[a.type]).sort((a, b) => a.start - b.start) : [];
@@ -345,7 +396,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             </div>
           ))}
           <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-xs text-[#787670]">
-            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
+            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'} · Ctrl+C / Ctrl+V: kopyala · Delete: sil</span>
             <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline">Kutuyu kaldır</button>
           </div>
         </div>

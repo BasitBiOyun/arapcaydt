@@ -268,6 +268,7 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .narration-pill.is-arabic { background: #fbefdc; border-color: #ecd1a4; color: #5c3b0b; font-family: 'Amiri', serif; font-size: .9375rem; }
 .narration-pill:hover { filter: brightness(.96); }
 .narration-pill[aria-pressed=true] { background: #8b1e2d; border-color: #8b1e2d; color: white; z-index: 2; }
+.narration-pill.is-speaking:not([aria-pressed=true]) { box-shadow: 0 0 0 2px #8b1e2d; }
 .narration-skip { position: absolute; top: 50%; transform: translate(-50%, -50%); color: #d97706; z-index: 3; pointer-events: auto; filter: drop-shadow(0 1px 1px rgb(0 0 0 / .25)); }
 .narration-strip-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 38px; font-size: .9375rem; }
 .narration-strip-bar > p { flex: 1 1 320px; line-height: 1.55; }
@@ -289,6 +290,7 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .narration-list button { display: flex; gap: 8px; width: 100%; text-align: left; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent; background: white; font-size: .875rem; line-height: 1.55; color: #33302c; }
 .narration-list button:hover { border-color: #d5d0ca; }
 .narration-list button[aria-pressed=true] { border-color: #8b1e2d; background: #fbf0f1; box-shadow: inset 3px 0 0 #8b1e2d; }
+.narration-list button.is-speaking:not([aria-pressed=true]) { background: #faf5e6; }
 
 
 /* Short laptop screens (13–15"): tighter bars around the editor so the question stays large. */
