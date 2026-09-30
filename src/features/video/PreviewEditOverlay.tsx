@@ -148,6 +148,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   useEffect(() => { if (focusBox && !tool && !drawOption) setSelectedId(focusBox.id); }, [focusBox]); // eslint-disable-line react-hooks/exhaustive-deps
   const keys = useRef<(e: KeyboardEvent) => void>(() => {});
   const onPicture = useRef(false);
+  /** The underlines drawn one after another at this paused moment: where the next one starts. */
+  const lineSeries = useRef<{ time: number; end: number } | null>(null);
   useEffect(() => {
     // Capture: runs before the page's Esc (leaving full screen), so Esc first lets go of a box or tool.
     const key = (e: KeyboardEvent) => keys.current(e);
@@ -213,8 +215,14 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       const place = tool && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, typicalLineHeight(regions)) : null;
       if (tool && place) {
         const id = `manual-box-${Date.now()}`;
-        onRegions([...regions, { ...place, id }], addMark([], id, tool, time, total));
-        setSelectedId(id); setTool(null);
+        // Underlines are drawn line after line with the tool kept: each new line follows the
+        // previous one in time (while the preview stays at the same moment).
+        const series = tool === 'underline';
+        const at = series && lineSeries.current && Math.abs(lineSeries.current.time - time) < .01 ? lineSeries.current.end : time;
+        const marks = addMark([], id, tool, at, total);
+        onRegions([...regions, { ...place, id }], marks);
+        if (series) lineSeries.current = { time, end: Math.min(total - .1, at + marks[0].duration) };
+        else { setSelectedId(id); setTool(null); }
       } else if (gesture.boxId) markBox(gesture.boxId);
     } else if (gesture && draft && 'x' in draft) onRegions(regions.map(r => r.id === draft.id ? draft : r));
     else if (gesture && draft) onActions(actions.map(a => a.id === draft.id ? draft as VideoAction : a));
@@ -306,7 +314,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       </div>
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
         <span className={`px-2 py-1 rounded-md text-white text-xs ${drawOption ? 'bg-[#8B1E2D] font-semibold' : 'bg-black/60'}`}>
-          {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool ? `${ICON[tool]!.name}: ${tool === 'underline' ? 'kelimelerin altına sürükleyip çizin' : 'istediğiniz yere sürükleyip alan çizin'} ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
+          {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool === 'underline' ? 'Altı çizgi: satırların altına sırayla çizin, her biri öncekinin ardından gelir · bitince Esc'
+            : tool ? `${ICON[tool]!.name}: istediğiniz yere sürükleyip alan çizin ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
         </span>
         {onUndo && <button type="button" disabled={!canUndo} onClick={onUndo} title="Son değişikliği geri al"
           className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">

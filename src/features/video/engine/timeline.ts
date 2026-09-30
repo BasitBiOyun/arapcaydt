@@ -24,7 +24,9 @@ export const underlineSpanFor = (draw: number) => draw + .8 >= 4 ? draw + .8 : d
 
 /** How far an underline is drawn `elapsed` seconds in: evenly over its draw time, or word by word. */
 export function underlineProgress(action: VideoAction, elapsed: number): number {
-  const draw = underlineDrawTime(action.duration);
+  // A held line (a passage line) is drawn in the time before its hold.
+  const hold = Math.min(action.holdFor ?? 0, Math.max(0, action.duration - .5));
+  const draw = underlineDrawTime(action.duration - hold);
   const steps = action.drawSteps;
   if (!steps?.length) return Math.max(0, Math.min(1, elapsed / draw));
   // Word steps are stretched or squeezed with the mark, so a longer mark draws each word slower.

@@ -103,6 +103,8 @@ export interface VideoAction {
   drawSteps?: Array<{ at: number; to: number }>;
   /** Underline only: moves this line up (−) or down (+), in heights of its text line. */
   lineOffset?: number;
+  /** Underline only: seconds the finished line stays at the end of the mark (a passage line waits for the passage). */
+  holdFor?: number;
   id: string;
   start: number; // seconds
   startTime?: number; // alias

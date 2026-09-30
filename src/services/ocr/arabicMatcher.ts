@@ -63,13 +63,19 @@ export interface ArabicMatchResult {
   phrase: string;
   region: AnnotationRegion;
   matchedWords: OCRWord[];
+  /** A line of a quoted passage: its exact place in the solution (see passageMatcher). */
+  sourceStart?: number;
+  sourceEnd?: number;
+  /** Where the passage ends in the solution: the line stays until then. */
+  passageEnd?: number;
 }
 
 /** Pick the better OCR pass per phrase without mixing overlapping word boxes. */
-export function findBestArabicMatches(text: string, primary: OCRWord[], alternative: OCRWord[] = []): ArabicMatchResult[] {
-  // Words already underlined as part of a longer quote (longest phrases come first): a
-  // shorter phrase repeated elsewhere in the question is looked for inside that quote.
-  const context = { primary: new Set<OCRWord>(), alternative: new Set<OCRWord>() };
+export function findBestArabicMatches(text: string, primary: OCRWord[], alternative: OCRWord[] = [], quoted: Iterable<OCRWord> = []): ArabicMatchResult[] {
+  // Words already underlined as part of a longer quote (longest phrases come first, and a
+  // passage read in full before them): a shorter phrase repeated elsewhere in the question is
+  // looked for inside that quote.
+  const context = { primary: new Set<OCRWord>(quoted), alternative: new Set<OCRWord>(quoted) };
   return extractArabicPhrases(text).flatMap((phrase, index) => {
     const a = findArabicMatchesInOcr(phrase, primary, context.primary);
     const b = findArabicMatchesInOcr(phrase, alternative, context.alternative);
