@@ -91,16 +91,52 @@ function sampleRateFromMime(mime: string) {
   return match ? Number(match[1]) : 24000;
 }
 
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+/** Storage calls hit a passing network error now and then: three tries before giving up. */
+const STORE_RETRY_MS = [0, 700, 2000];
+
 export async function saveGeneratedAudio(memberId: string, projectId: string, text: string, audio: Buffer, extension: string, contentType: string) {
   const db = serviceDatabase();
   const digest = createHash('sha256').update(text).digest('hex').slice(0, 20);
   const path = `${memberId}/${projectId}/gemini-${digest}.${extension}`;
   const bucket = db.storage.from('project-assets');
-  const { error: uploadError } = await bucket.upload(path, audio, { contentType, upsert: true });
-  if (uploadError) throw new Error(`Gemini sesi depoya kaydedilemedi: ${uploadError.message}`);
-  const { data, error: signedError } = await bucket.createSignedUrl(path, 21600);
-  if (signedError || !data?.signedUrl) throw new Error('Gemini sesi için oynatma bağlantısı oluşturulamadı.');
-  return { path, signedUrl: data.signedUrl };
+  let failure = '';
+  for (const delay of STORE_RETRY_MS) {
+    if (delay) await wait(delay);
+    try {
+      const { error: uploadError } = await bucket.upload(path, audio, { contentType, upsert: true });
+      if (uploadError) { failure = uploadError.message; continue; }
+      const { data, error: signedError } = await bucket.createSignedUrl(path, 21600);
+      if (signedError || !data?.signedUrl) { failure = 'oynatma bağlantısı oluşturulamadı'; continue; }
+      return { path, signedUrl: data.signedUrl };
+    } catch (error: any) {
+      failure = error?.message || 'ağ hatası';
+    }
+  }
+  throw new StoreError(`Gemini sesi depoya kaydedilemedi: ${failure}`);
+}
+/** The voice was made but could not be stored: it is sent to the browser instead, never thrown away. */
+export class StoreError extends Error {}
+
+/**
+ * Rough time Google needs for a text (the voice is made about 5–6× faster than it is spoken).
+ * A model is not started when the rest of the budget cannot fit it: a request cut off by our
+ * timeout still counts against the day's allowance.
+ */
+export function neededMs(characters: number): number {
+  return 8_000 + characters * 12;
+}
+
+/** Why a reply came without audio, for the admin failure list. */
+export function missingAudioReason(payload: any): string {
+  const candidate = payload?.candidates?.[0];
+  const parts: any[] = candidate?.content?.parts || [];
+  return [
+    candidate?.finishReason && `neden ${candidate.finishReason}`,
+    payload?.promptFeedback?.blockReason && `engel ${payload.promptFeedback.blockReason}`,
+    parts.some(p => typeof p?.text === 'string') && 'yalnız yazı döndü',
+    !payload?.candidates?.length && 'aday yok',
+  ].filter(Boolean).join(', ') || 'ayrıntı yok';
 }
 
 interface Attempt { model: string; status: number; detail?: string; daily?: boolean; quota?: string; keySource: KeySource }
@@ -151,7 +187,7 @@ export default async function handler(req: any, res: any) {
   lanes: for (const lane of lanes) {
     for (const model of GEMINI_MODELS.filter(m => !lane.skip.includes(m))) {
       const remaining = deadline - Date.now();
-      if (remaining < MIN_ATTEMPT_MS) break lanes;
+      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(text.length))) break lanes;
       try {
         const upstream = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
@@ -181,7 +217,7 @@ export default async function handler(req: any, res: any) {
         const payload = JSON.parse(raw);
         const audioPart = (payload?.candidates?.[0]?.content?.parts || []).find((part: any) => part?.inlineData?.data);
         if (!audioPart?.inlineData?.data) {
-          attempts.push({ model, status: 502, detail: 'Gemini yanıtında ses verisi yok.', keySource: lane.source });
+          attempts.push({ model, status: 502, detail: `Gemini yanıtında ses verisi yok (${missingAudioReason(payload)}).`, keySource: lane.source });
           continue;
         }
 
@@ -190,13 +226,20 @@ export default async function handler(req: any, res: any) {
         if (wav.toString('ascii', 0, 4) !== 'RIFF') wav = pcmToWav(wav, sampleRateFromMime(upstreamMime));
         const duration = wavDurationSeconds(wav);
         const audio = await storedNarrationAudio(wav);
-        const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio.bytes, audio.extension, audio.mimeType);
+        let stored: { path: string; signedUrl: string } | null = null;
+        let storeNote = '';
+        try {
+          stored = await saveGeneratedAudio(member.user.id, projectId, text, audio.bytes, audio.extension, audio.mimeType);
+        } catch (error: any) {
+          // The voice exists: the browser gets it and stores it with the project instead.
+          if (!(error instanceof StoreError)) throw error;
+          storeNote = ` (depo: ${error.message}; ses tarayıcıya gönderildi)`;
+        }
 
         await recordUsage(member.user.id, projectId, [...failedUsage(attempts, text.length),
-          { kind: 'gemini_tts', state: 'succeeded', detail: model, characters: text.length, keySource: lane.source }]);
+          { kind: 'gemini_tts', state: 'succeeded', detail: model + storeNote, characters: text.length, keySource: lane.source }]);
         return res.status(200).json({
-          audioUrl: stored.signedUrl,
-          assetPath: stored.path,
+          ...(stored ? { audioUrl: stored.signedUrl, assetPath: stored.path } : { audioBase64: audio.bytes.toString('base64') }),
           mimeType: audio.mimeType,
           mode: 'live',
           durationSeconds: Number(duration.toFixed(3)),

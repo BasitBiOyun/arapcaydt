@@ -67,6 +67,9 @@ test('every request is counted separately, per service and Gemini model, on the 
   assert.deepEqual(r.totals.all.voice, { succeeded: 1, failed: 0 });
   assert.equal(r.members.t1.gemini_tts, 3);
   assert.equal(r.members.t2.gemini_transcribe, 1);
+  // Last 7 days per teacher: successes next to failures.
+  assert.deepEqual(r.membersWeek.t1, { voice: { succeeded: 2, failed: 1 }, timing: { succeeded: 0, failed: 0 } });
+  assert.deepEqual(r.membersWeek.t2, { voice: { succeeded: 0, failed: 0 }, timing: { succeeded: 1, failed: 0 } }, 'the 20 Sep failure is older than 7 days');
 });
 
 test('usage migration applies on top of the membership schema and accepts the new request kinds', async () => {

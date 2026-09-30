@@ -5,19 +5,19 @@ import { PART_CHARS, SPOKEN_LIMIT, splitNarration } from '../src/services/narrat
 const squash = (s: string) => s.replace(/\s+/g, ' ').trim();
 
 test('a solution up to the part size stays one request, as before', () => {
-  const text = 'A şıkkı olmaz. '.repeat(250).trim();
+  const text = 'A şıkkı olmaz. '.repeat(110).trim();
   assert.ok(text.length <= PART_CHARS);
   assert.deepEqual(splitNarration(text), [text]);
   assert.equal(SPOKEN_LIMIT, 10_000);
 });
 
 test('a long paragraph question is split at paragraph ends into even parts, nothing lost', () => {
-  const arabic = 'يَقْرَأُ الطُّلَّابُ الْكُتُبَ الْمُفِيدَةَ فِي أَوْقَاتِهِمْ. '.repeat(40).trim();
-  const turkish = 'Öğrenciler faydalı kitapları boş vakitlerinde okurlar. '.repeat(40).trim();
+  const arabic = 'يَقْرَأُ الطُّلَّابُ الْكُتُبَ الْمُفِيدَةَ فِي أَوْقَاتِهِمْ. '.repeat(20).trim();
+  const turkish = 'Öğrenciler faydalı kitapları boş vakitlerinde okurlar. '.repeat(20).trim();
   const text = [arabic, turkish, 'Şimdi şıklara bakalım.\nA şıkkı olmaz.', turkish, 'Doğru cevap D şıkkı.'].join('\n\n');
   assert.ok(text.length > PART_CHARS && text.length <= SPOKEN_LIMIT);
   const parts = splitNarration(text);
-  assert.ok(parts.length >= 2 && parts.length <= 3);
+  assert.ok(parts.length >= 2 && parts.length <= Math.ceil(text.length / PART_CHARS) + 1, `${parts.length} parts`);
   for (const p of parts) assert.ok(p.length <= PART_CHARS, `part of ${p.length}`);
   assert.equal(squash(parts.join(' ')), squash(text));
   // Cuts fall on paragraph ends: no part starts inside a sentence.

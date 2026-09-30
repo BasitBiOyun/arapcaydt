@@ -84,6 +84,7 @@ interface Analytics {
     geminiModels: Record<string, { today: Counter; last30Days: Counter; sharedToday?: number; lastQuota?: string }>;
     members: Record<string, Record<RequestService, number>>;
     membersToday?: Record<string, MemberToday>;
+    membersWeek?: Record<string, { voice: Counter; timing: Counter }>;
     studio?: { transcribeUsed: number; transcribeExhausted: boolean; ttsExhausted: string[] };
     limits?: { sharedTranscribePerTeacher: number; elevenlabsAlignPerTeacher: number };
   };
@@ -618,6 +619,36 @@ export const AdminPage: React.FC = () => {
                   </div>
                 )}
               </section>
+
+              {requests.membersWeek && Object.keys(requests.membersWeek).length > 0 && (
+                <section className={card}>
+                  <SectionTitle title="Öğretmen başına istekler (son 7 gün)" note="Başarılı ve başarısız istekler birlikte: yalnız hatalara bakınca sorun olduğundan büyük görünür. Her model denemesi ayrı bir istektir." />
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-[#FAF9F5] text-xs text-[#666560]">
+                        <tr>{['Öğretmen', 'Seslendirme', 'Zamanlama', 'Başarı oranı'].map((t) => <th key={t} className="px-3 py-2 font-semibold whitespace-nowrap">{t}</th>)}</tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#EFEFEA]">
+                        {Object.entries(requests.membersWeek)
+                          .sort((a, b) => b[1].voice.failed + b[1].timing.failed - (a[1].voice.failed + a[1].timing.failed))
+                          .map(([owner, w]) => {
+                            const all = w.voice.succeeded + w.voice.failed + w.timing.succeeded + w.timing.failed;
+                            const rate = all ? Math.round(((w.voice.succeeded + w.timing.succeeded) / all) * 100) : 0;
+                            const cell = (c: Counter) => <><strong className="tabular-nums text-[#15803D]">{c.succeeded}</strong> başarılı{c.failed > 0 && <span className="text-red-700"> · {c.failed} başarısız</span>}</>;
+                            return (
+                              <tr key={owner}>
+                                <td className="px-3 py-2 whitespace-nowrap">{who(owner)}</td>
+                                <td className="px-3 py-2">{cell(w.voice)}</td>
+                                <td className="px-3 py-2">{cell(w.timing)}</td>
+                                <td className={`px-3 py-2 font-semibold ${rate < 50 ? 'text-red-700' : rate < 80 ? 'text-[#B45309]' : 'text-[#15803D]'}`}>%{rate}</td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
 
               <section className={card}>
                 <SectionTitle title="Son başarısız istekler" note="Son 7 gün, en yeni üstte; servisin verdiği neden ile. Dakikalık sınır ve geçici hatalar kendiliğinden tekrar denenir." />

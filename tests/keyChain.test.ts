@@ -191,15 +191,15 @@ test('a passing error on the teacher key is retried there once, before the share
   assert.ok(!world.google.some(g => g.key === STUDIO_KEY), 'the shared quota is not touched');
 });
 
-test('a Transcribe reply without word timings is logged with its shape, not its text', async () => {
+test('a Transcribe reply without word timings is logged with its shape, not its text, and not retried on the shared key', async () => {
   const { default: align } = await import('../api/gemini/align-project');
   const noWords = { status: 200, body: { status: 'completed', steps: [{ content: [{ type: 'text', text: 'Doğru cevap C' }] }] } };
   const world = await freshWorld({ answer: () => noWords });
   const r = await call(align, 'POST', { projectId: 'p1' });
   assert.equal(r.payload.code, 'GEMINI_TRANSCRIBE_ERROR');
   const reason = 'neden: Gemini Transcribe kelime zaman damgası döndürmedi (durum completed, steps 1, içerik text, işaret -, metin 13 karakter).';
-  assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [
-    ['teacher', `gemini-3.5-transcribe · 200 · ${reason}`], ['system', `gemini-3.5-transcribe · 200 · ${reason}`]]);
+  // The same audio on the shared key would answer the same: it is not tried (the shared allowance is kept).
+  assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [['teacher', `gemini-3.5-transcribe · 200 · ${reason}`]]);
   assert.ok(!world.activity.some(a => a.detail.includes('Doğru cevap')), 'no transcript text is stored');
 });
 
