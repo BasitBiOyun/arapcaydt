@@ -35,7 +35,10 @@ export function assessReadiness(project: QuestionProject): Readiness {
       ? { id: 'options', status: 'ok', label: `${found.length} şık bulundu (${found[0]}–${found[found.length - 1]}).` }
       : { id: 'options', status: 'warn', label: `Eksik şık: ${missing.join(', ')}. Görsel üzerinde işaretleyin.`, action: 'regions' });
 
-  const correctTargets = [...new Set(actions.filter(a => a.type === 'correct').map(a => a.targetRegionId))];
+  // Ticks on premises (I, II, III…) or phrases explain the text; the answer is the ticked option.
+  const optionType = new Map((config.regions || []).map(r => [r.id, r.type]));
+  const isOption = (id: string) => /^option-[a-e]$/i.test(id) || String(optionType.get(id) ?? '').startsWith('option-');
+  const correctTargets = [...new Set(actions.filter(a => a.type === 'correct' && isOption(a.targetRegionId)).map(a => a.targetRegionId))];
   const answerId = `option-${project.correctAnswer.toLowerCase()}`;
   items.push(correctTargets.includes(answerId) && correctTargets.length === 1
     ? { id: 'answer', status: 'ok', label: `Doğru cevap ${project.correctAnswer} işaretleniyor.` }

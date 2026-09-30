@@ -101,6 +101,24 @@ test('"Doğru cevap" label never covers the question stem',async()=>{
   assert.ok(draw([option]).includes('Doğru cevap'));
   assert.ok(!draw([option,{id:'question-root',type:'paragraph',label:'k',x:.44,y:.38,width:.33,height:.06}]).includes('Doğru cevap'));
 });
+test('a tick on a premise (I, II, III…) is only a tick: no "Doğru cevap" label, not the closing answer',async()=>{
+  const {renderQuestionVideoFrame}=await import('../src/features/video/engine/renderer');
+  const draw=(time:number,actions:VideoAction[])=>{const texts:string[]=[];
+    const ctx:any=new Proxy({} as Record<string,unknown>,{get:(t,k)=>k in t?t[k as string]:k==='measureText'?()=>({width:120}):k==='fillText'?(s:string)=>texts.push(s):()=>{},set:(t,k,v)=>{t[k as string]=v;return true;}});
+    renderQuestionVideoFrame(ctx,1920,1080,null,regions,actions,time,{width:1920,height:1080,aspectRatio:'16:9',duration:10});
+    return texts;};
+  const regions=[
+    {id:'manual-box-1',type:'keyword',label:'I',x:.27,y:.2,width:.35,height:.06},
+    {id:'manual-box-2',type:'keyword',label:'II',x:.27,y:.3,width:.35,height:.06},
+    {id:'option-d',type:'option-d',label:'D',x:.27,y:.6,width:.2,height:.06},
+  ] as any;
+  const premises:VideoAction[]=[{id:'p1',type:'correct',targetRegionId:'manual-box-1',start:1,duration:9},{id:'p2',type:'correct',targetRegionId:'manual-box-2',start:2,duration:8}];
+  assert.ok(!draw(4,premises).includes('Doğru cevap'));
+  assert.ok(!draw(11,premises).some(t=>t.startsWith('Doğru cevap')),'no closing card without a ticked option');
+  const withAnswer=[...premises,{id:'d',type:'correct',targetRegionId:'option-d',start:6,duration:4} as VideoAction];
+  assert.ok(draw(8,withAnswer).includes('Doğru cevap'));
+  assert.ok(draw(11,withAnswer).includes('Doğru cevap: D'));
+});
 test('MP4 tracks only take increasing timestamps (a packet one frame early is dropped, not fatal)',async()=>{
   const {monotonicGate}=await import('../src/features/video/engine/exporter');
   const gate=monotonicGate();
