@@ -13,6 +13,8 @@ export interface HelpTopic {
   title: string;
   summary: string;
   steps: HelpStep[];
+  /** Reference parts after the steps: what each thing on the screen does, what to do when… */
+  sections?: { title: string; items: string[] }[];
   tips?: string[];
 }
 
@@ -61,45 +63,165 @@ export const HELP_TOPICS: HelpTopic[] = [
   },
   {
     id: 'seslendirme',
-    title: 'Seslendirme',
-    summary: 'Çözüm metninizi stüdyo seslendirir ya da kendi okuduğunuz MP3’ü yüklersiniz.',
+    title: 'Ses adımı: tam rehber',
+    summary: 'Çözüm metniniz Türkçe ve Arapça olarak seslendirilir. Sesi dinler, yanlış okunan yer varsa yalnız o cümleyi düzeltir ve onaylarsınız. Bütün sesi yeniden üretmek son çaredir.',
     steps: [
-      { text: '**3 Ses** adımında **Seslendirme Oluştur**’a basın. Ses birkaç saniye ile bir dakika arasında hazırlanır. Kendi sesinizi kullanmak isterseniz **MP3 Yükle** ile dosyanızı seçin.', image: 'ses-olustur', alt: 'Seslendirme Oluştur ve MP3 Yükle düğmeleri' },
-      { text: 'Sesi sorunun altındaki **Ses şeridinde** **Oynat**’a basıp baştan sona dinleyin; okunan cümle sorunun altında yazı olarak da görünür. Beğendiyseniz sağdaki **Bu Sesi Kullan**’a basın.', image: 'ses-onay', alt: 'Sesi dinleme ve onaylama' },
-      { text: 'Bir yer yanlış okunduysa bütün sesi baştan üretmeyin. Dinlerken hatayı duyduğunuz anda **Burada hata var**’a basın: ses durur ve o cümle seçilir (ya da cümlenin kutucuğuna kendiniz tıklayın). **Yeniden seslendir**’e basın. Yalnız o yer yeniden okunur (1 ses hakkı) ve hemen çalınır; doğruysa **Oldu**, değilse **Olmadı, geri al** deyin. Okunmamış görünen yerler şeritte turuncu işaretle gösterilir ve **Bu yeri ekle** ile eklenir.', image: 'sesi-duzelt', alt: 'Ses şeridi' },
-      { text: 'Onaylanan ses “Onaylandı” olarak görünür. **İşaretlere geç** ile dördüncü adıma geçin.' },
+      { text: '**3 Ses** adımına geçin. Henüz ses yoksa sağda iki seçenek vardır: **Seslendirme Oluştur** (stüdyo okur) ve **MP3 Yükle** (kendi kaydınız). **Seslendirme Oluştur**’a basın. Ses birkaç saniye ile bir iki dakika arasında hazırlanır; bu sırada sayfayı kapatmayın.', image: 'ses-olustur', alt: 'Seslendirme Oluştur ve MP3 Yükle düğmeleri' },
+      { text: 'Ses hazır olunca sorunun altında **Ses şeridi** açılır. Üstte sesin dalgası, altında çözümünüzün her cümlesi bir kutucuk olarak durur. Kutucuk, o cümlenin seste okunduğu yerdedir. Arapça cümleler bej, Türkçe cümleler mavi renktedir.' },
+      { text: '**Oynat**’a basıp sesi baştan sona dinleyin. O an okunan cümle hem şeritte çerçeveyle hem de sorunun altında yazı olarak görünür. Dalganın üstünde bir yere tıklarsanız ses oradan devam eder.', image: 'ses-onay', alt: 'Ses şeridinde Oynat ve sağda Bu Sesi Kullan' },
+      { text: 'Yanlış okunan bir yer duyduğunuz anda **Burada hata var**’a basın. Ses durur ve az önce okunan cümle seçilir (koyu kırmızı olur). Seçili cümle şeridin altında yazılı görünür; **Dinle** ile yalnız o cümleyi dinleyebilirsiniz. Hatayı duymadan da bir cümlenin kutucuğuna tıklayarak seçebilirsiniz.', image: 'sesi-duzelt', alt: 'Burada hata var, seçili cümle ve Yeniden seslendir' },
+      { text: 'Hata birkaç cümleye yayılıyorsa ilk ve son cümlenin kutucuğuna tıklayın; aradaki bütün cümleler seçilir. Seçili bir cümleye tekrar tıklarsanız o cümle seçimden çıkar. **Seçimi kaldır** ya da **Esc** seçimi tamamen bırakır.' },
+      { text: '**Yeniden seslendir**’e basın. Yalnız seçtiğiniz yer yeniden okunur ve eskisinin yerine konur; kesim cümle aralarındaki duraklamalardan yapılır. Sesin geri kalanı ve işaretleriniz olduğu gibi kalır. Bir iki cümlede onay sorulmaz; dört beş cümleden uzun seçimlerde önce onayınız istenir. Her düzeltme 1 ses hakkı kullanır.' },
+      { text: 'Yeni hali hazır olunca kendiliğinden çalar. Doğru okunduysa **Oldu**, okunmadıysa **Olmadı, geri al** deyin; **Tekrar dinle** ile bir kez daha dinleyebilirsiniz. Geri alınca önceki ses aynen geri gelir. Yine olmadıysa aynı cümleyi bir kez daha yeniden seslendirebilirsiniz.' },
+      { text: 'Ses baştan sona doğruysa sağdaki **Bu Sesi Kullan**’a basın. Ses **Onaylandı** olur. **İşaretlere geç** ile dördüncü adıma geçin. Onaylanmamış bir sesle video hazırlanamaz.' },
+    ],
+    sections: [
+      {
+        title: 'Sağ paneldekiler ne işe yarar?',
+        items: [
+          '**Karakter sayacı ve şık kontrolü** (örneğin “686 / 10.000 karakter”): Metninizin uzunluğunu ve her şık için ne olacağını gösterir: ✗ elenir (hangi sözle), ✓ doğru cevap. Bir şık için “işaret yok” yazıyorsa o şık metinde harfiyle anılmıyordur; **2 Metin** adımında cümlenizi düzeltin.',
+          '**Telaffuzu kısa bir örnekle dene**: Nasıl okunacağından emin olmadığınız bir kelimeyi ya da cümleyi (en fazla 350 karakter) yazıp **Örnek ses üret** deyin. Ana sesiniz değişmez, ancak bu deneme de 1 ses hakkı kullanır.',
+          '**Eğitmen Sesi** kutusu: Sesin durumunu gösterir: **Onay Bekliyor** ya da **Onaylandı**.',
+          '**Ses Dosyasını İndir**: Sesi MP3 olarak bilgisayarınıza indirir.',
+          'Sağdaki **Yeniden seslendir**: **Bütün** sesi baştan üretir. Eski ses silinir; işaretleri de yeniden hazırlamanız gerekir. Uzun metinlerde birden çok hak harcar. Yalnızca metni baştan değiştirdiyseniz kullanın; bir iki cümle için şeritteki düzeltmeyi kullanın.',
+          '**Bu Sesi Kullan**: Sesi onaylar.',
+          'En alttaki kapasite satırı: Bugün ortak kapasiteden ne kadar kullanıldığını ve kendi anahtarınız varsa onun durumunu gösterir.',
+        ],
+      },
+      {
+        title: 'Ses şeridindeki her şey',
+        items: [
+          '**Oynat / Durdur** ve yanındaki süre (geçen / toplam).',
+          '**Burada hata var**: Sesi durdurur ve az önce okunan cümleyi seçer.',
+          'Cümle kutucuğuna **bir kez** tıklamak cümleyi seçer, **çift** tıklamak yalnız o cümleyi çalar.',
+          '**Daha fazla** düğmesinin içinde: yakınlaştırma (**−**, **+**, **Tümü**); **Cümle listesi** (cümleleri alt alta, saatleriyle gösterir, uzun metinlerde seçmek daha kolaydır); **Zamanla seç** (“2:00” ve “2:10” yazıp **Seç** deyince o aralıktaki cümleler seçilir).',
+          'Turuncu ünlem işareti: “Okunmamış görünüyor”. O yer şeridin altında yazılı olarak da listelenir; **Bu yeri ekle** ile yalnız o yer okunup doğru yerine eklenir. Arapça kelimeler bazen farklı yazıya döküldüğü için bu uyarı yanlış çıkabilir: önce dinleyin, doğru okunmuşsa dokunmayın.',
+          '**Bölümler** satırı (çok uzun metinlerde): Metin 2–3 bölümde seslendirildiyse her bölümü ayrı dinleyebilir, mikrofon düğmesiyle yalnız o bölümü yeniden seslendirebilirsiniz.',
+          '**Son düzeltmeyi geri al**: Yalnızca en son yaptığınız düzeltmeyi geri alır.',
+        ],
+      },
+      {
+        title: 'Kendi sesinizi (MP3) kullanmak',
+        items: [
+          '**MP3 Yükle** ile kaydınızı seçin. Stüdyo kaydı dinleyip her kelimenin zamanını çıkarır; bu biraz sürebilir.',
+          'Okuduğunuz metin çözüm metniyle aynı olmalıdır; işaretler kelimelere göre yerleştirilir. Metinden farklı okursanız işaretler kayar.',
+          'Yüklenen seste Ses şeridi yoktur; sağdaki oynatıcıyla dinlersiniz. Kaydı değiştirmek için **MP3 Değiştir**, kaldırmak için **Sil**.',
+          'Kendi kaydınızın bir kısmı stüdyoda yeniden seslendirilemez; kaydı düzeltip yeniden yükleyin.',
+        ],
+      },
+      {
+        title: 'Ses hakları ve hatalar',
+        items: [
+          'Her seslendirme, her cümle düzeltmesi ve her örnek ses 1 hak kullanır; çok uzun metinler bölüm başına 1 hak kullanır.',
+          'Günlük ücretsiz haklar Türkiye saatiyle 10:00’da (yaz saatinde 11:00) yenilenir. “Bugünkü ücretsiz ses hakkı bitti” yazarsa yenilenmeyi bekleyin ya da kendi Google anahtarınızı ekleyin (bkz. **Google anahtarı alma**).',
+          'Bir hata çıkarsa üst üste denemeyin: her deneme bir hak harcar. İki denemede olmuyorsa sol menüdeki **Sorun bildir** ile bize yazın.',
+        ],
+      },
+      {
+        title: 'Sesin ilk seferde doğru çıkması için metni nasıl yazmalı?',
+        items: [
+          'Arapça ifadeleri **harekeli** yazın.',
+          'Türkçe ile Arapçayı aynı cümlenin içinde sık sık karıştırmayın. Arapça alıntıyı tam bir cümle olarak verin, açıklamasını ayrı bir Türkçe cümleyle yapın; iki dil de böyle daha doğru okunur.',
+          'Uzun bir Arapça paragrafı tek parça hâlinde, arasına Türkçe koymadan yazın.',
+          'Kısaltma ve sembol yerine okunacak hâlini yazın (örneğin “vb.” yerine “ve benzeri”).',
+        ],
+      },
     ],
     tips: [
-      'Bir kelimenin nasıl okunacağından emin değilseniz **Telaffuzu kısa bir örnekle dene** bölümünden kısa bir deneme dinleyebilirsiniz.',
-      'Kendi MP3’ünüzü yüklüyorsanız, okuduğunuz metin çözüm metniyle aynı olmalıdır; işaretler kelimelere göre yerleştirilir.',
-      'Günlük ücretsiz ses hakkı biterse kendi Google anahtarınızı ekleyebilirsiniz (bkz. **Google anahtarı alma**).',
-      'Seçili bir cümleye yeniden tıklamak onu seçimden çıkarır. Bir cümleye çift tıklarsanız o cümle çalar; ses çalarken okunan cümle çerçeveyle gösterilir.',
-      'Yakınlaştırma, cümle listesi ve “2:00 – 2:10” gibi zamanla seçme şeritteki **Daha fazla** düğmesindedir.',
       'Klavyeyle: **Boşluk** oynatır/durdurur, **← →** önceki/sonraki cümleyi seçer (**Shift** ile seçime ekler), **Enter** seçili yeri dinletir, **Esc** seçimi kaldırır.',
+      'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** ile yalnız soru ve şerit kalır; **Paneli gizle** sağ paneli kapatır.',
     ],
   },
   {
     id: 'isaretler',
-    title: 'İşaretler ve kutular',
-    summary: 'Çarpı, tik, çerçeve ve altı çizgiler sesle aynı anda çıkar. Stüdyo bunları kendisi yerleştirir; siz izleyip gerekirse düzeltirsiniz.',
+    title: 'İşaretler adımı: tam rehber',
+    summary: 'Çarpı, tik, çerçeve, altı çizgi ve vurgular sesle aynı anda çıkar. Stüdyo bunları metninizden ve seslendirmeden kendisi yerleştirir; siz videoyu izler, yalnız yanlış olanı düzeltirsiniz.',
     steps: [
-      { text: 'İlk girişte **İşaretleri otomatik hazırla**’ya basın. Sonra önizlemede ▶ düğmesine basıp videoyu izleyin.', image: 'isaretler', alt: 'Önizleme ve işaret araçları' },
-      { text: 'Bir işareti değiştirmek için videoyu durdurun ve görseldeki kutuya tıklayın. Soldaki araçlardan **✗ Çarpı**, **✓ Doğru işareti**, **◎ Çerçeve**, **▁ Altı çizgi** veya **▮ Vurgu** ekleyebilirsiniz.', image: 'isaret-secili', alt: 'Seçili kutu ve işaret menüsü' },
-      { text: 'Önizlemeyi izlerken yanlış bir işaret görürseniz **Burada hata var**’a basın: video durur ve az önce çıkan işaretin kutusu seçilir.' },
-      { text: 'Önizlemenin altındaki **Zaman şeridi**nde her işaret bir kutucuktur. Kutucuğu sürükleyerek işaretin ne zaman çıkacağını, kenarından çekerek ne kadar kalacağını ayarlarsınız.', image: 'zaman-seridi', alt: 'Zaman şeridi' },
-      { text: 'Bir şıkkın kutusu yanlış yerdeyse kutuya tıklayıp ortasından sürükleyerek taşıyın, kenarlarındaki mavi tutamaçlardan çekerek büyütün veya küçültün.' },
-      { text: 'Yayın kontrolünde **Eksik şık** yazıyorsa yanındaki düğmeye basın ve o şıkkın kutusunu görselde çizin. Ya da şıkkı gösteren kutuya tıklayıp **Hangi şık?** satırından harfini seçin. O şıkkın çarpısı veya tiki, seste söylendiği ana kendiliğinden gelir.' },
-      { text: 'Değişiklikler kendiliğinden kaydedilir. Bitince **İndirmeye geç**’e basın.' },
+      { text: '**4 İşaretler** adımında ilk kez **İşaretleri otomatik hazırla**’ya basın. Stüdyo soru görselini okur (şıkları ve Arapça ifadeleri bulur), metninizden hangi şıkkın ne zaman eleneceğini çıkarır ve her işareti seste söylendiği ana yerleştirir. Birkaç saniye sürer.' },
+      { text: 'Ekranda üstte videonun önizlemesi, altında ayarlar satırı ve **Zaman şeridi** vardır. Önizlemede ▶ ile videoyu izleyin; 1× … 2× düğmeleriyle daha hızlı izleyebilirsiniz.', image: 'isaretler', alt: 'Önizleme ve işaret araçları' },
+      { text: 'Yanlış bir şey görürseniz **Burada hata var**’a basın: video durur ve az önce çıkan işaretin kutusu görselde seçilir.' },
+      { text: 'Video durunca görsel düzenlenebilir olur. Bir kutuya tıklayınca yanında küçük bir pencere açılır: o kutunun işaretleri ve saatleri, **Hangi şık?** harfleri, **Kopyala / Yapıştır** ve **Kutuyu kaldır** buradadır.', image: 'isaret-secili', alt: 'Seçili kutu ve penceresi' },
+      { text: 'Bir işaretin zamanını **Zaman şeridi**nden düzeltin. Her işaret bir kutucuktur: sürükleyince işaret daha erken ya da geç çıkar, kenarından çekince ne kadar kalacağı değişir.', image: 'zaman-seridi', alt: 'Zaman şeridi' },
+      { text: 'Bitince **İndirmeye geç**’e basın. Değişiklikler kendiliğinden kaydedilir.' },
+    ],
+    sections: [
+      {
+        title: 'İşaret türleri',
+        items: [
+          '**✗ Çarpı** (kırmızı): Elenen şık. Bir kez çıkınca videonun sonuna kadar kalır.',
+          '**✓ Doğru işareti** (yeşil): Doğru cevap; doğru şık yeşil çerçeve içinde kalır. Öncüle (I, II, III) ya da başka bir yere konan tik yalnızca kısaca parlar.',
+          '**◎ Çerçeve**: Bir şıktan ya da ifadeden bahsedilirken onu çerçeveye alır, sonra kalkar.',
+          '**▁ Altı çizgi**: İfade okunurken altı kelime kelime çizilir.',
+          '**▮ Vurgu**: İfadenin üstünden fosforlu kalem gibi geçer.',
+          'Doğru cevap söylendiyse videonun sonunda kısa bir **Doğru cevap** kartı çıkar (ayarlar satırındaki **Kapanış kartı** ile kapatılabilir).',
+        ],
+      },
+      {
+        title: 'Stüdyo işaretleri neye göre koyar? (Metni böyle yazın)',
+        items: [
+          'Şıkkı harfiyle anın: “A şıkkı … olmaz”, “C seçeneği yanlıştır”, “B ve E şıklarını eliyoruz”, “Doğru cevap D şıkkı”. Harfiyle anılmayan şıkka işaret konamaz.',
+          'Bir şıktan bahsedilince çerçeve, elendiği söylenince çarpı, doğru denince tik, tam o söz söylendiği anda çıkar.',
+          'Çözümdeki Arapça ifadeler görselde aranır; bulunanların altı, ifade okunurken çizilir.',
+          'Uzun bir Arapça paragrafı (10 kelimeden uzun) baştan sona okursanız stüdyo paragrafı görselde bulur ve her satırın altını o satır okunurken çizer. Paragrafı arasına Türkçe kelime koymadan yazın.',
+          'Açıklamada paragraftan bir ifadeyi tekrar okursanız (“yani اِسْتِخْلَاصَ الْخُيُوطِ …”), ifadenin paragraftaki yerinin altı yeniden çizilir.',
+        ],
+      },
+      {
+        title: 'Görsel üzerindeki araçlar (soldaki dikey çubuk)',
+        items: [
+          '**↖ Seç ve taşı**: Kutuya tıklayıp seçer. Ortasından sürükleyerek taşırsınız, kenar ve köşelerdeki mavi tutamaçlardan büyütüp küçültürsünüz.',
+          '**✗ ✓ ◎ ▁ ▮**: Önce önizlemeyi işaretin çıkacağı anda durdurun. Aracı seçin, sonra görselde bir kutuya tıklayın ya da istediğiniz yere sürükleyerek yeni bir alan çizin. İşaret, durduğunuz anda eklenir.',
+          '**▁** aracı çizdikten sonra açık kalır: satırların altına sırayla çizgi çekebilirsiniz; her yeni çizgi bir öncekinin bittiği andan başlar. Bitince **Esc**’ye basın.',
+          'Seçili bir altı çizgi kutusunda çizginin kendisini fareyle tutup yukarı aşağı sürükleyerek yalnız o çizginin yüksekliğini ayarlayabilirsiniz.',
+          'Görselin üstündeki **Geri al** son değişikliği geri alır.',
+        ],
+      },
+      {
+        title: 'Kutuya tıklayınca açılan pencere',
+        items: [
+          'İşaret listesi: kutunun her işareti saatiyle yazar. Raptiye düğmesi (**Buraya al**) işareti önizlemenin durduğu ana taşır; çöp kutusu işareti siler.',
+          '**Hangi şık?**: Kutunun hangi şık olduğunu söyler. Bir harfe basınca kutu o şık olur; o şıkkın çarpısı ya da tiki sese göre kendiliğinden gelir. (Yalnız şık kutularında ve elle çizilen kutularda görünür.)',
+          '**Kopyala / Yapıştır**: Kutuyu işaretleriyle çoğaltır. Kopya biraz yanda çıkar ve işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun.',
+          '**Kutuyu kaldır**: Kutuyu ve işaretlerini siler.',
+        ],
+      },
+      {
+        title: 'Zaman şeridi',
+        items: [
+          'Üstte sesin dalgası, altında işaret kutucukları vardır. Kırmızı dikey çizgi önizlemenin şu anki yeridir; dalgaya tıklayınca oraya gidilir.',
+          'Renkler: turuncu altı çizgi, mor çerçeve, kırmızı çarpı, yeşil tik.',
+          'Bir kutucuğa tıklayınca altta ayarları çıkar: **Erken / Geç** (0,1 saniye), **Kısa / Uzun** (yarım saniye), **Kırmızı çizginin olduğu yere al** ve **Sil**.',
+          'Çarpı ve tik sona kadar kaldığı için yalnız başlangıçları taşınır.',
+          'Yakınlaştırma düğmeleri (**+**, **−**, **Tümü**) ince ayar içindir.',
+        ],
+      },
+      {
+        title: 'Önizlemenin altındaki ayarlar satırı',
+        items: [
+          '**Altyazıları göster**: Videoda okunan cümlenin yazısını açar ya da kapatır.',
+          '**Altyazı konumu**: Altyazıyı yukarı ya da aşağı taşır.',
+          '**Soru boyutu** (**−**, **Tam boy**, **+**): Altyazı bir şıkkı kapatıyorsa soruyu küçültün; küçülen soru altyazının üstünde durur.',
+          '**Altı çizgi ↑ Yukarı / ↓ Aşağı**: Videodaki bütün altı çizgileri birlikte kaydırır. Kaydırınca yanında çıkan **sıfırla** ile normal yerine dönersiniz.',
+          '**Kapanış kartı**: Videonun sonundaki “Doğru cevap” kartını açar ya da kapatır.',
+        ],
+      },
+      {
+        title: 'Sık karşılaşılan durumlar',
+        items: [
+          '**Bir şık bulunamadı** (“Eksik şık: C”): Sağdaki **Yayına hazır** listesinde **C şıkkını görselde göster**’e basıp kutusunu çizin; ya da o şıkkı gösteren kutuya tıklayıp **Hangi şık?** satırından C’yi seçin. Çarpısı ya da tiki sese göre kendiliğinden gelir.',
+          '**İki şık tek kutuda birleşmiş** (örneğin B ile C): Kutuyu tutamaçlarından küçültüp yalnız B’yi içine alacak hâle getirin. **Yayına hazır** listesi C’yi eksik gösterir; **C şıkkını görselde göster**’e basıp C’nin kutusunu çizin. C’nin işaretleri kendiliğinden gelir.',
+          '**Bir kelimenin altı çizilmemiş**: Önizlemeyi o kelimenin okunduğu anda durdurun ve ▁ aracıyla kelimenin altına sürükleyin. Ya da yakındaki bir altı çizgi kutusunu büyütüp o kelimeyi içine alın.',
+          '**Altı çizgiler kelimelerin fazla altında ya da üstünde**: Ayarlar satırındaki **↑ Yukarı / ↓ Aşağı**.',
+          '**İşaret erken ya da geç çıkıyor**: Şeritte kutucuğu sürükleyin ya da **Erken / Geç**’e basın.',
+          '**Altyazı bir şıkkı kapatıyor**: **Soru boyutu −** ile soruyu küçültün ya da **Altyazı konumu**nu değiştirin.',
+          '**Her şey karıştı**: Sağdaki **İşaretleri yeniden hazırla** işaretleri baştan kurar. Elle yaptığınız düzeltmeler silineceği için önce onay ister.',
+          'Sağ panelde görselin nasıl okunduğu ve varsa paragrafın kaç satırının bulunduğu yazar. Paragraf görselde bulunamazsa sebebi de orada yazar.',
+        ],
+      },
     ],
     tips: [
-      'Yaptığınız son değişikliği **Geri al** düğmesiyle ya da **Ctrl+Z** ile geri alabilirsiniz.',
-      'Görselde seçili kutuyu **Kopyala** / **Yapıştır** düğmeleriyle ya da **Ctrl+C** / **Ctrl+V** ile çoğaltabilirsiniz: kopya biraz yanda çıkar, işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun. **Delete** seçili kutuyu siler, **Esc** seçimi bırakır.',
-      '**İşaretleri yeniden hazırla** elle yaptığınız düzeltmeleri siler; bu yüzden önce onayınızı ister.',
-      'Önizleme hızını 1× ile 2× arasında seçerek videoyu hızlıca kontrol edebilirsiniz.',
-      'Çözümde uzun bir Arapça paragrafı baştan sona okuyorsanız, stüdyo paragrafı görselde bulur ve her satırın altını o satır okunurken çizer. Paragrafı çözüm metninde tek satırda (araya Türkçe koymadan) yazın.',
-      'Altını elle çizmeniz gerekirse ▁ aracını seçin ve satırların altına sırayla çizin: araç açık kalır, her yeni çizgi bir öncekinin ardından gelir. Bitince Esc’ye basın; zamanlarını şeritten ayarlayabilirsiniz.',
-      'Altı çizgiler kelimelere göre fazla aşağıdaysa önizlemenin altındaki **Altı çizgi ↑ Yukarı** düğmesine birkaç kez basın; bütün çizgiler birlikte kayar.',
-      'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, ikisi de kaydırmadan ekrana sığar. Esc ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
+      'Klavyeyle: **Boşluk** oynatır/durdurur, **Ctrl+Z** geri alır, **Ctrl+C / Ctrl+V** seçili kutuyu kopyalar/yapıştırır, **Delete** seçili kutuyu siler, **Esc** seçimi bırakır. Şeritte **← →** önceki/sonraki işarete gider, **Shift + ← →** seçili işareti 0,1 saniye kaydırır.',
+      'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, ikisi de kaydırmadan ekrana sığar. **Esc** ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
     ],
   },
   {

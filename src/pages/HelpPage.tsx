@@ -33,6 +33,12 @@ function Topic({ topic }: { topic: HelpTopic }) {
           </li>
         ))}
       </ol>
+      {topic.sections?.map(section => (
+        <section key={section.title} className="help-section">
+          <h3>{section.title}</h3>
+          <ul>{section.items.map((item, i) => <li key={i}><Rich text={item} /></li>)}</ul>
+        </section>
+      ))}
       {topic.tips?.length ? (
         <aside className="help-tips">
           <h3>İpuçları</h3>
@@ -72,7 +78,7 @@ export function HelpPage({ onShowGuide }: { onShowGuide: () => void }) {
     document.querySelector('main')?.scrollTo({ top: 0 });
   };
   const query = search.trim().toLocaleLowerCase('tr');
-  const shown = HELP_TOPICS.filter(t => !query || [t.title, t.summary, ...t.steps.map(s => s.text), ...(t.tips || [])].join(' ').toLocaleLowerCase('tr').includes(query));
+  const shown = HELP_TOPICS.filter(t => !query || [t.title, t.summary, ...t.steps.map(s => s.text), ...(t.sections || []).flatMap(s => [s.title, ...s.items]), ...(t.tips || [])].join(' ').toLocaleLowerCase('tr').includes(query));
   const index = HELP_TOPICS.findIndex(t => t.id === topicId);
   const topic = HELP_TOPICS[index];
   const previous = HELP_TOPICS[index - 1], next = HELP_TOPICS[index + 1];

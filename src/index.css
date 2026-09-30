@@ -221,6 +221,11 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .help-tips h3 { font-size: 1.0625rem; font-weight: 700; color: #6f5316; }
 .help-tips ul { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; list-style: disc; padding-left: 22px; }
 .help-tips li { font-size: 1.0625rem; line-height: 1.7; color: #44403b; }
+.help-section { margin-top: 32px; }
+.help-section h3 { font-size: 1.25rem; font-weight: 700; color: #1c1917; padding-bottom: 8px; border-bottom: 1px solid #e5e4dc; }
+.help-section ul { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; list-style: disc; padding-left: 22px; }
+.help-section li { font-size: 1.0625rem; line-height: 1.7; color: #33302c; }
+.help-section strong { color: #8b1e2d; }
 .help-pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; padding-top: 24px; border-top: 1px solid #e5e4dc; }
 @media (max-width: 900px) {
   .help-layout { grid-template-columns: 1fr; gap: 20px; }
