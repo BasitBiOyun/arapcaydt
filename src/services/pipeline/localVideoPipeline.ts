@@ -2,6 +2,7 @@ import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCap
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
 import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
+import { findPassageMatches } from '../ocr/passageMatcher';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
@@ -124,7 +125,16 @@ export class LocalVideoPipeline {
 
     const options = finalRegions.filter(r => r.type.startsWith('option'));
     const stemWords = ocrResult.words.filter(w => !options.some(r => w.x+w.width/2 >= r.x && w.x+w.width/2 <= r.x+r.width && w.y+w.height/2 >= r.y && w.y+w.height/2 <= r.y+r.height));
-    const arabicMatches = findBestArabicMatches(solutionText, stemWords, ocrResult.arabicStemWords).filter(m => !suppressed.has(m.region.id));
+    // A passage read in full is found as a whole (one underline per printed line); the shorter
+    // phrases are looked for without it, and a later mention of its words points into it.
+    const passageMatches = findPassageMatches(solutionText, stemWords, ocrResult.arabicStemWords);
+    const passageRanges = [...new Map(passageMatches.map(m => [m.passageEnd, m])).values()]
+      .map(m => [Math.min(...passageMatches.filter(o => o.passageEnd === m.passageEnd).map(o => o.sourceStart)), m.passageEnd] as const);
+    const withoutPassages = passageRanges.reduce((text, [from, to]) => text.slice(0, from) + ' '.repeat(to - from) + text.slice(to), solutionText);
+    const arabicMatches = [
+      ...passageMatches,
+      ...findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)),
+    ].filter(m => !suppressed.has(m.region.id));
     for (const match of arabicMatches) {
       if (!finalRegions.some((r) => r.id === match.region.id)) {
         finalRegions.push(match.region);
@@ -159,7 +169,7 @@ export class LocalVideoPipeline {
     const warnings: string[] = [];
     const covered = new Set([...arabicMatches.map(m => m.phrase), ...options.map(r => r.content || '')].flatMap(p => normalizeArabic(p).split(' ')));
     const unread = [...new Set(extractArabicPhrases(solutionText).flatMap(p => p.split(/\s+/)).filter(w => !covered.has(normalizeArabic(w))))];
-    if (unread.length) warnings.push(`Görselde eşleştirilemeyen Arapça kelimeler: ${unread.slice(0,8).join('، ')}${unread.length>8?'…':''}. Görselde bulunanları alan düzenleyicisinde işaretleyin; bu kelimelere tahmini vurgu eklenmedi.`);
+    if (unread.length) warnings.push(`Görselde eşleştirilemeyen Arapça kelimeler: ${unread.slice(0,8).join('، ')}${unread.length>8?'…':''}. Bu kelimelere tahmini vurgu eklenmedi; gerekirse önizlemede ▁ aracıyla altlarını çizin.`);
     if (detectedOptions.length < 5) warnings.push(`Şu şıklar bulunamadı: ${['A', 'B', 'C', 'D', 'E'].filter(x => !detectedOptions.includes(x)).join(', ')}. Önizlemede o şıkkın kutusuna tıklayıp harfini seçin ya da kutusunu çizin.`);
     if (alignment.quality !== 'word-aligned') warnings.push(alignment.quality === 'approximate'
       ? 'Ses zamanlamaları eşleştirilemedi. Süreler yaklaşık; dışa aktarmadan önce zaman çizelgesini kontrol edin.'

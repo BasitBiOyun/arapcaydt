@@ -15,6 +15,8 @@ export interface SemanticParsedEvent {
   sentenceStart?: number;
   sentenceEnd?: number;
   sourceText?: string;
+  /** A passage line: stays on screen until the narration reaches this place (the passage's end). */
+  holdUntil?: number;
 }
 
 export interface SolutionParseResult {
@@ -279,6 +281,8 @@ export function parseSolutionSemantics(
   const inferred = new Set<OptionLetter>();
   // Each place on the question is underlined once, at its first reading; later mentions only talk about it.
   const underlined = new Set<string>();
+  const passages = arabicMatches.filter(am => am.sourceStart !== undefined && am.passageEnd !== undefined)
+    .map(am => ({ start: am.sourceStart!, end: am.passageEnd! }));
   const pendingWeak: Partial<Record<OptionLetter, { trigger: string; sentence: string; sourceStart: number; sourceEnd: number; sentenceStart: number; sentenceEnd: number }>> = {};
   for (const [sentenceIndex, sentenceSpan] of sentences.entries()) {
     const sentence = sentenceSpan.text;
@@ -293,16 +297,30 @@ export function parseSolutionSemantics(
         event.sourceText = solutionText;
       }
     };
+    // A passage read in full: each printed line is underlined as its words are read.
+    for (const am of arabicMatches) {
+      if (am.sourceStart === undefined || am.sourceStart < sentenceSpan.start || am.sourceStart >= sentenceSpan.end) continue;
+      if (!validRegionIds.has(am.region.id) || underlined.has(am.region.id)) continue;
+      underlined.add(am.region.id);
+      events.push({
+        id: `event-${counter.value++}`, targetRegionId: am.region.id, actionType: 'underline',
+        semanticTriggerPhrase: am.phrase, sentenceText: sentence,
+        sourceStart: am.sourceStart, sourceEnd: am.sourceEnd ?? am.sourceStart + am.phrase.length,
+        holdUntil: am.passageEnd, order: events.length + 1,
+      });
+    }
     // Choose the longest phrase at EACH spoken occurrence. A later single-word
     // explanation must not also light up inside the earlier full sentence.
     const candidates = arabicMatches.flatMap(am => {
-      if (!validRegionIds.has(am.region.id)) return [];
+      if (!validRegionIds.has(am.region.id) || am.sourceStart !== undefined) return [];
       const cx = am.region.x + am.region.width / 2, cy = am.region.y + am.region.height / 2;
       if (availableRegions.some(r => r.type.startsWith('option') && cx >= r.x && cx <= r.x+r.width && cy >= r.y && cy <= r.y+r.height)) return [];
       const escaped = am.phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       return Array.from(sentence.matchAll(new RegExp(escaped, 'g'))).flatMap(m => {
         const start = m.index!, end = start + m[0].length;
         if (/[\u0621-\u065F]/.test(sentence[start-1] || '') || /[\u0621-\u065F]/.test(sentence[end] || '')) return [];
+        // Inside a passage being read, its lines are underlined already.
+        if (passages.some(p => sentenceSpan.start + start >= p.start && sentenceSpan.start + start < p.end)) return [];
         return [{ am, start, end }];
       });
     });

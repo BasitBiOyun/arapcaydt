@@ -1,0 +1,177 @@
+import type { AnnotationRegion } from '../../types';
+import type { OCRWord } from './ocrTypes';
+import { groupOcrWordsIntoLines, normalizeArabic, type ArabicMatchResult } from './arabicMatcher';
+
+/**
+ * A long Arabic passage quoted in the solution (a reading text read aloud in full) is found on
+ * the picture as a whole, not word by word: OCR misreads a few words of every long text, and
+ * exact matching then breaks the passage into scattered pieces. The passage is aligned to the
+ * words on the picture in reading order, tolerating misread, missing and extra words, and gets
+ * one underline per printed line, timed by the words of that line.
+ */
+
+/** A solution line with at least this many Arabic words (and hardly any Latin) is a passage. */
+export const PASSAGE_MIN_WORDS = 10;
+/** Share of the passage's words that must be found on the picture, in order. */
+const MIN_FOUND = .5;
+/** A wider gap between two words of one row separates two columns. */
+const COLUMN_GAP = .05;
+
+const ARABIC_WORD = /[ء-غف-يً-ٰٟـٱ-ۓ]+/g;
+
+interface PassageToken { norm: string; from: number; to: number }
+
+/** Solution lines that are an Arabic passage, with each word's place in the text. */
+export function findPassages(solutionText: string): PassageToken[][] {
+  const passages: PassageToken[][] = [];
+  let at = 0;
+  for (const line of solutionText.split('\n')) {
+    const tokens = [...line.matchAll(ARABIC_WORD)]
+      .map(m => ({ norm: normalizeArabic(m[0]), from: at + m.index!, to: at + m.index! + m[0].length }))
+      .filter(t => t.norm);
+    const arabic = tokens.reduce((n, t) => n + t.norm.length, 0);
+    const latin = (line.match(/[A-Za-zÇĞİÖŞÜçğıöşü]/g) || []).length;
+    if (tokens.length >= PASSAGE_MIN_WORDS && latin <= arabic * .15) passages.push(tokens);
+    at += line.length + 1;
+  }
+  return passages;
+}
+
+/** Without the article and the joined "and", which OCR often reads apart or loses. */
+const stem = (w: string) => w.replace(/^و(?=..)/, '').replace(/^(?:ال|لل)(?=..)/, '');
+
+function levenshtein(a: string, b: string): number {
+  if (a === b) return 0;
+  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i];
+    for (let j = 1; j <= b.length; j++)
+      row[j] = Math.min(previous[j] + 1, row[j - 1] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    previous = row;
+  }
+  return previous[b.length];
+}
+
+/** How alike two normalized words are, 0–1. */
+export function wordLikeness(a: string, b: string): number {
+  if (a === b) return 1;
+  const ratio = (x: string, y: string) => 1 - levenshtein(x, y) / Math.max(x.length, y.length, 1);
+  return Math.max(ratio(a, b), ratio(stem(a), stem(b)) - .05);
+}
+
+interface PictureToken { norm: string; word: OCRWord; segment: number; row: number }
+
+/**
+ * The Arabic words on the picture in reading order: column by column (right first), top to
+ * bottom, right to left. A row is cut where a wide gap separates two columns, so a passage
+ * beside the question stays one run of words.
+ */
+export function readingOrder(words: OCRWord[]): { tokens: PictureToken[]; segments: OCRWord[][] } {
+  const rows = groupOcrWordsIntoLines(words.filter(w => /[ء-ي]/.test(w.text)));
+  const segments: OCRWord[][] = [];
+  const rowOf = new Map<OCRWord, number>();
+  rows.forEach((row, r) => row.forEach(w => rowOf.set(w, r)));
+  for (const row of rows) {
+    let current: OCRWord[] = [];
+    for (const word of row) {
+      const previous = current[current.length - 1];
+      if (previous && previous.x - (word.x + word.width) > COLUMN_GAP) { segments.push(current); current = []; }
+      current.push(word);
+    }
+    if (current.length) segments.push(current);
+  }
+  // Columns: segments whose widths overlap belong together.
+  const span = (s: OCRWord[]) => ({ left: Math.min(...s.map(w => w.x)), right: Math.max(...s.map(w => w.x + w.width)), top: Math.min(...s.map(w => w.y)) });
+  const spans = segments.map(span);
+  const column = segments.map((_, i) => i);
+  const find = (i: number): number => (column[i] === i ? i : (column[i] = find(column[i])));
+  for (let i = 0; i < segments.length; i++) for (let j = i + 1; j < segments.length; j++) {
+    const a = spans[i], b = spans[j];
+    const overlap = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+    if (overlap > .3 * Math.min(a.right - a.left, b.right - b.left)) column[find(i)] = find(j);
+  }
+  const groups = new Map<number, number[]>();
+  segments.forEach((_, i) => groups.set(find(i), [...(groups.get(find(i)) || []), i]));
+  const ordered = [...groups.values()]
+    .sort((a, b) => Math.max(...b.map(i => spans[i].right)) - Math.max(...a.map(i => spans[i].right)))
+    .flatMap(group => group.sort((a, b) => spans[a].top - spans[b].top));
+  const orderedSegments = ordered.map(i => segments[i]);
+  const tokens = orderedSegments.flatMap((segment, index) => segment.flatMap(word =>
+    normalizeArabic(word.text).split(' ').filter(Boolean).map(norm => ({ norm, word, segment: index, row: rowOf.get(word)! }))));
+  return { tokens, segments: orderedSegments };
+}
+
+/** Local alignment (Smith–Waterman) of the passage to the picture's words; pairs of alike words. */
+export function alignPassage(expected: string[], seen: string[]): Array<[number, number]> {
+  const n = expected.length, m = seen.length;
+  const score = (a: string, b: string) => { const s = wordLikeness(a, b); return s >= .8 ? 2 : s >= .6 ? 1 : -1; };
+  const H = Array.from({ length: n + 1 }, () => new Float32Array(m + 1));
+  let best = 0, bi = 0, bj = 0;
+  for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++) {
+    const v = Math.max(0, H[i - 1][j - 1] + score(expected[i - 1], seen[j - 1]), H[i - 1][j] - 1, H[i][j - 1] - 1);
+    H[i][j] = v;
+    if (v > best) { best = v; bi = i; bj = j; }
+  }
+  const pairs: Array<[number, number]> = [];
+  let i = bi, j = bj;
+  while (i > 0 && j > 0 && H[i][j] > 0) {
+    const s = score(expected[i - 1], seen[j - 1]);
+    if (H[i][j] === H[i - 1][j - 1] + s) { if (s > 0) pairs.push([i - 1, j - 1]); i--; j--; }
+    else if (H[i][j] === H[i - 1][j] - 1) i--;
+    else j--;
+  }
+  return pairs.reverse();
+}
+
+export interface PassageMatch extends ArabicMatchResult {
+  sourceStart: number;
+  sourceEnd: number;
+  /** End of the whole passage in the solution: the line stays until the passage has been read. */
+  passageEnd: number;
+}
+
+function matchOne(solutionText: string, passage: PassageToken[], words: OCRWord[], index: number): PassageMatch[] {
+  const { tokens, segments } = readingOrder(words);
+  if (!tokens.length) return [];
+  const pairs = alignPassage(passage.map(t => t.norm), tokens.map(t => t.norm));
+  if (pairs.length < Math.max(6, passage.length * MIN_FOUND)) return [];
+  // Each printed line the passage covers, with the passage words read on it. A line is a row of
+  // the picture: a lost word can leave a gap in it, which does not make it two lines.
+  const lines: Array<{ row: number; segment: number; firstWord: number; tokens: number[] }> = [];
+  for (const [e, t] of pairs) {
+    const { row, segment } = tokens[t], last = lines[lines.length - 1];
+    if (last?.row === row) last.tokens.push(t);
+    else lines.push({ row, segment, firstWord: e, tokens: [t] });
+  }
+  // Passage words before the first found one (or after the last) were misread: the words next to it on the picture.
+  const lo = pairs[0][1] - pairs[0][0], hi = pairs[pairs.length - 1][1] + (passage.length - 1 - pairs[pairs.length - 1][0]);
+  return lines.map((line, k) => {
+    const next = lines[k + 1];
+    const from = k === 0 ? 0 : line.firstWord;
+    const to = next ? next.firstWord - 1 : passage.length - 1;
+    const lineWords = [...new Set(tokens.filter((t, i) => t.row === line.row && i >= lo && i <= hi).map(t => t.word))];
+    const shown = lineWords.length ? lineWords : segments[line.segment];
+    const x = Math.max(0, Math.min(...shown.map(w => w.x)) - .005), y = Math.max(0, Math.min(...shown.map(w => w.y)) - .004);
+    const right = Math.min(1, Math.max(...shown.map(w => w.x + w.width)) + .005), bottom = Math.min(1, Math.max(...shown.map(w => w.y + w.height)) + .004);
+    const sourceStart = passage[from].from, sourceEnd = passage[Math.max(from, to)].to;
+    const phrase = solutionText.slice(sourceStart, sourceEnd);
+    const region: AnnotationRegion = {
+      id: `arabic-passage-${index + 1}-line-${k + 1}`, label: `Paragraf, ${k + 1}. satır`, type: 'phrase',
+      x, y, width: right - x, height: bottom - y, content: phrase,
+    };
+    return { phrase, region, matchedWords: shown, sourceStart, sourceEnd, passageEnd: passage[passage.length - 1].to };
+  });
+}
+
+/**
+ * Every Arabic passage of the solution found on the picture, as one underline per printed line.
+ * The better of the two OCR passes is used for each passage.
+ */
+export function findPassageMatches(solutionText: string, primary: OCRWord[], alternative: OCRWord[] = []): PassageMatch[] {
+  return findPassages(solutionText).flatMap((passage, index) => {
+    const a = matchOne(solutionText, passage, primary, index);
+    const b = alternative.length ? matchOne(solutionText, passage, alternative, index) : [];
+    const words = (lines: PassageMatch[]) => lines.reduce((n, l) => n + l.matchedWords.length, 0);
+    return words(b) > words(a) ? b : a;
+  });
+}

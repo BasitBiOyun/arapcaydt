@@ -213,6 +213,9 @@ function spanTime(words: SourceNarrationWord[], start: number, end: number) {
   return selected.length ? { start: selected[0].start, end: selected[selected.length - 1].end } : null;
 }
 
+/** Passage lines stay this long after the passage's last word, then go together. */
+const PASSAGE_LINGER = .8;
+
 /** An underline is drawn over the spoken phrase, never faster than 0.6 s nor slower than 2.5 s. */
 const underlineDraw = (item: { start: number; triggerEnd?: number }) =>
   Math.min(2.5, Math.max(.6, (item.triggerEnd ?? item.start + .6) - item.start));
@@ -297,12 +300,23 @@ export function alignEventsWithNarration(
       if (event.actionType === 'underline') end = start + underlineSpanFor(draw);
     }
     end = Math.min(duration, Math.max(start, end));
+    // A passage line, once drawn, stays until the whole passage has been read.
+    let holdFor = 0;
+    if (event.actionType === 'underline' && event.holdUntil !== undefined) {
+      const passageEnd = spanTime(alignment.words, event.holdUntil - 1, event.holdUntil)?.end;
+      if (passageEnd !== undefined && passageEnd + PASSAGE_LINGER > end) {
+        const held = Math.min(duration, passageEnd + PASSAGE_LINGER);
+        holdFor = held - end;
+        end = held;
+      }
+    }
     return {
       id: `act-${index + 1}-${event.targetRegionId}-${event.actionType}`,
       targetRegionId: event.targetRegionId, regionId: event.targetRegionId,
       type: event.actionType, start, startTime: start, duration: end - start,
       label: `${event.actionType}: ${event.semanticTriggerPhrase}`,
       ...(steps ? {drawSteps: steps} : {}),
+      ...(holdFor > 0 ? { holdFor: Math.round(holdFor * 1000) / 1000 } : {}),
     };
   }).filter(action => action.duration > 0).sort((a, b) => a.start - b.start);
 }
