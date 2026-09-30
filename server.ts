@@ -2,6 +2,7 @@ import geminiVoiceHandler from './api/gemini/generate';
 import geminiAlignHandler from './api/gemini/align-project';
 import geminiJoinHandler from './api/gemini/join-parts';
 import geminiKeyHandler from './api/gemini/key';
+import visionOcrHandler from './api/vision/ocr';
 import voiceStatusHandler from './api/elevenlabs/status';
 import voiceListHandler from './api/elevenlabs/voices';
 import elevenLabsProjectAlignHandler from './api/elevenlabs/align-project';
@@ -42,6 +43,7 @@ app.get('/api/elevenlabs/voices', safe(voiceListHandler));
 app.post('/api/gemini/generate', safe(geminiVoiceHandler));
 app.post('/api/gemini/align-project', safe(geminiAlignHandler));
 app.post('/api/gemini/join-parts', safe(geminiJoinHandler));
+app.post('/api/vision/ocr', safe(visionOcrHandler));
 app.all('/api/gemini/key', safe(geminiKeyHandler));
 app.post('/api/elevenlabs/align-project', safe(elevenLabsProjectAlignHandler));
 // Same handlers Vercel serves from api/, so the admin panel also works in local development.
