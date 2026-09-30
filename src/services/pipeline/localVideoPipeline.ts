@@ -2,7 +2,7 @@ import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCap
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
 import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
-import { findPassageMatches, findPassages, withPassageReferences } from '../ocr/passageMatcher';
+import { findPassageMatches, findPassages, withPassageReferences, withTolerantPhrases } from '../ocr/passageMatcher';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
@@ -156,8 +156,8 @@ export class LocalVideoPipeline {
     const withoutPassages = passageRanges.reduce((text, [from, to]) => text.slice(0, from) + ' '.repeat(to - from) + text.slice(to), solutionText);
     const arabicMatches = [
       ...passageMatches,
-      ...withPassageReferences(withoutPassages,
-        findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)), passageMatches),
+      ...withTolerantPhrases(withoutPassages, withPassageReferences(withoutPassages,
+        findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)), passageMatches), stemWords),
     ].filter(m => !suppressed.has(m.region.id) || m.region.id.startsWith('arabic-passage-'));
     // Passage lines are always planned again: a line deleted once (for example to draw it by
     // hand) must not keep the passage from being underlined when the marks are prepared again.
@@ -192,6 +192,13 @@ export class LocalVideoPipeline {
 
     const alignment = alignSolutionNarration(solutionText, words, audioDuration);
     const actions = alignEventsWithNarration(parseResult.events, words, audioDuration, solutionText);
+    // The spoken words and the planned steps, so a wrong timing can be traced from the teşhis file.
+    const time = (v: number) => Math.round(v * 1000) / 1000;
+    if (lastDiagnostics) Object.assign(lastDiagnostics, {
+      audio: { duration: time(audioDuration), type: narrationSource?.type, timingQuality: alignment.quality },
+      narrationWords: words.map(w => ({ text: w.text, start: time(w.start), end: time(w.end) })),
+      actions: actions.map(a => ({ type: a.type, region: a.targetRegionId, start: time(a.start), duration: time(a.duration), label: a.label })),
+    });
     const warnings: string[] = [];
     const covered = new Set([...arabicMatches.map(m => m.phrase), ...options.map(r => r.content || '')].flatMap(p => normalizeArabic(p).split(' ')));
     const unread = [...new Set(extractArabicPhrases(solutionText).flatMap(p => p.split(/\s+/)).filter(w => !covered.has(normalizeArabic(w))))];

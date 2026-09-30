@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { QuestionProject } from '../../types';
+import { reportClientError } from '../../services/supabase';
 import { localVideoPipeline, LocalPipelineProgress, LocalPipelineResult } from '../../services/pipeline/localVideoPipeline';
 import { 
   CheckCircle, 
@@ -156,6 +157,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       if (!live()) return;
       isRunningRef.current = false;
       console.error('[Local Video Generation Error]:', err);
+      reportClientError(project.id, 'isaretler', err);
       setCurrentStage('ERROR');
       setStatusDetail(null);
       setErrorMessage(err?.message || 'Video analizi yerel olarak tamamlanamadı.');

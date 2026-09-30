@@ -14,6 +14,11 @@ const TIMEOUT_MS = 40_000;
  * Readings allowed per calendar month (Google's first 1000 are free). At the limit the studio
  * reads with the in-browser reader; the count is kept in Supabase (reserve_vision).
  */
+/** Readings a teacher may use per day (Türkiye day); admins have no daily limit. */
+export const dailyLimit = () => {
+  const value = Number(process.env.VISION_DAILY_PER_TEACHER);
+  return Number.isInteger(value) && value >= 0 ? value : 30;
+};
 export const monthlyLimit = () => {
   const value = Number(process.env.VISION_MONTHLY_LIMIT);
   return Number.isInteger(value) && value >= 0 ? value : 950;
@@ -61,9 +66,14 @@ export default async function handler(req: any, res: any) {
 
   // Count first: never more readings in a month than the limit, even with many teachers at once.
   try {
-    const { data: used, error } = await serviceDatabase().rpc('reserve_vision', { p_owner: member.user.id, p_limit: monthlyLimit() });
+    const db = serviceDatabase();
+    const daily = member.profile?.role === 'admin' ? null : dailyLimit();
+    let { data: used, error } = await db.rpc('reserve_vision', { p_owner: member.user.id, p_limit: monthlyLimit(), p_daily: daily });
+    // Before 20261006_vision_daily_client_errors.sql: the monthly limit only.
+    if (error) ({ data: used, error } = await db.rpc('reserve_vision', { p_owner: member.user.id, p_limit: monthlyLimit() }));
     if (error) return res.status(503).json({ error: 'Google Vision sayacı kurulmamış.', code: 'VISION_COUNTER_MISSING' });
-    if (typeof used === 'number' && used < 0) return res.status(429).json({ error: 'Bu ayın Google Vision hakkı doldu.', code: 'VISION_MONTH_FULL', limit: monthlyLimit() });
+    if (used === -1) return res.status(429).json({ error: 'Bu ayın Google Vision hakkı doldu.', code: 'VISION_MONTH_FULL', limit: monthlyLimit() });
+    if (used === -2) return res.status(429).json({ error: 'Bugünkü Google Vision hakkınız doldu.', code: 'VISION_DAY_FULL', limit: daily });
   } catch {
     return res.status(503).json({ error: 'Google Vision sayacına ulaşılamadı.', code: 'VISION_COUNTER_MISSING' });
   }
