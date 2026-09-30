@@ -16,10 +16,24 @@ interface Report {
 const when = (iso: string) => new Date(iso).toLocaleString('tr', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
 /** Admin panel: teachers' "Sorun bildir" reports, newest first; open ones on top. */
-export function FeedbackSection({ who }: { who: (ownerId: string) => string }) {
+/** Saves a report's teşhis record as the same file the editor's "Teşhis dosyasını indir" gives. */
+async function downloadDiagnostics(report: Report) {
+  const { data, error } = await database().from('feedback').select('diagnostics').eq('id', report.id).single();
+  if (error || !data?.diagnostics) throw new Error('Teşhis kaydı okunamadı.');
+  const blob = new Blob([JSON.stringify(data.diagnostics, null, 1)], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const title = (report.context?.projectTitle || 'soru').replace(/[^\p{L}\p{N}]+/gu, '-');
+  link.download = `teshis-${title}-${report.created_at.slice(0, 10)}.json`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+
+export function FeedbackSection({ who, onOpen }: { who: (ownerId: string) => string; onOpen?: (projectId: string) => void }) {
   const [reports, setReports] = useState<Report[]>([]);
   const [state, setState] = useState<'loading' | 'ready' | 'pending' | 'error'>('loading');
   const [showResolved, setShowResolved] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
 
   const load = useCallback(async () => {
     const { data, error } = await database().from('feedback').select('id,owner_id,message,context,status,created_at')
@@ -52,6 +66,7 @@ export function FeedbackSection({ who }: { who: (ownerId: string) => string }) {
       {state === 'pending' && <p className="text-sm text-[#78540E]">Bildirimler için veritabanı güncellemesi bekleniyor (supabase/migrations/20261003_feedback.sql). O zamana kadar hocaların bildirimleri e-posta taslağı olarak size gelir.</p>}
       {state === 'error' && <p className="text-sm text-[#8B1E2D]">Bildirimler okunamadı.</p>}
       {state === 'ready' && !shown.length && <p className="text-sm text-[#787670]">Açık bildirim yok.</p>}
+      {downloadError && <p role="alert" className="text-sm text-[#8B1E2D] mb-2">{downloadError}</p>}
       <ul className="space-y-3">
         {shown.map(report => {
           const c = report.context || {};
@@ -66,7 +81,19 @@ export function FeedbackSection({ who }: { who: (ownerId: string) => string }) {
                   ? <button type="button" onClick={() => void resolve(report.id)} className="px-2.5 py-1 rounded border text-xs font-semibold hover:bg-[#F0EFEA] inline-flex items-center gap-1"><CheckCircle size={14} />Çözüldü</button>
                   : <span className="text-xs font-semibold text-[#15803D]">Çözüldü</span>}
               </div>
-              <p className="whitespace-pre-line text-[#33322E]">{report.message || <span className="text-[#787670]">(Açıklama yazılmadı)</span>}</p>
+              {c.reason && <p className="font-semibold text-[#8B1E2D]">{c.reason}</p>}
+              {(report.message || !c.reason) && <p className="whitespace-pre-line text-[#33322E]">{report.message || <span className="text-[#787670]">(Açıklama yazılmadı)</span>}</p>}
+              {(c.projectId || c.hasDiagnostics) && (
+                <div className="flex flex-wrap gap-3 text-xs font-semibold">
+                  {c.projectId && onOpen && <button type="button" className="text-[#8B1E2D] hover:underline" onClick={() => onOpen(c.projectId!)}>Soruyu aç</button>}
+                  {c.hasDiagnostics && (
+                    <button type="button" className="text-[#8B1E2D] hover:underline"
+                      onClick={() => { setDownloadError(''); downloadDiagnostics(report).catch(e => setDownloadError(e.message)); }}>
+                      Teşhis dosyasını indir
+                    </button>
+                  )}
+                </div>
+              )}
               {!!c.shownErrors?.length && <p className="text-xs text-[#8B1E2D]">Ekrandaki uyarı: {c.shownErrors.join(' · ')}</p>}
               {!!c.recentErrors?.length && (
                 <details className="text-xs text-[#55544F]">

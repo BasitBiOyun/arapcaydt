@@ -9,7 +9,7 @@ test('emitted ElevenLabs handlers load in native Node ESM and reject anonymous r
  const root=resolve('verification-output');await mkdir(root,{recursive:true});
  const folder=await mkdtemp(join(root,'server-runtime-'));
  try {
-  for(const file of ['server/auth.ts','server/usage.ts','server/quota.ts','server/projectAudio.ts','server/mp3.ts','server/storage.ts','api/admin/storage.ts','api/gemini/key.ts','api/elevenlabs/status.ts','api/elevenlabs/voices.ts','api/admin/analytics.ts','api/gemini/generate.ts','api/gemini/join-parts.ts','api/gemini/align-project.ts','api/elevenlabs/align-project.ts','api/vision/ocr.ts']){
+  for(const file of ['server/auth.ts','server/usage.ts','server/quota.ts','server/projectAudio.ts','server/mp3.ts','server/storage.ts','server/errorLog.ts','api/admin/monitor.ts','api/admin/set-role.ts','api/admin/storage.ts','api/gemini/key.ts','api/elevenlabs/status.ts','api/elevenlabs/voices.ts','api/admin/analytics.ts','api/gemini/generate.ts','api/gemini/join-parts.ts','api/gemini/align-project.ts','api/elevenlabs/align-project.ts','api/vision/ocr.ts']){
    const output=join(folder,file.replace(/\.ts$/,'.js'));
    await mkdir(resolve(output,'..'),{recursive:true});
    const source=await readFile(file,'utf8');
@@ -32,6 +32,17 @@ test('emitted ElevenLabs handlers load in native Node ESM and reject anonymous r
       const res={status(code){status=code;return this;},json(){return this;},setHeader(){}};
       await handler({method:'GET',headers:{}},res);
       assert.equal(status,401,'admin '+admin+' must load and require sign-in');}
+    }
+    {
+      const {default:handler}=await import('./api/admin/monitor.js');
+      let status;
+      const res={status(code){status=code;return this;},json(){return this;},setHeader(){}};
+      await handler({method:'GET',headers:{},query:{}},res);
+      assert.equal(status,404,'the morning report is off without MONITOR_TOKEN');
+      process.env.MONITOR_TOKEN='x'.repeat(32);
+      await handler({method:'GET',headers:{authorization:'Bearer wrong'},query:{}},res);
+      assert.equal(status,401,'the morning report needs the secret');
+      delete process.env.MONITOR_TOKEN;
     }
     for(const path of ['gemini/generate','gemini/join-parts','gemini/align-project','gemini/key','elevenlabs/align-project','vision/ocr']){
       const {default:handler}=await import('./api/'+path+'.js');

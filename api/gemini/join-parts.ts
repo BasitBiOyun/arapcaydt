@@ -2,6 +2,7 @@ import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { joinNarrationAudio } from '../../server/mp3.js';
 import { MAX_PROJECT_AUDIO_BYTES, ownedAssetPath } from '../../server/projectAudio.js';
 import { saveGeneratedAudio } from './generate.js';
+import { logged } from '../../server/errorLog.js';
 
 export const config = { maxDuration: 60 };
 const MAX_PARTS = 8;
@@ -11,7 +12,7 @@ const MAX_PARTS = 8;
  * narration the project uses. Only the teacher's own part files of this project are read;
  * the part files are removed once the whole narration is stored.
  */
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -47,3 +48,5 @@ export default async function handler(req: any, res: any) {
     return res.status(502).json({ error: error?.message || 'Ses parçaları birleştirilemedi.', code: 'JOIN_FAILED' });
   }
 }
+
+export default logged('/api/gemini/join-parts', handler);

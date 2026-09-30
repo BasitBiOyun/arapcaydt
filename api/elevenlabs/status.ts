@@ -1,4 +1,5 @@
 import { requireMember } from '../../server/auth.js';
+import { logged } from '../../server/errorLog.js';
 function normalizeApiKey(value?: string): string {
   let key = (value || '').trim();
   if (
@@ -10,7 +11,7 @@ function normalizeApiKey(value?: string): string {
   return key;
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member=await requireMember(req,res);
   if(!member)return;
   if (req.method !== 'GET') {
@@ -96,3 +97,5 @@ export default async function handler(req: any, res: any) {
     });
   }
 }
+
+export default logged('/api/elevenlabs/status', handler);
