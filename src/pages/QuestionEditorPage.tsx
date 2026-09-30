@@ -25,7 +25,6 @@ import { AudioStep } from '../features/question-editor/steps/AudioStep';
 import { NarrationCheck } from '../features/question-editor/steps/NarrationCheck';
 import { SolutionStep } from '../features/question-editor/steps/SolutionStep';
 import { EditorStage } from '../features/question-editor/steps/EditorStage';
-import { SimpleTimingList } from '../features/question-editor/SimpleTimingList';
 import { ImageStep } from '../features/question-editor/steps/ImageStep';
 import { ArrowLeft, Check, CornersIn, CornersOut, Plus, SidebarSimple } from '@phosphor-icons/react';
 import type { LeaveGuard } from '../layouts/AppLayout';
@@ -68,7 +67,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const confirm = useConfirm();
 
   const [step, setStep] = useState(() => (currentProject ? resumeStep(currentProject) : 0));
-  const [editRegions, setEditRegions] = useState(false);
+  /** A missing option the teacher is showing on the picture (from the readiness check). */
+  const [drawOption, setDrawOption] = useState<string | null>(null);
   const [regionHistory, setRegionHistory] = useState<VideoConfig[]>([]);
   const [sampleBusy, setSampleBusy] = useState(false);
 
@@ -127,7 +127,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const [isExportingMp4, setIsExportingMp4] = useState(false);
   const [exportPercent, setExportPercent] = useState<number | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
-  const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
   const exportAbortRef = useRef<AbortController | null>(null);
 
   // Determine if video already exists for this project
@@ -237,16 +236,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       setAudioError('Kayıt tamamlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');
       return;
     }
-  };
-
-  const finishRegionEditing = async () => {
-    const saved = await saveCurrentProject();
-    if (!saved) {
-      setAudioError('Düzenlemeler kaydedilemedi. Önizlemeye dönmeden önce tekrar deneyin.');
-      return;
-    }
-    setEditRegions(false);
-    setPreviewMode('video');
   };
 
   // A new or removed image invalidates every box and mark drawn on the old one.
@@ -534,7 +523,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setCurrentPreviewTime(0);
     setIsVideoModalOpen(false);
     setStep(3);
-    setEditRegions(false);
   };
 
   // Handle direct MP4 Export & Download using local browser engine (1080p @ 30fps)
@@ -578,7 +566,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setIsVideoModalOpen(true);
   };
 
-  const handleReadinessAction = (action: ReadinessAction) => {
+  const handleReadinessAction = (action: ReadinessAction, letter?: string) => {
     if (action === 'regenerate') {
       setIsVideoModalOpen(true);
       return;
@@ -589,8 +577,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     }
     setStep(3);
     setIsPlayingPreview(false);
-    setEditRegions(action === 'regions');
-    if (action === 'timing') setPreviewMode('video');
+    setPreviewMode('video');
+    setDrawOption(action === 'regions' && letter ? letter : null);
   };
 
   const check = checkNarration(currentProject.solutionText, currentProject.correctAnswer);
@@ -689,7 +677,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             previewMode={previewMode}
             setPreviewMode={setPreviewMode}
             step={step}
-            editRegions={editRegions}
             currentProject={currentProject}
             updateCurrentProject={updateCurrentProject}
             currentPreviewTime={currentPreviewTime}
@@ -699,10 +686,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             activeAudioDuration={activeAudioDuration}
             activeAudioUrl={activeAudioUrl}
             setIsVideoModalOpen={setIsVideoModalOpen}
-            saveStatus={saveStatus}
-            finishRegionEditing={finishRegionEditing}
-            selectedRegionId={selectedRegionId}
-            setSelectedRegionId={setSelectedRegionId}
+            drawOption={drawOption}
+            setDrawOption={setDrawOption}
             regionHistory={regionHistory}
             setRegionHistory={setRegionHistory}
             narration={hasAudio && !isUploadedAudio && (currentProject.narrationSource?.words?.length ?? 0) > 0 ? {
@@ -812,38 +797,10 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             <section className="space-y-3">
               <h2>İşaretleri kontrol edin</h2>
               <p>
-                {editRegions
-                  ? 'Soldaki görselde kutuları düzenleyin; bitince önizlemeye dönün.'
-                  : videoGenerated
-                    ? 'İşaretler sesinize göre yerleştirildi. Önizlemeyi izleyin; kayan bir işaret varsa listeyi açıp düzeltin, yoksa indirmeye geçin.'
-                    : 'Önce aşağıdaki düğmeyle sesinize uygun işaretleri hazırlayın.'}
+                {videoGenerated
+                  ? 'İşaretler sesinize göre yerleştirildi. Önizlemeyi izleyin; yerinde olmayan bir işareti görselde ya da alttaki zaman şeridinde sürükleyerek düzeltin, yoksa indirmeye geçin.'
+                  : 'Önce aşağıdaki düğmeyle sesinize uygun işaretleri hazırlayın.'}
               </p>
-              {videoGenerated && !editRegions && (
-                <SimpleTimingList
-                  actions={currentProject.videoConfig.timelineActions || []}
-                  regions={currentProject.videoConfig.regions || []}
-                  duration={activeAudioDuration || 15}
-                  currentTime={currentPreviewTime}
-                  onUpdateActions={actions =>
-                    updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } })
-                  }
-                  onSeek={setCurrentPreviewTime}
-                  setPlaying={playing => {
-                    if (playing) setPreviewMode('video');
-                    setIsPlayingPreview(playing);
-                  }}
-                />
-              )}
-              {hasImage &&
-                (editRegions ? (
-                  <button className="studio-primary w-full" onClick={() => void finishRegionEditing()}>
-                    Kaydet ve önizlemeye dön
-                  </button>
-                ) : (
-                  <button className="studio-secondary w-full" onClick={() => setEditRegions(true)}>
-                    Görseldeki kutuları düzenle
-                  </button>
-                ))}
             </section>
           )}
           <ExportStep

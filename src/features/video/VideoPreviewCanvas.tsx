@@ -41,6 +41,11 @@ interface VideoPreviewCanvasProps {
     onActions: (actions: VideoAction[]) => void;
     onUndo?: () => void;
     canUndo?: boolean;
+    /** The teacher says a box is option `letter`. */
+    onAssignOption?: (boxId: string, letter: string) => void;
+    /** A missing option to draw or pick on the picture. */
+    drawOption?: string | null;
+    onDrawOptionDone?: () => void;
   };
 }
 
@@ -230,7 +235,8 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         {editing && !isPlaying && fit && imageElement && (
           <PreviewEditOverlay fit={fit} canvasWidth={1920} canvasHeight={1080} regions={regions} actions={actions}
             time={currentTime} total={duration} underlineOffset={videoConfig.underlineOffset}
-            onRegions={editing.onRegions} onActions={editing.onActions} onUndo={editing.onUndo} canUndo={editing.canUndo} />
+            onRegions={editing.onRegions} onActions={editing.onActions} onUndo={editing.onUndo} canUndo={editing.canUndo}
+            onAssignOption={editing.onAssignOption} drawOption={editing.drawOption} onDrawOptionDone={editing.onDrawOptionDone} />
         )}
 
         {/* Center overlay play button when paused */}

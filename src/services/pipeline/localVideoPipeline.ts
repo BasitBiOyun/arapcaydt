@@ -160,7 +160,7 @@ export class LocalVideoPipeline {
     const covered = new Set([...arabicMatches.map(m => m.phrase), ...options.map(r => r.content || '')].flatMap(p => normalizeArabic(p).split(' ')));
     const unread = [...new Set(extractArabicPhrases(solutionText).flatMap(p => p.split(/\s+/)).filter(w => !covered.has(normalizeArabic(w))))];
     if (unread.length) warnings.push(`Görselde eşleştirilemeyen Arapça kelimeler: ${unread.slice(0,8).join('، ')}${unread.length>8?'…':''}. Görselde bulunanları alan düzenleyicisinde işaretleyin; bu kelimelere tahmini vurgu eklenmedi.`);
-    if (detectedOptions.length < 5) warnings.push(`Şu şıklar bulunamadı: ${['A', 'B', 'C', 'D', 'E'].filter(x => !detectedOptions.includes(x)).join(', ')}. Alan düzenleyicisinde eksik şıkları işaretleyip yeniden hazırlayın.`);
+    if (detectedOptions.length < 5) warnings.push(`Şu şıklar bulunamadı: ${['A', 'B', 'C', 'D', 'E'].filter(x => !detectedOptions.includes(x)).join(', ')}. Önizlemede o şıkkın kutusuna tıklayıp harfini seçin ya da kutusunu çizin.`);
     if (alignment.quality !== 'word-aligned') warnings.push(alignment.quality === 'approximate'
       ? 'Ses zamanlamaları eşleştirilemedi. Süreler yaklaşık; dışa aktarmadan önce zaman çizelgesini kontrol edin.'
       : 'Bazı ifadelerin süreleri komşu ses kelimelerinden hesaplandı. Önizlemede zamanlamayı kontrol edin.');
@@ -170,7 +170,7 @@ export class LocalVideoPipeline {
 
     // Never silently claim success and then export only image + audio.
     if (actions.length === 0) {
-      warnings.push('Animasyon adımı bulunamadı. Kutuları ve vurguları düzenle bölümünden alan ekleyin; zaman çizelgesinden işaret ekleyebilirsiniz.');
+      warnings.push('Animasyon adımı bulunamadı. Önizlemede soldaki araçlarla görsele işaret ekleyebilirsiniz.');
     }
 
     onProgress?.({

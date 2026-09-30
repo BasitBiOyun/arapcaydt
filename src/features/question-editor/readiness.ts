@@ -9,6 +9,8 @@ export interface ReadinessItem {
   status: 'ok' | 'warn' | 'fail';
   label: string;
   action?: ReadinessAction;
+  /** For a missing option: the letter to draw on the picture. */
+  letter?: string;
 }
 export interface Readiness {
   level: 'ready' | 'check' | 'blocked';
@@ -30,10 +32,10 @@ export function assessReadiness(project: QuestionProject): Readiness {
   // Four options (A–D) is a complete LGS question unless the script talks about E.
   const complete = missing.length === 0 || (missing.join() === 'E' && !saysE && project.correctAnswer !== 'E');
   items.push(found.length === 0
-    ? { id: 'options', status: 'fail', label: 'Görselde şık bulunamadı.', action: 'regions' }
+    ? { id: 'options', status: 'fail', label: 'Görselde şık bulunamadı.', action: 'regions', letter: 'A' }
     : complete
       ? { id: 'options', status: 'ok', label: `${found.length} şık bulundu (${found[0]}–${found[found.length - 1]}).` }
-      : { id: 'options', status: 'warn', label: `Eksik şık: ${missing.join(', ')}. Görsel üzerinde işaretleyin.`, action: 'regions' });
+      : { id: 'options', status: 'warn', label: `Eksik şık: ${missing.join(', ')}. Görsel üzerinde işaretleyin.`, action: 'regions', letter: missing[0] });
 
   // Ticks on premises (I, II, III…) or phrases explain the text; the answer is the ticked option.
   const optionType = new Map((config.regions || []).map(r => [r.id, r.type]));

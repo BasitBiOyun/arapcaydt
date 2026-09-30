@@ -93,7 +93,7 @@ test('a word found twice in the question is underlined inside the quote being ex
  assert.deepEqual(findBestArabicMatches('في burada harf-i cerdir.',[word('في',.5,.5)]),[],'a lone particle is not underlined');
 });
 test('an underline never flashes past: readable draw, a moment on screen, adjustable by the teacher',async()=>{
- const {withStay,withLineOffset}=await import('../src/features/question-editor/SimpleTimingList');
+ const {withLineOffset}=await import('../src/features/video/markLabels');
  const {underlineDrawTime}=await import('../src/features/video/engine/timeline');
  const matches=findBestArabicMatches('كتاب ve قلم.',[word('كتاب',.7),word('قلم',.5)]);
  const parsed=parseSolutionSemantics('كتاب ve قلم.',matches.map(m=>m.region),matches);
@@ -102,11 +102,9 @@ test('an underline never flashes past: readable draw, a moment on screen, adjust
  const first=actions.find(a=>a.type==='underline')!;
  assert.ok(underlineDrawTime(first.duration)>=.6-1e-9,'drawn at a readable pace');
  assert.ok(first.duration>underlineDrawTime(first.duration),'shows a moment once drawn');
- const stay=withStay(first,5,10);
- assert.equal(stay.duration,5);
+ const stay={...first,duration:5};
  // The drawing follows the mark's length: a 5 s mark is half drawn 2.1 s in (draw time 4.2 s).
  assert.ok(Math.abs(computeTimelineVisualState(first.start+2.1,[stay]).activeUnderlines[0].progress-.5)<.01);
- assert.equal(withStay(first,8,3).duration,3-first.start,'never past the end of the video');
  assert.equal(withLineOffset(withLineOffset(first,-.15),-.15).lineOffset,-.3);
  const state=computeTimelineVisualState(first.start+.7,[{...first,lineOffset:-.3}]);
  assert.equal(state.activeUnderlines[0].offset,-.3);

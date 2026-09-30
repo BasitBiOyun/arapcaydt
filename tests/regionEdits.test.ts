@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyRegionEdits } from '../src/services/analysis/regionEdits';
+import { applyRegionEdits, assignOption } from '../src/services/analysis/regionEdits';
 import type { AnnotationRegion, VideoConfig } from '../src/types';
 const region = (id:string, content = ''):AnnotationRegion => ({id,type:id.startsWith('option-') ? id as any : 'keyword',label:id,content,x:.2,y:id.startsWith('option-')?.4:.2,width:.1,height:.05});
 const base:VideoConfig={aspectRatio:'16:9',fps:30,backgroundColor:'#fff',showWatermark:false,annotations:[],regions:[region('option-a')],timelineActions:[{id:'keep',type:'focus',targetRegionId:'option-a',start:2,duration:3}]};
@@ -11,6 +11,35 @@ test('new manual option immediately gets focus/check from narration and retains 
  assert.ok(next.timelineActions!.some(a=>a.targetRegionId==='option-b' && a.type==='correct'));
  assert.ok(next.timelineActions!.some(a=>a.id==='keep' && a.start===2));
  assert.ok(next.regions!.find(r=>r.id==='option-b')!.manuallyAdjusted);
+});
+test('a box named as a missing option gets its tick from the narration; its own marks move with it',()=>{
+ const drawn={...region('manual-box-1'),label:'Elle eklenen alan'};
+ const config={...base,regions:[...base.regions!,drawn],timelineActions:[...base.timelineActions!,
+  {id:'manual-manual-box-1-focus-3000-1',type:'focus' as const,targetRegionId:'manual-box-1',regionId:'manual-box-1',start:3,duration:2},
+  {id:'manual-manual-box-1-reject-3000-2',type:'reject' as const,targetRegionId:'manual-box-1',regionId:'manual-box-1',start:3,duration:9}]};
+ const next=assignOption(config,'manual-box-1','B',text,words,12);
+ const b=next.regions!.find(r=>r.id==='option-b')!;
+ assert.deepEqual([b.type,b.label,b.x,b.y],['option-b','B Şıkkı',drawn.x,drawn.y]);
+ assert.ok(!next.regions!.some(r=>r.id==='manual-box-1'));
+ const marks=next.timelineActions!.filter(a=>a.targetRegionId==='option-b');
+ assert.ok(marks.some(a=>a.type==='correct'&&a.start>=5.9),'the narrated tick, at the spoken answer');
+ assert.ok(!marks.some(a=>a.type==='reject'),'the hand-made cross gives way to the narrated verdict');
+ assert.ok(marks.some(a=>a.type==='focus'&&a.start===3&&a.regionId==='option-b'),'the teacher\'s frame moves with the box');
+ assert.ok(next.timelineActions!.some(a=>a.id==='keep'),'other options keep their marks');
+ assert.ok(!next.warnings!.some(w=>w.includes('B')&&w.startsWith('Şu şıklar')),'B is no longer missing');
+});
+test('naming a box as an option that already has one replaces the old box and keeps its narrated marks',()=>{
+ const withB=applyRegionEdits(base,[...base.regions!,region('option-b')],text,words,12);
+ const tick=withB.timelineActions!.find(a=>a.targetRegionId==='option-b'&&a.type==='correct')!;
+ const config={...withB,regions:[...withB.regions!,{...region('manual-box-2'),x:.6,y:.7}]};
+ const next=assignOption(config,'manual-box-2','B',text,words,12);
+ assert.equal(next.regions!.filter(r=>r.id==='option-b').length,1);
+ assert.deepEqual([next.regions!.find(r=>r.id==='option-b')!.x,next.regions!.find(r=>r.id==='option-b')!.y],[.6,.7],'the new place');
+ assert.ok(next.timelineActions!.some(a=>a.id===tick.id&&a.start===tick.start),'the narrated tick keeps its time');
+ assert.equal(assignOption(next,'option-b','B',text,words,12),next,'naming a box what it already is changes nothing');
+ const relabeled=assignOption(next,'option-a','C',text,words,12);
+ assert.ok(!relabeled.timelineActions!.some(a=>a.id==='keep'),'narrated marks of the option it was taken for do not follow it');
+ assert.ok(relabeled.regions!.some(r=>r.id==='option-c')&&!relabeled.regions!.some(r=>r.id==='option-a'));
 });
 test('selected phrase creates one timed underline; deletion removes actions and persists suppression',()=>{
  const next=applyRegionEdits(base,[...base.regions!,region('manual-phrase','مُمَيِّزَاتٌ')],text,words,12);

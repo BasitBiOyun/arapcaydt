@@ -63,22 +63,17 @@ test('simple timing list: nudging keeps ✗/✓ marks to the end and other cues 
   assert.equal(nudgeAction(mark, 0.3, 30).startTime, 10.3);
 });
 
-test('simple timing list shows the marks a teacher hears, in order, with plain titles', async () => {
-  const { listedCues, cueTitle } = await import('../src/features/question-editor/SimpleTimingList');
+test('marks are named in plain words', async () => {
+  const { cueTitle } = await import('../src/features/video/markLabels');
   const actions = [
-    { id: '3', type: 'correct' as const, targetRegionId: 'option-d', start: 20, duration: 5, label: 'correct: doğru cevap D' },
-    { id: '1', type: 'focus' as const, targetRegionId: 'option-a', start: 2, duration: 3 },
-    { id: 'x', type: 'dim-others' as const, targetRegionId: 'option-a', start: 2, duration: 3 },
-    { id: '2', type: 'reject' as const, targetRegionId: 'option-a', start: 5, duration: 20 },
     { id: '4', type: 'underline' as const, targetRegionId: 'ar-1', start: 1, duration: 1 },
+    { id: '1', type: 'focus' as const, targetRegionId: 'option-a', start: 2, duration: 3 },
+    { id: '2', type: 'reject' as const, targetRegionId: 'option-a', start: 5, duration: 20 },
+    { id: '3', type: 'correct' as const, targetRegionId: 'option-d', start: 20, duration: 5 },
   ];
   const regions = [{ id: 'ar-1', label: 'Arapça', type: 'custom' as const, content: 'ذَهَبَ الطَّالِبُ', x: 0, y: 0, width: .1, height: .1 }];
-  const cues = listedCues(actions);
-  assert.deepEqual(cues.map(c => c.id), ['4', '1', '2', '3']);
-  assert.deepEqual(cues.map(c => cueTitle(c, regions as any)),
-    ['Altı çizilir: ذَهَبَ الطَّالِبُ', 'Odak: A şıkkı', 'A şıkkı elenir', 'D şıkkı: doğru cevap']);  const { cueSummary } = await import('../src/features/question-editor/SimpleTimingList');
-  assert.equal(cueSummary(cues), '1 şık elenir · 1 doğru cevap · 2 vurgu', 'the closed list still says what will happen');
-  assert.equal(cueSummary([]), '');
+  assert.deepEqual(actions.map(c => cueTitle(c, regions as any)),
+    ['Altı çizilir: ذَهَبَ الطَّالِبُ', 'Odak: A şıkkı', 'A şıkkı elenir', 'D şıkkı: doğru cevap']);
 });
 
 test('player and marks list share one time format', async () => {
@@ -89,12 +84,3 @@ test('player and marks list share one time format', async () => {
   assert.equal(clock(59.97), '01:00,0', 'rounding carries into the minute');
 });
 
-test('options without a cross or tick can be crossed by hand from the paused moment', async () => {
-  const { unmarkedOptions, manualCross } = await import('../src/features/question-editor/SimpleTimingList');
-  const regions = ['a', 'b', 'c', 'd', 'e'].map(l => ({ id: `option-${l}` })) as any;
-  const actions = [{ id: '1', type: 'reject', targetRegionId: 'option-a', start: 3, duration: 7 }, { id: '2', type: 'correct', targetRegionId: 'option-d', start: 8, duration: 2 },
-    { id: '3', type: 'focus', targetRegionId: 'option-b', start: 4, duration: 1 }] as any;
-  assert.deepEqual(unmarkedOptions(actions, regions), ['option-b', 'option-c', 'option-e']);
-  const cross = manualCross('option-b', 6.25, 10);
-  assert.deepEqual([cross.type, cross.start, cross.duration], ['reject', 6.25, 3.75], 'lasts to the end like narrated crosses');
-});

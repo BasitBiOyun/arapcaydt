@@ -83,8 +83,9 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'İlk girişte **İşaretleri otomatik hazırla**’ya basın. Sonra önizlemede ▶ düğmesine basıp videoyu izleyin.', image: 'isaretler', alt: 'Önizleme ve işaret araçları' },
       { text: 'Bir işareti değiştirmek için videoyu durdurun ve görseldeki kutuya tıklayın. Soldaki araçlardan **✗ Çarpı**, **✓ Doğru işareti**, **◎ Çerçeve**, **▁ Altı çizgi** veya **▮ Vurgu** ekleyebilirsiniz.', image: 'isaret-secili', alt: 'Seçili kutu ve işaret menüsü' },
       { text: 'Önizlemenin altındaki **Zaman şeridi**nde her işaret bir kutucuktur. Kutucuğu sürükleyerek işaretin ne zaman çıkacağını, kenarından çekerek ne kadar kalacağını ayarlarsınız.', image: 'zaman-seridi', alt: 'Zaman şeridi' },
-      { text: 'Bir şıkkın kutusu yanlış yerdeyse sağdaki **Görseldeki kutuları düzenle**’ye basın. Kutuya tıklayın, ortasından sürükleyerek taşıyın, kenarlarındaki mavi tutamaçlardan çekerek büyütün veya küçültün.', image: 'kutu-duzenle', alt: 'Kutu düzenleyici' },
-      { text: 'Bitince **Kaydet ve önizlemeye dön**, ardından **İndirmeye geç**’e basın.' },
+      { text: 'Bir şıkkın kutusu yanlış yerdeyse kutuya tıklayıp ortasından sürükleyerek taşıyın, kenarlarındaki mavi tutamaçlardan çekerek büyütün veya küçültün.' },
+      { text: 'Yayın kontrolünde **Eksik şık** yazıyorsa yanındaki düğmeye basın ve o şıkkın kutusunu görselde çizin. Ya da şıkkı gösteren kutuya tıklayıp **Hangi şık?** satırından harfini seçin. O şıkkın çarpısı veya tiki, seste söylendiği ana kendiliğinden gelir.' },
+      { text: 'Değişiklikler kendiliğinden kaydedilir. Bitince **İndirmeye geç**’e basın.' },
     ],
     tips: [
       'Yaptığınız son değişikliği **Geri al** düğmesiyle geri alabilirsiniz.',
