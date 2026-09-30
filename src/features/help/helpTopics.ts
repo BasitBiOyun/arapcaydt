@@ -66,6 +66,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     steps: [
       { text: '**3 Ses** adımında **Seslendirme Oluştur**’a basın. Ses birkaç saniye ile bir dakika arasında hazırlanır. Kendi sesinizi kullanmak isterseniz **MP3 Yükle** ile dosyanızı seçin.', image: 'ses-olustur', alt: 'Seslendirme Oluştur ve MP3 Yükle düğmeleri' },
       { text: 'Sesi baştan sona dinleyin. Beğendiyseniz **Bu Sesi Kullan**’a basın; beğenmediyseniz metni düzeltip **Yeniden seslendir** diyebilirsiniz.', image: 'ses-onay', alt: 'Sesi dinleme ve onaylama' },
+      { text: 'Bir cümle yanlış okunduysa ya da atlandıysa bütün sesi baştan üretmeyin: sesin altındaki **Sesi düzelt** bölümünü açın. Okunmamış görünen yerler en üstte **Bu yeri ekle** düğmesiyle listelenir. Başka bir cümleyi düzeltmek için listeden o cümleye tıklayın (birden çok cümle için ilk ve son cümleye), isterseniz “2:00 – 2:10” gibi zamanla seçin; **Dinle** ile kontrol edip **Seçili yeri yeniden seslendir**’e basın. Yalnız o yer yeniden seslendirilir (1 ses hakkı); sesin geri kalanı ve işaretleriniz korunur. Beğenmezseniz **Son düzeltmeyi geri al** deyin.', image: 'sesi-duzelt', alt: 'Sesi düzelt bölümü' },
       { text: 'Onaylanan ses “Onaylandı” olarak görünür. **İşaretlere geç** ile dördüncü adıma geçin.' },
     ],
     tips: [
