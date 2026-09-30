@@ -13,7 +13,8 @@ type Handle = Corner | 'n' | 's' | 'e' | 'w';
 const MIN_SIZE = .01;
 const ICON: Partial<Record<VideoAction['type'], { icon: string; color: string; name: string }>> = {
   reject: { icon: '✗', color: '#8B1E2D', name: 'Çarpı' }, correct: { icon: '✓', color: '#15803D', name: 'Doğru işareti' },
-  focus: { icon: '◎', color: '#4338CA', name: 'Çerçeve' }, underline: { icon: '▁', color: '#D97706', name: 'Altı çizgi' },
+  focus: { icon: '◎', color: '#4338CA', name: 'Çerçeve' }, circle: { icon: '◯', color: '#DC2626', name: 'Daire' },
+  underline: { icon: '▁', color: '#D97706', name: 'Altı çizgi' },
   highlight: { icon: '▮', color: '#B45309', name: 'Vurgu' },
 };
 /** "A şıkkı" or the phrase the box holds. */
@@ -38,7 +39,7 @@ export function resizeRegion(region: AnnotationRegion, handle: Handle, dx: numbe
 }
 
 /** Marks a teacher can put on the picture, in toolbar order. */
-export const TOOLS = ['reject', 'correct', 'focus', 'underline', 'highlight'] as const;
+export const TOOLS = ['reject', 'correct', 'focus', 'circle', 'underline', 'highlight'] as const;
 export type Tool = typeof TOOLS[number];
 
 /**
@@ -48,7 +49,7 @@ export type Tool = typeof TOOLS[number];
 export function addMark(actions: VideoAction[], regionId: string, tool: Tool, time: number, total: number): VideoAction[] {
   const start = Math.max(0, Math.min(total - .1, time));
   const lasting = tool === 'reject' || tool === 'correct';
-  const duration = lasting ? total - start : Math.min(tool === 'focus' ? 2.5 : 2, total - start);
+  const duration = lasting ? total - start : Math.min(tool === 'focus' || tool === 'circle' ? 2.5 : 2, total - start);
   const mark: VideoAction = { id: `manual-${regionId}-${tool}-${Math.round(start * 1000)}-${actions.length}`, type: tool, targetRegionId: regionId,
     regionId, start, startTime: start, duration, label: `${tool}: elle eklendi` };
   // A box has one verdict: a new cross or tick replaces whichever it had.
@@ -97,6 +98,21 @@ export function placeFromStroke(drawn: AnnotationRegion, tool: Tool, fit: FitRec
   if (!wide || tool !== 'underline') return null;
   const bottom = drawn.y + drawn.height, top = Math.max(0, bottom - lineHeight);
   return { ...drawn, y: top, height: bottom - top };
+}
+
+/**
+ * A line dropped close under printed text sits exactly under it: the nearest text box (a phrase,
+ * an option, a line found earlier) whose bottom is within half a line of the stroke and which
+ * overlaps it sideways lends the line its top and bottom. Otherwise the line stays where it was drawn.
+ */
+export function snapToText(place: AnnotationRegion, regions: AnnotationRegion[], lineHeight: number): AnnotationRegion {
+  const bottom = place.y + place.height;
+  const near = regions
+    .filter(r => r.id !== 'question-root' && r.height <= .2 && r.x < place.x + place.width && r.x + r.width > place.x)
+    .map(r => ({ r, gap: Math.abs(r.y + r.height - bottom) }))
+    .filter(n => n.gap <= lineHeight * .5)
+    .sort((a, b) => a.gap - b.gap)[0];
+  return near ? { ...place, y: near.r.y, height: near.r.height } : place;
 }
 
 /** The usual height of a text line on this question: the median phrase box, else 5% of the image. */
@@ -187,7 +203,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
     const px = pxPerCanvas();
     if (gesture.mode === 'draw') {
       const { ix, iy } = onImage(e);
-      setDraft(drawnRegion('drawing', gesture.ix, gesture.iy, ix, iy));
+      // The underline tool draws a flat line of fixed thickness: only its length follows the pointer.
+      setDraft(drawnRegion('drawing', gesture.ix, gesture.iy, ix, tool === 'underline' ? gesture.iy : iy));
       return;
     }
     if (gesture.mode === 'line') {
@@ -212,14 +229,18 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       }
     } else if (gesture?.mode === 'draw') {
       // A drawn place (anywhere, even over a found box) gets the chosen mark; a click on a box marks that box.
-      const place = tool && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, typicalLineHeight(regions)) : null;
+      const lineHeight = typicalLineHeight(regions);
+      const stroke = tool && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, lineHeight) : null;
+      const place = stroke && tool === 'underline' ? snapToText(stroke, regions, lineHeight) : stroke;
       if (tool && place) {
         const id = `manual-box-${Date.now()}`;
         // Underlines are drawn line after line with the tool kept: each new line follows the
         // previous one in time (while the preview stays at the same moment).
         const series = tool === 'underline';
         const at = series && lineSeries.current && Math.abs(lineSeries.current.time - time) < .01 ? lineSeries.current.end : time;
-        const marks = addMark([], id, tool, at, total);
+        // The line flows the way it was dragged (left-to-right or, as Arabic is read, right-to-left).
+        const fromLeft = series && draft && 'x' in draft && gesture.ix <= draft.x + draft.width / 2;
+        const marks = addMark([], id, tool, at, total).map(m => fromLeft ? { ...m, fromLeft: true } : m);
         onRegions([...regions, { ...place, id }], marks);
         if (series) lineSeries.current = { time, end: Math.min(total - .1, at + marks[0].duration) };
         else { setSelectedId(id); setTool(null); }
@@ -314,7 +335,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       </div>
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
         <span className={`px-2 py-1 rounded-md text-white text-xs ${drawOption ? 'bg-[#8B1E2D] font-semibold' : 'bg-black/60'}`}>
-          {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool === 'underline' ? 'Altı çizgi: satırların altına sırayla çizin, her biri öncekinin ardından gelir · bitince Esc'
+          {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool === 'underline' ? 'Alt çizgi: başlangıca basın, sağa ya da sola sürükleyip bırakın · yazının altına bırakırsanız satıra oturur · bitince Esc'
             : tool ? `${ICON[tool]!.name}: istediğiniz yere sürükleyip alan çizin ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
         </span>
         {onUndo && <button type="button" disabled={!canUndo} onClick={onUndo} title="Son değişikliği geri al"
@@ -348,7 +369,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
 
       {selected && !drawing && boxes.current.get(selected.id) && (
         <Moveable key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={false}
-          renderDirections={['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']} throttleDrag={0} throttleResize={0}
+          // A box that only carries an underline is lengthened or shortened from its ends.
+          renderDirections={selectedMarks.length && selectedMarks.every(m => m.type === 'underline') ? ['w', 'e'] : ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']} throttleDrag={0} throttleResize={0}
           snappable snapThreshold={6} isDisplaySnapDigit={false} elementGuidelines={[...boxes.current.entries()].filter(([id]) => id !== selected.id).map(([, el]) => el)}
           onDrag={e => preview(fromScreen(selected, e.left, e.top, e.width, e.height))}
           onDragEnd={commit}
@@ -364,7 +386,13 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           }} />
       )}
 
-      {gesture?.mode === 'draw' && draft && 'x' in draft && (
+      {gesture?.mode === 'draw' && draft && 'x' in draft && tool === 'underline' && (() => {
+        const rect = regionCanvasRect(draft, fit);
+        return <div className="absolute rounded-full pointer-events-none bg-[#D97706] shadow-[0_0_0_2px_white]"
+          style={{ left: `${rect.x / canvasWidth * 100}%`, width: `${Math.max(rect.width, 2) / canvasWidth * 100}%`,
+            top: `${(rect.y - Math.max(2, 2.5 * scale)) / canvasHeight * 100}%`, height: `${Math.max(4, 5 * scale) / canvasHeight * 100}%` }} />;
+      })()}
+      {gesture?.mode === 'draw' && draft && 'x' in draft && tool !== 'underline' && (
         <div className="absolute border-2 border-dashed rounded-[3px] pointer-events-none" style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : drawOption ? '#8B1E2D' : '#2563EB' }} />
       )}
 
@@ -416,7 +444,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             </div>
           ))}
           <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-xs text-[#787670]">
-            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
+            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için uçlarındaki tutamakları çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
             <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline shrink-0" title="Delete tuşu">Kutuyu kaldır</button>
           </div>
           <div className="flex items-center gap-1.5">

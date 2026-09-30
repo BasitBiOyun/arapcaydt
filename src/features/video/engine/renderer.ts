@@ -311,6 +311,23 @@ export function renderQuestionVideoFrame(
     ctx.lineTo(u.isRtl ? r.x + r.width - swept : r.x + swept, y); ctx.stroke();
     ctx.restore();
   }
+  // A ring as if drawn by hand: one stroke around the box that slightly overshoots its start.
+  for (const c of state.activeCircles) {
+    const r = rectFor(c.regionId); if (!r || c.progress <= 0) continue;
+    const cx = r.x + r.width / 2, cy = r.y + r.height / 2;
+    const rx = r.width / 2 + 12 * scale, ry = r.height / 2 + 10 * scale;
+    const from = -Math.PI * .6, sweep = Math.PI * 2.12 * easeOutCubic(c.progress);
+    ctx.save(); ctx.globalAlpha = c.opacity;
+    ctx.strokeStyle = '#DC2626'; ctx.lineWidth = 4.5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
+    for (let i = 0; i <= 48; i++) {
+      const a = from + sweep * i / 48;
+      // The ring widens a little as it goes round, so its end passes outside its start.
+      const grow = 1 + .06 * (i / 48) * (sweep / (Math.PI * 2));
+      const x = cx + Math.cos(a) * rx * grow, y = cy + Math.sin(a) * ry * grow;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke(); ctx.restore();
+  }
   // Eliminated choices fade back so the remaining ones stand out.
   for (const [id, mark] of Object.entries(state.rejectedRegions)) {
     const r = rectFor(id); if (!r || state.correctRegions[id]) continue;

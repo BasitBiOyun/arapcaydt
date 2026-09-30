@@ -48,6 +48,7 @@ export function computeTimelineVisualState(
     activeHighlights: [],
     activeUnderlines: [],
     activeFocus: [],
+    activeCircles: [],
     activeDimOthers: { active: false, opacity: 0 },
     rejectedRegions: {},
     correctRegions: {},
@@ -119,7 +120,8 @@ export function computeTimelineVisualState(
           state.activeUnderlines.push({
             regionId: action.targetRegionId,
             progress: underlineProgress(action, elapsed),
-            isRtl: true, // Arabic YDT default is right-to-left
+            // Arabic is underlined right-to-left; a line the teacher dragged left-to-right is drawn that way.
+            isRtl: !action.fromLeft,
             offset: action.lineOffset,
             opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .18) : 1,
           });
@@ -136,6 +138,19 @@ export function computeTimelineVisualState(
           state.activeFocus.push({
             regionId: action.targetRegionId,
             intensity,
+          });
+        }
+        break;
+      }
+
+      case 'circle': {
+        // A ring drawn in 0.6 s around the box, kept for the mark's duration, then faded.
+        const duration = action.duration ?? 2.5;
+        if (currentTime <= action.start + duration) {
+          state.activeCircles.push({
+            regionId: action.targetRegionId,
+            progress: Math.min(1, elapsed / .6),
+            opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .2) : 1,
           });
         }
         break;
@@ -164,6 +179,7 @@ export function computeTimelineVisualState(
           state.activeHighlights = [];
           state.activeUnderlines = [];
           state.activeFocus = [];
+          state.activeCircles = [];
           state.activeDimOthers = { active: false, opacity: 0 };
         }
         break;

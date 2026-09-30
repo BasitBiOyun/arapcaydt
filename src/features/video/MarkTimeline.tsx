@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/plugins/timeline';
 import HoverPlugin from 'wavesurfer.js/plugins/hover';
-import { ArrowsOutLineHorizontal, CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus, MapPin, Minus, Plus, Trash, HandPalm } from '@phosphor-icons/react';
-import type { AnnotationRegion, VideoAction } from '../../types';
+import { ArrowsOutLineHorizontal, CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus, Minus, Plus, Timer, Trash, HandPalm } from '@phosphor-icons/react';
+import type { AnnotationRegion, NarrationWord, VideoAction } from '../../types';
 import { adjacentAction, clock, isTypingTarget, nudgeAction } from '../question-editor/workflow';
 
 const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; name: string }>> = {
   reject: { icon: '✗', color: '#8B1E2D', name: 'Çarpı' }, correct: { icon: '✓', color: '#15803D', name: 'Doğru' },
-  focus: { icon: '◎', color: '#4338CA', name: 'Çerçeve' }, underline: { icon: '▁', color: '#D97706', name: 'Altı çizgi' },
+  focus: { icon: '◎', color: '#4338CA', name: 'Çerçeve' }, circle: { icon: '◯', color: '#DC2626', name: 'Daire' },
+  underline: { icon: '▁', color: '#D97706', name: 'Altı çizgi' },
   highlight: { icon: '▮', color: '#B45309', name: 'Vurgu' },
 };
 /** Crosses and ticks stay to the end of the video: only their start moves. */
@@ -54,6 +55,20 @@ export function dragPill(action: VideoAction, mode: PillDrag, delta: number, tot
   return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)) };
 }
 
+/**
+ * "Şimdi" while listening: the first tap starts the mark at `time`; for a mark that ends, the next
+ * tap ends it there. Crosses and ticks only start (they stay to the end).
+ */
+export function tapMark(action: VideoAction, time: number, total: number, stage: 'start' | 'end'): VideoAction {
+  if (stage === 'end' && !lasting(action)) return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, time - action.start)) };
+  return nudgeAction(action, time - action.start, total);
+}
+
+/** The words said around `time` (a few before, more after), in the order they are said. */
+export function nearbyWords(words: NarrationWord[], time: number, before = 2.5, after = 6, max = 14) {
+  return words.map((w, i) => ({ w, i })).filter(({ w }) => w.end >= time - before && w.start <= time + after).slice(0, max);
+}
+
 const seconds = (s: number) => `${s.toLocaleString('tr', { maximumFractionDigits: 1 })} sn`;
 
 interface Props {
@@ -73,6 +88,8 @@ interface Props {
   playing?: boolean;
   /** "Burada hata var": the box of the mark just seen, to select it on the picture (null: none). */
   onFlag?: (regionId: string | null) => void;
+  /** The narration's words, shown under the waveform: a click moves the selected mark to that word. */
+  words?: NarrationWord[];
 }
 
 /**
@@ -91,13 +108,16 @@ export function markJustSeen(marks: VideoAction[], time: number, within = 4): Vi
  * how long it stays (an underline is drawn over that whole time). Crosses and ticks stay to the
  * end, so only their start moves. Zoom in for fine timing; the marks follow the zoom and scroll.
  */
-export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact, playing, onFlag }: Props) {
+export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact, playing, onFlag, words = [] }: Props) {
   const waveBox = useRef<HTMLDivElement>(null);
   const lanesBox = useRef<HTMLDivElement>(null);
   const surfer = useRef<WaveSurfer | null>(null);
   const seekRef = useRef(onSeek);
   seekRef.current = onSeek;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  /** The next "Şimdi" tap ends the selected mark (after a first tap started it). */
+  const [tapEnds, setTapEnds] = useState(false);
+  useEffect(() => setTapEnds(false), [selectedId]);
   const [drag, setDrag] = useState<{ id: string; mode: PillDrag; x: number; moved: boolean } | null>(null);
   const [draft, setDraft] = useState<VideoAction | null>(null);
   /** Horizontal scale and scroll of the waveform, which the marks follow. */
@@ -162,6 +182,12 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
   };
   const replace = (next: VideoAction) => onActions(actions.map(a => a.id === next.id ? next : a));
   const remove = (id: string) => { onActions(actions.filter(a => a.id !== id)); setSelectedId(null); };
+  const tap = () => {
+    const mark = actions.find(a => a.id === selectedId);
+    if (!mark) return;
+    replace(tapMark(mark, currentTime, total, tapEnds ? 'end' : 'start'));
+    setTapEnds(!tapEnds && !lasting(mark));
+  };
 
   useEffect(() => {
     if (!keyboard) return;
@@ -172,6 +198,10 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
         e.preventDefault(); onPlayPause(); return;
       }
       const selected = actions.find(a => a.id === selectedId);
+      if (e.key === 'Enter' && selected) {
+        if ((e.target as HTMLElement | null)?.tagName === 'BUTTON') return;
+        e.preventDefault(); tap(); return;
+      }
       if ((e.key === 'Delete' || e.key === 'Backspace') && selected) { e.preventDefault(); remove(selected.id); return; }
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
@@ -228,7 +258,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     <div className="rounded-xl border border-[#E5E4DC] bg-white px-3 py-2 space-y-1.5 select-none">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <p className="text-[#55544F]">
-          <b className="text-[#1C1917] text-sm" title={keyboard ? 'Klavye: Boşluk oynat/durdur · ←/→ önceki/sonraki işaret · Shift+←/→ seçili işareti 0,1 sn kaydır · Delete sil' : undefined}>Zaman şeridi</b>
+          <b className="text-[#1C1917] text-sm" title={keyboard ? 'Klavye: Boşluk oynat/durdur · Enter seçili işaret şimdi başlasın / bitsin · ←/→ önceki/sonraki işaret · Shift+←/→ seçili işareti 0,1 sn kaydır · Delete sil' : undefined}>Zaman şeridi</b>
           {compact ? ' · sürükleyin: ne zaman · kenarından: ne kadar' : ' · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)'}
         </p>
         <span className="flex items-center gap-1" role="group" aria-label="Yakınlaştırma">
@@ -252,6 +282,22 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
       </div>
 
       <div ref={waveBox} className="rounded-md bg-[#FAF9F5] cursor-pointer" title="Tıklayın ya da sürükleyin: o ana gidin" />
+
+      {words.length > 0 && (
+        <div className="flex items-center gap-1 overflow-hidden text-xs" aria-label="Seslendirmenin kelimeleri">
+          <span className="shrink-0 text-[#8A8880]" title="Kırmızı çizginin olduğu yerde söylenen kelimeler, söylendikleri sırayla">Kelimeler:</span>
+          {nearbyWords(words, currentTime).map(({ w, i }) => (
+            <button key={`${i}-${w.start}`} type="button" dir="auto"
+              className={`shrink-0 px-1.5 py-0.5 rounded border ${currentTime >= w.start && currentTime < w.end ? 'border-[#8B1E2D] bg-[#F6E3E5] text-[#8B1E2D] font-semibold' : 'border-[#E5E4DC] bg-white text-[#33322E] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}
+              title={selectedId ? `Seçili işaret “${w.text}” söylenirken başlasın (${clock(w.start)})` : `${clock(w.start)}: buraya gidin`}
+              onClick={() => {
+                const mark = actions.find(a => a.id === selectedId);
+                if (mark) replace(nudgeAction(mark, w.start - mark.start, total));
+                onSeek(w.start);
+              }}>{w.text}</button>
+          ))}
+        </div>
+      )}
 
       <div className={compact && laneCount > COMPACT_ROWS ? 'overflow-y-auto rounded-md' : undefined}
         style={compact && laneCount > COMPACT_ROWS ? { maxHeight: COMPACT_ROWS * LANE + 14 } : undefined}
@@ -294,13 +340,15 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
                 <button type="button" className={button} onClick={() => replace(dragPill(selected, 'end', -.5, total))} title="Yarım saniye kısalt"><Minus size={12} /> Kısa</button>
                 <button type="button" className={button} onClick={() => replace(dragPill(selected, 'end', .5, total))} title="Yarım saniye uzat"><Plus size={12} /> Uzun</button>
               </>}
-              <button type="button" className={button} onClick={() => replace(nudgeAction(selected, currentTime - selected.start, total))} disabled={Math.abs(selected.start - currentTime) < .05}
-                title={`${clock(currentTime)} anında başlasın`}><MapPin size={12} /> Kırmızı çizginin olduğu yere al</button>
+              <button type="button" className={`${button} border-[#8B1E2D] text-[#8B1E2D] font-semibold`} onClick={tap}
+                title={tapEnds ? 'Dinlerken işaretin bitmesi gereken anda basın (Enter)' : 'Dinlerken işaretin çıkması gereken anda basın (Enter)'}>
+                <Timer size={12} /> {tapEnds ? 'Şimdi bitsin' : 'Şimdi başlasın'}
+              </button>
               <button type="button" className={`${button} text-[#8B1E2D]`} onClick={() => remove(selected.id)}><Trash size={12} /> Sil</button>
             </span>
           </>
         ) : (
-          <span className="text-[#A8A69E]">Bir işarete tıklayın: erken/geç, kısa/uzun ve sil butonları burada çıkar.</span>
+          <span className="text-[#A8A69E]">Bir işarete tıklayın: “Şimdi” (Enter), erken/geç, kısa/uzun ve sil burada çıkar · kelimeye tıklayınca seçili işaret oraya gelir.</span>
         )}
       </div>
     </div>

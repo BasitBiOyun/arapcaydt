@@ -22,6 +22,13 @@ export interface ActiveFocus {
   intensity: number; // 0 to 1
 }
 
+/** A ring around a box: `progress` 0–1 of its drawing, then it stays. */
+export interface ActiveCircle {
+  regionId: string;
+  progress: number;
+  opacity: number;
+}
+
 export interface ActiveDimOthers {
   active: boolean;
   targetRegionId?: string;
@@ -38,6 +45,7 @@ export interface RenderState {
   activeHighlights: ActiveHighlight[];
   activeUnderlines: ActiveUnderline[];
   activeFocus: ActiveFocus[];
+  activeCircles: ActiveCircle[];
   activeDimOthers: ActiveDimOthers;
   rejectedRegions: Record<string, MarkerState>;
   correctRegions: Record<string, MarkerState>;

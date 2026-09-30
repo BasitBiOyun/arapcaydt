@@ -106,3 +106,6 @@ export async function googleSignInEnabled() { return false; }
 export function takeOAuthError() { return null; }
 export function rememberMe() { return true; }
 export function setRememberMe() {}
+
+/** Browser errors are not recorded in the screenshots. */
+export function reportClientError(..._args: unknown[]) {}

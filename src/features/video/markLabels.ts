@@ -5,6 +5,7 @@ const TITLE: Partial<Record<VideoAction['type'], (target: string) => string>> = 
   correct: t => `${t}: doğru cevap`,
   focus: t => `Odak: ${t}`,
   underline: t => `Altı çizilir: ${t}`,
+  circle: t => `Daire: ${t}`,
   highlight: t => `Vurgu: ${t}`,
 };
 
