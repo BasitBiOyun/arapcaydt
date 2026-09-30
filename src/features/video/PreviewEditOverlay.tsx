@@ -5,7 +5,7 @@ import type { AnnotationRegion, VideoAction } from '../../types';
 import type { FitRect } from './engine/types';
 import { regionCanvasRect, underlineY } from './engine/renderer';
 import { clock, moveRegion, nudgeAction } from '../question-editor/workflow';
-import { cueTitle, withLineOffset } from '../question-editor/SimpleTimingList';
+import { cueTitle, withLineOffset } from './markLabels';
 
 type Corner = 'nw' | 'ne' | 'sw' | 'se';
 /** A corner, or one side: 'w' / 'e' move only the left / right edge, 'n' / 's' only the top / bottom. */
@@ -102,24 +102,34 @@ interface Props {
   onActions: (actions: VideoAction[]) => void;
   onUndo?: () => void;
   canUndo?: boolean;
+  /** The teacher says a box is option `letter` (the system then knows where "C şıkkı" is). */
+  onAssignOption?: (boxId: string, letter: string) => void;
+  /** A missing option to show on the picture: draw its box, or click the box that is it. */
+  drawOption?: string | null;
+  onDrawOptionDone?: () => void;
 }
+
+const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
 /**
  * On-picture editing of the paused preview: click a box to select it, drag it to move,
  * drag a corner to resize, drag its underline up or down, and change its marks from the
  * small menu next to it. Every change goes through the same data the exported MP4 uses.
  */
-export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, actions, time, total, underlineOffset = 0, onRegions, onActions, onUndo, canUndo }: Props) {
+export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, actions, time, total, underlineOffset = 0, onRegions, onActions, onUndo, canUndo, onAssignOption, drawOption, onDrawOptionDone }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [gesture, setGesture] = useState<Gesture | null>(null);
   const [draft, setDraft] = useState<AnnotationRegion | VideoAction | null>(null);
   const [tool, setTool] = useState<Tool | null>(null);
   useEffect(() => {
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { setSelectedId(null); setTool(null); } };
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { setSelectedId(null); setTool(null); onDrawOptionDone?.(); } };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
-  }, []);
+  }, [onDrawOptionDone]);
+  // Showing a missing option puts the tools aside.
+  useEffect(() => { if (drawOption) { setTool(null); setSelectedId(null); } }, [drawOption]);
+  const drawing = !!tool || !!drawOption;
 
   const picks = pickableRegions(regions);
   const selected = picks.find(r => r.id === selectedId);
@@ -157,7 +167,18 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
     setDraft(gesture.mode === 'move' ? moveRegion(gesture.region, dx, dy) : resizeRegion(gesture.region, gesture.mode, dx, dy));
   };
   const end = () => {
-    if (gesture?.mode === 'draw') {
+    if (gesture?.mode === 'draw' && drawOption) {
+      // A box drawn for the missing option, or a click on the box that is it.
+      const drawn = draft && 'x' in draft ? placeFromStroke(draft, 'focus', fit, 0) : null;
+      if (drawn) {
+        const id = `option-${drawOption.toLowerCase()}`;
+        onRegions([...regions.filter(r => r.id !== id), { ...drawn, id, type: id as AnnotationRegion['type'], label: `${drawOption} Şıkkı` }]);
+        setSelectedId(id); onDrawOptionDone?.();
+      } else if (gesture.boxId && onAssignOption) {
+        onAssignOption(gesture.boxId, drawOption);
+        setSelectedId(`option-${drawOption.toLowerCase()}`); onDrawOptionDone?.();
+      }
+    } else if (gesture?.mode === 'draw') {
       // A drawn place (anywhere, even over a found box) gets the chosen mark; a click on a box marks that box.
       const place = tool && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, typicalLineHeight(regions)) : null;
       if (tool && place) {
@@ -203,12 +224,12 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const menuBelow = selectedRect ? selectedRect.y + selectedRect.height < canvasHeight * .62 : true;
 
   return (
-    <div ref={box} className={`absolute inset-0 z-10 ${tool ? 'cursor-crosshair' : ''}`} onPointerMove={drag} onPointerUp={end} onPointerCancel={end}
+    <div ref={box} className={`absolute inset-0 z-10 ${drawing ? 'cursor-crosshair' : ''}`} onPointerMove={drag} onPointerUp={end} onPointerCancel={end}
       onPointerDown={e => {
         // The selection frame's handles sit on this layer: pressing one keeps the box selected.
         if ((e.target as HTMLElement).closest('.moveable-control-box')) return;
         setSelectedId(null);
-        if (!tool) return;
+        if (!drawing) return;
         const { ix, iy } = onImage(e);
         begin(e, { mode: 'draw', x: e.clientX, y: e.clientY, ix, iy });
       }}>
@@ -217,15 +238,15 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         <button type="button" aria-pressed={!tool} onClick={() => setTool(null)} title="Seç ve taşı"
           className={`w-9 h-9 rounded-lg text-[15px] ${!tool ? 'bg-[#1C1917] text-white' : 'hover:bg-[#F2F1EB] text-[#33322E]'}`}>↖</button>
         {TOOLS.map(t => (
-          <button key={t} type="button" aria-pressed={tool === t} onClick={() => { setTool(tool === t ? null : t); setSelectedId(null); }}
+          <button key={t} type="button" aria-pressed={tool === t} onClick={() => { setTool(tool === t ? null : t); setSelectedId(null); onDrawOptionDone?.(); }}
             title={`${ICON[t]!.name} ekle`} aria-label={`${ICON[t]!.name} ekle`}
             className={`w-9 h-9 rounded-lg text-[16px] font-bold ${tool === t ? 'text-white' : 'hover:bg-[#F2F1EB]'}`}
             style={tool === t ? { background: ICON[t]!.color } : { color: ICON[t]!.color }}>{ICON[t]!.icon}</button>
         ))}
       </div>
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
-        <span className="px-2 py-1 rounded-md bg-black/60 text-white text-xs">
-          {tool ? `${ICON[tool]!.name}: ${tool === 'underline' ? 'kelimelerin altına sürükleyip çizin' : 'istediğiniz yere sürükleyip alan çizin'} ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
+        <span className={`px-2 py-1 rounded-md text-white text-xs ${drawOption ? 'bg-[#8B1E2D] font-semibold' : 'bg-black/60'}`}>
+          {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool ? `${ICON[tool]!.name}: ${tool === 'underline' ? 'kelimelerin altına sürükleyip çizin' : 'istediğiniz yere sürükleyip alan çizin'} ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
         </span>
         {onUndo && <button type="button" disabled={!canUndo} onClick={onUndo} title="Son değişikliği geri al"
           className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
@@ -242,11 +263,11 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         return (
           <div key={region.id} role="button" aria-label={`${boxName(region, regions)} kutusu`}
             title="Seç: taşımak için sürükleyin"
-            className={`absolute rounded-[3px] ${tool ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${tool ? '' : isSelected ? 'border-2 border-[#2563EB] bg-[#2563EB]/5' : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
+            className={`absolute rounded-[3px] ${drawing ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${drawing ? '' : isSelected ? 'border-2 border-[#2563EB] bg-[#2563EB]/5' : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
             style={{ ...pct(rect), ...(isSelected || !color ? {} : { borderColor: `${color}AA` }) }}
             ref={el => { if (el) boxes.current.set(region.id, el); else boxes.current.delete(region.id); }}
             onPointerDown={e => {
-              if (tool) { setSelectedId(null); begin(e, { mode: 'draw', x: e.clientX, y: e.clientY, ...onImage(e), boxId: region.id }); return; }
+              if (drawing) { setSelectedId(null); begin(e, { mode: 'draw', x: e.clientX, y: e.clientY, ...onImage(e), boxId: region.id }); return; }
               // The selected box is moved by its selection frame; another box is picked and dragged at once.
               if (isSelected) { e.stopPropagation(); return; }
               setSelectedId(region.id); begin(e, { mode: 'move', x: e.clientX, y: e.clientY, region });
@@ -254,7 +275,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         );
       })}
 
-      {selected && !tool && boxes.current.get(selected.id) && (
+      {selected && !drawing && boxes.current.get(selected.id) && (
         <Moveable key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={false}
           renderDirections={['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']} throttleDrag={0} throttleResize={0}
           snappable snapThreshold={6} isDisplaySnapDigit={false} elementGuidelines={[...boxes.current.entries()].filter(([id]) => id !== selected.id).map(([, el]) => el)}
@@ -273,7 +294,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       )}
 
       {gesture?.mode === 'draw' && draft && 'x' in draft && (
-        <div className="absolute border-2 border-dashed rounded-[3px] pointer-events-none" style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : '#2563EB' }} />
+        <div className="absolute border-2 border-dashed rounded-[3px] pointer-events-none" style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : drawOption ? '#8B1E2D' : '#2563EB' }} />
       )}
 
       {selected && selectedRect && lineAction && (
@@ -296,6 +317,22 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             <b className="truncate">{boxName(selected, regions)}</b>
             <button type="button" onClick={() => setSelectedId(null)} aria-label="Kapat" className="p-0.5 rounded hover:bg-[#F2F1EB]"><X size={12} /></button>
           </div>
+          {onAssignOption && (
+            <div className="flex items-center gap-1" role="group" aria-label="Bu kutu hangi şık?">
+              <span className="text-[#787670] mr-auto">Hangi şık?</span>
+              {LETTERS.map(letter => {
+                const current = selected.id === `option-${letter.toLowerCase()}`;
+                return (
+                  <button key={letter} type="button" aria-pressed={current} disabled={current}
+                    onClick={() => { onAssignOption(selected.id, letter); setSelectedId(`option-${letter.toLowerCase()}`); }}
+                    title={current ? `Bu kutu ${letter} şıkkı` : `Bu kutu ${letter} şıkkı: çarpısı ya da tiki sese göre kendiliğinden gelsin`}
+                    className={`w-6 h-6 rounded border font-bold ${current ? 'bg-[#8B1E2D] border-[#8B1E2D] text-white' : 'bg-white hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}>
+                    {letter}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           {selectedMarks.length === 0 && <p className="text-[#787670]">Bu kutuda işaret yok.</p>}
           {selectedMarks.map(mark => (
             <div key={mark.id} className="flex items-center gap-1.5">

@@ -3,8 +3,7 @@ import type { NarrationWord, QuestionProject, VideoConfig } from '../../../types
 import { FilmStrip, Image as ImageIcon } from '@phosphor-icons/react';
 import { VideoPreviewCanvas } from '../../video/VideoPreviewCanvas';
 import { MarkTimeline } from '../../video/MarkTimeline';
-import { RegionEditorCanvas } from '../RegionEditorCanvas';
-import { applyRegionEdits } from '../../../services/analysis/regionEdits';
+import { applyRegionEdits, assignOption } from '../../../services/analysis/regionEdits';
 import { NarrationStrip } from '../NarrationStrip';
 import type { TextRange } from '../../../services/narration/revoice';
 
@@ -14,7 +13,6 @@ export interface EditorStageProps {
   previewMode: 'video' | 'image';
   setPreviewMode: (mode: 'video' | 'image') => void;
   step: number;
-  editRegions: boolean;
   currentProject: QuestionProject;
   updateCurrentProject: (updates: Partial<QuestionProject>) => void;
   currentPreviewTime: number;
@@ -24,10 +22,9 @@ export interface EditorStageProps {
   activeAudioDuration: number;
   activeAudioUrl: string;
   setIsVideoModalOpen: (open: boolean) => void;
-  saveStatus: 'saved' | 'pending' | 'saving' | 'error';
-  finishRegionEditing: () => Promise<void>;
-  selectedRegionId: string | null;
-  setSelectedRegionId: (id: string | null) => void;
+  /** A missing option the teacher is showing on the picture, from the readiness check. */
+  drawOption: string | null;
+  setDrawOption: (letter: string | null) => void;
   regionHistory: VideoConfig[];
   setRegionHistory: React.Dispatch<React.SetStateAction<VideoConfig[]>>;
   /** Ses step with a generated voice: the question on top, the narration strip ("Sesi düzelt") under it. */
@@ -87,10 +84,11 @@ function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: bool
 }
 
 /** Left column: question image or animated preview, timing editor and box editor. */
-export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, editRegions, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, saveStatus, finishRegionEditing, selectedRegionId, setSelectedRegionId, regionHistory, setRegionHistory, narration }: EditorStageProps) {
+export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, drawOption, setDrawOption, regionHistory, setRegionHistory, narration }: EditorStageProps) {
   const frame = useRef<HTMLDivElement>(null);
   const { width: fitWidth, short } = useFitWidth(frame, previewMode === 'video' && videoGenerated);
   const shortScreen = useShortScreen();
+  useEffect(() => { if (step !== 3) setDrawOption(null); }, [step, setDrawOption]);
   if (step === 2 && narration && hasImage) return (
     <div className="narration-stage">
       <div className="narration-stage-picture">
@@ -132,7 +130,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
       </div>
     )}
 
-    <div className="preview-content" hidden={step===3&&editRegions}>
+    <div className="preview-content">
     {previewMode === 'video' && videoGenerated ? (
       /* Generated Video Player powered by local Canvas engine */
       <div ref={frame} className="w-full flex flex-col items-center gap-2 px-2 pb-2">
@@ -159,6 +157,13 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
                 currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15);
               updateCurrentProject({ videoConfig: add.length ? { ...config, timelineActions: [...(config.timelineActions || []), ...add].sort((a, b) => a.start - b.start) } : config });
             },
+            onAssignOption: (boxId, letter) => {
+              setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]);
+              updateCurrentProject({ videoConfig: assignOption(currentProject.videoConfig, boxId, letter, currentProject.solutionText,
+                currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15) });
+            },
+            drawOption,
+            onDrawOptionDone: () => setDrawOption(null),
           } : undefined}
         />
         </div>
@@ -197,7 +202,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
           </label>
         </div>
 
-        {step === 3 && !editRegions && (
+        {step === 3 && (
           <div className="w-full"><MarkTimeline actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
             duration={activeAudioDuration || 15} currentTime={currentPreviewTime} audioUrl={activeAudioUrl}
             onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard compact={short}
@@ -228,41 +233,6 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
       </div>
     )}
     </div>
-    {hasImage && step===3 && editRegions && <section className="w-full max-w-4xl shrink-0 text-xs bg-white rounded-xl p-3 border border-[#D5D4CC] shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3 border-b border-[#E5E4DC]">
-        <div>
-          <h3 className="font-semibold text-[#1C1917]">Görsel işaretleri düzenle</h3>
-          <p className="text-xs text-[#787670] mt-0.5">Kutuları, kelime vurgularını ve temel animasyonları doğrudan soru üzerinde düzenleyin.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span role="status" className={`text-xs px-2 py-1 rounded-full border font-semibold ${
-            saveStatus==='saved'
-              ? 'bg-[#EFF7F0] border-[#C5DAC8] text-[#1E562A]'
-              : saveStatus==='error'
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-[#FFF7ED] border-[#F1D7AF] text-[#8A5A12]'
-          }`}>
-            {({saved:'Kaydedildi',pending:'Değişiklikler bekliyor',saving:'Kaydediliyor…',error:'Kayıt hatası'})[saveStatus]}
-          </span>
-          <button type="button" onClick={()=>void finishRegionEditing()}
-            className="px-3 py-2 rounded-lg bg-[#1C1917] hover:bg-[#33312E] text-white text-xs font-semibold transition-colors cursor-pointer">
-            Düzenlemeyi Bitir ve Önizlemeye Dön
-          </button>
-        </div>
-      </div>
-      <RegionEditorCanvas imageUrl={currentProject.imageUrl} regions={currentProject.videoConfig.regions || []}
-        solutionText={currentProject.solutionText}
-        currentTime={currentPreviewTime}
-        audioDuration={activeAudioDuration || 15}
-        actions={currentProject.videoConfig.timelineActions || []}
-        onUpdateActions={actions=>updateCurrentProject({videoConfig:{...currentProject.videoConfig,timelineActions:actions}})}
-        selectedRegionId={selectedRegionId} onSelectRegion={setSelectedRegionId}
-        canUndo={regionHistory.length>0} onUndo={()=>{const previous=regionHistory.at(-1);if(previous){updateCurrentProject({videoConfig:previous});setRegionHistory(regionHistory.slice(0,-1));}}}
-        onUpdateRegions={regions => {setRegionHistory(h=>[...h.slice(-29),currentProject.videoConfig]);updateCurrentProject({ videoConfig: applyRegionEdits(
-          currentProject.videoConfig, regions, currentProject.solutionText,
-          currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15
-        ) });}} />
-    </section>}
     </>
   );
 }

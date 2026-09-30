@@ -28,6 +28,37 @@ export function applyRegionEdits(config: VideoConfig, next: AnnotationRegion[], 
     suppressedRegionIds: [...new Set([...(config.suppressedRegionIds || []), ...removed])].filter(id => !ids.has(id)),
     timelineActions: [...actions, ...fresh.map(a => ({ ...a, id: `edit-${a.targetRegionId}-${a.type}-${a.start}` }))].sort((a,b) => a.start-b.start),
     warnings: [...(config.warnings || []).filter(w => !w.startsWith('Şu şıklar bulunamadı:')),
-      ...(missing.length ? [`Şu şıklar bulunamadı: ${missing.join(', ')}. Alan düzenleyicisinden ekleyebilirsiniz.`] : [])],
+      ...(missing.length ? [`Şu şıklar bulunamadı: ${missing.join(', ')}. Önizlemede o şıkkın kutusuna tıklayıp harfini seçin ya da kutusunu çizin.`] : [])],
+  };
+}
+
+const isVerdict = (type: string) => type === 'reject' || type === 'correct';
+
+/**
+ * The teacher says a box on the picture is option `letter`: the box becomes that option (an
+ * earlier box for it goes away, its narrated marks stay on the new place). A newly found option
+ * gets its cross or tick from the narration, at the moment the voice speaks about it. The box's
+ * own marks move with it, apart from narrated ones of another option it was taken for.
+ */
+export function assignOption(config: VideoConfig, boxId: string, letter: string, text: string, words: NarrationWord[], duration: number): VideoConfig {
+  const id = `option-${letter.toLowerCase()}`;
+  const before = config.regions || [];
+  const box = before.find(r => r.id === boxId);
+  if (!box || boxId === id) return config;
+  const old = before.find(r => r.id === id);
+  const next = { ...box, id, type: id as AnnotationRegion['type'], label: `${letter.toUpperCase()} Şıkkı`, content: old ? old.content : undefined, manuallyAdjusted: true };
+  const regions = before.filter(r => r.id !== id).map(r => (r.id === boxId ? next : r));
+  const wasOption = /^option-[a-e]$/.test(boxId);
+  const moved = (config.timelineActions || [])
+    .filter(a => a.targetRegionId === boxId && (!wasOption || a.id.startsWith('manual-')))
+    .map(a => ({ ...a, targetRegionId: id, ...(a.regionId ? { regionId: id } : {}) }));
+  const edited = applyRegionEdits({ ...config, timelineActions: (config.timelineActions || []).filter(a => a.targetRegionId !== boxId) },
+    regions, text, words, duration);
+  const actions = edited.timelineActions || [];
+  const narrated = actions.some(a => a.targetRegionId === id && isVerdict(a.type));
+  return {
+    ...edited,
+    suppressedRegionIds: (edited.suppressedRegionIds || []).filter(r => r !== boxId),
+    timelineActions: [...actions, ...moved.filter(a => !(narrated && isVerdict(a.type)))].sort((a, b) => a.start - b.start),
   };
 }

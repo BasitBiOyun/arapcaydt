@@ -12,7 +12,7 @@ const actionLabels: Record<ReadinessAction, string> = {
   regions: 'Görselde düzelt', timing: 'Zamanlamayı aç', regenerate: 'Yeniden hazırla', text: 'Metne git',
 };
 
-export function ReadinessCard({ project, onAction }: { project: QuestionProject; onAction: (action: ReadinessAction) => void }) {
+export function ReadinessCard({ project, onAction }: { project: QuestionProject; onAction: (action: ReadinessAction, letter?: string) => void }) {
   const { level, items } = assessReadiness(project);
   return (
     <section aria-label="Yayın kontrolü" className={`rounded-lg border bg-white p-3 space-y-2 ${tones[level]}`}>
@@ -23,9 +23,9 @@ export function ReadinessCard({ project, onAction }: { project: QuestionProject;
             <span aria-hidden className={`mt-1 h-2 w-2 shrink-0 rounded-full ${dots[item.status]}`} />
             <span className="flex-1">{item.label}</span>
             {item.status !== 'ok' && item.action && (
-              <button type="button" onClick={() => onAction(item.action!)}
+              <button type="button" onClick={() => onAction(item.action!, item.letter)}
                 className="shrink-0 font-semibold text-[#8B1E2D] hover:underline cursor-pointer">
-                {actionLabels[item.action]}
+                {item.letter ? `${item.letter} şıkkını görselde göster` : actionLabels[item.action]}
               </button>
             )}
           </li>

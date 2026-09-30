@@ -9,7 +9,7 @@ export interface ExportStepProps {
   step: number;
   videoGenerated: boolean;
   currentProject: QuestionProject;
-  handleReadinessAction: (action: ReadinessAction) => void;
+  handleReadinessAction: (action: ReadinessAction, letter?: string) => void;
   exportError: string | null;
   isExportingMp4: boolean;
   exportAbortRef: React.RefObject<AbortController | null>;

@@ -131,26 +131,17 @@ const scenes = {
   },
   async isaretler() {
     await go('#/soru/ornek-3', 3000); await step(4);
-    await mark(['[role=toolbar][aria-label="İşaret araçları"]', '.editor-panel >> text=İşaretleri tek tek kontrol et']);
+    await mark(['[role=toolbar][aria-label="İşaret araçları"]']);
   },
   async 'isaret-secili'() {
     await go('#/soru/ornek-3', 3000); await step(4);
     await page.locator('[aria-label="A şıkkı kutusu"]').first().click();
     await page.waitForTimeout(700);
-    await mark([page.locator('.moveable-control-box').first(), '[role=toolbar][aria-label="İşaret araçları"]']);
+    await mark([page.locator('.moveable-control-box').first(), '[role=toolbar][aria-label="İşaret araçları"]', '[role=group][aria-label="Bu kutu hangi şık?"]']);
   },
   async 'zaman-seridi'() {
     await go('#/soru/ornek-3', 3000); await step(4);
     await mark([page.getByText('Zaman şeridi', { exact: true }).first().locator('xpath=ancestor::div[contains(@class,"rounded")][1]')]);
-  },
-  async 'kutu-duzenle'() {
-    await go('#/soru/ornek-3', 3000); await step(4);
-    await page.getByRole('button', { name: 'Görseldeki kutuları düzenle' }).click(); await page.waitForTimeout(900);
-    const stage = page.getByRole('group', { name: 'Bölge çizim alanı' });
-    await stage.scrollIntoViewIfNeeded();
-    await page.locator('[title="Seçmek için tıklayın"]').filter({ hasText: 'D Seçeneği' }).first().click(); await page.waitForTimeout(600);
-    await stage.evaluate(el => el.scrollIntoView({ block: 'center' })); await page.waitForTimeout(400);
-    await mark([page.locator('[title^="Taşımak için"]').first()]);
   },
   async 'video-indir'() { await go('#/soru/ornek-3', 3000); await step(5); await mark(['button:has-text("MP4 İndir")', page.getByText('Yayına hazır').first().locator('xpath=..')]); },
   async 'soru-listesi'() { await go('#/sorular'); await mark(['.library-search', '.filter-row', page.getByRole('button', { name: /Devam et/ }).first()]); },
