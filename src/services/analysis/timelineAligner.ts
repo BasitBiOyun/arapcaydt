@@ -74,6 +74,21 @@ function sequenceAnchors(source: Array<{ norm: string }>, spoken: Array<{ norm: 
   return anchors;
 }
 
+/**
+ * About how long a passage takes to say: 0.07 s per letter (Arabic vowel marks and signs do not
+ * count). Turkish and Arabic speech run at about 12–16 letters a second.
+ */
+export function speechSeconds(text: string): number {
+  return (text.replace(/[\u064B-\u065F\u0670\u0640]/g, '').match(/[\p{L}\p{N}]/gu)?.length ?? 0) * 0.07;
+}
+/**
+ * A passage the transcript missed was still spoken when the audio between the words around it
+ * is long enough to hold it: the transcript often misses or rewrites Arabic (Latin letters,
+ * other spellings) that the voice read correctly.
+ */
+export const HEARD_SHARE = 0.4;
+
+const ARABIC = /[\u0600-\u06FF]/;
 export interface NarrationDrift {
   /** Spoken passages with no counterpart in the script (the voice added words). */
   added: Array<{ text: string; start: number }>;
@@ -98,8 +113,27 @@ export function narrationDrift(solutionText: string, narration: NarrationWord[] 
     const heard = spoken.slice(sj + 1, j), written = source.slice(si + 1, i);
     if (heard.length - written.length >= minWords)
       drift.added.push({ text: heard.map(w => w.text).join(' '), start: heard[0].start });
-    else if (written.length - heard.length >= minWords + 1)
-      drift.skipped.push({ text: solutionText.slice(written[0].sourceStart, written[written.length - 1].sourceEnd), start: spoken[sj]?.end ?? 0 });
+    else if (written.length - heard.length >= minWords + 1) {
+      const passage = (from: typeof written) => solutionText.slice(from[0].sourceStart, from[from.length - 1].sourceEnd);
+      const room = (spoken[j]?.start ?? duration) - (spoken[sj]?.end ?? 0);
+      // Only a gap too short for the passage means the voice left something out.
+      if (room < HEARD_SHARE * speechSeconds(passage(written))) {
+        // The transcript writes Turkish reliably but often misses Arabic: unheard Turkish is what
+        // was skipped; Arabic counts only when there is not even room for the Arabic itself.
+        const arabic = written.filter(w => ARABIC.test(w.text));
+        const latin = written.filter(w => !ARABIC.test(w.text));
+        const skippedArabic = arabic.length > 0 && room < HEARD_SHARE * speechSeconds(passage(arabic));
+        // Turkish on both sides of a spoken Arabic line is reported as separate passages.
+        const runs: typeof written[] = [];
+        if (skippedArabic) runs.push(written);
+        else if (latin.length - heard.length >= minWords + 1) for (const w of latin) {
+          const last = runs[runs.length - 1];
+          if (last && !ARABIC.test(solutionText.slice(last[last.length - 1].sourceEnd, w.sourceStart))) last.push(w);
+          else runs.push([w]);
+        }
+        for (const run of runs) drift.skipped.push({ text: passage(run), start: spoken[sj]?.end ?? 0 });
+      }
+    }
     si = i; sj = j;
   }
   return drift;

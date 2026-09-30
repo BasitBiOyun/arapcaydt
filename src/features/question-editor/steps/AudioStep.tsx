@@ -59,7 +59,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
   // transcript taken for timing shows where; forced alignment and Whisper cannot tell.
   const source = currentProject.narrationSource;
   const drift = useMemo(() => source?.type === 'gemini' && source.timingSource === 'gemini-transcribe'
-    ? narrationDrift(currentProject.solutionText, source.words || []) : null, [source, currentProject.solutionText]);
+    ? narrationDrift(currentProject.solutionText, source.words || [], activeAudioDuration || undefined) : null, [source, currentProject.solutionText, activeAudioDuration]);
   const clock = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
 
   return (

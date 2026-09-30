@@ -187,7 +187,7 @@ export default async function handler(req: any, res: any) {
   lanes: for (const lane of lanes) {
     for (const model of GEMINI_MODELS.filter(m => !lane.skip.includes(m))) {
       const remaining = deadline - Date.now();
-      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(text.length))) break lanes;
+      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(text.replace(/[\u064B-\u065F\u0670\u0640]/g, '').length))) break lanes;
       try {
         const upstream = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,

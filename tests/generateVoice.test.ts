@@ -4,7 +4,7 @@ import { MAX_REQUEST_CHARS, missingAudioReason, neededMs } from '../api/gemini/g
 import { PART_CHARS } from '../src/services/narration/narrationParts';
 
 test('a part always fits the time budget; a 5,000-character text leaves no room for a second model', () => {
-  assert.ok(neededMs(PART_CHARS) < 40_000, 'one part of a long solution is quick');
+  assert.ok(neededMs(PART_CHARS) < 95_000 / 2, 'one part fits the budget with room for a second model');
   assert.ok(neededMs(MAX_REQUEST_CHARS) > 95_000 / 2, 'no second slow try after a long first one');
 });
 
