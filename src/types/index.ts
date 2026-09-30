@@ -162,6 +162,9 @@ export interface VideoConfig {
   pipelineVersion?: number;
   warnings?: string[];
   suppressedRegionIds?: string[];
+  /** Which reader read the question picture, and why Google Vision was not used (if tried). */
+  ocrEngine?: 'vision' | 'tesseract';
+  ocrNote?: string;
 }
 
 export interface ExportConfig {

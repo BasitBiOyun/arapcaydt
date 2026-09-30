@@ -87,3 +87,29 @@ test('Ses şeridi: clicking back through a selection takes sentences out one by 
   assert.deepEqual(nextPick([3, 6], 3), [4, 6], 'the first one clicked again goes out');
   assert.deepEqual(nextPick([2, 8], 5), [2, 5], 'a click inside cuts the selection there');
 });
+
+test('re-voicing cuts in the real pause, not inside an Arabic sentence the transcript did not write', async () => {
+  const { cutAtPauses, findPauses } = await import('../src/services/narration/revoice');
+  const text = 'Birinci cümle burada biter. اِسْتَخْرَجَ النَّاسُ مُنْذُ الْعُصُورِ الْقَدِيمَةِ أَلْوَانًا. Üçüncü cümle de buradadır.';
+  const rate = 8000;
+  // Speech 0–2 s, pause, the Arabic sentence 2.5–5 s, pause, the last sentence 5.5–7.5 s.
+  const speech = [[0, 2], [2.5, 5], [5.5, 7.5]];
+  const samples = new Float32Array(8 * rate).map((_, i) => speech.some(([a, b]) => i / rate >= a && i / rate < b) ? .3 * Math.sin(i / 3) : 0);
+  // The transcript wrote only the Turkish words.
+  const heard: NarrationWord[] = [
+    ...['Birinci', 'cümle', 'burada', 'biter.'].map((t, i) => ({ text: t, start: i * .5, end: i * .5 + .45 })),
+    ...['Üçüncü', 'cümle', 'de', 'buradadır.'].map((t, i) => ({ text: t, start: 5.5 + i * .5, end: 5.5 + i * .5 + .45 })),
+  ];
+  const from = text.indexOf('Üçüncü');
+  const span = spokenSpan(text, heard, 8, { from, to: text.length })!;
+  assert.ok(span.start < 5, 'halfway between heard words falls inside the Arabic sentence');
+  const pauses = findPauses(samples, rate);
+  assert.ok([2, 5].every(t => pauses.some(p => p.start <= t + .02 && p.end >= t + .48)), 'the two sentence gaps are found');
+  const cut = cutAtPauses(samples, rate, span);
+  assert.ok(cut.start >= 5 && cut.start <= 5.5, `the cut is in the pause before the sentence (${cut.start.toFixed(2)} s)`);
+  assert.ok(cut.end >= 7.45 && cut.end <= 8, 'the end in the silence after the last word');
+  // Re-voicing the Arabic sentence itself: both cuts in the pauses around it.
+  const arabic = text.indexOf('اِسْتَخْرَجَ');
+  const both = cutAtPauses(samples, rate, spokenSpan(text, heard, 8, { from: arabic, to: text.indexOf('Üçüncü') - 1 })!);
+  assert.ok(both.start >= 2 && both.start <= 2.5 && both.end >= 5 && both.end <= 5.5, `${both.start.toFixed(2)}–${both.end.toFixed(2)} s`);
+});

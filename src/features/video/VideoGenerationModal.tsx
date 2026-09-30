@@ -34,9 +34,9 @@ interface StageDefinition {
 const STAGES: StageDefinition[] = [
   {
     id: 'IMAGE_ANALYSIS',
-    activeText: 'Soru görseli Tesseract OCR ile taranıyor...',
+    activeText: 'Soru görseli okunuyor...',
     completedText: 'Soru görseli ve şıklar analiz edildi',
-    pendingText: 'Soru görseli analizi (Tesseract)',
+    pendingText: 'Soru görseli analizi',
   },
   {
     id: 'SOLUTION_ANALYSIS',

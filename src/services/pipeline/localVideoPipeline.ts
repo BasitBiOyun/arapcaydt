@@ -31,6 +31,8 @@ export interface LocalPipelineResult {
   captions: VideoCaption[];
   timingQuality: 'word-aligned' | 'anchored' | 'approximate';
   warnings: string[];
+  ocrEngine?: 'vision' | 'tesseract';
+  ocrNote?: string;
 }
 
 export class LocalVideoPipeline {
@@ -74,7 +76,7 @@ export class LocalVideoPipeline {
     onProgress?.({
       stage: 'ocr',
       progress: 10,
-      message: 'Tesseract OCR ile soru metni ve şıklar taranıyor...',
+      message: 'Soru metni ve şıklar okunuyor...',
     });
 
     // Fixed template text (header, instruction box, footer) learned from earlier slides is ignored.
@@ -206,6 +208,8 @@ export class LocalVideoPipeline {
       captions: alignment.captions,
       timingQuality: alignment.quality,
       warnings,
+      ocrEngine: rawOcr.engine,
+      ocrNote: rawOcr.cloudIssue,
     };
   }
 }

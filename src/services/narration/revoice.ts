@@ -81,6 +81,16 @@ export interface SpokenSpan {
   end: number;
   /** No word of the range was heard: the new audio is inserted, nothing is taken out. */
   skipped: boolean;
+  /**
+   * Where each cut is looked for in the audio: between the last word heard before the range and
+   * the first heard inside it (and likewise at the end), near the estimated boundary. Words the
+   * transcript did not write (often Arabic) lie in between, so the cut is set in a real pause
+   * there (see cutAtPauses), not halfway between heard words, which could fall inside them.
+   */
+  startWindow?: [number, number];
+  endWindow?: [number, number];
+  startGuess?: number;
+  endGuess?: number;
 }
 
 /**
@@ -91,7 +101,8 @@ export interface SpokenSpan {
 export function spokenSpan(solutionText: string, words: NarrationWord[], duration: number, range: { from: number; to: number }): SpokenSpan | null {
   const aligned = alignSolutionNarration(solutionText, words, duration).words;
   if (!aligned.length || !aligned.some(w => w.matched)) return null;
-  const inside = aligned.filter(w => w.sourceStart >= range.from && w.sourceEnd <= range.to && w.matched);
+  const words_ = aligned.filter(w => w.sourceStart >= range.from && w.sourceEnd <= range.to);
+  const inside = words_.filter(w => w.matched);
   const before = [...aligned].reverse().find(w => w.sourceEnd <= range.from && w.matched);
   const after = aligned.find(w => w.sourceStart >= range.to && w.matched);
   const mid = (a: number, b: number) => (a + b) / 2;
@@ -104,19 +115,77 @@ export function spokenSpan(solutionText: string, words: NarrationWord[], duratio
     const spokenThere = /[\u0600-\u06FF]/.test(text)
       ? to - from >= HEARD_SHARE * speechSeconds(text)
       : words.filter(w => w.start >= from - 0.01 && w.end <= to + 0.01).length >= Math.max(1, text.split(/\s+/).length / 2);
-    if (spokenThere) return { start: from, end: to, skipped: false };
+    if (spokenThere) return { start: from, end: to, skipped: false,
+      startWindow: [from, to], endWindow: [from, to], startGuess: words_[0]?.start ?? from, endGuess: words_[words_.length - 1]?.end ?? to };
     // Really left out: it goes in after whatever was spoken between the words around it
     // (an Arabic line the transcript did not write, for example), not in the middle of that.
     const before_ = speechSeconds(solutionText.slice(before?.sourceEnd ?? 0, range.from));
     const at = Math.max(from, Math.min(to - 0.05, from + before_ + 0.1));
-    return { start: at, end: at, skipped: true };
+    return { start: at, end: at, skipped: true, startWindow: [from, to], endWindow: [from, to], startGuess: at, endGuess: at };
   }
   const first = inside[0], last = inside[inside.length - 1];
   return {
     start: before ? mid(before.end, first.start) : Math.max(0, first.start - 0.05),
     end: after ? mid(last.end, after.start) : duration,
     skipped: false,
+    startWindow: [before?.end ?? 0, first.start], endWindow: [last.end, after?.start ?? duration],
+    // The range's own first and last words, timed between the heard ones when unheard.
+    startGuess: words_[0].start, endGuess: words_[words_.length - 1].end,
   };
+}
+
+/** A stretch of silence in the narration (seconds). */
+export interface Pause { start: number; end: number }
+
+/**
+ * The silences of a narration: 10 ms frames well below its loud level, at least 80 ms long.
+ */
+export function findPauses(samples: Float32Array, rate: number): Pause[] {
+  const frame = Math.max(1, Math.round(rate * .01));
+  const levels: number[] = [];
+  for (let i = 0; i < samples.length; i += frame) {
+    let sum = 0;
+    const end = Math.min(samples.length, i + frame);
+    for (let j = i; j < end; j++) sum += samples[j] * samples[j];
+    levels.push(Math.sqrt(sum / Math.max(1, end - i)));
+  }
+  const loud = [...levels].sort((a, b) => a - b)[Math.floor(levels.length * .95)] || 0;
+  const quiet = Math.max(.004, loud * .08);
+  const pauses: Pause[] = [];
+  let from = -1;
+  levels.forEach((level, i) => {
+    if (level < quiet) { if (from < 0) from = i; return; }
+    if (from >= 0 && i - from >= 8) pauses.push({ start: from * frame / rate, end: i * frame / rate });
+    from = -1;
+  });
+  if (from >= 0 && levels.length - from >= 8) pauses.push({ start: from * frame / rate, end: levels.length * frame / rate });
+  return pauses;
+}
+
+/**
+ * The best place to cut near `guess` within [lo, hi]: the middle of a pause there, a long one
+ * (a sentence end) preferred over a short one, a near one over a far one. Without a pause, the guess.
+ */
+export function snapToPause(pauses: Pause[], guess: number, lo: number, hi: number): number {
+  let best = Math.max(lo, Math.min(hi, guess)), bestScore = -Infinity;
+  for (const p of pauses) {
+    const middle = (p.start + p.end) / 2;
+    if (middle < lo - .05 || middle > hi + .05) continue;
+    const score = Math.min(.6, p.end - p.start) - .5 * Math.abs(middle - guess);
+    if (score > bestScore) { bestScore = score; best = middle; }
+  }
+  return best;
+}
+
+/** Where to cut the narration for a span: in the real pauses around it (see SpokenSpan). */
+export function cutAtPauses(samples: Float32Array, rate: number, span: SpokenSpan): { start: number; end: number } {
+  if (!span.startWindow || !span.endWindow) return { start: span.start, end: span.end };
+  const pauses = findPauses(samples, rate);
+  const start = snapToPause(pauses, span.startGuess ?? span.start, ...span.startWindow);
+  // A left-out stretch goes into a pause between the words around it; nothing is taken out.
+  if (span.skipped) return { start, end: start };
+  const end = snapToPause(pauses, span.endGuess ?? span.end, Math.max(start, span.endWindow[0]), span.endWindow[1]);
+  return end > start ? { start, end } : { start: span.start, end: span.end };
 }
 
 /** Samples below this level (about 1% of full scale) count as silence. */

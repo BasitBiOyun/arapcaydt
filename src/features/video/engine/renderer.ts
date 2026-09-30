@@ -327,8 +327,8 @@ export function renderQuestionVideoFrame(
   const spot = outroT >= 0 && correctIds.length
     ? { ids: correctIds, strength: Math.min(1, outroT / .4) }
     : lit.length
-    ? { ids: [...lit.map(f => f.regionId), ...Object.keys(state.correctRegions)], strength: Math.max(...lit.map(f => f.intensity)) }
-    : lastCorrect && age(lastCorrect) < 2.4
+    ? { ids: [...lit.map(f => f.regionId), ...correctIds], strength: Math.max(...lit.map(f => f.intensity)) }
+    : lastCorrect && isOption(lastCorrect.regionId) && age(lastCorrect) < 2.4
       ? { ids: [lastCorrect.regionId], strength: Math.min(1, age(lastCorrect) / .3, (2.4 - age(lastCorrect)) / .5) }
       : state.activeDimOthers.active
         ? { ids: [state.activeDimOthers.targetRegionId!], strength: .6 }
@@ -359,8 +359,11 @@ export function renderQuestionVideoFrame(
     const r = rectFor(id); if (!r) continue;
     const t = age(mark);
     const lift = emphasis.find(f => f.regionId === id)?.intensity ?? 0;
-    tracedFrame(ctx, r, scale, '#16A34A', `rgba(220,252,231,${.45 + .25 * lift})`, easeOutCubic(Math.min(1, t / .45)), 1, 'rgba(22,163,74,.5)', framePad(id));
-    if (lift > 0) tracedFrame(ctx, r, scale, 'rgba(22,163,74,.7)', 'transparent', 1, lift * (.55 + .45 * Math.sin(currentTime * 5) ** 2), 'rgba(22,163,74,.9)', framePad(id));
+    // The answer option keeps its green frame; a tick on anything else (a premise, a drawn place)
+    // only flashes it, like a cross, so no empty box is left beside the tick.
+    if (isOption(id)) tracedFrame(ctx, r, scale, '#16A34A', `rgba(220,252,231,${.45 + .25 * lift})`, easeOutCubic(Math.min(1, t / .45)), 1, 'rgba(22,163,74,.5)', framePad(id));
+    else if (t < .45) tracedFrame(ctx, r, scale, '#16A34A', 'rgba(220,252,231,.35)', 1, 1 - t / .45, 'rgba(22,163,74,.35)', framePad(id));
+    if (lift > 0 && isOption(id)) tracedFrame(ctx, r, scale, 'rgba(22,163,74,.7)', 'transparent', 1, lift * (.55 + .45 * Math.sin(currentTime * 5) ** 2), 'rgba(22,163,74,.9)', framePad(id));
     const m = markerGeometry(r, width, scale, true, byId.get(id)?.markerAnchor, obstaclesFor(id));
     markBadge(ctx, m.x, m.y, m.radius * 1.3, t, 'correct', scale);
     const reveal = isOption(id) ? Math.min(1, Math.max(0, (t - .3) / .3)) : 0;
