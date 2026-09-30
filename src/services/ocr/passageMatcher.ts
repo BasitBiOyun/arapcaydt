@@ -23,7 +23,7 @@ interface PassageToken { norm: string; from: number; to: number }
 
 /**
  * The Arabic passages of the solution, with each word's place in the text: runs of ten or more
- * Arabic words with no Turkish word between them. A passage may share its line with Turkish
+ * Arabic words with no Turkish word between them (sentence numbers like "II." do not count). A passage may share its line with Turkish
  * ("Önce paragrafı okuyalım. اِسْتَخْرَجَ …").
  */
 export function findPassages(solutionText: string): PassageToken[][] {
@@ -32,6 +32,8 @@ export function findPassages(solutionText: string): PassageToken[][] {
   const close = () => { if (run.length >= PASSAGE_MIN_WORDS) passages.push(run); run = []; };
   for (const m of solutionText.matchAll(/\S+/g)) {
     const word = m[0];
+    // Numbered sentences ("I. …", "(II) …", "3. …") are one passage read sentence by sentence.
+    if (/^[([]?(?:[IVX]{1,4}|\d{1,2})[)\].:]*$/.test(word)) continue;
     if (/[A-Za-zÇĞİÖŞÜçğıöşü]/.test(word)) { close(); continue; }
     // A line break between Arabic lines keeps the passage; a blank line ends it.
     if (/\n[ \t]*\n/.test(solutionText.slice(run.length ? run[run.length - 1].to : m.index!, m.index!))) close();

@@ -111,3 +111,34 @@ test('passage: shorter phrases skip it while it is read, and a later mention poi
   assert.deepEqual(inside, [], 'nothing else is underlined while the passage is read');
   assert.ok(parsed.events.some(e => e.targetRegionId === mention!.region.id && e.sourceStart! > SOLUTION.indexOf('Parçada')));
 });
+
+test('passage: numbered sentences ("I. …", "II. …") are read as one passage, despite a watermark over them', () => {
+  const sentences = [
+    'مُنْذُ سِنٍّ مُبَكِّرَةٍ، يُفَضِّلُ أَغْلَبُ الْأَطْفَالِ اسْتِهْلَاكَ الْمُنْتَجَاتِ الْمُصَنَّعَةِ.',
+    'تُعَدُّ وَجْبَةُ الْإِفْطَارِ أَهَمَّ وَجْبَةٍ فِي الْيَوْمِ.',
+    'فَهِيَ الَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ مَلِيءٍ بِالطَّاقَةِ وَالنَّشَاطِ.',
+    'لِذَلِكَ مِنَ الضَّرُورِيِّ أَنْ يَتَنَاوَلَ الْأَطْفَالُ وَجْبَةَ إِفْطَارٍ مُغَذِّيَةً قَبْلَ الذَّهَابِ إِلَى الْمَدْرَسَةِ.',
+    'وَيُسَاعِدُ تَنَاوُلُ وَجْبَةِ إِفْطَارٍ مُتَكَامِلَةٍ عَلَى تَلْبِيَةِ احْتِيَاجَاتِ الْأَطْفَالِ مِنَ الطَّاقَةِ.',
+  ];
+  const text = `Önce cümlelerin tamamını okuyalım:\n${sentences.map((s, i) => `${['I', 'II', 'III', 'IV', 'V'][i]}. ${s}`).join('\n')}\nŞimdi anlam bütünlüğüne bakalım. İkinci cümlede kahvaltının önemi söyleniyor. Doğru cevap A seçeneğidir.`;
+  const passages = findPassages(text);
+  assert.equal(passages.length, 1, 'the five numbered sentences are one passage');
+  assert.equal(passages[0].length, sentences.join(' ').split(/\s+/).length);
+  // As printed: sentence numbers inside the lines, a watermark across them (Latin words, some
+  // Arabic words broken or misread under it).
+  const printed = [
+    '(I) منذ سن مبكرة، يفضل أغلب الأطفال استهلاك',
+    'المنتجات المصنغة. (II) تعد وجبة الإفطار أهم وجبة في',
+    'اليوم. (III) فهي التي تحضر الجسم لبوم مليء بالطاقة',
+    'والنشاط، (IV) لذلك من الضرور ي أن يتناول الأطفال',
+    'وجبة إفطار مغذية قبل الذهاب إلى المدرسة. (V) ويساعد',
+    'تناول وجبة إفطار متكاملة على تلبية احتياجات الأطفال',
+    'من الطاقة.',
+  ];
+  const words = printed.flatMap((row, i) => line(row, .70, .32 + i * .06))
+    .concat(line("ÖSYM'nin yazılı izni olmadan", .62, .5), line('A) I B) II C) III D) IV E) V', .66, .74));
+  const found = findPassageMatches(text, words);
+  assert.equal(found.length, printed.length, 'one underline per printed line');
+  found.forEach((l, i) => assert.ok(Math.abs(l.region.y - (.32 + i * .06)) < .01, `line ${i + 1} on printed line ${i + 1}`));
+  assert.ok(found[1].phrase.includes('الْمُصَنَّعَةِ') && found[1].phrase.includes('فِي'), 'a line spanning two numbered sentences keeps both parts');
+});
