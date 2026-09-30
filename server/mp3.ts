@@ -90,3 +90,28 @@ export async function storedNarrationAudio(wav: Buffer): Promise<{ bytes: Buffer
   }
   return { bytes: wav, mimeType: 'audio/wav', extension: 'wav' };
 }
+
+/**
+ * One narration from the parts of a long solution, in order. MP3 parts are joined frame after
+ * frame (same encoder settings, no headers); WAV parts (kept when encoding failed) are joined
+ * as PCM and encoded once. A mix cannot be joined without decoding MP3, so it is refused.
+ */
+export async function joinNarrationAudio(parts: Buffer[]): Promise<{ bytes: Buffer; mimeType: string; extension: string }> {
+  if (!parts.length) throw new Error('Birleştirilecek ses parçası yok.');
+  const wavs = parts.map(pcmFromWav);
+  if (wavs.every(Boolean)) {
+    const pcm = wavs as Pcm[];
+    if (pcm.some(p => p.sampleRate !== pcm[0].sampleRate)) throw new Error('Ses parçalarının örnekleme hızı farklı.');
+    const samples = new Int16Array(pcm.reduce((n, p) => n + p.samples.length, 0));
+    let at = 0;
+    for (const p of pcm) { samples.set(p.samples, at); at += p.samples.length; }
+    const header = Buffer.alloc(44);
+    header.write('RIFF', 0); header.writeUInt32LE(36 + samples.length * 2, 4); header.write('WAVEfmt ', 8);
+    header.writeUInt32LE(16, 16); header.writeUInt16LE(1, 20); header.writeUInt16LE(1, 22); header.writeUInt32LE(pcm[0].sampleRate, 24);
+    header.writeUInt32LE(pcm[0].sampleRate * 2, 28); header.writeUInt16LE(2, 32); header.writeUInt16LE(16, 34); header.write('data', 36);
+    header.writeUInt32LE(samples.length * 2, 40);
+    return storedNarrationAudio(Buffer.concat([header, Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength)]));
+  }
+  if (wavs.some(Boolean)) throw new Error('Ses parçaları farklı biçimde kaydedilmiş; seslendirmeyi yeniden deneyin.');
+  return { bytes: Buffer.concat(parts), mimeType: 'audio/mpeg', extension: 'mp3' };
+}

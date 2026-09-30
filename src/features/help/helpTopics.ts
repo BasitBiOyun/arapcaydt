@@ -57,7 +57,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'Metnin altındaki kontrol kutusunda her şıkkın ne olacağını görürsünüz (✗ elenir / ✓ doğru cevap). Bir şık eksikse cümlenizi o şıkkı adıyla anarak düzeltin.' },
       { text: 'Arapça ifadeleri **harekeli** yazın; seslendirme böylece doğru okur ve ifadeler görselde bulunup altı çizilir. Bitince **Sese geç**’e basın.' },
     ],
-    tips: ['Metin en fazla 5.000 karakter olabilir; sayaç kutunun altında görünür.'],
+    tips: ['Metin en fazla 10.000 karakter olabilir; sayaç kutunun altında görünür. 4.500 karakterden uzun metinler birkaç bölümde seslendirilip tek ses dosyasında birleştirilir (her bölüm bir ses hakkı kullanır).'],
   },
   {
     id: 'seslendirme',

@@ -12,7 +12,8 @@ export interface SolutionStepProps {
 
 /** STEP 2: Çözüm Metni */
 /** Longest solution text the voice can read in one go (the server refuses longer). */
-export const SPOKEN_LIMIT = 5000;
+import { SPOKEN_LIMIT } from '../../../services/narration/narrationParts';
+export { SPOKEN_LIMIT };
 
 export function SolutionStep({
   step,
