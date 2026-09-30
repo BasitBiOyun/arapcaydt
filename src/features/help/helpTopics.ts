@@ -232,6 +232,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: '**5 İndir** adımında **Yayına hazır** listesini okuyun: bulunan şıklar, doğru cevap ve işaretlerin sese bağlılığı burada kontrol edilir. Kırmızı bir madde varsa yanındaki düğmeyle düzeltin.', image: 'video-indir', alt: 'Video indirme adımı' },
       { text: '**MP4 İndir (1080p)** düğmesine basın. Düğmede “MP4 Hazırlanıyor… %40” gibi ilerleme görünür; bitene kadar bu sekmeyi kapatmayın.' },
       { text: 'Video, tarayıcınızın **İndirilenler** klasörüne sorunun adıyla kaydedilir.' },
+      { text: 'İndirilen soru **Tamamlandı** olarak işaretlenir ve kontrol listelerinden çıkar; Sorularım’da yanında “✓ Tamamlandı” yazar. Değişiklik yapmak isterseniz **Düzenlemeye geri aç**’a basın, bitince yeniden indirin. Videoyu daha önce indirdiyseniz **tamamlandı olarak işaretleyin** bağlantısını kullanın.' },
     ],
     tips: ['Altyazıları, soru boyutunu ve sondaki “Doğru cevap” kapanış kartını önizlemenin altındaki seçeneklerden açıp kapatabilirsiniz.'],
   },

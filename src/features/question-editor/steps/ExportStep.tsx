@@ -10,6 +10,8 @@ export interface ExportStepProps {
   videoGenerated: boolean;
   currentProject: QuestionProject;
   handleReadinessAction: (action: ReadinessAction, letter?: string) => void;
+  /** Mark the question finished (true) or open it for changes again (false). */
+  onMarkDone: (done: boolean) => void;
   exportError: string | null;
   isExportingMp4: boolean;
   exportAbortRef: React.RefObject<AbortController | null>;
@@ -22,7 +24,7 @@ export interface ExportStepProps {
 }
 
 /** STEP 4: Video Oluştur */
-export function ExportStep({ step, videoGenerated, currentProject, handleReadinessAction, exportError, isExportingMp4, exportAbortRef, handleDownloadMp4, exportPercent, setIsVideoModalOpen, handleAttemptCreateVideo, isAudioApproved, videoButtonWarning }: ExportStepProps) {
+export function ExportStep({ step, videoGenerated, currentProject, handleReadinessAction, onMarkDone, exportError, isExportingMp4, exportAbortRef, handleDownloadMp4, exportPercent, setIsVideoModalOpen, handleAttemptCreateVideo, isAudioApproved, videoButtonWarning }: ExportStepProps) {
   const confirm = useConfirm();
   return (
     <div hidden={step<3} className="space-y-3 pt-2 border-t border-[#E5E4DC]">
@@ -62,6 +64,18 @@ export function ExportStep({ step, videoGenerated, currentProject, handleReadine
                 </>
               )}
             </button>
+            {step === 4 && (currentProject.completedAt ? (
+              <div className="p-3 rounded-lg border border-[#C5DAC8] bg-white text-sm text-[#1E562A] space-y-1.5">
+                <p className="font-semibold flex items-center gap-1.5"><CheckCircle size={16} weight="fill" /> Tamamlandı · {new Date(currentProject.completedAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}</p>
+                <p className="text-[#55544F]">Bu soru bitti sayılır; kontrol listelerinde artık görünmez. Değişiklik yapmak isterseniz düzenlemeye açın, bitince yeniden indirin.</p>
+                <button type="button" className="font-semibold text-[#8B1E2D] hover:underline" onClick={() => onMarkDone(false)}>Düzenlemeye geri aç</button>
+              </div>
+            ) : (
+              <p className="text-sm text-[#787670] text-center">
+                İndirince soru <b>Tamamlandı</b> olarak işaretlenir. Daha önce indirdiyseniz{' '}
+                <button type="button" className="font-semibold text-[#8B1E2D] hover:underline" onClick={() => onMarkDone(true)}>tamamlandı olarak işaretleyin</button>.
+              </p>
+            ))}
           </div>
 
           <div className="pt-1 text-center">

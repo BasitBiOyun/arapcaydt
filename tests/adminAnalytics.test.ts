@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeProjects, CURRENT_PIPELINE_VERSION, type ProjectRow } from '../api/admin/analytics';
+import { isCompleted, summarizeProjects, CURRENT_PIPELINE_VERSION, type ProjectRow } from '../api/admin/analytics';
 import { CURRENT_PIPELINE_VERSION as EDITOR_VERSION } from '../src/features/question-editor/readiness';
 
 const options = ['option-a', 'option-b', 'option-c', 'option-d', 'option-e'];
@@ -22,7 +22,7 @@ test('admin analytics counts engines, Gemini models, fallbacks and timestamp sou
   assert.deepEqual({ g: s.voice.gemini, e: s.voice.elevenlabs, f: s.voice.geminiFallbacks, u: s.voice.uploaded, n: s.voice.none }, { g: 2, e: 2, f: 1, u: 1, n: 1 });
   assert.deepEqual(s.voice.models, { 'gemini-3.8-flash-lite-tts': 1, 'gemini-3.8-flash-tts': 1 });
   assert.deepEqual(s.voice.timing, { 'gemini-transcribe': 1, 'forced-alignment': 1, 'elevenlabs-tts': 2, whisper: 1 });
-  assert.deepEqual(s.funnel, { total: 6, withAudio: 5, withMarkers: 4, ready: 4 });
+  assert.deepEqual(s.funnel, { total: 6, withAudio: 5, withMarkers: 4, ready: 4, completed: 0 });
   assert.equal(s.members.t1.gemini, 2);
   assert.equal(s.members.t1.geminiFallbacks, 1);
   assert.ok(s.issues.some(i => i.projectId === 'p3' && i.detail.includes('ElevenLabs yedeği')));
@@ -91,4 +91,20 @@ test('usage migration applies on top of the membership schema and accepts the ne
   await assert.rejects(db.query(`insert into public.activity(owner_id,kind,state) values ($1,'something_else','x')`, [id]));
   // Re-running the migration is harmless.
   await db.exec(readFileSync(new URL('../supabase/migrations/20260927_voice_usage.sql', import.meta.url), 'utf8'));
+});
+
+test('finished questions leave the checks and the attention list; an old MP4 download counts until reopened', () => {
+  const blocked = (id: string, extra: Partial<ProjectRow> = {}): ProjectRow => ({ id, owner_id: 't1', updated_at: '2026-09-30T10:00:00Z', status: 'video_ready',
+    correctAnswer: 'A', pipelineVersion: 1, actions: [{ type: 'correct', targetRegionId: 'option-a' }], regionIds: ['option-a'], ...extra });
+  const s = summarizeProjects([
+    blocked('done', { completedAt: '2026-09-30T11:00:00Z' }),
+    blocked('old-export'),
+    blocked('reopened', { reopenedAt: '2026-09-30T12:00:00Z' }),
+    blocked('open'),
+  ], { 'old-export': '2026-09-29T09:00:00Z', reopened: '2026-09-29T09:00:00Z' });
+  assert.equal(s.funnel.completed, 2, 'marked done, and downloaded before marking existed');
+  assert.equal(s.quality.blocked, 2, 'only the open ones are still to fix');
+  assert.equal(s.members.t1.completed, 2);
+  assert.deepEqual(s.issues.map(i => i.projectId).sort(), ['open', 'reopened'], 'finished questions are not in the attention list');
+  assert.equal(isCompleted({ reopenedAt: '2026-09-30T12:00:00Z' }, '2026-09-30T13:00:00Z'), true, 'downloaded again after reopening');
 });

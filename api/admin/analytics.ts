@@ -13,6 +13,8 @@ export interface ProjectRow {
   category?: string | null;
   status?: string | null;
   videoReady?: boolean | null;
+  completedAt?: string | null;
+  reopenedAt?: string | null;
   correctAnswer?: string | null;
   narrationType?: string | null;
   modelId?: string | null;
@@ -29,6 +31,7 @@ export interface ProjectRow {
 const SELECT = [
   'id', 'owner_id', 'updated_at',
   'title:data->>title', 'category:data->>category', 'status:data->>status', 'videoReady:data->videoReady',
+  'completedAt:data->>completedAt', 'reopenedAt:data->>reopenedAt',
   'correctAnswer:data->>correctAnswer',
   'narrationType:data->narrationSource->>type', 'modelId:data->narrationSource->>modelId',
   'legacyModelId:data->audioNarration->>modelId',
@@ -64,15 +67,25 @@ export interface MemberStats {
   draft: number; audioGenerated: number; audioApproved: number; videoReady: number;
   withAudio: number; uploadedAudio: number; gemini: number; elevenlabs: number; geminiFallbacks: number;
   quality: Record<Quality, number>;
+  completed: number;
   lastProjectAt: string | null;
 }
 export interface Issue { projectId: string; ownerId: string; title: string; updatedAt: string; detail: string }
 
-export function summarizeProjects(rows: ProjectRow[]) {
+/**
+ * A question the teacher finished: marked done (downloading its MP4 does that), or, for questions
+ * downloaded before that existed, an MP4 export on record that is newer than any reopening.
+ */
+export function isCompleted(row: Pick<ProjectRow, 'completedAt' | 'reopenedAt'>, lastExportAt?: string): boolean {
+  if (row.completedAt) return true;
+  return !!lastExportAt && (!row.reopenedAt || lastExportAt > row.reopenedAt);
+}
+
+export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<string, string> = {}) {
   const categoryTotals: Record<string, number> = {};
   const members: Record<string, MemberStats> = {};
   const voice = { gemini: 0, elevenlabs: 0, geminiFallbacks: 0, uploaded: 0, none: 0, models: {} as Record<string, number>, timing: {} as Record<string, number> };
-  const funnel = { total: rows.length, withAudio: 0, withMarkers: 0, ready: 0 };
+  const funnel = { total: rows.length, withAudio: 0, withMarkers: 0, ready: 0, completed: 0 };
   const qualityTotals: Record<Quality, number> = { ready: 0, check: 0, blocked: 0 };
   const issues: Issue[] = [];
 
@@ -81,7 +94,7 @@ export function summarizeProjects(rows: ProjectRow[]) {
     const category = row.category?.trim() || 'belirtilmemis';
     const status = row.status || 'draft';
     const stats = members[owner] ??= { categories: {}, draft: 0, audioGenerated: 0, audioApproved: 0, videoReady: 0, withAudio: 0,
-      uploadedAudio: 0, gemini: 0, elevenlabs: 0, geminiFallbacks: 0, quality: { ready: 0, check: 0, blocked: 0 }, lastProjectAt: null };
+      uploadedAudio: 0, gemini: 0, elevenlabs: 0, geminiFallbacks: 0, quality: { ready: 0, check: 0, blocked: 0 }, completed: 0, lastProjectAt: null };
     stats.categories[category] = (stats.categories[category] || 0) + 1;
     categoryTotals[category] = (categoryTotals[category] || 0) + 1;
     if (status === 'draft') stats.draft++;
@@ -109,8 +122,12 @@ export function summarizeProjects(rows: ProjectRow[]) {
       voice.timing[timing] = (voice.timing[timing] || 0) + 1;
     }
 
+    // A finished question is no longer "to check": it counts as completed, not by its publish check.
+    const completed = isCompleted(row, lastExportAt[row.id]);
     const level = quality(row);
-    if (level) { funnel.withMarkers++; qualityTotals[level]++; stats.quality[level]++; if (level === 'ready') funnel.ready++; }
+    if (level || completed) funnel.withMarkers++;
+    if (completed) { funnel.completed++; stats.completed++; continue; }
+    if (level) { qualityTotals[level]++; stats.quality[level]++; if (level === 'ready') funnel.ready++; }
 
     const title = row.title || 'Adsız proje';
     const push = (detail: string) => issues.push({ projectId: row.id, ownerId: owner, title, updatedAt: row.updated_at, detail });
@@ -216,6 +233,19 @@ async function readTeacherKeys(db: any): Promise<Record<string, { last4: string;
   return Object.fromEntries((data || []).map((r: any) => [r.owner_id, { last4: r.last4, status: r.status, updatedAt: r.updated_at }]));
 }
 
+/** When each question's MP4 was last exported (activity 'video_export'). */
+async function readExports(db: any): Promise<Record<string, string>> {
+  const latest: Record<string, string> = {};
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await db.from('activity').select('project_id,created_at').eq('kind', 'video_export')
+      .not('project_id', 'is', null).order('created_at', { ascending: false }).range(from, from + 999);
+    if (error) return latest;
+    for (const row of data || []) if (!latest[row.project_id]) latest[row.project_id] = row.created_at;
+    if ((data || []).length < 1000) break;
+  }
+  return latest;
+}
+
 async function readAllProjects(db: any): Promise<ProjectRow[]> {
   const all: ProjectRow[] = [];
   const pageSize = 1000;
@@ -245,8 +275,8 @@ export default async function handler(req: any, res: any) {
 
   try {
     const db = serviceDatabase();
-    const [projects, usage, teacherKeys, limits] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db)]);
-    return res.status(200).json({ ...summarizeProjects(projects), teacherKeys,
+    const [projects, usage, teacherKeys, limits, exports] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db), readExports(db)]);
+    return res.status(200).json({ ...summarizeProjects(projects, exports), teacherKeys,
       requests: { ...summarizeRequests(usage.rows, undefined, limits), migrationPending: usage.migrationPending } });
   } catch (error: any) {
     console.error('[Admin analytics]', error?.message || error);

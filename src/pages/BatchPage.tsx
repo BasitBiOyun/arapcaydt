@@ -136,7 +136,10 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
         setVideos(previous => ({ ...previous, [p.questionNumber]: { name, blob } }));
         if (!zipMode) saveFile(blob, videoFileName(p));
       },
-      recordExport: async p => { await database().rpc('record_video_export', { project_id: p.id }); },
+      recordExport: async p => {
+        await projectRepository.save({ ...p, completedAt: new Date().toISOString() }).catch(() => undefined);
+        await database().rpc('record_video_export', { project_id: p.id });
+      },
       wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
       now: () => Date.now(),
     };

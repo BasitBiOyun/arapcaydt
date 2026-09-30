@@ -45,6 +45,8 @@ interface MemberAnalytics {
   elevenlabs: number;
   geminiFallbacks: number;
   quality: { ready: number; check: number; blocked: number };
+  /** Finished questions (MP4 downloaded or marked done); not counted in quality. */
+  completed?: number;
   lastProjectAt: string | null;
 }
 interface MemberToday {
@@ -71,7 +73,7 @@ interface Analytics {
     models: Record<string, number>;
     timing: Record<string, number>;
   };
-  funnel: { total: number; withAudio: number; withMarkers: number; ready: number };
+  funnel: { total: number; withAudio: number; withMarkers: number; ready: number; completed?: number };
   quality: { ready: number; check: number; blocked: number };
   issues: Array<{ projectId: string; ownerId: string; title: string; updatedAt: string; detail: string }>;
   teacherKeys?: Record<string, { last4: string; status: string; updatedAt: string }>;
@@ -418,8 +420,8 @@ export const AdminPage: React.FC = () => {
               hint={`${analytics?.funnel.withAudio ?? 0} tanesi seslendirildi`} />
             <Stat label="Video hazır" value={totalVideoReady} tone="text-[#8B1E2D]"
               hint={`${members.reduce((s, m) => s + m.exports, 0)} MP4 indirildi`} />
-            <Stat label="Yayına hazır" value={analytics?.quality.ready ?? 0} tone="text-[#1E562A]"
-              hint={analytics ? `${analytics.quality.check} kontrol önerilir · ${analytics.quality.blocked} düzeltme gerekli` : undefined} />
+            <Stat label="Tamamlandı" value={analytics?.funnel.completed ?? 0} tone="text-[#1E562A]"
+              hint={analytics ? `Bekleyenler: ${analytics.quality.ready} yayına hazır · ${analytics.quality.check} kontrol önerilir · ${analytics.quality.blocked} düzeltme gerekli` : undefined} />
           </div>
 
           <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6">
@@ -440,7 +442,7 @@ export const AdminPage: React.FC = () => {
                     ['Proje', analytics.funnel.total],
                     ['Sesli', analytics.funnel.withAudio],
                     ['İşaretleri hazır', analytics.funnel.withMarkers],
-                    ['Yayına hazır', analytics.funnel.ready],
+                    ['Tamamlandı', analytics.funnel.completed ?? 0],
                   ] as Array<[string, number]>).map(([label, value]) => (
                     <div key={label}>
                       <div className="flex justify-between text-sm"><span className="text-[#55544F]">{label}</span><strong className="tabular-nums">{value}</strong></div>
@@ -512,7 +514,9 @@ export const AdminPage: React.FC = () => {
                             </div>
                           )}
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-xs" title="yayına hazır · kontrol önerilir · düzeltme gerekli">
+                        <td className="px-4 py-3 whitespace-nowrap text-xs" title="tamamlandı ✓ · bekleyenler: yayına hazır · kontrol önerilir · düzeltme gerekli">
+                          <span className="text-[#166534] font-bold">✓ {stats?.completed || 0}</span>
+                          <span className="text-[#C9C7BE]"> · </span>
                           <span className="text-[#15803D] font-semibold">{stats?.quality.ready || 0}</span>
                           <span className="text-[#C9C7BE]"> · </span>
                           <span className="text-[#B45309] font-semibold">{stats?.quality.check || 0}</span>

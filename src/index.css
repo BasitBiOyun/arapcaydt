@@ -114,6 +114,7 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .question-open strong { display: block; font-size: .875rem; font-weight: 700; overflow-wrap: anywhere; }
 .question-open small { display: block; font-size: .875rem; color: #746e66; margin-top: 6px; }
 .project-stage { font-size: .75rem; color: #6c4b38; padding: 6px 9px; background: #efeae2; border-radius: 5px; white-space: nowrap; }
+.project-stage.is-done { color: #166534; background: #dcfce7; font-weight: 600; }
 .row-actions { display: flex; align-items: center; gap: 4px; }
 .row-actions > button:not(.studio-secondary) { display: grid; place-items: center; height: 40px; width: 36px; color: #746e66; border-radius: 7px; }
 .row-actions > button:hover { background: #f0eae3; color: #8b1e2d; }

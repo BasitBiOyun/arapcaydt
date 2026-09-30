@@ -232,6 +232,10 @@ export interface QuestionProject {
   notes?: string;
   /** When the teacher moved it to the recycle bin; it is deleted for good 30 days later. */
   deletedAt?: string;
+  /** The teacher finished the question (downloaded its MP4, or marked it done): no longer "to check". */
+  completedAt?: string;
+  /** When a finished question was opened for changes again. */
+  reopenedAt?: string;
 }
 
 /**
@@ -241,7 +245,7 @@ export interface QuestionProject {
 export type ProjectSummary = Pick<QuestionProject,
   'id' | 'ownerId' | 'createdAt' | 'updatedAt' | 'title' | 'examYear' | 'examName' | 'questionNumber' | 'category'
   | 'correctAnswer' | 'status' | 'audioApproved' | 'videoReady' | 'imageUrl' | 'imageFileName' | 'arabicQuestionSnippet' | 'solutionText'
-  | 'deletedAt'> & {
+  | 'deletedAt' | 'completedAt'> & {
   narrationSource?: Pick<NarrationSource, 'type' | 'isApproved' | 'duration'>;
   audioNarration?: Pick<AudioNarration, 'isApproved' | 'duration'>;
 };

@@ -10,7 +10,7 @@ export const SUMMARY_SELECT = [
   'solutionText:data->>solutionText',
   'nsType:data->narrationSource->>type', 'nsApproved:data->narrationSource->isApproved', 'nsDuration:data->narrationSource->duration',
   'anApproved:data->audioNarration->isApproved', 'anDuration:data->audioNarration->duration',
-  'deletedAt:data->>deletedAt',
+  'deletedAt:data->>deletedAt', 'completedAt:data->>completedAt',
 ].join(',');
 
 /** Storage path of a stored image reference, or null for inline/legacy URLs. */
@@ -36,6 +36,7 @@ export function summaryFromRow(row: any, signed: Map<string, string>): ProjectSu
     narrationSource: hasNarration ? { type: row.nsType, isApproved: row.nsApproved === true, duration: Number(row.nsDuration) || 0 } : undefined,
     audioNarration: hasCompat ? { isApproved: row.anApproved === true, duration: Number(row.anDuration) || 0 } : undefined,
     ...(row.deletedAt ? { deletedAt: row.deletedAt } : {}),
+    ...(row.completedAt ? { completedAt: row.completedAt } : {}),
   };
 }
 
@@ -49,5 +50,6 @@ export function toSummary(p: QuestionProject | ProjectSummary): ProjectSummary {
     narrationSource: p.narrationSource ? { type: p.narrationSource.type, isApproved: p.narrationSource.isApproved, duration: p.narrationSource.duration } : undefined,
     audioNarration: p.audioNarration ? { isApproved: p.audioNarration.isApproved, duration: p.audioNarration.duration } : undefined,
     ...(p.deletedAt ? { deletedAt: p.deletedAt } : {}),
+    ...(p.completedAt ? { completedAt: p.completedAt } : {}),
   };
 }
