@@ -316,7 +316,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             </p>
           ) : null}
           {hasAudio && !isUploadedAudio && (
-            <p className="text-sm leading-relaxed">Sesin yalnız bir iki cümlesi hatalıysa bütün sesi yeniden üretmeyin: “Sesi düzelt” ile sadece o yeri düzeltin.</p>
+            <p className="text-sm leading-relaxed">Sesin yalnız bir iki cümlesi hatalıysa bütün sesi yeniden üretmeyin: sorunun altındaki Ses şeridinde o cümleyi seçip yalnız onu yeniden seslendirin.</p>
           )}
         </div>
       ))}

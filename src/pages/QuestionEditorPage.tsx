@@ -292,7 +292,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     const voiceParts = splitNarration(currentProject.solutionText).length;
     if (activeAudioUrl && !await confirm({
       title: 'Yeniden seslendirilsin mi?',
-      message: `Yalnız bir iki cümle hatalıysa bunun yerine “Sesi düzelt”i kullanın. Yeniden seslendirirseniz şu anki ses silinir ve yerine yenisi üretilir. Bugünkü ses haklarınızdan ${voiceParts > 1 ? `${voiceParts} tanesi (uzun metin ${voiceParts} bölümde okunur)` : 'biri'} kullanılır.${currentProject.audioApproved ? ' Onayladığınız sesin yerine geçer.' : ''}`,
+      message: `Yalnız bir iki cümle hatalıysa bunun yerine sorunun altındaki Ses şeridinden yalnız o cümleyi yeniden seslendirin. Yeniden seslendirirseniz şu anki ses silinir ve yerine yenisi üretilir. Bugünkü ses haklarınızdan ${voiceParts > 1 ? `${voiceParts} tanesi (uzun metin ${voiceParts} bölümde okunur)` : 'biri'} kullanılır.${currentProject.audioApproved ? ' Onayladığınız sesin yerine geçer.' : ''}`,
       confirmLabel: 'Yeniden seslendir',
     })) return;
 
