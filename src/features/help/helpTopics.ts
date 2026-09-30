@@ -73,6 +73,8 @@ export const HELP_TOPICS: HelpTopic[] = [
       'Bir kelimenin nasıl okunacağından emin değilseniz **Telaffuzu kısa bir örnekle dene** bölümünden kısa bir deneme dinleyebilirsiniz.',
       'Kendi MP3’ünüzü yüklüyorsanız, okuduğunuz metin çözüm metniyle aynı olmalıdır; işaretler kelimelere göre yerleştirilir.',
       'Günlük ücretsiz ses hakkı biterse kendi Google anahtarınızı ekleyebilirsiniz (bkz. **Google anahtarı alma**).',
+      'Seçili bir cümleye yeniden tıklamak onu seçimden çıkarır. Bir cümleye çift tıklarsanız o cümle çalar; ses çalarken okunan cümle çerçeveyle gösterilir.',
+      'Klavyeyle: **Boşluk** oynatır/durdurur, **← →** önceki/sonraki cümleyi seçer (**Shift** ile seçime ekler), **Enter** seçili yeri dinletir, **Esc** seçimi kaldırır.',
     ],
   },
   {
@@ -88,10 +90,11 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'Değişiklikler kendiliğinden kaydedilir. Bitince **İndirmeye geç**’e basın.' },
     ],
     tips: [
-      'Yaptığınız son değişikliği **Geri al** düğmesiyle geri alabilirsiniz.',
+      'Yaptığınız son değişikliği **Geri al** düğmesiyle ya da **Ctrl+Z** ile geri alabilirsiniz.',
+      'Görselde seçili kutuyu **Ctrl+C** ile kopyalayıp **Ctrl+V** ile yapıştırabilirsiniz: kopya biraz yanda çıkar, işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun. **Delete** seçili kutuyu siler, **Esc** seçimi bırakır.',
       '**İşaretleri yeniden hazırla** elle yaptığınız düzeltmeleri siler; bu yüzden önce onayınızı ister.',
       'Önizleme hızını 1× ile 2× arasında seçerek videoyu hızlıca kontrol edebilirsiniz.',
-      'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, soru büyür. Esc ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
+      'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, ikisi de kaydırmadan ekrana sığar. Esc ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
     ],
   },
   {
