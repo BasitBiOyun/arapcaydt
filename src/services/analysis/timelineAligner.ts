@@ -1,3 +1,4 @@
+import { findPassages } from '../ocr/passageMatcher';
 import { VideoAction, NarrationWord } from '../../types';
 import { SemanticParsedEvent } from './solutionParser';
 import { underlineSpanFor } from '../../features/video/engine/timeline';
@@ -86,6 +87,8 @@ export function speechSeconds(text: string): number {
  * is long enough to hold it: the transcript often misses or rewrites Arabic (Latin letters,
  * other spellings) that the voice read correctly.
  */
+/** Inside a long Arabic passage: the share of its speaking time that must be missing to call it skipped. */
+const PASSAGE_HEARD_SHARE = .15;
 export const HEARD_SHARE = 0.4;
 
 const ARABIC = /[\u0600-\u06FF]/;
@@ -108,6 +111,10 @@ export function narrationDrift(solutionText: string, narration: NarrationWord[] 
   const drift: NarrationDrift = { added: [], skipped: [] };
   const anchors = sequenceAnchors(source, spoken);
   if (!source.length || !spoken.length || anchors.size / source.length < 0.5) return drift;
+  // Inside a long Arabic passage the transcript often writes little of the Arabic, and a stray
+  // match can leave a short gap: there only a stretch with almost no room at all is "skipped".
+  const passages = findPassages(solutionText).map(p => ({ from: p[0].from, to: p[p.length - 1].to }));
+  const inPassage = (from: number, to: number) => passages.some(p => from >= p.from && to <= p.to);
   let si = -1, sj = -1;
   for (const [i, j] of [...anchors, [source.length, spoken.length] as [number, number]]) {
     const heard = spoken.slice(sj + 1, j), written = source.slice(si + 1, i);
@@ -122,7 +129,8 @@ export function narrationDrift(solutionText: string, narration: NarrationWord[] 
         // was skipped; Arabic counts only when there is not even room for the Arabic itself.
         const arabic = written.filter(w => ARABIC.test(w.text));
         const latin = written.filter(w => !ARABIC.test(w.text));
-        const skippedArabic = arabic.length > 0 && room < HEARD_SHARE * speechSeconds(passage(arabic));
+        const share = arabic.length && inPassage(arabic[0].sourceStart, arabic[arabic.length - 1].sourceEnd) ? PASSAGE_HEARD_SHARE : HEARD_SHARE;
+        const skippedArabic = arabic.length > 0 && room < share * speechSeconds(passage(arabic));
         // Turkish on both sides of a spoken Arabic line is reported as separate passages.
         const runs: typeof written[] = [];
         if (skippedArabic) runs.push(written);

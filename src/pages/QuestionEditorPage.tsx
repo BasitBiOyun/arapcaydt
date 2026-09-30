@@ -2,7 +2,7 @@ import { steps, resumeStep, checkNarration } from '../features/question-editor/w
 import { VoiceSample } from '../features/question-editor/VoiceSample';
 import { type ReadinessAction } from '../features/question-editor/readiness';
 import { applyPipelineResult, narrationFromTts, timeGeneratedNarration, withWordTimings } from '../features/question-editor/projectUpdates';
-import { database } from '../services/supabase';
+import { database, reportClientError } from '../services/supabase';
 import React, { useState, useEffect, useRef } from 'react';
 import { QuestionProject, VideoConfig } from '../types';
 import { useProjects } from '../features/projects/ProjectContext';
@@ -13,7 +13,7 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
 import { narrationService } from '../services/narration/narrationService';
-import { cutAtPauses, moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
+import { cutAtPauses, matchLoudness, moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
 import { NARRATION_RATE, decodeAudio, encodeMp3 } from '../services/narration/audioCodec';
 import { alignSolutionNarration } from '../services/analysis/timelineAligner';
 import { splitNarration, spokenLength } from '../services/narration/narrationParts';
@@ -372,7 +372,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       const [base, insert] = await Promise.all([decodeAudio(activeAudioUrl), decodeAudio(piece.audioUrl)]);
       // Cut in the real pauses around the range, so no word of the sentences around it is lost.
       const cut = cutAtPauses(base, NARRATION_RATE, span);
-      const joined = spliceAudio(base, insert, NARRATION_RATE, cut.start, cut.end);
+      // The new piece at the loudness of the voice around it.
+      const joined = spliceAudio(base, matchLoudness(insert, base, NARRATION_RATE, cut.start, cut.end), NARRATION_RATE, cut.start, cut.end);
       const blob = await encodeMp3(joined.samples);
       const audioUrl = URL.createObjectURL(blob);
       const duration = joined.samples.length / NARRATION_RATE;
@@ -555,6 +556,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       if (activityError) setExportError('Video indirildi; üretim kaydı kaydedilemedi.');
     } catch (err) {
       console.error('Local MP4 Export error:', err);
+      if (!exportAbortRef.current?.signal.aborted) reportClientError(currentProject.id, 'mp4', err);
       setExportError(err instanceof Error ? err.message : 'Video oluşturulamadı.');
     } finally {
       setIsExportingMp4(false);

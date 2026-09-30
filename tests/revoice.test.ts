@@ -113,3 +113,15 @@ test('re-voicing cuts in the real pause, not inside an Arabic sentence the trans
   const both = cutAtPauses(samples, rate, spokenSpan(text, heard, 8, { from: arabic, to: text.indexOf('Üçüncü') - 1 })!);
   assert.ok(both.start >= 2 && both.start <= 2.5 && both.end >= 5 && both.end <= 5.5, `${both.start.toFixed(2)}–${both.end.toFixed(2)} s`);
 });
+
+test('a re-voiced piece is brought to the loudness of the voice around it', async () => {
+  const { matchLoudness } = await import('../src/services/narration/revoice');
+  const rate = 8000;
+  const tone = (seconds: number, level: number) => new Float32Array(seconds * rate).map((_, i) => level * Math.sin(i / 3) * (i % 4000 < 3000 ? 1 : 0));
+  const base = tone(20, .2), level = (s: Float32Array) => Math.sqrt(s.reduce((n, v) => n + v * v, 0) / s.length);
+  const loud = matchLoudness(tone(3, .35), base, rate, 8, 10);
+  assert.ok(Math.abs(level(loud) / level(tone(3, .2)) - 1) < .05, 'a louder piece is turned down');
+  const quiet = matchLoudness(tone(3, .15), base, rate, 8, 10);
+  assert.ok(Math.abs(level(quiet) / level(tone(3, .2)) - 1) < .05, 'a quieter one up');
+  assert.ok(Math.max(...matchLoudness(tone(3, .6), tone(20, .9), rate, 8, 10).map(Math.abs)) <= .981, 'never clipping');
+});

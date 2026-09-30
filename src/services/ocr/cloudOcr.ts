@@ -90,6 +90,7 @@ const ISSUES: Record<string, string> = {
   VISION_QUOTA: 'Google Vision kotası doldu',
   VISION_TIMEOUT: 'Google Vision zamanında yanıt vermedi',
   VISION_MONTH_FULL: 'bu ayın Google Vision hakkı doldu; ay başında yeniden açılır',
+  VISION_DAY_FULL: 'bugünkü Google Vision hakkınız (30 okuma) doldu; yarın yenilenir',
   VISION_COUNTER_MISSING: 'Google Vision sayacı kurulmamış (Supabase’de 20261005_vision_quota.sql çalıştırılmalı)',
 };
 
@@ -112,7 +113,7 @@ export async function readWithVision(imageUrl: string, onProgress?: (progress: O
     const data = await res.json().catch(() => null);
     if (!res.ok) {
       // Not set up, or this month's readings used up: not asked again in this session.
-      if (data?.code === 'VISION_NOT_CONFIGURED' || data?.code === 'VISION_MONTH_FULL') { notConfigured = true; skipReason = data.code; }
+      if (data?.code === 'VISION_NOT_CONFIGURED' || data?.code === 'VISION_MONTH_FULL' || data?.code === 'VISION_DAY_FULL') { notConfigured = true; skipReason = data.code; }
       const issue = ISSUES[data?.code] || data?.error || `Google Vision isteği başarısız (${res.status})`;
       console.warn('Google Vision okuyamadı, tarayıcıdaki okuyucu kullanılıyor:', data?.code || res.status, data?.detail || '');
       return { issue: data?.detail ? `${issue}: ${String(data.detail).slice(0, 140)}` : issue };

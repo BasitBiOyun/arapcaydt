@@ -248,3 +248,44 @@ export function withPassageReferences(text: string, found: ArabicMatchResult[], 
   });
   return result;
 }
+
+/** A quote of an option ("A seçeneğinde şöyle deniyor. …"): its words are in the option, not to be looked for elsewhere. */
+function quotesAnOption(text: string, phrase: string): boolean {
+  const at = text.indexOf(phrase);
+  return at >= 0 && /(?:şıkk|seçene)[^\n]{0,60}$/i.test(text.slice(Math.max(0, at - 120), at).split('\n').slice(-2).join(' '));
+}
+
+/**
+ * An explanation phrase of three or more words that the exact search missed (one letter misread
+ * is enough to miss it), looked for tolerantly anywhere on the picture, column by column. Found
+ * in two places, it is left alone rather than drawn at the wrong one.
+ */
+export function findTolerantly(phrase: string, words: OCRWord[], id: string): ArabicMatchResult[] {
+  const { segments, tokens } = readingOrder(words);
+  // Pieces of one printed line (cut by a lost word) are one line: one underline.
+  const rowOf = new Map(tokens.map(t => [t.word, t.row]));
+  const lines = (list: OCRWord[][]) => list.filter(s => s.length).reduce<OCRWord[][]>((rows, s) => {
+    const last = rows[rows.length - 1];
+    if (last && rowOf.get(last[0]) === rowOf.get(s[0])) last.push(...s); else rows.push([...s]);
+    return rows;
+  }, []).map(s => ({ matchedWords: s }) as PassageMatch);
+  const first = findInPassage(phrase, lines(segments), id);
+  if (!first.length) return [];
+  const used = new Set(first.flatMap(m => m.matchedWords));
+  if (findInPassage(phrase, lines(segments.map(s => s.filter(w => !used.has(w)))), `${id}-again`).length) return [];
+  return first;
+}
+
+/** The explanation's phrases of three or more words the exact search missed, found tolerantly; their found pieces give way. */
+export function withTolerantPhrases(text: string, found: ArabicMatchResult[], words: OCRWord[]): ArabicMatchResult[] {
+  let result = found;
+  extractArabicPhrases(text).forEach((phrase, index) => {
+    if (phrase.split(/\s+/).filter(w => normalizeArabic(w)).length < 3 || quotesAnOption(text, phrase)) return;
+    if (result.some(m => m.region.label === `Arapça: "${phrase}"` || m.region.label?.startsWith(`Arapça: "${phrase}" (`))) return;
+    const tolerant = findTolerantly(phrase, words, `arabic-tolerant-${index + 1}`);
+    if (!tolerant.length) return;
+    const covered = new Set(tolerant.flatMap(m => m.matchedWords));
+    result = [...result.filter(m => !m.matchedWords.length || !m.matchedWords.every(w => covered.has(w))), ...tolerant];
+  });
+  return result;
+}

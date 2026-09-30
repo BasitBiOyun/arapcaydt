@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { isCompleted, summarizeProjects, CURRENT_PIPELINE_VERSION, type ProjectRow } from '../api/admin/analytics';
+import { clientErrorIssues, isCompleted, summarizeProjects, CURRENT_PIPELINE_VERSION, type ProjectRow } from '../api/admin/analytics';
 import { CURRENT_PIPELINE_VERSION as EDITOR_VERSION } from '../src/features/question-editor/readiness';
 
 const options = ['option-a', 'option-b', 'option-c', 'option-d', 'option-e'];
@@ -107,4 +107,15 @@ test('finished questions leave the checks and the attention list; an old MP4 dow
   assert.equal(s.members.t1.completed, 2);
   assert.deepEqual(s.issues.map(i => i.projectId).sort(), ['open', 'reopened'], 'finished questions are not in the attention list');
   assert.equal(isCompleted({ reopenedAt: '2026-09-30T12:00:00Z' }, '2026-09-30T13:00:00Z'), true, 'downloaded again after reopening');
+});
+
+test('browser failures appear in the attention list under their question', () => {
+  const issues = clientErrorIssues([
+    { project_id: 'p1', owner_id: 't1', state: 'mp4', detail: 'Video kodlayıcı açılamadı', created_at: '2026-09-30T10:00:00Z' },
+    { project_id: null, owner_id: 't2', state: 'isaretler', detail: null, created_at: '2026-09-29T10:00:00Z' },
+  ], [{ id: 'p1', title: 'Soru 12' }]);
+  assert.deepEqual(issues.map(i => [i.title, i.detail]), [
+    ['Soru 12', 'Tarayıcı hatası (MP4): Video kodlayıcı açılamadı'],
+    ['Adsız proje', 'Tarayıcı hatası (İşaretler): ayrıntı yok'],
+  ]);
 });

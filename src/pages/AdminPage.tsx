@@ -74,6 +74,7 @@ interface Analytics {
     timing: Record<string, number>;
   };
   funnel: { total: number; withAudio: number; withMarkers: number; ready: number; completed?: number };
+  vision?: { month: number | null; limit: number; configured: boolean };
   quality: { ready: number; check: number; blocked: number };
   issues: Array<{ projectId: string; ownerId: string; title: string; updatedAt: string; detail: string }>;
   teacherKeys?: Record<string, { last4: string; status: string; updatedAt: string }>;
@@ -324,7 +325,7 @@ export const AdminPage: React.FC = () => {
     analytics && analytics.issues.length > 0 ? (
       <ul className="divide-y divide-[#EFEFEA]">
         {analytics.issues.slice(0, limit).map((issue) => (
-          <li key={issue.projectId + issue.detail} className="py-2.5 flex items-start justify-between gap-3">
+          <li key={issue.projectId + issue.detail + issue.updatedAt} className="py-2.5 flex items-start justify-between gap-3">
             <div className="min-w-0">
               <button disabled={busy} className="font-semibold text-[#8B1E2D] hover:underline text-left" onClick={() => void open(issue.projectId)}>
                 {issue.title}
@@ -457,6 +458,9 @@ export const AdminPage: React.FC = () => {
                 <div className="mt-5 pt-4 border-t text-sm space-y-1.5">
                   <div className="flex justify-between"><span className="text-[#55544F]">Ortak anahtar · bugünkü zamanlama</span>
                     <strong className={`tabular-nums ${requests.studio?.transcribeExhausted ? 'text-red-700' : ''}`}>{requests.studio?.transcribeUsed ?? 0} / ~{STUDIO_TRANSCRIBE_DAILY}</strong></div>
+                  <div className="flex justify-between" title="Ayda ilk 1000 okuma ücretsiz; sınıra gelince tarayıcıdaki okuyucu kullanılır. Hoca başına günde 30 okuma.">
+                    <span className="text-[#55544F]">Google Vision · bu ay</span>
+                    <strong className="tabular-nums">{!analytics?.vision?.configured ? 'kapalı' : analytics.vision.month == null ? '—' : `${analytics.vision.month} / ${analytics.vision.limit}`}</strong></div>
                   <div className="flex justify-between"><span className="text-[#55544F]">ElevenLabs yedek kotası</span>
                     <strong className="tabular-nums">{voice?.remainingCharacters != null ? `${voice.remainingCharacters.toLocaleString('tr')} karakter` : '—'}</strong></div>
                 </div>

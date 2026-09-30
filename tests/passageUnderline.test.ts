@@ -163,3 +163,19 @@ test('passage: the real Google Vision reading under the ÖSYM watermark gives on
   const { normalizeArabic } = await import('../src/services/ocr/arabicMatcher');
   lines.forEach((l, i) => assert.ok(normalizeArabic(l.phrase).startsWith(normalizeArabic(starts[i])), `line ${i + 1} is read from “${starts[i]}”, not “${l.phrase.slice(0, 20)}”`));
 });
+
+test('phrases: a three-word-or-longer phrase with a word the reader lost is still found, once, and option quotes are not looked for', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { findTolerantly, withTolerantPhrases } = await import('../src/services/ocr/passageMatcher');
+  const data = JSON.parse(readFileSync(new URL('./fixtures/passage-watermark-vision.json', import.meta.url), 'utf8'));
+  const words = data.words.filter((w: any) => w.y < .7);
+  // Vision did not read تحضر: the exact search misses this phrase.
+  assert.deepEqual(findBestArabicMatches('الَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ', words).filter(m => m.phrase.includes('تُحَضِّرُ')), []);
+  const found = findTolerantly('الَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ', words, 't');
+  assert.equal(found.length, 1);
+  assert.ok(Math.abs(found[0].region.y + found[0].region.height / 2 - .45) < .025, 'on the third printed line');
+  const quoted = withTolerantPhrases('C seçeneğinde şöyle deniyor.\nالَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ', [], words);
+  assert.deepEqual(quoted, [], 'a quoted option is not looked for on the text');
+  const said = withTolerantPhrases('Burada yani الَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ deniyor.', [], words);
+  assert.equal(said.length, 1);
+});

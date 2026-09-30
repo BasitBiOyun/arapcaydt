@@ -188,6 +188,37 @@ export function cutAtPauses(samples: Float32Array, rate: number, span: SpokenSpa
   return end > start ? { start, end } : { start: span.start, end: span.end };
 }
 
+/** Loudness of the spoken parts only (10 ms frames above silence), so pauses do not lower it. */
+function speechLevel(samples: Float32Array, rate: number, from = 0, to = samples.length): number {
+  const frame = Math.max(1, Math.round(rate * .01));
+  let sum = 0, count = 0;
+  for (let i = Math.max(0, from); i + frame <= Math.min(samples.length, to); i += frame) {
+    let energy = 0;
+    for (let j = i; j < i + frame; j++) energy += samples[j] * samples[j];
+    const rms = Math.sqrt(energy / frame);
+    if (rms >= QUIET) { sum += rms * rms; count++; }
+  }
+  return count ? Math.sqrt(sum / count) : 0;
+}
+
+/**
+ * The new piece at the loudness of the narration around it (6 s on each side of the cut), so a
+ * fixed sentence does not stand out louder or quieter. Never more than twice or half, never clipping.
+ */
+export function matchLoudness(insert: Float32Array, base: Float32Array, rate: number, start: number, end: number): Float32Array {
+  const around = Math.round(6 * rate), a = Math.round(start * rate), b = Math.round(end * rate);
+  const before = speechLevel(base, rate, a - around, a), after = speechLevel(base, rate, b, b + around);
+  const target = before && after ? (before + after) / 2 : before || after;
+  const level = speechLevel(insert, rate);
+  if (!target || !level) return insert;
+  let gain = Math.max(.5, Math.min(2, target / level));
+  let peak = 0;
+  for (const v of insert) peak = Math.max(peak, Math.abs(v));
+  if (peak * gain > .98) gain = .98 / peak;
+  if (Math.abs(gain - 1) < .03) return insert;
+  return insert.map(v => v * gain);
+}
+
 /** Samples below this level (about 1% of full scale) count as silence. */
 const QUIET = 0.012;
 const PAUSE = 0.18;

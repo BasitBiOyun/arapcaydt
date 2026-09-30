@@ -36,6 +36,14 @@ export function database() {
   return supabase;
 }
 
+/** A failure in the teacher's browser, kept for the admin panel. Never throws. */
+export function reportClientError(projectId: string, stage: 'isaretler' | 'mp4', error: unknown) {
+  const message = error instanceof Error ? error.message : String(error || 'bilinmeyen hata');
+  if (!supabase) return;
+  Promise.resolve(supabase.rpc('record_client_error', { project_id: projectId, stage, message: message.slice(0, 300) }))
+    .catch(() => undefined);
+}
+
 export async function authHeaders(): Promise<Record<string, string>> {
   const { data, error } = await database().auth.getSession();
   if (error || !data.session) throw new Error('Oturumunuz sona erdi. Yeniden giriş yapın.');

@@ -233,6 +233,43 @@ async function readTeacherKeys(db: any): Promise<Record<string, { last4: string;
   return Object.fromEntries((data || []).map((r: any) => [r.owner_id, { last4: r.last4, status: r.status, updatedAt: r.updated_at }]));
 }
 
+/** The start of this calendar month in Pacific time (how Google counts Vision's free readings). */
+export function pacificMonthStart(now = new Date()): string {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: 'numeric', timeZoneName: 'shortOffset' })
+    .formatToParts(now).map(p => [p.type, p.value]));
+  const offset = Number(/GMT([+-]\d+)/.exec(parts.timeZoneName || '')?.[1] ?? -8);
+  return new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, 1, -offset)).toISOString();
+}
+
+/** Google Vision readings this month (activity 'vision_ocr'), for the admin panel. */
+async function readVisionMonth(db: any): Promise<number | null> {
+  const { count, error } = await db.from('activity').select('id', { count: 'exact', head: true })
+    .eq('kind', 'vision_ocr').gte('created_at', pacificMonthStart());
+  return error ? null : count ?? 0;
+}
+
+export interface ClientError { project_id: string | null; owner_id: string; state: string | null; detail: string | null; created_at: string }
+
+/** Failures in teachers' browsers over the last 7 days (activity 'client_error'). */
+async function readClientErrors(db: any): Promise<ClientError[]> {
+  const since = new Date(Date.now() - 7 * 864e5).toISOString();
+  const { data, error } = await db.from('activity').select('project_id,owner_id,state,detail,created_at')
+    .eq('kind', 'client_error').gte('created_at', since).order('created_at', { ascending: false }).limit(40);
+  return error ? [] : data || [];
+}
+
+const STAGE_NAMES: Record<string, string> = { isaretler: 'İşaretler', mp4: 'MP4' };
+
+/** Browser failures as admin issues, titled by their question. */
+export function clientErrorIssues(errors: ClientError[], projects: Pick<ProjectRow, 'id' | 'title'>[]): Issue[] {
+  const titles = new Map(projects.map(p => [p.id, p.title]));
+  return errors.map(e => ({
+    projectId: e.project_id || '', ownerId: e.owner_id, updatedAt: e.created_at,
+    title: (e.project_id && titles.get(e.project_id)) || 'Adsız proje',
+    detail: `Tarayıcı hatası (${STAGE_NAMES[e.state || ''] || e.state || 'bilinmiyor'}): ${e.detail || 'ayrıntı yok'}`,
+  }));
+}
+
 /** When each question's MP4 was last exported (activity 'video_export'). */
 async function readExports(db: any): Promise<Record<string, string>> {
   const latest: Record<string, string> = {};
@@ -275,8 +312,13 @@ export default async function handler(req: any, res: any) {
 
   try {
     const db = serviceDatabase();
-    const [projects, usage, teacherKeys, limits, exports] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db), readExports(db)]);
-    return res.status(200).json({ ...summarizeProjects(projects, exports), teacherKeys,
+    const [projects, usage, teacherKeys, limits, exports, visionMonth, clientErrors] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db), readExports(db), readVisionMonth(db), readClientErrors(db)]);
+    const visionLimit = Number(process.env.VISION_MONTHLY_LIMIT);
+    const summary = summarizeProjects(projects, exports);
+    const issues = [...clientErrorIssues(clientErrors, projects), ...summary.issues]
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 40);
+    return res.status(200).json({ ...summary, issues, teacherKeys,
+      vision: { month: visionMonth, limit: Number.isInteger(visionLimit) && visionLimit >= 0 ? visionLimit : 950, configured: !!process.env.GOOGLE_VISION_API_KEY },
       requests: { ...summarizeRequests(usage.rows, undefined, limits), migrationPending: usage.migrationPending } });
   } catch (error: any) {
     console.error('[Admin analytics]', error?.message || error);
