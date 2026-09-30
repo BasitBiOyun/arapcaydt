@@ -1,3 +1,4 @@
+import { logged } from '../../server/errorLog.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { encodeMp3, pcmFromWav } from '../../server/mp3.js';
 import {
@@ -69,7 +70,7 @@ async function remove(db: any, names: string[]): Promise<number> {
  * CONVERT_BATCH WAV narrations into MP3 (timings unchanged); POST
  * {action:'sweep', scope:'wav'|'all'} deletes files no project uses.
  */
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   if (req.method !== 'GET' && req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
@@ -110,3 +111,5 @@ export default async function handler(req: any, res: any) {
     return res.status(500).json({ error: 'Depolama bilgisi hazırlanamadı.' });
   }
 }
+
+export default logged('/api/admin/storage', handler);

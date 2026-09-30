@@ -31,6 +31,7 @@ import type { LeaveGuard } from '../layouts/AppLayout';
 import { APP_NAME } from '../config/brand';
 import { ReportProblem } from '../features/feedback/ReportProblem';
 import { setReportContext } from '../features/feedback/feedback';
+import { reportSnapshot } from '../features/feedback/reportSnapshot';
 import { toast } from 'sonner';
 import { useConfirm } from '../components/common/ConfirmDialog';
 import { useAuth } from '../features/auth/AuthContext';
@@ -198,9 +199,12 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     return () => registerLeaveGuard(null);
   }, [working, registerLeaveGuard]);
 
-  // A problem report says which question and step the teacher was on.
+  // A problem report says which question and step the teacher was on, and carries its teşhis record.
+  const reportProject = useRef(currentProject);
+  reportProject.current = currentProject;
   useEffect(() => {
-    setReportContext({ page: 'Soru editörü', projectId: currentProject?.id, projectTitle: currentProject?.title, step: steps[step] });
+    setReportContext({ page: 'Soru editörü', projectId: currentProject?.id, projectTitle: currentProject?.title, step: steps[step],
+      snapshot: () => reportSnapshot(reportProject.current) });
   }, [currentProject?.id, currentProject?.title, step]);
 
   if (!currentProject) {

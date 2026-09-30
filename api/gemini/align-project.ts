@@ -1,3 +1,4 @@
+import { logged } from '../../server/errorLog.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
@@ -60,7 +61,7 @@ async function deleteGeminiFile(apiKey: string, name: string) {
   }).catch(() => undefined);
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -248,3 +249,5 @@ async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, proje
     await deleteGeminiFile(apiKey, uploadedName);
   }
 }
+
+export default logged('/api/gemini/align-project', handler);

@@ -1,4 +1,5 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { logged } from '../../server/errorLog.js';
 
 /**
  * Reads a question picture with Google Cloud Vision (document text detection), which reads
@@ -54,7 +55,7 @@ export function visionPage(annotation: any): VisionPage | null {
   return { width: page.width, height: page.height, words, lines, text: annotation.text || '' };
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -105,3 +106,5 @@ export default async function handler(req: any, res: any) {
   if (!page || !page.words.length) return res.status(200).json({ width: 0, height: 0, words: [], lines: [], text: '' });
   return res.status(200).json(page);
 }
+
+export default logged('/api/vision/ocr', handler);

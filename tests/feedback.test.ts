@@ -55,4 +55,33 @@ test('feedback migration: teachers write their own reports, only admins read all
   await db.exec('set role service_role');
   assert.equal((await db.query<any>(`select count(*)::int n from public.feedback`)).rows[0].n, 11, 'the server role can read reports');
   await db.exec('reset role');
+
+  // The teşhis record and the server error log (run twice: safe to repeat).
+  const reports = readFileSync(new URL('../supabase/migrations/20261007_reports_server_errors.sql', import.meta.url), 'utf8');
+  await db.exec(reports);
+  await db.exec(reports);
+  await as(t1);
+  await db.query(`insert into public.feedback(message, context, diagnostics) values ('', '{"reason":"Çizgi yanlış yerde"}', '{"words":[]}')`);
+  await assert.rejects(db.query(`select * from public.server_errors`), /permission denied/, 'teachers cannot read server errors');
+  await as(admin);
+  assert.deepEqual((await db.query<any>(`select diagnostics from public.feedback where context->>'reason' is not null`)).rows, [{ diagnostics: { words: [] } }]);
+  await db.exec('reset role');
+  await db.exec('set role service_role');
+  await db.query(`insert into public.server_errors(route, status, message) values ('/api/vision/ocr', 500, 'x')`);
+  assert.equal((await db.query<any>(`select count(*)::int n from public.server_errors`)).rows[0].n, 1);
+  await db.exec('reset role');
+});
+
+test('a report with a one-tap reason says it first, and the teşhis snapshot is never part of its context', async () => {
+  assert.match(describeReport('', { ...context, reason: 'Çizgi yanlış yerde' }), /^Sorun: Çizgi yanlış yerde\n\(Açıklama yazılmadı\)/);
+  const { setReportContext, collectContext, currentSnapshot } = await import('../src/features/feedback/feedback');
+  (globalThis as any).location = { pathname: '/', search: '' };
+  (globalThis as any).navigator ??= { userAgent: 'test' };
+  (globalThis as any).window ??= { innerWidth: 1, innerHeight: 1 };
+  setReportContext({ page: 'Soru editörü', projectId: 'p', snapshot: () => ({ words: [1] }) });
+  const collected = collectContext({ querySelectorAll: () => [] as any } as any);
+  assert.equal('snapshot' in collected, false);
+  assert.deepEqual(currentSnapshot(), { words: [1] });
+  setReportContext({ snapshot: () => { throw new Error('x'); } });
+  assert.equal(currentSnapshot(), undefined, 'a broken snapshot never blocks the report');
 });

@@ -9,6 +9,7 @@ import elevenLabsProjectAlignHandler from './api/elevenlabs/align-project';
 import analyticsHandler from './api/admin/analytics';
 import storageHandler from './api/admin/storage';
 import setRoleHandler from './api/admin/set-role';
+import monitorHandler from './api/admin/monitor';
 import { requireMember } from './server/auth';
 import express from 'express';
 import path from 'path';
@@ -50,6 +51,7 @@ app.post('/api/elevenlabs/align-project', safe(elevenLabsProjectAlignHandler));
 app.get('/api/admin/analytics', safe(analyticsHandler));
 app.all('/api/admin/storage', safe(storageHandler));
 app.post('/api/admin/set-role', safe(setRoleHandler));
+app.get('/api/admin/monitor', safe(monitorHandler));
 app.use('/api', safe(async(req,res)=>{if(await requireMember(req,res))res.status(404).json({ error: 'Bulunamadı.' });}));
 app.use('/api', (error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('[api]', error instanceof Error ? error.message : error);

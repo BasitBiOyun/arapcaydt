@@ -1,5 +1,6 @@
 import { requireMember } from '../../server/auth.js';
-export default async function handler(req: any, res: any) {
+import { logged } from '../../server/errorLog.js';
+async function handler(req: any, res: any) {
   const member=await requireMember(req,res);
   if(!member)return;
   if (req.method !== 'GET') {
@@ -21,3 +22,5 @@ export default async function handler(req: any, res: any) {
     ],
   });
 }
+
+export default logged('/api/elevenlabs/voices', handler);

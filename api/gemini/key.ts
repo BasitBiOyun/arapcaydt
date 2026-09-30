@@ -1,4 +1,5 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { logged } from '../../server/errorLog.js';
 import {
   FREE_TRANSCRIBE_PER_DAY, FREE_TTS_PER_MODEL, GEMINI_TTS_MODELS, encryptKey, isCapped, keyStorageReady,
   normalizeApiKey, readDailyState,
@@ -36,7 +37,7 @@ export function keySaveMessage(error: { code?: string; message?: string }, admin
  * encrypted on the server and never sent back to any browser; only its last
  * four characters are shown.
  */
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (!['GET', 'POST', 'DELETE'].includes(req.method)) {
@@ -103,3 +104,5 @@ export default async function handler(req: any, res: any) {
     },
   });
 }
+
+export default logged('/api/gemini/key', handler);

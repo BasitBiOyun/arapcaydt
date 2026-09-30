@@ -2,6 +2,7 @@ import { elevenLabsAlignAllowed, isCapped, readDailyState, usageDetail } from '.
 import { recordUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { logged } from '../../server/errorLog.js';
 
 export const config = { maxDuration: 120 };
 
@@ -11,7 +12,7 @@ function normalizeApiKey(value?: string): string {
   return key;
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -127,3 +128,5 @@ export default async function handler(req: any, res: any) {
     return res.status(502).json({ error: error?.message || 'ElevenLabs Forced Alignment servisine ulaşılamadı.' });
   }
 }
+
+export default logged('/api/elevenlabs/align-project', handler);

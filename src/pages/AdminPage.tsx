@@ -75,6 +75,7 @@ interface Analytics {
   };
   funnel: { total: number; withAudio: number; withMarkers: number; ready: number; completed?: number };
   vision?: { month: number | null; limit: number; configured: boolean };
+  serverErrors?: Array<{ owner_id: string | null; route: string; status: number; message: string; created_at: string }> | null;
   week?: Record<string, { completed: number; working: number; needsVoice: number; needsMarks: number; needsFix: number; errors: number }>;
   quality: { ready: number; check: number; blocked: number };
   issues: Array<{ projectId: string; ownerId: string; title: string; updatedAt: string; detail: string }>;
@@ -387,7 +388,7 @@ export const AdminPage: React.FC = () => {
 
       {tab === 'overview' && (
         <div className="space-y-6">
-          <FeedbackSection who={who} />
+          <FeedbackSection who={who} onOpen={id => void open(id)} />
           {pending.length > 0 && (
             <section className="rounded-xl border border-[#E5D7B0] bg-[#FFF8E6] p-5">
               <SectionTitle title={`Onay bekleyen hesaplar (${pending.length})`} note="E-postasını doğrulamış ve onayınızı bekleyen öğretmenler." />
@@ -711,6 +712,32 @@ export const AdminPage: React.FC = () => {
                             <td className="px-3 py-2 font-mono-code whitespace-nowrap">{f.model}</td>
                             <td className="px-3 py-2">{f.status === '0' ? 'bağlantı' : f.status}</td>
                             <td className="px-3 py-2 text-[#55544F]">{f.reason || '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </section>
+
+              <section className={card}>
+                <SectionTitle title="Sunucu hataları" note="Son 7 gün: sunucunun hata ile yanıt verdiği istekler (öğretmen bildirmese de kaydedilir). Her sabah kontrol edilir." />
+                {analytics?.serverErrors == null ? (
+                  <p className="text-sm text-[#78540E]">Kayıt için veritabanı güncellemesi bekleniyor: <code>supabase/migrations/20261007_reports_server_errors.sql</code>.</p>
+                ) : !analytics.serverErrors.length ? <p className="text-sm text-[#787670]">Son 7 günde sunucu hatası yok.</p> : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs text-left">
+                      <thead className="bg-[#FAF9F5] text-[#666560]">
+                        <tr>{['Zaman', 'Öğretmen', 'İstek', 'Kod', 'Mesaj'].map((t) => <th key={t} className="px-3 py-2 font-semibold whitespace-nowrap">{t}</th>)}</tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#EFEFEA]">
+                        {analytics.serverErrors.map((e, i) => (
+                          <tr key={i}>
+                            <td className="px-3 py-2 whitespace-nowrap">{new Date(e.created_at).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">{e.owner_id ? who(e.owner_id) : '—'}</td>
+                            <td className="px-3 py-2 font-mono-code whitespace-nowrap">{e.route}</td>
+                            <td className="px-3 py-2">{e.status}</td>
+                            <td className="px-3 py-2 text-[#55544F]">{e.message || '—'}</td>
                           </tr>
                         ))}
                       </tbody>

@@ -1,5 +1,6 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { DEFAULT_LIMITS, GEMINI_TTS_MODELS, nextQuotaReset, readLimits, quotaDay, summarizeDay, type Limits } from '../../server/quota.js';
+import { logged } from '../../server/errorLog.js';
 
 /**
  * One row per project with only the JSON fields the panel needs. Narration
@@ -282,6 +283,14 @@ export function summarizeWeek(rows: ProjectRow[], lastExportAt: Record<string, s
   return week;
 }
 
+/** API answers that failed on the server over the last 7 days; null until the table exists. */
+async function readServerErrors(db: any) {
+  const since = new Date(Date.now() - 7 * 864e5).toISOString();
+  const { data, error } = await db.from('server_errors').select('owner_id,route,status,message,created_at')
+    .gte('created_at', since).order('created_at', { ascending: false }).limit(50);
+  return error ? null : data || [];
+}
+
 const STAGE_NAMES: Record<string, string> = { isaretler: 'İşaretler', mp4: 'MP4' };
 
 /** Browser failures as admin issues, titled by their question. */
@@ -322,7 +331,7 @@ async function readAllProjects(db: any): Promise<ProjectRow[]> {
   return all;
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });
@@ -336,13 +345,13 @@ export default async function handler(req: any, res: any) {
 
   try {
     const db = serviceDatabase();
-    const [projects, usage, teacherKeys, limits, exports, visionMonth, clientErrors] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db), readExports(db), readVisionMonth(db), readClientErrors(db)]);
+    const [projects, usage, teacherKeys, limits, exports, visionMonth, clientErrors, serverErrors] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db), readExports(db), readVisionMonth(db), readClientErrors(db), readServerErrors(db)]);
     const visionLimit = Number(process.env.VISION_MONTHLY_LIMIT);
     const summary = summarizeProjects(projects, exports);
     const week = summarizeWeek(projects, exports, clientErrors);
     const issues = [...clientErrorIssues(clientErrors, projects), ...summary.issues]
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 40);
-    return res.status(200).json({ ...summary, issues, week, teacherKeys,
+    return res.status(200).json({ ...summary, issues, week, serverErrors, teacherKeys,
       vision: { month: visionMonth, limit: Number.isInteger(visionLimit) && visionLimit >= 0 ? visionLimit : 950, configured: !!process.env.GOOGLE_VISION_API_KEY },
       requests: { ...summarizeRequests(usage.rows, undefined, limits), migrationPending: usage.migrationPending } });
   } catch (error: any) {
@@ -350,3 +359,5 @@ export default async function handler(req: any, res: any) {
     return res.status(500).json({ error: 'Yönetim istatistikleri hazırlanamadı.' });
   }
 }
+
+export default logged('/api/admin/analytics', handler);

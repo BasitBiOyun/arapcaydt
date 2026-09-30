@@ -1,3 +1,4 @@
+import { logged } from '../../server/errorLog.js';
 import { createHash } from 'node:crypto';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage, type UsageEvent } from '../../server/usage.js';
@@ -146,7 +147,7 @@ function failedUsage(attempts: Attempt[], characters: number): UsageEvent[] {
   return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily, a.quota, a.detail), characters, keySource: a.keySource }));
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -268,3 +269,5 @@ export default async function handler(req: any, res: any) {
     attempts,
   });
 }
+
+export default logged('/api/gemini/generate', handler);

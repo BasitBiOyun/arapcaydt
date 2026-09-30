@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CheckCircle, Lifebuoy, WarningCircle, X } from '@phosphor-icons/react';
-import { collectContext, sendFeedback, type FeedbackContext, type SendResult } from './feedback';
+import { collectContext, currentSnapshot, REPORT_REASONS, sendFeedback, type FeedbackContext, type SendResult } from './feedback';
 
 /**
  * "Sorun bildir": one click opens a short form; the page, the open question and
@@ -10,14 +10,17 @@ import { collectContext, sendFeedback, type FeedbackContext, type SendResult } f
 export function ReportProblem({ variant = 'link', sender }: { variant?: 'link' | 'compact' | 'button'; sender?: string }) {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [reason, setReason] = useState('');
   const [context, setContext] = useState<FeedbackContext | null>(null);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<SendResult | null>(null);
   const field = useRef<HTMLTextAreaElement>(null);
 
   const start = () => { setContext(collectContext()); setResult(null); setOpen(true); };
-  const close = () => { setOpen(false); if (result?.sent) setMessage(''); };
-  useEffect(() => { if (open) field.current?.focus(); }, [open]);
+  const close = () => { setOpen(false); if (result?.sent) { setMessage(''); setReason(''); } };
+  // In a question the teacher first picks what went wrong; elsewhere they write it.
+  const inQuestion = !!context?.projectId;
+  useEffect(() => { if (open && !inQuestion) field.current?.focus(); }, [open, inQuestion]);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
@@ -29,7 +32,8 @@ export function ReportProblem({ variant = 'link', sender }: { variant?: 'link' |
     e.preventDefault();
     if (!context) return;
     setBusy(true);
-    setResult(await sendFeedback(message, context, sender));
+    const diagnostics = inQuestion ? currentSnapshot() : undefined;
+    setResult(await sendFeedback(message, { ...context, reason: reason || undefined }, sender, diagnostics));
     setBusy(false);
   };
 
@@ -63,16 +67,31 @@ export function ReportProblem({ variant = 'link', sender }: { variant?: 'link' |
               </div>
             ) : (
               <>
+                {inQuestion && (
+                  <fieldset>
+                    <legend className="text-sm font-medium text-[#33322E] mb-2">Ne oldu? Birini seçin.</legend>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {REPORT_REASONS.map(r => (
+                        <button key={r} type="button" aria-pressed={reason === r} onClick={() => setReason(reason === r ? '' : r)}
+                          className={`rounded-lg border px-3 py-2.5 text-left text-sm font-semibold transition-colors ${reason === r
+                            ? 'border-[#8B1E2D] bg-[#F7EEEE] text-[#8B1E2D]' : 'border-[#D5D4CC] text-[#33322E] hover:bg-[#FAF9F5]'}`}>
+                          {r}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+                )}
                 <label className="block text-sm font-medium text-[#33322E]">
-                  Ne oldu? <span className="font-normal text-[#787670]">(isteğe bağlı)</span>
-                  <textarea ref={field} value={message} onChange={e => setMessage(e.target.value)} maxLength={2000} rows={4}
-                    placeholder="Örnek: Ses üret düğmesine bastım, uzun süre bekledi ve hata verdi."
+                  {inQuestion ? 'İsterseniz kısaca yazın' : 'Ne oldu?'} <span className="font-normal text-[#787670]">(isteğe bağlı)</span>
+                  <textarea ref={field} value={message} onChange={e => setMessage(e.target.value)} maxLength={2000} rows={inQuestion ? 2 : 4}
+                    placeholder={inQuestion ? 'Örnek: 3. satırın altını çizmedi.' : 'Örnek: Ses üret düğmesine bastım, uzun süre bekledi ve hata verdi.'}
                     className="mt-1.5 block w-full rounded-lg border border-[#D5D4CC] p-3 text-sm outline-none focus:border-[#8B1E2D]" />
                 </label>
                 <div className="rounded-lg bg-[#FAF9F5] border border-[#E5E4DC] p-3 text-xs text-[#55544F] space-y-1">
                   <p className="font-semibold text-[#33322E]">Otomatik eklenecek bilgiler</p>
                   {context.page && <p>Sayfa: {context.page}</p>}
                   {context.projectTitle && <p>Soru: {context.projectTitle}{context.step ? ` · ${context.step} adımı` : ''}</p>}
+                  {inQuestion && <p>Sorunun işaretleri, zamanlaması ve görselde okunan yazı (dosya indirmeniz gerekmez)</p>}
                   <p>{context.shownErrors.length ? `Ekrandaki uyarı: ${context.shownErrors[0]}` : 'Ekranda uyarı yok'}{context.recentErrors.length ? ` · son ${context.recentErrors.length} hata kaydı` : ''}</p>
                   <p>Tarayıcı ve ekran boyutu</p>
                 </div>
@@ -84,7 +103,8 @@ export function ReportProblem({ variant = 'link', sender }: { variant?: 'link' |
                 )}
                 <div className="flex justify-end gap-2">
                   <button type="button" className="studio-secondary" onClick={close}>Vazgeç</button>
-                  <button className="studio-primary" disabled={busy}>{busy ? 'Gönderiliyor…' : 'Gönder'}</button>
+                  <button className="studio-primary" disabled={busy || (inQuestion && !reason && !message.trim())}
+                    title={inQuestion && !reason && !message.trim() ? 'Önce ne olduğunu seçin' : undefined}>{busy ? 'Gönderiliyor…' : 'Gönder'}</button>
                 </div>
               </>
             )}

@@ -8,9 +8,20 @@ export interface ReportContext {
   projectId?: string;
   projectTitle?: string;
   step?: string;
+  /** The open question's teşhis record, taken only when a report is sent. */
+  snapshot?: () => unknown;
 }
 
-export interface FeedbackContext extends ReportContext {
+/** What the teacher picks in one tap; the admin sees it as the report's title. */
+export const REPORT_REASONS = [
+  'Çizgi yanlış yerde', 'Tik / çarpı yanlış şıkta', 'Ses yanlış okudu', 'İşaret zamanı kaymış', 'Hata verdi / takıldı', 'Başka bir şey',
+] as const;
+
+export interface FeedbackContext extends Omit<ReportContext, 'snapshot'> {
+  /** The one-tap reason, when the teacher picked one. */
+  reason?: string;
+  /** The report carries the question's teşhis record (feedback.diagnostics). */
+  hasDiagnostics?: boolean;
   url: string;
   at: string;
   browser: string;
@@ -49,13 +60,14 @@ export function installErrorBuffer() {
 }
 
 export function collectContext(doc: Pick<Document, 'querySelectorAll'> = document): FeedbackContext {
+  const { snapshot: _snapshot, ...page } = current;
   const shownErrors = Array.from(doc.querySelectorAll('[role="alert"]'))
     .map(el => (el.textContent || '').replace(/\s+/g, ' ').trim())
     .filter(Boolean)
     .slice(0, 5)
     .map(text => text.slice(0, 300));
   return {
-    ...current,
+    ...page,
     url: location.pathname + location.search,
     at: new Date().toISOString(),
     browser: navigator.userAgent.slice(0, 200),
@@ -68,6 +80,7 @@ export function collectContext(doc: Pick<Document, 'querySelectorAll'> = documen
 /** Plain text of a report, for the e-mail fallback and the admin list. */
 export function describeReport(message: string, context: FeedbackContext, sender?: string): string {
   const lines = [
+    context.reason && `Sorun: ${context.reason}`,
     message.trim() || '(Açıklama yazılmadı)',
     '',
     sender && `Gönderen: ${sender}`,
@@ -83,11 +96,20 @@ export function describeReport(message: string, context: FeedbackContext, sender
 
 export type SendResult = { sent: true } | { sent: false; reason: string; mailto: string };
 
-export async function sendFeedback(message: string, context: FeedbackContext, sender?: string): Promise<SendResult> {
+/** The open question's teşhis record, or undefined when no question is open or it cannot be read. */
+export function currentSnapshot(): unknown {
+  try { return current.snapshot?.(); } catch { return undefined; }
+}
+
+export async function sendFeedback(message: string, context: FeedbackContext, sender?: string, diagnostics?: unknown): Promise<SendResult> {
   const mailto = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent('Soru Stüdyosu · Sorun bildirimi')}&body=${encodeURIComponent(describeReport(message, context, sender).slice(0, 1800))}`;
   if (!supabase) return { sent: false, reason: 'Bağlantı kurulamadı.', mailto };
   try {
-    const { error } = await supabase.from('feedback').insert({ message: message.trim().slice(0, 2000), context });
+    const row = { message: message.trim().slice(0, 2000), context: { ...context, hasDiagnostics: diagnostics != null } };
+    const full: Record<string, unknown> = diagnostics != null ? { ...row, diagnostics } : row;
+    let { error } = await supabase.from('feedback').insert(full);
+    // The teşhis column comes with a later database update; until then the report goes without it.
+    if (error && diagnostics != null && /diagnostics/i.test(error.message)) ({ error } = await supabase.from('feedback').insert({ ...row, context }));
     if (!error) return { sent: true };
     return { sent: false, reason: /çok fazla/i.test(error.message) ? error.message : 'Bildirim kaydedilemedi.', mailto };
   } catch {
