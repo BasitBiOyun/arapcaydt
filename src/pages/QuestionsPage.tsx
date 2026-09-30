@@ -56,7 +56,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
       (!category || p.category === category) &&
       (!collection || p.examName === collection) &&
       (!year || p.examYear === year) &&
-      (!status || String(resumeStep(p)) === status) &&
+      (!status || (status === 'done' ? !!p.completedAt : String(resumeStep(p)) === status && !p.completedAt)) &&
       [p.title, p.examName, p.examYear, p.arabicQuestionSnippet, String(p.questionNumber)]
         .join(' ')
         .toLocaleLowerCase('tr')
@@ -211,6 +211,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
                 {['Görsel bekliyor', 'Metin bekliyor', 'Ses kontrolü', 'İşaret kontrolü', 'Video hazır'][i]}
               </option>
             ))}
+            <option value="done">Tamamlandı</option>
           </select>
           {view === 'list' && (
             <select aria-label="Sıralama" value={sort} onChange={e => setSort(e.target.value as SortId)}>
@@ -298,7 +299,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               </>
             ) : (
               <>
-                <span className="project-stage">{stageLabels[resumeStep(p)]}</span>
+                <span className={`project-stage ${p.completedAt ? 'is-done' : ''}`}>{p.completedAt ? '✓ Tamamlandı' : stageLabels[resumeStep(p)]}</span>
                 <div className="row-actions">
                   <button
                     disabled={!!busy}

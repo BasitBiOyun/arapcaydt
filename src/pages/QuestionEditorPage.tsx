@@ -549,6 +549,8 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       const videoBlob = await exportProjectVideo(currentProject, setExportPercent, exportAbortRef.current.signal);
 
       saveFile(videoBlob, videoFileName(currentProject));
+      // Downloading the video finishes the question (it leaves the "to check" lists).
+      await saveCurrentProject({ completedAt: new Date().toISOString() });
       const { error: activityError } = await database().rpc('record_video_export', { project_id: currentProject.id });
       if (activityError) setExportError('Video indirildi; üretim kaydı kaydedilemedi.');
     } catch (err) {
@@ -847,6 +849,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             videoGenerated={videoGenerated}
             currentProject={currentProject}
             handleReadinessAction={handleReadinessAction}
+            onMarkDone={done => void saveCurrentProject(done ? { completedAt: new Date().toISOString() } : { completedAt: undefined, reopenedAt: new Date().toISOString() })}
             exportError={exportError}
             isExportingMp4={isExportingMp4}
             exportAbortRef={exportAbortRef}
