@@ -1,5 +1,5 @@
 import type { NarrationWord, VideoAction, VideoCaption } from '../../types';
-import { alignSolutionNarration } from '../analysis/timelineAligner';
+import { HEARD_SHARE, alignSolutionNarration, speechSeconds } from '../analysis/timelineAligner';
 import { splitNarration } from './narrationParts';
 
 /**
@@ -82,7 +82,19 @@ export function spokenSpan(solutionText: string, words: NarrationWord[], duratio
   const after = aligned.find(w => w.sourceStart >= range.to && w.matched);
   const mid = (a: number, b: number) => (a + b) / 2;
   if (!inside.length) {
-    const at = mid(before?.end ?? 0, after?.start ?? duration);
+    const from = before?.end ?? 0, to = after?.start ?? duration;
+    // The transcript missed these words but they were spoken: replace that stretch, do not add a
+    // copy. Arabic the transcript often writes differently or not at all: there is room for it in
+    // the audio. Turkish it writes reliably: heard words (just spelled differently) fill the gap.
+    const text = solutionText.slice(range.from, range.to);
+    const spokenThere = /[\u0600-\u06FF]/.test(text)
+      ? to - from >= HEARD_SHARE * speechSeconds(text)
+      : words.filter(w => w.start >= from - 0.01 && w.end <= to + 0.01).length >= Math.max(1, text.split(/\s+/).length / 2);
+    if (spokenThere) return { start: from, end: to, skipped: false };
+    // Really left out: it goes in after whatever was spoken between the words around it
+    // (an Arabic line the transcript did not write, for example), not in the middle of that.
+    const before_ = speechSeconds(solutionText.slice(before?.sourceEnd ?? 0, range.from));
+    const at = Math.max(from, Math.min(to - 0.05, from + before_ + 0.1));
     return { start: at, end: at, skipped: true };
   }
   const first = inside[0], last = inside[inside.length - 1];

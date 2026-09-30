@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowCounterClockwise, Microphone, Play, PlusCircle, Stop } from '@phosphor-icons/react';
 import type { NarrationWord } from '../../types';
 import { alignSolutionNarration } from '../../services/analysis/timelineAligner';
-import { PART_CHARS } from '../../services/narration/narrationParts';
+import { PART_CHARS, spokenLength } from '../../services/narration/narrationParts';
 import { partRanges, sentenceRanges, spokenSpan, wholeSentences, type TextRange } from '../../services/narration/revoice';
 
 interface Props {
@@ -33,7 +33,7 @@ function seconds(value: string): number | null {
  */
 export function RevoicePanel({ solutionText, words, duration, skipped, audio, busy, onRevoice, canUndo, onUndo }: Props) {
   const sentences = useMemo(() => sentenceRanges(solutionText), [solutionText]);
-  const parts = useMemo(() => (solutionText.trim().length > PART_CHARS ? partRanges(solutionText) : []), [solutionText]);
+  const parts = useMemo(() => (spokenLength(solutionText) > PART_CHARS ? partRanges(solutionText) : []), [solutionText]);
   const aligned = useMemo(() => alignSolutionNarration(solutionText, words, duration).words, [solutionText, words, duration]);
   const startOf = (r: TextRange) => aligned.find(w => w.sourceStart >= r.from)?.start ?? 0;
   const [pick, setPick] = useState<[number, number] | null>(null);
@@ -70,7 +70,7 @@ export function RevoicePanel({ solutionText, words, duration, skipped, audio, bu
     setNote('');
     setPick([hit[0], hit[hit.length - 1]]);
   };
-  const tooLong = chosen && chosen.text.length > PART_CHARS;
+  const tooLong = chosen && spokenLength(chosen.text) > PART_CHARS;
 
   return (
     <details className="revoice-panel" open={skipped.length > 0 || undefined}>
