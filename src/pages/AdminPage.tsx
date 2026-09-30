@@ -75,6 +75,7 @@ interface Analytics {
   };
   funnel: { total: number; withAudio: number; withMarkers: number; ready: number; completed?: number };
   vision?: { month: number | null; limit: number; configured: boolean };
+  week?: Record<string, { completed: number; working: number; needsVoice: number; needsMarks: number; needsFix: number; errors: number }>;
   quality: { ready: number; check: number; blocked: number };
   issues: Array<{ projectId: string; ownerId: string; title: string; updatedAt: string; detail: string }>;
   teacherKeys?: Record<string, { last4: string; status: string; updatedAt: string }>;
@@ -467,6 +468,40 @@ export const AdminPage: React.FC = () => {
               )}
             </section>
           </div>
+
+          {analytics?.week && (
+            <section className={card}>
+              <SectionTitle title="Bu hafta" note="Son 7 gün, öğretmen başına: bitirilen sorular, üzerinde çalışılan sorular ve bunların nerede beklediği. Tarayıcı hatası: İşaretler veya MP4 sırasında çıkan hata." />
+              {Object.keys(analytics.week).length === 0 ? (
+                <p className="text-sm text-[#787670]">Bu hafta çalışılan soru yok.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs text-[#666560]">
+                      <tr>{['Öğretmen', 'Bitirdi', 'Çalıştı', 'Ses bekliyor', 'İşaret bekliyor', 'Düzeltme gerekli', 'Tarayıcı hatası'].map(t => (
+                        <th key={t} className="px-2 py-2 font-semibold whitespace-nowrap">{t}</th>
+                      ))}</tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#EFEFEA]">
+                      {Object.entries(analytics.week)
+                        .sort(([, a], [, b]) => (b.completed + b.working) - (a.completed + a.working))
+                        .map(([id, w]) => (
+                          <tr key={id} className="tabular-nums">
+                            <td className="px-2 py-2 font-semibold whitespace-nowrap">{who(id)}</td>
+                            <td className="px-2 py-2 font-bold text-[#166534]">{w.completed}</td>
+                            <td className="px-2 py-2">{w.working}</td>
+                            <td className={`px-2 py-2 ${w.needsVoice ? 'text-[#B45309] font-semibold' : 'text-[#A8A69E]'}`}>{w.needsVoice}</td>
+                            <td className={`px-2 py-2 ${w.needsMarks ? 'text-[#B45309] font-semibold' : 'text-[#A8A69E]'}`}>{w.needsMarks}</td>
+                            <td className={`px-2 py-2 ${w.needsFix ? 'text-red-700 font-semibold' : 'text-[#A8A69E]'}`}>{w.needsFix}</td>
+                            <td className={`px-2 py-2 ${w.errors ? 'text-red-700 font-semibold' : 'text-[#A8A69E]'}`}>{w.errors}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          )}
         </div>
       )}
 

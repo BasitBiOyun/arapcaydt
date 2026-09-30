@@ -39,6 +39,7 @@ Use the narrowest meaningful checks:
 - `npm test` for relevant automated tests.
 - `npm run build` when the change can affect production build/runtime.
 Do not run expensive external generation as a substitute for local verification.
+- When a teacher's teşhis file (İşaretler → "Teşhis dosyasını indir") shows a marking problem, fix it, then keep the file as a test with `npm run teshis:ekle -- <file> <short-name>` (see `tests/teshisReplay.test.ts`). Only keep it once its underlines are right.
 
 ## Context efficiency
 - Open only files needed for the task.

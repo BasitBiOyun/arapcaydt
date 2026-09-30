@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { QuestionProject } from '../../types';
 import { reportClientError } from '../../services/supabase';
+import { pipelineParams } from '../question-editor/projectUpdates';
 import { localVideoPipeline, LocalPipelineProgress, LocalPipelineResult } from '../../services/pipeline/localVideoPipeline';
 import { 
   CheckCircle, 
@@ -100,31 +101,8 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
     setCurrentStage('IMAGE_ANALYSIS');
 
     try {
-      const activeNarrationSource = project.narrationSource || (project.audioNarration ? {
-        type: 'elevenlabs' as const,
-        audioUrl: project.audioNarration.audioUrl,
-        audioBase64: project.audioNarration.audioBase64,
-        duration: project.audioNarration.duration,
-        voiceId: project.audioNarration.voiceId,
-        voiceName: project.audioNarration.voiceName,
-        words: project.audioNarration.words,
-        alignment: project.audioNarration.alignment,
-        isApproved: true,
-      } : {
-        type: 'elevenlabs' as const,
-        audioUrl: '',
-        duration: 15,
-        words: [],
-        isApproved: true,
-      });
-
       const result = await localVideoPipeline.executePipeline({
-        imageUrl: project.imageUrl,
-        solutionText: project.solutionText,
-        correctAnswer: project.correctAnswer,
-        narrationSource: activeNarrationSource,
-        existingRegions: project.videoConfig?.regions?.length ? project.videoConfig.regions : undefined,
-        suppressedRegionIds: project.videoConfig?.suppressedRegionIds,
+        ...pipelineParams(project),
         onProgress: (p: LocalPipelineProgress) => {
           setStatusDetail(p.message);
           if (p.stage === 'ocr' || p.stage === 'detect_layout') {

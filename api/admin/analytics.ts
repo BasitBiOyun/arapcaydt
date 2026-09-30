@@ -254,8 +254,32 @@ export interface ClientError { project_id: string | null; owner_id: string; stat
 async function readClientErrors(db: any): Promise<ClientError[]> {
   const since = new Date(Date.now() - 7 * 864e5).toISOString();
   const { data, error } = await db.from('activity').select('project_id,owner_id,state,detail,created_at')
-    .eq('kind', 'client_error').gte('created_at', since).order('created_at', { ascending: false }).limit(40);
+    .eq('kind', 'client_error').gte('created_at', since).order('created_at', { ascending: false }).limit(500);
   return error ? [] : data || [];
+}
+
+/** One teacher's last 7 days: what they finished, what they worked on, and where those questions wait. */
+export interface WeekStats { completed: number; working: number; needsVoice: number; needsMarks: number; needsFix: number; errors: number }
+
+export function summarizeWeek(rows: ProjectRow[], lastExportAt: Record<string, string>, errors: Pick<ClientError, 'owner_id'>[], now = Date.now()) {
+  const since = new Date(now - 7 * 864e5).toISOString();
+  const week: Record<string, WeekStats> = {};
+  const of = (owner: string) => week[owner] ??= { completed: 0, working: 0, needsVoice: 0, needsMarks: 0, needsFix: 0, errors: 0 };
+  for (const row of rows) {
+    if (isCompleted(row, lastExportAt[row.id])) {
+      const at = row.completedAt || lastExportAt[row.id] || '';
+      if (at >= since) of(row.owner_id).completed++;
+      continue;
+    }
+    if (row.updated_at < since) continue;
+    const stats = of(row.owner_id);
+    stats.working++;
+    if (voiceEngine(row) === 'none') stats.needsVoice++;
+    else if (!quality(row)) stats.needsMarks++;
+    else if (quality(row) === 'blocked') stats.needsFix++;
+  }
+  for (const error of errors) of(error.owner_id).errors++;
+  return week;
 }
 
 const STAGE_NAMES: Record<string, string> = { isaretler: 'İşaretler', mp4: 'MP4' };
@@ -315,9 +339,10 @@ export default async function handler(req: any, res: any) {
     const [projects, usage, teacherKeys, limits, exports, visionMonth, clientErrors] = await Promise.all([readAllProjects(db), readUsage(db), readTeacherKeys(db), readLimits(db), readExports(db), readVisionMonth(db), readClientErrors(db)]);
     const visionLimit = Number(process.env.VISION_MONTHLY_LIMIT);
     const summary = summarizeProjects(projects, exports);
+    const week = summarizeWeek(projects, exports, clientErrors);
     const issues = [...clientErrorIssues(clientErrors, projects), ...summary.issues]
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 40);
-    return res.status(200).json({ ...summary, issues, teacherKeys,
+    return res.status(200).json({ ...summary, issues, week, teacherKeys,
       vision: { month: visionMonth, limit: Number.isInteger(visionLimit) && visionLimit >= 0 ? visionLimit : 950, configured: !!process.env.GOOGLE_VISION_API_KEY },
       requests: { ...summarizeRequests(usage.rows, undefined, limits), migrationPending: usage.migrationPending } });
   } catch (error: any) {

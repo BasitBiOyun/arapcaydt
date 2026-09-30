@@ -42,7 +42,6 @@ export function ExportStep({ step, videoGenerated, currentProject, handleReadine
 
           <div className="space-y-2">
             <ReadinessCard project={currentProject} onAction={handleReadinessAction} />
-            {currentProject.videoConfig.warnings?.map(w => <p key={w} className="text-sm text-amber-800">{w}</p>)}
             {exportError && <p role="alert" className="text-sm text-red-700">{exportError}</p>}
             {isExportingMp4 && <button type="button" className="text-sm underline" onClick={() => exportAbortRef.current?.abort()}>Oluşturmayı iptal et</button>}
             <button

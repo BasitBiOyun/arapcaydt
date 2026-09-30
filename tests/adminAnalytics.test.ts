@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { clientErrorIssues, isCompleted, summarizeProjects, CURRENT_PIPELINE_VERSION, type ProjectRow } from '../api/admin/analytics';
+import { clientErrorIssues, isCompleted, summarizeWeek, summarizeProjects, CURRENT_PIPELINE_VERSION, type ProjectRow } from '../api/admin/analytics';
 import { CURRENT_PIPELINE_VERSION as EDITOR_VERSION } from '../src/features/question-editor/readiness';
 
 const options = ['option-a', 'option-b', 'option-c', 'option-d', 'option-e'];
@@ -118,4 +118,20 @@ test('browser failures appear in the attention list under their question', () =>
     ['Soru 12', 'Tarayıcı hatası (MP4): Video kodlayıcı açılamadı'],
     ['Adsız proje', 'Tarayıcı hatası (İşaretler): ayrıntı yok'],
   ]);
+});
+
+test('this week: finished, worked on, and where the open questions wait, per teacher', () => {
+  const now = Date.parse('2026-09-30T12:00:00Z');
+  const recent = '2026-09-29T10:00:00Z', old = '2026-09-01T10:00:00Z';
+  const tick = [{ type: 'correct', targetRegionId: 'option-a' }];
+  const week = summarizeWeek([
+    { id: '1', owner_id: 't1', updated_at: recent, completedAt: recent },
+    { id: '2', owner_id: 't1', updated_at: old, completedAt: old },
+    { id: '3', owner_id: 't1', updated_at: recent },
+    { id: '4', owner_id: 't1', updated_at: recent, narrationType: 'uploaded' },
+    { id: '5', owner_id: 't1', updated_at: recent, narrationType: 'uploaded', correctAnswer: 'B', actions: tick, pipelineVersion: 5 },
+    { id: '6', owner_id: 't2', updated_at: old },
+  ], {}, [{ owner_id: 't2' }], now);
+  assert.deepEqual(week.t1, { completed: 1, working: 3, needsVoice: 1, needsMarks: 1, needsFix: 1, errors: 0 });
+  assert.deepEqual(week.t2, { completed: 0, working: 0, needsVoice: 0, needsMarks: 0, needsFix: 0, errors: 1 });
 });
