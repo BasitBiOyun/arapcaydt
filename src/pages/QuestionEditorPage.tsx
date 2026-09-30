@@ -820,6 +820,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
                   {currentProject.videoConfig.ocrEngine === 'vision'
                     ? 'Görsel Google Vision ile okundu.'
                     : `Görsel tarayıcıdaki okuyucuyla okundu${currentProject.videoConfig.ocrNote ? ` (${currentProject.videoConfig.ocrNote})` : ''}.`}
+                  {currentProject.videoConfig.passageNote && <> {currentProject.videoConfig.passageNote}</>}
                 </p>
               )}
               {videoGenerated && currentProject.videoConfig.warnings?.filter(w => w.startsWith('Çözümdeki Arapça paragraf')).map(w => (

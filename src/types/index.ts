@@ -165,6 +165,8 @@ export interface VideoConfig {
   /** Which reader read the question picture, and why Google Vision was not used (if tried). */
   ocrEngine?: 'vision' | 'tesseract';
   ocrNote?: string;
+  /** What was found of the solution's Arabic passages (shown in İşaretler). */
+  passageNote?: string;
 }
 
 export interface ExportConfig {
