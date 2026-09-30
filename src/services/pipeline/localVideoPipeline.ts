@@ -2,7 +2,7 @@ import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCap
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
 import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
-import { findPassageMatches, withPassageReferences } from '../ocr/passageMatcher';
+import { findPassageMatches, findPassages, withPassageReferences } from '../ocr/passageMatcher';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
@@ -130,6 +130,8 @@ export class LocalVideoPipeline {
     // A passage read in full is found as a whole (one underline per printed line); the shorter
     // phrases are looked for without it, and a later mention of its words points into it.
     const passageMatches = findPassageMatches(solutionText, stemWords, ocrResult.arabicStemWords);
+    const passages = findPassages(solutionText);
+    const missedPassages = passages.filter(p => !passageMatches.some(m => m.passageEnd === p[p.length - 1].to));
     const passageRanges = [...new Map(passageMatches.map(m => [m.passageEnd, m])).values()]
       .map(m => [Math.min(...passageMatches.filter(o => o.passageEnd === m.passageEnd).map(o => o.sourceStart)), m.passageEnd] as const);
     const withoutPassages = passageRanges.reduce((text, [from, to]) => text.slice(0, from) + ' '.repeat(to - from) + text.slice(to), solutionText);
@@ -173,6 +175,11 @@ export class LocalVideoPipeline {
     const covered = new Set([...arabicMatches.map(m => m.phrase), ...options.map(r => r.content || '')].flatMap(p => normalizeArabic(p).split(' ')));
     const unread = [...new Set(extractArabicPhrases(solutionText).flatMap(p => p.split(/\s+/)).filter(w => !covered.has(normalizeArabic(w))))];
     if (unread.length) warnings.push(`Görselde eşleştirilemeyen Arapça kelimeler: ${unread.slice(0,8).join('، ')}${unread.length>8?'…':''}. Bu kelimelere tahmini vurgu eklenmedi; gerekirse önizlemede ▁ aracıyla altlarını çizin.`);
+    for (const passage of missedPassages) {
+      const start = solutionText.slice(passage[0].from, passage[Math.min(4, passage.length - 1)].to);
+      const read = stemWords.filter(w => /[\u0621-\u064A]/.test(w.text)).length;
+      warnings.push(`Çözümdeki Arapça paragraf (“${start}…”, ${passage.length} kelime) görselde bulunamadı; görselde ${read} Arapça kelime okundu (${rawOcr.engine === 'vision' ? 'Google Vision' : 'tarayıcıdaki okuyucu'}). Altını ▁ aracıyla satır satır çizebilirsiniz.`);
+    }
     if (detectedOptions.length < 5) warnings.push(`Şu şıklar bulunamadı: ${['A', 'B', 'C', 'D', 'E'].filter(x => !detectedOptions.includes(x)).join(', ')}. Önizlemede o şıkkın kutusuna tıklayıp harfini seçin ya da kutusunu çizin.`);
     if (alignment.quality !== 'word-aligned') warnings.push(alignment.quality === 'approximate'
       ? 'Ses zamanlamaları eşleştirilemedi. Süreler yaklaşık; dışa aktarmadan önce zaman çizelgesini kontrol edin.'

@@ -16,6 +16,7 @@ export interface VisionPage { width: number; height: number; words: VisionWord[]
 
 /** Not set up on this server: asked once per session, then the in-browser reader is used. */
 let notConfigured = false;
+let skipReason = 'VISION_NOT_CONFIGURED';
 
 /** The picture as a JPEG (white background, long side at most 2400 px). */
 async function pictureForCloud(imageUrl: string): Promise<string | null> {
@@ -88,6 +89,8 @@ const ISSUES: Record<string, string> = {
   VISION_KEY_INVALID: 'Google Vision anahtarı geçersiz ya da projede Cloud Vision API veya faturalandırma açık değil',
   VISION_QUOTA: 'Google Vision kotası doldu',
   VISION_TIMEOUT: 'Google Vision zamanında yanıt vermedi',
+  VISION_MONTH_FULL: 'bu ayın Google Vision hakkı doldu; ay başında yeniden açılır',
+  VISION_COUNTER_MISSING: 'Google Vision sayacı kurulmamış (Supabase’de 20261005_vision_quota.sql çalıştırılmalı)',
 };
 
 /**
@@ -95,7 +98,7 @@ const ISSUES: Record<string, string> = {
  * key is asked once per session.
  */
 export async function readWithVision(imageUrl: string, onProgress?: (progress: OCRProgress) => void): Promise<{ result: OCRResult } | { issue: string }> {
-  if (notConfigured) return { issue: ISSUES.VISION_NOT_CONFIGURED };
+  if (notConfigured) return { issue: ISSUES[skipReason] };
   onProgress?.({ status: 'recognizing', progress: 30, message: 'Soru görseli Google Vision ile okunuyor...' });
   const image = await pictureForCloud(imageUrl);
   if (!image) return { issue: 'Görsel Google Vision’a gönderilemedi (tarayıcı görseli okuyamadı)' };
@@ -108,7 +111,8 @@ export async function readWithVision(imageUrl: string, onProgress?: (progress: O
     });
     const data = await res.json().catch(() => null);
     if (!res.ok) {
-      if (data?.code === 'VISION_NOT_CONFIGURED') notConfigured = true;
+      // Not set up, or this month's readings used up: not asked again in this session.
+      if (data?.code === 'VISION_NOT_CONFIGURED' || data?.code === 'VISION_MONTH_FULL') { notConfigured = true; skipReason = data.code; }
       const issue = ISSUES[data?.code] || data?.error || `Google Vision isteği başarısız (${res.status})`;
       console.warn('Google Vision okuyamadı, tarayıcıdaki okuyucu kullanılıyor:', data?.code || res.status, data?.detail || '');
       return { issue: data?.detail ? `${issue}: ${String(data.detail).slice(0, 140)}` : issue };

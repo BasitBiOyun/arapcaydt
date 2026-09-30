@@ -52,6 +52,9 @@ test('passage: an Arabic line of ten or more words is a passage; a quoted option
   const passages = findPassages(SOLUTION);
   assert.equal(passages.length, 1);
   assert.equal(SOLUTION.slice(passages[0][0].from, passages[0].at(-1)!.to), PASSAGE.slice(0, -1));
+  const inline = findPassages(`Önce paragrafın tamamını okuyalım. ${PASSAGE} Şimdi soruya bakalım.`);
+  assert.equal(inline.length, 1, 'a passage on the same line as Turkish is still a passage');
+  assert.equal(inline[0].length, passages[0].length);
   assert.ok(wordLikeness('الحجري', 'الحجرى') >= .8 && wordLikeness('واستخدامها', 'واستخدمها') >= .8);
 });
 

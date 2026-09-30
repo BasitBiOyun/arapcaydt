@@ -1,4 +1,4 @@
-import { requireMember } from '../../server/auth.js';
+import { requireMember, serviceDatabase } from '../../server/auth.js';
 
 /**
  * Reads a question picture with Google Cloud Vision (document text detection), which reads
@@ -10,6 +10,14 @@ export const config = { maxDuration: 60 };
 /** A picture larger than this (base64) is refused; the studio sends at most 2400 px JPEG. */
 const MAX_IMAGE_CHARS = 6_000_000;
 const TIMEOUT_MS = 40_000;
+/**
+ * Readings allowed per calendar month (Google's first 1000 are free). At the limit the studio
+ * reads with the in-browser reader; the count is kept in Supabase (reserve_vision).
+ */
+export const monthlyLimit = () => {
+  const value = Number(process.env.VISION_MONTHLY_LIMIT);
+  return Number.isInteger(value) && value >= 0 ? value : 950;
+};
 
 export interface VisionWord { text: string; confidence: number; x: number; y: number; width: number; height: number }
 export interface VisionPage { width: number; height: number; words: VisionWord[]; lines: number[][]; text: string }
@@ -50,6 +58,15 @@ export default async function handler(req: any, res: any) {
   const image = typeof req.body?.image === 'string' ? req.body.image.replace(/^data:image\/\w+;base64,/, '') : '';
   if (!image || image.length > MAX_IMAGE_CHARS || !/^[A-Za-z0-9+/=\s]+$/.test(image.slice(0, 200)))
     return res.status(400).json({ error: 'Görsel okunamadı.', code: 'INVALID_IMAGE' });
+
+  // Count first: never more readings in a month than the limit, even with many teachers at once.
+  try {
+    const { data: used, error } = await serviceDatabase().rpc('reserve_vision', { p_owner: member.user.id, p_limit: monthlyLimit() });
+    if (error) return res.status(503).json({ error: 'Google Vision sayacı kurulmamış.', code: 'VISION_COUNTER_MISSING' });
+    if (typeof used === 'number' && used < 0) return res.status(429).json({ error: 'Bu ayın Google Vision hakkı doldu.', code: 'VISION_MONTH_FULL', limit: monthlyLimit() });
+  } catch {
+    return res.status(503).json({ error: 'Google Vision sayacına ulaşılamadı.', code: 'VISION_COUNTER_MISSING' });
+  }
 
   let response: Response;
   try {
