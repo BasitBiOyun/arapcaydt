@@ -123,6 +123,15 @@ const scenes = {
   },
   async 'ses-olustur'() { await go('#/soru/ornek-8', 2500); await step(3); await mark(['button:has-text("Seslendirme Oluştur")', 'label:has-text("MP3 Yükle")']); },
   async 'ses-onay'() { await go('#/soru/ornek-5', 2500); await step(3); await mark([page.getByText('Eğitmen Sesi').first().locator('xpath=ancestor::div[2]'), 'button:has-text("Bu Sesi Kullan")']); },
+  async 'sesi-duzelt'() {
+    await go('#/soru/ornek-4', 2500); await step(3);
+    await page.getByText('Sesi düzelt').first().click(); await page.waitForTimeout(300);
+    await page.locator('.revoice-sentences button').nth(3).click(); await page.waitForTimeout(300);
+    const panel = page.locator('.revoice-sentences').locator('xpath=..');
+    await panel.evaluate(el => el.scrollIntoView({ block: 'center' })); await page.waitForTimeout(300);
+    await mark([page.locator('.revoice-sentences button').nth(3), page.getByRole('button', { name: 'Seçili yeri yeniden seslendir' })]);
+    return panel;
+  },
   async isaretler() {
     await go('#/soru/ornek-3', 3000); await step(4);
     await mark(['[role=toolbar][aria-label="İşaret araçları"]', '.editor-panel >> text=İşaretleri tek tek kontrol et']);

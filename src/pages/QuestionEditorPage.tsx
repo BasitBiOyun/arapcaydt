@@ -13,6 +13,9 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
 import { narrationService } from '../services/narration/narrationService';
+import { moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
+import { NARRATION_RATE, decodeAudio, encodeMp3 } from '../services/narration/audioCodec';
+import { alignSolutionNarration } from '../services/analysis/timelineAligner';
 import { splitNarration } from '../services/narration/narrationParts';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
@@ -122,6 +125,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   // Audio playback updates
   const activeAudioUrl = currentProject?.narrationSource?.audioUrl || currentProject?.audioNarration?.audioUrl || '';
   const activeAudioDuration = currentProject?.narrationSource?.duration || currentProject?.audioNarration?.duration || 0;
+  // The narration before the last "Sesi düzelt" change, so the teacher can take it back.
+  const [revoiceUndo, setRevoiceUndo] = useState<Pick<QuestionProject, 'narrationSource' | 'audioNarration' | 'videoConfig'> | null>(null);
+  useEffect(() => setRevoiceUndo(null), [currentProject?.id]);
 
   useEffect(() => {
     const audio = stageAudioRef.current;
@@ -315,6 +321,70 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     } finally {
       setIsGeneratingAudio(false);
     }
+  };
+
+  // "Sesi düzelt": only the picked stretch is voiced again and put in place of the old one.
+  const handleRevoice = async (range: TextRange) => {
+    if (!currentProject || !activeAudioUrl) return;
+    const source = currentProject.narrationSource;
+    const span = spokenSpan(currentProject.solutionText, source?.words || [], activeAudioDuration, range);
+    if (!span) { setAudioError('Bu sesin kelime zamanları yok; seçili yer bulunamadı. Sesi yeniden oluşturun.'); return; }
+    const excerpt = range.text.length > 160 ? `${range.text.slice(0, 160)}…` : range.text;
+    if (!await confirm({
+      title: span.skipped ? 'Okunmayan yer eklensin mi?' : 'Seçili yer yeniden seslendirilsin mi?',
+      message: `“${excerpt}” yeniden seslendirilip sesin ${span.skipped ? 'atlanan yerine eklenir' : 'bu yerine konur'}. Sesin geri kalanı ve işaretleriniz korunur. Bugünkü ses haklarınızdan biri kullanılır.`,
+      confirmLabel: span.skipped ? 'Ekle' : 'Yeniden seslendir',
+    })) return;
+    setAudioError(null);
+    setAudioInfo('Seçili yer seslendiriliyor…');
+    setIsGeneratingAudio(true);
+    stageAudioRef.current?.pause();
+    const before = { narrationSource: currentProject.narrationSource, audioNarration: currentProject.audioNarration, videoConfig: currentProject.videoConfig };
+    try {
+      if (!(await saveCurrentProject())) throw new Error('Önce proje kaydedilmelidir.');
+      const piece = await narrationService.generateNarration({ projectId: currentProject.id, text: range.text,
+        voiceId: STANDARD_VOICE_CONFIG.voiceId, modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat });
+      setAudioInfo('Yeni parça sesin içine yerleştiriliyor…');
+      if (!piece.audioUrl) throw new Error('Yeni parçanın sesi alınamadı. Tekrar deneyin.');
+      const [base, insert] = await Promise.all([decodeAudio(activeAudioUrl), decodeAudio(piece.audioUrl)]);
+      const joined = spliceAudio(base, insert, NARRATION_RATE, span.start, span.end);
+      const blob = await encodeMp3(joined.samples);
+      const audioUrl = URL.createObjectURL(blob);
+      const duration = joined.samples.length / NARRATION_RATE;
+      const moved = moveTimeline({ start: span.start, end: span.end, newStart: joined.newStart, newEnd: joined.newEnd },
+        currentProject.videoConfig.timelineActions, currentProject.videoConfig.captions, source?.words);
+      // A new file: the old stored path must not be reused when saving.
+      const replaced = <T extends { audioUrl: string; duration: number }>(audio: T | undefined) => audio && ({
+        ...audio, audioUrl, duration, mimeType: 'audio/mpeg', fileName: 'seslendirme.mp3', assetPath: undefined, audioBase64: undefined,
+        words: moved.words, generatedAt: new Date().toISOString(),
+      });
+      const persisted = await saveCurrentProject({
+        narrationSource: replaced(currentProject.narrationSource),
+        audioNarration: replaced(currentProject.audioNarration),
+        videoConfig: { ...currentProject.videoConfig, timelineActions: moved.actions, captions: moved.captions },
+      });
+      if (!persisted) throw new Error('Düzeltilmiş ses kaydedilemedi. Tekrar deneyin.');
+      setRevoiceUndo(before);
+      setAudioInfo('Kelime zamanları güncelleniyor…');
+      const timing = await timeGeneratedNarration(persisted, project => narrationService.alignGeneratedNarration(project.id));
+      if (timing?.words.length) {
+        const timed = withWordTimings(persisted, timing.words, timing.timingSource);
+        const captions = persisted.videoConfig.captions?.length
+          ? alignSolutionNarration(persisted.solutionText, timing.words, duration).captions : persisted.videoConfig.captions;
+        await saveCurrentProject({ ...timed, videoConfig: { ...persisted.videoConfig, captions } });
+      }
+      setAudioInfo(`${span.skipped ? 'Okunmayan yer eklendi' : 'Seçili yer yeniden seslendirildi'} (${Math.floor(joined.newStart / 60)}:${String(Math.floor(joined.newStart % 60)).padStart(2, '0')}). Dinleyip kontrol edin; beğenmezseniz “Son düzeltmeyi geri al”.`);
+    } catch (err) {
+      setAudioInfo(null);
+      setAudioError(err instanceof Error ? err.message : 'Seçili yer yeniden seslendirilemedi.');
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+  const handleUndoRevoice = async () => {
+    if (!revoiceUndo) return;
+    stageAudioRef.current?.pause();
+    if (await saveCurrentProject(revoiceUndo)) { setRevoiceUndo(null); setAudioInfo('Son düzeltme geri alındı; önceki ses geri geldi.'); }
   };
 
   // Uploaded MP3: align the written solution to the audio; Whisper stays as fallback.
@@ -683,6 +753,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             transcribeProgress={transcribeProgress}
             audioError={audioError}
             audioInfo={audioInfo}
+            handleRevoice={range => void handleRevoice(range)}
+            canUndoRevoice={!!revoiceUndo}
+            handleUndoRevoice={() => void handleUndoRevoice()}
           />
           {step === 3 && (
             <section className="space-y-3">

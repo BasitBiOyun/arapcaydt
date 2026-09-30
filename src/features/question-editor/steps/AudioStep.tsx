@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { QuestionProject } from '../../../types';
 import { narrationDrift } from '../../../services/analysis/timelineAligner';
 import { capacityLine, geminiKeyService, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
+import { RevoicePanel } from '../RevoicePanel';
+import type { TextRange } from '../../../services/narration/revoice';
 import { Check, Pause, Play, DownloadSimple, ArrowsClockwise, Trash, CircleNotch, Microphone, UploadSimple } from '@phosphor-icons/react';
 
 export interface AudioStepProps {
@@ -32,13 +34,17 @@ export interface AudioStepProps {
   audioError: string | null;
   /** A plain note after an upload (e.g. the solution text was taken from the recording). */
   audioInfo?: string | null;
+  /** Re-voice only a stretch of the solution (a sentence, a few, or a part). */
+  handleRevoice?: (range: TextRange) => void;
+  canUndoRevoice?: boolean;
+  handleUndoRevoice?: () => void;
 }
 
 /** STEP 3: Seslendirme */
 const formatTime = (secs: number) =>
   `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
 
-export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo }: AudioStepProps) {
+export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo, handleRevoice, canUndoRevoice, handleUndoRevoice }: AudioStepProps) {
   // Which Google key the next narration uses; refreshed after each generation.
   const [keyStatus, setKeyStatus] = useState<TeacherKeyStatus | null>(null);
   useEffect(() => {
@@ -87,7 +93,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               <p className="font-semibold">Ses metinden sapmış olabilir; ilgili yerleri dinleyin:</p>
               {drift.added.slice(0, 3).map(d => <p key={`a${d.start}`}>{clock(d.start)} · metinde olmayan: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
               {drift.skipped.slice(0, 3).map(d => <p key={`s${d.start}`}>{clock(d.start)} · okunmamış: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
-              <p>Hatalıysa “Yeniden seslendir” deyin. Arapça kelimeler bazen farklı yazıya dökülür; sesi dinleyip karar verin.</p>
+              <p>Hatalıysa aşağıdaki “Sesi düzelt” bölümünden yalnız o yeri yeniden seslendirin. Arapça kelimeler bazen farklı yazıya dökülür; sesi dinleyip karar verin.</p>
             </div>
           )}
 
@@ -199,6 +205,19 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </button>
             )}
           </div>
+          {handleRevoice && !isUploadedAudio && (source?.words?.length ?? 0) > 0 && (
+            <RevoicePanel
+              solutionText={currentProject.solutionText}
+              words={source?.words || []}
+              duration={activeAudioDuration}
+              skipped={drift?.skipped ?? []}
+              audio={stageAudioRef}
+              busy={isGeneratingAudio || sampleBusy}
+              onRevoice={handleRevoice}
+              canUndo={!!canUndoRevoice}
+              onUndo={() => handleUndoRevoice?.()}
+            />
+          )}
         </div>
       ) : (
         /* Two clean choices: Seslendirme Oluştur or MP3 Yükle */
