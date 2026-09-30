@@ -42,3 +42,17 @@ test('missing options and unread Arabic are warnings; four-option questions are 
   assert.equal(assessReadiness(project({ timingQuality: 'anchored' })).level, 'check');
   assert.equal(assessReadiness(project({ timingQuality: 'approximate' })).level, 'blocked');
 });
+
+test('ticks on premises (I, II, III) do not count as a second answer', () => {
+  const premise = (n: number) => ({ id: `manual-box-${n}`, type: 'keyword', label: 'I', x: 0, y: .1 * n, width: .1, height: .05 }) as any;
+  const r = assessReadiness(project({
+    regions: [...'abcde'.split('').map(option), premise(1), premise(2)],
+    timelineActions: [
+      { id: 'p1', type: 'correct', targetRegionId: 'manual-box-1', start: 1, duration: 9 },
+      { id: 'p2', type: 'correct', targetRegionId: 'manual-box-2', start: 2, duration: 8 },
+      { id: 'c', type: 'correct', targetRegionId: 'option-c', start: 3, duration: 2 },
+    ] as VideoAction[],
+  }));
+  assert.equal(r.items.find(i => i.id === 'answer')!.status, 'ok');
+  assert.equal(r.level, 'ready');
+});

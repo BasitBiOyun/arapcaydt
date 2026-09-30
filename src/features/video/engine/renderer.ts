@@ -321,7 +321,9 @@ export function renderQuestionVideoFrame(
   const lastCorrect = Object.values(state.correctRegions).sort((a, b) => b.timestamp - a.timestamp)[0];
   const lit = [...focused, ...emphasis];
   const outroT = options.duration && !options.interactiveMode && options.showOutro !== false ? currentTime - options.duration : -1;
-  const correctIds = Object.keys(state.correctRegions);
+  // A tick on a premise (I, II, III…) or a phrase is only a tick; the answer is a ticked option.
+  const isOption = (id: string) => /^option-[a-e]$/i.test(id) || (byId.get(id)?.type ?? '').startsWith('option-');
+  const correctIds = Object.keys(state.correctRegions).filter(isOption);
   const spot = outroT >= 0 && correctIds.length
     ? { ids: correctIds, strength: Math.min(1, outroT / .4) }
     : lit.length
@@ -361,7 +363,7 @@ export function renderQuestionVideoFrame(
     if (lift > 0) tracedFrame(ctx, r, scale, 'rgba(22,163,74,.7)', 'transparent', 1, lift * (.55 + .45 * Math.sin(currentTime * 5) ** 2), 'rgba(22,163,74,.9)', framePad(id));
     const m = markerGeometry(r, width, scale, true, byId.get(id)?.markerAnchor, obstaclesFor(id));
     markBadge(ctx, m.x, m.y, m.radius * 1.3, t, 'correct', scale);
-    const reveal = Math.min(1, Math.max(0, (t - .3) / .3));
+    const reveal = isOption(id) ? Math.min(1, Math.max(0, (t - .3) / .3)) : 0;
     if (reveal > 0) {
       ctx.save(); ctx.font = '700 ' + 25 * scale + 'px "Manrope", sans-serif';
       ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
@@ -385,7 +387,7 @@ export function renderQuestionVideoFrame(
   }
   ctx.restore();
   drawCaption(ctx, width, height, currentTime, options);
-  if (outroT >= 0 && correctIds.length) drawOutroCard(ctx, width, height, outroT, correctIds[correctIds.length - 1].slice(-1).toUpperCase(), options);
+  if (outroT >= 0 && correctIds.length) drawOutroCard(ctx, width, height, outroT, (byId.get(correctIds[correctIds.length - 1])?.type?.startsWith('option-') ? byId.get(correctIds[correctIds.length - 1])!.type : correctIds[correctIds.length - 1]).slice(-1).toUpperCase(), options);
   if (!options.interactiveMode && options.duration && options.duration > 0) {
     const p = Math.max(0, Math.min(1, currentTime / options.duration));
     ctx.fillStyle = 'rgba(139,30,45,.14)'; ctx.fillRect(0, height - 6 * scale, width, 6 * scale);
