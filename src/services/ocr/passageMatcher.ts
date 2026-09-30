@@ -77,12 +77,12 @@ interface PictureToken { norm: string; word: OCRWord; segment: number; row: numb
  */
 export function readingOrder(words: OCRWord[]): { tokens: PictureToken[]; segments: OCRWord[][] } {
   const arabic = words.filter(w => /[\u0621-\u064A]/.test(w.text));
-  // A watermark or a drawing read as a "word" can be many lines tall; one such box would pull
-  // several printed lines into one row and scramble the reading order. Boxes far taller than a
-  // usual word are left out.
+  // A watermark or a drawing read as a "word" can be taller than a line (the ÖSYM watermark
+  // swells words it crosses); such a box would pull printed lines into one row and put the
+  // underline under the next line. Boxes half again taller than a usual word are left out.
   const heights = arabic.map(w => w.height).sort((a, b) => a - b);
   const usual = heights[Math.floor(heights.length / 2)] || 0;
-  const rows = groupOcrWordsIntoLines(usual ? arabic.filter(w => w.height <= usual * 2.2) : arabic);
+  const rows = groupOcrWordsIntoLines(usual ? arabic.filter(w => w.height <= usual * 1.5) : arabic);
   const segments: OCRWord[][] = [];
   const rowOf = new Map<OCRWord, number>();
   rows.forEach((row, r) => row.forEach(w => rowOf.set(w, r)));
@@ -109,7 +109,9 @@ export function readingOrder(words: OCRWord[]): { tokens: PictureToken[]; segmen
   segments.forEach((_, i) => groups.set(find(i), [...(groups.get(find(i)) || []), i]));
   const ordered = [...groups.values()]
     .sort((a, b) => Math.max(...b.map(i => spans[i].right)) - Math.max(...a.map(i => spans[i].right)))
-    .flatMap(group => group.sort((a, b) => spans[a].top - spans[b].top));
+    // Within a column, line after line; a line cut by a gap (words the reader lost) keeps its
+    // right part first.
+    .flatMap(group => group.sort((a, b) => rowOf.get(segments[a][0])! - rowOf.get(segments[b][0])! || spans[b].right - spans[a].right));
   const orderedSegments = ordered.map(i => segments[i]);
   const tokens = orderedSegments.flatMap((segment, index) => segment.flatMap(word =>
     normalizeArabic(word.text).split(' ').filter(Boolean).map(norm => ({ norm, word, segment: index, row: rowOf.get(word)! }))));
