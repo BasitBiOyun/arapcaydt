@@ -1,10 +1,12 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import type { QuestionProject, VideoConfig } from '../../../types';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { NarrationWord, QuestionProject, VideoConfig } from '../../../types';
 import { FilmStrip, Image as ImageIcon } from '@phosphor-icons/react';
 import { VideoPreviewCanvas } from '../../video/VideoPreviewCanvas';
 import { MarkTimeline } from '../../video/MarkTimeline';
 import { RegionEditorCanvas } from '../RegionEditorCanvas';
 import { applyRegionEdits } from '../../../services/analysis/regionEdits';
+import { NarrationStrip } from '../NarrationStrip';
+import type { TextRange } from '../../../services/narration/revoice';
 
 export interface EditorStageProps {
   videoGenerated: boolean;
@@ -28,18 +30,39 @@ export interface EditorStageProps {
   setSelectedRegionId: (id: string | null) => void;
   regionHistory: VideoConfig[];
   setRegionHistory: React.Dispatch<React.SetStateAction<VideoConfig[]>>;
+  /** Ses step with a generated voice: the question on top, the narration strip ("Sesi düzelt") under it. */
+  narration?: { words: NarrationWord[]; showSkipped: boolean; busy: boolean; onRevoice: (range: TextRange) => void; canUndo: boolean; onUndo: () => void };
+}
+
+/** A 13–15" laptop screen, where the strips go compact so the question stays large. */
+function useShortScreen(): boolean {
+  const query = '(max-height: 820px)';
+  const [short, setShort] = useState(() => typeof window !== 'undefined' && window.matchMedia?.(query).matches);
+  useEffect(() => {
+    const media = window.matchMedia?.(query);
+    if (!media) return;
+    const change = () => setShort(media.matches);
+    media.addEventListener('change', change);
+    return () => media.removeEventListener('change', change);
+  }, []);
+  return short;
 }
 
 /** Narrowest the picture gets to leave room for the controls and the strip, in pixels. */
 const MIN_PICTURE = 480;
+/** Below this column height (a 13–15" laptop) the strip goes compact so the question stays large. */
+const SHORT_ROOM = 760;
+/** The question always gets at least this share of the column's height; the strip scrolls below it if needed. */
+const PICTURE_SHARE = 0.55;
 
 /**
  * The widest preview whose picture, controls and mark strip all fit the column's height, so a
  * teacher sees the whole question while editing without scrolling. Re-measured when the column,
  * the window or the strip (more rows of marks) changes size.
  */
-function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: boolean): number | undefined {
+function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: boolean): { width?: number; short: boolean } {
   const [width, setWidth] = useState<number>();
+  const [short, setShort] = useState(false);
   useLayoutEffect(() => {
     const el = frame.current, stage = el?.closest('.editor-stage') as HTMLElement | null;
     if (!active || !el || !stage) return;
@@ -50,7 +73,9 @@ function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: bool
       const room = stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
       const rest = el.offsetHeight - picture.offsetHeight;
       const across = stage.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-      const next = Math.round(Math.max(MIN_PICTURE, Math.min(across, (room - rest - 4) * 16 / 9)));
+      setShort(room < SHORT_ROOM);
+      const fits = (room - rest - 4) * 16 / 9, share = room * PICTURE_SHARE * 16 / 9;
+      const next = Math.round(Math.max(MIN_PICTURE, Math.min(across, Math.max(fits, share))));
       setWidth(previous => previous !== undefined && Math.abs(previous - next) < 3 ? previous : next);
     };
     fit();
@@ -58,13 +83,24 @@ function useFitWidth(frame: React.RefObject<HTMLDivElement | null>, active: bool
     observer.observe(stage); observer.observe(el);
     return () => observer.disconnect();
   }, [frame, active]);
-  return width;
+  return { width, short };
 }
 
 /** Left column: question image or animated preview, timing editor and box editor. */
-export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, editRegions, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, saveStatus, finishRegionEditing, selectedRegionId, setSelectedRegionId, regionHistory, setRegionHistory }: EditorStageProps) {
+export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewMode, step, editRegions, currentProject, updateCurrentProject, currentPreviewTime, setCurrentPreviewTime, isPlayingPreview, setIsPlayingPreview, activeAudioDuration, activeAudioUrl, saveStatus, finishRegionEditing, selectedRegionId, setSelectedRegionId, regionHistory, setRegionHistory, narration }: EditorStageProps) {
   const frame = useRef<HTMLDivElement>(null);
-  const fitWidth = useFitWidth(frame, previewMode === 'video' && videoGenerated);
+  const { width: fitWidth, short } = useFitWidth(frame, previewMode === 'video' && videoGenerated);
+  const shortScreen = useShortScreen();
+  if (step === 2 && narration && hasImage) return (
+    <div className="narration-stage">
+      <div className="narration-stage-picture">
+        <img src={currentProject.imageUrl} alt="Soru görseli" />
+      </div>
+      <NarrationStrip solutionText={currentProject.solutionText} words={narration.words} duration={activeAudioDuration || 15}
+        audioUrl={activeAudioUrl} showSkipped={narration.showSkipped} busy={narration.busy} onRevoice={narration.onRevoice}
+        canUndo={narration.canUndo} onUndo={narration.onUndo} compact={shortScreen} />
+    </div>
+  );
   return (
     <>
     {videoGenerated && hasImage && (
@@ -164,7 +200,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
         {step === 3 && !editRegions && (
           <div className="w-full"><MarkTimeline actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
             duration={activeAudioDuration || 15} currentTime={currentPreviewTime} audioUrl={activeAudioUrl}
-            onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard
+            onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard compact={short}
             onActions={actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} /></div>
         )}
       </div>

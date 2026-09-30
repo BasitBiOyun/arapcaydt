@@ -27,7 +27,7 @@ import { SolutionStep } from '../features/question-editor/steps/SolutionStep';
 import { EditorStage } from '../features/question-editor/steps/EditorStage';
 import { SimpleTimingList } from '../features/question-editor/SimpleTimingList';
 import { ImageStep } from '../features/question-editor/steps/ImageStep';
-import { ArrowLeft, Check, Plus } from '@phosphor-icons/react';
+import { ArrowLeft, Check, CornersIn, CornersOut, Plus, SidebarSimple } from '@phosphor-icons/react';
 import type { LeaveGuard } from '../layouts/AppLayout';
 import { APP_NAME } from '../config/brand';
 import { ReportProblem } from '../features/feedback/ReportProblem';
@@ -91,6 +91,33 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const [videoGenerated, setVideoGenerated] = useState(() => hasAnimationPlan(currentProject));
   const [videoButtonWarning, setVideoButtonWarning] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<'video' | 'image'>(() => (hasAnimationPlan(currentProject) ? 'video' : 'image'));
+  // More room for the question on small screens: the right panel can be folded away (remembered on
+  // this device), and "Tam ekranda düzenle" shows only the question and its strip.
+  const [panelHidden, setPanelHidden] = useState(() => { try { return localStorage.getItem('studio-panel-hidden') === 'yes'; } catch { return false; } });
+  useEffect(() => { try { localStorage.setItem('studio-panel-hidden', panelHidden ? 'yes' : 'no'); } catch { /* per-device only */ } }, [panelHidden]);
+  const [focusMode, setFocusMode] = useState(false);
+  const enterFocus = () => {
+    setFocusMode(true);
+    // The browser's own full screen hides its bars too; where it is not allowed the page still fills the window.
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => undefined);
+  };
+  const leaveFocus = () => {
+    setFocusMode(false);
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+  };
+  useEffect(() => {
+    if (!focusMode) return;
+    // Esc leaves focus mode (and the browser's full screen); leaving full screen another way does too.
+    const onChange = () => { if (!document.fullscreenElement) setFocusMode(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || e.defaultPrevented) return;
+      setFocusMode(false);
+      if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+    };
+    document.addEventListener('fullscreenchange', onChange);
+    window.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('fullscreenchange', onChange); window.removeEventListener('keydown', onKey); };
+  }, [focusMode]);
 
   // Video preview player state (HTML5 Canvas + Audio Sync)
   const [currentPreviewTime, setCurrentPreviewTime] = useState(0);
@@ -578,7 +605,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     }
   };
   return (
-    <div className="studio-editor flex flex-col h-screen w-screen overflow-hidden bg-[#FAF9F5]">
+    <div className={`studio-editor flex flex-col h-screen w-screen overflow-hidden bg-[#FAF9F5] ${focusMode ? 'editor-focus' : ''} ${panelHidden ? 'panel-hidden' : ''}`}>
       <header className="h-14 bg-white border-b border-[#E5E4DC] px-6 flex items-center justify-between shrink-0 z-10">
         <div className="flex items-center gap-3">
           <button
@@ -637,6 +664,25 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       )}
       <div className="editor-columns flex-1 flex min-h-0 overflow-hidden">
         <section className="editor-stage flex-[68] h-full bg-[#F7F6F0] border-r border-[#E5E4DC] p-6 pt-16 flex flex-col items-center overflow-y-auto relative">
+          {hasImage && (
+            <div className="stage-view-buttons">
+              {focusMode ? (
+                <button type="button" className="stage-view-button is-primary" onClick={leaveFocus}>
+                  <CornersIn size={18} /> Tam ekrandan çık <kbd>Esc</kbd>
+                </button>
+              ) : (
+                <>
+                  <button type="button" className="stage-view-button" onClick={enterFocus} title="Yalnız soru ve şerit kalır; küçük ekranlar için">
+                    <CornersOut size={18} /> Tam ekranda düzenle
+                  </button>
+                  <button type="button" className="stage-view-button" onClick={() => setPanelHidden(!panelHidden)} aria-expanded={!panelHidden}
+                    title={panelHidden ? 'Sağdaki paneli geri açın' : 'Sağdaki paneli gizleyip soruya yer açın'}>
+                    {panelHidden ? <><SidebarSimple size={18} /> Paneli aç</> : <><SidebarSimple size={18} mirrored /> Paneli gizle</>}
+                  </button>
+                </>
+              )}
+            </div>
+          )}
           <EditorStage
             videoGenerated={videoGenerated}
             hasImage={hasImage}
@@ -659,6 +705,14 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             setSelectedRegionId={setSelectedRegionId}
             regionHistory={regionHistory}
             setRegionHistory={setRegionHistory}
+            narration={hasAudio && !isUploadedAudio && (currentProject.narrationSource?.words?.length ?? 0) > 0 ? {
+              words: currentProject.narrationSource!.words!,
+              showSkipped: currentProject.narrationSource?.type === 'gemini' && currentProject.narrationSource.timingSource === 'gemini-transcribe',
+              busy: isGeneratingAudio || sampleBusy,
+              onRevoice: range => void handleRevoice(range),
+              canUndo: !!revoiceUndo,
+              onUndo: () => void handleUndoRevoice(),
+            } : undefined}
           />
         </section>
 
@@ -753,9 +807,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             transcribeProgress={transcribeProgress}
             audioError={audioError}
             audioInfo={audioInfo}
-            handleRevoice={range => void handleRevoice(range)}
-            canUndoRevoice={!!revoiceUndo}
-            handleUndoRevoice={() => void handleUndoRevoice()}
           />
           {step === 3 && (
             <section className="space-y-3">

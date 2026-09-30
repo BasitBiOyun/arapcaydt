@@ -15,6 +15,8 @@ const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; n
 const lasting = (a: VideoAction) => a.type === 'reject' || a.type === 'correct';
 const MIN_SECONDS = .3;
 const LANE = 27, PILL_PX = 30, WAVE = 44, RULER = 16;
+/** On a short screen the strip gives the question room: a thinner waveform and two rows of marks in view (the rest scroll). */
+const COMPACT_WAVE = 26, COMPACT_ROWS = 2;
 /** Zoom steps, as multiples of "the whole narration fits". */
 const ZOOMS = [1, 2, 4, 8, 16];
 
@@ -65,6 +67,8 @@ interface Props {
   onActions: (actions: VideoAction[]) => void;
   /** Space, arrows and Delete work only while this editor is on screen. */
   keyboard?: boolean;
+  /** Short screen: thinner waveform, two rows of marks in view. */
+  compact?: boolean;
 }
 
 /**
@@ -73,7 +77,7 @@ interface Props {
  * how long it stays (an underline is drawn over that whole time). Crosses and ticks stay to the
  * end, so only their start moves. Zoom in for fine timing; the marks follow the zoom and scroll.
  */
-export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard }: Props) {
+export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact }: Props) {
   const waveBox = useRef<HTMLDivElement>(null);
   const lanesBox = useRef<HTMLDivElement>(null);
   const surfer = useRef<WaveSurfer | null>(null);
@@ -91,7 +95,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
   useEffect(() => {
     if (!waveBox.current) return;
     const ws = WaveSurfer.create({
-      container: waveBox.current, height: WAVE, waveColor: '#D5D4CC', progressColor: '#C98A93', cursorColor: '#8B1E2D', cursorWidth: 2,
+      container: waveBox.current, height: compact ? COMPACT_WAVE : WAVE, waveColor: '#D5D4CC', progressColor: '#C98A93', cursorColor: '#8B1E2D', cursorWidth: 2,
       barWidth: 2, barGap: 1, barRadius: 2, normalize: true, dragToSeek: true, autoScroll: false, hideScrollbar: false,
       // The strip works without the narration file too: a flat outline of the video's length.
       ...(audioUrl ? { url: audioUrl } : { peaks: [new Array(400).fill(.08)], duration: total }),
@@ -109,7 +113,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     ws.on('scroll', (_from, _to, left) => setView(v => ({ ...v, scroll: left })));
     ws.on('interaction', time => { setSelectedId(null); seekRef.current(time); });
     return () => { surfer.current = null; ws.destroy(); };
-  }, [audioUrl, total]);
+  }, [audioUrl, total, compact]);
 
   // The waveform's playhead follows the preview; when zoomed in it keeps the playhead in sight.
   useEffect(() => {
@@ -210,7 +214,8 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
     <div className="rounded-xl border border-[#E5E4DC] bg-white px-3 py-2 space-y-1.5 select-none">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <p className="text-[#55544F]">
-          <b className="text-[#1C1917] text-sm" title={keyboard ? 'Klavye: Boşluk oynat/durdur · ←/→ önceki/sonraki işaret · Shift+←/→ seçili işareti 0,1 sn kaydır · Delete sil' : undefined}>Zaman şeridi</b> · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)
+          <b className="text-[#1C1917] text-sm" title={keyboard ? 'Klavye: Boşluk oynat/durdur · ←/→ önceki/sonraki işaret · Shift+←/→ seçili işareti 0,1 sn kaydır · Delete sil' : undefined}>Zaman şeridi</b>
+          {compact ? ' · sürükleyin: ne zaman · kenarından: ne kadar' : ' · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)'}
         </p>
         <span className="flex items-center gap-1" role="group" aria-label="Yakınlaştırma">
           <button type="button" className={button} onClick={() => setZoomStep(zoom - 1)} disabled={zoom === 0} title="Uzaklaştır"><MagnifyingGlassMinus size={14} /></button>
@@ -222,6 +227,9 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
 
       <div ref={waveBox} className="rounded-md bg-[#FAF9F5] cursor-pointer" title="Tıklayın ya da sürükleyin: o ana gidin" />
 
+      <div className={compact && laneCount > COMPACT_ROWS ? 'overflow-y-auto rounded-md' : undefined}
+        style={compact && laneCount > COMPACT_ROWS ? { maxHeight: COMPACT_ROWS * LANE + 14 } : undefined}
+        title={compact && laneCount > COMPACT_ROWS ? 'Diğer işaretler için şeridi aşağı kaydırın' : undefined}>
       <div ref={lanesBox} className="relative overflow-hidden cursor-pointer rounded-md bg-[#FCFBF8]" style={{ height: laneCount * LANE + 8 }}
         onPointerDown={scrub} onPointerMove={move} onPointerUp={end} onPointerCancel={end}>
         {marks.map(mark => {
@@ -245,6 +253,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
           );
         })}
         <span className="absolute top-0 bottom-0 w-0.5 -ml-px bg-[#8B1E2D] pointer-events-none" style={{ left: px(currentTime) }} />
+      </div>
       </div>
 
       <div className="min-h-8 flex flex-wrap items-center gap-2 text-xs">

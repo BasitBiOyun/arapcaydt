@@ -46,7 +46,8 @@ export function quotaResetClock(now = new Date()): string {
 
 /** One plain sentence for the audio step: which capacity the next narration will use and how much is left today. */
 export function capacityLine(status: TeacherKeyStatus | null): string | null {
-  if (!status) return null;
+  // An unexpected answer from the key service leaves the line out rather than breaking the editor.
+  if (!status?.today?.tts || !status.today.shared || !status.today.transcribe) return null;
   const { key, today } = status;
   const of = (used: number, limit?: number) => limit ? `${used} / ${limit}` : `${used}`;
   const pool = today.shared.ttsExhausted
