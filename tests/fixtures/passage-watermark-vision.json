@@ -1,0 +1,904 @@
+{
+ "note": "Google Vision reading of a numbered-sentences paragraph question under the ÖSYM watermark (teacher diagnostics file).",
+ "solutionText": "Önce cümlelerin tamamını okuyalım:\nI. مُنْذُ سِنٍّ مُبَكِّرَةٍ، يُفَضِّلُ أَغْلَبُ الْأَطْفَالِ اسْتِهْلَاكَ الْمُنْتَجَاتِ الْمُصَنَّعَةِ.\nII. تُعَدُّ وَجْبَةُ الْإِفْطَارِ أَهَمَّ وَجْبَةٍ فِي الْيَوْمِ.\nIII. فَهِيَ الَّتِي تُحَضِّرُ الْجِسْمَ لِيَوْمٍ مَلِيءٍ بِالطَّاقَةِ وَالنَّشَاطِ.\nIV. لِذَلِكَ مِنَ الضَّرُورِيِّ أَنْ يَتَنَاوَلَ الْأَطْفَالُ وَجْبَةَ إِفْطَارٍ مُغَذِّيَةً قَبْلَ الذَّهَابِ إِلَى الْمَدْرَسَةِ.\nV. وَيُسَاعِدُ تَنَاوُلُ وَجْبَةِ إِفْطَارٍ مُتَكَامِلَةٍ عَلَى تَلْبِيَةِ احْتِيَاجَاتِ الْأَطْفَالِ مِنَ الطَّاقَةِ.\nŞimdi seçenekleri değerlendirelim.\nA seçeneğindeki birinci cümlede, çocukların küçük yaşlardan itibaren işlenmiş ürünleri tüketmeyi tercih etmesinden söz ediliyor. Ancak diğer cümlelerde konu kahvaltının önemi ve çocuklara sağladığı enerjidir. Bu nedenle birinci cümle anlam bütünlüğünü bozuyor.\nB seçeneği olmaz. İkinci cümlede kahvaltının günün en önemli öğünü olduğu söyleniyor ve devamındaki cümlelerle doğrudan bağlantı kuruluyor.\nC seçeneği olmaz. Üçüncü cümledeki فَهِيَ ifadesi ikinci cümlede geçen kahvaltıya gönderme yapıyor ve kahvaltının vücudu güne hazırladığı açıklanıyor.\nD seçeneği olmaz. Dördüncü cümledeki لِذَلِكَ, yani “bu nedenle” ifadesi önceki düşüncelerin doğal sonucunu veriyor.\nE seçeneği de olmaz. Beşinci cümlede dengeli bir kahvaltının çocukların enerji ihtiyacını karşılamaya yardımcı olduğu belirtilerek konu devam ettiriliyor.\nBu nedenle doğru cevap A seçeneği, yani birinci cümledir.",
+ "words": [
+  {
+   "text": "SORULAR",
+   "confidence": 100,
+   "x": 0.9031,
+   "y": 0.0278,
+   "width": 0.0609,
+   "height": 0.0213
+  },
+  {
+   "text": "ÇIKMIŞ",
+   "confidence": 95,
+   "x": 0.8531,
+   "y": 0.0278,
+   "width": 0.0458,
+   "height": 0.0213
+  },
+  {
+   "text": "-",
+   "confidence": 89,
+   "x": 0.8453,
+   "y": 0.0278,
+   "width": 0.0031,
+   "height": 0.0213
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 95,
+   "x": 0.7901,
+   "y": 0.0278,
+   "width": 0.0526,
+   "height": 0.0213
+  },
+  {
+   "text": "YDT",
+   "confidence": 100,
+   "x": 0.7615,
+   "y": 0.0278,
+   "width": 0.0271,
+   "height": 0.0213
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 96,
+   "x": 0.1,
+   "y": 0.0278,
+   "width": 0.0536,
+   "height": 0.0185
+  },
+  {
+   "text": "YDT",
+   "confidence": 99,
+   "x": 0.0714,
+   "y": 0.0269,
+   "width": 0.0266,
+   "height": 0.0194
+  },
+  {
+   "text": "-",
+   "confidence": 85,
+   "x": 0.0656,
+   "y": 0.0269,
+   "width": 0.0031,
+   "height": 0.0176
+  },
+  {
+   "text": "YKS",
+   "confidence": 99,
+   "x": 0.0354,
+   "y": 0.0269,
+   "width": 0.026,
+   "height": 0.0185
+  },
+  {
+   "text": "sirasıyla",
+   "confidence": 93,
+   "x": 0.5042,
+   "y": 0.075,
+   "width": 0.063,
+   "height": 0.0278
+  },
+  {
+   "text": "cümleler",
+   "confidence": 95,
+   "x": 0.4333,
+   "y": 0.075,
+   "width": 0.0661,
+   "height": 0.0278
+  },
+  {
+   "text": ",",
+   "confidence": 96,
+   "x": 0.4255,
+   "y": 0.075,
+   "width": 0.0021,
+   "height": 0.0259
+  },
+  {
+   "text": "sorularda",
+   "confidence": 98,
+   "x": 0.351,
+   "y": 0.0741,
+   "width": 0.0724,
+   "height": 0.0278
+  },
+  {
+   "text": "80.",
+   "confidence": 97,
+   "x": 0.325,
+   "y": 0.0741,
+   "width": 0.0198,
+   "height": 0.0259
+  },
+  {
+   "text": "-",
+   "confidence": 85,
+   "x": 0.3151,
+   "y": 0.0741,
+   "width": 0.0042,
+   "height": 0.0259
+  },
+  {
+   "text": "76.",
+   "confidence": 93,
+   "x": 0.287,
+   "y": 0.0741,
+   "width": 0.0219,
+   "height": 0.0259
+  },
+  {
+   "text": "bozan",
+   "confidence": 99,
+   "x": 0.6182,
+   "y": 0.1074,
+   "width": 0.0453,
+   "height": 0.0259
+  },
+  {
+   "text": "bütünlüğünü",
+   "confidence": 97,
+   "x": 0.5167,
+   "y": 0.1065,
+   "width": 0.0958,
+   "height": 0.0278
+  },
+  {
+   "text": "anlam",
+   "confidence": 99,
+   "x": 0.4646,
+   "y": 0.1083,
+   "width": 0.0448,
+   "height": 0.0259
+  },
+  {
+   "text": "parçanın",
+   "confidence": 93,
+   "x": 0.3938,
+   "y": 0.1083,
+   "width": 0.0646,
+   "height": 0.0269
+  },
+  {
+   "text": "okunduğunda",
+   "confidence": 98,
+   "x": 0.2833,
+   "y": 0.1083,
+   "width": 0.1052,
+   "height": 0.0278
+  },
+  {
+   "text": ".",
+   "confidence": 93,
+   "x": 0.4083,
+   "y": 0.1398,
+   "width": 0.0036,
+   "height": 0.025
+  },
+  {
+   "text": "bulunuz",
+   "confidence": 99,
+   "x": 0.3474,
+   "y": 0.1398,
+   "width": 0.0609,
+   "height": 0.0269
+  },
+  {
+   "text": "cümleyi",
+   "confidence": 95,
+   "x": 0.2828,
+   "y": 0.1417,
+   "width": 0.0594,
+   "height": 0.0278
+  },
+  {
+   "text": "(",
+   "confidence": 94,
+   "x": 0.6932,
+   "y": 0.3287,
+   "width": 0.0068,
+   "height": 0.0296
+  },
+  {
+   "text": "1",
+   "confidence": 87,
+   "x": 0.6891,
+   "y": 0.3278,
+   "width": 0.0063,
+   "height": 0.0278
+  },
+  {
+   "text": ")",
+   "confidence": 91,
+   "x": 0.6823,
+   "y": 0.3287,
+   "width": 0.0073,
+   "height": 0.0296
+  },
+  {
+   "text": "منذ",
+   "confidence": 97,
+   "x": 0.6521,
+   "y": 0.3213,
+   "width": 0.0266,
+   "height": 0.0287
+  },
+  {
+   "text": "سن",
+   "confidence": 98,
+   "x": 0.6177,
+   "y": 0.3333,
+   "width": 0.0281,
+   "height": 0.0278
+  },
+  {
+   "text": "مبكرة",
+   "confidence": 90,
+   "x": 0.5625,
+   "y": 0.3139,
+   "width": 0.0495,
+   "height": 0.0472
+  },
+  {
+   "text": "يفضل",
+   "confidence": 98,
+   "x": 0.5047,
+   "y": 0.312,
+   "width": 0.049,
+   "height": 0.0426
+  },
+  {
+   "text": "أغلب",
+   "confidence": 98,
+   "x": 0.4568,
+   "y": 0.313,
+   "width": 0.0417,
+   "height": 0.0426
+  },
+  {
+   "text": "الأطفال",
+   "confidence": 98,
+   "x": 0.3896,
+   "y": 0.313,
+   "width": 0.0604,
+   "height": 0.0435
+  },
+  {
+   "text": "استهلاك",
+   "confidence": 99,
+   "x": 0.3167,
+   "y": 0.3139,
+   "width": 0.0672,
+   "height": 0.0435
+  },
+  {
+   "text": ".",
+   "confidence": 94,
+   "x": 0.2375,
+   "y": 0.3185,
+   "width": 0.0042,
+   "height": 0.0204
+  },
+  {
+   "text": "80",
+   "confidence": 99,
+   "x": 0.2172,
+   "y": 0.3185,
+   "width": 0.0198,
+   "height": 0.0204
+  },
+  {
+   "text": "المنتجات",
+   "confidence": 99,
+   "x": 0.6266,
+   "y": 0.3713,
+   "width": 0.075,
+   "height": 0.038
+  },
+  {
+   "text": "گل",
+   "confidence": 38,
+   "x": 0.512,
+   "y": 0.3796,
+   "width": 0.0438,
+   "height": 0.0787
+  },
+  {
+   "text": "تعد",
+   "confidence": 99,
+   "x": 0.4927,
+   "y": 0.3639,
+   "width": 0.024,
+   "height": 0.0472
+  },
+  {
+   "text": "وجبة",
+   "confidence": 98,
+   "x": 0.4438,
+   "y": 0.3639,
+   "width": 0.0411,
+   "height": 0.0481
+  },
+  {
+   "text": "المروري",
+   "confidence": 94,
+   "x": 0.4375,
+   "y": 0.3778,
+   "width": 0.1865,
+   "height": 0.1491
+  },
+  {
+   "text": "دولة",
+   "confidence": 52,
+   "x": 0.4193,
+   "y": 0.4213,
+   "width": 0.1005,
+   "height": 0.163
+  },
+  {
+   "text": "الإفطار",
+   "confidence": 99,
+   "x": 0.376,
+   "y": 0.3639,
+   "width": 0.0609,
+   "height": 0.0481
+  },
+  {
+   "text": "أهم",
+   "confidence": 99,
+   "x": 0.3453,
+   "y": 0.3648,
+   "width": 0.026,
+   "height": 0.0481
+  },
+  {
+   "text": "وجبة",
+   "confidence": 98,
+   "x": 0.2974,
+   "y": 0.3657,
+   "width": 0.0422,
+   "height": 0.0472
+  },
+  {
+   "text": "في",
+   "confidence": 98,
+   "x": 0.2714,
+   "y": 0.3657,
+   "width": 0.0214,
+   "height": 0.0481
+  },
+  {
+   "text": "اليوم",
+   "confidence": 98,
+   "x": 0.6651,
+   "y": 0.4269,
+   "width": 0.037,
+   "height": 0.0454
+  },
+  {
+   "text": ".",
+   "confidence": 91,
+   "x": 0.6609,
+   "y": 0.4269,
+   "width": 0.0026,
+   "height": 0.0454
+  },
+  {
+   "text": "(",
+   "confidence": 93,
+   "x": 0.6484,
+   "y": 0.4269,
+   "width": 0.0052,
+   "height": 0.0454
+  },
+  {
+   "text": "III",
+   "confidence": 62,
+   "x": 0.6339,
+   "y": 0.4269,
+   "width": 0.0146,
+   "height": 0.0454
+  },
+  {
+   "text": ")",
+   "confidence": 70,
+   "x": 0.6276,
+   "y": 0.4269,
+   "width": 0.0052,
+   "height": 0.0454
+  },
+  {
+   "text": "فهي",
+   "confidence": 99,
+   "x": 0.5911,
+   "y": 0.4269,
+   "width": 0.0318,
+   "height": 0.0454
+  },
+  {
+   "text": "التي",
+   "confidence": 99,
+   "x": 0.5521,
+   "y": 0.4269,
+   "width": 0.0313,
+   "height": 0.0454
+  },
+  {
+   "text": "الجسم",
+   "confidence": 99,
+   "x": 0.437,
+   "y": 0.4278,
+   "width": 0.0469,
+   "height": 0.0481
+  },
+  {
+   "text": "ليوم",
+   "confidence": 99,
+   "x": 0.399,
+   "y": 0.4269,
+   "width": 0.0318,
+   "height": 0.0472
+  },
+  {
+   "text": "مليء",
+   "confidence": 99,
+   "x": 0.3516,
+   "y": 0.425,
+   "width": 0.0406,
+   "height": 0.0481
+  },
+  {
+   "text": "بالطاقة",
+   "confidence": 99,
+   "x": 0.2891,
+   "y": 0.4231,
+   "width": 0.0557,
+   "height": 0.0481
+  },
+  {
+   "text": "والنشاط",
+   "confidence": 99,
+   "x": 0.638,
+   "y": 0.4796,
+   "width": 0.0635,
+   "height": 0.0407
+  },
+  {
+   "text": "،",
+   "confidence": 74,
+   "x": 0.6323,
+   "y": 0.4796,
+   "width": 0.0052,
+   "height": 0.0389
+  },
+  {
+   "text": "(",
+   "confidence": 81,
+   "x": 0.6193,
+   "y": 0.4796,
+   "width": 0.0063,
+   "height": 0.0389
+  },
+  {
+   "text": ")",
+   "confidence": 98,
+   "x": 0.6188,
+   "y": 0.4926,
+   "width": 0.0078,
+   "height": 0.0296
+  },
+  {
+   "text": "۱۷",
+   "confidence": 51,
+   "x": 0.6042,
+   "y": 0.4796,
+   "width": 0.0172,
+   "height": 0.0389
+  },
+  {
+   "text": "IV",
+   "confidence": 98,
+   "x": 0.6036,
+   "y": 0.4917,
+   "width": 0.0188,
+   "height": 0.0306
+  },
+  {
+   "text": ")",
+   "confidence": 69,
+   "x": 0.5984,
+   "y": 0.4787,
+   "width": 0.0063,
+   "height": 0.0389
+  },
+  {
+   "text": "(",
+   "confidence": 97,
+   "x": 0.5979,
+   "y": 0.4935,
+   "width": 0.0073,
+   "height": 0.0296
+  },
+  {
+   "text": "إفطار",
+   "confidence": 88,
+   "x": 0.5714,
+   "y": 0.5083,
+   "width": 0.0583,
+   "height": 0.0694
+  },
+  {
+   "text": "لذلك",
+   "confidence": 98,
+   "x": 0.5589,
+   "y": 0.4787,
+   "width": 0.0333,
+   "height": 0.0398
+  },
+  {
+   "text": ".",
+   "confidence": 64,
+   "x": 0.5521,
+   "y": 0.4787,
+   "width": 0.0073,
+   "height": 0.0389
+  },
+  {
+   "text": "ان",
+   "confidence": 92,
+   "x": 0.4151,
+   "y": 0.4824,
+   "width": 0.0193,
+   "height": 0.0389
+  },
+  {
+   "text": "يتناول",
+   "confidence": 99,
+   "x": 0.3573,
+   "y": 0.4806,
+   "width": 0.0521,
+   "height": 0.0426
+  },
+  {
+   "text": "الأطفال",
+   "confidence": 99,
+   "x": 0.288,
+   "y": 0.4704,
+   "width": 0.0635,
+   "height": 0.0472
+  },
+  {
+   "text": "وجبة",
+   "confidence": 98,
+   "x": 0.6391,
+   "y": 0.5306,
+   "width": 0.0573,
+   "height": 0.0435
+  },
+  {
+   "text": "kulla",
+   "confidence": 83,
+   "x": 0.437,
+   "y": 0.5667,
+   "width": 0.075,
+   "height": 0.1324
+  },
+  {
+   "text": "لى",
+   "confidence": 95,
+   "x": 0.4302,
+   "y": 0.5352,
+   "width": 0.0208,
+   "height": 0.037
+  },
+  {
+   "text": "المدرسة",
+   "confidence": 99,
+   "x": 0.3573,
+   "y": 0.5352,
+   "width": 0.0667,
+   "height": 0.037
+  },
+  {
+   "text": ".",
+   "confidence": 77,
+   "x": 0.3536,
+   "y": 0.5352,
+   "width": 0.0026,
+   "height": 0.037
+  },
+  {
+   "text": "(",
+   "confidence": 88,
+   "x": 0.3401,
+   "y": 0.5352,
+   "width": 0.0063,
+   "height": 0.037
+  },
+  {
+   "text": "۷",
+   "confidence": 64,
+   "x": 0.3266,
+   "y": 0.5352,
+   "width": 0.0156,
+   "height": 0.037
+  },
+  {
+   "text": ")",
+   "confidence": 89,
+   "x": 0.3234,
+   "y": 0.5352,
+   "width": 0.0073,
+   "height": 0.037
+  },
+  {
+   "text": "ويساعد",
+   "confidence": 99,
+   "x": 0.2599,
+   "y": 0.5352,
+   "width": 0.0583,
+   "height": 0.037
+  },
+  {
+   "text": "تناول",
+   "confidence": 99,
+   "x": 0.6604,
+   "y": 0.5898,
+   "width": 0.0417,
+   "height": 0.038
+  },
+  {
+   "text": "وجبة",
+   "confidence": 99,
+   "x": 0.6115,
+   "y": 0.5898,
+   "width": 0.0422,
+   "height": 0.038
+  },
+  {
+   "text": "إفطار",
+   "confidence": 99,
+   "x": 0.5594,
+   "y": 0.5898,
+   "width": 0.0464,
+   "height": 0.038
+  },
+  {
+   "text": "YM'n",
+   "confidence": 74,
+   "x": 0.3604,
+   "y": 0.5981,
+   "width": 0.0755,
+   "height": 0.1315
+  },
+  {
+   "text": "احتياجات",
+   "confidence": 98,
+   "x": 0.3333,
+   "y": 0.5852,
+   "width": 0.076,
+   "height": 0.0435
+  },
+  {
+   "text": "الأطفال",
+   "confidence": 99,
+   "x": 0.2661,
+   "y": 0.5815,
+   "width": 0.0604,
+   "height": 0.0426
+  },
+  {
+   "text": "من",
+   "confidence": 99,
+   "x": 0.6776,
+   "y": 0.6454,
+   "width": 0.026,
+   "height": 0.0333
+  },
+  {
+   "text": "الطاقة",
+   "confidence": 99,
+   "x": 0.6219,
+   "y": 0.6352,
+   "width": 0.0521,
+   "height": 0.0389
+  },
+  {
+   "text": "V",
+   "confidence": 96,
+   "x": 0.651,
+   "y": 0.7176,
+   "width": 0.0125,
+   "height": 0.0278
+  },
+  {
+   "text": ")",
+   "confidence": 97,
+   "x": 0.6385,
+   "y": 0.7176,
+   "width": 0.0068,
+   "height": 0.0278
+  },
+  {
+   "text": "E",
+   "confidence": 98,
+   "x": 0.6271,
+   "y": 0.7185,
+   "width": 0.0109,
+   "height": 0.0278
+  },
+  {
+   "text": "IV",
+   "confidence": 99,
+   "x": 0.5573,
+   "y": 0.7185,
+   "width": 0.0161,
+   "height": 0.0241
+  },
+  {
+   "text": ")",
+   "confidence": 96,
+   "x": 0.5448,
+   "y": 0.7185,
+   "width": 0.0063,
+   "height": 0.0241
+  },
+  {
+   "text": "D",
+   "confidence": 97,
+   "x": 0.5323,
+   "y": 0.7185,
+   "width": 0.012,
+   "height": 0.0241
+  },
+  {
+   "text": "III",
+   "confidence": 81,
+   "x": 0.462,
+   "y": 0.7185,
+   "width": 0.0135,
+   "height": 0.0269
+  },
+  {
+   "text": ")",
+   "confidence": 96,
+   "x": 0.4526,
+   "y": 0.7185,
+   "width": 0.0052,
+   "height": 0.0269
+  },
+  {
+   "text": "C",
+   "confidence": 88,
+   "x": 0.4396,
+   "y": 0.7185,
+   "width": 0.0115,
+   "height": 0.0269
+  },
+  {
+   "text": "an",
+   "confidence": 23,
+   "x": 0.3964,
+   "y": 0.7028,
+   "width": 0.038,
+   "height": 0.0667
+  },
+  {
+   "text": "I",
+   "confidence": 61,
+   "x": 0.2771,
+   "y": 0.7176,
+   "width": 0.0068,
+   "height": 0.0278
+  },
+  {
+   "text": ")",
+   "confidence": 95,
+   "x": 0.263,
+   "y": 0.7176,
+   "width": 0.0068,
+   "height": 0.0278
+  },
+  {
+   "text": "A",
+   "confidence": 96,
+   "x": 0.2495,
+   "y": 0.7176,
+   "width": 0.0125,
+   "height": 0.0278
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 95,
+   "x": 0.8807,
+   "y": 0.9333,
+   "width": 0.0891,
+   "height": 0.0315
+  },
+  {
+   "text": "/",
+   "confidence": 92,
+   "x": 0.8698,
+   "y": 0.9333,
+   "width": 0.0094,
+   "height": 0.0287
+  },
+  {
+   "text": "YDT",
+   "confidence": 99,
+   "x": 0.8219,
+   "y": 0.9324,
+   "width": 0.0453,
+   "height": 0.0306
+  },
+  {
+   "text": "-",
+   "confidence": 68,
+   "x": 0.8068,
+   "y": 0.9324,
+   "width": 0.012,
+   "height": 0.0287
+  },
+  {
+   "text": "2025",
+   "confidence": 96,
+   "x": 0.7609,
+   "y": 0.9315,
+   "width": 0.0417,
+   "height": 0.0306
+  }
+ ],
+ "regions": [
+  {
+   "id": "question-root",
+   "type": "paragraph",
+   "x": 0.2529,
+   "y": 0.306,
+   "width": 0.4578,
+   "height": 0.4296
+  },
+  {
+   "id": "option-a",
+   "type": "option-a",
+   "x": 0.2425,
+   "y": 0.7116,
+   "width": 0.0484,
+   "height": 0.0398
+  },
+  {
+   "id": "option-b",
+   "type": "option-b",
+   "x": 0.3369,
+   "y": 0.7116,
+   "width": 0.0327,
+   "height": 0.0398
+  },
+  {
+   "id": "option-c",
+   "type": "option-c",
+   "x": 0.4326,
+   "y": 0.7125,
+   "width": 0.0499,
+   "height": 0.0389
+  },
+  {
+   "id": "option-d",
+   "type": "option-d",
+   "x": 0.5253,
+   "y": 0.7125,
+   "width": 0.0551,
+   "height": 0.0361
+  },
+  {
+   "id": "option-e",
+   "type": "option-e",
+   "x": 0.6201,
+   "y": 0.7116,
+   "width": 0.0505,
+   "height": 0.0407
+  }
+ ]
+}

@@ -144,3 +144,22 @@ test('passage: numbered sentences ("I. …", "II. …") are read as one passage,
   found.forEach((l, i) => assert.ok(Math.abs(l.region.y - (.32 + i * .06)) < .01, `line ${i + 1} on printed line ${i + 1}`));
   assert.ok(found[1].phrase.includes('الْمُصَنَّعَةِ') && found[1].phrase.includes('فِي'), 'a line spanning two numbered sentences keeps both parts');
 });
+
+test('passage: the real Google Vision reading under the ÖSYM watermark gives one underline per printed line, on that line', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('./fixtures/passage-watermark-vision.json', import.meta.url), 'utf8'));
+  const options = data.regions.filter((r: any) => r.id.startsWith('option-'));
+  const inOption = (w: any) => options.some((r: any) => w.x + w.width / 2 >= r.x && w.x + w.width / 2 <= r.x + r.width && w.y + w.height / 2 >= r.y && w.y + w.height / 2 <= r.y + r.height);
+  const lines = findPassageMatches(data.solutionText, data.words.filter((w: any) => !inOption(w)));
+  // The printed lines of the paragraph, by the words Vision read on them.
+  const printed = [.33, .39, .45, .50, .55, .61, .66];
+  assert.equal(lines.length, printed.length, 'seven printed lines, seven underlines');
+  lines.forEach((l, i) => {
+    const bottom = l.region.y + l.region.height;
+    assert.ok(Math.abs(l.region.y + l.region.height / 2 - printed[i]) < .025, `line ${i + 1} sits on printed line ${i + 1}`);
+    assert.ok(bottom < printed[i] + .045, `line ${i + 1} is drawn under its own words, not the next line (${bottom.toFixed(3)})`);
+  });
+  const starts = ['مُنْذُ', 'الْمُنْتَجَاتِ', 'الْيَوْمِ', 'وَالنَّشَاطِ', 'وَجْبَةَ', 'تَنَاوُلُ', 'مِنَ'];
+  const { normalizeArabic } = await import('../src/services/ocr/arabicMatcher');
+  lines.forEach((l, i) => assert.ok(normalizeArabic(l.phrase).startsWith(normalizeArabic(starts[i])), `line ${i + 1} is read from “${starts[i]}”, not “${l.phrase.slice(0, 20)}”`));
+});
