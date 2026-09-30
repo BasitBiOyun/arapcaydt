@@ -1,13 +1,13 @@
 import type { AnnotationRegion } from '../../types';
 import type { OCRWord } from './ocrTypes';
-import { groupOcrWordsIntoLines, normalizeArabic, type ArabicMatchResult } from './arabicMatcher';
+import { extractArabicPhrases, groupOcrWordsIntoLines, normalizeArabic, type ArabicMatchResult } from './arabicMatcher';
 
 /**
  * A long Arabic passage quoted in the solution (a reading text read aloud in full) is found on
  * the picture as a whole, not word by word: OCR misreads a few words of every long text, and
  * exact matching then breaks the passage into scattered pieces. The passage is aligned to the
  * words on the picture in reading order, tolerating misread, missing and extra words, and gets
- * one underline per printed line, timed by the words of that line.
+ * one underline per printed line, drawn while the words of that line are read.
  */
 
 /** A solution line with at least this many Arabic words (and hardly any Latin) is a passage. */
@@ -126,7 +126,7 @@ export function alignPassage(expected: string[], seen: string[]): Array<[number,
 export interface PassageMatch extends ArabicMatchResult {
   sourceStart: number;
   sourceEnd: number;
-  /** End of the whole passage in the solution: the line stays until the passage has been read. */
+  /** End of the whole passage in the solution. */
   passageEnd: number;
 }
 
@@ -174,4 +174,60 @@ export function findPassageMatches(solutionText: string, primary: OCRWord[], alt
     const words = (lines: PassageMatch[]) => lines.reduce((n, l) => n + l.matchedWords.length, 0);
     return words(b) > words(a) ? b : a;
   });
+}
+
+/**
+ * A phrase of the explanation found inside a passage on the picture, tolerating misread words
+ * (the exact search needs every word read right). One region per printed line it spans.
+ */
+export function findInPassage(phrase: string, lines: PassageMatch[], id: string): ArabicMatchResult[] {
+  const raw = phrase.split(/\s+/);
+  const expected = raw.map((w, i) => ({ norm: normalizeArabic(w), i })).filter(t => t.norm);
+  if (expected.length < 2) return [];
+  const seen = lines.flatMap((line, row) => [...line.matchedWords].sort((a, b) => b.x - a.x)
+    .flatMap(word => normalizeArabic(word.text).split(' ').filter(Boolean).map(norm => ({ norm, word, row }))));
+  const pairs = alignPassage(expected.map(t => t.norm), seen.map(t => t.norm));
+  if (pairs.length < Math.max(2, Math.ceil(expected.length * .7))) return [];
+  if (pairs[pairs.length - 1][1] - pairs[0][1] > expected.length + 1) return [];
+  const rows = [...new Set(pairs.map(([, t]) => seen[t].row))];
+  return rows.map((row, k) => {
+    const inRow = pairs.filter(([, t]) => seen[t].row === row);
+    const nextRow = rows[k + 1];
+    // A misread first (or last) word is the word next to the found ones on the same line.
+    let from = inRow[0][1], to = inRow[inRow.length - 1][1];
+    if (k === 0) from = Math.max(from - pairs[0][0], seen.findIndex(t => t.row === row));
+    if (nextRow === undefined) {
+      const lastOnRow = seen.map(t => t.row).lastIndexOf(row);
+      to = Math.min(to + (expected.length - 1 - pairs[pairs.length - 1][0]), lastOnRow);
+    }
+    const words = [...new Set(seen.slice(from, to + 1).map(t => t.word))];
+    const eFrom = k === 0 ? 0 : inRow[0][0];
+    const eTo = nextRow === undefined ? expected.length - 1 : pairs.find(([, t]) => seen[t].row === nextRow)![0] - 1;
+    const text = raw.slice(expected[eFrom].i, expected[Math.max(eFrom, eTo)].i + 1).join(' ');
+    const x = Math.max(0, Math.min(...words.map(w => w.x)) - .005), y = Math.max(0, Math.min(...words.map(w => w.y)) - .004);
+    const right = Math.min(1, Math.max(...words.map(w => w.x + w.width)) + .005), bottom = Math.min(1, Math.max(...words.map(w => w.y + w.height)) + .004);
+    return { phrase: text, matchedWords: words, region: {
+      id: `${id}-line-${k + 1}`, label: `Arapça: "${phrase}"${rows.length > 1 ? ` (${k + 1})` : ''}`, type: 'phrase',
+      x, y, width: right - x, height: bottom - y, content: text,
+    } };
+  });
+}
+
+/**
+ * The explanation's phrases that the exact search missed but that are in a passage (the teacher
+ * pointing back to the reading text): found there tolerantly. Pieces the exact search found of
+ * such a phrase give way to the whole.
+ */
+export function withPassageReferences(text: string, found: ArabicMatchResult[], passages: PassageMatch[]): ArabicMatchResult[] {
+  if (!passages.length) return found;
+  let result = found;
+  extractArabicPhrases(text).forEach((phrase, index) => {
+    const whole = result.some(m => m.region.label === `Arapça: "${phrase}"` || m.region.label?.startsWith(`Arapça: "${phrase}" (`));
+    if (whole) return;
+    const tolerant = findInPassage(phrase, passages, `arabic-passage-ref-${index + 1}`);
+    if (!tolerant.length) return;
+    const covered = new Set(tolerant.flatMap(m => m.matchedWords));
+    result = [...result.filter(m => !m.matchedWords.length || !m.matchedWords.every(w => covered.has(w))), ...tolerant];
+  });
+  return result;
 }

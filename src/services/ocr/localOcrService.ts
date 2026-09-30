@@ -4,6 +4,42 @@ import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
 import { missingMarkerCrops } from './markerRecovery';
 import { detectYdtQuestionRegions } from './ydtQuestionDetector';
 
+/**
+ * Longest side a small picture is enlarged to before it is read: in small print the dots and
+ * joined letters of Arabic run together, and the reader does much better on larger letters.
+ */
+const OCR_LONG_SIDE = 2400;
+
+/** The picture to read (enlarged up to twice when small), with its size in pixels. */
+export async function enlargeForOcr(imageUrl: string): Promise<{ url: string; width: number; height: number }> {
+  const img = await new Promise<HTMLImageElement | null>(resolve => {
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.onload = () => resolve(image);
+    image.onerror = () => resolve(null);
+    image.src = imageUrl;
+  });
+  const width = img?.naturalWidth || 1000, height = img?.naturalHeight || 1000;
+  const scale = Math.min(2, OCR_LONG_SIDE / Math.max(width, height));
+  if (!img || scale < 1.1) return { url: imageUrl, width, height };
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(width * scale);
+  canvas.height = Math.round(height * scale);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return { url: imageUrl, width, height };
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  try {
+    return { url: canvas.toDataURL('image/png'), width: canvas.width, height: canvas.height };
+  } catch {
+    // A picture from another site without permission cannot be read back: read it as it is.
+    return { url: imageUrl, width, height };
+  }
+}
+
 class LocalOcrService {
   private static instance: LocalOcrService;
   private worker: Worker | null = null;
@@ -85,21 +121,6 @@ class LocalOcrService {
     }
   }
 
-  private async getImageDimensions(imageUrl: string): Promise<{ width: number; height: number }> {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        resolve({
-          width: img.naturalWidth || img.width || 1000,
-          height: img.naturalHeight || img.height || 1000,
-        });
-      };
-      img.onerror = () => resolve({ width: 1000, height: 1000 });
-      img.src = imageUrl;
-    });
-  }
-
   private toOcrWord(rawWord: any, imgWidth: number, imgHeight: number): OCRWord | null {
     const text = String(rawWord?.text || '').trim();
     if (!text) return null;
@@ -173,7 +194,9 @@ class LocalOcrService {
       throw new Error('Geçerli bir soru görseli bulunamadı.');
     }
 
-    const { width: imgWidth, height: imgHeight } = await this.getImageDimensions(imageUrl);
+    // Every pass reads the same (enlarged) picture; positions are kept as shares of its size.
+    const source = await enlargeForOcr(imageUrl);
+    const { width: imgWidth, height: imgHeight } = source;
 
     onProgress?.({
       status: 'initializing',
@@ -190,7 +213,7 @@ class LocalOcrService {
     });
 
     // Tesseract v6/v7: text is on by default, blocks must be explicitly enabled.
-    const result = await worker.recognize(imageUrl, {}, { text: true, blocks: true });
+    const result = await worker.recognize(source.url, {}, { text: true, blocks: true });
     const data = result.data as any;
 
     const words: OCRWord[] = [];
@@ -256,7 +279,7 @@ class LocalOcrService {
       try {
         await worker.reinitialize('eng');
         await worker.setParameters({ tessedit_pageseg_mode: PSM.SPARSE_TEXT });
-        const labels = await worker.recognize(imageUrl, {}, { text: true, blocks: true });
+        const labels = await worker.recognize(source.url, {}, { text: true, blocks: true });
         const markers: OCRWord[] = [];
         for (const block of labels.data.blocks || []) for (const paragraph of block.paragraphs || [])
           for (const line of paragraph.lines || []) for (const raw of line.words || []) {
@@ -265,7 +288,7 @@ class LocalOcrService {
           }
         for(const crop of missingMarkerCrops(markers,imgWidth,imgHeight)){
           await worker.setParameters({tessedit_pageseg_mode:PSM.SINGLE_LINE});
-          const retry=await worker.recognize(imageUrl,{rectangle:crop.rectangle},{text:true,blocks:true});
+          const retry=await worker.recognize(source.url,{rectangle:crop.rectangle},{text:true,blocks:true});
           for(const block of retry.data.blocks||[]) for(const paragraph of block.paragraphs||[])
             for(const line of paragraph.lines||[]) for(const raw of line.words||[]){
               const word=this.toOcrWord(raw,imgWidth,imgHeight);
@@ -287,7 +310,7 @@ class LocalOcrService {
           const rectangle = {left, top,
             width: Math.min(imgWidth-left, Math.ceil(root.width*imgWidth)+20),
             height: Math.min(imgHeight-top, Math.ceil(root.height*imgHeight)+16)};
-          const retry = await worker.recognize(imageUrl, {rectangle}, {text:true, blocks:true});
+          const retry = await worker.recognize(source.url, {rectangle}, {text:true, blocks:true});
           const stemWords: OCRWord[] = [];
           for (const block of retry.data.blocks || []) for (const paragraph of block.paragraphs || [])
             for (const line of paragraph.lines || []) for (const raw of line.words || []) {

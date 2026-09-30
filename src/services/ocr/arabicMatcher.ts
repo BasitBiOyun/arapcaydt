@@ -66,7 +66,7 @@ export interface ArabicMatchResult {
   /** A line of a quoted passage: its exact place in the solution (see passageMatcher). */
   sourceStart?: number;
   sourceEnd?: number;
-  /** Where the passage ends in the solution: the line stays until then. */
+  /** Where the passage ends in the solution: nothing else is underlined inside it while it is read. */
   passageEnd?: number;
 }
 

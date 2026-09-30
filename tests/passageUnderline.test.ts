@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { findPassageMatches, findPassages, readingOrder, wordLikeness } from '../src/services/ocr/passageMatcher';
+import { findPassageMatches, findPassages, readingOrder, withPassageReferences, wordLikeness } from '../src/services/ocr/passageMatcher';
 import { findBestArabicMatches } from '../src/services/ocr/arabicMatcher';
 import { parseSolutionSemantics } from '../src/services/analysis/solutionParser';
 import { alignEventsWithNarration } from '../src/services/analysis/timelineAligner';
@@ -17,13 +17,13 @@ Parçada başlangıçta giysilerin yaprak, tüy, kürk ve hayvan derilerinden ya
 Bu nedenle doğru cevap D seçeneğidir.`;
 
 // The printed lines of the passage, as OCR reads them: a few words misread, one lost, one written
-// differently in the book (واستخدمها for وَاسْتِخْدَامِهَا), one split in two.
+// differently in the book (واستخدمها for وَاسْتِخْدَامِهَا), one split in two, الخيوط read as الخبوط.
 const PRINTED = [
   'ظهرت الملابس في العصر الحجري القديم أي منذ أكثر',
   'من مائة وخمسين ألف سنة، وكانت الملابس في البداية',
   'مصنوعة من أوراق الاشجار الكبيرة والريش وفراء',
   'وجلود الحيوانات. وفي أواخر العصر الحجرى القديم',
-  'تمكن الإنسان من استخلاص الخيوط من ألياف',
+  'تمكن الإنسان من استخلاص الخبوط من ألياف',
   'النباتات واستخدمها في صناعة الملابس. ارتبطت',
   'الملابس بالالوان حتى إنها كانت ترمز لطيقة أو حالة',
   'اجتماعية أو فئة عمرية أو غيرها من التصنيفات، وكثير',
@@ -80,10 +80,10 @@ test('passage: one underline per printed line, in reading order, each timed by i
   const marks = alignEventsWithNarration(parsed.events, spoken, spoken.at(-1)!.end + 1, SOLUTION)
     .filter(a => a.targetRegionId.startsWith('arabic-passage'));
   assert.equal(marks.length, PRINTED.length);
-  const passageEnd = marks.at(-1)!.start + marks.at(-1)!.duration;
   marks.forEach((m, i) => {
     if (i) assert.ok(m.start > marks[i - 1].start, 'line after line');
-    assert.ok(Math.abs(m.start + m.duration - passageEnd) < .05, 'every line stays until the passage has been read');
+    // Each line only while it is read (and a moment after), like a teacher draws them by hand.
+    if (i < marks.length - 1) assert.ok(m.start + m.duration < marks[i + 1].start + 1, 'gone soon after the next line starts');
   });
   // The first line is fully drawn once its words are read, long before the passage ends.
   const firstLineEnd = spoken[5 + 9].end;
@@ -94,9 +94,13 @@ test('passage: one underline per printed line, in reading order, each timed by i
 test('passage: shorter phrases skip it while it is read, and a later mention points into it', () => {
   const lines = findPassageMatches(SOLUTION, picture);
   const text = SOLUTION.slice(0, lines[0].sourceStart) + ' '.repeat(lines.at(-1)!.passageEnd - lines[0].sourceStart) + SOLUTION.slice(lines.at(-1)!.passageEnd);
-  const others = findBestArabicMatches(text, picture, [], lines.flatMap(l => l.matchedWords));
-  const mention = others.find(m => m.phrase.includes('الْخُيُوطِ'));
+  const exact = findBestArabicMatches(text, picture, [], lines.flatMap(l => l.matchedWords));
+  assert.ok(!exact.some(m => m.phrase.includes('الْخُيُوطِ') && m.phrase.includes('النَّبَاتَاتِ')), 'the exact search misses the misread words');
+  const others = withPassageReferences(text, exact, lines);
+  const mention = others.find(m => m.phrase === 'اِسْتِخْلَاصَ الْخُيُوطِ مِنْ أَلْيَافِ');
   assert.ok(mention && mention.region.x > .5, 'the explanation underlines the passage, where the words are');
+  assert.ok(Math.abs(mention.region.y - (.25 + 4 * .045)) < .01, 'on the printed line that holds them');
+  assert.ok(others.some(m => m.phrase === 'النَّبَاتَاتِ' && Math.abs(m.region.y - (.25 + 5 * .045)) < .01), 'and its last word on the next line');
   const all = [...lines, ...others];
   const parsed = parseSolutionSemantics(SOLUTION, all.map(m => m.region), all);
   const inside = parsed.events.filter(e => !e.targetRegionId.startsWith('arabic-passage')

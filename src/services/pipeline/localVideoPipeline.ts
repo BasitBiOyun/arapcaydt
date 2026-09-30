@@ -2,7 +2,7 @@ import { AnnotationRegion, VideoAction, NarrationWord, NarrationSource, VideoCap
 import { localOcrService } from '../ocr/localOcrService';
 import { detectYdtQuestionRegions } from '../ocr/ydtQuestionDetector';
 import { findBestArabicMatches, extractArabicPhrases, normalizeArabic } from '../ocr/arabicMatcher';
-import { findPassageMatches } from '../ocr/passageMatcher';
+import { findPassageMatches, withPassageReferences } from '../ocr/passageMatcher';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
 import { OCRProgress } from '../ocr/ocrTypes';
@@ -133,7 +133,8 @@ export class LocalVideoPipeline {
     const withoutPassages = passageRanges.reduce((text, [from, to]) => text.slice(0, from) + ' '.repeat(to - from) + text.slice(to), solutionText);
     const arabicMatches = [
       ...passageMatches,
-      ...findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)),
+      ...withPassageReferences(withoutPassages,
+        findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)), passageMatches),
     ].filter(m => !suppressed.has(m.region.id));
     for (const match of arabicMatches) {
       if (!finalRegions.some((r) => r.id === match.region.id)) {
