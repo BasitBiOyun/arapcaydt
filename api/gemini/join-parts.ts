@@ -4,7 +4,7 @@ import { MAX_PROJECT_AUDIO_BYTES, ownedAssetPath } from '../../server/projectAud
 import { saveGeneratedAudio } from './generate.js';
 
 export const config = { maxDuration: 60 };
-const MAX_PARTS = 4;
+const MAX_PARTS = 8;
 
 /**
  * Joins the voiced parts of a long solution (each made by /api/gemini/generate) into the one

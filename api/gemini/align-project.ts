@@ -132,6 +132,9 @@ export default async function handler(req: any, res: any) {
     if (lane.source === 'teacher' && result.status && isInvalidKeyError(result.status, result.raw)) await markTeacherKeyInvalid(db, member.user.id);
     failures.push(`${lane.source === 'teacher' ? 'Kendi anahtarınız' : 'Ortak anahtar'}: ${result.error}`);
     lastStatus = result.status && result.status >= 400 ? result.status : 502;
+    // The model answered but found no words in this audio: the same audio on the shared key
+    // gives the same empty answer and only spends the shared allowance. The next timing service takes over.
+    if (result.status === 200) break;
   }
   return res.status(lastStatus).json({ error: failures.join(' · '), code: 'GEMINI_TRANSCRIBE_ERROR' });
 }

@@ -2,6 +2,7 @@ import { authHeaders } from '../supabase';
 import { quotaResetClock } from './geminiKeyService';
 import type { GenerateNarrationRequest, GenerateNarrationResponse } from '../elevenlabs/types';
 import { splitNarration } from './narrationParts';
+import { decodeAudio, encodeMp3 } from './audioCodec';
 
 export const VOICE_QUOTA_MESSAGE = `Bugünkü ücretsiz ses hakkı doldu. Kendi Google anahtarınızı ekleyin (Ayarlar → Google anahtarım) ya da haklar yenilenince (her gün saat ${quotaResetClock()}) tekrar deneyin.`;
 export const VOICE_RETRY_MESSAGE = 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.';
@@ -113,6 +114,17 @@ class NarrationService {
       }
     }
     onPart?.(parts.length, parts.length);
+    // A part the server could not store came back in the answer itself: join in the browser.
+    if (made.some(p => !p.assetPath)) {
+      const samples = await Promise.all(made.map(p => decodeAudio(p.audioUrl!)));
+      const whole = new Float32Array(samples.reduce((n, s) => n + s.length, 0));
+      let at = 0;
+      for (const s of samples) { whole.set(s, at); at += s.length; }
+      return {
+        ...made[0], audioUrl: URL.createObjectURL(await encodeMp3(whole)), assetPath: undefined, audioBase64: undefined,
+        mimeType: 'audio/mpeg', durationSeconds: made.reduce((sum, p) => sum + p.durationSeconds, 0),
+      };
+    }
     let res: Response;
     try {
       res = await fetch('/api/gemini/join-parts', {
@@ -151,10 +163,12 @@ class NarrationService {
     }
     if (res.ok) {
       const data = await res.json().catch(() => null);
-      if (!data?.audioUrl || !data?.assetPath) throw new VoiceUnavailableError('Gemini ses servisi ses dosyası konumu döndürmedi.');
+      // A voice the server could not store arrives in the answer; the project stores it when saved.
+      const audioUrl = data?.audioUrl || (data?.audioBase64 ? `data:${data.mimeType || 'audio/mpeg'};base64,${data.audioBase64}` : '');
+      if (!audioUrl) throw new VoiceUnavailableError('Gemini ses servisi ses dosyası döndürmedi.');
       return {
-        audioUrl: data.audioUrl,
-        assetPath: data.assetPath,
+        audioUrl,
+        assetPath: data.assetPath || undefined,
         mimeType: data.mimeType || 'audio/wav',
         mode: 'live',
         durationSeconds: Number(data.durationSeconds) > 0 ? Number(data.durationSeconds) : 15,

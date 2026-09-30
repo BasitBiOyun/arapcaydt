@@ -2,7 +2,8 @@ import { SPOKEN_LIMIT } from './SolutionStep';
 import React, { useEffect, useMemo, useState } from 'react';
 import type { QuestionProject } from '../../../types';
 import { narrationDrift } from '../../../services/analysis/timelineAligner';
-import { capacityLine, geminiKeyService, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
+import { capacityLine, geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
+import { VOICE_QUOTA_MESSAGE, VOICE_RETRY_MESSAGE } from '../../../services/narration/narrationService';
 import { RevoicePanel } from '../RevoicePanel';
 import type { TextRange } from '../../../services/narration/revoice';
 import { Check, Pause, Play, DownloadSimple, ArrowsClockwise, Trash, CircleNotch, Microphone, UploadSimple } from '@phosphor-icons/react';
@@ -298,11 +299,38 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
       {audioInfo && !audioError && (
         <p className="text-sm text-[#1E562A] font-medium">{audioInfo}</p>
       )}
-      {audioError && (
-        <p className="text-sm text-red-600 font-medium">
-          {audioError}
-        </p>
+      {hasAudio && capacity && !audioError && (
+        <p className="text-sm text-[#787670]">{capacity}</p>
       )}
+      {audioError && (audioError === VOICE_QUOTA_MESSAGE || /hakkı doldu|hakkınız doldu|kotaları doldu/i.test(audioError) ? (
+        // Out of today's allowance: say it plainly, so nobody keeps trying until morning.
+        <div role="alert" className="p-3.5 rounded-lg border border-[#F1D7AF] bg-[#FFF7E8] text-[#6F5316] space-y-1.5">
+          <p className="text-base font-bold">Bugünkü ücretsiz ses hakkı bitti</p>
+          <p className="text-sm leading-relaxed">
+            Haklar her gün saat {quotaResetClock()}’da yenilenir. O saate kadar yeniden denemeyin; denemeler sonuç vermez.
+          </p>
+          {!keyStatus?.key ? (
+            <p className="text-sm leading-relaxed">
+              Bugün devam etmek için kendi ücretsiz Google anahtarınızı ekleyin:{' '}
+              <a href="#/yardim/google-anahtari" className="font-semibold text-[#8B1E2D] underline">resimli anlatım</a>.
+            </p>
+          ) : (
+            <p className="text-sm leading-relaxed">Kendi anahtarınızın ve ortak kapasitenin bugünkü hakları kullanıldı.</p>
+          )}
+        </div>
+      ) : (
+        <div role="alert" className="p-3.5 rounded-lg border border-red-200 bg-red-50 text-red-800 space-y-1.5">
+          <p className="text-sm font-semibold">{audioError}</p>
+          {audioError === VOICE_RETRY_MESSAGE || /zamanında yanıt vermedi|seslendirilemedi/i.test(audioError) ? (
+            <p className="text-sm leading-relaxed">
+              Üst üste olmuyorsa tekrar tekrar denemeyin (her deneme bir hak harcar); sol menüdeki “Sorun bildir” ile bize haber verin.
+            </p>
+          ) : null}
+          {hasAudio && !isUploadedAudio && (
+            <p className="text-sm leading-relaxed">Sesin yalnız bir iki cümlesi hatalıysa bütün sesi yeniden üretmeyin: “Sesi düzelt” ile sadece o yeri düzeltin.</p>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

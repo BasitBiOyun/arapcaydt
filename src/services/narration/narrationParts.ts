@@ -1,9 +1,11 @@
 /**
  * Long solutions are voiced in parts: one TTS request for a very long text runs out of time
- * and tends to skip passages. Up to PART_CHARS the whole text is one request, as before.
+ * (the request is cut off but still counts against the day's allowance) and tends to skip
+ * passages. A part of about 1,800 characters is 1.5–2 minutes of speech, which every model
+ * makes in time. Up to PART_CHARS the whole text is one request.
  */
 export const SPOKEN_LIMIT = 10_000;
-export const PART_CHARS = 4_500;
+export const PART_CHARS = 1_800;
 
 /** Where a part may end, best first: a paragraph, a sentence, a clause, a word. */
 const BREAKS = [/\n\s*\n/g, /\n/g, /[.!?؟…:](?=\s)/g, /[;،,](?=\s)/g, /\s/g];
