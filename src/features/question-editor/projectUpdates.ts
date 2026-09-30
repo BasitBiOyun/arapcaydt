@@ -79,6 +79,8 @@ export function applyPipelineResult(project: QuestionProject, result: LocalPipel
       timingQuality: result.timingQuality,
       pipelineVersion: CURRENT_PIPELINE_VERSION,
       warnings: result.warnings,
+      ocrEngine: result.ocrEngine,
+      ocrNote: result.ocrNote,
     },
     ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
     status: 'video_ready',

@@ -176,7 +176,7 @@ class LocalOcrService {
 
     // Google Vision (on the server) reads printed Arabic best; the in-browser reader is the fallback.
     const cloud = await readWithVision(imageUrl, onProgress);
-    if (cloud) return cloud;
+    if ('result' in cloud) return cloud.result;
 
     const { width: imgWidth, height: imgHeight } = await this.getImageDimensions(imageUrl);
 
@@ -248,6 +248,8 @@ class LocalOcrService {
     });
 
     const output: OCRResult = {
+      engine: 'tesseract',
+      cloudIssue: cloud.issue,
       text: data.text || lines.map((l) => l.text).join('\n'),
       imageWidth: imgWidth,
       imageHeight: imgHeight,

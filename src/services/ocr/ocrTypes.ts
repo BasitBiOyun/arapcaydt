@@ -24,6 +24,10 @@ export interface OCRLine {
 }
 
 export interface OCRResult {
+  /** Which reader read the picture. */
+  engine?: 'vision' | 'tesseract';
+  /** Why Google Vision was not used (shown to the teacher), when it was tried. */
+  cloudIssue?: string;
   /** Dedicated Arabic-only stem pass; independent alternative to mixed OCR. */
   arabicStemWords?: OCRWord[];
   /** Independent Latin-label pass; never mix its Arabic guesses into words. */

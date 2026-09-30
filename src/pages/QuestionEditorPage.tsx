@@ -13,7 +13,7 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
 import { narrationService } from '../services/narration/narrationService';
-import { moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
+import { cutAtPauses, moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
 import { NARRATION_RATE, decodeAudio, encodeMp3 } from '../services/narration/audioCodec';
 import { alignSolutionNarration } from '../services/analysis/timelineAligner';
 import { splitNarration, spokenLength } from '../services/narration/narrationParts';
@@ -370,11 +370,13 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       setAudioInfo('Yeni parça sesin içine yerleştiriliyor…');
       if (!piece.audioUrl) throw new Error('Yeni parçanın sesi alınamadı. Tekrar deneyin.');
       const [base, insert] = await Promise.all([decodeAudio(activeAudioUrl), decodeAudio(piece.audioUrl)]);
-      const joined = spliceAudio(base, insert, NARRATION_RATE, span.start, span.end);
+      // Cut in the real pauses around the range, so no word of the sentences around it is lost.
+      const cut = cutAtPauses(base, NARRATION_RATE, span);
+      const joined = spliceAudio(base, insert, NARRATION_RATE, cut.start, cut.end);
       const blob = await encodeMp3(joined.samples);
       const audioUrl = URL.createObjectURL(blob);
       const duration = joined.samples.length / NARRATION_RATE;
-      const moved = moveTimeline({ start: span.start, end: span.end, newStart: joined.newStart, newEnd: joined.newEnd },
+      const moved = moveTimeline({ start: cut.start, end: cut.end, newStart: joined.newStart, newEnd: joined.newEnd },
         currentProject.videoConfig.timelineActions, currentProject.videoConfig.captions, source?.words);
       // A new file: the old stored path must not be reused when saving.
       const replaced = <T extends { audioUrl: string; duration: number }>(audio: T | undefined) => audio && ({
@@ -813,6 +815,13 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
                   ? 'İşaretler sesinize göre yerleştirildi. Önizlemeyi izleyin; yerinde olmayan bir işareti görselde ya da alttaki zaman şeridinde sürükleyerek düzeltin, yoksa indirmeye geçin.'
                   : 'Önce aşağıdaki düğmeyle sesinize uygun işaretleri hazırlayın.'}
               </p>
+              {videoGenerated && currentProject.videoConfig.ocrEngine && (
+                <p className="text-sm text-[#787670]">
+                  {currentProject.videoConfig.ocrEngine === 'vision'
+                    ? 'Görsel Google Vision ile okundu.'
+                    : `Görsel tarayıcıdaki okuyucuyla okundu${currentProject.videoConfig.ocrNote ? ` (${currentProject.videoConfig.ocrNote})` : ''}.`}
+                </p>
+              )}
             </section>
           )}
           <ExportStep

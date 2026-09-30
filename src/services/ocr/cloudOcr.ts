@@ -83,12 +83,22 @@ export function visionToOcr(page: VisionPage): OCRResult {
   };
 }
 
-/** The picture read by Google Vision, or null (not set up, not reachable, nothing read): use the in-browser reader. */
-export async function readWithVision(imageUrl: string, onProgress?: (progress: OCRProgress) => void): Promise<OCRResult | null> {
-  if (notConfigured) return null;
+const ISSUES: Record<string, string> = {
+  VISION_NOT_CONFIGURED: 'Google Vision anahtarı sunucuda tanımlı değil (Vercel’de GOOGLE_VISION_API_KEY ekleyip yeniden yükleyin)',
+  VISION_KEY_INVALID: 'Google Vision anahtarı geçersiz ya da projede Cloud Vision API veya faturalandırma açık değil',
+  VISION_QUOTA: 'Google Vision kotası doldu',
+  VISION_TIMEOUT: 'Google Vision zamanında yanıt vermedi',
+};
+
+/**
+ * The picture read by Google Vision, or why not (the in-browser reader is used then). A missing
+ * key is asked once per session.
+ */
+export async function readWithVision(imageUrl: string, onProgress?: (progress: OCRProgress) => void): Promise<{ result: OCRResult } | { issue: string }> {
+  if (notConfigured) return { issue: ISSUES.VISION_NOT_CONFIGURED };
   onProgress?.({ status: 'recognizing', progress: 30, message: 'Soru görseli Google Vision ile okunuyor...' });
   const image = await pictureForCloud(imageUrl);
-  if (!image) return null;
+  if (!image) return { issue: 'Görsel Google Vision’a gönderilemedi (tarayıcı görseli okuyamadı)' };
   try {
     const res = await fetch('/api/vision/ocr', {
       method: 'POST',
@@ -99,13 +109,14 @@ export async function readWithVision(imageUrl: string, onProgress?: (progress: O
     const data = await res.json().catch(() => null);
     if (!res.ok) {
       if (data?.code === 'VISION_NOT_CONFIGURED') notConfigured = true;
-      else console.warn('Google Vision okuyamadı, tarayıcıdaki okuyucu kullanılıyor:', data?.code || res.status);
-      return null;
+      const issue = ISSUES[data?.code] || data?.error || `Google Vision isteği başarısız (${res.status})`;
+      console.warn('Google Vision okuyamadı, tarayıcıdaki okuyucu kullanılıyor:', data?.code || res.status, data?.detail || '');
+      return { issue: data?.detail ? `${issue}: ${String(data.detail).slice(0, 140)}` : issue };
     }
-    if (!data?.words?.length || !data.width || !data.height) return null;
+    if (!data?.words?.length || !data.width || !data.height) return { issue: 'Google Vision görselde yazı bulamadı' };
     onProgress?.({ status: 'completed', progress: 100, message: `${data.words.length} kelime Google Vision ile okundu.` });
-    return visionToOcr(data as VisionPage);
+    return { result: { ...visionToOcr(data as VisionPage), engine: 'vision' } };
   } catch {
-    return null;
+    return { issue: ISSUES.VISION_TIMEOUT };
   }
 }
