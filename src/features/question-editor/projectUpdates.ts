@@ -81,6 +81,7 @@ export function applyPipelineResult(project: QuestionProject, result: LocalPipel
       warnings: result.warnings,
       ocrEngine: result.ocrEngine,
       ocrNote: result.ocrNote,
+      passageNote: result.passageNote,
     },
     ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
     status: 'video_ready',

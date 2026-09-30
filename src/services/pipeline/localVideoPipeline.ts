@@ -33,6 +33,7 @@ export interface LocalPipelineResult {
   warnings: string[];
   ocrEngine?: 'vision' | 'tesseract';
   ocrNote?: string;
+  passageNote?: string;
 }
 
 export class LocalVideoPipeline {
@@ -139,7 +140,9 @@ export class LocalVideoPipeline {
       ...passageMatches,
       ...withPassageReferences(withoutPassages,
         findBestArabicMatches(withoutPassages, stemWords, ocrResult.arabicStemWords, passageMatches.flatMap(m => m.matchedWords)), passageMatches),
-    ].filter(m => !suppressed.has(m.region.id));
+    ].filter(m => !suppressed.has(m.region.id) || m.region.id.startsWith('arabic-passage-'));
+    // Passage lines are always planned again: a line deleted once (for example to draw it by
+    // hand) must not keep the passage from being underlined when the marks are prepared again.
     for (const match of arabicMatches) {
       if (!finalRegions.some((r) => r.id === match.region.id)) {
         finalRegions.push(match.region);
@@ -217,6 +220,9 @@ export class LocalVideoPipeline {
       warnings,
       ocrEngine: rawOcr.engine,
       ocrNote: rawOcr.cloudIssue,
+      passageNote: passages.length
+        ? `Çözümde ${passages.length} Arapça paragraf var; görselde ${new Set(passageMatches.map(m => m.region.id)).size} satırı bulundu.`
+        : 'Çözümde 10 kelimeden uzun kesintisiz bir Arapça paragraf yok.',
     };
   }
 }
