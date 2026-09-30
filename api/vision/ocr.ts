@@ -1,0 +1,80 @@
+import { requireMember } from '../../server/auth.js';
+
+/**
+ * Reads a question picture with Google Cloud Vision (document text detection), which reads
+ * printed Arabic far better than the in-browser reader. The key stays on the server
+ * (GOOGLE_VISION_API_KEY); the picture comes from the signed-in teacher's browser.
+ */
+export const config = { maxDuration: 60 };
+
+/** A picture larger than this (base64) is refused; the studio sends at most 2400 px JPEG. */
+const MAX_IMAGE_CHARS = 6_000_000;
+const TIMEOUT_MS = 40_000;
+
+export interface VisionWord { text: string; confidence: number; x: number; y: number; width: number; height: number }
+export interface VisionPage { width: number; height: number; words: VisionWord[]; lines: number[][]; text: string }
+
+const BREAKS_LINE = new Set(['LINE_BREAK', 'EOL_SURE_SPACE', 'HYPHEN']);
+
+/** Words (with pixel boxes) and printed lines from a Vision `fullTextAnnotation`. */
+export function visionPage(annotation: any): VisionPage | null {
+  const page = annotation?.pages?.[0];
+  if (!page?.width || !page?.height) return null;
+  const words: VisionWord[] = [];
+  const lines: number[][] = [];
+  let line: number[] = [];
+  for (const block of page.blocks || []) for (const paragraph of block.paragraphs || []) {
+    for (const word of paragraph.words || []) {
+      const symbols = word.symbols || [];
+      const text = symbols.map((s: any) => s.text || '').join('');
+      const points = (word.boundingBox?.vertices || []).map((v: any) => ({ x: v.x || 0, y: v.y || 0 }));
+      if (!text.trim() || !points.length) continue;
+      const left = Math.min(...points.map((p: any) => p.x)), right = Math.max(...points.map((p: any) => p.x));
+      const top = Math.min(...points.map((p: any) => p.y)), bottom = Math.max(...points.map((p: any) => p.y));
+      line.push(words.length);
+      words.push({ text, confidence: Math.round((word.confidence ?? .9) * 100), x: left, y: top, width: Math.max(1, right - left), height: Math.max(1, bottom - top) });
+      const lastBreak = symbols[symbols.length - 1]?.property?.detectedBreak?.type;
+      if (BREAKS_LINE.has(lastBreak)) { lines.push(line); line = []; }
+    }
+    if (line.length) { lines.push(line); line = []; }
+  }
+  return { width: page.width, height: page.height, words, lines, text: annotation.text || '' };
+}
+
+export default async function handler(req: any, res: any) {
+  const member = await requireMember(req, res);
+  if (!member) return;
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  const key = process.env.GOOGLE_VISION_API_KEY?.trim();
+  if (!key) return res.status(503).json({ error: 'Google Vision ayarlı değil.', code: 'VISION_NOT_CONFIGURED' });
+  const image = typeof req.body?.image === 'string' ? req.body.image.replace(/^data:image\/\w+;base64,/, '') : '';
+  if (!image || image.length > MAX_IMAGE_CHARS || !/^[A-Za-z0-9+/=\s]+$/.test(image.slice(0, 200)))
+    return res.status(400).json({ error: 'Görsel okunamadı.', code: 'INVALID_IMAGE' });
+
+  let response: Response;
+  try {
+    response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${encodeURIComponent(key)}`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requests: [{
+        image: { content: image },
+        features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
+        imageContext: { languageHints: ['ar', 'tr', 'en'] },
+      }] }),
+    });
+  } catch {
+    return res.status(504).json({ error: 'Google Vision zamanında yanıt vermedi.', code: 'VISION_TIMEOUT' });
+  }
+  const data: any = await response.json().catch(() => null);
+  if (!response.ok || data?.responses?.[0]?.error) {
+    const status = response.status, message = String(data?.error?.message || data?.responses?.[0]?.error?.message || '');
+    const code = status === 429 || /quota|rate/i.test(message) ? 'VISION_QUOTA'
+      : status === 400 && /API key/i.test(message) || status === 403 ? 'VISION_KEY_INVALID' : 'VISION_FAILED';
+    // The key is never echoed back; Google's message does not contain it.
+    return res.status(502).json({ error: 'Google Vision görseli okuyamadı.', code, detail: message.slice(0, 200) });
+  }
+  const page = visionPage(data?.responses?.[0]?.fullTextAnnotation);
+  if (!page || !page.words.length) return res.status(200).json({ width: 0, height: 0, words: [], lines: [], text: '' });
+  return res.status(200).json(page);
+}
