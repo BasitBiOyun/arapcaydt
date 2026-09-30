@@ -46,6 +46,8 @@ interface VideoPreviewCanvasProps {
     /** A missing option to draw or pick on the picture. */
     drawOption?: string | null;
     onDrawOptionDone?: () => void;
+    /** A box to select ("Burada hata var"). */
+    focusBox?: { id: string } | null;
   };
 }
 
@@ -236,7 +238,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
           <PreviewEditOverlay fit={fit} canvasWidth={1920} canvasHeight={1080} regions={regions} actions={actions}
             time={currentTime} total={duration} underlineOffset={videoConfig.underlineOffset}
             onRegions={editing.onRegions} onActions={editing.onActions} onUndo={editing.onUndo} canUndo={editing.canUndo}
-            onAssignOption={editing.onAssignOption} drawOption={editing.drawOption} onDrawOptionDone={editing.onDrawOptionDone} />
+            onAssignOption={editing.onAssignOption} drawOption={editing.drawOption} onDrawOptionDone={editing.onDrawOptionDone} focusBox={editing.focusBox} />
         )}
 
         {/* Center overlay play button when paused */}

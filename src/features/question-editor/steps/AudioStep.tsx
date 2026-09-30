@@ -13,6 +13,8 @@ export interface AudioStepProps {
   isUploadedAudio: boolean;
   isAudioApproved: boolean;
   currentProject: QuestionProject;
+  /** The Ses şeridi under the question plays and fixes the voice: this panel then has no player of its own. */
+  stripShown: boolean;
   isAudioPlaying: boolean;
   toggleStageAudio: () => void;
   audioPlayTime: number;
@@ -39,7 +41,7 @@ export interface AudioStepProps {
 const formatTime = (secs: number) =>
   `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
 
-export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo }: AudioStepProps) {
+export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, stripShown, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo }: AudioStepProps) {
   // Which Google key the next narration uses; refreshed after each generation.
   const [keyStatus, setKeyStatus] = useState<TeacherKeyStatus | null>(null);
   useEffect(() => {
@@ -83,17 +85,17 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </span>
             )}
           </div>
-          {drift && (drift.added.length > 0 || drift.skipped.length > 0) && (
+          {drift && (drift.added.length > 0 || (!stripShown && drift.skipped.length > 0)) && (
             <div role="alert" className="p-2.5 rounded border border-[#E5D7B0] bg-[#FAF5E6] text-sm text-[#5C420B] space-y-1">
               <p className="font-semibold">Ses metinden sapmış olabilir; ilgili yerleri dinleyin:</p>
               {drift.added.slice(0, 3).map((d, i) => <p key={`a${i}-${d.start}`}>{clock(d.start)} · metinde olmayan: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
-              {drift.skipped.slice(0, 3).map((d, i) => <p key={`s${i}-${d.start}`}>{clock(d.start)} · okunmamış: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
+              {!stripShown && drift.skipped.slice(0, 3).map((d, i) => <p key={`s${i}-${d.start}`}>{clock(d.start)} · okunmamış: “{d.text.length > 80 ? d.text.slice(0, 80) + '…' : d.text}”</p>)}
               <p>Hatalıysa soldaki Ses şeridinden yalnız o yeri yeniden seslendirin. Arapça kelimeler bazen farklı yazıya dökülür; sesi dinleyip karar verin.</p>
             </div>
           )}
 
-          {/* Minimalist Audio player bar */}
-          <div className="flex items-center gap-3 bg-white p-2.5 rounded-lg border border-[#E5E4DC]">
+          {/* Minimalist Audio player bar; with the Ses şeridi the voice is played there, not here. */}
+          <div className={`flex items-center gap-3 bg-white p-2.5 rounded-lg border border-[#E5E4DC] ${stripShown ? 'hidden' : ''}`}>
             <button
               type="button"
               onClick={toggleStageAudio}
@@ -200,10 +202,10 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </button>
             )}
           </div>
-          {!isUploadedAudio && (source?.words?.length ?? 0) > 0 && (
+          {stripShown && (
             <p className="p-2.5 rounded-lg bg-[#F4EDEB] text-sm text-[#5C3A33] leading-relaxed">
-              <strong>Sesi düzelt:</strong> bir cümle yanlış okunduysa ya da atlandıysa bütün sesi baştan üretmeyin. Sorunun altındaki
-              <strong> Ses şeridinde</strong> o cümleye tıklayıp yalnız onu yeniden seslendirin.
+              Sesi sorunun altındaki <strong>Ses şeridinden</strong> dinleyin. Yanlış bir yer duyarsanız <strong>Burada hata var</strong>’a,
+              sonra <strong>Yeniden seslendir</strong>’e basın; yalnız o yer yeniden okunur. Her şey doğruysa <strong>Bu Sesi Kullan</strong>.
             </p>
           )}
         </div>

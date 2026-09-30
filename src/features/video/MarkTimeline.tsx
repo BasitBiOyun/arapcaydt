@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/plugins/timeline';
 import HoverPlugin from 'wavesurfer.js/plugins/hover';
-import { ArrowsOutLineHorizontal, CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus, MapPin, Minus, Plus, Trash } from '@phosphor-icons/react';
+import { ArrowsOutLineHorizontal, CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus, MapPin, Minus, Plus, Trash, HandPalm } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import { adjacentAction, clock, isTypingTarget, nudgeAction } from '../question-editor/workflow';
 
@@ -69,6 +69,20 @@ interface Props {
   keyboard?: boolean;
   /** Short screen: thinner waveform, two rows of marks in view. */
   compact?: boolean;
+  /** The preview is playing ("Burada hata var" pauses it). */
+  playing?: boolean;
+  /** "Burada hata var": the box of the mark just seen, to select it on the picture (null: none). */
+  onFlag?: (regionId: string | null) => void;
+}
+
+/**
+ * What the teacher just saw: the latest mark that appeared at or before `time`, if it appeared in
+ * the last few seconds or (an underline, a frame) is still on screen.
+ */
+export function markJustSeen(marks: VideoAction[], time: number, within = 4): VideoAction | null {
+  const lasting = (m: VideoAction) => m.type === 'reject' || m.type === 'correct';
+  const seen = marks.filter(m => m.start <= time + .1 && (m.start >= time - within || (!lasting(m) && m.start + m.duration >= time)));
+  return seen.length ? seen.reduce((a, b) => (b.start >= a.start ? b : a)) : null;
 }
 
 /**
@@ -77,7 +91,7 @@ interface Props {
  * how long it stays (an underline is drawn over that whole time). Crosses and ticks stay to the
  * end, so only their start moves. Zoom in for fine timing; the marks follow the zoom and scroll.
  */
-export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact }: Props) {
+export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact, playing, onFlag }: Props) {
   const waveBox = useRef<HTMLDivElement>(null);
   const lanesBox = useRef<HTMLDivElement>(null);
   const surfer = useRef<WaveSurfer | null>(null);
@@ -218,6 +232,18 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
           {compact ? ' · sürükleyin: ne zaman · kenarından: ne kadar' : ' · işareti sürükleyin: ne zaman çıksın · kenarından çekin: ne kadar kalsın (altı çizgi bu sürede çizilir)'}
         </p>
         <span className="flex items-center gap-1" role="group" aria-label="Yakınlaştırma">
+          {onFlag && (
+            <button type="button" className={`${button} mr-2 border-[#E6B8BF] bg-[#FBF0F1] text-[#8B1E2D] font-semibold hover:bg-[#F6E3E5]`}
+              title="Önizlemeyi durdurur ve az önce çıkan işaretin kutusunu seçer"
+              onClick={() => {
+                if (playing) onPlayPause();
+                const mark = markJustSeen(marks, currentTime);
+                setSelectedId(mark?.id ?? null);
+                onFlag(mark?.targetRegionId ?? null);
+              }}>
+              <HandPalm size={14} /> Burada hata var
+            </button>
+          )}
           <button type="button" className={button} onClick={() => setZoomStep(zoom - 1)} disabled={zoom === 0} title="Uzaklaştır"><MagnifyingGlassMinus size={14} /></button>
           <span className="w-10 text-center font-semibold text-[#55544F]">{ZOOMS[zoom]}×</span>
           <button type="button" className={button} onClick={() => setZoomStep(zoom + 1)} disabled={zoom === ZOOMS.length - 1} title="Yakınlaştır: ince ayar için"><MagnifyingGlassPlus size={14} /></button>

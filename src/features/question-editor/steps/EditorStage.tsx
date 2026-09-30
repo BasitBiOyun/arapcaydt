@@ -28,7 +28,8 @@ export interface EditorStageProps {
   regionHistory: VideoConfig[];
   setRegionHistory: React.Dispatch<React.SetStateAction<VideoConfig[]>>;
   /** Ses step with a generated voice: the question on top, the narration strip ("Sesi düzelt") under it. */
-  narration?: { words: NarrationWord[]; showSkipped: boolean; busy: boolean; onRevoice: (range: TextRange) => void; canUndo: boolean; onUndo: () => void };
+  narration?: { words: NarrationWord[]; showSkipped: boolean; busy: boolean; onRevoice: (range: TextRange) => void; canUndo: boolean; onUndo: () => void;
+    lastFix: { start: number; end: number; at: number } | null; onKeepFix: () => void };
 }
 
 /** A 13–15" laptop screen, where the strips go compact so the question stays large. */
@@ -44,6 +45,10 @@ function useShortScreen(): boolean {
   }, []);
   return short;
 }
+
+/** One "↑ Yukarı / ↓ Aşağı" click moves every underline by this share of its text line. */
+const LINE_STEP = .1;
+const lineOffset = (current: number | undefined, delta: number) => Math.round(Math.max(-.8, Math.min(.8, (current ?? 0) + delta)) * 100) / 100;
 
 /** Narrowest the picture gets to leave room for the controls and the strip, in pixels. */
 const MIN_PICTURE = 420;
@@ -89,14 +94,20 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
   const { width: fitWidth, short } = useFitWidth(frame, previewMode === 'video' && videoGenerated, step);
   const shortScreen = useShortScreen();
   useEffect(() => { if (step !== 3) setDrawOption(null); }, [step, setDrawOption]);
+  /** The sentence being spoken in the Ses step, shown under the question like a caption. */
+  const [spoken, setSpoken] = useState<string | null>(null);
+  /** The box to select on the picture after "Burada hata var" (a new object each time, so the same box can be picked again). */
+  const [focusBox, setFocusBox] = useState<{ id: string } | null>(null);
   if (step === 2 && narration && hasImage) return (
     <div className="narration-stage">
       <div className="narration-stage-picture">
         <img src={currentProject.imageUrl} alt="Soru görseli" />
+        {spoken && <p className="narration-caption" dir="auto">{spoken}</p>}
       </div>
       <NarrationStrip solutionText={currentProject.solutionText} words={narration.words} duration={activeAudioDuration || 15}
         audioUrl={activeAudioUrl} showSkipped={narration.showSkipped} busy={narration.busy} onRevoice={narration.onRevoice}
-        canUndo={narration.canUndo} onUndo={narration.onUndo} compact={shortScreen} />
+        canUndo={narration.canUndo} onUndo={narration.onUndo} compact={shortScreen}
+        lastFix={narration.lastFix} onKeepFix={narration.onKeepFix} onSpeaking={setSpoken} />
     </div>
   );
   return (
@@ -164,6 +175,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             },
             drawOption,
             onDrawOptionDone: () => setDrawOption(null),
+            focusBox,
           } : undefined}
         />
         </div>
@@ -188,13 +200,19 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             <button type="button" className="w-6 h-6 rounded border bg-white hover:bg-[#F2F1EB] font-bold" aria-label="Soruyu büyüt"
               onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, imageScale: (currentProject.videoConfig.imageScale ?? 1) + .05 >= .999 ? undefined : Math.round(((currentProject.videoConfig.imageScale ?? 1) + .05) * 100) / 100 } })}>+</button>
           </span>
-          <label className="flex gap-2 items-center ml-2" title="Bu videodaki tüm altı çizgileri yukarı ya da aşağı kaydırır">
-          Altı çizgi
-          <input aria-label="Altı çizgi yüksekliği" type="range" min="-0.8" max="0.8" step="0.05"
-            value={currentProject.videoConfig.underlineOffset ?? 0}
-            onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, underlineOffset: Number(e.target.value) } })} />
-          <span className="text-[#787670] w-12">{(currentProject.videoConfig.underlineOffset ?? 0) < -0.02 ? 'yukarıda' : (currentProject.videoConfig.underlineOffset ?? 0) > 0.02 ? 'aşağıda' : 'normal'}</span>
-          </label>
+          <span className="flex gap-1 items-center ml-2" title="Bu videodaki tüm altı çizgileri yukarı ya da aşağı kaydırır">
+            Altı çizgi
+            <button type="button" className="px-2 h-6 rounded border bg-white hover:bg-[#F2F1EB] font-semibold" aria-label="Altı çizgileri yukarı al"
+              onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, underlineOffset: lineOffset(currentProject.videoConfig.underlineOffset, -LINE_STEP) } })}>↑ Yukarı</button>
+            <button type="button" className="px-2 h-6 rounded border bg-white hover:bg-[#F2F1EB] font-semibold" aria-label="Altı çizgileri aşağı al"
+              onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, underlineOffset: lineOffset(currentProject.videoConfig.underlineOffset, LINE_STEP) } })}>↓ Aşağı</button>
+            {Math.abs(currentProject.videoConfig.underlineOffset ?? 0) > .02 && (
+              <button type="button" className="px-1.5 h-6 rounded text-[#787670] hover:text-[#8B1E2D] underline-offset-2 hover:underline" title="Normal yerine döndür"
+                onClick={() => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, underlineOffset: 0 } })}>
+                {(currentProject.videoConfig.underlineOffset ?? 0) < 0 ? 'yukarıda' : 'aşağıda'} · sıfırla
+              </button>
+            )}
+          </span>
           <label className="flex gap-2 items-center ml-2">
           <input type="checkbox" checked={currentProject.videoConfig.showOutro !== false}
             onChange={e => updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, showOutro: e.target.checked } })} />
@@ -206,6 +224,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
           <div className="w-full"><MarkTimeline actions={currentProject.videoConfig.timelineActions || []} regions={currentProject.videoConfig.regions || []}
             duration={activeAudioDuration || 15} currentTime={currentPreviewTime} audioUrl={activeAudioUrl}
             onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard compact={short}
+            playing={isPlayingPreview} onFlag={id => setFocusBox(id ? { id } : null)}
             onActions={actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} /></div>
         )}
       </div>

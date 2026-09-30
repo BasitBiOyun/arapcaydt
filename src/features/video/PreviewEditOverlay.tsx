@@ -124,7 +124,12 @@ interface Props {
   /** A missing option to show on the picture: draw its box, or click the box that is it. */
   drawOption?: string | null;
   onDrawOptionDone?: () => void;
+  /** A box to select at once ("Burada hata var" on the mark strip). */
+  focusBox?: { id: string } | null;
 }
+
+/** The copied box lives outside the overlay, which is rebuilt every time the preview pauses. */
+let copied: { region: AnnotationRegion; marks: VideoAction[] } | null = null;
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
@@ -133,14 +138,14 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E'];
  * drag a corner to resize, drag its underline up or down, and change its marks from the
  * small menu next to it. Every change goes through the same data the exported MP4 uses.
  */
-export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, actions, time, total, underlineOffset = 0, onRegions, onActions, onUndo, canUndo, onAssignOption, drawOption, onDrawOptionDone }: Props) {
+export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, actions, time, total, underlineOffset = 0, onRegions, onActions, onUndo, canUndo, onAssignOption, drawOption, onDrawOptionDone, focusBox }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [gesture, setGesture] = useState<Gesture | null>(null);
   const [draft, setDraft] = useState<AnnotationRegion | VideoAction | null>(null);
   const [tool, setTool] = useState<Tool | null>(null);
-  /** A copied box and its marks (Ctrl+C), pasted with Ctrl+V. */
-  const copied = useRef<{ region: AnnotationRegion; marks: VideoAction[] } | null>(null);
+  const [hasCopy, setHasCopy] = useState(!!copied);
+  useEffect(() => { if (focusBox && !tool && !drawOption) setSelectedId(focusBox.id); }, [focusBox]); // eslint-disable-line react-hooks/exhaustive-deps
   const keys = useRef<(e: KeyboardEvent) => void>(() => {});
   const onPicture = useRef(false);
   useEffect(() => {
@@ -241,8 +246,12 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const markHere = (action: VideoAction) => onActions(actions.map(a => a.id === action.id ? nudgeAction(a, time - a.start, total) : a));
   const removeBox = (id: string) => { setSelectedId(null); onRegions(regions.filter(r => r.id !== id)); };
   const markBox = (id: string) => { if (tool) { onActions(addMark(actions, id, tool, time, total)); setSelectedId(id); setTool(null); } };
+  const copy = (region: AnnotationRegion) => {
+    copied = { region, marks: actions.filter(a => a.targetRegionId === region.id && ICON[a.type]) };
+    setHasCopy(true);
+  };
   const paste = () => {
-    const source = copied.current;
+    const source = copied;
     if (!source) return;
     const pasted = pastedBox(source.region, source.marks, `manual-box-${Date.now()}`, time, total);
     onRegions([...regions, pasted.region], pasted.marks);
@@ -262,10 +271,10 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
     if (k === 'z' && onUndo && canUndo) { e.preventDefault(); onUndo(); return; }
     if (k === 'c' && selected && onPicture.current && !window.getSelection()?.toString()) {
       e.preventDefault();
-      copied.current = { region: selected, marks: actions.filter(a => a.targetRegionId === selected.id && ICON[a.type]) };
+      copy(selected);
       return;
     }
-    if (k === 'v' && copied.current) { e.preventDefault(); paste(); }
+    if (k === 'v' && copied) { e.preventDefault(); paste(); }
   };
 
   const selectedRect = selected ? regionCanvasRect(shown(selected), fit) : null;
@@ -303,6 +312,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
           <ArrowCounterClockwise size={12} /> Geri al
         </button>}
+        {hasCopy && !selected && !drawing && <button type="button" onClick={paste} title="Kopyalanan kutuyu buraya yapıştır (Ctrl+V)"
+          className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E]">Yapıştır</button>}
       </div>
 
       {picks.map(region => {
@@ -368,7 +379,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             <b className="truncate">{boxName(selected, regions)}</b>
             <button type="button" onClick={() => setSelectedId(null)} aria-label="Kapat" className="p-0.5 rounded hover:bg-[#F2F1EB]"><X size={12} /></button>
           </div>
-          {onAssignOption && (
+          {onAssignOption && (selected.type.startsWith('option-') || !selected.content) && (
             <div className="flex items-center gap-1" role="group" aria-label="Bu kutu hangi şık?">
               <span className="text-[#787670] mr-auto">Hangi şık?</span>
               {LETTERS.map(letter => {
@@ -396,8 +407,13 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             </div>
           ))}
           <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-xs text-[#787670]">
-            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'} · Ctrl+C / Ctrl+V: kopyala · Delete: sil</span>
-            <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline">Kutuyu kaldır</button>
+            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için kutunun yanlarını çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
+            <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline shrink-0" title="Delete tuşu">Kutuyu kaldır</button>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button type="button" onClick={() => copy(selected)} title="Ctrl+C" className="flex-1 px-2 py-1 rounded border hover:bg-[#F2F1EB] font-semibold">Kopyala</button>
+            <button type="button" onClick={paste} disabled={!hasCopy} title="Ctrl+V: kopya biraz yanda çıkar, işaretleri şu andan başlar"
+              className="flex-1 px-2 py-1 rounded border hover:bg-[#F2F1EB] font-semibold disabled:opacity-40">Yapıştır</button>
           </div>
         </div>
       )}

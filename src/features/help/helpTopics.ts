@@ -65,8 +65,8 @@ export const HELP_TOPICS: HelpTopic[] = [
     summary: 'Çözüm metninizi stüdyo seslendirir ya da kendi okuduğunuz MP3’ü yüklersiniz.',
     steps: [
       { text: '**3 Ses** adımında **Seslendirme Oluştur**’a basın. Ses birkaç saniye ile bir dakika arasında hazırlanır. Kendi sesinizi kullanmak isterseniz **MP3 Yükle** ile dosyanızı seçin.', image: 'ses-olustur', alt: 'Seslendirme Oluştur ve MP3 Yükle düğmeleri' },
-      { text: 'Sesi baştan sona dinleyin. Beğendiyseniz **Bu Sesi Kullan**’a basın; beğenmediyseniz metni düzeltip **Yeniden seslendir** diyebilirsiniz.', image: 'ses-onay', alt: 'Sesi dinleme ve onaylama' },
-      { text: 'Bir cümle yanlış okunduysa ya da atlandıysa bütün sesi baştan üretmeyin. Sorunun altındaki **Ses şeridinde** her cümle sesin içindeki yerinde bir kutucuktur. Yanlış okunan cümlenin kutucuğuna tıklayın (birden çok cümle için ilk ve son cümleye); isterseniz **Cümle listesi** ile cümleleri alt alta görün ya da “2:00 – 2:10” gibi zamanla seçin. **Dinle** ile kontrol edip **Seçili yeri yeniden seslendir**’e basın. Yalnız o yer yeniden seslendirilir (1 ses hakkı); sesin geri kalanı ve işaretleriniz korunur. Okunmamış görünen yerler şeritte turuncu işaretle gösterilir ve **Bu yeri ekle** ile eklenir. Beğenmezseniz **Son düzeltmeyi geri al** deyin.', image: 'sesi-duzelt', alt: 'Ses şeridi' },
+      { text: 'Sesi sorunun altındaki **Ses şeridinde** **Oynat**’a basıp baştan sona dinleyin; okunan cümle sorunun altında yazı olarak da görünür. Beğendiyseniz sağdaki **Bu Sesi Kullan**’a basın.', image: 'ses-onay', alt: 'Sesi dinleme ve onaylama' },
+      { text: 'Bir yer yanlış okunduysa bütün sesi baştan üretmeyin. Dinlerken hatayı duyduğunuz anda **Burada hata var**’a basın: ses durur ve o cümle seçilir (ya da cümlenin kutucuğuna kendiniz tıklayın). **Yeniden seslendir**’e basın. Yalnız o yer yeniden okunur (1 ses hakkı) ve hemen çalınır; doğruysa **Oldu**, değilse **Olmadı, geri al** deyin. Okunmamış görünen yerler şeritte turuncu işaretle gösterilir ve **Bu yeri ekle** ile eklenir.', image: 'sesi-duzelt', alt: 'Ses şeridi' },
       { text: 'Onaylanan ses “Onaylandı” olarak görünür. **İşaretlere geç** ile dördüncü adıma geçin.' },
     ],
     tips: [
@@ -74,6 +74,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       'Kendi MP3’ünüzü yüklüyorsanız, okuduğunuz metin çözüm metniyle aynı olmalıdır; işaretler kelimelere göre yerleştirilir.',
       'Günlük ücretsiz ses hakkı biterse kendi Google anahtarınızı ekleyebilirsiniz (bkz. **Google anahtarı alma**).',
       'Seçili bir cümleye yeniden tıklamak onu seçimden çıkarır. Bir cümleye çift tıklarsanız o cümle çalar; ses çalarken okunan cümle çerçeveyle gösterilir.',
+      'Yakınlaştırma, cümle listesi ve “2:00 – 2:10” gibi zamanla seçme şeritteki **Daha fazla** düğmesindedir.',
       'Klavyeyle: **Boşluk** oynatır/durdurur, **← →** önceki/sonraki cümleyi seçer (**Shift** ile seçime ekler), **Enter** seçili yeri dinletir, **Esc** seçimi kaldırır.',
     ],
   },
@@ -84,6 +85,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     steps: [
       { text: 'İlk girişte **İşaretleri otomatik hazırla**’ya basın. Sonra önizlemede ▶ düğmesine basıp videoyu izleyin.', image: 'isaretler', alt: 'Önizleme ve işaret araçları' },
       { text: 'Bir işareti değiştirmek için videoyu durdurun ve görseldeki kutuya tıklayın. Soldaki araçlardan **✗ Çarpı**, **✓ Doğru işareti**, **◎ Çerçeve**, **▁ Altı çizgi** veya **▮ Vurgu** ekleyebilirsiniz.', image: 'isaret-secili', alt: 'Seçili kutu ve işaret menüsü' },
+      { text: 'Önizlemeyi izlerken yanlış bir işaret görürseniz **Burada hata var**’a basın: video durur ve az önce çıkan işaretin kutusu seçilir.' },
       { text: 'Önizlemenin altındaki **Zaman şeridi**nde her işaret bir kutucuktur. Kutucuğu sürükleyerek işaretin ne zaman çıkacağını, kenarından çekerek ne kadar kalacağını ayarlarsınız.', image: 'zaman-seridi', alt: 'Zaman şeridi' },
       { text: 'Bir şıkkın kutusu yanlış yerdeyse kutuya tıklayıp ortasından sürükleyerek taşıyın, kenarlarındaki mavi tutamaçlardan çekerek büyütün veya küçültün.' },
       { text: 'Yayın kontrolünde **Eksik şık** yazıyorsa yanındaki düğmeye basın ve o şıkkın kutusunu görselde çizin. Ya da şıkkı gösteren kutuya tıklayıp **Hangi şık?** satırından harfini seçin. O şıkkın çarpısı veya tiki, seste söylendiği ana kendiliğinden gelir.' },
@@ -91,9 +93,10 @@ export const HELP_TOPICS: HelpTopic[] = [
     ],
     tips: [
       'Yaptığınız son değişikliği **Geri al** düğmesiyle ya da **Ctrl+Z** ile geri alabilirsiniz.',
-      'Görselde seçili kutuyu **Ctrl+C** ile kopyalayıp **Ctrl+V** ile yapıştırabilirsiniz: kopya biraz yanda çıkar, işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun. **Delete** seçili kutuyu siler, **Esc** seçimi bırakır.',
+      'Görselde seçili kutuyu **Kopyala** / **Yapıştır** düğmeleriyle ya da **Ctrl+C** / **Ctrl+V** ile çoğaltabilirsiniz: kopya biraz yanda çıkar, işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun. **Delete** seçili kutuyu siler, **Esc** seçimi bırakır.',
       '**İşaretleri yeniden hazırla** elle yaptığınız düzeltmeleri siler; bu yüzden önce onayınızı ister.',
       'Önizleme hızını 1× ile 2× arasında seçerek videoyu hızlıca kontrol edebilirsiniz.',
+      'Altı çizgiler kelimelere göre fazla aşağıdaysa önizlemenin altındaki **Altı çizgi ↑ Yukarı** düğmesine birkaç kez basın; bütün çizgiler birlikte kayar.',
       'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, ikisi de kaydırmadan ekrana sığar. Esc ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
     ],
   },

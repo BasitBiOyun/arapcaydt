@@ -256,7 +256,8 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .revoice-time { display: inline-block; min-width: 38px; font-variant-numeric: tabular-nums; font-weight: 700; color: #8b1e2d; }
 .revoice-note { font-size: .875rem; color: #b45309; }
 .narration-stage { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
-.narration-stage-picture { flex: 1 1 auto; min-height: 180px; display: flex; justify-content: center; }
+.narration-stage-picture { position: relative; flex: 1 1 auto; min-height: 180px; display: flex; justify-content: center; }
+.narration-caption { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); max-width: min(90%, 760px); margin: 0; padding: 6px 14px; border-radius: 8px; background: rgb(28 25 23 / .82); color: white; font-size: 1rem; line-height: 1.5; text-align: center; pointer-events: none; }
 .narration-stage-picture img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; border: 1px solid #e5e4dc; background: white; padding: 6px; }
 .narration-strip { flex-shrink: 0; border: 1px solid #e5e4dc; border-radius: 12px; background: white; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; user-select: none; }
 .narration-strip > header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: .875rem; color: #55504a; }
@@ -278,6 +279,8 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .narration-strip-button.is-primary { background: #8b1e2d; border-color: #8b1e2d; color: white; }
 .narration-strip-button.is-primary:hover:not(:disabled) { background: #721824; color: white; }
 .narration-strip-button:disabled { opacity: .45; }
+.narration-strip-button.is-flag { border-color: #e6b8bf; background: #fbf0f1; color: #8b1e2d; }
+.narration-strip-more { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 8px; background: #faf9f5; font-size: .875rem; }
 .narration-strip-button[aria-pressed=true] { background: #1c1917; border-color: #1c1917; color: white; }
 .narration-time-pick { display: inline-flex; align-items: center; gap: 5px; font-size: .875rem; color: #55504a; }
 .narration-time-pick input { width: 58px; padding: 5px 6px; border: 1px solid #d5d0ca; border-radius: 7px; text-align: center; font-size: .9375rem; }
