@@ -10,6 +10,8 @@ import {
 export const config = { maxDuration: 120 };
 export const REQUEST_BUDGET_MS = 95_000;
 const MIN_ATTEMPT_MS = 10_000;
+/** One TTS request; longer solutions are sent in parts and joined by /api/gemini/join-parts. */
+export const MAX_REQUEST_CHARS = 5000;
 
 const VOICE_NAME = 'Achernar';
 // 3.8 models read naturally on their own; the only instruction is fidelity.
@@ -89,7 +91,7 @@ function sampleRateFromMime(mime: string) {
   return match ? Number(match[1]) : 24000;
 }
 
-async function saveGeneratedAudio(memberId: string, projectId: string, text: string, audio: Buffer, extension: string, contentType: string) {
+export async function saveGeneratedAudio(memberId: string, projectId: string, text: string, audio: Buffer, extension: string, contentType: string) {
   const db = serviceDatabase();
   const digest = createHash('sha256').update(text).digest('hex').slice(0, 20);
   const path = `${memberId}/${projectId}/gemini-${digest}.${extension}`;
@@ -118,8 +120,9 @@ export default async function handler(req: any, res: any) {
 
   const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
   const projectId = typeof req.body?.projectId === 'string' ? req.body.projectId.trim() : '';
-  if (!text || text.length > 5000) {
-    return res.status(400).json({ error: 'Seslendirme metni 1–5000 karakter arasında olmalıdır.', code: 'INVALID_TEXT', fallbackAllowed: false });
+  // Longer solutions come in parts (see src/services/narration/narrationParts.ts), each its own request.
+  if (!text || text.length > MAX_REQUEST_CHARS) {
+    return res.status(400).json({ error: `Seslendirme metni 1–${MAX_REQUEST_CHARS} karakter arasında olmalıdır.`, code: 'INVALID_TEXT', fallbackAllowed: false });
   }
   if (!projectId) {
     return res.status(400).json({ error: 'Gemini seslendirmesi için proje kimliği gerekli.', code: 'MISSING_PROJECT_ID', fallbackAllowed: false });

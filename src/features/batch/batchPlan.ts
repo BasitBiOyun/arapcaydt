@@ -1,5 +1,6 @@
 import { parseSolutionSemantics } from '../../services/analysis/solutionParser';
 import type { AnnotationRegion } from '../../types';
+import { SPOKEN_LIMIT } from '../../services/narration/narrationParts';
 
 type Letter = 'A' | 'B' | 'C' | 'D' | 'E';
 
@@ -77,7 +78,7 @@ export function buildBatchPlan<F extends BatchFileRef>(images: F[], solutionDocu
   for (const it of byNumber.values()) {
     if (!it.image) it.problems.push('Görsel yok');
     if (!it.solution) it.problems.push('Çözüm metni yok');
-    if (it.solution && it.solution.length > 5000) it.problems.push('Çözüm 5.000 karakterden uzun');
+    if (it.solution && it.solution.length > SPOKEN_LIMIT) it.problems.push(`Çözüm ${SPOKEN_LIMIT.toLocaleString('tr')} karakterden uzun`);
     if (it.solution) {
       it.answer = parseSolutionSemantics(it.solution, OPTION_REGIONS).deducedCorrectAnswer;
       if (!it.answer) it.notes.push('Metinde doğru cevap bulunamadı; işaretleri kontrol edin');

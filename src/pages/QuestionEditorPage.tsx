@@ -13,6 +13,7 @@ import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
 import { narrationService } from '../services/narration/narrationService';
+import { splitNarration } from '../services/narration/narrationParts';
 import { STANDARD_VOICE_CONFIG } from '../config/voice';
 import { QUESTION_CATEGORIES } from '../config/categories';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
@@ -260,10 +261,11 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       setAudioError('Lütfen önce çözüm metnini yazın.');
       return;
     }
-    // A new narration replaces the one there is and uses one of the day's voice requests.
+    // A new narration replaces the one there is and uses one of the day's voice requests (one per part).
+    const voiceParts = splitNarration(currentProject.solutionText).length;
     if (activeAudioUrl && !await confirm({
       title: 'Yeniden seslendirilsin mi?',
-      message: `Şu anki ses silinir ve yerine yenisi üretilir. Bugünkü ses haklarınızdan biri kullanılır.${currentProject.audioApproved ? ' Onayladığınız sesin yerine geçer.' : ''}`,
+      message: `Şu anki ses silinir ve yerine yenisi üretilir. Bugünkü ses haklarınızdan ${voiceParts > 1 ? `${voiceParts} tanesi (uzun metin ${voiceParts} bölümde okunur)` : 'biri'} kullanılır.${currentProject.audioApproved ? ' Onayladığınız sesin yerine geçer.' : ''}`,
       confirmLabel: 'Yeniden seslendir',
     })) return;
 
@@ -279,7 +281,9 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
         voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId,
         outputFormat: STANDARD_VOICE_CONFIG.outputFormat,
-      });
+      }, (done, total) => setAudioInfo(done < total
+        ? `Uzun çözüm ${total} bölümde seslendiriliyor: ${done + 1}. bölüm hazırlanıyor…`
+        : 'Bölümler tek ses dosyasında birleştiriliyor…'));
 
       const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
 

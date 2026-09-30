@@ -1,6 +1,7 @@
 import React from 'react';
 import type { QuestionProject } from '../../../types';
 import { checkNarration } from '../workflow';
+import { SPOKEN_LIMIT } from '../../../services/narration/narrationParts';
 
 export interface NarrationCheckProps {
   step: number;
@@ -12,7 +13,7 @@ export function NarrationCheck({ step, check, currentProject }: NarrationCheckPr
   return (
     (step === 1 || step === 2) && (
       <section className="narration-check" aria-label="Ses ön kontrolü">
-        <strong>{check.characters.toLocaleString('tr')} / 5.000 karakter</strong>
+        <strong>{check.characters.toLocaleString('tr')} / {SPOKEN_LIMIT.toLocaleString('tr')} karakter</strong>
         <p>Doğru cevap: {currentProject.correctAnswer}.</p>
         {check.characters > 0 && (
           <ul className="mt-2 space-y-0.5" aria-label="Şıkların işaretleri">
@@ -30,7 +31,7 @@ export function NarrationCheck({ step, check, currentProject }: NarrationCheckPr
             })}
           </ul>
         )}
-        {check.characters > 5000 && <p role="alert">Tek ses için metni 5.000 karakterin altına kısaltın.</p>}
+        {check.characters > SPOKEN_LIMIT && <p role="alert">Seslendirme için metni {SPOKEN_LIMIT.toLocaleString('tr')} karakterin altına kısaltın.</p>}
         {check.missing.length > 0 && <p>Metinde şık başlığı bulunamadı: {check.missing.join(', ')}. Açıklamalarınızı kontrol edin.</p>}
         {check.mismatch && (
           <p role="alert">

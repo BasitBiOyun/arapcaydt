@@ -1,6 +1,7 @@
 import { authHeaders } from '../supabase';
 import { quotaResetClock } from './geminiKeyService';
 import type { GenerateNarrationRequest, GenerateNarrationResponse } from '../elevenlabs/types';
+import { splitNarration } from './narrationParts';
 
 export const VOICE_QUOTA_MESSAGE = `Bugünkü ücretsiz ses hakkı doldu. Kendi Google anahtarınızı ekleyin (Ayarlar → Google anahtarım) ya da haklar yenilenince (her gün saat ${quotaResetClock()}) tekrar deneyin.`;
 export const VOICE_RETRY_MESSAGE = 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.';
@@ -93,7 +94,48 @@ class NarrationService {
     throw new Error(failures.join(' · '));
   }
 
-  async generateNarration(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
+  /**
+   * The voice for a solution. A long solution is voiced in parts (each its own request, which
+   * finishes in time and skips less) and the parts are joined on the server into one narration.
+   */
+  async generateNarration(req: GenerateNarrationRequest, onPart?: (done: number, total: number) => void): Promise<GenerateNarrationResponse> {
+    const parts = splitNarration(req.text);
+    if (parts.length <= 1) return this.generatePart(req);
+    const made: GenerateNarrationResponse[] = [];
+    for (const [i, text] of parts.entries()) {
+      onPart?.(i, parts.length);
+      try {
+        made.push(await this.generatePart({ ...req, text }));
+      } catch (error) {
+        if (error instanceof VoiceUnavailableError)
+          throw new VoiceUnavailableError(`Bölüm ${i + 1}/${parts.length}: ${error.detail}`, `Uzun çözümün ${i + 1}. bölümü (toplam ${parts.length}) seslendirilemedi. ${error.message}`);
+        throw error;
+      }
+    }
+    onPart?.(parts.length, parts.length);
+    let res: Response;
+    try {
+      res = await fetch('/api/gemini/join-parts', {
+        method: 'POST',
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+        headers: { 'Content-Type': 'application/json', ...await authHeaders() },
+        body: JSON.stringify({ projectId: req.projectId, text: req.text, parts: made.map(p => p.assetPath) }),
+      });
+    } catch (error) {
+      throw new VoiceUnavailableError(timedOut(error) ? 'Ses bölümleri zamanında birleştirilemedi.' : 'Ses bölümleri birleştirilemedi.', VOICE_RETRY_MESSAGE);
+    }
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data?.audioUrl || !data?.assetPath) throw new VoiceUnavailableError(data?.error || `HTTP ${res.status}`, data?.error || VOICE_RETRY_MESSAGE);
+    return {
+      ...made[0],
+      audioUrl: data.audioUrl,
+      assetPath: data.assetPath,
+      mimeType: data.mimeType || made[0].mimeType,
+      durationSeconds: made.reduce((sum, p) => sum + p.durationSeconds, 0),
+    };
+  }
+
+  private async generatePart(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
     let res: Response;
     try {
       res = await fetch('/api/gemini/generate', {
