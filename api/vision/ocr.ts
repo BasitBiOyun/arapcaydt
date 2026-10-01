@@ -55,6 +55,13 @@ export function visionPage(annotation: any): VisionPage | null {
   return { width: page.width, height: page.height, words, lines, text: annotation.text || '' };
 }
 
+/** A failure Google clears by itself in a moment: busy (429/503) or a per-image "resource exhausted". */
+export function passingFailure(status: number, data: any): boolean {
+  const error = data?.responses?.[0]?.error;
+  if (status === 429 || status === 503) return true;
+  return !!error && (error.code === 8 || error.code === 14 || /exhausted|unavailable/i.test(String(error.message || '')));
+}
+
 async function handler(req: any, res: any) {
   const member = await requireMember(req, res);
   if (!member) return;
@@ -79,22 +86,29 @@ async function handler(req: any, res: any) {
     return res.status(503).json({ error: 'Google Vision sayacına ulaşılamadı.', code: 'VISION_COUNTER_MISSING' });
   }
 
-  let response: Response;
-  try {
-    response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${encodeURIComponent(key)}`, {
-      method: 'POST',
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ requests: [{
-        image: { content: image },
-        features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
-        imageContext: { languageHints: ['ar', 'tr', 'en'] },
-      }] }),
-    });
-  } catch {
-    return res.status(504).json({ error: 'Google Vision zamanında yanıt vermedi.', code: 'VISION_TIMEOUT' });
+  // Google sometimes answers an image with a passing "Resource has been exhausted" (inside a 200
+  // answer, so its console shows no error): asked again after a short wait it reads the image.
+  let response!: Response;
+  let data: any = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt) await new Promise(r => setTimeout(r, attempt * 1500));
+    try {
+      response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${encodeURIComponent(key)}`, {
+        method: 'POST',
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requests: [{
+          image: { content: image },
+          features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
+          imageContext: { languageHints: ['ar', 'tr', 'en'] },
+        }] }),
+      });
+    } catch {
+      return res.status(504).json({ error: 'Google Vision zamanında yanıt vermedi.', code: 'VISION_TIMEOUT' });
+    }
+    data = await response.json().catch(() => null);
+    if (!passingFailure(response.status, data)) break;
   }
-  const data: any = await response.json().catch(() => null);
   if (!response.ok || data?.responses?.[0]?.error) {
     const status = response.status, message = String(data?.error?.message || data?.responses?.[0]?.error?.message || '');
     const code = status === 429 || /quota|rate/i.test(message) ? 'VISION_QUOTA'

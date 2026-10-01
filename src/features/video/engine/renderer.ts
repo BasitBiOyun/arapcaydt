@@ -255,6 +255,24 @@ function drawOutroCard(ctx: CanvasRenderingContext2D, width: number, height: num
   ctx.restore();
 }
 
+/** Fills the frame around the picture with the picture's own edge pixels (sides, then top and bottom). */
+function extendEdges(ctx: CanvasRenderingContext2D, img: HTMLImageElement, fit: FitRect, width: number, height: number) {
+  const iw = img.naturalWidth, ih = img.naturalHeight, edge = 2;
+  ctx.save(); ctx.imageSmoothingEnabled = false;
+  const left = Math.max(0, fit.x), right = Math.max(0, width - fit.x - fit.width);
+  const top = Math.max(0, fit.y), bottom = Math.max(0, height - fit.y - fit.height);
+  if (left) ctx.drawImage(img, 0, 0, edge, ih, 0, fit.y, left + 1, fit.height);
+  if (right) ctx.drawImage(img, iw - edge, 0, edge, ih, fit.x + fit.width - 1, fit.y, right + 1, fit.height);
+  if (top) ctx.drawImage(img, 0, 0, iw, edge, fit.x, 0, fit.width, top + 1);
+  if (bottom) ctx.drawImage(img, 0, ih - edge, iw, edge, fit.x, fit.y + fit.height - 1, fit.width, bottom + 1);
+  // Corners: the corner pixel.
+  if (left && top) ctx.drawImage(img, 0, 0, edge, edge, 0, 0, left + 1, top + 1);
+  if (right && top) ctx.drawImage(img, iw - edge, 0, edge, edge, fit.x + fit.width - 1, 0, right + 1, top + 1);
+  if (left && bottom) ctx.drawImage(img, 0, ih - edge, edge, edge, 0, fit.y + fit.height - 1, left + 1, bottom + 1);
+  if (right && bottom) ctx.drawImage(img, iw - edge, ih - edge, edge, edge, fit.x + fit.width - 1, fit.y + fit.height - 1, right + 1, bottom + 1);
+  ctx.restore();
+}
+
 /** One deterministic painter for editing, playback, and every encoded frame. */
 export function renderQuestionVideoFrame(
   ctx: CanvasRenderingContext2D, width: number, height: number,
@@ -267,8 +285,12 @@ export function renderQuestionVideoFrame(
     captionStrip(options, height), options.imageScale);
   // The slide is always shown whole (no zoom on the examined option).
   ctx.save();
-  if (imageElement?.complete && imageElement.naturalWidth > 0)
+  if (imageElement?.complete && imageElement.naturalWidth > 0) {
+    // A question made smaller keeps a full-width slide: its outermost pixels are stretched out to the
+    // frame's edges, so the header band and the page colour run edge to edge instead of leaving white.
+    if ((options.imageScale ?? 1) < 1) extendEdges(ctx, imageElement, fit, width, height);
     ctx.drawImage(imageElement, fit.x, fit.y, fit.width, fit.height);
+  }
   const state = computeTimelineVisualState(currentTime, actions, regions, options.selectedRegionId);
   if (options.settled) {
     // Paused for editing: every mark on screen is shown whole, not at the first frame of its animation.

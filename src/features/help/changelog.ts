@@ -34,6 +34,8 @@ export const NEWS: NewsEntry[] = [
         items: [
           { text: 'İki ya da üç satıra taşan şıkların son satırı da şıkkın çerçevesine girer (Arapçada kısa son satır sağa yaslı olduğu için dışarıda kalıyordu).' },
           { text: 'Önizleme oynarken soru artık hafifçe büyüyüp küçülmüyor; boyutu sabit kalıyor.' },
+          { text: 'Soru küçültüldüğünde üst bant ve sayfa rengi ekranın iki yanına kadar uzanır; kenarlarda beyaz boşluk kalmaz.' },
+          { text: 'Google’ın okuyucusu anlık “kaynak tükendi” cevabı verdiğinde stüdyo birkaç saniye bekleyip tekrar dener; görsel gereksiz yere zayıf okuyucuyla okunmaz.' },
           { text: 'Soru küçültüldüğünde bir şık vurgulanırken yalnız soru değil bütün ekran birlikte kararıyor; kenarlarda beyaz şerit kalmıyor.' },
           { text: 'Paragrafın şıkların yanında basıldığı sorularda bir şıkkın çerçevesi artık yandaki paragrafa taşmıyor.' },
           { text: 'Bir şıkkı okurken (“A) …” ya da “A şıkkı: …”) aynı kelimeler paragrafta da geçse, paragrafın altı çizilmiyor; o anda yalnız şık gösteriliyor. Çözümde “parçada …” diye paragrafa gönderme yaparsanız çizgi yine çıkar.' },
