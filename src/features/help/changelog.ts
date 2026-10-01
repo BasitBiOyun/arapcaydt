@@ -32,6 +32,7 @@ export const NEWS: NewsEntry[] = [
       {
         title: 'Düzeltmeler',
         items: [
+          { text: 'Stüdyonun kendi görsel okuyucusu (Google’ın okuyucusu kullanılamadığında devreye giren) daha iyi okuyor: görseli büyütüp siyah-beyaz yapıyor, soluk filigranlar artık okumayı bozmuyor. Denemelerde Arapça kelimeleri doğru yerde bulma oranı %86’dan %95’e çıktı.', help: 'isaretler' },
           { text: 'İki ya da üç satıra taşan şıkların son satırı da şıkkın çerçevesine girer (Arapçada kısa son satır sağa yaslı olduğu için dışarıda kalıyordu).' },
           { text: 'Önizleme oynarken soru artık hafifçe büyüyüp küçülmüyor; boyutu sabit kalıyor.' },
           { text: 'Boşluk doldurma (cloze) sorularında, şıklar solda paragraf sağdayken E şıkkının kutusu artık paragrafa değil E şıkkının kendisine konur.' },

@@ -1,4 +1,5 @@
 import { createWorker, Worker, PSM } from 'tesseract.js';
+import { prepareForReading } from './prepareImage';
 import { groupOcrWordsIntoLines } from './arabicMatcher';
 import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
 import { missingMarkerCrops } from './markerRecovery';
@@ -101,11 +102,11 @@ class LocalOcrService {
     });
   }
 
-  private toOcrWord(rawWord: any, imgWidth: number, imgHeight: number): OCRWord | null {
+  private toOcrWord(rawWord: any, imgWidth: number, imgHeight: number, scale = 1): OCRWord | null {
     const text = String(rawWord?.text || '').trim();
     if (!text) return null;
 
-    const bbox = rawWord?.bbox || { x0: 0, y0: 0, x1: 0, y1: 0 };
+    const bbox = unscale(rawWord?.bbox || { x0: 0, y0: 0, x1: 0, y1: 0 }, scale);
     const px = Math.max(0, Number(bbox.x0) || 0);
     const py = Math.max(0, Number(bbox.y0) || 0);
     const pw = Math.max(1, (Number(bbox.x1) || px + 1) - px);
@@ -125,16 +126,16 @@ class LocalOcrService {
     };
   }
 
-  private toOcrLine(rawLine: any, imgWidth: number, imgHeight: number): OCRLine | null {
+  private toOcrLine(rawLine: any, imgWidth: number, imgHeight: number, scale = 1): OCRLine | null {
     const text = String(rawLine?.text || '').trim();
     const rawWords = Array.isArray(rawLine?.words) ? rawLine.words : [];
     const lineWords = rawWords
-      .map((w: any) => this.toOcrWord(w, imgWidth, imgHeight))
+      .map((w: any) => this.toOcrWord(w, imgWidth, imgHeight, scale))
       .filter(Boolean) as OCRWord[];
 
     if (!text && lineWords.length === 0) return null;
 
-    const bbox = rawLine?.bbox || (() => {
+    const bbox = rawLine?.bbox ? unscale(rawLine.bbox, scale) : (() => {
       if (lineWords.length === 0) return { x0: 0, y0: 0, x1: 1, y1: 1 };
       return {
         x0: Math.min(...lineWords.map((w) => w.pixelX)),
@@ -196,8 +197,11 @@ class LocalOcrService {
       message: 'Soru ve şıklar taranıyor...',
     });
 
+    // Read a cleaned, enlarged copy (see prepareImage); boxes are scaled back below.
+    const prepared = await prepareForReading(imageUrl, imgWidth, imgHeight);
+    const scale = prepared?.scale ?? 1;
     // Tesseract v6/v7: text is on by default, blocks must be explicitly enabled.
-    const result = await worker.recognize(imageUrl, {}, { text: true, blocks: true });
+    const result = await worker.recognize(prepared?.image ?? imageUrl, {}, { text: true, blocks: true });
     const data = result.data as any;
 
     const words: OCRWord[] = [];
@@ -208,7 +212,7 @@ class LocalOcrService {
       for (const block of data.blocks) {
         for (const paragraph of block?.paragraphs || []) {
           for (const rawLine of paragraph?.lines || []) {
-            const line = this.toOcrLine(rawLine, imgWidth, imgHeight);
+            const line = this.toOcrLine(rawLine, imgWidth, imgHeight, scale);
             if (!line) continue;
             lines.push(line);
             words.push(...line.words);
@@ -220,14 +224,14 @@ class LocalOcrService {
     // Backward-compatible fallback for older Tesseract output shapes.
     if (words.length === 0 && Array.isArray(data.words)) {
       for (const rawWord of data.words) {
-        const word = this.toOcrWord(rawWord, imgWidth, imgHeight);
+        const word = this.toOcrWord(rawWord, imgWidth, imgHeight, scale);
         if (word) words.push(word);
       }
     }
 
     if (lines.length === 0 && Array.isArray(data.lines)) {
       for (const rawLine of data.lines) {
-        const line = this.toOcrLine(rawLine, imgWidth, imgHeight);
+        const line = this.toOcrLine(rawLine, imgWidth, imgHeight, scale);
         if (line) lines.push(line);
       }
     }
@@ -319,6 +323,11 @@ class LocalOcrService {
       this.worker = null;
     }
   }
+}
+
+function unscale(bbox: any, scale: number) {
+  if (scale === 1) return bbox;
+  return { x0: bbox.x0 / scale, y0: bbox.y0 / scale, x1: bbox.x1 / scale, y1: bbox.y1 / scale };
 }
 
 export const localOcrService = LocalOcrService.getInstance();
