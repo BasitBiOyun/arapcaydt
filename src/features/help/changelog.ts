@@ -34,6 +34,7 @@ export const NEWS: NewsEntry[] = [
         items: [
           { text: 'İki ya da üç satıra taşan şıkların son satırı da şıkkın çerçevesine girer (Arapçada kısa son satır sağa yaslı olduğu için dışarıda kalıyordu).' },
           { text: 'Önizleme oynarken soru artık hafifçe büyüyüp küçülmüyor; boyutu sabit kalıyor.' },
+          { text: 'Boşluk doldurma (cloze) sorularında, şıklar solda paragraf sağdayken E şıkkının kutusu artık paragrafa değil E şıkkının kendisine konur.' },
           { text: 'Stüdyonun yeni sürümü yayınlandığında açık sayfada mavi bir uyarı çıkar: **Sayfayı yenile**’ye basınca düzeltmeler hemen çalışır.' },
           { text: 'Ses yazıya dökülürken okunan Arapça cümle atlanırsa, o cümlenin altı artık cümle okunurken çizilir (önceden cümle bittikten sonra, bir sonraki Türkçe cümlede çiziliyordu).' },
           { text: 'Soru küçültüldüğünde üst bant ve sayfa rengi ekranın iki yanına kadar uzanır; kenarlarda beyaz boşluk kalmaz.' },
