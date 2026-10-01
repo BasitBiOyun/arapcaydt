@@ -9,6 +9,7 @@ import { logged } from '../../server/errorLog.js';
  *   GET /api/admin/monitor?hours=24         the report
  *   GET /api/admin/monitor?feedback=<id>    one report's teşhis record
  *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks, a 10-minute picture link; no audio)
+ *   GET /api/admin/monitor?project=<id>&picture=1   that question's picture itself
  */
 export function tokenMatches(header: unknown, token: string | undefined): boolean {
   if (!token || token.length < 24 || typeof header !== 'string' || !header.startsWith('Bearer ')) return false;
@@ -42,6 +43,13 @@ async function handler(req: any, res: any) {
     if (!data) return res.status(404).json({ error: 'Not found' });
     // The question picture as a link that works for ten minutes (for checking how it is read).
     const path = typeof (data as any).image === 'object' ? (data as any).image?.assetPath : null;
+    if (req.query?.picture && path) {
+      // The picture itself (for a checker that cannot reach the storage host).
+      const file = await db.storage.from('project-assets').download(path);
+      if (file.error || !file.data) return res.status(404).json({ error: 'Not found' });
+      res.setHeader('Content-Type', file.data.type || 'application/octet-stream');
+      return res.status(200).send(Buffer.from(await file.data.arrayBuffer()));
+    }
     const signed = path ? await db.storage.from('project-assets').createSignedUrl(path, 600) : null;
     return res.status(200).json({ ...(data as object), image: signed?.data?.signedUrl ?? (typeof (data as any).image === 'string' && /^https:/.test((data as any).image) ? (data as any).image : null) });
   }
