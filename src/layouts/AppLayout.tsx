@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppSidebar, AppPage } from '../components/common/AppSidebar';
 import { AppHeader } from '../components/common/AppHeader';
 import { AnnouncementBanner } from '../features/settings/AnnouncementBanner';
+import { UpdateBanner } from '../features/settings/UpdateBanner';
 import { setReportContext } from '../features/feedback/feedback';
 import { PAGE_LABELS } from '../config/pages';
 import { DashboardPage } from '../pages/DashboardPage';
@@ -164,6 +165,7 @@ export const AppLayout: React.FC = () => {
           onNavigate={navigate}
         />
 
+        <UpdateBanner />
         <AnnouncementBanner />
         <main className="flex-1 overflow-y-auto">
           {error&&<div role="alert" className="p-4 bg-red-50 text-red-800">{error} <button onClick={()=>void loadProjects()}>Yeniden dene</button></div>}

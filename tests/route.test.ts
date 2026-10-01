@@ -30,3 +30,9 @@ test('Yenilikler: its own address; every entry is dated newest first and links o
   assert.deepEqual(unseenNews(`${NEWS[0].id}#1`).map(e => e.id), [NEWS[0].id], 'a day that got more items is new again');
   assert.deepEqual(unseenNews('2026-10-01-ogle').map(e => e.id).includes(NEWS[0].id), NEWS[0].id >= '2026-10-01', 'an older stamp still works');
 });
+
+test('a newer studio is told apart by its bundle name', async () => {
+  const { bundleOf } = await import('../src/features/settings/UpdateBanner');
+  assert.equal(bundleOf('<script type="module" src="/assets/index-C8PtcxqW.js"></script>'), 'assets/index-C8PtcxqW.js');
+  assert.equal(bundleOf('<script type="module" src="/src/main.tsx"></script>'), null, 'development: no check');
+});
