@@ -12,6 +12,7 @@ import { QuestionEditorPage } from '../pages/QuestionEditorPage';
 import { SettingsPage } from '../pages/SettingsPage';
 import { BatchPage } from '../pages/BatchPage';
 import { HelpPage } from '../pages/HelpPage';
+import { NewsPage } from '../pages/NewsPage';
 import { FirstRunGuide, guideSeen } from '../features/help/FirstRunGuide';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
@@ -186,6 +187,7 @@ export const AppLayout: React.FC = () => {
           {currentPage === 'batch' && <BatchPage onOpenProject={id => void handleSelectProject(id)} registerLeaveGuard={registerLeaveGuard} />}
           {currentPage === 'settings' && <SettingsPage />}
           {currentPage === 'help' && <HelpPage onShowGuide={() => setShowGuide(true)} />}
+          {currentPage === 'news' && <NewsPage />}
         </main>
       </div>
 

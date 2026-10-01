@@ -2,7 +2,7 @@ import type { AppPage } from '../components/common/AppSidebar';
 
 /** Readable addresses for the studio's pages, so a reload or a bookmark returns to the same place. */
 const PATHS: Record<Exclude<AppPage, 'editor'>, string> = {
-  dashboard: '', questions: 'sorular', batch: 'toplu', settings: 'ayarlar', admin: 'yonetim', help: 'yardim',
+  dashboard: '', questions: 'sorular', batch: 'toplu', settings: 'ayarlar', admin: 'yonetim', help: 'yardim', news: 'yenilikler',
 };
 
 /** The address of a page; the editor's address names its question, the help page its topic. */

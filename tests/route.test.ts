@@ -13,3 +13,17 @@ test('studio addresses: every page round-trips and the editor names its question
   assert.equal(pageHash('help', 'google-anahtari'), '#/yardim/google-anahtari');
   assert.deepEqual(parseHash('#/yardim/google-anahtari'), { page: 'help', topic: 'google-anahtari' });
 });
+
+test('Yenilikler: its own address; every entry is dated newest first and links only to real guide topics', async () => {
+  const { NEWS, unseenNews } = await import('../src/features/help/changelog');
+  const { HELP_TOPICS } = await import('../src/features/help/helpTopics');
+  assert.equal(pageHash('news'), '#/yenilikler');
+  assert.equal(parseHash('#/yenilikler').page, 'news');
+  const ids = NEWS.map(n => n.id);
+  assert.deepEqual(ids, [...ids].sort().reverse(), 'newest first, ids sort by date');
+  const topics = new Set(HELP_TOPICS.map(t => t.id));
+  for (const entry of NEWS) for (const group of entry.groups) for (const item of group.items)
+    if (item.help) assert.ok(topics.has(item.help), `${entry.id}: unknown guide topic ${item.help}`);
+  assert.equal(unseenNews('').length, NEWS.length, 'a first visit marks everything new');
+  assert.equal(unseenNews(NEWS[0].id).length, 0);
+});

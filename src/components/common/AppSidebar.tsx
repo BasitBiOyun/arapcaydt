@@ -1,13 +1,14 @@
-import React from 'react';
-import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck, Question } from '@phosphor-icons/react';
+import React, { useEffect, useState } from 'react';
+import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck, Question, Megaphone } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 import { BrandMark } from './BrandMark';
 import { APP_NAME } from '../../config/brand';
 import { PAGE_LABELS } from '../../config/pages';
 import { ReportProblem } from '../../features/feedback/ReportProblem';
+import { readSeen, unseenNews } from '../../features/help/changelog';
 
-export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin' | 'help';
+export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin' | 'help' | 'news';
 
 interface AppSidebarProps {
   currentPage: AppPage;
@@ -22,6 +23,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 }) => {
   const { user, logout } = useAuth();
   const { projects } = useProjects();
+  // "Yeni" next to Yenilikler until the newest entry has been opened on this device.
+  const [seen, setSeen] = useState(readSeen);
+  useEffect(() => {
+    const update = () => setSeen(readSeen());
+    window.addEventListener('studio-news-seen', update);
+    return () => window.removeEventListener('studio-news-seen', update);
+  }, []);
+  const newCount = unseenNews(seen).length;
 
   const items: Array<{ page: AppPage; label: string; icon: React.ElementType; badge?: string }> = [
     ...(user?.role === 'admin' ? [{ page: 'admin' as const, label: PAGE_LABELS.admin, icon: ShieldCheck }] : []),
@@ -44,7 +53,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <item.icon size={18} weight={active ? 'fill' : 'regular'} />
           <span>{item.label}</span>
         </div>
-        {item.badge && <span className="text-xs tabular-nums text-[#787670]">{item.badge}</span>}
+        {item.badge === 'Yeni'
+          ? <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-[#8B1E2D] text-white">Yeni</span>
+          : item.badge && <span className="text-xs tabular-nums text-[#787670]">{item.badge}</span>}
       </button>
     );
   };
@@ -75,6 +86,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <div className="text-xs uppercase font-semibold text-[#8C8A82] tracking-wider">Sistem</div>
         </div>
         {link({ page: 'settings', label: PAGE_LABELS.settings, icon: Gear })}
+        {link({ page: 'news', label: PAGE_LABELS.news, icon: Megaphone, badge: newCount ? 'Yeni' : undefined })}
         {link({ page: 'help', label: PAGE_LABELS.help, icon: Question })}
         <ReportProblem sender={user?.name} />
         <button className="mobile-signout" onClick={logout}><SignOut size={18}/>Çıkış</button>
