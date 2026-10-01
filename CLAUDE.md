@@ -41,6 +41,9 @@ Use the narrowest meaningful checks:
 Do not run expensive external generation as a substitute for local verification.
 - When a teacher's teşhis file (İşaretler → "Teşhis dosyasını indir") shows a marking problem, fix it, then keep the file as a test with `npm run teshis:ekle -- <file> <short-name>` (see `tests/teshisReplay.test.ts`). Only keep it once its underlines are right.
 
+## Teacher-facing changes
+- When a change is visible to teachers, add a plain-Turkish item to `src/features/help/changelog.ts` (the "Yenilikler" page; newest entry first, `help` links to a Yardım topic) and update the related Yardım topic.
+
 ## Context efficiency
 - Open only files needed for the task.
 - Do not repeatedly reread unchanged files.
