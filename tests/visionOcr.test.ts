@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { visionPage } from '../api/vision/ocr';
+import { passingFailure, visionPage } from '../api/vision/ocr';
 import { optionMarkersFrom, visionToOcr } from '../src/services/ocr/cloudOcr';
 
 /** A Vision word: its letters, a box, and the break after its last letter. */
@@ -56,4 +56,12 @@ test('a question’s Vision reading is used again for the same picture, without 
   } finally {
     globalThis.fetch = real;
   }
+});
+
+test('a passing "resource exhausted" inside a 200 answer is asked again; real failures are not', () => {
+  assert.equal(passingFailure(200, { responses: [{ error: { code: 8, message: 'Resource has been exhausted (e.g. check quota).' } }] }), true);
+  assert.equal(passingFailure(429, null), true);
+  assert.equal(passingFailure(200, { responses: [{ fullTextAnnotation: {} }] }), false);
+  assert.equal(passingFailure(403, { error: { message: 'API key not valid' } }), false);
+  assert.equal(passingFailure(200, { responses: [{ error: { code: 3, message: 'Bad image data.' } }] }), false);
 });
