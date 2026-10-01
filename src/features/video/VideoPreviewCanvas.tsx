@@ -163,6 +163,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         teacherTag: videoConfig.teacherTag || 'Arapça YDT • Video Stüdyosu',
         selectedRegionId,
         interactiveMode: false,
+        settled: !isPlaying,
         captions: videoConfig.captions,
         showCaptions: videoConfig.showCaptions,
         captionY: videoConfig.captionY,
@@ -173,7 +174,7 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
       }
     );
     setFit(previous => previous && ['x', 'y', 'width', 'height'].every(k => previous[k as keyof FitRect] === drawn[k as keyof FitRect]) ? previous : drawn);
-  }, [currentTime, imageElement, regions, actions, videoConfig, selectedRegionId, duration]);
+  }, [currentTime, imageElement, regions, actions, videoConfig, selectedRegionId, duration, isPlaying]);
 
   useEffect(() => {
     renderFrame();

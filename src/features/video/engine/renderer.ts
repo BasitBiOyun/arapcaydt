@@ -270,9 +270,15 @@ export function renderQuestionVideoFrame(
   if (imageElement?.complete && imageElement.naturalWidth > 0)
     ctx.drawImage(imageElement, fit.x, fit.y, fit.width, fit.height);
   const state = computeTimelineVisualState(currentTime, actions, regions, options.selectedRegionId);
+  if (options.settled) {
+    // Paused for editing: every mark on screen is shown whole, not at the first frame of its animation.
+    for (const u of state.activeUnderlines) { u.progress = 1; u.opacity = 1; }
+    for (const c of state.activeCircles) { c.progress = 1; c.opacity = 1; }
+    for (const f of state.activeFocus) f.intensity = 1;
+  }
   const byId = new Map(regions.map(r => [r.id, r]));
   const rectFor = (id: string) => { const r = byId.get(id); return r ? regionCanvasRect(r, fit) : null; };
-  const age = (mark: { timestamp: number }) => Math.max(0, currentTime - mark.timestamp);
+  const age = (mark: { timestamp: number }) => Math.max(options.settled ? 1.5 : 0, currentTime - mark.timestamp);
   // Frames of neighbouring options (A|B side by side, B above C) must never touch.
   const optionRects = regions.filter(r => r.type.startsWith('option')).map(r => ({ id: r.id, rect: regionCanvasRect(r, fit) }));
   const obstaclesFor = (id: string) => optionRects.filter(o => o.id !== id).map(o => o.rect);
@@ -304,7 +310,9 @@ export function renderQuestionVideoFrame(
     const r = rectFor(u.regionId); if (!r || u.progress <= 0) continue;
     // Even speed: the line keeps pace with the voice over the whole mark.
     const swept = r.width * u.progress;
-    const y = underlineY(r, scale, (options.underlineOffset ?? 0) + (u.offset ?? 0));
+    // A line the teacher drew is its box: drawn through its middle, where it was put.
+    const y = byId.get(u.regionId)?.shape === 'line' ? r.y + r.height / 2
+      : underlineY(r, scale, (options.underlineOffset ?? 0) + (u.offset ?? 0));
     ctx.save(); ctx.globalAlpha = u.opacity ?? 1;
     ctx.strokeStyle = u.color || '#D97706'; ctx.lineWidth = 5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
     ctx.moveTo(u.isRtl ? r.x + r.width : r.x, y);
@@ -315,7 +323,9 @@ export function renderQuestionVideoFrame(
   for (const c of state.activeCircles) {
     const r = rectFor(c.regionId); if (!r || c.progress <= 0) continue;
     const cx = r.x + r.width / 2, cy = r.y + r.height / 2;
-    const rx = r.width / 2 + 12 * scale, ry = r.height / 2 + 10 * scale;
+    // A ring the teacher drew fills the place drawn; around a found word it leaves room.
+    const drawn = byId.get(c.regionId)?.shape === 'drawn';
+    const rx = r.width / 2 + (drawn ? 0 : 12 * scale), ry = r.height / 2 + (drawn ? 0 : 10 * scale);
     const from = -Math.PI * .6, sweep = Math.PI * 2.12 * easeOutCubic(c.progress);
     ctx.save(); ctx.globalAlpha = c.opacity;
     ctx.strokeStyle = '#DC2626'; ctx.lineWidth = 4.5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
@@ -328,9 +338,12 @@ export function renderQuestionVideoFrame(
     }
     ctx.stroke(); ctx.restore();
   }
+  // A stamp (✗/✓ put on the picture) is the badge itself, drawn in its box: no frame, no fading.
+  const isStamp = (id: string) => byId.get(id)?.shape === 'stamp';
+  const stampBadge = (r: FitRect) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2, radius: Math.min(r.width, r.height) / 2 });
   // Eliminated choices fade back so the remaining ones stand out.
   for (const [id, mark] of Object.entries(state.rejectedRegions)) {
-    const r = rectFor(id); if (!r || state.correctRegions[id]) continue;
+    const r = rectFor(id); if (!r || state.correctRegions[id] || isStamp(id)) continue;
     ctx.save(); ctx.globalAlpha = .5 * Math.min(1, age(mark) / .45); ctx.fillStyle = '#FFFFFF';
     const p = pad(r, Math.min(4 * scale, framePad(id))); ctx.beginPath(); ctx.roundRect(p.x, p.y, p.width, p.height, 8 * scale); ctx.fill(); ctx.restore();
   }
@@ -369,6 +382,7 @@ export function renderQuestionVideoFrame(
   for (const [id, mark] of Object.entries(state.rejectedRegions)) {
     const r = rectFor(id); if (!r || state.correctRegions[id]) continue;
     const t = age(mark);
+    if (isStamp(id)) { const b = stampBadge(r); markBadge(ctx, b.x, b.y, b.radius, t, 'reject', scale); continue; }
     if (t < .45) tracedFrame(ctx, r, scale, '#DC2626', 'rgba(254,226,226,.35)', 1, 1 - t / .45, 'rgba(220,38,38,.35)', framePad(id));
     const m = markerGeometry(r, width, scale, false, byId.get(id)?.markerAnchor, obstaclesFor(id));
     markBadge(ctx, m.x, m.y, m.radius * 1.15, t, 'reject', scale);
@@ -376,6 +390,7 @@ export function renderQuestionVideoFrame(
   for (const [id, mark] of Object.entries(state.correctRegions)) {
     const r = rectFor(id); if (!r) continue;
     const t = age(mark);
+    if (isStamp(id)) { const b = stampBadge(r); markBadge(ctx, b.x, b.y, b.radius, t, 'correct', scale); continue; }
     const lift = emphasis.find(f => f.regionId === id)?.intensity ?? 0;
     // The answer option keeps its green frame; a tick on anything else (a premise, a drawn place)
     // only flashes it, like a cross, so no empty box is left beside the tick.
