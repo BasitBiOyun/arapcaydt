@@ -218,6 +218,7 @@ function fitLabelSlots(anchors: DetectedOptionMarker[], pool: DetectedOptionMark
     layouts.push(k => { const y = rowY.get(rowOf(k)); const x = colOf(k) < 2 ? colX.get(colOf(k)) : undefined;
       return y === undefined || (colOf(k) < 2 && x === undefined) ? null : { x, y }; });
 
+  const gridLeft = Math.min(...anchors.map(a => a.word.x)) - w * 2, gridRight = Math.max(...anchors.map(a => a.word.x)) + w * 4;
   let best: Map<OptionLetter, DetectedOptionMarker> | null = null, bestReal = 0;
   for (const slotAt of layouts) {
     const result = new Map<OptionLetter, DetectedOptionMarker>();
@@ -233,11 +234,24 @@ function fitLabelSlots(anchors: DetectedOptionMarker[], pool: DetectedOptionMark
         return;
       }
       if (!slot || slot.y > .93) return;
-      const hit = pool.filter(c => !used.has(c) && Math.abs(cy(c) - slot.y) < h * .7 && (slot.x === undefined || Math.abs(c.word.x - slot.x) < w * 1.2))
+      // E under the A B / C D grid has no column of its own, but it is never outside the grid
+      // (a stray token in a passage beside the options is not E).
+      const inGrid = (x: number) => x >= gridLeft && x <= gridRight;
+      const hit = pool.filter(c => !used.has(c) && Math.abs(cy(c) - slot.y) < h * .7 && (slot.x === undefined ? inGrid(c.word.x) : Math.abs(c.word.x - slot.x) < w * 1.2))
         .sort((a, b) => Math.abs(a.word.x - (slot.x ?? a.word.x)) - Math.abs(b.word.x - (slot.x ?? b.word.x)))[0];
       if (hit) { used.add(hit); result.set(letter, { ...hit, letter }); real++; return; }
-      const sx = slot.x;
-      if (sx === undefined) return;
+      let sx = slot.x;
+      if (sx === undefined) {
+        // No label read for E: it stands just left of the first option text on its row inside the grid.
+        const row = words.filter(word => word.height > h * .5 && Math.abs(cy(word) - slot.y) < h * .7 && inGrid(word.x))
+          .sort((p, q) => p.x - q.x);
+        if (!row.length) return;
+        const first = row[0], short = first.text.replace(/[\u200E\u200F]/g, '').trim().length <= 3 && row.length > 1;
+        const label: OCRWord = short ? { ...first, text: `${letter})` }
+          : { text: `${letter})`, confidence: 40, x: Math.max(0, first.x - w * 1.3), y: slot.y - h / 2, width: w, height: h, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 };
+        result.set(letter, { letter, word: label, y: label.y, confidence: 40 });
+        return;
+      }
       const text = words.some(word => word.y < .94 && word.height > h * .5 && Math.abs(cy(word) - slot.y) < h
         && word.x + word.width > sx + w && word.x < sx + w * 4);
       if (!text) return;
@@ -396,7 +410,8 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
           if (span) {
             // A wrapped line never reaches past the lines above it: text beside it (a page footer,
             // a passage) is not the option's.
-            if (word.x >= span.from && word.x + word.width <= span.to) {
+            // (it starts within them; a short option's last word may reach a little past its first line).
+            if (word.x >= span.from && word.x < span.to && word.x + word.width / 2 <= span.to + .01) {
               optionWords.push(word);
               lastBottom = Math.max(lastBottom, word.y + word.height);
             }

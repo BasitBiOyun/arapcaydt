@@ -1,0 +1,838 @@
+{
+ "note": "Cloze testi (2025 YDT 18): şıklar solda A B / C D / E, paragraf sağda; E paragrafa değil kendi yerine konur.",
+ "solutionText": "Parçanın ilgili kısmını okuyalım:\nحَيْثُ إِنَّ الطَّرِيقَ ---- وَالْأَوَّلَ لِتَحَمُّلِ الْمَسْؤُولِيَّةِ هُوَ اخْتِيَارُ الْوِجْهَةِ الصَّحِيحَةِ، وَالتَّرْكِيزُ ---- مَا يُمْكِنُهُ التَّحَكُّمُ عَلَيْهِ فِي حَيَاتِهِ، عِلْمًا بِأَنَّ أَهْدَافَهُ تَكُونُ فِي الْعَادَةِ ذَاتَ طَابِعٍ وَاضِحٍ وَوَاقِعِيٍّ.\nBurada boşluktan önce التَّرْكِيزُ kelimesi geliyor. التَّرْكِيزُ عَلَى شَيْءٍ kalıbı “bir şeye odaklanmak” anlamındadır. Dolayısıyla ifade:\nوَالتَّرْكِيزُ عَلَى مَا يُمْكِنُهُ التَّحَكُّمُ عَلَيْهِ\nşeklinde olur. Anlamı da “hayatında kontrol edebildiği şeylere odaklanmak”tır.\nA seçeneğindeki مِنْ olmaz. Çünkü التَّرْكِيزُ مِنْ şeklinde bir kullanım burada doğru değildir.\nB seçeneğindeki فِي olmaz. التَّرْكِيزُ فِي bazı özel bağlamlarda görülebilse de burada “bir şey üzerine odaklanmak” anlamı için gereken edat عَلَىdır.\nC seçeneğindeki إِلَى olmaz. “-e doğru” anlamı verir ve التَّرْكِيزُ ile bu yapıda kullanılmaz.\nE seçeneğindeki عَنْ ise “-den, hakkında” anlamı taşır ve cümlenin anlamına uymaz.\nBu nedenle doğru cevap D seçeneği, عَلَىdır.",
+ "words": [
+  {
+   "text": "veya",
+   "confidence": 96,
+   "x": 0.3333,
+   "y": 0.1769,
+   "width": 0.0297,
+   "height": 0.0185
+  },
+  {
+   "text": "sözcük",
+   "confidence": 96,
+   "x": 0.2844,
+   "y": 0.1722,
+   "width": 0.0453,
+   "height": 0.0185
+  },
+  {
+   "text": "düşen",
+   "confidence": 96,
+   "x": 0.2411,
+   "y": 0.1722,
+   "width": 0.0385,
+   "height": 0.0231
+  },
+  {
+   "text": "uygun",
+   "confidence": 96,
+   "x": 0.1974,
+   "y": 0.1769,
+   "width": 0.0391,
+   "height": 0.0185
+  },
+  {
+   "text": "yerlere",
+   "confidence": 96,
+   "x": 0.1495,
+   "y": 0.1722,
+   "width": 0.0432,
+   "height": 0.0231
+  },
+  {
+   "text": "numaralanmış",
+   "confidence": 96,
+   "x": 0.0552,
+   "y": 0.1722,
+   "width": 0.0896,
+   "height": 0.0231
+  },
+  {
+   "text": "bulunuz.",
+   "confidence": 95,
+   "x": 0.1016,
+   "y": 0.2009,
+   "width": 0.0542,
+   "height": 0.0176
+  },
+  {
+   "text": "ifadeyi",
+   "confidence": 95,
+   "x": 0.0552,
+   "y": 0.2,
+   "width": 0.0417,
+   "height": 0.0231
+  },
+  {
+   "text": "‏يتمتع",
+   "confidence": 93,
+   "x": 0.9089,
+   "y": 0.2963,
+   "width": 0.0406,
+   "height": 0.0407
+  },
+  {
+   "text": "الفرد",
+   "confidence": 92,
+   "x": 0.8641,
+   "y": 0.2926,
+   "width": 0.0365,
+   "height": 0.0389
+  },
+  {
+   "text": "الناجح",
+   "confidence": 92,
+   "x": 0.8063,
+   "y": 0.2926,
+   "width": 0.049,
+   "height": 0.0444
+  },
+  {
+   "text": "بالعديد",
+   "confidence": 92,
+   "x": 0.7484,
+   "y": 0.2917,
+   "width": 0.051,
+   "height": 0.038
+  },
+  {
+   "text": "من",
+   "confidence": 93,
+   "x": 0.7172,
+   "y": 0.3019,
+   "width": 0.0234,
+   "height": 0.0287
+  },
+  {
+   "text": "الصفات",
+   "confidence": 92,
+   "x": 0.6464,
+   "y": 0.2917,
+   "width": 0.063,
+   "height": 0.0296
+  },
+  {
+   "text": "وهي؛",
+   "confidence": 92,
+   "x": 0.5948,
+   "y": 0.2991,
+   "width": 0.0448,
+   "height": 0.038
+  },
+  {
+   "text": "مقدرته‎",
+   "confidence": 91,
+   "x": 0.5313,
+   "y": 0.2935,
+   "width": 0.0547,
+   "height": 0.038
+  },
+  {
+   "text": "‏على",
+   "confidence": 96,
+   "x": 0.9156,
+   "y": 0.3463,
+   "width": 0.0323,
+   "height": 0.0407
+  },
+  {
+   "text": "تحمل",
+   "confidence": 96,
+   "x": 0.8656,
+   "y": 0.3463,
+   "width": 0.0432,
+   "height": 0.0352
+  },
+  {
+   "text": "المسؤوليات",
+   "confidence": 91,
+   "x": 0.7646,
+   "y": 0.3472,
+   "width": 0.0927,
+   "height": 0.038
+  },
+  {
+   "text": "(16)----",
+   "confidence": 70,
+   "x": 0.6911,
+   "y": 0.3583,
+   "width": 0.0656,
+   "height": 0.0306
+  },
+  {
+   "text": "تقع",
+   "confidence": 92,
+   "x": 0.6599,
+   "y": 0.3481,
+   "width": 0.0245,
+   "height": 0.0435
+  },
+  {
+   "text": "على",
+   "confidence": 93,
+   "x": 0.6188,
+   "y": 0.3463,
+   "width": 0.0333,
+   "height": 0.0407
+  },
+  {
+   "text": "عاتقه؛",
+   "confidence": 45,
+   "x": 0.5635,
+   "y": 0.3481,
+   "width": 0.0469,
+   "height": 0.0278
+  },
+  {
+   "text": "حيث‎",
+   "confidence": 92,
+   "x": 0.5161,
+   "y": 0.3491,
+   "width": 0.0391,
+   "height": 0.0352
+  },
+  {
+   "text": "18.",
+   "confidence": 96,
+   "x": 0.049,
+   "y": 0.362,
+   "width": 0.0234,
+   "height": 0.0241
+  },
+  {
+   "text": "‏إن",
+   "confidence": 96,
+   "x": 0.9307,
+   "y": 0.4037,
+   "width": 0.0177,
+   "height": 0.037
+  },
+  {
+   "text": "الطريق",
+   "confidence": 92,
+   "x": 0.8641,
+   "y": 0.4009,
+   "width": 0.0589,
+   "height": 0.0407
+  },
+  {
+   "text": "(17)----",
+   "confidence": 64,
+   "x": 0.7906,
+   "y": 0.4139,
+   "width": 0.0656,
+   "height": 0.0306
+  },
+  {
+   "text": "والأول",
+   "confidence": 92,
+   "x": 0.7297,
+   "y": 0.4019,
+   "width": 0.0542,
+   "height": 0.0398
+  },
+  {
+   "text": "لتحمل",
+   "confidence": 92,
+   "x": 0.674,
+   "y": 0.4019,
+   "width": 0.0479,
+   "height": 0.0352
+  },
+  {
+   "text": "الفرد",
+   "confidence": 92,
+   "x": 0.6286,
+   "y": 0.4028,
+   "width": 0.0365,
+   "height": 0.0389
+  },
+  {
+   "text": "للمسؤولية",
+   "confidence": 91,
+   "x": 0.5417,
+   "y": 0.4019,
+   "width": 0.0792,
+   "height": 0.0398
+  },
+  {
+   "text": "هو",
+   "confidence": 93,
+   "x": 0.513,
+   "y": 0.412,
+   "width": 0.0203,
+   "height": 0.0296
+  },
+  {
+   "text": "فى",
+   "confidence": 96,
+   "x": 0.3526,
+   "y": 0.4176,
+   "width": 0.0229,
+   "height": 0.0407
+  },
+  {
+   "text": "(8",
+   "confidence": 91,
+   "x": 0.3292,
+   "y": 0.4139,
+   "width": 0.0167,
+   "height": 0.0315
+  },
+  {
+   "text": "من‎",
+   "confidence": 96,
+   "x": 0.1078,
+   "y": 0.4259,
+   "width": 0.024,
+   "height": 0.0306
+  },
+  {
+   "text": "A)",
+   "confidence": 90,
+   "x": 0.0828,
+   "y": 0.4139,
+   "width": 0.0182,
+   "height": 0.0315
+  },
+  {
+   "text": "‏اختيار",
+   "confidence": 92,
+   "x": 0.9005,
+   "y": 0.4583,
+   "width": 0.0479,
+   "height": 0.038
+  },
+  {
+   "text": "الوجهة",
+   "confidence": 91,
+   "x": 0.8359,
+   "y": 0.4565,
+   "width": 0.0552,
+   "height": 0.0389
+  },
+  {
+   "text": "الصحيحة؛",
+   "confidence": 92,
+   "x": 0.7464,
+   "y": 0.4565,
+   "width": 0.0823,
+   "height": 0.038
+  },
+  {
+   "text": "والتركيز",
+   "confidence": 92,
+   "x": 0.6693,
+   "y": 0.4574,
+   "width": 0.0693,
+   "height": 0.0389
+  },
+  {
+   "text": "(18)----",
+   "confidence": 56,
+   "x": 0.5943,
+   "y": 0.4685,
+   "width": 0.0656,
+   "height": 0.0306
+  },
+  {
+   "text": "ما",
+   "confidence": 93,
+   "x": 0.5719,
+   "y": 0.4583,
+   "width": 0.0161,
+   "height": 0.0278
+  },
+  {
+   "text": "يمكنه‎",
+   "confidence": 92,
+   "x": 0.5219,
+   "y": 0.4583,
+   "width": 0.0432,
+   "height": 0.0361
+  },
+  {
+   "text": "١",
+   "confidence": 82,
+   "x": 0.3573,
+   "y": 0.4593,
+   "width": 0.0052,
+   "height": 0.0037
+  },
+  {
+   "text": "‏التحكم",
+   "confidence": 92,
+   "x": 0.9,
+   "y": 0.5111,
+   "width": 0.0484,
+   "height": 0.0435
+  },
+  {
+   "text": "عليه",
+   "confidence": 93,
+   "x": 0.8573,
+   "y": 0.5111,
+   "width": 0.0344,
+   "height": 0.038
+  },
+  {
+   "text": "في",
+   "confidence": 96,
+   "x": 0.8292,
+   "y": 0.513,
+   "width": 0.0224,
+   "height": 0.0435
+  },
+  {
+   "text": "حياته؛",
+   "confidence": 89,
+   "x": 0.7734,
+   "y": 0.513,
+   "width": 0.049,
+   "height": 0.0361
+  },
+  {
+   "text": "علما",
+   "confidence": 92,
+   "x": 0.7307,
+   "y": 0.5111,
+   "width": 0.0333,
+   "height": 0.0296
+  },
+  {
+   "text": "بأن",
+   "confidence": 93,
+   "x": 0.6979,
+   "y": 0.5056,
+   "width": 0.026,
+   "height": 0.0444
+  },
+  {
+   "text": "أهدافه",
+   "confidence": 91,
+   "x": 0.6427,
+   "y": 0.5056,
+   "width": 0.0479,
+   "height": 0.0352
+  },
+  {
+   "text": "تكون",
+   "confidence": 92,
+   "x": 0.5953,
+   "y": 0.513,
+   "width": 0.0411,
+   "height": 0.037
+  },
+  {
+   "text": "في",
+   "confidence": 93,
+   "x": 0.5667,
+   "y": 0.513,
+   "width": 0.0224,
+   "height": 0.0435
+  },
+  {
+   "text": "العادة",
+   "confidence": 91,
+   "x": 0.5167,
+   "y": 0.512,
+   "width": 0.0427,
+   "height": 0.0287
+  },
+  {
+   "text": "على‎",
+   "confidence": 96,
+   "x": 0.3526,
+   "y": 0.5065,
+   "width": 0.0339,
+   "height": 0.0426
+  },
+  {
+   "text": "D)",
+   "confidence": 91,
+   "x": 0.3292,
+   "y": 0.5046,
+   "width": 0.0177,
+   "height": 0.0306
+  },
+  {
+   "text": "‏إلى‎",
+   "confidence": 96,
+   "x": 0.1073,
+   "y": 0.5065,
+   "width": 0.026,
+   "height": 0.0426
+  },
+  {
+   "text": "©(",
+   "confidence": 89,
+   "x": 0.0839,
+   "y": 0.5046,
+   "width": 0.0182,
+   "height": 0.0306
+  },
+  {
+   "text": "‏ذات",
+   "confidence": 91,
+   "x": 0.9172,
+   "y": 0.5676,
+   "width": 0.0323,
+   "height": 0.0546
+  },
+  {
+   "text": "طابع",
+   "confidence": 92,
+   "x": 0.8714,
+   "y": 0.5667,
+   "width": 0.0391,
+   "height": 0.0454
+  },
+  {
+   "text": "واضح",
+   "confidence": 91,
+   "x": 0.8125,
+   "y": 0.5685,
+   "width": 0.0526,
+   "height": 0.0435
+  },
+  {
+   "text": "وواقعي.",
+   "confidence": 90,
+   "x": 0.7401,
+   "y": 0.5685,
+   "width": 0.0656,
+   "height": 0.0435
+  },
+  {
+   "text": "وهو",
+   "confidence": 93,
+   "x": 0.699,
+   "y": 0.5769,
+   "width": 0.0333,
+   "height": 0.0296
+  },
+  {
+   "text": "(19)----",
+   "confidence": 49,
+   "x": 0.625,
+   "y": 0.5787,
+   "width": 0.0656,
+   "height": 0.0306
+  },
+  {
+   "text": "بترتيب‎",
+   "confidence": 92,
+   "x": 0.5609,
+   "y": 0.5713,
+   "width": 0.0573,
+   "height": 0.0509
+  },
+  {
+   "text": "5",
+   "confidence": 69,
+   "x": 0.2193,
+   "y": 0.5981,
+   "width": 0.0307,
+   "height": 0.0306
+  },
+  {
+   "text": "of",
+   "confidence": 68,
+   "x": 0.9396,
+   "y": 0.6111,
+   "width": 0.0104,
+   "height": 0.0537
+  },
+  {
+   "text": "ol",
+   "confidence": 36,
+   "x": 0.9219,
+   "y": 0.6111,
+   "width": 0.013,
+   "height": 0.0537
+  },
+  {
+   "text": "cally",
+   "confidence": 41,
+   "x": 0.8813,
+   "y": 0.6222,
+   "width": 0.0672,
+   "height": 0.038
+  },
+  {
+   "text": "‏خصوصا",
+   "confidence": 90,
+   "x": 0.7979,
+   "y": 0.6231,
+   "width": 0.0755,
+   "height": 0.037
+  },
+  {
+   "text": "إذا",
+   "confidence": 90,
+   "x": 0.7734,
+   "y": 0.6222,
+   "width": 0.0161,
+   "height": 0.038
+  },
+  {
+   "text": "حدث",
+   "confidence": 92,
+   "x": 0.7245,
+   "y": 0.6241,
+   "width": 0.0406,
+   "height": 0.0269
+  },
+  {
+   "text": "تعاض",
+   "confidence": 42,
+   "x": 0.6536,
+   "y": 0.6222,
+   "width": 0.0641,
+   "height": 0.0389
+  },
+  {
+   "text": "بين",
+   "confidence": 96,
+   "x": 0.6214,
+   "y": 0.6315,
+   "width": 0.0255,
+   "height": 0.0287
+  },
+  {
+   "text": "هذه",
+   "confidence": 96,
+   "x": 0.5865,
+   "y": 0.6213,
+   "width": 0.026,
+   "height": 0.0296
+  },
+  {
+   "text": "الأهداف.",
+   "confidence": 92,
+   "x": 0.5089,
+   "y": 0.6231,
+   "width": 0.0693,
+   "height": 0.0343
+  },
+  {
+   "text": "ع‎",
+   "confidence": 78,
+   "x": 0.2422,
+   "y": 0.6139,
+   "width": 0.0255,
+   "height": 0.0269
+  },
+  {
+   "text": "‏و",
+   "confidence": 96,
+   "x": 0.9401,
+   "y": 0.6935,
+   "width": 0.0099,
+   "height": 0.0213
+  },
+  {
+   "text": "(20)----",
+   "confidence": 36,
+   "x": 0.8651,
+   "y": 0.688,
+   "width": 0.0656,
+   "height": 0.0306
+  },
+  {
+   "text": "يتمتع",
+   "confidence": 92,
+   "x": 0.8177,
+   "y": 0.6806,
+   "width": 0.0406,
+   "height": 0.0407
+  },
+  {
+   "text": "الأشخاص",
+   "confidence": 92,
+   "x": 0.7292,
+   "y": 0.6704,
+   "width": 0.0813,
+   "height": 0.0444
+  },
+  {
+   "text": "الناجحون",
+   "confidence": 92,
+   "x": 0.6469,
+   "y": 0.6769,
+   "width": 0.075,
+   "height": 0.038
+  },
+  {
+   "text": "بالذكاء",
+   "confidence": 92,
+   "x": 0.588,
+   "y": 0.6759,
+   "width": 0.0521,
+   "height": 0.037
+  },
+  {
+   "text": "والعزيمة؛‎",
+   "confidence": 81,
+   "x": 0.5021,
+   "y": 0.6759,
+   "width": 0.0781,
+   "height": 0.0398
+  },
+  {
+   "text": "‏كما",
+   "confidence": 96,
+   "x": 0.9229,
+   "y": 0.7324,
+   "width": 0.0266,
+   "height": 0.0278
+  },
+  {
+   "text": "أنهم",
+   "confidence": 93,
+   "x": 0.8854,
+   "y": 0.7324,
+   "width": 0.0302,
+   "height": 0.0417
+  },
+  {
+   "text": "يتمتعون",
+   "confidence": 93,
+   "x": 0.8151,
+   "y": 0.7352,
+   "width": 0.0646,
+   "height": 0.0343
+  },
+  {
+   "text": "بالمرونة.‎",
+   "confidence": 89,
+   "x": 0.7354,
+   "y": 0.7306,
+   "width": 0.0729,
+   "height": 0.0398
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 96,
+   "x": 0.8531,
+   "y": 0.9333,
+   "width": 0.088,
+   "height": 0.0324
+  },
+  {
+   "text": "YDT/",
+   "confidence": 78,
+   "x": 0.7943,
+   "y": 0.9333,
+   "width": 0.0547,
+   "height": 0.0259
+  },
+  {
+   "text": "—",
+   "confidence": 82,
+   "x": 0.7792,
+   "y": 0.9481,
+   "width": 0.0109,
+   "height": 0.0028
+  },
+  {
+   "text": "2025",
+   "confidence": 93,
+   "x": 0.7333,
+   "y": 0.9333,
+   "width": 0.0401,
+   "height": 0.0259
+  }
+ ],
+ "regions": [
+  {
+   "id": "question-root",
+   "type": "paragraph",
+   "x": 0.5091,
+   "y": 0.2857,
+   "width": 0.4473,
+   "height": 0.112
+  },
+  {
+   "id": "option-a",
+   "type": "option-a",
+   "x": 0.0758,
+   "y": 0.4079,
+   "width": 0.063,
+   "height": 0.0546
+  },
+  {
+   "id": "option-b",
+   "type": "option-b",
+   "x": 0.3222,
+   "y": 0.4079,
+   "width": 0.0604,
+   "height": 0.0564
+  },
+  {
+   "id": "option-c",
+   "type": "option-c",
+   "x": 0.0769,
+   "y": 0.4986,
+   "width": 0.0635,
+   "height": 0.0564
+  },
+  {
+   "id": "option-d",
+   "type": "option-d",
+   "x": 0.3222,
+   "y": 0.4986,
+   "width": 0.0713,
+   "height": 0.0564
+  },
+  {
+   "id": "option-e",
+   "type": "option-e",
+   "x": 0.5795,
+   "y": 0.6051,
+   "width": 0.3775,
+   "height": 0.175
+  }
+ ],
+ "image": {
+  "width": 1920,
+  "height": 1080
+ },
+ "expect": {
+  "passageLines": [
+   {
+    "y": 0.367,
+    "phrase": "حَيْثُ"
+   },
+   {
+    "y": 0.421,
+    "phrase": "إِنَّ الطَّرِيقَ ---- وَالْأَوَّلَ لِتَحَمُّلِ الْمَسْؤُولِيَّةِ هُوَ"
+   },
+   {
+    "y": 0.476,
+    "phrase": "اخْتِيَارُ الْوِجْهَةِ الصَّحِيحَةِ، وَالتَّرْكِيزُ ---- مَا يُمْكِنُهُ"
+   },
+   {
+    "y": 0.531,
+    "phrase": "التَّحَكُّمُ عَلَيْهِ فِي حَيَاتِهِ، عِلْمًا بِأَنَّ أَهْدَافَهُ تَكُونُ فِي الْعَادَةِ"
+   },
+   {
+    "y": 0.594,
+    "phrase": "ذَاتَ طَابِعٍ وَاضِحٍ وَوَاقِعِيٍّ"
+   }
+  ],
+  "phrases": [
+   {
+    "y": 0.477,
+    "phrase": "وَالتَّرْكِيزُ عَلَى مَا يُمْكِنُهُ"
+   },
+   {
+    "y": 0.533,
+    "phrase": "التَّحَكُّمُ عَلَيْهِ"
+   }
+  ]
+ }
+}

@@ -90,3 +90,16 @@ test('long options in one column keep their full text when nothing is printed be
     assert.ok(option.x + option.width > .85, `${id} keeps its long text`);
   }
 });
+
+test('cloze: E under an A B / C D grid is found in the grid, never on the passage beside it', async () => {
+  const { loadTeshisFiles } = await import('./support/teshis');
+  const { groupOcrWordsIntoLines } = await import('../src/services/ocr/arabicMatcher');
+  const { optionMarkersFrom } = await import('../src/services/ocr/cloudOcr');
+  const t = loadTeshisFiles().find(f => f.name === 'cloze-e-sikki-paragraf-yaninda.json')!.teshis;
+  const words = groupOcrWordsIntoLines(t.words.map(w => ({ ...w, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 }))).flat();
+  const found = detectYdtQuestionRegions({ text: '', imageWidth: t.image!.width, imageHeight: t.image!.height, words, lines: [], optionMarkers: optionMarkersFrom(words) })
+    .regions.filter(r => r.id.startsWith('option-'));
+  const e = found.find(r => r.id === 'option-e')!;
+  assert.ok(e.x + e.width < .4 && e.y > .55 && e.y + e.height < .7, `E sits under the grid (${e.x.toFixed(2)}, ${e.y.toFixed(2)})`);
+  assert.ok(/ع/.test(e.content || ''), 'and holds its own word');
+});
