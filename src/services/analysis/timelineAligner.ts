@@ -36,8 +36,18 @@ function matches(a: string, b: string): boolean {
 }
 
 /** Tokenize chunk timestamps too. Chunk subdivision remains an estimate. */
+/**
+ * How long a word can really be said. A transcript that leaves a read Arabic sentence out stretches
+ * the word before it over the whole sentence ("okuyalım." 0.9–11.4 s): that word is cut back to
+ * its own length, so the left-out sentence is timed in the time it really took.
+ */
+export function spokenLength(text: string): number {
+  return .5 + .14 * normalize(text).replace(/\s/g, '').length;
+}
+
 function spokenTokens(words: NarrationWord[], duration: number) {
   return words.filter(w => Number.isFinite(w.start) && Number.isFinite(w.end) && w.end >= w.start && w.start < duration)
+    .map(w => w.end - w.start > 2.5 ? { ...w, end: w.start + Math.min(w.end - w.start, spokenLength(w.text)) } : w)
     .flatMap(word => {
       const parts = tokens(word.text);
       const weight = parts.reduce((sum, part) => sum + part.norm.length, 0) || 1;

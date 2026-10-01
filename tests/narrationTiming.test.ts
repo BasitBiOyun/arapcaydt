@@ -100,3 +100,14 @@ test('a generated voice that adds or skips words is caught from the timing trans
   const arabic = 'الكتاب مفيد demektir. Doğru cevap E şıkkıdır.';
   assert.deepEqual(narrationDrift(arabic, say('elkitabu mufid demektir. Doğru cevap E şıkkıdır.')), { added: [], skipped: [] });
 });
+
+test('a transcript that leaves out a read Arabic sentence does not push its underline past it', async () => {
+  const { alignSolutionNarration } = await import('../src/services/analysis/timelineAligner');
+  const text = 'Önce cümleyi okuyalım:\nيُعَرِّفُ الِاتِّحَادُ الْفَلَكِيُّ النَّيْزَكَ\nCümlede meteor anlatılıyor.';
+  // The transcript wrote no Arabic: "okuyalım." swallowed the whole sentence (0.9–11.4 s).
+  const spoken = [{ text: 'Önce', start: .1, end: .5 }, { text: 'cümleyi', start: .5, end: .9 }, { text: 'okuyalım.', start: .9, end: 11.4 },
+    { text: 'Cümlede', start: 13.9, end: 14.4 }, { text: 'meteor', start: 14.4, end: 15 }, { text: 'anlatılıyor.', start: 15, end: 16 }];
+  const arabic = alignSolutionNarration(text, spoken, 20).words.filter(w => /[\u0621-\u064A]/.test(w.text));
+  assert.ok(arabic[0].start < 3, `the sentence starts right after "okuyalım" (${arabic[0].start.toFixed(1)} s)`);
+  assert.ok(arabic[arabic.length - 1].end <= 13.9 + 1e-9, 'and is over before "Cümlede"');
+});
