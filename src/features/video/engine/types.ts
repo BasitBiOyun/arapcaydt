@@ -67,6 +67,8 @@ export interface RenderOptions {
   teacherTag?: string;
   selectedRegionId?: string | null;
   interactiveMode?: boolean;
+  /** The paused editor: marks that have started are shown finished (a mark added at this moment is visible at once). */
+  settled?: boolean;
   captions?: VideoCaption[];
   showCaptions?: boolean;
   captionY?: number;

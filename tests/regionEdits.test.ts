@@ -155,7 +155,7 @@ test('mark strip: a mark near the end is pulled inside the strip and gets its ow
   assert.notEqual(lanes.get('e'), lanes.get('a'), 'a pulled-in pill never covers its neighbour');
 });
 
-test('picture editing: sides resize one edge; a flat underline stroke becomes the line above it', async () => {
+test('picture editing: sides resize one edge; a flat underline stroke becomes a line where it was drawn', async () => {
   const { resizeRegion, placeFromStroke, typicalLineHeight } = await import('../src/features/video/PreviewEditOverlay');
   const box = { id: 'b', type: 'keyword', label: '', x: .2, y: .2, width: .2, height: .1 } as any;
   const wider = resizeRegion(box, 'e', .1, .3);
@@ -165,7 +165,7 @@ test('picture editing: sides resize one edge; a flat underline stroke becomes th
   const fit = { x: 0, y: 0, width: 1000, height: 500 };
   const stroke = { ...box, x: .5, y: .6, width: .2, height: .004 };
   const line = placeFromStroke(stroke, 'underline', fit, .05)!;
-  assert.deepEqual([line.x, +line.y.toFixed(3), +(line.y + line.height).toFixed(3)], [.5, .554, .604], 'the words sit just above the stroke');
+  assert.deepEqual([line.x, +(line.y + line.height / 2).toFixed(3), line.shape], [.5, .604, 'line'], 'the line runs through the stroke');
   assert.equal(placeFromStroke(stroke, 'focus', fit, .05), null, 'a flat stroke is not a frame');
   assert.equal(placeFromStroke({ ...stroke, width: .005 }, 'underline', fit, .05), null, 'a click is not a line');
   assert.equal(typicalLineHeight([{ ...box, content: 'a', height: .04 }, { ...box, content: 'b', height: .06 }, { ...box, content: 'c', height: .05 }]), .05);

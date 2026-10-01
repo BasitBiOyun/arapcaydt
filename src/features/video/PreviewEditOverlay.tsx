@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Moveable from 'react-moveable';
-import { ArrowCounterClockwise, MapPin, Trash, X } from '@phosphor-icons/react';
+import { ArrowCounterClockwise, ClipboardText, Copy, MapPin, Trash, X } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import type { FitRect } from './engine/types';
 import { regionCanvasRect, underlineY } from './engine/renderer';
@@ -49,13 +49,13 @@ const LINE_COLOR_KEY = 'studio-line-color';
 const savedLineColor = () => { try { return localStorage.getItem(LINE_COLOR_KEY) || LINE_COLORS[0].color; } catch { return LINE_COLORS[0].color; } };
 
 /** Ten colour dots; the chosen one is ringed. */
-function ColorDots({ value, onPick, label }: { value: string; onPick: (color: string) => void; label: string }) {
+function ColorDots({ value, onPick, label, row }: { value: string; onPick: (color: string) => void; label: string; row?: boolean }) {
   return (
-    <div role="radiogroup" aria-label={label} className="grid grid-cols-5 gap-1">
+    <div role="radiogroup" aria-label={label} className={row ? 'flex items-center gap-0.5' : 'grid grid-cols-5 gap-1'}>
       {LINE_COLORS.map(c => (
         <button key={c.color} type="button" role="radio" aria-checked={value === c.color} aria-label={c.name} title={c.name}
           onClick={() => onPick(c.color)}
-          className={`w-6 h-6 rounded-full border-2 ${value === c.color ? 'border-[#1C1917] ring-2 ring-white' : 'border-white/80 hover:scale-110'} transition-transform`}
+          className={`${row ? 'w-4 h-4' : 'w-6 h-6'} rounded-full border-2 ${value === c.color ? 'border-[#1C1917] ring-2 ring-white' : 'border-white/80 hover:scale-110'} transition-transform`}
           style={{ background: c.color }} />
       ))}
     </div>
@@ -116,12 +116,24 @@ type Gesture =
  * The place a drawn stroke becomes: a box as drawn, or, for a flat stroke drawn with the underline
  * tool, the text line it sits under (one usual text height above the stroke). Null for a stray click.
  */
-export function placeFromStroke(drawn: AnnotationRegion, tool: Tool, fit: FitRect, lineHeight: number): AnnotationRegion | null {
+export function placeFromStroke(drawn: AnnotationRegion, tool: Tool, fit: FitRect, _lineHeight: number): AnnotationRegion | null {
   const wide = drawn.width * fit.width > 12, tall = drawn.height * fit.height > 8;
+  if (tool === 'underline') return wide ? lineAt(drawn, drawn.y + drawn.height) : null;
   if (wide && tall) return drawn;
-  if (!wide || tool !== 'underline') return null;
-  const bottom = drawn.y + drawn.height, top = Math.max(0, bottom - lineHeight);
-  return { ...drawn, y: top, height: bottom - top };
+  return null;
+}
+
+/** Height of a drawn line's box (a share of the picture): the line runs through its middle. */
+export const LINE_BOX = .016;
+/** A line along `drawn`'s width whose middle is at `y`. */
+const lineAt = (drawn: AnnotationRegion, y: number): AnnotationRegion =>
+  ({ ...drawn, y: Math.max(0, Math.min(1 - LINE_BOX, y - LINE_BOX / 2)), height: LINE_BOX, shape: 'line' });
+
+/** A ✗ or ✓ stamp of `side` canvas pixels centred where the teacher clicked (image shares). */
+export function stampAt(id: string, ix: number, iy: number, fit: FitRect, side: number): AnnotationRegion {
+  const width = side / fit.width, height = side / fit.height;
+  return { id, type: 'keyword', label: 'Elle eklenen işaret', x: Math.max(0, Math.min(1 - width, ix - width / 2)),
+    y: Math.max(0, Math.min(1 - height, iy - height / 2)), width, height, manuallyAdjusted: true, shape: 'stamp' };
 }
 
 /**
@@ -136,7 +148,8 @@ export function snapToText(place: AnnotationRegion, regions: AnnotationRegion[],
     .map(r => ({ r, gap: Math.abs(r.y + r.height - bottom) }))
     .filter(n => n.gap <= lineHeight * .5)
     .sort((a, b) => a.gap - b.gap)[0];
-  return near ? { ...place, y: near.r.y, height: near.r.height } : place;
+  // Just under the text: the line's middle a little below the text's bottom.
+  return near ? { ...place, y: Math.min(1 - place.height, near.r.y + near.r.height + .004 - place.height / 2) } : place;
 }
 
 /** The usual height of a text line on this question: the median phrase box, else 5% of the image. */
@@ -257,9 +270,18 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
     } else if (gesture?.mode === 'draw') {
       // A drawn place (anywhere, even over a found box) gets the chosen mark; a click on a box marks that box.
       const lineHeight = typicalLineHeight(regions);
-      const stroke = tool && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, lineHeight) : null;
-      const place = stroke && tool === 'underline' ? snapToText(stroke, regions, lineHeight) : stroke;
-      if (tool && place) {
+      const stamp = tool === 'reject' || tool === 'correct';
+      const stroke = tool && !stamp && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, lineHeight) : null;
+      const place = stroke && tool === 'underline' ? snapToText(stroke, regions, lineHeight)
+        : stroke ? { ...stroke, shape: 'drawn' as const } : null;
+      const dragged = draft && 'x' in draft && (draft.width * fit.width > 12 || draft.height * fit.height > 8);
+      if (stamp && (dragged || !gesture.boxId)) {
+        // ✗ and ✓ are stamps: put where clicked (or in the middle of a dragged area), not beside a box.
+        const id = `manual-box-${Date.now()}`;
+        const at = draft && 'x' in draft && dragged ? { ix: draft.x + draft.width / 2, iy: draft.y + draft.height / 2 } : gesture;
+        onRegions([...regions, stampAt(id, at.ix, at.iy, fit, 44 * scale)], addMark([], id, tool!, time, total));
+        setSelectedId(id); setTool(null);
+      } else if (tool && place) {
         const id = `manual-box-${Date.now()}`;
         // Underlines are drawn line after line with the tool kept: each new line follows the
         // previous one in time (while the preview stays at the same moment).
@@ -396,11 +418,13 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         const rect = regionCanvasRect(r, fit);
         const active = marksAt(actions, region.id, time);
         const isSelected = region.id === selectedId;
-        const color = ICON[active[0]?.type]?.color;
+        const color = region.shape ? undefined : ICON[active[0]?.type]?.color;
+        // A stamp, a line or a drawn ring is the mark itself: grab it where it is drawn.
+        const shapeClass = region.shape === 'stamp' ? 'rounded-full' : region.shape === 'line' ? 'rounded-full' : region.shape === 'drawn' ? 'rounded-[40%]' : 'rounded-[3px]';
         return (
-          <div key={region.id} role="button" aria-label={`${boxName(region, regions)} kutusu`}
+          <div key={region.id} role="button" aria-label={`${region.shape ? (active[0] ? ICON[active[0].type]!.name : 'İşaret') : boxName(region, regions)} kutusu`}
             title="Seç: taşımak için sürükleyin"
-            className={`absolute rounded-[3px] ${drawing ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${drawing ? '' : isSelected ? 'border-2 border-[#2563EB] bg-[#2563EB]/5' : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
+            className={`absolute ${shapeClass} ${drawing ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${drawing ? '' : isSelected ? (region.shape ? 'border border-dashed border-[#2563EB]' : 'border-2 border-[#2563EB] bg-[#2563EB]/5') : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
             style={{ ...pct(rect), ...(isSelected || !color ? {} : { borderColor: `${color}AA` }) }}
             ref={el => { if (el) boxes.current.set(region.id, el); else boxes.current.delete(region.id); }}
             onPointerDown={e => {
@@ -413,10 +437,17 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       })}
 
       {selected && !drawing && boxes.current.get(selected.id) && (
-        <Moveable key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={false}
-          // A box that only carries an underline is lengthened or shortened from its ends.
-          renderDirections={selectedMarks.length && selectedMarks.every(m => m.type === 'underline') ? ['w', 'e'] : ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']} throttleDrag={0} throttleResize={0}
-          snappable snapThreshold={6} isDisplaySnapDigit={false} elementGuidelines={[...boxes.current.entries()].filter(([id]) => id !== selected.id).map(([, el]) => el)}
+        <Moveable key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={selected.shape === 'stamp'}
+          // A line is lengthened from its two ends, a stamp sized from its corners; a box from every side.
+          renderDirections={selected.shape === 'stamp' ? ['nw', 'ne', 'sw', 'se']
+            : selected.shape === 'line' || (selectedMarks.length && selectedMarks.every(m => m.type === 'underline')) ? ['w', 'e']
+            : ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']}
+          hideDefaultLines={selected.shape === 'stamp' || selected.shape === 'line'} throttleDrag={0} throttleResize={0}
+          // Alignment guides: edges and centres line up with the text boxes and the other marks.
+          snappable snapThreshold={6} isDisplaySnapDigit={false}
+          snapDirections={{ top: true, bottom: true, left: true, right: true, center: true, middle: true }}
+          elementSnapDirections={{ top: true, bottom: true, left: true, right: true, center: true, middle: true }}
+          elementGuidelines={[...boxes.current.entries()].filter(([id]) => id !== selected.id).map(([, el]) => el)}
           onDrag={e => preview(fromScreen(selected, e.left, e.top, e.width, e.height))}
           onDragEnd={commit}
           // Resizing follows react-moveable's own pattern: the box is sized on screen, then saved once.
@@ -437,11 +468,11 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           style={{ left: `${rect.x / canvasWidth * 100}%`, width: `${Math.max(rect.width, 2) / canvasWidth * 100}%`,
             top: `${(rect.y - Math.max(2, 2.5 * scale)) / canvasHeight * 100}%`, height: `${Math.max(4, 5 * scale) / canvasHeight * 100}%` }} />;
       })()}
-      {gesture?.mode === 'draw' && draft && 'x' in draft && tool !== 'underline' && (
-        <div className="absolute border-2 border-dashed rounded-[3px] pointer-events-none" style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : drawOption ? '#8B1E2D' : '#2563EB' }} />
+      {gesture?.mode === 'draw' && draft && 'x' in draft && tool !== 'underline' && tool !== 'reject' && tool !== 'correct' && (
+        <div className={`absolute border-2 ${tool === 'circle' ? 'rounded-[50%]' : 'border-dashed rounded-[3px]'} pointer-events-none`} style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : drawOption ? '#8B1E2D' : '#2563EB' }} />
       )}
 
-      {selected && selectedRect && lineAction && (
+      {selected && selectedRect && lineAction && selected.shape !== 'line' && (
         <div role="slider" aria-label="Altı çizgiyi yukarı-aşağı sürükleyin" aria-valuenow={lineAction.lineOffset ?? 0} title="Çizgiyi yukarı-aşağı sürükleyin"
           className="absolute cursor-ns-resize flex items-center"
           style={{ left: pct(selectedRect).left, width: pct(selectedRect).width,
@@ -452,57 +483,47 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       )}
 
       {selected && selectedRect && !gesture && !draft && (
-        <div className="absolute w-64 max-w-[70%] rounded-lg bg-white shadow-lg border border-[#D5D4CC] text-xs text-[#33322E] p-2 space-y-1.5"
-          style={{ left: `${Math.min(selectedRect.x / canvasWidth * 100, 60)}%`,
-            ...(menuBelow ? { top: `calc(${(selectedRect.y + selectedRect.height) / canvasHeight * 100}% + 8px)` }
-              : { bottom: `calc(${(1 - selectedRect.y / canvasHeight) * 100}% + 8px)` }) }}
+        // A small bar by the selection: its marks (time, move to now, delete), colour, option letter, copy, remove.
+        <div className="absolute flex flex-wrap items-center gap-1 max-w-[92%] rounded-lg bg-white/95 shadow-lg border border-[#D5D4CC] text-xs text-[#33322E] px-1.5 py-1"
+          style={{ left: `${Math.min(selectedRect.x / canvasWidth * 100, 55)}%`,
+            ...(menuBelow ? { top: `calc(${(selectedRect.y + selectedRect.height) / canvasHeight * 100}% + 10px)` }
+              : { bottom: `calc(${(1 - selectedRect.y / canvasHeight) * 100}% + 10px)` }) }}
           onPointerDown={e => e.stopPropagation()}>
-          <div className="flex items-center justify-between gap-2">
-            <b className="truncate">{boxName(selected, regions)}</b>
-            <button type="button" onClick={() => setSelectedId(null)} aria-label="Kapat" className="p-0.5 rounded hover:bg-[#F2F1EB]"><X size={12} /></button>
-          </div>
-          {onAssignOption && (selected.type.startsWith('option-') || !selected.content) && (
-            <div className="flex items-center gap-1" role="group" aria-label="Bu kutu hangi şık?">
-              <span className="text-[#787670] mr-auto">Hangi şık?</span>
+          {!selected.shape && <b className="px-1 max-w-[11rem] truncate" title={boxName(selected, regions)}>{boxName(selected, regions)}</b>}
+          {selectedMarks.length === 0 && <span className="px-1 text-[#787670]">İşaret yok</span>}
+          {selectedMarks.map(mark => (
+            <span key={mark.id} className="inline-flex items-center gap-0.5 rounded border border-[#E5E4DC] pl-1" title={`${ICON[mark.type]!.name} · ${clock(mark.start)}`}>
+              <span className="font-bold" style={{ color: mark.type === 'underline' && mark.color ? mark.color : ICON[mark.type]!.color }}>{ICON[mark.type]!.icon}</span>
+              <span className="font-mono-code">{clock(mark.start)}</span>
+              <button type="button" onClick={() => markHere(mark)} disabled={Math.abs(mark.start - time) < .05} title={`${clock(time)} anına al`}
+                className="p-1 rounded hover:bg-[#F2F1EB] disabled:opacity-30" aria-label="Buraya al"><MapPin size={11} /></button>
+              <button type="button" onClick={() => removeMark(mark.id)} title="İşareti sil" aria-label="İşareti sil"
+                className="p-1 rounded text-[#8B1E2D] hover:bg-red-50"><X size={11} /></button>
+            </span>
+          ))}
+          {line && <ColorDots row value={line.color || LINE_COLORS[0].color} onPick={color => recolorLines(selected.id, color)} label="Bu çizginin rengi" />}
+          {onAssignOption && (selected.type.startsWith('option-') || (!selected.content && !selected.shape)) && (
+            <span className="inline-flex items-center gap-0.5" role="group" aria-label="Bu kutu hangi şık?">
+              <span className="text-[#787670] px-0.5">Şık:</span>
               {LETTERS.map(letter => {
                 const current = selected.id === `option-${letter.toLowerCase()}`;
                 return (
                   <button key={letter} type="button" aria-pressed={current} disabled={current}
                     onClick={() => { onAssignOption(selected.id, letter); setSelectedId(`option-${letter.toLowerCase()}`); }}
                     title={current ? `Bu kutu ${letter} şıkkı` : `Bu kutu ${letter} şıkkı: çarpısı ya da tiki sese göre kendiliğinden gelsin`}
-                    className={`w-6 h-6 rounded border font-bold ${current ? 'bg-[#8B1E2D] border-[#8B1E2D] text-white' : 'bg-white hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}>
+                    className={`w-5 h-5 rounded border font-bold ${current ? 'bg-[#8B1E2D] border-[#8B1E2D] text-white' : 'bg-white hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}>
                     {letter}
                   </button>
                 );
               })}
-            </div>
+            </span>
           )}
-          {line && (
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[#787670]">Çizgi rengi</span>
-              <ColorDots value={line.color || LINE_COLORS[0].color} onPick={color => recolorLines(selected.id, color)} label="Bu çizginin rengi" />
-            </div>
-          )}
-          {selectedMarks.length === 0 && <p className="text-[#787670]">Bu kutuda işaret yok.</p>}
-          {selectedMarks.map(mark => (
-            <div key={mark.id} className="flex items-center gap-1.5">
-              <span className="w-4 text-center font-bold" style={{ color: ICON[mark.type]!.color }}>{ICON[mark.type]!.icon}</span>
-              <span className="flex-1 truncate">{ICON[mark.type]!.name} · <span className="font-mono-code">{clock(mark.start)}</span></span>
-              <button type="button" onClick={() => markHere(mark)} disabled={Math.abs(mark.start - time) < .05} title={`${clock(time)} anına al`}
-                className="p-1 rounded border hover:bg-[#F2F1EB] disabled:opacity-40" aria-label="Buraya al"><MapPin size={12} /></button>
-              <button type="button" onClick={() => removeMark(mark.id)} title="İşareti sil" aria-label="İşareti sil"
-                className="p-1 rounded border text-[#8B1E2D] hover:bg-red-50"><Trash size={12} /></button>
-            </div>
-          ))}
-          <div className="flex items-center justify-between pt-1 border-t border-[#EFEFEA] text-xs text-[#787670]">
-            <span>{line ? 'Çizgiyi yukarı-aşağı sürükleyin · boyu için uçlarındaki tutamakları çekin' : 'Sürükle: taşı · kenar/köşe: boyut'}</span>
-            <button type="button" onClick={() => removeBox(selected.id)} className="text-[#8B1E2D] hover:underline shrink-0" title="Delete tuşu">Kutuyu kaldır</button>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <button type="button" onClick={() => copy(selected)} title="Ctrl+C" className="flex-1 px-2 py-1 rounded border hover:bg-[#F2F1EB] font-semibold">Kopyala</button>
-            <button type="button" onClick={paste} disabled={!hasCopy} title="Ctrl+V: kopya biraz yanda çıkar, işaretleri şu andan başlar"
-              className="flex-1 px-2 py-1 rounded border hover:bg-[#F2F1EB] font-semibold disabled:opacity-40">Yapıştır</button>
-          </div>
+          <span className="inline-flex items-center ml-auto">
+            <button type="button" onClick={() => copy(selected)} title="Kopyala (Ctrl+C)" aria-label="Kopyala" className="p-1 rounded hover:bg-[#F2F1EB]"><Copy size={14} /></button>
+            {hasCopy && <button type="button" onClick={paste} title="Yapıştır (Ctrl+V): kopya biraz yanda çıkar" aria-label="Yapıştır" className="p-1 rounded hover:bg-[#F2F1EB]"><ClipboardText size={14} /></button>}
+            <button type="button" onClick={() => removeBox(selected.id)} title="Kaldır (Delete)" aria-label="Kaldır" className="p-1 rounded text-[#8B1E2D] hover:bg-red-50"><Trash size={14} /></button>
+            <button type="button" onClick={() => setSelectedId(null)} aria-label="Kapat" title="Kapat (Esc)" className="p-1 rounded hover:bg-[#F2F1EB]"><X size={13} /></button>
+          </span>
         </div>
       )}
     </div>

@@ -74,6 +74,12 @@ export interface AnnotationRegion {
   manuallyAdjusted?: boolean;
   /** Label center relative to this region, independent of Arabic descenders. */
   markerAnchor?: { x: number; y: number };
+  /**
+   * A mark the teacher put on the picture as an object of its own: a ✗/✓ `stamp` (the box is the
+   * stamp), an underline `line` (the box is the line), or a `drawn` place (a ring fills it exactly).
+   * Found boxes and older drawn boxes have none.
+   */
+  shape?: 'stamp' | 'line' | 'drawn';
 }
 
 export interface VideoCaption {
