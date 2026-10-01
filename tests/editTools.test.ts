@@ -47,3 +47,15 @@ test('daire and direction: a ring is drawn in and kept; a left-to-right line flo
   assert.equal(computeTimelineVisualState(1, [line], []).activeUnderlines[0].isRtl, true, 'Arabic default: right-to-left');
   assert.equal(computeTimelineVisualState(1, [{ ...line, fromLeft: true }], []).activeUnderlines[0].isRtl, false);
 });
+
+test('an option read aloud ("A) …") is not underlined where the same words stand in the passage', async () => {
+  const { isOptionQuote } = await import('../src/services/pipeline/arabicMarks');
+  const sentence = 'تعتمد الطيور المهاجرة على المجال المغناطيسي';
+  const options = [{ content: `A) ${sentence} للأرض وحده` }];
+  assert.equal(isOptionQuote(`Şıkları okuyalım:\nA) ${sentence} للأرض وحده.`, sentence, options), true, 'read as option A');
+  assert.equal(isOptionQuote(`A şıkkı: ${sentence}.`, sentence, options), true);
+  assert.equal(isOptionQuote(`Yani ${sentence} deniyor.`, sentence, options), true, 'mostly option A’s own text, not tied to the passage');
+  assert.equal(isOptionQuote(`Parçada açıkça ${sentence} deniyor.`, sentence, options), false, 'pointed at the passage: underlined there');
+  assert.equal(isOptionQuote(`Yani الطيور المهاجرة deniyor.`, 'الطيور المهاجرة', options), false, 'a short phrase is looked for as usual');
+  assert.equal(isOptionQuote(`Bunu ve ${sentence}.`, sentence, []), false, 'no options known: nothing is skipped');
+});

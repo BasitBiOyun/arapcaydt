@@ -136,7 +136,7 @@ export class LocalVideoPipeline {
 
     const options = finalRegions.filter(r => r.type.startsWith('option'));
     const stemWords = wordsOutside(ocrResult.words, options);
-    const { passageMatches, arabicMatches } = planArabicMarks(solutionText, stemWords, ocrResult.arabicStemWords, suppressed);
+    const { passageMatches, arabicMatches } = planArabicMarks(solutionText, stemWords, ocrResult.arabicStemWords, suppressed, options);
     const passages = findPassages(solutionText);
     const missedPassages = passages.filter(p => !passageMatches.some(m => m.passageEnd === p[p.length - 1].to));
     const round = (v: number) => Math.round(v * 10000) / 10000;
