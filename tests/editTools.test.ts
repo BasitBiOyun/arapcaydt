@@ -59,3 +59,17 @@ test('an option read aloud ("A) …") is not underlined where the same words sta
   assert.equal(isOptionQuote(`Yani الطيور المهاجرة deniyor.`, 'الطيور المهاجرة', options), false, 'a short phrase is looked for as usual');
   assert.equal(isOptionQuote(`Bunu ve ${sentence}.`, sentence, []), false, 'no options known: nothing is skipped');
 });
+
+test('a coloured underline is drawn in its own colour; the default stays the studio orange', () => {
+  const line = { id: 'u', type: 'underline', targetRegionId: 'r', start: 0, duration: 2 } as VideoAction;
+  assert.equal(computeTimelineVisualState(1, [line], []).activeUnderlines[0].color, undefined);
+  assert.equal(computeTimelineVisualState(1, [{ ...line, color: '#2563EB' }], []).activeUnderlines[0].color, '#2563EB');
+});
+
+test('long options read aloud are underlined in the option, line by line, timed by where each line is read', async () => {
+  const { optionReadAt } = await import('../src/services/pipeline/arabicMarks');
+  const text = 'Şimdi seçeneklere bakalım.\nA seçeneğinde şöyle deniyor:\nبدأ الأموريون بعد انفصالهم\nB) كانت المناطق';
+  assert.equal(optionReadAt(text, text.indexOf('بدأ')), 'A', 'named on the line above');
+  assert.equal(optionReadAt(text, text.indexOf('كانت')), 'B', '"B)" on the same line');
+  assert.equal(optionReadAt('Parçada şöyle deniyor:\nبدأ', 'Parçada şöyle deniyor:\n'.length), null);
+});

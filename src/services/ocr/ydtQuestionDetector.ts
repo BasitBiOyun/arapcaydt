@@ -354,11 +354,14 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
     regions.push({ id: 'question-root', label: 'Soru Kökü / Metin', type: 'paragraph',
       ...bounds(promptWords), content: promptWords.map((word) => word.text).join(' ') });
   }
+  const heights = words.map(w => w.height).sort((p, q) => p - q);
+  const textLine = heights[Math.floor(heights.length / 2)] ?? 0;
   for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
     const row = rows[rowIndex].sort((a, b) => a.word.x - b.word.x);
     const top = Math.min(...row.map((marker) => marker.y));
     const rowHeight = Math.max(...row.map((marker) => marker.word.height));
-    const nextTop = rows[rowIndex + 1]?.[0].y ?? Math.min(1, top + rowHeight * 3.2);
+    // The last option may wrap onto three lines (measured in text lines: a label like "E" can be read short).
+    const nextTop = rows[rowIndex + 1]?.[0].y ?? Math.min(1, top + Math.max(rowHeight, textLine) * 4.6);
     // Partition by label columns, not by full-width stripes. The next marker is
     // the hard right edge of a cell, so a neighbouring choice can never enter it.
     for (let column = 0; column < row.length; column++) {
@@ -384,8 +387,21 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
         if (Math.min(...group.map(w => w.y)) > lastBottom + rowHeight * .9) break;
         const sorted = group.sort((a,b) => a.x - b.x);
         let edge = marker.word.x + marker.word.width;
+        // The option's text so far: a later line inside it belongs to the option even when it is
+        // short and right-aligned (Arabic), far from the label.
+        const text = optionWords.filter(w => w !== marker.word);
+        const span = text.length ? { from: Math.min(...text.map(w => w.x)) - .01, to: Math.max(...text.map(w => w.x + w.width)) + .01 } : null;
         for (const word of sorted) {
           if (word.x + word.width < left) continue;
+          if (span) {
+            // A wrapped line never reaches past the lines above it: text beside it (a page footer,
+            // a passage) is not the option's.
+            if (word.x >= span.from && word.x + word.width <= span.to) {
+              optionWords.push(word);
+              lastBottom = Math.max(lastBottom, word.y + word.height);
+            }
+            continue;
+          }
           const gap = word.x - edge;
           if (gap > Math.max(.08, rowHeight * ocr.imageHeight / ocr.imageWidth * 2.4)) break;
           optionWords.push(word);

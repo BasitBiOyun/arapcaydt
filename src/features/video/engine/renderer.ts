@@ -306,7 +306,7 @@ export function renderQuestionVideoFrame(
     const swept = r.width * u.progress;
     const y = underlineY(r, scale, (options.underlineOffset ?? 0) + (u.offset ?? 0));
     ctx.save(); ctx.globalAlpha = u.opacity ?? 1;
-    ctx.strokeStyle = '#D97706'; ctx.lineWidth = 5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
+    ctx.strokeStyle = u.color || '#D97706'; ctx.lineWidth = 5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
     ctx.moveTo(u.isRtl ? r.x + r.width : r.x, y);
     ctx.lineTo(u.isRtl ? r.x + r.width - swept : r.x + swept, y); ctx.stroke();
     ctx.restore();
@@ -352,7 +352,8 @@ export function renderQuestionVideoFrame(
         : null;
   if (spot?.ids.length && spot.strength > 0) {
     ctx.save(); ctx.fillStyle = `rgba(15,23,42,${.16 * spot.strength})`; ctx.beginPath();
-    ctx.rect(fit.x, fit.y, fit.width, fit.height);
+    // The whole frame recedes, also the margin left around a question made smaller.
+    ctx.rect(0, 0, width, height);
     // Each hole once: with even-odd filling a repeated or overlapping hole would be dimmed again.
     for (const id of new Set(spot.ids)) {
       const r = rectFor(id); if (!r) continue;

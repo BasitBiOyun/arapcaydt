@@ -18,6 +18,7 @@ const teshis: Teshis = {
   solutionText: file.solutionText,
   words: file.words.map(({ text, confidence, x, y, width, height }) => ({ text, confidence, x, y, width, height })),
   regions: file.regions.map(({ id, type, x, y, width, height }) => ({ id, type, x, y, width, height })),
+  ...(file.image ? { image: { width: file.image.width, height: file.image.height } } : {}),
 };
 teshis.expect = replay(teshis);
 writeFileSync(new URL(`${name}.json`, TESHIS_DIR), JSON.stringify(teshis, null, 1) + '\n');

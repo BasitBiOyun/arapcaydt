@@ -1,7 +1,7 @@
 import type { AnnotationRegion } from '../../types';
 import type { OCRWord } from '../ocr/ocrTypes';
-import { findBestArabicMatches, normalizeArabic } from '../ocr/arabicMatcher';
-import { findPassageMatches, withPassageReferences, withTolerantPhrases } from '../ocr/passageMatcher';
+import { extractArabicPhrases, findBestArabicMatches, normalizeArabic, type ArabicMatchResult } from '../ocr/arabicMatcher';
+import { findPassageMatches, findTolerantly, withPassageReferences, withTolerantPhrases } from '../ocr/passageMatcher';
 
 /** The words whose middle is outside every given box (the question text without its options). */
 export function wordsOutside(words: OCRWord[], boxes: Pick<AnnotationRegion, 'x' | 'y' | 'width' | 'height'>[]): OCRWord[] {
@@ -9,20 +9,22 @@ export function wordsOutside(words: OCRWord[], boxes: Pick<AnnotationRegion, 'x'
     && w.y + w.height / 2 >= r.y && w.y + w.height / 2 <= r.y + r.height));
 }
 
-/**
- * Where the solution's Arabic is underlined on the question text. A passage read in full is found
- * as a whole (one underline per printed line); the shorter phrases are looked for without it, and a
- * later mention of its words points into it. Removed marks stay removed, except passage lines.
- */
 /** Where `phrase` is read in the solution, each time. */
 const occurrences = (text: string, phrase: string) => {
   const at: number[] = [];
   for (let i = text.indexOf(phrase); i >= 0; i = text.indexOf(phrase, i + 1)) at.push(i);
   return at;
 };
-/** Read as an option ("A) …", "A şıkkı: …", "C seçeneğinde …" on the same line just before it). */
-const readAsOption = (text: string, at: number) =>
-  /(?:(?:^|[\s(])[A-E]\s*[).:-]|[Şş]ıkk|[Ss]eçene)[^\n]{0,60}$/.test(text.slice(Math.max(0, at - 80), at).split('\n').pop() || '');
+/**
+ * The option being read at `at`: named just before it on the same line or the line above ("A) …",
+ * "A şıkkı: …", "C seçeneğinde şöyle deniyor:" then the sentence). Null when it is not an option's.
+ */
+export function optionReadAt(text: string, at: number): string | null {
+  const before = text.slice(Math.max(0, at - 160), at).split('\n').slice(-2).join('\n');
+  const named = [...before.matchAll(/(?:^|[\s(“"])([A-E])\s*(?:[).:-]|[Şş]ıkk|[Ss]eçene)/g)].pop();
+  return named ? named[1] : null;
+}
+const readAsOption = (text: string, at: number) => !!optionReadAt(text, at);
 /** Pointed at the passage ("parçada …", "metinde …") just before it. */
 const pointsAtPassage = (text: string, at: number) => /(?:parça|metin|paragraf)[^\n]{0,60}$/i.test(text.slice(Math.max(0, at - 80), at));
 
@@ -43,8 +45,51 @@ export function isOptionQuote(text: string, phrase: string, options: Pick<Annota
   });
 }
 
+/** Arabic words in a text (normalized), for comparing a read sentence with an option's text. */
+const arabicWords = (text: string) => normalizeArabic(text).split(' ').filter(w => /[\u0621-\u064A]/.test(w));
+/** Options with this many Arabic words or more are underlined while they are read; shorter ones are framed only. */
+export const LONG_OPTION_WORDS = 5;
+
+/**
+ * A long Arabic option read aloud is underlined in the option itself, line by line as it is read:
+ * the option named just before the sentence (or, failing that, the one option whose text it mostly
+ * is) and only its own words, never the passage or another option.
+ */
+export function optionLineMarks(text: string, words: OCRWord[], options: AnnotationRegion[]): ArabicMatchResult[] {
+  const marks: ArabicMatchResult[] = [];
+  extractArabicPhrases(text).forEach((phrase, index) => {
+    const said = arabicWords(phrase);
+    if (said.length < LONG_OPTION_WORDS) return;
+    const named = [...new Set(occurrences(text, phrase).map(at => optionReadAt(text, at)))];
+    const share = (o: AnnotationRegion) => { const own = new Set(arabicWords(o.content || '')); return said.filter(w => own.has(w)).length / said.length; };
+    const likely = options.filter(o => share(o) >= .7);
+    const option = named.length === 1 && named[0] ? options.find(o => o.id === `option-${named[0]!.toLowerCase()}`)
+      : likely.length === 1 ? likely[0] : undefined;
+    if (!option || arabicWords(option.content || '').length < LONG_OPTION_WORDS) return;
+    const own = words.filter(w => !/^[([]?[A-E][)\].:]?$/.test(w.text.trim())
+      && w.x + w.width / 2 >= option.x && w.x + w.width / 2 <= option.x + option.width
+      && w.y + w.height / 2 >= option.y && w.y + w.height / 2 <= option.y + option.height);
+    // Each line is drawn while its own words are read: its place in the solution, like a passage line.
+    const at = occurrences(text, phrase).find(i => optionReadAt(text, i)) ?? occurrences(text, phrase)[0];
+    let from = 0;
+    for (const line of findTolerantly(phrase, own, `${option.id}-read-${index + 1}`)) {
+      const local = phrase.indexOf(line.phrase, from);
+      if (local < 0) { marks.push(line); continue; }
+      from = local + line.phrase.length;
+      marks.push({ ...line, sourceStart: at + local, sourceEnd: at + local + line.phrase.length });
+    }
+  });
+  return marks;
+}
+
+/**
+ * Where the solution's Arabic is underlined on the question. A passage read in full is found as a
+ * whole (one underline per printed line); the shorter phrases are looked for without it, and a
+ * later mention of its words points into it. A long option read aloud is underlined in the option.
+ * Removed marks stay removed, except passage lines.
+ */
 export function planArabicMarks(solutionText: string, stemWords: OCRWord[], arabicStemWords?: OCRWord[], suppressed: ReadonlySet<string> = new Set(),
-  options: Pick<AnnotationRegion, 'content'>[] = []) {
+  options: AnnotationRegion[] = [], words: OCRWord[] = []) {
   const passageMatches = findPassageMatches(solutionText, stemWords, arabicStemWords);
   const passageRanges = [...new Map(passageMatches.map(m => [m.passageEnd, m])).values()]
     .map(m => [Math.min(...passageMatches.filter(o => o.passageEnd === m.passageEnd).map(o => o.sourceStart)), m.passageEnd] as const);
@@ -57,5 +102,6 @@ export function planArabicMarks(solutionText: string, stemWords: OCRWord[], arab
   ].filter(m => !suppressed.has(m.region.id) || m.region.id.startsWith('arabic-passage-'))
     // Passage lines (the passage read in full) stay; other marks never stand for an option's own text.
     .filter(m => lines.has(m) || !isOptionQuote(solutionText, m.phrase, options));
+  arabicMatches.push(...optionLineMarks(solutionText, words, options).filter(m => !suppressed.has(m.region.id)));
   return { passageMatches, arabicMatches };
 }
