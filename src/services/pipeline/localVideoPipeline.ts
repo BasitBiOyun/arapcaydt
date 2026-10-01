@@ -6,7 +6,7 @@ import { findPassages } from '../ocr/passageMatcher';
 import { planArabicMarks, wordsOutside } from './arabicMarks';
 import { parseSolutionSemantics } from '../analysis/solutionParser';
 import { alignEventsWithNarration, alignSolutionNarration } from '../analysis/timelineAligner';
-import { OCRProgress } from '../ocr/ocrTypes';
+import { OCRProgress, OCRResult } from '../ocr/ocrTypes';
 import { learnTemplate, matchProfile, stripTemplateWords } from '../ocr/templateProfile';
 import { imageSignature, loadTemplateProfiles, saveTemplateProfiles } from '../ocr/templateStore';
 
@@ -42,6 +42,8 @@ export interface LocalPipelineResult {
   ocrEngine?: 'vision' | 'tesseract';
   ocrNote?: string;
   passageNote?: string;
+  /** Google Vision's reading to keep with the question (read again only for a new picture). */
+  visionReading?: OCRResult['visionReading'];
 }
 
 export class LocalVideoPipeline {
@@ -68,6 +70,8 @@ export class LocalVideoPipeline {
     narrationSource: NarrationSource;
     existingRegions?: AnnotationRegion[];
     suppressedRegionIds?: string[];
+    /** Google Vision's earlier reading of this question's picture. */
+    visionReading?: OCRResult['visionReading'];
     /** Teacher-selected answer: used when the script never names it, never to cross it out. */
     correctAnswer?: 'A' | 'B' | 'C' | 'D' | 'E';
     onProgress?: (progress: LocalPipelineProgress) => void;
@@ -98,7 +102,7 @@ export class LocalVideoPipeline {
         progress: Math.max(10, Math.min(40, Math.round(10 + p.progress * 0.3))),
         message: p.message,
       });
-    });
+    }, params.visionReading);
 
     onProgress?.({
       stage: 'detect_layout',
@@ -236,6 +240,7 @@ export class LocalVideoPipeline {
       warnings,
       ocrEngine: rawOcr.engine,
       ocrNote: rawOcr.cloudIssue,
+      visionReading: rawOcr.visionReading,
       passageNote: passages.length
         ? `Çözümde ${passages.length} Arapça paragraf var; görselde ${new Set(passageMatches.map(m => m.region.id)).size} satırı bulundu.`
         : 'Çözümde 10 kelimeden uzun kesintisiz bir Arapça paragraf yok.',

@@ -24,6 +24,7 @@ export function pipelineParams(project: QuestionProject) {
     narrationSource,
     existingRegions: project.videoConfig?.regions?.length ? project.videoConfig.regions : undefined,
     suppressedRegionIds: project.videoConfig?.suppressedRegionIds,
+    visionReading: project.videoConfig?.visionReading,
   };
 }
 
@@ -105,6 +106,8 @@ export function applyPipelineResult(project: QuestionProject, result: LocalPipel
       ocrEngine: result.ocrEngine,
       ocrNote: result.ocrNote,
       passageNote: result.passageNote,
+      // A reading from the in-browser reader is not kept: Google Vision is tried again next time.
+      visionReading: result.visionReading ?? project.videoConfig?.visionReading,
     },
     ...(result.deducedCorrectAnswer ? { correctAnswer: result.deducedCorrectAnswer } : {}),
     status: 'video_ready',

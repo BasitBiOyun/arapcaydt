@@ -28,6 +28,8 @@ export interface OCRResult {
   engine?: 'vision' | 'tesseract';
   /** Why Google Vision was not used (shown to the teacher), when it was tried. */
   cloudIssue?: string;
+  /** Google Vision's reading to keep with the question (its picture's key and the page). */
+  visionReading?: { key: string; page: import('./cloudOcr').VisionPage };
   /** Dedicated Arabic-only stem pass; independent alternative to mixed OCR. */
   arabicStemWords?: OCRWord[];
   /** Independent Latin-label pass; never mix its Arabic guesses into words. */

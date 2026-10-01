@@ -14,6 +14,21 @@ const SEND_LONG_SIDE = 2400;
 interface VisionWord { text: string; confidence: number; x: number; y: number; width: number; height: number }
 export interface VisionPage { width: number; height: number; words: VisionWord[]; lines: number[][]; text: string }
 
+/** The picture's fingerprint (SHA-256 of its bytes), or null when it cannot be read. */
+export async function imageKey(imageUrl: string): Promise<string | null> {
+  try {
+    const bytes = await (await fetch(imageUrl)).arrayBuffer();
+    const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+    return Array.from(digest, b => b.toString(16).padStart(2, '0')).join('');
+  } catch {
+    return null;
+  }
+}
+
+/** Only what the studio reads from a Vision answer (kept with the question). */
+const pageOf = (data: VisionPage): VisionPage =>
+  ({ width: data.width, height: data.height, text: data.text || '', lines: data.lines || [], words: data.words });
+
 /** Not set up on this server: asked once per session, then the in-browser reader is used. */
 let notConfigured = false;
 let skipReason = 'VISION_NOT_CONFIGURED';
@@ -95,10 +110,17 @@ const ISSUES: Record<string, string> = {
 };
 
 /**
- * The picture read by Google Vision, or why not (the in-browser reader is used then). A missing
- * key is asked once per session.
+ * The picture read by Google Vision, or why not (the in-browser reader is used then). A reading
+ * kept with the question is used again while the picture is the same: no new reading is spent,
+ * even when today's readings are used up. A missing key is asked once per session.
  */
-export async function readWithVision(imageUrl: string, onProgress?: (progress: OCRProgress) => void): Promise<{ result: OCRResult } | { issue: string }> {
+export async function readWithVision(imageUrl: string, onProgress?: (progress: OCRProgress) => void,
+  saved?: OCRResult['visionReading']): Promise<{ result: OCRResult } | { issue: string }> {
+  const key = await imageKey(imageUrl);
+  if (saved?.page?.words?.length && key && saved.key === key) {
+    onProgress?.({ status: 'completed', progress: 100, message: 'Görselin daha önceki Google Vision okuması kullanıldı.' });
+    return { result: { ...visionToOcr(saved.page), engine: 'vision', visionReading: saved } };
+  }
   if (notConfigured) return { issue: ISSUES[skipReason] };
   onProgress?.({ status: 'recognizing', progress: 30, message: 'Soru görseli Google Vision ile okunuyor...' });
   const image = await pictureForCloud(imageUrl);
@@ -120,7 +142,8 @@ export async function readWithVision(imageUrl: string, onProgress?: (progress: O
     }
     if (!data?.words?.length || !data.width || !data.height) return { issue: 'Google Vision görselde yazı bulamadı' };
     onProgress?.({ status: 'completed', progress: 100, message: `${data.words.length} kelime Google Vision ile okundu.` });
-    return { result: { ...visionToOcr(data as VisionPage), engine: 'vision' } };
+    const page = pageOf(data as VisionPage);
+    return { result: { ...visionToOcr(page), engine: 'vision', ...(key ? { visionReading: { key, page } } : {}) } };
   } catch {
     return { issue: ISSUES.VISION_TIMEOUT };
   }

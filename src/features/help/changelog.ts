@@ -27,6 +27,7 @@ export const NEWS: NewsEntry[] = [
           { text: 'Paragrafın şıkların yanında basıldığı sorularda bir şıkkın çerçevesi artık yandaki paragrafa taşmıyor.' },
           { text: 'Bir şıkkı okurken (“A) …” ya da “A şıkkı: …”) aynı kelimeler paragrafta da geçse, paragrafın altı çizilmiyor; o anda yalnız şık gösteriliyor. Çözümde “parçada …” diye paragrafa gönderme yaparsanız çizgi yine çıkar.' },
           { text: 'Daha önce hazırlanmış sorularda düzeltmenin görünmesi için **İşaretleri yeniden hazırla**’ya basın.', help: 'isaretler' },
+          { text: 'Bir sorunun görseli Google’ın okuyucusuyla bir kez okununca okuma soruyla birlikte saklanır. **İşaretleri yeniden hazırla**’ya kaç kez basarsanız basın günlük okuma hakkınızdan düşmez; günlük hakkınız bitmiş olsa bile o soru aynı kalitede hazırlanır. Görseli değiştirirseniz yeni görsel bir kez daha okunur.' },
         ],
       },
     ],
