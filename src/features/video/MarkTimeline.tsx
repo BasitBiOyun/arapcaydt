@@ -284,11 +284,13 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
       <div ref={waveBox} className="rounded-md bg-[#FAF9F5] cursor-pointer" title="Tıklayın ya da sürükleyin: o ana gidin" />
 
       {words.length > 0 && (
-        <div className="flex items-center gap-1 overflow-hidden text-xs" aria-label="Seslendirmenin kelimeleri">
+        // A fixed height: Arabic words set taller than Turkish ones, and a row that grows while the
+        // voice plays would make the editor rescale the question every few seconds.
+        <div className="flex flex-nowrap items-center gap-1 overflow-hidden text-xs h-7 shrink-0" aria-label="Seslendirmenin kelimeleri">
           <span className="shrink-0 text-[#8A8880]" title="Kırmızı çizginin olduğu yerde söylenen kelimeler, söylendikleri sırayla">Kelimeler:</span>
           {nearbyWords(words, currentTime).map(({ w, i }) => (
             <button key={`${i}-${w.start}`} type="button" dir="auto"
-              className={`shrink-0 px-1.5 py-0.5 rounded border ${currentTime >= w.start && currentTime < w.end ? 'border-[#8B1E2D] bg-[#F6E3E5] text-[#8B1E2D] font-semibold' : 'border-[#E5E4DC] bg-white text-[#33322E] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}
+              className={`shrink-0 h-6 px-1.5 leading-6 overflow-hidden rounded border ${currentTime >= w.start && currentTime < w.end ? 'border-[#8B1E2D] bg-[#F6E3E5] text-[#8B1E2D] font-semibold' : 'border-[#E5E4DC] bg-white text-[#33322E] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}
               title={selectedId ? `Seçili işaret “${w.text}” söylenirken başlasın (${clock(w.start)})` : `${clock(w.start)}: buraya gidin`}
               onClick={() => {
                 const mark = actions.find(a => a.id === selectedId);
@@ -315,7 +317,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
               {lasting(mark) && <span className="absolute h-px pointer-events-none" style={{ left: px(mark.start), right: 0, top: top + 12, background: `${style.color}55` }} />}
               <div role="button" aria-label={`${style.name} ${label(mark)} · ${clock(mark.start)}`} title={`${style.name} ${label(mark)} · ${clock(mark.start)} — sürükleyin`}
                 className={`absolute h-6 rounded-md text-xs font-semibold text-white flex items-center gap-1 px-2 overflow-hidden cursor-grab active:cursor-grabbing shadow-sm ${isSelected ? 'ring-2 ring-offset-1 ring-[#2563EB]' : 'hover:brightness-110'}`}
-                style={{ left, width, top, background: style.color }}
+                style={{ left, width, top, background: mark.type === 'underline' && mark.color ? mark.color : style.color }}
                 onPointerDown={e => begin(e, mark.id, 'move')}>
                 {!lasting(mark) && <span className="absolute left-0 top-0 bottom-0 w-2.5 cursor-ew-resize bg-black/15 hover:bg-black/30" title="Başını çekin" onPointerDown={e => begin(e, mark.id, 'start')} />}
                 <span className="pl-1">{style.icon}</span><span className="truncate">{label(mark)}</span>

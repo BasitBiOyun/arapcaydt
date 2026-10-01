@@ -123,6 +123,7 @@ export function computeTimelineVisualState(
             // Arabic is underlined right-to-left; a line the teacher dragged left-to-right is drawn that way.
             isRtl: !action.fromLeft,
             offset: action.lineOffset,
+            color: action.color,
             opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .18) : 1,
           });
         }

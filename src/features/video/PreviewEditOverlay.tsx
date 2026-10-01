@@ -38,6 +38,30 @@ export function resizeRegion(region: AnnotationRegion, handle: Handle, dx: numbe
   return { ...region, x: left, y: top, width: right - left, height: bottom - top, manuallyAdjusted: true };
 }
 
+/** Underline colours: the studio's orange first, then colours that read well on a printed page. */
+export const LINE_COLORS = [
+  { color: '#D97706', name: 'Turuncu' }, { color: '#DC2626', name: 'Kırmızı' }, { color: '#2563EB', name: 'Mavi' },
+  { color: '#16A34A', name: 'Yeşil' }, { color: '#7C3AED', name: 'Mor' }, { color: '#DB2777', name: 'Pembe' },
+  { color: '#0891B2', name: 'Turkuaz' }, { color: '#CA8A04', name: 'Hardal' }, { color: '#92400E', name: 'Kahverengi' },
+  { color: '#1C1917', name: 'Siyah' },
+] as const;
+const LINE_COLOR_KEY = 'studio-line-color';
+const savedLineColor = () => { try { return localStorage.getItem(LINE_COLOR_KEY) || LINE_COLORS[0].color; } catch { return LINE_COLORS[0].color; } };
+
+/** Ten colour dots; the chosen one is ringed. */
+function ColorDots({ value, onPick, label }: { value: string; onPick: (color: string) => void; label: string }) {
+  return (
+    <div role="radiogroup" aria-label={label} className="grid grid-cols-5 gap-1">
+      {LINE_COLORS.map(c => (
+        <button key={c.color} type="button" role="radio" aria-checked={value === c.color} aria-label={c.name} title={c.name}
+          onClick={() => onPick(c.color)}
+          className={`w-6 h-6 rounded-full border-2 ${value === c.color ? 'border-[#1C1917] ring-2 ring-white' : 'border-white/80 hover:scale-110'} transition-transform`}
+          style={{ background: c.color }} />
+      ))}
+    </div>
+  );
+}
+
 /** Marks a teacher can put on the picture, in toolbar order. */
 export const TOOLS = ['reject', 'correct', 'focus', 'circle', 'underline', 'highlight'] as const;
 export type Tool = typeof TOOLS[number];
@@ -161,6 +185,9 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const [draft, setDraft] = useState<AnnotationRegion | VideoAction | null>(null);
   const [tool, setTool] = useState<Tool | null>(null);
   const [hasCopy, setHasCopy] = useState(!!copied);
+  // The colour new underlines get, kept on this device.
+  const [lineColor, setLineColor] = useState(savedLineColor);
+  const pickLineColor = (color: string) => { setLineColor(color); try { localStorage.setItem(LINE_COLOR_KEY, color); } catch { /* per-device only */ } };
   useEffect(() => { if (focusBox && !tool && !drawOption) setSelectedId(focusBox.id); }, [focusBox]); // eslint-disable-line react-hooks/exhaustive-deps
   const keys = useRef<(e: KeyboardEvent) => void>(() => {});
   const onPicture = useRef(false);
@@ -240,7 +267,8 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         const at = series && lineSeries.current && Math.abs(lineSeries.current.time - time) < .01 ? lineSeries.current.end : time;
         // The line flows the way it was dragged (left-to-right or, as Arabic is read, right-to-left).
         const fromLeft = series && draft && 'x' in draft && gesture.ix <= draft.x + draft.width / 2;
-        const marks = addMark([], id, tool, at, total).map(m => fromLeft ? { ...m, fromLeft: true } : m);
+        const marks = addMark([], id, tool, at, total).map(m => ({ ...m, ...(fromLeft ? { fromLeft: true } : {}),
+          ...(tool === 'underline' && lineColor !== LINE_COLORS[0].color ? { color: lineColor } : {}) }));
         onRegions([...regions, { ...place, id }], marks);
         if (series) lineSeries.current = { time, end: Math.min(total - .1, at + marks[0].duration) };
         else { setSelectedId(id); setTool(null); }
@@ -274,7 +302,17 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const removeMark = (id: string) => onActions(actions.filter(a => a.id !== id));
   const markHere = (action: VideoAction) => onActions(actions.map(a => a.id === action.id ? nudgeAction(a, time - a.start, total) : a));
   const removeBox = (id: string) => { setSelectedId(null); onRegions(regions.filter(r => r.id !== id)); };
-  const markBox = (id: string) => { if (tool) { onActions(addMark(actions, id, tool, time, total)); setSelectedId(id); setTool(null); } };
+  const markBox = (id: string) => {
+    if (!tool) return;
+    const added = addMark(actions, id, tool, time, total)
+      .map(m => tool === 'underline' && m.targetRegionId === id && !actions.includes(m) && lineColor !== LINE_COLORS[0].color ? { ...m, color: lineColor } : m);
+    onActions(added); setSelectedId(id); setTool(null);
+  };
+  /** A selected box's underlines take the colour (and new lines get it too). */
+  const recolorLines = (id: string, color: string) => {
+    pickLineColor(color);
+    onActions(actions.map(a => a.targetRegionId === id && a.type === 'underline' ? { ...a, color: color === LINE_COLORS[0].color ? undefined : color } : a));
+  };
   const copy = (region: AnnotationRegion) => {
     copied = { region, marks: actions.filter(a => a.targetRegionId === region.id && ICON[a.type]) };
     setHasCopy(true);
@@ -333,6 +371,13 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             style={tool === t ? { background: ICON[t]!.color } : { color: ICON[t]!.color }}>{ICON[t]!.icon}</button>
         ))}
       </div>
+      {tool === 'underline' && (
+        <div className="absolute left-14 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-white/95 shadow-md border border-[#D5D4CC] space-y-1.5"
+          onPointerDown={e => e.stopPropagation()}>
+          <p className="text-[11px] font-semibold text-[#55544F]">Çizgi rengi</p>
+          <ColorDots value={lineColor} onPick={pickLineColor} label="Yeni çizgilerin rengi" />
+        </div>
+      )}
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
         <span className={`px-2 py-1 rounded-md text-white text-xs ${drawOption ? 'bg-[#8B1E2D] font-semibold' : 'bg-black/60'}`}>
           {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool === 'underline' ? 'Alt çizgi: başlangıca basın, sağa ya da sola sürükleyip bırakın · yazının altına bırakırsanız satıra oturur · bitince Esc'
@@ -402,7 +447,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           style={{ left: pct(selectedRect).left, width: pct(selectedRect).width,
             top: `${(underlineY(selectedRect, scale, underlineOffset + (lineAction.lineOffset ?? 0)) - 8 * scale) / canvasHeight * 100}%`, height: `${16 * scale / canvasHeight * 100}%` }}
           onPointerDown={e => begin(e, { mode: 'line', x: e.clientX, y: e.clientY, action: line!, heightPx: selectedRect.height })}>
-          <span className="w-full h-[3px] rounded bg-[#D97706] shadow-[0_0_0_2px_white]" />
+          <span className="w-full h-[3px] rounded shadow-[0_0_0_2px_white]" style={{ background: lineAction.color || '#D97706' }} />
         </div>
       )}
 
@@ -430,6 +475,12 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
                   </button>
                 );
               })}
+            </div>
+          )}
+          {line && (
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[#787670]">Çizgi rengi</span>
+              <ColorDots value={line.color || LINE_COLORS[0].color} onPick={color => recolorLines(selected.id, color)} label="Bu çizginin rengi" />
             </div>
           )}
           {selectedMarks.length === 0 && <p className="text-[#787670]">Bu kutuda işaret yok.</p>}

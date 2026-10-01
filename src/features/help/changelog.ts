@@ -18,12 +18,17 @@ export const NEWS: NewsEntry[] = [
           { text: '**Alt çizgi aracı (▁):** Çizginin başlayacağı yere basın, sağa ya da sola sürükleyip bırakın. Kalınlığı sabit, yalnız boyu değişir. Yazının hemen altına bırakırsanız satıra kendisi oturur; videoda çizgi sürüklediğiniz yönde akar.', help: 'isaretler' },
           { text: '**Daire aracı (◯):** Bir kelimenin ya da şıkkın etrafına elle çizilmiş gibi bir halka çizer.', help: 'isaretler' },
           { text: '**“Şimdi” ile zamanlama:** Zaman şeridinde bir işarete tıklayın, sesi oynatın. Çıkması gereken anda **Şimdi başlasın**’a (ya da Enter’a), bitmesi gereken anda **Şimdi bitsin**’e basın.', help: 'isaretler' },
+          { text: '**Çizgi rengi:** ▁ aracını seçince yanında 10 renk çıkar; seçtiğiniz renk yeni çizgilere uygulanır. Çizilmiş bir çizgiyi seçip penceresinden rengini değiştirebilirsiniz.', help: 'isaretler' },
+          { text: '**Uzun şıkların altı çizilir:** Çözüm bir şıkkın beş kelimeden uzun Arapça cümlesini okurken (“A seçeneğinde şöyle deniyor: …”), o cümlenin altı şıkkın kendi satırlarında, okundukça çizilir. Kısa şıklar yalnız çerçevelenir.', help: 'isaretler' },
           { text: '**Kelimeden zamanlama:** Şeridin altında o anda söylenen kelimeler yazar. Bir işaret seçiliyken kelimeye tıklarsanız işaret tam o kelimede başlar.', help: 'isaretler' },
         ],
       },
       {
         title: 'Düzeltmeler',
         items: [
+          { text: 'İki ya da üç satıra taşan şıkların son satırı da şıkkın çerçevesine girer (Arapçada kısa son satır sağa yaslı olduğu için dışarıda kalıyordu).' },
+          { text: 'Önizleme oynarken soru artık hafifçe büyüyüp küçülmüyor; boyutu sabit kalıyor.' },
+          { text: 'Soru küçültüldüğünde bir şık vurgulanırken yalnız soru değil bütün ekran birlikte kararıyor; kenarlarda beyaz şerit kalmıyor.' },
           { text: 'Paragrafın şıkların yanında basıldığı sorularda bir şıkkın çerçevesi artık yandaki paragrafa taşmıyor.' },
           { text: 'Bir şıkkı okurken (“A) …” ya da “A şıkkı: …”) aynı kelimeler paragrafta da geçse, paragrafın altı çizilmiyor; o anda yalnız şık gösteriliyor. Çözümde “parçada …” diye paragrafa gönderme yaparsanız çizgi yine çıkar.' },
           { text: 'Daha önce hazırlanmış sorularda düzeltmenin görünmesi için **İşaretleri yeniden hazırla**’ya basın.', help: 'isaretler' },

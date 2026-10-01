@@ -1,6 +1,9 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import type { OCRWord } from '../../src/services/ocr/ocrTypes';
-import { normalizeArabic } from '../../src/services/ocr/arabicMatcher';
+import type { AnnotationRegion } from '../../src/types';
+import { groupOcrWordsIntoLines, normalizeArabic } from '../../src/services/ocr/arabicMatcher';
+import { optionMarkersFrom } from '../../src/services/ocr/cloudOcr';
+import { detectYdtQuestionRegions } from '../../src/services/ocr/ydtQuestionDetector';
 import { planArabicMarks, wordsOutside } from '../../src/services/pipeline/arabicMarks';
 
 /**
@@ -12,6 +15,8 @@ export interface Teshis {
   solutionText: string;
   words: Array<Pick<OCRWord, 'text' | 'confidence' | 'x' | 'y' | 'width' | 'height'>>;
   regions: Array<{ id: string; type: string; x: number; y: number; width: number; height: number }>;
+  /** The picture's size: with it the options are found again from the words (as the studio does today). */
+  image?: { width: number; height: number };
   expect?: Marks;
 }
 /** Underlines, by the height of their middle on the picture (0–1) and the words they carry. */
@@ -29,9 +34,13 @@ export function loadTeshisFiles(): Array<{ name: string; teshis: Teshis }> {
 
 /** The underlines the studio plans today for this teşhis file (the same code "İşaretleri hazırla" runs). */
 export function replay(teshis: Teshis): Marks {
-  const words = teshis.words.map(w => ({ ...w, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 })) as OCRWord[];
-  const options = teshis.regions.filter(r => r.type.startsWith('option'));
-  const { passageMatches, arabicMatches } = planArabicMarks(teshis.solutionText, wordsOutside(words, options));
+  const words = groupOcrWordsIntoLines(teshis.words.map(w => ({ ...w, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 })) as OCRWord[]).flat();
+  // The options as found today from the same words; older files without the picture size keep their saved boxes.
+  const options = teshis.image
+    ? detectYdtQuestionRegions({ text: '', imageWidth: teshis.image.width, imageHeight: teshis.image.height, words, lines: [],
+      optionMarkers: optionMarkersFrom(words) }).regions.filter(r => r.type.startsWith('option'))
+    : teshis.regions.filter(r => r.type.startsWith('option')) as AnnotationRegion[];
+  const { passageMatches, arabicMatches } = planArabicMarks(teshis.solutionText, wordsOutside(words, options), undefined, new Set(), options, words);
   const mark = (m: { region: { y: number; height: number }; phrase: string }) => ({ y: Math.round((m.region.y + m.region.height / 2) * 1000) / 1000, phrase: m.phrase });
   const lines = new Set(passageMatches.map(m => m.region));
   return {

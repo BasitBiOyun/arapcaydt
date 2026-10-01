@@ -103,6 +103,8 @@ export interface VideoAction {
    * (`to`, 0–1) the line is `at` seconds after the mark starts; between points it moves evenly.
    */
   drawSteps?: Array<{ at: number; to: number }>;
+  /** Underline only: the line's colour (the studio's orange when not set). */
+  color?: string;
   /** Underline only: drawn left-to-right (the way the teacher dragged it); otherwise right-to-left, as Arabic is read. */
   fromLeft?: boolean;
   /** Underline only: moves this line up (−) or down (+), in heights of its text line. */
