@@ -169,6 +169,16 @@ export interface VideoConfig {
   /** Which reader read the question picture, and why Google Vision was not used (if tried). */
   ocrEngine?: 'vision' | 'tesseract';
   ocrNote?: string;
+  /**
+   * Google Vision's reading of this question's picture, kept so preparing the marks again reads
+   * it from here instead of spending another reading. `key` is the picture's SHA-256: a new
+   * picture is read again.
+   */
+  visionReading?: {
+    key: string;
+    page: { width: number; height: number; text: string; lines: number[][];
+      words: Array<{ text: string; confidence: number; x: number; y: number; width: number; height: number }> };
+  };
   /** What was found of the solution's Arabic passages (shown in İşaretler). */
   passageNote?: string;
 }

@@ -168,14 +168,16 @@ class LocalOcrService {
    */
   public async recognize(
     imageUrl: string,
-    onProgress?: (progress: OCRProgress) => void
+    onProgress?: (progress: OCRProgress) => void,
+    /** Google Vision's earlier reading of this question, used again if the picture is the same. */
+    saved?: OCRResult['visionReading'],
   ): Promise<OCRResult> {
     if (!imageUrl) {
       throw new Error('Geçerli bir soru görseli bulunamadı.');
     }
 
     // Google Vision (on the server) reads printed Arabic best; the in-browser reader is the fallback.
-    const cloud = await readWithVision(imageUrl, onProgress);
+    const cloud = await readWithVision(imageUrl, onProgress, saved);
     if ('result' in cloud) return cloud.result;
 
     const { width: imgWidth, height: imgHeight } = await this.getImageDimensions(imageUrl);

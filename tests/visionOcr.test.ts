@@ -35,3 +35,25 @@ test('Vision: shares of the picture like the in-browser reader, and option lette
   assert.deepEqual(ocr.optionMarkers!.map(m => [m.text, +m.width.toFixed(3)]), [['A)', .031]], '"A" and ")" read apart make one label');
   assert.deepEqual(optionMarkersFrom(ocr.words.filter(w => w.text !== ')')), [], 'a lone letter is not a label');
 });
+
+test('a question’s Vision reading is used again for the same picture, without spending a reading', async () => {
+  const { readWithVision, imageKey } = await import('../src/services/ocr/cloudOcr');
+  const picture = 'data:image/png;base64,' + Buffer.from('soru-34').toString('base64');
+  const key = (await imageKey(picture))!;
+  assert.match(key, /^[0-9a-f]{64}$/);
+  const page = { width: 1000, height: 500, text: 'تعتمد', lines: [[0]],
+    words: [{ text: 'تعتمد', confidence: 99, x: 600, y: 100, width: 80, height: 30 }] };
+  const real = globalThis.fetch;
+  const asked: string[] = [];
+  globalThis.fetch = (async (url: any, init?: any) => { asked.push(String(url)); return real(url, init); }) as typeof fetch;
+  try {
+    const again = await readWithVision(picture, undefined, { key, page });
+    assert.ok('result' in again && again.result.engine === 'vision');
+    assert.equal(again.result.words[0].text, 'تعتمد');
+    assert.deepEqual(asked.filter(u => u.includes('/api/vision')), [], 'no new Google Vision reading');
+    const other = 'data:image/png;base64,' + Buffer.from('soru-35').toString('base64');
+    assert.notEqual(await imageKey(other), key, 'another picture has another key, so it is read again');
+  } finally {
+    globalThis.fetch = real;
+  }
+});

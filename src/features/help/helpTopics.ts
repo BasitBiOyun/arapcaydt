@@ -221,6 +221,7 @@ export const HELP_TOPICS: HelpTopic[] = [
           '**Altyazı bir şıkkı kapatıyor**: **Soru boyutu −** ile soruyu küçültün ya da **Altyazı konumu**nu değiştirin.',
           '**Her şey karıştı**: Sağdaki **İşaretleri yeniden hazırla** işaretleri baştan kurar. Elle yaptığınız düzeltmeler silineceği için önce onay ister.',
           'Sağ panelde görselin nasıl okunduğu ve varsa paragrafın kaç satırının bulunduğu yazar. Paragraf görselde bulunamazsa sebebi de orada yazar.',
+          'Görsel Google’ın okuyucusuyla bir kez okununca okuma soruyla saklanır: **İşaretleri yeniden hazırla** günlük okuma hakkınızdan düşmez. Yalnız görseli değiştirince yeni görsel bir daha okunur.',
         ],
       },
     ],
