@@ -283,6 +283,36 @@ function separateOptionBoxes(regions: AnnotationRegion[]) {
   }
 }
 
+/**
+ * Options stacked in one column end at about the same right edge. A box that reaches far past
+ * most others took in text from beside the column: a reading passage printed next to the options,
+ * which also runs on above them (a long option's own text never does). The words right of the
+ * column are left out and the box is fitted to the rest.
+ */
+function trimToOptionColumn(regions: AnnotationRegion[], words: OCRWord[]) {
+  const options = regions.filter(r => r.type.startsWith('option-'));
+  if (options.length < 3) return;
+  const right = (r: AnnotationRegion) => r.x + r.width;
+  const edges = options.map(right).sort((a, b) => a - b);
+  const column = edges[Math.floor((edges.length - 1) / 2)];
+  const top = Math.min(...options.map(r => r.y));
+  // A passage runs on for several lines above the options; a question stem is one or two.
+  const above = words.filter(w => w.x > column + .01 && w.y + w.height < top && w.y > top - .25);
+  const aboveRows = new Set(above.map(w => Math.round((w.y + w.height / 2) / .02)));
+  if (aboveRows.size < 3) return;
+  for (const option of options) {
+    if (right(option) <= column + .08) continue;
+    const kept = words.filter(w => w.x >= option.x && w.x + w.width <= column + .02
+      && w.y >= option.y && w.y + w.height <= option.y + option.height);
+    if (!kept.length) continue;
+    const anchorX = option.x + (option.markerAnchor?.x ?? 0) * option.width;
+    const newRight = Math.min(1, Math.max(...kept.map(w => w.x + w.width)) + .007);
+    option.width = Math.max(.01, newRight - option.x);
+    if (option.markerAnchor) option.markerAnchor = { ...option.markerAnchor, x: (anchorX - option.x) / option.width };
+    option.content = kept.sort((a, b) => a.y - b.y || a.x - b.x).map(w => w.text).join(' ');
+  }
+}
+
 export function detectYdtQuestionRegions(ocr: OCRResult): {
   regions: AnnotationRegion[];
   detectedOptions: string[];
@@ -373,6 +403,7 @@ export function detectYdtQuestionRegions(ocr: OCRResult): {
         content: optionWords.map((word) => word.text).join(' ') });
     }
   }
+  trimToOptionColumn(regions, words);
   separateOptionBoxes(regions);
   const detectedOptions = ['A', 'B', 'C', 'D', 'E'].filter((letter) =>
     regions.some((region) => region.id === `option-${letter.toLowerCase()}`));

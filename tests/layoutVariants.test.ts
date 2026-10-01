@@ -48,3 +48,45 @@ test('header, instruction box, question number and footer never become options o
   assert.ok(root.x + root.width > .75, 'first stem word (misread as Latin) stays in the stem');
   assert.ok(layout.regions.every(r => r.y > .3 && r.y + r.height < .9));
 });
+
+test('a reading passage printed beside the options never enters an option box', () => {
+  const word = (text: string, x: number, y: number, width = .05, height = .025) =>
+    ({ text, confidence: 95, x, y, width, height, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 });
+  const words = [];
+  // Options A–E in the left column (label at .29, two text lines each, ending near .51).
+  'ABCDE'.split('').forEach((letter, i) => {
+    const y = .34 + i * .09;
+    words.push(word(`${letter})`, .29, y, .02));
+    for (const [line, dy] of [[0, 0], [1, .035]] as const)
+      for (let k = 0; k < 4; k++) words.push(word(`كلمة${letter}${line}${k}`, .32 + k * .048, y + dy));
+  });
+  // The passage on the right: it starts above the options and runs on beside A and B, close to their text.
+  for (let line = 0; line < 9; line++)
+    for (let k = 0; k < 7; k++) words.push(word(`نص${line}${k}`, .53 + k * .062, .18 + line * .035));
+  const ocr = { text: '', imageWidth: 1600, imageHeight: 1200, words, lines: [] } as unknown as OCRResult;
+  const found = detectYdtQuestionRegions(ocr).regions.filter(r => r.id.startsWith('option-'));
+  assert.equal(found.length, 5);
+  for (const option of found) {
+    assert.ok(option.x + option.width < .53, `${option.id} ends before the passage (${(option.x + option.width).toFixed(3)})`);
+    assert.ok(!/نص/.test(option.content || ''), `${option.id} holds no passage words`);
+  }
+});
+
+test('long options in one column keep their full text when nothing is printed beside them', () => {
+  const word = (text: string, x: number, y: number, width = .05) =>
+    ({ text, confidence: 95, x, y, width, height: .025, pixelX: 0, pixelY: 0, pixelWidth: 0, pixelHeight: 0 });
+  const words = [word('سؤال', .4, .25, .2)];
+  // A and B run nearly across the page; C, D, E are short.
+  'ABCDE'.split('').forEach((letter, i) => {
+    const y = .34 + i * .07;
+    words.push(word(`${letter})`, .1, y, .02));
+    const count = i < 2 ? 14 : 4;
+    for (let k = 0; k < count; k++) words.push(word(`كلمة${letter}${k}`, .13 + k * .055, y));
+  });
+  const ocr = { text: '', imageWidth: 1600, imageHeight: 1200, words, lines: [] } as unknown as OCRResult;
+  const found = detectYdtQuestionRegions(ocr).regions.filter(r => r.id.startsWith('option-'));
+  for (const id of ['option-a', 'option-b']) {
+    const option = found.find(r => r.id === id)!;
+    assert.ok(option.x + option.width > .85, `${id} keeps its long text`);
+  }
+});
