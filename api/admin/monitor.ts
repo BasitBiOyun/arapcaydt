@@ -8,7 +8,7 @@ import { logged } from '../../server/errorLog.js';
  * MONITOR_TOKEN secret, never with a teacher's session, and returns no keys or audio.
  *   GET /api/admin/monitor?hours=24         the report
  *   GET /api/admin/monitor?feedback=<id>    one report's teşhis record
- *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks; no audio)
+ *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks, a 10-minute picture link; no audio)
  */
 export function tokenMatches(header: unknown, token: string | undefined): boolean {
   if (!token || token.length < 24 || typeof header !== 'string' || !header.startsWith('Bearer ')) return false;
@@ -35,11 +35,15 @@ async function handler(req: any, res: any) {
     return data ? res.status(200).json(data.diagnostics ?? null) : res.status(404).json({ error: 'Not found' });
   }
   if (req.query?.project) {
-    const { data, error } = await db.from('projects').select('id,owner_id,updated_at,title:data->>title,category:data->>category,solutionText:data->>solutionText,'
+    const { data, error } = await db.from('projects').select('id,owner_id,updated_at,image:data->imageUrl,title:data->>title,category:data->>category,solutionText:data->>solutionText,'
       + 'correctAnswer:data->>correctAnswer,narrationType:data->narrationSource->>type,words:data->narrationSource->words,'
       + 'duration:data->narrationSource->duration,videoConfig:data->videoConfig').eq('id', id(req.query.project)).maybeSingle();
     if (error) return res.status(500).json({ error: error.message });
-    return data ? res.status(200).json(data) : res.status(404).json({ error: 'Not found' });
+    if (!data) return res.status(404).json({ error: 'Not found' });
+    // The question picture as a link that works for ten minutes (for checking how it is read).
+    const path = typeof (data as any).image === 'object' ? (data as any).image?.assetPath : null;
+    const signed = path ? await db.storage.from('project-assets').createSignedUrl(path, 600) : null;
+    return res.status(200).json({ ...(data as object), image: signed?.data?.signedUrl ?? (typeof (data as any).image === 'string' && /^https:/.test((data as any).image) ? (data as any).image : null) });
   }
 
   const hours = Math.min(168, Math.max(1, Number(req.query?.hours) || 24));
