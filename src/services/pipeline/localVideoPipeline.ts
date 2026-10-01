@@ -142,7 +142,12 @@ export class LocalVideoPipeline {
     const stemWords = wordsOutside(ocrResult.words, options);
     const { passageMatches, arabicMatches } = planArabicMarks(solutionText, stemWords, ocrResult.arabicStemWords, suppressed, options, ocrResult.words);
     const passages = findPassages(solutionText);
-    const missedPassages = passages.filter(p => !passageMatches.some(m => m.passageEnd === p[p.length - 1].to));
+    // A long Arabic sentence read as an option is underlined in the option: it is not a passage to find.
+    const readInOption = (p: typeof passages[number]) => arabicMatches.some(m => m.region.id.startsWith('option-')
+      && m.sourceStart !== undefined && m.sourceStart >= p[0].from && m.sourceStart < p[p.length - 1].to);
+    const optionReads = passages.filter(readInOption);
+    const realPassages = passages.filter(p => !readInOption(p));
+    const missedPassages = realPassages.filter(p => !passageMatches.some(m => m.passageEnd === p[p.length - 1].to));
     const round = (v: number) => Math.round(v * 10000) / 10000;
     lastDiagnostics = {
       at: new Date().toISOString(), engine: rawOcr.engine, cloudIssue: rawOcr.cloudIssue,
@@ -241,9 +246,12 @@ export class LocalVideoPipeline {
       ocrEngine: rawOcr.engine,
       ocrNote: rawOcr.cloudIssue,
       visionReading: rawOcr.visionReading,
-      passageNote: passages.length
-        ? `Çözümde ${passages.length} Arapça paragraf var; görselde ${new Set(passageMatches.map(m => m.region.id)).size} satırı bulundu.`
-        : 'Çözümde 10 kelimeden uzun kesintisiz bir Arapça paragraf yok.',
+      passageNote: [
+        realPassages.length
+          ? `Çözümde ${realPassages.length} Arapça paragraf var; görselde ${new Set(passageMatches.map(m => m.region.id)).size} satırı bulundu.`
+          : optionReads.length ? '' : 'Çözümde 10 kelimeden uzun kesintisiz bir Arapça paragraf yok.',
+        optionReads.length ? `Okunan ${optionReads.length} uzun şıkkın altı şıkların kendi satırlarında çiziliyor.` : '',
+      ].filter(Boolean).join(' '),
     };
   }
 }

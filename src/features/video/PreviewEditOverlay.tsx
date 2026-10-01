@@ -38,30 +38,6 @@ export function resizeRegion(region: AnnotationRegion, handle: Handle, dx: numbe
   return { ...region, x: left, y: top, width: right - left, height: bottom - top, manuallyAdjusted: true };
 }
 
-/** Underline colours: the studio's orange first, then colours that read well on a printed page. */
-export const LINE_COLORS = [
-  { color: '#D97706', name: 'Turuncu' }, { color: '#DC2626', name: 'Kırmızı' }, { color: '#2563EB', name: 'Mavi' },
-  { color: '#16A34A', name: 'Yeşil' }, { color: '#7C3AED', name: 'Mor' }, { color: '#DB2777', name: 'Pembe' },
-  { color: '#0891B2', name: 'Turkuaz' }, { color: '#CA8A04', name: 'Hardal' }, { color: '#92400E', name: 'Kahverengi' },
-  { color: '#1C1917', name: 'Siyah' },
-] as const;
-const LINE_COLOR_KEY = 'studio-line-color';
-const savedLineColor = () => { try { return localStorage.getItem(LINE_COLOR_KEY) || LINE_COLORS[0].color; } catch { return LINE_COLORS[0].color; } };
-
-/** Ten colour dots; the chosen one is ringed. */
-function ColorDots({ value, onPick, label, row }: { value: string; onPick: (color: string) => void; label: string; row?: boolean }) {
-  return (
-    <div role="radiogroup" aria-label={label} className={row ? 'flex items-center gap-0.5' : 'grid grid-cols-5 gap-1'}>
-      {LINE_COLORS.map(c => (
-        <button key={c.color} type="button" role="radio" aria-checked={value === c.color} aria-label={c.name} title={c.name}
-          onClick={() => onPick(c.color)}
-          className={`${row ? 'w-4 h-4' : 'w-6 h-6'} rounded-full border-2 ${value === c.color ? 'border-[#1C1917] ring-2 ring-white' : 'border-white/80 hover:scale-110'} transition-transform`}
-          style={{ background: c.color }} />
-      ))}
-    </div>
-  );
-}
-
 /** Marks a teacher can put on the picture, in toolbar order. */
 export const TOOLS = ['reject', 'correct', 'focus', 'circle', 'underline', 'highlight'] as const;
 export type Tool = typeof TOOLS[number];
@@ -198,14 +174,9 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const [draft, setDraft] = useState<AnnotationRegion | VideoAction | null>(null);
   const [tool, setTool] = useState<Tool | null>(null);
   const [hasCopy, setHasCopy] = useState(!!copied);
-  // The colour new underlines get, kept on this device.
-  const [lineColor, setLineColor] = useState(savedLineColor);
-  const pickLineColor = (color: string) => { setLineColor(color); try { localStorage.setItem(LINE_COLOR_KEY, color); } catch { /* per-device only */ } };
   useEffect(() => { if (focusBox && !tool && !drawOption) setSelectedId(focusBox.id); }, [focusBox]); // eslint-disable-line react-hooks/exhaustive-deps
   const keys = useRef<(e: KeyboardEvent) => void>(() => {});
   const onPicture = useRef(false);
-  /** The underlines drawn one after another at this paused moment: where the next one starts. */
-  const lineSeries = useRef<{ time: number; end: number } | null>(null);
   useEffect(() => {
     // Capture: runs before the page's Esc (leaving full screen), so Esc first lets go of a box or tool.
     const key = (e: KeyboardEvent) => keys.current(e);
@@ -221,6 +192,10 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
 
   const picks = pickableRegions(regions);
   const selected = picks.find(r => r.id === selectedId);
+  // The selection frame follows the box at once when it is resized or moved (not one step later).
+  const frame = useRef<Moveable>(null);
+  useEffect(() => { frame.current?.updateRect(); },
+    [selected?.x, selected?.y, selected?.width, selected?.height, canvasWidth, canvasHeight, fit.x, fit.y, fit.width, fit.height]);
   const shown = (r: AnnotationRegion) => draft && 'x' in draft && draft.id === r.id ? draft : r;
   // Percent of the overlay for a rectangle in canvas pixels.
   const pct = (rect: FitRect) => ({ left: `${rect.x / canvasWidth * 100}%`, top: `${rect.y / canvasHeight * 100}%`,
@@ -283,17 +258,13 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         setSelectedId(id); setTool(null);
       } else if (tool && place) {
         const id = `manual-box-${Date.now()}`;
-        // Underlines are drawn line after line with the tool kept: each new line follows the
-        // previous one in time (while the preview stays at the same moment).
-        const series = tool === 'underline';
-        const at = series && lineSeries.current && Math.abs(lineSeries.current.time - time) < .01 ? lineSeries.current.end : time;
-        // The line flows the way it was dragged (left-to-right or, as Arabic is read, right-to-left).
-        const fromLeft = series && draft && 'x' in draft && gesture.ix <= draft.x + draft.width / 2;
-        const marks = addMark([], id, tool, at, total).map(m => ({ ...m, ...(fromLeft ? { fromLeft: true } : {}),
-          ...(tool === 'underline' && lineColor !== LINE_COLORS[0].color ? { color: lineColor } : {}) }));
+        // Every mark starts at the paused moment, so it shows at once; its time is set on the strip.
+        // The underline tool stays on to draw several lines; the line flows the way it was dragged.
+        const line = tool === 'underline';
+        const fromLeft = line && draft && 'x' in draft && gesture.ix <= draft.x + draft.width / 2;
+        const marks = addMark([], id, tool, time, total).map(m => fromLeft ? { ...m, fromLeft: true } : m);
         onRegions([...regions, { ...place, id }], marks);
-        if (series) lineSeries.current = { time, end: Math.min(total - .1, at + marks[0].duration) };
-        else { setSelectedId(id); setTool(null); }
+        if (!line) { setSelectedId(id); setTool(null); }
       } else if (gesture.boxId) markBox(gesture.boxId);
     } else if (gesture && draft && 'x' in draft) onRegions(regions.map(r => r.id === draft.id ? draft : r));
     else if (gesture && draft) onActions(actions.map(a => a.id === draft.id ? draft as VideoAction : a));
@@ -324,17 +295,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
   const removeMark = (id: string) => onActions(actions.filter(a => a.id !== id));
   const markHere = (action: VideoAction) => onActions(actions.map(a => a.id === action.id ? nudgeAction(a, time - a.start, total) : a));
   const removeBox = (id: string) => { setSelectedId(null); onRegions(regions.filter(r => r.id !== id)); };
-  const markBox = (id: string) => {
-    if (!tool) return;
-    const added = addMark(actions, id, tool, time, total)
-      .map(m => tool === 'underline' && m.targetRegionId === id && !actions.includes(m) && lineColor !== LINE_COLORS[0].color ? { ...m, color: lineColor } : m);
-    onActions(added); setSelectedId(id); setTool(null);
-  };
-  /** A selected box's underlines take the colour (and new lines get it too). */
-  const recolorLines = (id: string, color: string) => {
-    pickLineColor(color);
-    onActions(actions.map(a => a.targetRegionId === id && a.type === 'underline' ? { ...a, color: color === LINE_COLORS[0].color ? undefined : color } : a));
-  };
+  const markBox = (id: string) => { if (tool) { onActions(addMark(actions, id, tool, time, total)); setSelectedId(id); setTool(null); } };
   const copy = (region: AnnotationRegion) => {
     copied = { region, marks: actions.filter(a => a.targetRegionId === region.id && ICON[a.type]) };
     setHasCopy(true);
@@ -393,13 +354,6 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
             style={tool === t ? { background: ICON[t]!.color } : { color: ICON[t]!.color }}>{ICON[t]!.icon}</button>
         ))}
       </div>
-      {tool === 'underline' && (
-        <div className="absolute left-14 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-white/95 shadow-md border border-[#D5D4CC] space-y-1.5"
-          onPointerDown={e => e.stopPropagation()}>
-          <p className="text-[11px] font-semibold text-[#55544F]">Çizgi rengi</p>
-          <ColorDots value={lineColor} onPick={pickLineColor} label="Yeni çizgilerin rengi" />
-        </div>
-      )}
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
         <span className={`px-2 py-1 rounded-md text-white text-xs ${drawOption ? 'bg-[#8B1E2D] font-semibold' : 'bg-black/60'}`}>
           {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool === 'underline' ? 'Alt çizgi: başlangıca basın, sağa ya da sola sürükleyip bırakın · yazının altına bırakırsanız satıra oturur · bitince Esc'
@@ -424,7 +378,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         return (
           <div key={region.id} role="button" aria-label={`${region.shape ? (active[0] ? ICON[active[0].type]!.name : 'İşaret') : boxName(region, regions)} kutusu`}
             title="Seç: taşımak için sürükleyin"
-            className={`absolute ${shapeClass} ${drawing ? 'cursor-crosshair border border-dashed border-[#2563EB]/60 hover:bg-[#2563EB]/10' : 'cursor-move'} transition-[border-color] ${drawing ? '' : isSelected ? (region.shape ? 'border border-dashed border-[#2563EB]' : 'border-2 border-[#2563EB] bg-[#2563EB]/5') : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
+            className={`absolute ${shapeClass} ${drawing ? `cursor-crosshair ${region.shape ? '' : 'border border-dashed border-[#2563EB]/60'} hover:bg-[#2563EB]/10` : 'cursor-move'} transition-[border-color] ${drawing ? '' : isSelected ? (region.shape ? 'border border-dashed border-[#2563EB]' : 'border-2 border-[#2563EB] bg-[#2563EB]/5') : color ? 'border-2' : 'border border-dashed border-white/0 hover:border-[#2563EB]/70'}`}
             style={{ ...pct(rect), ...(isSelected || !color ? {} : { borderColor: `${color}AA` }) }}
             ref={el => { if (el) boxes.current.set(region.id, el); else boxes.current.delete(region.id); }}
             onPointerDown={e => {
@@ -437,7 +391,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       })}
 
       {selected && !drawing && boxes.current.get(selected.id) && (
-        <Moveable key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={selected.shape === 'stamp'}
+        <Moveable ref={frame} key={selected.id} target={boxes.current.get(selected.id)!} draggable resizable origin={false} keepRatio={selected.shape === 'stamp'}
           // A line is lengthened from its two ends, a stamp sized from its corners; a box from every side.
           renderDirections={selected.shape === 'stamp' ? ['nw', 'ne', 'sw', 'se']
             : selected.shape === 'line' || (selectedMarks.length && selectedMarks.every(m => m.type === 'underline')) ? ['w', 'e']
@@ -478,7 +432,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           style={{ left: pct(selectedRect).left, width: pct(selectedRect).width,
             top: `${(underlineY(selectedRect, scale, underlineOffset + (lineAction.lineOffset ?? 0)) - 8 * scale) / canvasHeight * 100}%`, height: `${16 * scale / canvasHeight * 100}%` }}
           onPointerDown={e => begin(e, { mode: 'line', x: e.clientX, y: e.clientY, action: line!, heightPx: selectedRect.height })}>
-          <span className="w-full h-[3px] rounded shadow-[0_0_0_2px_white]" style={{ background: lineAction.color || '#D97706' }} />
+          <span className="w-full h-[3px] rounded bg-[#D97706] shadow-[0_0_0_2px_white]" />
         </div>
       )}
 
@@ -493,7 +447,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           {selectedMarks.length === 0 && <span className="px-1 text-[#787670]">İşaret yok</span>}
           {selectedMarks.map(mark => (
             <span key={mark.id} className="inline-flex items-center gap-0.5 rounded border border-[#E5E4DC] pl-1" title={`${ICON[mark.type]!.name} · ${clock(mark.start)}`}>
-              <span className="font-bold" style={{ color: mark.type === 'underline' && mark.color ? mark.color : ICON[mark.type]!.color }}>{ICON[mark.type]!.icon}</span>
+              <span className="font-bold" style={{ color: ICON[mark.type]!.color }}>{ICON[mark.type]!.icon}</span>
               <span className="font-mono-code">{clock(mark.start)}</span>
               <button type="button" onClick={() => markHere(mark)} disabled={Math.abs(mark.start - time) < .05} title={`${clock(time)} anına al`}
                 className="p-1 rounded hover:bg-[#F2F1EB] disabled:opacity-30" aria-label="Buraya al"><MapPin size={11} /></button>
@@ -501,7 +455,6 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
                 className="p-1 rounded text-[#8B1E2D] hover:bg-red-50"><X size={11} /></button>
             </span>
           ))}
-          {line && <ColorDots row value={line.color || LINE_COLORS[0].color} onPick={color => recolorLines(selected.id, color)} label="Bu çizginin rengi" />}
           {onAssignOption && (selected.type.startsWith('option-') || (!selected.content && !selected.shape)) && (
             <span className="inline-flex items-center gap-0.5" role="group" aria-label="Bu kutu hangi şık?">
               <span className="text-[#787670] px-0.5">Şık:</span>

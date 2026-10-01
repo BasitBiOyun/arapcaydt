@@ -3,7 +3,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/plugins/timeline';
 import HoverPlugin from 'wavesurfer.js/plugins/hover';
 import { ArrowsOutLineHorizontal, CaretLeft, CaretRight, MagnifyingGlassMinus, MagnifyingGlassPlus, Minus, Plus, Timer, Trash, HandPalm } from '@phosphor-icons/react';
-import type { AnnotationRegion, NarrationWord, VideoAction } from '../../types';
+import type { AnnotationRegion, VideoAction } from '../../types';
 import { adjacentAction, clock, isTypingTarget, nudgeAction } from '../question-editor/workflow';
 
 const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; name: string }>> = {
@@ -64,11 +64,6 @@ export function tapMark(action: VideoAction, time: number, total: number, stage:
   return nudgeAction(action, time - action.start, total);
 }
 
-/** The words said around `time` (a few before, more after), in the order they are said. */
-export function nearbyWords(words: NarrationWord[], time: number, before = 2.5, after = 6, max = 14) {
-  return words.map((w, i) => ({ w, i })).filter(({ w }) => w.end >= time - before && w.start <= time + after).slice(0, max);
-}
-
 const seconds = (s: number) => `${s.toLocaleString('tr', { maximumFractionDigits: 1 })} sn`;
 
 interface Props {
@@ -88,8 +83,6 @@ interface Props {
   playing?: boolean;
   /** "Burada hata var": the box of the mark just seen, to select it on the picture (null: none). */
   onFlag?: (regionId: string | null) => void;
-  /** The narration's words, shown under the waveform: a click moves the selected mark to that word. */
-  words?: NarrationWord[];
 }
 
 /**
@@ -108,7 +101,7 @@ export function markJustSeen(marks: VideoAction[], time: number, within = 4): Vi
  * how long it stays (an underline is drawn over that whole time). Crosses and ticks stay to the
  * end, so only their start moves. Zoom in for fine timing; the marks follow the zoom and scroll.
  */
-export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact, playing, onFlag, words = [] }: Props) {
+export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl, onSeek, onPlayPause, onActions, keyboard, compact, playing, onFlag }: Props) {
   const waveBox = useRef<HTMLDivElement>(null);
   const lanesBox = useRef<HTMLDivElement>(null);
   const surfer = useRef<WaveSurfer | null>(null);
@@ -283,24 +276,6 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
 
       <div ref={waveBox} className="rounded-md bg-[#FAF9F5] cursor-pointer" title="Tıklayın ya da sürükleyin: o ana gidin" />
 
-      {words.length > 0 && (
-        // A fixed height: Arabic words set taller than Turkish ones, and a row that grows while the
-        // voice plays would make the editor rescale the question every few seconds.
-        <div className="flex flex-nowrap items-center gap-1 overflow-hidden text-xs h-7 shrink-0" aria-label="Seslendirmenin kelimeleri">
-          <span className="shrink-0 text-[#8A8880]" title="Kırmızı çizginin olduğu yerde söylenen kelimeler, söylendikleri sırayla">Kelimeler:</span>
-          {nearbyWords(words, currentTime).map(({ w, i }) => (
-            <button key={`${i}-${w.start}`} type="button" dir="auto"
-              className={`shrink-0 h-6 px-1.5 leading-6 overflow-hidden rounded border ${currentTime >= w.start && currentTime < w.end ? 'border-[#8B1E2D] bg-[#F6E3E5] text-[#8B1E2D] font-semibold' : 'border-[#E5E4DC] bg-white text-[#33322E] hover:border-[#8B1E2D] hover:text-[#8B1E2D]'}`}
-              title={selectedId ? `Seçili işaret “${w.text}” söylenirken başlasın (${clock(w.start)})` : `${clock(w.start)}: buraya gidin`}
-              onClick={() => {
-                const mark = actions.find(a => a.id === selectedId);
-                if (mark) replace(nudgeAction(mark, w.start - mark.start, total));
-                onSeek(w.start);
-              }}>{w.text}</button>
-          ))}
-        </div>
-      )}
-
       <div className={compact && laneCount > COMPACT_ROWS ? 'overflow-y-auto rounded-md' : undefined}
         style={compact && laneCount > COMPACT_ROWS ? { maxHeight: COMPACT_ROWS * LANE + 14 } : undefined}
         title={compact && laneCount > COMPACT_ROWS ? 'Diğer işaretler için şeridi aşağı kaydırın' : undefined}>
@@ -350,7 +325,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
             </span>
           </>
         ) : (
-          <span className="text-[#A8A69E]">Bir işarete tıklayın: “Şimdi” (Enter), erken/geç, kısa/uzun ve sil burada çıkar · kelimeye tıklayınca seçili işaret oraya gelir.</span>
+          <span className="text-[#A8A69E]">Bir işarete tıklayın: “Şimdi” (Enter), erken/geç, kısa/uzun ve sil burada çıkar.</span>
         )}
       </div>
     </div>

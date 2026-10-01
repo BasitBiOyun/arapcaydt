@@ -144,7 +144,7 @@ const scenes = {
     const strip = page.getByText('Zaman şeridi', { exact: true }).first().locator('xpath=ancestor::div[contains(@class,"rounded")][1]');
     // A mark picked on the strip: its "Şimdi" button and the words row are shown.
     await strip.locator('[role=button][aria-label*=" · "]').first().click(); await page.waitForTimeout(500);
-    await mark([strip.getByRole('button', { name: /Şimdi başlasın/ }), strip.locator('[aria-label="Seslendirmenin kelimeleri"]')]);
+    await mark([strip.getByRole('button', { name: /Şimdi başlasın/ })]);
     return strip;
   },
   async 'video-indir'() { await go('#/soru/ornek-3', 3000); await step(5); await mark(['button:has-text("MP4 İndir")', page.getByText('Yayına hazır').first().locator('xpath=..')]); },
