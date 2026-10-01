@@ -1,0 +1,1338 @@
+{
+ "note": "Çeviri sorusu: Arapça kök cümle satır satır çizilir; transkript Arapçayı yazmasa da.",
+ "solutionText": "Önce cümleyi okuyalım:\nيُعَرِّفُ الِاتِّحَادُ الْفَلَكِيُّ الْعَالَمِيُّ النَّيْزَكَ بِأَنَّهُ جِسْمٌ صُلْبٌ، صَغِيرُ الْحَجْمِ، يَسْبَحُ بَيْنَ الْكَوَاكِبِ فِي الْمَجْمُوعَةِ الشَّمْسِيَّةِ.\nCümlede Uluslararası Astronomi Birliğinin النَّيْزَكَ, yani meteoru; جِسْمٌ صُلْبٌ، صَغِيرُ الْحَجْمِ “küçük hacimli, sert bir cisim” olarak tanımladığı söyleniyor. Ayrıca bu cismin بَيْنَ الْكَوَاكِبِ, yani gezegenler arasında, Güneş sistemi içinde hareket ettiği belirtiliyor.\nA seçeneği olmaz. Çünkü “Güneş sisteminin en küçük sert cisimleri” diyerek metinde bulunmayan bir en küçük anlamı ekliyor.\nB seçeneği olmaz. Anlam oldukça yakın olsa da yapı, küçük hacimli sert cisimleri topluca “meteor” olarak tanımlıyor. Kaynak cümlede ise doğrudan meteorun tekil olarak tanımı veriliyor.\nC seçeneği olmaz. Burada yine “sert cisimlerin en küçüğüdür” deniyor. Oysa Arapça cümlede صَغِيرُ الْحَجْمِ, yani “küçük hacimli” denmiş; “en küçük” denmemiştir.\nD seçeneği tam olarak uygundur. Meteorun Güneş sistemi içinde, gezegenler arasında hareket eden küçük hacimli sert bir cisim olduğu doğru biçimde verilmiştir.\nE seçeneği de olmaz. “Gezegenler arasında” anlamındaki بَيْنَ الْكَوَاكِبِ ayrıntısı tam olarak karşılanmamıştır ve cümlenin tanım yapısı da değişmiştir.\nBu nedenle doğru cevap D seçeneğidir.",
+ "words": [
+  {
+   "text": "SORULAR",
+   "confidence": 98,
+   "x": 0.9026,
+   "y": 0.0287,
+   "width": 0.0615,
+   "height": 0.0185
+  },
+  {
+   "text": "ÇIKMIŞ",
+   "confidence": 93,
+   "x": 0.8526,
+   "y": 0.0287,
+   "width": 0.0469,
+   "height": 0.0185
+  },
+  {
+   "text": "-",
+   "confidence": 81,
+   "x": 0.8448,
+   "y": 0.0287,
+   "width": 0.0047,
+   "height": 0.0185
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 93,
+   "x": 0.7896,
+   "y": 0.0287,
+   "width": 0.0531,
+   "height": 0.0185
+  },
+  {
+   "text": "YDT",
+   "confidence": 96,
+   "x": 0.762,
+   "y": 0.0287,
+   "width": 0.0255,
+   "height": 0.0185
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 93,
+   "x": 0.1,
+   "y": 0.0278,
+   "width": 0.0526,
+   "height": 0.0185
+  },
+  {
+   "text": "YDT",
+   "confidence": 96,
+   "x": 0.0724,
+   "y": 0.0269,
+   "width": 0.0255,
+   "height": 0.0194
+  },
+  {
+   "text": "-",
+   "confidence": 87,
+   "x": 0.0651,
+   "y": 0.0269,
+   "width": 0.0057,
+   "height": 0.0176
+  },
+  {
+   "text": "YKS",
+   "confidence": 98,
+   "x": 0.0365,
+   "y": 0.0269,
+   "width": 0.025,
+   "height": 0.0185
+  },
+  {
+   "text": "cümleye",
+   "confidence": 96,
+   "x": 0.5755,
+   "y": 0.0972,
+   "width": 0.0641,
+   "height": 0.0259
+  },
+  {
+   "text": "Arapça",
+   "confidence": 95,
+   "x": 0.5156,
+   "y": 0.0972,
+   "width": 0.0547,
+   "height": 0.025
+  },
+  {
+   "text": "verilen",
+   "confidence": 99,
+   "x": 0.4604,
+   "y": 0.0972,
+   "width": 0.0505,
+   "height": 0.025
+  },
+  {
+   "text": ",",
+   "confidence": 97,
+   "x": 0.4516,
+   "y": 0.0963,
+   "width": 0.0042,
+   "height": 0.025
+  },
+  {
+   "text": "sorularda",
+   "confidence": 99,
+   "x": 0.3786,
+   "y": 0.0963,
+   "width": 0.0719,
+   "height": 0.0259
+  },
+  {
+   "text": ".",
+   "confidence": 91,
+   "x": 0.3682,
+   "y": 0.0963,
+   "width": 0.0036,
+   "height": 0.025
+  },
+  {
+   "text": "69",
+   "confidence": 96,
+   "x": 0.351,
+   "y": 0.0963,
+   "width": 0.0167,
+   "height": 0.025
+  },
+  {
+   "text": "-",
+   "confidence": 43,
+   "x": 0.3411,
+   "y": 0.0963,
+   "width": 0.0057,
+   "height": 0.025
+  },
+  {
+   "text": "64.",
+   "confidence": 95,
+   "x": 0.3146,
+   "y": 0.0963,
+   "width": 0.0224,
+   "height": 0.025
+  },
+  {
+   "text": ".",
+   "confidence": 92,
+   "x": 0.6307,
+   "y": 0.1296,
+   "width": 0.0042,
+   "height": 0.025
+  },
+  {
+   "text": "bulunuz",
+   "confidence": 98,
+   "x": 0.5693,
+   "y": 0.1296,
+   "width": 0.0615,
+   "height": 0.025
+  },
+  {
+   "text": "cümleyi",
+   "confidence": 97,
+   "x": 0.5047,
+   "y": 0.1296,
+   "width": 0.0594,
+   "height": 0.025
+  },
+  {
+   "text": "Türkçe",
+   "confidence": 97,
+   "x": 0.4479,
+   "y": 0.1296,
+   "width": 0.0521,
+   "height": 0.025
+  },
+  {
+   "text": "yakın",
+   "confidence": 95,
+   "x": 0.401,
+   "y": 0.1296,
+   "width": 0.0411,
+   "height": 0.025
+  },
+  {
+   "text": "en",
+   "confidence": 99,
+   "x": 0.3786,
+   "y": 0.1296,
+   "width": 0.0177,
+   "height": 0.025
+  },
+  {
+   "text": "anlamca",
+   "confidence": 98,
+   "x": 0.3099,
+   "y": 0.1296,
+   "width": 0.0641,
+   "height": 0.025
+  },
+  {
+   "text": "يعرف",
+   "confidence": 94,
+   "x": 0.6536,
+   "y": 0.2324,
+   "width": 0.0417,
+   "height": 0.037
+  },
+  {
+   "text": "الاتحاد",
+   "confidence": 95,
+   "x": 0.6083,
+   "y": 0.2324,
+   "width": 0.0427,
+   "height": 0.037
+  },
+  {
+   "text": "الفلكي",
+   "confidence": 99,
+   "x": 0.5615,
+   "y": 0.2324,
+   "width": 0.0406,
+   "height": 0.038
+  },
+  {
+   "text": "العالمي",
+   "confidence": 99,
+   "x": 0.5089,
+   "y": 0.2333,
+   "width": 0.0474,
+   "height": 0.037
+  },
+  {
+   "text": "النيزك",
+   "confidence": 95,
+   "x": 0.4609,
+   "y": 0.2333,
+   "width": 0.0417,
+   "height": 0.038
+  },
+  {
+   "text": "بأنه",
+   "confidence": 98,
+   "x": 0.4313,
+   "y": 0.2343,
+   "width": 0.025,
+   "height": 0.037
+  },
+  {
+   "text": "جسم",
+   "confidence": 99,
+   "x": 0.3953,
+   "y": 0.2343,
+   "width": 0.0307,
+   "height": 0.037
+  },
+  {
+   "text": "صلب",
+   "confidence": 98,
+   "x": 0.3542,
+   "y": 0.2343,
+   "width": 0.0354,
+   "height": 0.038
+  },
+  {
+   "text": ".",
+   "confidence": 93,
+   "x": 0.3156,
+   "y": 0.2361,
+   "width": 0.0047,
+   "height": 0.0185
+  },
+  {
+   "text": "66",
+   "confidence": 98,
+   "x": 0.3,
+   "y": 0.2361,
+   "width": 0.0172,
+   "height": 0.0194
+  },
+  {
+   "text": "صغير",
+   "confidence": 99,
+   "x": 0.6568,
+   "y": 0.2806,
+   "width": 0.0396,
+   "height": 0.0361
+  },
+  {
+   "text": "الحجم",
+   "confidence": 99,
+   "x": 0.6125,
+   "y": 0.2806,
+   "width": 0.0349,
+   "height": 0.0352
+  },
+  {
+   "text": "،",
+   "confidence": 81,
+   "x": 0.6063,
+   "y": 0.2806,
+   "width": 0.0036,
+   "height": 0.0352
+  },
+  {
+   "text": "يسبح",
+   "confidence": 98,
+   "x": 0.5641,
+   "y": 0.2806,
+   "width": 0.0359,
+   "height": 0.0352
+  },
+  {
+   "text": "بين",
+   "confidence": 98,
+   "x": 0.537,
+   "y": 0.2806,
+   "width": 0.0219,
+   "height": 0.0352
+  },
+  {
+   "text": "الكواكب",
+   "confidence": 98,
+   "x": 0.4792,
+   "y": 0.2796,
+   "width": 0.05,
+   "height": 0.0361
+  },
+  {
+   "text": "في",
+   "confidence": 87,
+   "x": 0.4552,
+   "y": 0.2796,
+   "width": 0.0193,
+   "height": 0.0352
+  },
+  {
+   "text": "المجموعة",
+   "confidence": 99,
+   "x": 0.3818,
+   "y": 0.2796,
+   "width": 0.0693,
+   "height": 0.0352
+  },
+  {
+   "text": "الشمسية",
+   "confidence": 99,
+   "x": 0.6365,
+   "y": 0.325,
+   "width": 0.0594,
+   "height": 0.0296
+  },
+  {
+   "text": ".",
+   "confidence": 94,
+   "x": 0.6323,
+   "y": 0.325,
+   "width": 0.0047,
+   "height": 0.0296
+  },
+  {
+   "text": "arasında",
+   "confidence": 95,
+   "x": 0.6182,
+   "y": 0.3824,
+   "width": 0.0568,
+   "height": 0.0241
+  },
+  {
+   "text": "gezegenler",
+   "confidence": 99,
+   "x": 0.5422,
+   "y": 0.3824,
+   "width": 0.0729,
+   "height": 0.0241
+  },
+  {
+   "text": ",",
+   "confidence": 97,
+   "x": 0.5354,
+   "y": 0.3824,
+   "width": 0.0031,
+   "height": 0.0241
+  },
+  {
+   "text": "Birliği",
+   "confidence": 98,
+   "x": 0.499,
+   "y": 0.3824,
+   "width": 0.0344,
+   "height": 0.0241
+  },
+  {
+   "text": "Astronomi",
+   "confidence": 98,
+   "x": 0.4281,
+   "y": 0.3824,
+   "width": 0.0656,
+   "height": 0.0241
+  },
+  {
+   "text": "Uluslararası",
+   "confidence": 97,
+   "x": 0.3479,
+   "y": 0.3824,
+   "width": 0.076,
+   "height": 0.0241
+  },
+  {
+   "text": ")",
+   "confidence": 96,
+   "x": 0.337,
+   "y": 0.3824,
+   "width": 0.0057,
+   "height": 0.0241
+  },
+  {
+   "text": "A",
+   "confidence": 97,
+   "x": 0.3271,
+   "y": 0.3824,
+   "width": 0.0104,
+   "height": 0.0241
+  },
+  {
+   "text": "sert",
+   "confidence": 98,
+   "x": 0.6417,
+   "y": 0.413,
+   "width": 0.0266,
+   "height": 0.0231
+  },
+  {
+   "text": "küçük",
+   "confidence": 87,
+   "x": 0.6,
+   "y": 0.413,
+   "width": 0.038,
+   "height": 0.0231
+  },
+  {
+   "text": "en",
+   "confidence": 98,
+   "x": 0.5797,
+   "y": 0.413,
+   "width": 0.0151,
+   "height": 0.0231
+  },
+  {
+   "text": "sisteminin",
+   "confidence": 99,
+   "x": 0.5109,
+   "y": 0.413,
+   "width": 0.0635,
+   "height": 0.0231
+  },
+  {
+   "text": "Güneş",
+   "confidence": 97,
+   "x": 0.4641,
+   "y": 0.413,
+   "width": 0.0422,
+   "height": 0.0231
+  },
+  {
+   "text": ",",
+   "confidence": 94,
+   "x": 0.4568,
+   "y": 0.413,
+   "width": 0.0026,
+   "height": 0.0231
+  },
+  {
+   "text": "meteorları",
+   "confidence": 97,
+   "x": 0.3901,
+   "y": 0.413,
+   "width": 0.0641,
+   "height": 0.0231
+  },
+  {
+   "text": "yüzen",
+   "confidence": 95,
+   "x": 0.3464,
+   "y": 0.413,
+   "width": 0.0391,
+   "height": 0.0231
+  },
+  {
+   "text": ".",
+   "confidence": 93,
+   "x": 0.5526,
+   "y": 0.4444,
+   "width": 0.0031,
+   "height": 0.0194
+  },
+  {
+   "text": "tanımlamaktadır",
+   "confidence": 96,
+   "x": 0.4474,
+   "y": 0.4426,
+   "width": 0.1052,
+   "height": 0.0213
+  },
+  {
+   "text": "olarak",
+   "confidence": 99,
+   "x": 0.4036,
+   "y": 0.4426,
+   "width": 0.0401,
+   "height": 0.0204
+  },
+  {
+   "text": "cisimleri",
+   "confidence": 99,
+   "x": 0.3474,
+   "y": 0.4417,
+   "width": 0.0516,
+   "height": 0.0213
+  },
+  {
+   "text": "sistemindeki",
+   "confidence": 99,
+   "x": 0.5896,
+   "y": 0.5028,
+   "width": 0.0797,
+   "height": 0.0231
+  },
+  {
+   "text": "Güneş",
+   "confidence": 96,
+   "x": 0.5432,
+   "y": 0.5028,
+   "width": 0.0417,
+   "height": 0.0231
+  },
+  {
+   "text": ";",
+   "confidence": 94,
+   "x": 0.5349,
+   "y": 0.5028,
+   "width": 0.0026,
+   "height": 0.0231
+  },
+  {
+   "text": "Birliği",
+   "confidence": 98,
+   "x": 0.4995,
+   "y": 0.5028,
+   "width": 0.0339,
+   "height": 0.0231
+  },
+  {
+   "text": "Astronomi",
+   "confidence": 95,
+   "x": 0.4281,
+   "y": 0.5028,
+   "width": 0.0651,
+   "height": 0.0231
+  },
+  {
+   "text": "Uluslararası",
+   "confidence": 97,
+   "x": 0.3474,
+   "y": 0.5028,
+   "width": 0.0766,
+   "height": 0.0231
+  },
+  {
+   "text": ")",
+   "confidence": 95,
+   "x": 0.337,
+   "y": 0.5028,
+   "width": 0.0057,
+   "height": 0.0231
+  },
+  {
+   "text": "B",
+   "confidence": 96,
+   "x": 0.3281,
+   "y": 0.5028,
+   "width": 0.0083,
+   "height": 0.0231
+  },
+  {
+   "text": ",",
+   "confidence": 98,
+   "x": 0.7,
+   "y": 0.5333,
+   "width": 0.0016,
+   "height": 0.0231
+  },
+  {
+   "text": "cisimleri",
+   "confidence": 99,
+   "x": 0.6464,
+   "y": 0.5333,
+   "width": 0.051,
+   "height": 0.0231
+  },
+  {
+   "text": "sert",
+   "confidence": 99,
+   "x": 0.6188,
+   "y": 0.5333,
+   "width": 0.024,
+   "height": 0.0231
+  },
+  {
+   "text": "hacimli",
+   "confidence": 99,
+   "x": 0.5698,
+   "y": 0.5333,
+   "width": 0.0443,
+   "height": 0.0231
+  },
+  {
+   "text": "küçük",
+   "confidence": 93,
+   "x": 0.5271,
+   "y": 0.5333,
+   "width": 0.038,
+   "height": 0.0231
+  },
+  {
+   "text": "yüzen",
+   "confidence": 98,
+   "x": 0.4833,
+   "y": 0.5333,
+   "width": 0.0385,
+   "height": 0.0231
+  },
+  {
+   "text": "arasında",
+   "confidence": 97,
+   "x": 0.4234,
+   "y": 0.5333,
+   "width": 0.0552,
+   "height": 0.0231
+  },
+  {
+   "text": "gezegenler",
+   "confidence": 99,
+   "x": 0.3469,
+   "y": 0.5333,
+   "width": 0.0729,
+   "height": 0.0231
+  },
+  {
+   "text": ".",
+   "confidence": 94,
+   "x": 0.5453,
+   "y": 0.5639,
+   "width": 0.0031,
+   "height": 0.0185
+  },
+  {
+   "text": "tanımlamaktadır",
+   "confidence": 96,
+   "x": 0.4401,
+   "y": 0.5639,
+   "width": 0.1052,
+   "height": 0.0185
+  },
+  {
+   "text": "olarak",
+   "confidence": 99,
+   "x": 0.3964,
+   "y": 0.5639,
+   "width": 0.0401,
+   "height": 0.0185
+  },
+  {
+   "text": "meteor",
+   "confidence": 99,
+   "x": 0.3474,
+   "y": 0.5639,
+   "width": 0.0458,
+   "height": 0.0185
+  },
+  {
+   "text": "yüzen",
+   "confidence": 95,
+   "x": 0.6219,
+   "y": 0.6259,
+   "width": 0.0385,
+   "height": 0.0241
+  },
+  {
+   "text": "arasında",
+   "confidence": 97,
+   "x": 0.562,
+   "y": 0.6259,
+   "width": 0.0557,
+   "height": 0.0241
+  },
+  {
+   "text": "gezegenler",
+   "confidence": 99,
+   "x": 0.4859,
+   "y": 0.6259,
+   "width": 0.0724,
+   "height": 0.0241
+  },
+  {
+   "text": "içinde",
+   "confidence": 97,
+   "x": 0.4443,
+   "y": 0.6259,
+   "width": 0.0375,
+   "height": 0.0241
+  },
+  {
+   "text": "sistemi",
+   "confidence": 99,
+   "x": 0.3943,
+   "y": 0.6259,
+   "width": 0.0448,
+   "height": 0.0241
+  },
+  {
+   "text": "Güneş",
+   "confidence": 93,
+   "x": 0.3474,
+   "y": 0.6259,
+   "width": 0.0422,
+   "height": 0.0241
+  },
+  {
+   "text": ")",
+   "confidence": 93,
+   "x": 0.3375,
+   "y": 0.6259,
+   "width": 0.0057,
+   "height": 0.0241
+  },
+  {
+   "text": "C",
+   "confidence": 93,
+   "x": 0.3276,
+   "y": 0.6259,
+   "width": 0.0099,
+   "height": 0.0241
+  },
+  {
+   "text": "tanımına",
+   "confidence": 89,
+   "x": 0.6115,
+   "y": 0.6556,
+   "width": 0.0552,
+   "height": 0.0222
+  },
+  {
+   "text": "Birliğinin",
+   "confidence": 98,
+   "x": 0.5531,
+   "y": 0.6556,
+   "width": 0.0531,
+   "height": 0.0222
+  },
+  {
+   "text": "Astronomi",
+   "confidence": 98,
+   "x": 0.4823,
+   "y": 0.6556,
+   "width": 0.0651,
+   "height": 0.0222
+  },
+  {
+   "text": "Uluslararası",
+   "confidence": 97,
+   "x": 0.4016,
+   "y": 0.6556,
+   "width": 0.0755,
+   "height": 0.0222
+  },
+  {
+   "text": ",",
+   "confidence": 94,
+   "x": 0.3932,
+   "y": 0.6556,
+   "width": 0.0031,
+   "height": 0.0222
+  },
+  {
+   "text": "meteor",
+   "confidence": 99,
+   "x": 0.3479,
+   "y": 0.6556,
+   "width": 0.0448,
+   "height": 0.0222
+  },
+  {
+   "text": ".",
+   "confidence": 93,
+   "x": 0.5625,
+   "y": 0.6861,
+   "width": 0.0026,
+   "height": 0.0231
+  },
+  {
+   "text": "küçüğüdür",
+   "confidence": 87,
+   "x": 0.4938,
+   "y": 0.6861,
+   "width": 0.0682,
+   "height": 0.0231
+  },
+  {
+   "text": "en",
+   "confidence": 99,
+   "x": 0.474,
+   "y": 0.6861,
+   "width": 0.0146,
+   "height": 0.0231
+  },
+  {
+   "text": "cisimlerin",
+   "confidence": 99,
+   "x": 0.4083,
+   "y": 0.6861,
+   "width": 0.0599,
+   "height": 0.0231
+  },
+  {
+   "text": "sert",
+   "confidence": 99,
+   "x": 0.3802,
+   "y": 0.6861,
+   "width": 0.025,
+   "height": 0.0231
+  },
+  {
+   "text": "göre",
+   "confidence": 96,
+   "x": 0.3469,
+   "y": 0.6861,
+   "width": 0.0297,
+   "height": 0.0231
+  },
+  {
+   "text": "sistemi",
+   "confidence": 99,
+   "x": 0.651,
+   "y": 0.7454,
+   "width": 0.0448,
+   "height": 0.025
+  },
+  {
+   "text": "Güneş",
+   "confidence": 97,
+   "x": 0.6047,
+   "y": 0.7454,
+   "width": 0.0422,
+   "height": 0.025
+  },
+  {
+   "text": ",",
+   "confidence": 97,
+   "x": 0.5964,
+   "y": 0.7454,
+   "width": 0.0026,
+   "height": 0.025
+  },
+  {
+   "text": "meteoru",
+   "confidence": 99,
+   "x": 0.5438,
+   "y": 0.7454,
+   "width": 0.0505,
+   "height": 0.025
+  },
+  {
+   "text": ";",
+   "confidence": 94,
+   "x": 0.5349,
+   "y": 0.7454,
+   "width": 0.0026,
+   "height": 0.025
+  },
+  {
+   "text": "Birliği",
+   "confidence": 99,
+   "x": 0.4995,
+   "y": 0.7454,
+   "width": 0.0339,
+   "height": 0.025
+  },
+  {
+   "text": "Astronomi",
+   "confidence": 98,
+   "x": 0.4276,
+   "y": 0.7454,
+   "width": 0.0661,
+   "height": 0.025
+  },
+  {
+   "text": "Uluslararası",
+   "confidence": 97,
+   "x": 0.3474,
+   "y": 0.7454,
+   "width": 0.0766,
+   "height": 0.025
+  },
+  {
+   "text": ")",
+   "confidence": 91,
+   "x": 0.3375,
+   "y": 0.7454,
+   "width": 0.0063,
+   "height": 0.025
+  },
+  {
+   "text": "D",
+   "confidence": 95,
+   "x": 0.3281,
+   "y": 0.7454,
+   "width": 0.0099,
+   "height": 0.025
+  },
+  {
+   "text": "sert",
+   "confidence": 98,
+   "x": 0.6599,
+   "y": 0.775,
+   "width": 0.0255,
+   "height": 0.0241
+  },
+  {
+   "text": "hacimli",
+   "confidence": 99,
+   "x": 0.6104,
+   "y": 0.775,
+   "width": 0.0448,
+   "height": 0.0241
+  },
+  {
+   "text": "küçük",
+   "confidence": 88,
+   "x": 0.5698,
+   "y": 0.775,
+   "width": 0.0375,
+   "height": 0.0241
+  },
+  {
+   "text": "yüzen",
+   "confidence": 97,
+   "x": 0.5255,
+   "y": 0.775,
+   "width": 0.0385,
+   "height": 0.0241
+  },
+  {
+   "text": "arasında",
+   "confidence": 96,
+   "x": 0.4651,
+   "y": 0.775,
+   "width": 0.0568,
+   "height": 0.0241
+  },
+  {
+   "text": "gezegenler",
+   "confidence": 99,
+   "x": 0.3891,
+   "y": 0.775,
+   "width": 0.0724,
+   "height": 0.0241
+  },
+  {
+   "text": "içinde",
+   "confidence": 90,
+   "x": 0.3469,
+   "y": 0.775,
+   "width": 0.038,
+   "height": 0.0241
+  },
+  {
+   "text": ".",
+   "confidence": 94,
+   "x": 0.5536,
+   "y": 0.8056,
+   "width": 0.0031,
+   "height": 0.0194
+  },
+  {
+   "text": "tanımlamaktadır",
+   "confidence": 96,
+   "x": 0.4484,
+   "y": 0.8056,
+   "width": 0.1047,
+   "height": 0.0194
+  },
+  {
+   "text": "olarak",
+   "confidence": 99,
+   "x": 0.4047,
+   "y": 0.8056,
+   "width": 0.0401,
+   "height": 0.0194
+  },
+  {
+   "text": "cisim",
+   "confidence": 98,
+   "x": 0.3672,
+   "y": 0.8056,
+   "width": 0.0323,
+   "height": 0.0194
+  },
+  {
+   "text": "bir",
+   "confidence": 97,
+   "x": 0.3469,
+   "y": 0.8056,
+   "width": 0.0172,
+   "height": 0.0194
+  },
+  {
+   "text": "Astronomi",
+   "confidence": 98,
+   "x": 0.6281,
+   "y": 0.8676,
+   "width": 0.0661,
+   "height": 0.0231
+  },
+  {
+   "text": "Uluslararası",
+   "confidence": 97,
+   "x": 0.5479,
+   "y": 0.8676,
+   "width": 0.076,
+   "height": 0.0231
+  },
+  {
+   "text": ",",
+   "confidence": 97,
+   "x": 0.5396,
+   "y": 0.8676,
+   "width": 0.0026,
+   "height": 0.0231
+  },
+  {
+   "text": "meteorlar",
+   "confidence": 99,
+   "x": 0.4781,
+   "y": 0.8676,
+   "width": 0.0609,
+   "height": 0.0231
+  },
+  {
+   "text": "olan",
+   "confidence": 99,
+   "x": 0.4458,
+   "y": 0.8676,
+   "width": 0.026,
+   "height": 0.0231
+  },
+  {
+   "text": "yapıda",
+   "confidence": 95,
+   "x": 0.3979,
+   "y": 0.8676,
+   "width": 0.0432,
+   "height": 0.0231
+  },
+  {
+   "text": "bir",
+   "confidence": 98,
+   "x": 0.3781,
+   "y": 0.8676,
+   "width": 0.0167,
+   "height": 0.0231
+  },
+  {
+   "text": "Sert",
+   "confidence": 98,
+   "x": 0.3469,
+   "y": 0.8676,
+   "width": 0.0271,
+   "height": 0.0231
+  },
+  {
+   "text": ")",
+   "confidence": 95,
+   "x": 0.337,
+   "y": 0.8676,
+   "width": 0.0057,
+   "height": 0.0231
+  },
+  {
+   "text": "E",
+   "confidence": 95,
+   "x": 0.3281,
+   "y": 0.8676,
+   "width": 0.0094,
+   "height": 0.0231
+  },
+  {
+   "text": "küçük",
+   "confidence": 80,
+   "x": 0.6177,
+   "y": 0.8991,
+   "width": 0.038,
+   "height": 0.0231
+  },
+  {
+   "text": "yüzen",
+   "confidence": 94,
+   "x": 0.5745,
+   "y": 0.8991,
+   "width": 0.038,
+   "height": 0.0231
+  },
+  {
+   "text": "içinde",
+   "confidence": 97,
+   "x": 0.5328,
+   "y": 0.8991,
+   "width": 0.0375,
+   "height": 0.0231
+  },
+  {
+   "text": "sistemi",
+   "confidence": 98,
+   "x": 0.4833,
+   "y": 0.8991,
+   "width": 0.0448,
+   "height": 0.0231
+  },
+  {
+   "text": "Güneş",
+   "confidence": 95,
+   "x": 0.4365,
+   "y": 0.8991,
+   "width": 0.0417,
+   "height": 0.0231
+  },
+  {
+   "text": "göre",
+   "confidence": 97,
+   "x": 0.4026,
+   "y": 0.8991,
+   "width": 0.0297,
+   "height": 0.0231
+  },
+  {
+   "text": "Birliğine",
+   "confidence": 98,
+   "x": 0.3479,
+   "y": 0.8991,
+   "width": 0.05,
+   "height": 0.0231
+  },
+  {
+   "text": "ARAPÇA",
+   "confidence": 93,
+   "x": 0.8698,
+   "y": 0.9343,
+   "width": 0.087,
+   "height": 0.0315
+  },
+  {
+   "text": "/",
+   "confidence": 60,
+   "x": 0.8589,
+   "y": 0.9343,
+   "width": 0.0089,
+   "height": 0.0287
+  },
+  {
+   "text": "YDT",
+   "confidence": 97,
+   "x": 0.8115,
+   "y": 0.9333,
+   "width": 0.0422,
+   "height": 0.0296
+  },
+  {
+   "text": "-",
+   "confidence": 91,
+   "x": 0.7948,
+   "y": 0.9491,
+   "width": 0.0089,
+   "height": 0.0046
+  },
+  {
+   "text": "2025",
+   "confidence": 99,
+   "x": 0.7495,
+   "y": 0.9315,
+   "width": 0.0401,
+   "height": 0.0306
+  },
+  {
+   "text": ".",
+   "confidence": 94,
+   "x": 0.4625,
+   "y": 0.9278,
+   "width": 0.0036,
+   "height": 0.0185
+  },
+  {
+   "text": "cisimlerdir",
+   "confidence": 99,
+   "x": 0.3964,
+   "y": 0.9278,
+   "width": 0.0667,
+   "height": 0.0185
+  },
+  {
+   "text": "hacimli",
+   "confidence": 99,
+   "x": 0.3474,
+   "y": 0.9278,
+   "width": 0.0443,
+   "height": 0.0185
+  }
+ ],
+ "regions": [
+  {
+   "id": "question-root",
+   "type": "paragraph",
+   "x": 0.3472,
+   "y": 0.2264,
+   "width": 0.3562,
+   "height": 0.1342
+  },
+  {
+   "id": "option-a",
+   "type": "option-a",
+   "x": 0.3201,
+   "y": 0.3764,
+   "width": 0.3619,
+   "height": 0.0935
+  },
+  {
+   "id": "option-b",
+   "type": "option-b",
+   "x": 0.3211,
+   "y": 0.4968,
+   "width": 0.3551,
+   "height": 0.0916
+  },
+  {
+   "id": "option-c",
+   "type": "option-c",
+   "x": 0.3206,
+   "y": 0.6199,
+   "width": 0.3531,
+   "height": 0.0953
+  },
+  {
+   "id": "option-d",
+   "type": "option-d",
+   "x": 0.3211,
+   "y": 0.7394,
+   "width": 0.3817,
+   "height": 0.0916
+  },
+  {
+   "id": "option-e",
+   "type": "option-e",
+   "x": 0.3211,
+   "y": 0.8616,
+   "width": 0.3801,
+   "height": 0.0907
+  },
+  {
+   "id": "manual-box-1790877270952",
+   "type": "keyword",
+   "x": 0.3472,
+   "y": 0.265,
+   "width": 0.3551,
+   "height": 0.0159
+  },
+  {
+   "id": "manual-box-1790877294625",
+   "type": "keyword",
+   "x": 0.3778,
+   "y": 0.305,
+   "width": 0.323,
+   "height": 0.0156
+  },
+  {
+   "id": "manual-box-1790877334370",
+   "type": "keyword",
+   "x": 0.6302,
+   "y": 0.3574,
+   "width": 0.0669,
+   "height": 0.016
+  }
+ ],
+ "image": {
+  "width": 1920,
+  "height": 1080
+ },
+ "expect": {
+  "passageLines": [
+   {
+    "y": 0.252,
+    "phrase": "يُعَرِّفُ الِاتِّحَادُ الْفَلَكِيُّ الْعَالَمِيُّ النَّيْزَكَ بِأَنَّهُ جِسْمٌ صُلْبٌ"
+   },
+   {
+    "y": 0.298,
+    "phrase": "صَغِيرُ الْحَجْمِ، يَسْبَحُ بَيْنَ الْكَوَاكِبِ فِي الْمَجْمُوعَةِ"
+   },
+   {
+    "y": 0.34,
+    "phrase": "الشَّمْسِيَّةِ"
+   }
+  ],
+  "phrases": [
+   {
+    "y": 0.252,
+    "phrase": "النَّيْزَكَ"
+   },
+   {
+    "y": 0.253,
+    "phrase": "جِسْمٌ صُلْبٌ،"
+   },
+   {
+    "y": 0.298,
+    "phrase": "بَيْنَ الْكَوَاكِبِ"
+   },
+   {
+    "y": 0.299,
+    "phrase": "صَغِيرُ الْحَجْمِ"
+   },
+   {
+    "y": 0.299,
+    "phrase": "صَغِيرُ الْحَجْمِ"
+   }
+  ]
+ }
+}
