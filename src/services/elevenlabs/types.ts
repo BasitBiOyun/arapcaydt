@@ -22,6 +22,8 @@ export interface GenerateNarrationResponse {
   mimeType: string;
   mode: 'live' | 'mock';
   durationSeconds: number;
+  /** Voiced by a backup model (the teacher agreed); worth listening to before approving. */
+  lowerModel?: boolean;
   words?: NarrationWord[];
   alignment?: {
     characters: string[];

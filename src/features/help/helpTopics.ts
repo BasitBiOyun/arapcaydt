@@ -114,6 +114,8 @@ export const HELP_TOPICS: HelpTopic[] = [
         items: [
           'Her seslendirme, her cümle düzeltmesi ve her örnek ses 1 hak kullanır; çok uzun metinler bölüm başına 1 hak kullanır.',
           'Günlük ücretsiz haklar Türkiye saatiyle 10:00’da (yaz saatinde 11:00) yenilenir. “Bugünkü ücretsiz ses hakkı bitti” yazarsa yenilenmeyi bekleyin ya da kendi Google anahtarınızı ekleyin (bkz. **Google anahtarı alma**).',
+          'Sesler önce **en üst düzey modelle** üretilir. Bu modelin günlük kullanım hakkı bitince stüdyo sorar: **Yedek modelle seslendir** derseniz ses yine üretilir, ama yedek model araya olmayan cümle katabilir, olumsuz cümleyi olumlu okuyabilir ya da Türkçeyi yanlış telaffuz edebilir. Bu sesi mutlaka dinleyin; hatalı cümleyi yalnız o cümleyi **Sesi düzelt** ile yenileyerek düzeltin. **Yarını bekleyeceğim** derseniz hiçbir hak harcanmaz.',
+          'Bir iki cümle hatalıysa bütün sesi baştan üretmeyin: Ses şeridinde o cümleyi seçip **Sesi düzelt**’e basın. Hem sesin iyi kısımları bozulmaz hem de en üst düzey modelin hakkı daha geç biter.',
           'Bir hata çıkarsa üst üste denemeyin: her deneme bir hak harcar. İki denemede olmuyorsa sol menüdeki **Sorun bildir** ile bize yazın.',
         ],
       },

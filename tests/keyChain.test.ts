@@ -117,25 +117,43 @@ async function freshWorld(over: Partial<World> = {}): Promise<World> {
 }
 const today = (row: Row) => ({ created_at: new Date().toISOString(), ...row });
 
-test('narration uses the teacher key first and skips its exhausted models afterwards', async () => {
+test('narration tries the best model on every key before any backup, and skips exhausted keys afterwards', async () => {
   const { default: generate } = await import('../api/gemini/generate');
   const world = await freshWorld({ answer: key => key === TEACHER_KEY ? dailyQuota : ok });
   const first = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.' });
   assert.equal(first.status, 200);
   assert.equal(first.payload.keySource, 'system');
+  assert.equal(first.payload.lowerModel, false);
   const { GEMINI_TTS_MODELS } = await import('../server/quota');
-  assert.deepEqual(world.google.map(g => g.key === TEACHER_KEY ? 'teacher' : 'studio'), [...GEMINI_TTS_MODELS.map(() => 'teacher'), 'studio']);
-  assert.deepEqual(world.google.slice(0, GEMINI_TTS_MODELS.length).map(g => g.what), [...GEMINI_TTS_MODELS], 'strict quality order');
-  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · PerDay · neden: .+ · daily$/.test(a.detail)).length, GEMINI_TTS_MODELS.length);
+  assert.deepEqual(world.google, [{ key: TEACHER_KEY, what: GEMINI_TTS_MODELS[0] }, { key: STUDIO_KEY, what: GEMINI_TTS_MODELS[0] }]);
+  assert.equal(world.activity.filter(a => a.key_source === 'teacher' && / · 429 · PerDay · neden: .+ · daily$/.test(a.detail)).length, 1);
   assert.equal(world.activity.filter(a => a.key_source === 'system' && a.state === 'succeeded').length, 1);
 
-  // Same day: the teacher's exhausted models are not called again.
+  // Same day: the teacher's exhausted model is not called again.
   world.google = [];
   world.activity = world.activity.map(today);
   const second = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.' });
   assert.equal(second.payload.keySource, 'system');
   assert.deepEqual(world.google.map(g => g.key), [STUDIO_KEY]);
   assert.ok(!JSON.stringify(second.payload).includes(TEACHER_KEY) && !JSON.stringify(second.payload).includes(STUDIO_KEY));
+});
+
+test('the backup models voice only after the teacher agreed', async () => {
+  const { default: generate } = await import('../api/gemini/generate');
+  const { GEMINI_TTS_MODELS } = await import('../server/quota');
+  const world = await freshWorld({ answer: (_key, model) => model === GEMINI_TTS_MODELS[0] ? dailyQuota : ok });
+  const asked = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.' });
+  assert.equal(asked.status, 409);
+  assert.equal(asked.payload.code, 'TOP_MODEL_UNAVAILABLE');
+  assert.equal(asked.payload.reason, 'daily');
+  assert.ok(world.google.every(g => g.what === GEMINI_TTS_MODELS[0]), 'no backup model without consent');
+
+  world.google = [];
+  world.activity = world.activity.map(today);
+  const agreed = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.', allowLower: true });
+  assert.equal(agreed.status, 200);
+  assert.equal(agreed.payload.lowerModel, true);
+  assert.deepEqual(world.google, [{ key: TEACHER_KEY, what: GEMINI_TTS_MODELS[1] }], 'exhausted best model is skipped');
 });
 
 test('a working teacher key serves the narration itself', async () => {

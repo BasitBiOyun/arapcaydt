@@ -18,8 +18,39 @@ export class VoiceUnavailableError extends Error {
   }
 }
 
+/**
+ * Only the best voice model was tried and it could not voice today ("daily") or right now ("busy").
+ * The weaker backups add or drop sentences, flip negations and mispronounce Turkish, so the
+ * teacher decides whether they may be used.
+ */
+export class TopModelUnavailableError extends VoiceUnavailableError {
+  constructor(public reason: 'daily' | 'busy', detail: string) {
+    super(detail, reason === 'daily'
+      ? `Seslendirme yapılmadı. En üst düzey modelin kullanım hakkı her gün saat ${quotaResetClock()}’da yenilenir.`
+      : 'Seslendirme yapılmadı. En üst düzey model biraz sonra yine denenebilir.');
+  }
+}
+
+/** Asked once per narration before a backup model is used; true lets the backups voice. */
+export type AskLowerModel = (reason: 'daily' | 'busy') => Promise<boolean>;
+
+export const LOWER_MODEL_NOTE = 'Bu ses yedek modelle üretildi. Dinleyin: araya katılmış ya da yanlış okunmuş bir cümle varsa yalnız o cümleyi Ses şeridinden “Sesi düzelt” ile yeniden seslendirin.';
+
+/** The teacher's question before a backup model voices (asked with the studio's confirm dialog). */
+export function askLowerWith(confirm: (options: { title: string; message: string; confirmLabel: string; cancelLabel: string }) => Promise<boolean>): AskLowerModel {
+  return reason => confirm({
+    title: reason === 'daily' ? 'En üst düzey modelin bugünkü kullanım hakkı bitti' : 'En üst düzey model şu anda yanıt vermiyor',
+    message: `Yedek modelle seslendirilebilir, ama yedek model araya olmayan cümleler katabilir, olumsuz cümleyi olumlu okuyabilir ya da Türkçeyi yanlış telaffuz edebilir; sesi mutlaka dinleyin. ${reason === 'daily'
+      ? `En üst düzey modelin hakkı her gün saat ${quotaResetClock()}’da yenilenir.`
+      : 'Birkaç dakika sonra en üst düzey modelle yeniden deneyebilirsiniz.'}`,
+    confirmLabel: 'Yedek modelle seslendir',
+    cancelLabel: reason === 'daily' ? 'Yarını bekleyeceğim' : 'Sonra deneyeceğim',
+  });
+}
+
 /** What the teacher is told when /api/gemini/generate refuses. */
 export function voiceFailure(status: number, err: any): VoiceUnavailableError {
+  if (err?.code === 'TOP_MODEL_UNAVAILABLE') return new TopModelUnavailableError(err.reason === 'busy' ? 'busy' : 'daily', err?.error || 'En üst düzey model kullanılamadı.');
   const detail = err?.error || `Gemini ses servisi hata döndürdü (HTTP ${status}).`;
   // Input and permission problems are the teacher's to fix; say exactly what.
   if (err?.fallbackAllowed === false || status === 401) return new VoiceUnavailableError(detail, err?.error || VOICE_RETRY_MESSAGE);
@@ -99,16 +130,27 @@ class NarrationService {
    * The voice for a solution. A long solution is voiced in parts (each its own request, which
    * finishes in time and skips less) and the parts are joined on the server into one narration.
    */
-  async generateNarration(req: GenerateNarrationRequest, onPart?: (done: number, total: number) => void): Promise<GenerateNarrationResponse> {
+  async generateNarration(req: GenerateNarrationRequest, onPart?: (done: number, total: number) => void, askLower?: AskLowerModel): Promise<GenerateNarrationResponse> {
+    // Once the teacher agreed to a backup model, the remaining parts may use it too.
+    let allowLower = false;
+    const voice = async (text: string) => {
+      try {
+        return await this.generatePart({ ...req, text }, allowLower);
+      } catch (error) {
+        if (!(error instanceof TopModelUnavailableError) || !askLower || !await askLower(error.reason)) throw error;
+        allowLower = true;
+        return this.generatePart({ ...req, text }, true);
+      }
+    };
     const parts = splitNarration(req.text);
-    if (parts.length <= 1) return this.generatePart(req);
+    if (parts.length <= 1) return voice(req.text);
     const made: GenerateNarrationResponse[] = [];
     for (const [i, text] of parts.entries()) {
       onPart?.(i, parts.length);
       try {
-        made.push(await this.generatePart({ ...req, text }));
+        made.push(await voice(text));
       } catch (error) {
-        if (error instanceof VoiceUnavailableError)
+        if (error instanceof VoiceUnavailableError && !(error instanceof TopModelUnavailableError))
           throw new VoiceUnavailableError(`Bölüm ${i + 1}/${parts.length}: ${error.detail}`, `Uzun çözümün ${i + 1}. bölümü (toplam ${parts.length}) seslendirilemedi. ${error.message}`);
         throw error;
       }
@@ -122,7 +164,7 @@ class NarrationService {
       for (const s of samples) { whole.set(s, at); at += s.length; }
       return {
         ...made[0], audioUrl: URL.createObjectURL(await encodeMp3(whole)), assetPath: undefined, audioBase64: undefined,
-        mimeType: 'audio/mpeg', durationSeconds: made.reduce((sum, p) => sum + p.durationSeconds, 0),
+        mimeType: 'audio/mpeg', durationSeconds: made.reduce((sum, p) => sum + p.durationSeconds, 0), lowerModel: made.some(p => p.lowerModel),
       };
     }
     let res: Response;
@@ -144,17 +186,18 @@ class NarrationService {
       assetPath: data.assetPath,
       mimeType: data.mimeType || made[0].mimeType,
       durationSeconds: made.reduce((sum, p) => sum + p.durationSeconds, 0),
+      lowerModel: made.some(p => p.lowerModel),
     };
   }
 
-  private async generatePart(req: GenerateNarrationRequest): Promise<GenerateNarrationResponse> {
+  private async generatePart(req: GenerateNarrationRequest, allowLower = false): Promise<GenerateNarrationResponse> {
     let res: Response;
     try {
       res = await fetch('/api/gemini/generate', {
         method: 'POST',
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         headers: { 'Content-Type': 'application/json', ...await authHeaders() },
-        body: JSON.stringify({ projectId: req.projectId, text: req.text }),
+        body: JSON.stringify({ projectId: req.projectId, text: req.text, ...(allowLower ? { allowLower: true } : {}) }),
       });
     } catch (error) {
       throw new VoiceUnavailableError(timedOut(error)
@@ -176,6 +219,7 @@ class NarrationService {
         modelId: data.modelId || 'gemini-tts',
         voiceId: data.voiceId || 'Achernar',
         voiceName: data.voiceName || 'Achernar',
+        lowerModel: data.lowerModel === true,
       };
     }
     const failure = voiceFailure(res.status, await res.json().catch(() => null));

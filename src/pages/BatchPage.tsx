@@ -12,7 +12,7 @@ import { CollectionInput } from '../features/projects/CollectionInput';
 import { useAuth } from '../features/auth/AuthContext';
 import { newProjectDefaults } from '../features/settings/preferences';
 import { exportProjectVideo, videoFileName } from '../features/video/exportProjectVideo';
-import { narrationService } from '../services/narration/narrationService';
+import { askLowerWith, narrationService } from '../services/narration/narrationService';
 import { readAudioDuration, readCompressedImage, readDataUrl, saveFile } from '../services/narration/browserMedia';
 import { prepareUploadedNarration } from '../services/narration/uploadedNarration';
 import { localOcrService } from '../services/ocr/localOcrService';
@@ -111,6 +111,9 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
     if (!onlyUnfinished) setVideos({});
     const finished: Record<number, { name: string; blob: Blob }> = {};
     const zipMode = asZip;
+    // Asked once for the whole batch, not for every question.
+    let lowerAnswer: Promise<boolean> | null = null;
+    const askLower = askLowerWith(confirm);
     const deps: BatchDeps<File> = {
       // Only question images go through this; MP3s use prepareUpload below.
       readDataUrl: readCompressedImage,
@@ -118,7 +121,7 @@ export function BatchPage({ onOpenProject, registerLeaveGuard }: { onOpenProject
       loadProject: id => projectRepository.getById(id),
       saveProject: p => projectRepository.save(p),
       generateVoice: p => narrationService.generateNarration({ projectId: p.id, text: p.solutionText, voiceId: STANDARD_VOICE_CONFIG.voiceId,
-        modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat }),
+        modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat }, undefined, reason => (lowerAnswer ??= askLower(reason))),
       alignGeneratedVoice: p => narrationService.alignGeneratedNarration(p.id),
       alignGeneratedVoiceLocal: p => localWhisperService.transcribeNarrationAudio(p),
       prepareUpload: (p, file) => prepareUploadedNarration(file, {
