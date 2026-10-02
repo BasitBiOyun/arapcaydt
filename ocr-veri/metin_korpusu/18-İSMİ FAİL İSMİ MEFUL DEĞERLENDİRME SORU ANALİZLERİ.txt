@@ -1,0 +1,289 @@
+İSMİ FAİL İSMİ MEFUL DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+يَقْرَأُ الطَّالِبُ النَّصَّ بِصَوْتٍ وَاضِحٍ، فَالطَّالِبُ ----.
+Önce cümlenin yapısına bakalım:
+يَقْرَأُ الطَّالِبُ النَّصَّ بِصَوْتٍ وَاضِحٍ
+“Öğrenci metni açık bir sesle okuyor.”
+Cümlenin temel fiili يَقْرَأُ olup mâzisi قَرَأَ şeklindedir.
+Fiili gerçekleştiren unsur الطَّالِبُ, fiilden etkilenen unsur ise النَّصَّ kelimesidir.
+Boşlukta tekrar الطَّالِبُ hakkında bilgi verilmektedir. Bu nedenle şıklarda, öğrencinin cümlede üstlendiği rolü ifade eden kelime aranmalıdır. Kelimelerin hem kökleri hem de eylemi yapanı mı, eylemden etkileneni mi gösterdikleri dikkate alınmalıdır.
+Şimdi şıklara bakalım:
+A) مَقْرُوءٌ — okunmuş / okunan
+قَرَأَ fiilinden türemiştir ancak okuma eylemini yapanı değil, eylemden etkileneni bildirir. ❌
+B) قَارِئٌ — okuyan / okuyucu
+قَرَأَ fiilinden türemiştir ve okuma eylemini gerçekleştiren kişiyi ifade eder. Cümledeki الطَّالِبُ ile uyumludur. ✅
+C) قِرَاءَةٌ — okuma
+Mastardır; eylemi yapan kişiyi değil, eylemin kendisini ifade eder. ❌
+D) مَكْتُوبٌ — yazılmış / yazılı
+كَتَبَ fiilinden türemiştir. Hem kökü farklıdır hem de eylemden etkileneni bildirir. ❌
+E) كِتَابٌ — kitap
+Bir isimdir; öğrencinin gerçekleştirdiği eylemi ifade eden bir türemiş isim değildir. ❌
+Doğru cevap: B) قَارِئٌ
+2. Soru
+فَتَحَ الْمُوَظَّفُ الْبَابَ، فَالْبَابُ ----.
+Önce cümlenin yapısına bakalım:
+فَتَحَ الْمُوَظَّفُ الْبَابَ
+“Görevli kapıyı açtı.”
+Burada fiil فَتَحَ, fiili gerçekleştiren kişi الْمُوَظَّفُ, açma eyleminin üzerinde gerçekleştiği unsur ise الْبَابَ kelimesidir.
+İkinci bölümde hakkında hüküm verilen unsur الْبَابُ olduğundan, kapının eylemi gerçekleştiren mi yoksa eylemden etkilenen unsur mu olduğuna dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) فَاتِحٌ — açan
+Açma eylemini gerçekleştiren kişiyi ifade eder. Kapı burada açan değil, açılan unsurdur. ❌
+B) مَفْتُوحٌ — açılmış / açık
+فَتَحَ fiilinden türemiştir ve açma eyleminden etkilenen şeyi ifade eder. الْبَابُ ile anlam bakımından uyumludur. ✅
+C) فَتْحٌ — açma / fetih
+Mastardır; eylemden etkilenen varlığı nitelemez. ❌
+D) مِفْتَاحٌ — anahtar
+Alet ismidir; “açılmış” anlamı vermez. ❌
+E) فَاتِحَةٌ — açan kadın / başlangıç
+Biçim ve anlam bakımından الْبَابُ ile uyumlu değildir. ❌
+Doğru cevap: B) مَفْتُوحٌ
+3. Soru
+Üç harfli yalın fiillerden bir eylemi gerçekleştiren kişi veya varlığı ifade eden türemiş isim oluşturulurken belirli bir vezin kullanılır.
+Örneğin كَتَبَ، جَلَسَ، فَتَحَ gibi üç harfli fiillerin türemiş şekillerine bakıldığında ortak bir kalıp görülür.
+Burada seçeneklerde verilen vezinlerin hangi türemiş isim türünü ifade ettiğine dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) مَفْعُولٌ
+Üç harfli fiillerden genellikle ism-i mef‘ûl türetmekte kullanılan vezindir. ❌
+B) فَعِيلٌ
+Sıfat-ı müşebbehe ve başka anlam kalıplarında görülebilir; düzenli ism-i fâil vezni değildir. ❌
+C) فَاعِلٌ
+Üç harfli yalın fiillerden eylemi yapanı gösteren isimlerin temel veznidir:
+كَتَبَ ← كَاتِبٌ ✅
+D) مُفْعِلٌ
+Üç harfli olmayan, özellikle أَفْعَلَ babındaki fiillerin ism-i fâil yapısında görülür. ❌
+E) فِعَالٌ
+Üç harfli fiilin düzenli ism-i fâil vezni değildir. ❌
+Doğru cevap: C) فَاعِلٌ
+4. Soru
+İsm-i mef‘ûl, fiilin bildirdiği eylemin üzerinde gerçekleştiği veya eylemden etkilenen kişi ya da varlığı ifade eder.
+Üç harfli yalın fiillerde bunun için düzenli bir vezin bulunmaktadır. Şıklardaki kalıpların ism-i fâil, mübalağa veya mezîd fiillerden türetilmiş yapılar olup olmadığına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) فَاعِلٌ
+Üç harfli fiillerin düzenli ism-i fâil veznidir. ❌
+B) مَفْعُولٌ
+Üç harfli fiillerden ism-i mef‘ûl türetmekte kullanılan temel vezindir:
+كَتَبَ ← مَكْتُوبٌ ✅
+C) فَعَّالٌ
+Genellikle mübalağa ifade eden kalıplardan biridir. ❌
+D) مُفَعِّلٌ
+فَعَّلَ babındaki fiillerin ism-i fâil kalıbıdır. ❌
+E) فَعُولٌ
+Çeşitli sıfat ve mübalağa anlamlarında görülebilir; temel ism-i mef‘ûl vezni değildir. ❌
+Doğru cevap: B) مَفْعُولٌ
+5. Soru
+كَتَبَ “yazdı” anlamında üç harfli yalın bir fiildir.
+Soruda, yazma eyleminin kendisi veya yazma eyleminden etkilenen nesne değil, bu eylemi gerçekleştiren kişi ya da varlığı ifade eden türemiş isim aranmaktadır.
+Bu nedenle hem köke hem de üç harfli fiillerin ilgili türetme kalıbına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) مَكْتُوبٌ — yazılmış / yazılı
+Yazma eyleminden etkilenen şeyi ifade eder. ❌
+B) كُتِبَ — yazıldı
+Meçhul mâzi fiildir; isim değildir. ❌
+C) كَاتِبٌ — yazan / yazar
+كَتَبَ fiilinden türemiş ve yazma eylemini gerçekleştiren kişiyi ifade etmektedir. ✅
+D) كِتَابٌ — kitap
+Bir isimdir ancak “yazan kişi” anlamı taşımaz. ❌
+E) كَتْبٌ — yazma
+Mastar niteliğindedir; eylemi yapanı ifade etmez. ❌
+Doğru cevap: C) كَاتِبٌ
+6. Soru
+“جَلَسَ” fiilinin ism-i fâili aşağıdakilerden hangisidir?
+جَلَسَ “oturdu” anlamına gelen üç harfli yalın bir fiildir.
+Soruda, oturma eylemini gerçekleştiren kimseyi ifade eden türemiş isim aranmaktadır. Şıklarda kök benzerliği tek başına yeterli değildir; kelimenin hangi vezinde ve hangi anlamda kullanıldığı da değerlendirilmelidir.
+Şimdi şıklara bakalım:
+A) جَالِسٌ — oturan
+جَلَسَ fiilinden türemiştir ve oturma eylemini yapan kimseyi ifade eder. ✅
+B) مَجْلُوسٌ — oturulmuş
+Biçim olarak eylemden etkilenen unsuru ifade eden yapıdadır. ❌
+C) جِلَاسٌ
+Düzenli ism-i fâil kalıbında değildir. ❌
+D) مَجْلِسٌ — meclis / oturulan yer
+Yer bildiren bir isimdir; eylemi yapanı göstermez. ❌
+E) جَلِيسٌ — oturma arkadaşı / birlikte oturan kimse
+Kök bakımından bağlantılıdır fakat düzenli فَاعِلٌ veznindeki ism-i fâil değildir. ❌
+Doğru cevap: A) جَالِسٌ
+
+7. Soru
+“شَرِبَ” fiilinin ism-i fâili aşağıdakilerden hangisidir?
+شَرِبَ “içti” anlamına gelen üç harfli bir fiildir.
+Soruda içme eylemini gerçekleştiren kişi veya varlığı ifade eden türemiş isim aranmaktadır. Şıklarda mastar, ism-i mef‘ûl ve farklı sıfat kalıpları bulunmaktadır.
+Şimdi şıklara bakalım:
+A) مَشْرُوبٌ — içilmiş / içecek olan şey
+İçme eyleminden etkilenen unsuru ifade eder. ❌
+B) شَرُوبٌ — çok içen
+Mübalağa anlamı taşıyabilir; düzenli ism-i fâil kalıbı değildir . ❌
+C) شَرَابٌ — içecek
+Bir isimdir; içme eylemini yapan kişiyi ifade etmez. ❌
+D) شَارِبٌ — içen
+شَرِبَ fiilinden türemiştir ve eylemi gerçekleştiren kişiyi ifade eder. ✅
+E) مِشْرَبَةٌ — içme yeri / kap vb.
+Eylemi gerçekleştiren kişiyi göstermez. ❌
+Doğru cevap: D) شَارِبٌ
+
+8. Soru
+فَتَحَ “açtı” anlamındaki üç harfli yalın fiildir.
+Soruda açma eylemini gerçekleştiren kişi veya varlığı ifade eden türemiş isim aranmaktadır. Kökün aynı olması yeterli değildir; türetilen kelimenin görevine bakılmalıdır.
+Şimdi şıklara bakalım:
+A) فَاتِحٌ — açan
+Açma eylemini gerçekleştiren kişi veya varlığı ifade eder. ✅
+B) مِفْتَاحٌ — anahtar
+Açma işinde kullanılan aleti ifade eder. ❌
+C) مَفْتُوحٌ — açılmış / açık
+Açma eyleminden etkilenen şeyi ifade eder. ❌
+D) مَفَاتِيحُ — anahtarlar
+مِفْتَاحٌ kelimesinin çoğuludur. ❌
+E) فَتْحٌ — açma / fetih
+Mastardır; eylemi yapanı ifade etmez. ❌
+Doğru cevap: A) فَاتِحٌ
+9. Soru
+Bu soruda kelimelerin yalnızca anlamlarına değil, morfolojik yapılarına dikkat edilmelidir.
+فَاعِلٌ kalıbında birinci kök harfinden sonra uzun ا, ikinci kök harfinden sonra ise kesra bulunur.
+Şıklardaki kelimelerin hangi vezne oturduğunu karşılaştırmak gerekir.
+Şimdi şıklara bakalım:
+A) مَكْتُوبٌ — yazılmış
+مَفْعُولٌ veznindedir. ❌
+B) نَاصِرٌ — yardım eden
+Kök harfleri ن ـ ص ـ ر olup yapı فَاعِلٌ kalıbına uymaktadır. ✅
+C) مَشْرُوبٌ — içilmiş
+مَفْعُولٌ veznindedir. ❌
+D) مِفْتَاحٌ — anahtar
+Alet ismidir; فَاعِلٌ vezninde değildir. ❌
+E) مُعَلَّمٌ — öğretilmiş
+Mezîd fiilden türetilmiş ism-i mef‘ûl yapısındadır. ❌
+Doğru cevap: B) نَاصِرٌ
+10. Soru
+مَفْعُولٌ üç harfli yalın fiillerden ism-i mef‘ûl türetmekte kullanılan temel vezindir.
+Bu nedenle şıklardaki kelimelerin başındaki harfler, kök dizilimi ve uzun و içeren yapı dikkatle incelenmelidir.
+Şimdi şıklara bakalım:
+A) مُكْرِمٌ — ikram eden
+أَكْرَمَ fiilinden türemiş ism-i fâildir. ❌
+B) مُدَاخَلَةٌ — müdahale / katılım
+Mastardır. ❌
+C) شُجَاعٌ — cesur
+Sıfat niteliğindedir; مَفْعُولٌ vezninde değildir. ❌
+D) مَقْتُولٌ — öldürülmüş
+قَتَلَ fiilinden türemiştir ve yapı olarak مَفْعُولٌ veznine tam olarak uymaktadır. ✅
+E) مُدْهِشٌ — şaşırtıcı
+Mezîd fiilden türemiş ism-i fâil yapısındadır. ❌
+Doğru cevap: D) مَقْتُولٌ
+11. Soru
+Aşağıdaki fiil–türemiş isim eşleştirmelerinden hangisi yanlıştır?
+Bu soruda türemiş ismin mutlaka ism-i fâil olması istenmemektedir. Bu nedenle her seçenekte verilen ismin gerçekten belirtilen fiil kökünden türeyip türemediğine bakılmalıdır.
+Özellikle yalın üç harfli bir fiille, aynı kökün mezîd kalıbından türeyen bir ismi karıştırmamak gerekir.
+Şimdi şıklara bakalım:
+A) كَتَبَ ← كَاتِبٌ
+كَاتِبٌ, كَتَبَ fiilinden türemiştir ve yazan anlamındadır. Eşleştirme doğrudur. ✅
+B) نَصَرَ ← مَنْصُورٌ
+مَنْصُورٌ, نَصَرَ fiilinden türemiş ism-i mef‘ûldür: “yardım edilmiş / muzaffer kılınmış.” Eşleştirme doğrudur. ✅
+C) فَتَحَ ← مَفْتُوحٌ
+مَفْتُوحٌ, فَتَحَ fiilinden türemiş ism-i mef‘ûldür. Eşleştirme doğrudur. ✅
+D) خَرَجَ ← مُخْرِجٌ
+خَرَجَ fiilinin eylemi yapanı gösteren düzenli türevi خَارِجٌ şeklindedir. مُخْرِجٌ ise أَخْرَجَ — يُخْرِجُ fiilinden türemiştir ve “çıkaran” anlamına gelir. Bu nedenle eşleştirme yanlıştır. ❌
+E) شَرِبَ ← شَارِبٌ
+شَارِبٌ, شَرِبَ fiilinden türemiştir ve “içen” anlamındadır. Eşleştirme doğrudur. ✅
+Doğru cevap: D) خَرَجَ ← مُخْرِجٌ
+12. Soru
+Soruda yalnızca aynı kökten türeme yeterli değildir. İkinci kelimenin, verilen fiildeki eylemi gerçekleştiren kişi veya varlığı ifade etmesi gerekmektedir.
+Bu nedenle mastar, mekân ismi ve eylemden etkileneni gösteren kelimeler elenmelidir.
+Şimdi şıklara bakalım:
+A) كَتَبَ - مَكْتَبٌ
+مَكْتَبٌ, “büro / çalışma masası” gibi anlamlara gelir; yazan kişiyi ifade etmez. ❌
+B) فَتَحَ - مَفْتُوحٌ
+مَفْتُوحٌ, “açılmış” demektir; eylemi yapanı değil, eylemden etkileneni bildirir. ❌
+C) أَكَلَ - مَأْكُولٌ
+مَأْكُولٌ, “yenmiş / yenilen” anlamındadır. ❌
+D) شَرِبَ - شَارِبٌ
+İkinci kelime içme eylemini gerçekleştiren kişiyi ifade etmektedir. ✅
+E) نَصَرَ - مَنْصُورٌ
+مَنْصُورٌ, yardım edilen veya desteklenen kişiyi ifade eder; eylemi yapan değildir. ❌
+Doğru cevap: D) شَرِبَ - شَارِبٌ
+13. Soru
+Burada fiil üç harfli yalın değil, أَفْعَلَ veznindeki mezîd bir fiildir.
+Üç harfli olmayan fiillerde ism-i fâil türetilirken muzâri şekli esas alınır; muzâri harfinin yerine dammeli مُـ getirilir ve sondan bir önceki harf kesralı yapılır.
+Bu nedenle şıklarda hem köke hem de hareke yapısına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) مَحَاسِينُ — güzellikler / güzel özellikler
+Soruda istenen fiili yapan kişi anlamını taşımaz. ❌
+B) مُحْسِنٌ — iyilik yapan / iyi davranan
+أَحْسَنَ — يُحْسِنُ fiilinden, mezîd fiillerin ism-i fâil kuralına uygun biçimde türetilmiştir. ✅
+C) إِحْسَانٌ — iyilik etme
+Fiilin mastarıdır. ❌
+D) حَسِينٌ
+Soruda verilen fiilin düzenli ism-i fâili değildir. ❌
+E) مُحْسَنٌ — kendisine iyilik yapılan / iyi hâle getirilen
+Yapı itibarıyla eylemden etkileneni ifade eder. ❌
+Doğru cevap: B) مُحْسِنٌ
+14. Soru
+أَكْرَمَ, أَفْعَلَ vezninde mezîd bir fiildir.
+Üç harfli olmayan fiillerden ism-i mef‘ûl yapılırken muzâri fiilden hareket edilir; başına dammeli مُـ getirilir ve sondan bir önceki harf fethalı yapılır.
+Soruda, ikram etme veya onurlandırma eylemini yapan değil, bu eylemin üzerinde gerçekleştiği kişi veya varlık aranmalıdır.
+Şimdi şıklara bakalım:
+A) مُكْرِمٌ — ikram eden / onurlandıran
+Eylemi yapanı ifade eder. ❌
+B) إِكْرَامٌ — ikram etme / onurlandırma
+Mastardır. ❌
+C) كَرِيمٌ — cömert / değerli
+Sıfattır; sorulan fiilin ism-i mef‘ûlü değildir. ❌
+D) مُكْرَمٌ — ikram edilen / onurlandırılan
+أَكْرَمَ — يُكْرِمُ fiilinden eylemden etkileneni ifade edecek biçimde türetilmiştir. ✅
+E) مُكَرِّمٌ — onurlandıran
+Başka bir fiil kalıbına, كَرَّمَ, bağlı ism-i fâil yapısıdır. ❌
+Doğru cevap: D) مُكْرَمٌ
+
+15. Soru
+عَلَّمَ, فَعَّلَ vezninde mezîd bir fiildir.
+Bu tür fiillerden ism-i fâil türetilirken muzâri şekil dikkate alınır:
+يُعَلِّمُ
+Soruda, öğretme eylemini gerçekleştiren kişi aranmalıdır. Özellikle sondan bir önceki harfin harekesi, ism-i fâil ile ism-i mef‘ûlü birbirinden ayırmada önemlidir.
+Şimdi şıklara bakalım:
+A) مُعَلَّمٌ — öğretilmiş / eğitilmiş
+Eylemden etkileneni ifade eder. ❌
+B) تَعْلِيمٌ — öğretme / eğitim
+Mastardır. ❌
+C) مُعَلِّمٌ — öğreten / öğretmen
+عَلَّمَ — يُعَلِّمُ fiilinden türemiştir ve öğretme eylemini gerçekleştiren kişiyi ifade eder. ✅
+D) عَلِيمٌ — çok bilen / bilgin
+Kök bakımından bağlantılı olmakla birlikte عَلَّمَ fiilinin düzenli ism-i fâili değildir. ❌
+E) مَعْلُومٌ — bilinen
+عَلِمَ fiiliyle ilişkili ism-i mef‘ûl yapısıdır; “öğreten” anlamını vermez. ❌
+Doğru cevap: C) مُعَلِّمٌ
+
+16. Soru
+كَرَّمَ, فَعَّلَ vezninde mezîd bir fiildir.
+Muzâri şekli:
+يُكَرِّمُ
+Soruda onurlandırma eylemini yapan kişi değil, bu eylemin üzerinde gerçekleştiği kişi veya varlık aranmalıdır.
+Özellikle مُكَرِّمٌ ile مُكَرَّمٌ arasındaki hareke farkına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) مُكَرِّمٌ — onurlandıran
+Eylemi gerçekleştiren kişiyi ifade eder. ❌
+B) كَرِيمٌ — cömert / değerli
+Bir sıfattır; verilen fiilin ism-i mef‘ûlü değildir. ❌
+C) مُكَرَّمٌ — onurlandırılmış
+كَرَّمَ fiilinden türetilmiştir ve eylemden etkileneni ifade eder. ✅
+D) تَكْرِيمٌ — onurlandırma
+Fiilin mastarıdır. ❌
+E) مَكْرُومٌ
+Üç harfli yalın fiillerin مَفْعُولٌ kalıbını çağrıştırır; كَرَّمَ fiilinin doğru ism-i mef‘ûl kalıbı değildir. ❌
+Doğru cevap: C) مُكَرَّمٌ
+
+17. Soru
+“اِسْتَخْرَجَ” fiilinden türetilen ism-i fâil aşağıdakilerden hangisidir?
+اِسْتَخْرَجَ, üç harften fazla olan ve اِسْتَفْعَلَ vezninde bulunan mezîd bir fiildir.
+Muzâri şekli:
+يَسْتَخْرِجُ
+Üç harfli olmayan fiillerde ism-i fâil türetilirken muzâri fiilin başındaki muzâraat harfi kaldırılır, yerine dammeli مُـ getirilir ve sondan bir önceki harf kesralı bırakılır.
+Şıklarda ism-i fâil, ism-i mef‘ûl, mastar ve aynı kökün farklı fiil kalıplarından türeyen kelimeler bulunmaktadır.
+Şimdi şıklara bakalım:
+A) مُسْتَخْرِجٌ — çıkaran / elde eden
+اِسْتَخْرَجَ — يَسْتَخْرِجُ fiilinden türetilmiştir ve eylemi gerçekleştiren kişiyi ifade eder. ✅
+B) مُسْتَخْرَجٌ — çıkarılmış / elde edilmiş
+Eylemden etkileneni ifade eder. Burada sondan bir önceki harfin fethalı olması ism-i mef‘ûl olduğunu göstermektedir. ❌
+C) اِسْتِخْرَاجٌ — çıkarma / elde etme
+Fiilin mastarıdır. ❌
+D) خَارِجٌ — çıkan / dışarıda olan
+Üç harfli خَرَجَ fiilinin ism-i fâilidir; اِسْتَخْرَجَ fiilinin değil. ❌
+E) مُخْرِجٌ — çıkaran
+Anlam bakımından yakın görünse de أَخْرَجَ — يُخْرِجُ fiilinden türemiş ism-i fâildir. Soruda verilen اِسْتَخْرَجَ fiilinin türevi değildir. ❌
+Doğru cevap: A) مُسْتَخْرِجٌ

@@ -1,0 +1,81 @@
+ZAMİR SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+---- مُجْتَهِدٌ فِي عَمَلِهِ.
+Türkçesi: ---- işinde çalışkandır.
+İlk aşamada مُجْتَهِدٌ “çalışkan” kelimesine bakalım. Bu kelime müzekker tekildir. Ayrıca عَمَلِهِ “onun işi” ifadesindeki ـهِ zamiri de müzekker tekil bir kişiye işaret ediyor. Buna uygun bir zamir arıyoruz.
+Şimdi şıklara bakalım:
+A) نَحْنُ — biz
+Çoğul zamirdir. Müzekker tekil olan مُجْتَهِدٌ ile uyumlu değildir. Olmaz.
+B) هِيَ — o (kadın)
+Müennes tekil zamirdir. Bununla مُجْتَهِدَةٌ denmesi gerekirdi. Olmaz.
+C) إِيَّاهُ — onu
+Ayrı kullanılan bir nesne zamiridir. Burada özne olarak kullanılamaz. Olmaz.
+D) هُوَ — o (erkek)
+Müzekker tekil özne zamiridir. مُجْتَهِدٌ ve عَمَلِهِ ile uyumludur. Olabilir.
+E) ـنَا — bizim / bizi
+Muttasıl yani bitişik zamirdir. Burada bağımsız özne olarak kullanılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, هُوَ olur.
+2. Soru
+---- مُعَلِّمَانِ فِي الْمَدْرَسَةِ.
+Türkçesi: ---- okulda iki öğretmendir.
+İlk aşamada مُعَلِّمَانِ “iki öğretmen” kelimesine bakalım. Burada iki kişiden söz edildiği için buna uygun ikil bir zamir arıyoruz.
+Şimdi şıklara bakalım:
+A) أَنْتُمْ — siz
+Müzekker çoğul hitap zamiridir. Burada iki kişiden söz ediliyor. Olmaz.
+B) هُمْ — onlar
+Müzekker çoğul zamirdir. İkil olan مُعَلِّمَانِ ile sayı bakımından uyumlu değildir. Olmaz.
+C) هُوَ — o (erkek)
+Tekil zamirdir. İki kişiyi karşılamaz. Olmaz.
+D) إِيَّاكُمَا — sizi ikinizi
+İkil nesne zamiridir. Burada özne olarak kullanılamaz. Olmaz.
+E) هُمَا — o ikisi
+İkil zamirdir. مُعَلِّمَانِ ile sayı bakımından uyumludur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, هُمَا olur.
+3. Soru
+رَأَيْتُ ---- فِي الْمَكْتَبَةِ.
+Türkçesi: Kütüphanede ---- gördüm.
+İlk aşamada رَأَيْتُ “gördüm” fiiline bakalım. Burada “Kimi gördüm?” sorusuna cevap verecek bir nesne zamiri arıyoruz. Bu nedenle fiile bağlanabilecek muttasıl bir zamir gerekir.
+Şimdi şıklara bakalım:
+A) أَنَا — ben
+Munfasıl özne zamiridir. Burada nesne olarak kullanılamaz. Olmaz.
+B) هُوَ — o (erkek)
+Munfasıl özne zamiridir. “Onu gördüm” demek için bu biçim kullanılmaz. Olmaz.
+C) ـنَا — bizi / bizim
+Muttasıl zamirdir ve nesne olabilir; ancak رَأَيْتُنَا “bizi gördüm” anlamına gelir ve burada anlam bakımından uygun değildir. Olmaz.
+D) ـهُ — onu
+Muttasıl nesne zamiridir. Fiile bağlandığında رَأَيْتُهُ “onu gördüm” anlamını verir. Olabilir.
+E) نَحْنُ — biz
+Munfasıl özne zamiridir. Burada nesne olarak kullanılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, ـهُ olur.
+4. Soru
+---- جَدِيدٌ وَمُفِيدٌ.
+Türkçesi: ---- yeni ve faydalıdır.
+İlk aşamada جَدِيدٌ وَمُفِيدٌ “yeni ve faydalı” ifadelerine bakalım. Her ikisi de müzekker tekildir. Buna uygun müzekker tekil bir isim veya isim grubu arıyoruz.
+Şimdi şıklara bakalım:
+A) مُعَلِّمَةٌ — kadın öğretmen
+Müennes bir isimdir. Bununla جَدِيدَةٌ وَمُفِيدَةٌ denmesi gerekirdi. Olmaz.
+B) كِتَابُهُ — onun kitabı
+Bir isim grubudur. كِتَابٌ müzekker tekildir ve جَدِيدٌ وَمُفِيدٌ ile uyumludur. “Onun kitabı yeni ve faydalıdır.” anlamı uygundur. Olabilir.
+C) إِيَّاهُ — onu
+Nesne konumunda bir zamirdir. Burada cümlenin öznesi olarak kullanılamaz. Olmaz.
+D) هِيَ — o (kadın)
+Müennes tekil zamirdir. Müzekker olan جَدِيدٌ وَمُفِيدٌ ile uyumlu değildir. Olmaz.
+E) هُمْ — onlar
+Çoğul zamirdir. Tekil olan yüklemlerle uyumlu değildir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, كِتَابُهُ olur.
+5. Soru
+---- إِلَى الْمَدْرَسَةِ مُبَكِّرًا.
+Türkçesi: ---- okula erken.
+İlk aşamada إِلَى الْمَدْرَسَةِ “okula”, مُبَكِّرًا ise “erken” demektir. Boşluğa bu ifadelerle birlikte cümleyi anlam bakımından tamamlayacak uygun bir yapı gelmelidir.
+Şimdi şıklara bakalım:
+A) هُوَ — o (erkek)
+Bir özne zamiridir; ancak هُوَ إِلَى الْمَدْرَسَةِ مُبَكِّرًا şeklinde cümle tamamlanmaz. Olmaz.
+B) أَكْتُبُ — yazıyorum
+Bir fiildir; ancak “okula erken yazıyorum” anlamı burada uygun değildir. Olmaz.
+C) اِذْهَبْ — git!
+Emir fiilidir. اِذْهَبْ إِلَى الْمَدْرَسَةِ مُبَكِّرًا “Okula erken git.” şeklinde anlamlı ve doğru bir cümle oluşturur. Olabilir.
+D) إِيَّاهُ — onu
+Ayrı kullanılan nesne zamiridir. Burada cümleyi tamamlamaz. Olmaz.
+E) ـهُ — onu / onun
+Muttasıl zamirdir ve tek başına kullanılamaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, اِذْهَبْ olur.

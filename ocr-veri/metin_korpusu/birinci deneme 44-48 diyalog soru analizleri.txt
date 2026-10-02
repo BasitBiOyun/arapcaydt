@@ -1,0 +1,261 @@
+44.-48. sorularda, karşılıklı konuşmanın boş bırakılan kısmını tamamlayabilecek ifadeyi bulunuz.
+44. Soru
+Bu soruda müdür ile çalışan arasında geçen bir konuşma var. Diyaloğumuzu okuyalım.
+الْمُدِيرُ:
+لَقَدْ لَاحَظْتُ أَنَّكَ لَمْ تُسَلِّمِ التَّقْرِيرَ الشَّهْرِيَّ حَتَّى الْآنَ، فَمَا السَّبَبُ؟
+Müdür, “Aylık raporu hâlâ teslim etmediğini fark ettim. Bunun sebebi nedir?” diyor.
+الْمُوَظَّفُ:
+ــــ
+Burada boşluğumuz var. Çalışanın müdüre ne cevap verdiğini henüz bilmiyoruz. konuşmanın devamını okuyalım.
+الْمُدِيرُ:
+هَذَا عُذْرٌ غَيْرُ مَقْبُولٍ؛ فَلَوْ أَبْلَغْتَنِي بِالْمُشْكِلَةِ فَوْرَ حُدُوثِهَا لَمَدَدْتُ لَكَ الْمُهْلَةَ.
+Müdür, “Bu kabul edilebilir bir mazeret değil. Sorun ortaya çıkar çıkmaz bana haber verseydin sana süreyi uzatırdım.” diyor.
+الْمُوَظَّفُ:
+أَعْتَذِرُ بِشِدَّةٍ يَا سَيِّدِي. سَأُنْهِي التَّقْرِيرَ وَأُسَلِّمُهُ قَبْلَ نِهَايَةِ الْيَوْمِ.
+Çalışan da, “Çok özür dilerim efendim. Raporu tamamlayıp gün sonundan önce teslim edeceğim.” diyor.
+Şimdi boşluğa ne gelmesi gerektiğini belirleyelim.
+Müdür ilk cümlede:
+فَمَا السَّبَبُ؟
+“Sebebi nedir?” diye soruyor.
+Demek ki boşlukta raporun neden teslim edilmediğini açıklayan bir sebep veya mazeret arıyoruz.
+Devamındaki en güçlü ipucumuz ise:
+بِالْمُشْكِلَةِ فَوْرَ حُدُوثِهَا
+“sorun ortaya çıkar çıkmaz”
+ifadesi.
+Demek ki çalışanın başına gelen somut bir problemden söz etmiş olması gerekiyor.
+Şimdi şıklara bakalım.
+A)
+كُنْتُ أَظُنُّ أَنَّ مَوْعِدَ تَسْلِيمِ التَّقْرِيرِ قَدْ أُجِّلَ إِلَى نِهَايَةِ الْأُسْبُوعِ.
+“Raporun teslim tarihinin hafta sonuna ertelendiğini düşünüyordum.”
+Bu şık ilk bakışta bir mazeret olduğu için mümkün görünebilir. Ancak müdür devamında “sorun ortaya çıkar çıkmaz bana haber verseydin” diyor. Burada ortaya çıkan somut bir problem değil, teslim tarihinin yanlış anlaşılması söz konusu. Bu nedenle devamındaki cümleyle tam olarak örtüşmüyor.
+B)
+أَعْتَقِدُ أَنَّ إِعْدَادَ التَّقْرِيرِ لَا يَدْخُلُ ضِمْنَ مَسْؤُولِيَّاتِي الْأَسَاسِيَّةِ.
+“Rapor hazırlamanın temel sorumluluklarım arasında olmadığını düşünüyorum.”
+Bu şık olmaz. Çünkü gecikmeye neden olan bir problem açıklamıyor. Müdürün الْمُشْكِلَةِ ifadesiyle de uyuşmuyor.
+C)
+سَأُرْسِلُ إِلَيْكَ التَّقْرِيرَ بَعْدَ اجْتِمَاعِ الْأُسْبُوعِ الْمُقْبِلِ.
+“Raporu gelecek haftaki toplantıdan sonra size göndereceğim.”
+Bu şık olmaz. Müdür “Neden teslim etmedin?” diye bir sebep soruyor. Bu seçenek ise sebep açıklamıyor; yalnızca geleceğe yönelik bir zaman bildiriyor.
+D)
+تَعَطَّلَ حَاسُوبِي فَجْأَةً أَمْسِ، وَفَقَدْتُ جُزْءًا مِنَ الْبَيَانَاتِ الَّتِي كُنْتُ قَدْ أَعْدَدْتُهَا.
+“Bilgisayarım dün aniden bozuldu ve hazırlamış olduğum verilerin bir bölümünü kaybettim.”
+Bu şık olabilir. Çünkü raporun gecikmesine yol açan somut bir problem açıklıyor.
+Ayrıca müdürün:
+فَلَوْ أَبْلَغْتَنِي بِالْمُشْكِلَةِ فَوْرَ حُدُوثِهَا
+“Bu sorun ortaya çıkar çıkmaz bana haber verseydin...”
+sözüyle doğrudan bağlantı kuruyor.
+E)
+هَلْ يُمْكِنُ أَنْ نُنَاقِشَ مُحْتَوَى التَّقْرِيرِ قَبْلَ أَنْ أَبْدَأَ كِتَابَتَهُ؟
+“Raporu yazmaya başlamadan önce içeriğini konuşabilir miyiz?”
+Bu şık olmaz. Müdür geçmişte yaşanan gecikmenin sebebini soruyor. Bu seçenek ise rapor daha yazılmadan önce yapılabilecek bir görüşmeden söz ediyor.
+Dolayısıyla boşluğun öncesindeki فَمَا السَّبَبُ؟ ve boşluktan sonraki بِالْمُشْكِلَةِ فَوْرَ حُدُوثِهَا ifadeleriyle en güçlü bağlantıyı kuran seçenek D’dir.
+Doğru cevabımız D, 
+45. Soru
+Bu soruda Leyla ile Fatıma arasında bir konuşma var. Diyaloğumuzu okuyalım.
+لَيْلَى:
+هَلْ فَكَّرْتِ فِي مَوْضُوعِ بَحْثِ تَخَرُّجِكِ يَا فَاطِمَةُ؟
+Leyla, “Fatıma, mezuniyet araştırmanın konusu hakkında düşündün mü?” diye soruyor.
+فَاطِمَةُ:
+ــــ
+Burada boşluğumuz var. Fatıma’nın ne cevap verdiğini henüz bilmiyoruz. Devamını okuyalım.
+لَيْلَى:
+فِكْرَةٌ مُمْتَازَةٌ! سَأُسَاعِدُكِ فِي جَمْعِ بَعْضِ الْمَصَادِرِ وَالْمَرَاجِعِ حَوْلَ هَذَا الْمَوْضُوعِ.
+Leyla, “Harika bir fikir! Bu konu hakkında bazı kaynak ve referansları toplamana yardımcı olacağım.” diyor.
+فَاطِمَةُ:
+شُكْرًا لَكِ، هَذَا لُطْفٌ كَبِيرٌ مِنْكِ.
+Fatıma da, “Teşekkür ederim, bu senin büyük bir inceliğin.” diyor.
+Şimdi boşluğa ne gelmesi gerektiğine bakalım.
+Leyla önce:
+هَلْ فَكَّرْتِ فِي مَوْضُوعِ بَحْثِ تَخَرُّجِكِ؟
+“Mezuniyet araştırmanın konusu hakkında düşündün mü?” diye soruyor.
+Devamında ise:
+فِكْرَةٌ مُمْتَازَةٌ
+“Harika bir fikir!”
+ve
+حَوْلَ هَذَا الْمَوْضُوعِ
+“bu konu hakkında”
+diyor.
+Demek ki Fatıma boşlukta belirli bir araştırma konusu söylemiş olmalı.
+Şıklara bakalım.
+A)
+لَيْسَ بَعْدُ، فَمَا زِلْتُ مُتَرَدِّدَةً بَيْنَ عِدَّةِ مَوْضُوعَاتٍ مُخْتَلِفَةٍ.
+“Henüz değil, hâlâ birkaç farklı konu arasında kararsızım.”
+Bu şık olmaz. Çünkü bundan sonra Leyla’nın “Harika fikir!” demesi doğal olmaz. Ortada henüz seçilmiş bir fikir yok.
+B)
+قَرَّرْتُ تَأْجِيلَ اخْتِيَارِ الْمَوْضُوعِ إِلَى الْفَصْلِ الدِّرَاسِيِّ الْمُقْبِلِ.
+“Konu seçimini gelecek döneme ertelemeye karar verdim.”
+Bu şık da olmaz. Çünkü belirli bir konu söylenmiyor. 
+C)
+أَظُنُّ أَنَّ كِتَابَةَ الْبَحْثِ سَتَكُونُ أَصْعَبَ مِنْ تَقْدِيمِهِ شَفَوِيًّا.
+“Araştırmayı yazmanın onu sözlü olarak sunmaktan daha zor olacağını düşünüyorum.”
+Bu şık olmaz. Soru araştırmanın zorluğuyla ilgili değil, konusuyla ilgili.
+D)
+لَمْ أَتَحَدَّثْ مَعَ الْمُشْرِفِ بَعْدُ عَنْ مُتَطَلَّبَاتِ الْبَحْثِ.
+“Henüz danışmanla araştırmanın gereklilikleri hakkında konuşmadım.”
+Bu da olmaz. Yine belirli bir araştırma konusu verilmiş olmuyor.
+E)
+نَعَمْ، اخْتَرْتُ مَوْضُوعَ أَثَرِ وَسَائِلِ التَّوَاصُلِ الِاجْتِمَاعِيِّ فِي الْعَلَاقَاتِ الْأُسَرِيَّةِ.
+“Evet, sosyal medya araçlarının aile ilişkileri üzerindeki etkisi konusunu seçtim.”
+Bu şık olabilir. Çünkü belirli bir araştırma konusu söylüyor.
+Bunun üzerine Leyla’nın:
+فِكْرَةٌ مُمْتَازَةٌ
+“Harika fikir!”
+ve
+حَوْلَ هَذَا الْمَوْضُوعِ
+“bu konu hakkında”
+demesi tamamen doğal hâle geliyor.
+Dolayısıyla doğru cevabımız E’dir.
+Doğru cevabımız E, 
+46. Soru
+Bu soruda Ömer ile Sami arasında bir konuşma var. Diyaloğumuzu okuyalım.
+عُمَرُ:
+هَلْ تَعْتَقِدُ أَنَّ الْقِيَادَةَ مِنْ دُونِ تَرْكِيزٍ قَدْ تُؤَدِّي إِلَى وُقُوعِ الْحَوَادِثِ؟
+Ömer, “Dikkat etmeden araç kullanmanın kazaların meydana gelmesine yol açabileceğini düşünüyor musun?” diye soruyor.
+سَامِي:
+ــــ
+Burada boşluğumuz var. Sami’nin ne cevap verdiğini bilmiyoruz. Devamını okuyalım.
+عُمَرُ:
+أَتَّفِقُ مَعَكَ تَمَامًا، فَبِضْعُ ثَوَانٍ مِنَ التَّشَتُّتِ قَدْ تُكَلِّفُنَا حَيَاتَنَا.
+Ömer, “Sana tamamen katılıyorum. Çünkü birkaç saniyelik dikkatsizlik bile hayatımıza mal olabilir.” diyor.
+Şimdi ne aradığımıza bakalım.
+Ömer önce dikkatsiz araç kullanmanın kazalara yol açıp açmadığını soruyor.
+Daha sonra:
+أَتَّفِقُ مَعَكَ تَمَامًا
+“Sana tamamen katılıyorum.”
+diyor.
+Demek ki Sami de dikkatsizliğin kazalara yol açabileceğini açıkça kabul eden ve destekleyen bir görüş söylemiş olmalı.
+Şıklara bakalım.
+A)
+لَا، فَالْحَوَادِثُ تَرْتَبِطُ دَائِمًا بِحَالَةِ الطُّرُقِ وَحْدَهَا.
+“Hayır, çünkü kazalar her zaman yalnızca yolların durumuyla ilgilidir.”
+Bu şık olmaz. Sami “hayır” derse Ömer’in hemen arkasından “Sana tamamen katılıyorum” demesi mantıksal olarak uyuşmaz.
+B)
+بِالطَّبْعِ، فَعَدَمُ الِانْتِبَاهِ إِلَى الطَّرِيقِ وَحَرَكَةِ الْمُرُورِ يَزِيدُ احْتِمَالَ وُقُوعِ الْحَوَادِثِ.
+“Elbette. Yola ve trafik akışına dikkat etmemek kazaların meydana gelme ihtimalini artırır.”
+Bu şık olabilir. Ömer’in görüşünü doğrudan destekliyor.
+Ardından Ömer’in:
+أَتَّفِقُ مَعَكَ تَمَامًا
+“Sana tamamen katılıyorum.”
+demesi de doğal bir devam oluşturuyor.
+C)
+رُبَّمَا، لَكِنَّ أَنْظِمَةَ الْمُسَاعَدَةِ الْحَدِيثَةَ تَمْنَعُ وُقُوعَ جَمِيعِ الْحَوَادِثِ.
+“Belki, ancak modern yardım sistemleri bütün kazaların meydana gelmesini önler.”
+Bu şık olmaz. جَمِيعِ الْحَوَادِثِ, yani “bütün kazalar” ifadesi aşırı kesinlik taşıyor. Ayrıca Ömer’in “birkaç saniyelik dikkatsizlik hayatımıza mal olabilir” sözüyle uyuşmuyor.
+D)
+أَظُنُّ أَنَّ الِالْتِزَامَ بِالسُّرْعَةِ الْقَانُونِيَّةِ يُلْغِي أَثَرَ التَّشَتُّتِ تَمَامًا.
+“Yasal hız sınırına uymanın dikkatsizliğin etkisini tamamen ortadan kaldırdığını düşünüyorum.”
+Bu şık olmaz. Ömer devamında tam tersine birkaç saniyelik dikkatsizliğin bile tehlikeli olduğunu söylüyor.
+E)
+يَعْتَمِدُ وُقُوعُ الْحَوَادِثِ عَلَى نَوْعِ السَّيَّارَةِ أَكْثَرَ مِنِ انْتِبَاهِ السَّائِقِ.
+“Kazaların meydana gelmesi, sürücünün dikkatinden daha çok aracın türüne bağlıdır.”
+Bu şık da olmaz. Konuşmanın devamındaki dikkatsizlik vurgusuyla uyuşmuyor.
+Dolayısıyla doğru cevabımız B’dir.
+Doğru cevabımız B, 
+47. Soru
+Bu soruda Halil ile Selim arasında geçen bir konuşma var. Diyaloğumuzu okuyalım.
+خَلِيلٌ:
+بِصَرَاحَةٍ، لَمْ أُفَكِّرْ مِنْ قَبْلُ فِي تَرْبِيَةِ حَيَوَانٍ أَلِيفٍ، وَلَكِنَّنِي بَدَأْتُ أُفَكِّرُ فِي ذَلِكَ مُؤَخَّرًا.
+Halil, “Açıkçası daha önce evcil hayvan beslemeyi düşünmemiştim ama son zamanlarda bunu düşünmeye başladım.” diyor.
+سَلِيمٌ:
+ــــ
+Burada boşluğumuz var. Selim’in ne söylediğini bilmiyoruz. Devamını okuyalım.
+خَلِيلٌ:
+رُبَّمَا أَنْتَ مُحِقٌّ، وَلَكِنَّنِي أَخْشَى أَلَّا أَسْتَطِيعَ تَحَمُّلَ مَسْؤُولِيَّةِ رِعَايَتِهِ يَوْمِيًّا.
+Halil, “Belki haklısın ama onun günlük bakım sorumluluğunu üstlenememekten korkuyorum.” diyor.
+Şimdi boşluğa ne gelmesi gerektiğine bakalım.
+Halil’in cevabı:
+رُبَّمَا أَنْتَ مُحِقٌّ
+“Belki haklısın.”
+diye başlıyor.
+Demek ki Selim boşlukta Halil’e bir görüş veya olumlu bir gerekçe sunmuş olmalı.
+Halil daha sonra:
+وَلَكِنَّنِي أَخْشَى...
+“Ancak korkuyorum ki...”
+diyerek bir çekincesini dile getiriyor.
+Yani boşlukta evcil hayvan beslemeyi destekleyen olumlu bir düşünce arıyoruz.
+Şıklara bakalım.
+A)
+هَلْ تَعْتَقِدُ أَنَّ مَنْزِلَكَ مُنَاسِبٌ لِتَرْبِيَةِ قِطَّةٍ؟
+“Evinin kedi beslemek için uygun olduğunu düşünüyor musun?”
+Bu şık ilk bakışta konuyla ilgili. Ancak Halil’in “Belki haklısın” cevabı bir soruya verilen doğal cevap değildir. Burada Selim’in bir görüş bildirmesi daha uygun.
+B)
+مَا رَأْيُكَ فِي السَّفَرِ مَعِي إِلَى تُرْكِيَا فِي الْعُطْلَةِ الْقَادِمَةِ؟
+“Gelecek tatilde benimle Türkiye’ye seyahat etmeye ne dersin?”
+Bu şık olmaz. Konu tamamen değişiyor ve evcil hayvan konuşmasıyla hiçbir bağlantı kurmuyor.
+C)
+لَا أَرَى سَبَبًا يَدْفَعُكَ إِلَى التَّفْكِيرِ فِي هَذَا الْأَمْرِ الْآنَ.
+“Şu anda seni bu konuyu düşünmeye yöneltecek bir sebep görmüyorum.”
+Bu şık olmaz. Bu olumsuz bir tutum. Oysa Halil ardından “Belki haklısın, ama bakım sorumluluğundan endişe ediyorum” diyor. 
+D)
+هَلْ سَبَقَ لَكَ أَنْ رَبَّيْتَ الْعَصَافِيرَ فِي غُرْفَتِكَ؟
+“Daha önce odanda kuş besledin mi?”
+Bu şık da konu bakımından yakın olsa da Halil’in رُبَّمَا أَنْتَ مُحِقٌّ, “Belki haklısın” cevabına uygun değil. Çünkü burada yine bir soru soruluyor.
+E)
+هَذَا أَمْرٌ رَائِعٌ، فَتَرْبِيَةُ حَيَوَانٍ أَلِيفٍ قَدْ تُخَفِّفُ الشُّعُورَ بِالْوَحْدَةِ وَتَبْعَثُ عَلَى السَّعَادَةِ.
+“Bu harika bir şey. Çünkü evcil hayvan beslemek yalnızlık hissini azaltabilir ve mutluluk verebilir.”
+Bu şık olabilir. Selim evcil hayvan beslemenin olumlu bir yönünü söylüyor.
+Bunun üzerine Halil’in:
+رُبَّمَا أَنْتَ مُحِقٌّ، وَلَكِنَّنِي...
+“Belki haklısın, ancak...”
+şeklinde cevap vermesi son derece doğal.
+Dolayısıyla doğru cevabımız E’dir.
+Doğru cevabımız E
+48. Soru
+Bu soruda doktor ile hasta arasında geçen bir konuşma var. Diyaloğumuzu okuyalım.
+الطَّبِيبُ:
+يَجِبُ عَلَيْكَ اتِّبَاعُ نِظَامٍ غِذَائِيٍّ مُتَوَازِنٍ وَمُمَارَسَةُ الرِّيَاضَةِ بِانْتِظَامٍ.
+Doktor, “Dengeli bir beslenme programı uygulaman ve düzenli olarak spor yapman gerekiyor.” diyor.
+الْمَرِيضُ:
+هَلْ هَذَا يَعْنِي أَنَّنِي يَجِبُ أَنْ أَتَوَقَّفَ عَنْ تَنَاوُلِ الْحَلَوِيَّاتِ تَمَامًا؟
+Hasta, “Bu, tatlı yemeyi tamamen bırakmam gerektiği anlamına mı geliyor?” diye soruyor.
+الطَّبِيبُ:
+ــــ
+Burada boşluğumuz var. Doktorun ne cevap verdiğini bilmiyoruz. Devamını okuyalım.
+الْمَرِيضُ:
+فَهِمْتُ، سَأُحَاوِلُ التَّقْلِيلَ مِنْهَا قَدْرَ الْإِمْكَانِ.
+Hasta, “Anladım, onları mümkün olduğunca azaltmaya çalışacağım.” diyor.
+Şimdi boşluğa ne gelmesi gerektiğini belirleyelim.
+Hasta doktora:
+هَلْ ... أَتَوَقَّفَ عَنْ تَنَاوُلِ الْحَلَوِيَّاتِ تَمَامًا؟
+“Tatlı yemeyi tamamen bırakmalı mıyım?” diye soruyor.
+Devamında ise:
+سَأُحَاوِلُ التَّقْلِيلَ مِنْهَا
+“Onları azaltmaya çalışacağım.”
+diyor.
+Buradaki التَّقْلِيلُ, yani “azaltmak” kelimesi çok güçlü bir ipucu.
+Demek ki doktor “Tamamen bırakmalısın” dememiş; tamamen bırakmak yerine ölçülü ve sınırlı tüketmekten söz etmiş olmalı.
+Şıklara bakalım.
+A)
+نَعَمْ، فَجَمِيعُ أَنْوَاعِ الْحَلَوِيَّاتِ ضَارَّةٌ مَهْمَا كَانَتِ الْكَمِّيَّةُ الَّتِي تَتَنَاوَلُهَا.
+“Evet, çünkü ne kadar tüketirsen tüket bütün tatlı türleri zararlıdır.”
+Bu şık olmaz. Doktor burada tamamen bırakılmasını söylüyor. Ancak hasta devamında “azaltmaya çalışacağım” diyor. Ayrıca جَمِيعُ ve مَهْمَا كَانَتِ الْكَمِّيَّةُ ifadeleri aşırı genelleme içeriyor.
+B)
+يُمْكِنُكَ تَعْوِيضُ الْإِفْرَاطِ فِي تَنَاوُلِهَا بِزِيَادَةِ مُدَّةِ مُـمَارَسَةِ الرِّيَاضَةِ.
+“Onları aşırı tüketmeni spor süresini artırarak telafi edebilirsin.”
+Bu şık olmaz. Doktorun dengeli beslenme önerisiyle uyuşmuyor. Ayrıca hastanın “o hâlde azaltacağım” cevabını doğrudan doğurmaz.
+C)
+مِنَ الْأَفْضَلِ أَنْ تُرَكِّزَ فِي الْوَقْتِ الْحَالِيِّ عَلَى زِيَادَةِ كَمِّيَّةِ الْبُرُوتِينِ.
+“Şu anda protein miktarını artırmaya odaklanman daha iyi olur.”
+Bu şık olmaz. Hastanın sorusu tatlıları tamamen bırakıp bırakmamasıyla ilgili. Bu seçenek soruya doğrudan cevap vermiyor.
+D)
+لَا دَاعِيَ إِلَى الِامْتِنَاعِ عَنْهَا تَمَامًا، وَلَكِنْ يَنْبَغِي تَنَاوُلُهَا بِاعْتِدَالٍ وَبِكَمِّيَّاتٍ مَحْدُودَةٍ.
+“Onlardan tamamen uzak durmana gerek yok; ancak ölçülü ve sınırlı miktarlarda tüketmelisin.”
+Bu şık olabilir.
+Hasta “Tamamen bırakmalı mıyım?” diye soruyor. Doktor:
+لَا دَاعِيَ إِلَى الِامْتِنَاعِ عَنْهَا تَمَامًا
+“Tamamen bırakmana gerek yok.”
+diyor.
+Ardından:
+بِاعْتِدَالٍ وَبِكَمِّيَّاتٍ مَحْدُودَةٍ
+“ölçülü ve sınırlı miktarda”
+tüketmesini öneriyor.
+Bu nedenle hastanın:
+سَأُحَاوِلُ التَّقْلِيلَ مِنْهَا
+“Onları azaltmaya çalışacağım.”
+demesi tamamen doğal.
+E)
+سَنَتَحَدَّثُ عَنْ ذَلِكَ بَعْدَ الِانْتِهَاءِ مِنَ الْبَرْنَامَجِ الرِّيَاضِيِّ.
+“Bunu spor programını tamamladıktan sonra konuşacağız.”
+Bu şık olmaz. Doktor hastanın sorusunu cevapsız bırakıyor. Ayrıca hastanın hemen arkasından “Anladım, azaltacağım” demesi için gerekli bilgi verilmiş olmuyor.
+Dolayısıyla doğru cevabımız D’dir.
+Doğru cevabımız D

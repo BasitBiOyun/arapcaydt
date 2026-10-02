@@ -1,0 +1,72 @@
+2019 YDT Arapça: 76–80. anlam bütünlüğünü bozan cümle
+76. soru
+(I) جَامِعَةُ إِسْطَنْبُولَ هِيَ الْجَامِعَةُ الْأَكْبَرُ وَالْأَقْدَمُ وَالْأَعْرَقُ فِي تُرْكِيَا وَتَارِيخُهَا هُوَ تَارِيخُ مَدِينَةِ إِسْطَنْبُولَ نَفْسِهَا.
+Türkçesi: İstanbul Üniversitesi, Türkiye’nin en büyük, en eski ve en köklü üniversitesidir; tarihi, İstanbul şehrinin tarihiyle iç içedir.
+(II) وَسَيَدْرُسُ فِي جَامِعَةِ إِسْطَنْبُولَ سَنَوِيًّا نَحْوَ سِتِّينَ أَلْفَ طَالِبٍ إِلَى جَانِبِ عِشْرِينَ أَلْفَ طَالِبِ دِرَاسَاتٍ عُلْيَا، وَيَعْمَلُ فِيهَا سِتَّةُ آلَافِ مُوَظَّفٍ إِدَارِيٍّ.
+Türkçesi: İstanbul Üniversitesinde her yıl yaklaşık altmış bin öğrenciye ek olarak yirmi bin lisansüstü öğrenci okuyacak; burada altı bin idari personel çalışmaktadır.
+(III) أَسَّسَ مُحَمَّدُ الْفَاتِحُ جَامِعَةَ إِسْطَنْبُولَ فِي الْبِدَايَةِ كَمَدْرَسَةٍ تَعْلِيمِيَّةٍ،
+Türkçesi: Fatih Sultan Mehmet, İstanbul Üniversitesini başlangıçta bir eğitim kurumu olarak kurdu.
+(IV) وَقَرَّرَ السُّلْطَانُ الْعُثْمَانِيُّ عَبْدُ الْحَمِيدِ الثَّانِي تَحْوِيلَ الْجَامِعَةِ إِلَى مَقَرٍّ تَعْلِيمِيٍّ أَكْبَرَ تَحْتَ اسْمِ «دَارِ الْفُنُونِ»،
+Türkçesi: Osmanlı Sultanı II. Abdülhamid, üniversiteyi “Dârülfünun” adı altında daha büyük bir eğitim merkezine dönüştürmeye karar verdi.
+(V) وَبَعْدَ تَأْسِيسِ الْجُمْهُورِيَّةِ التُّرْكِيَّةِ عَامَ ١٩٢٣ عَلَى يَدِ مُصْطَفَى كَمَال أَتَاتُورْك اسْتَمَرَّتْ فِي نَشَاطِهَا التَّعْلِيمِيِّ تَحْتَ اسْمِ دَارِ الْفُنُونِ حَتَّى عَامِ ١٩٣٣ حَيْثُ تَمَّ إِعْلَانُهَا جَامِعَةً رَسْمِيَّةً تَحْتَ اسْمِ جَامِعَةِ إِسْطَنْبُولَ.
+Türkçesi: Türkiye Cumhuriyeti’nin 1923’te Mustafa Kemal Atatürk tarafından kurulmasından sonra kurum, 1933’e kadar Dârülfünun adıyla eğitim faaliyetlerini sürdürdü; o yıl İstanbul Üniversitesi adıyla resmî bir üniversite olarak ilan edildi.
+Analiz: I, III, IV ve V üniversitenin tarihî gelişimini izler. II ise öğrenci ve personel sayılarını araya sokar. Cümledeki gelecek zamanlı سَيَدْرُسُ da çevresindeki geçmiş anlatımından ayrılır. Esas kopukluk konudadır; II’yi yalnızca gramer gerekçesiyle elemiyoruz.
+Doğru cevap: B) II.
+Yıl: 2019
+77. soru
+(I) لِكُلِّ اخْتِرَاعٍ قِصَّةٌ وَتَارِيخٌ.
+Türkçesi: Her buluşun bir hikâyesi ve tarihi vardır.
+(II) وَآلَةُ التَّصْوِيرِ تَبْدَأُ قِصَّةُ اخْتِرَاعِهَا مُنْذُ الْقِدَمِ.
+Türkçesi: Fotoğraf makinesinin icat hikâyesi eski zamanlardan başlar.
+(III) إِذِ اسْتَطَاعَ تَصْوِيرَ الصُّورَةِ بِمَوَادَّ كِيمِيَاوِيَّةٍ فَوْقَ صَحِيفَةٍ مَعْدِنِيَّةٍ.
+Türkçesi: Çünkü metal bir levha üzerinde kimyasal maddeler kullanarak görüntüyü kaydetmeyi başardı.
+(IV) وَيُعْتَبَرُ الْغَرْبُ ابْنَ الْهَيْثَمِ هُوَ أَوَّلَ مَنْ وَضَعَ الْأُسُسَ الْعِلْمِيَّةَ لِظُهُورِ آلَةِ التَّصْوِيرِ.
+Türkçesi: Batı, İbnü’l-Heysem’i fotoğraf makinesinin ortaya çıkışının bilimsel temellerini atan ilk kişi sayar.
+(V) وَتَوَالَتِ التَّجَارِبُ وَالْأَبْحَاثُ وَظَهَرَتْ آلَةُ التَّصْوِيرِ بَعْدَ ذَلِكَ.
+Türkçesi: Daha sonra deneyler ve araştırmalar birbirini izledi ve fotoğraf makinesi ortaya çıktı.
+Analiz: I ve II icadın geçmişini açar; IV bilimsel temellerine, V sonraki deneylere geçer. III’te اسْتَطَاعَ “başardı” fiilinin kimden söz ettiği önceki cümlede belli değildir. Ayrıca kimyasal maddelerle görüntü kaydetme ayrıntısına ani geçiş yapar. IV’ün Arapça kuruluşunda da anlatım pürüzü bulunması, III’ün paragraf akışındaki kopukluğunu ortadan kaldırmaz.
+Doğru cevap: C) III.
+Yıl: 2019
+78. soru
+(I) بِيئَةُ الْغَابَاتِ تَكْثُرُ فِيهَا الْأَشْجَارُ الضَّخْمَةُ، هَوَاؤُهَا غَنِيٌّ بِالْأُكْسِجِينِ، وَحَيَوَانَاتُهَا كَثِيرَةٌ وَمُتَنَوِّعَةٌ.
+Türkçesi: Orman ortamında büyük ağaçlar çoktur; havası oksijen bakımından zengindir ve hayvanları çok sayıda, çeşit çeşittir.
+(II) إِنَّ الْحَيَوَانَاتِ وَالنَّبَاتَاتِ مَوْجُودَةٌ فِي كُلِّ بُقْعَةٍ مِنَ الْأَرْضِ وَنُسَمِّي الْمَكَانَ الَّذِي تُوجَدُ فِيهِ: الْبِيئَةَ.
+Türkçesi: Hayvanlar ve bitkiler yeryüzünün her bölgesinde bulunur; bulundukları yere “çevre” veya “yaşam ortamı” deriz.
+(III) أَمَّا بِيئَةُ الصَّحْرَاءِ فَهِيَ مَنَاطِقُ جَافَّةٌ، أَمْطَارُهَا قَلِيلَةٌ.
+Türkçesi: Çöl ortamı ise kurak, az yağış alan bölgelerden oluşur.
+(IV) وَدَرَجَةُ الْحَرَارَةِ فِيهَا مُرْتَفِعَةٌ نَهَارًا وَمُنْخَفِضَةٌ لَيْلًا.
+Türkçesi: Orada sıcaklık gündüz yüksek, gece düşüktür.
+(V) وَتَعِيشُ فِيهَا الصَّبَّارِيَّاتُ، وَبَعْضُ الْحَيَوَانَاتِ كَالزَّوَاحِفِ وَالْحَشَرَاتِ وَالطُّيُورِ.
+Türkçesi: Orada kaktüsler ile sürüngenler, böcekler ve kuşlar gibi bazı hayvanlar yaşar.
+Analiz: II genel bir yaşam ortamı tanımı verir; III çöl ortamını açar. IV ve V’teki فِيهَا “orada” zamiri çöl ortamına döner. I ise ayrı olarak orman ortamını anlatır. III’teki أَمَّا karşılaştırma izlenimi verse de II–V arasında kurulan çöl açıklamasının dışında kalan cümle I’dir.
+Doğru cevap: A) I.
+Yıl: 2019
+79. soru
+(I) إِنَّ أَفْضَلَ طَرِيقَةٍ لِيُصْبِحَ الْفَرْدُ كَاتِبًا نَاجِحًا تَكُونُ بِفَضْلِ التَّعَلُّمِ مِنْ غَيْرِهِ مِنَ الْكُتَّابِ.
+Türkçesi: Bir kişinin başarılı bir yazar olmasının en iyi yolu, başka yazarlardan öğrenmesidir.
+(II) وَأَنْ يُتَابِعَهُمْ عَلَى الْإِنْتَرْنِتِ وَيَدْرُسَ كِتَابَاتِهِمْ وَيَتَعَرَّفَ عَلَى قِصَصِ نَجَاحِهِمْ فِي الْكِتَابَةِ.
+Türkçesi: Onları internette takip etmeli, yazılarını incelemeli ve yazarlıkta nasıl başarılı olduklarını öğrenmelidir.
+(III) كَمَا يُمْكِنُ مُتَابَعَةُ الدَّوْرَاتِ الَّتِي يُقَدِّمُهَا الْكُتَّابُ عَلَى وَسَائِلِ الْإِعْلَامِ الِاجْتِمَاعِيَّةِ.
+Türkçesi: Yazarların sosyal medya üzerinden sunduğu eğitimler de takip edilebilir.
+(IV) الْأَمْرُ الَّذِي مِنْ شَأْنِهِ أَنْ يُعَزِّزَ الْمَهَارَاتِ الْكِتَابِيَّةَ لَدَى الْفَرْدِ الَّذِي يُرِيدُ أَنْ يُصْبِحَ كَاتِبًا نَاجِحًا.
+Türkçesi: Bu, başarılı bir yazar olmak isteyen kişinin yazma becerilerini geliştirebilecek bir durumdur.
+(V) إِنَّ التَّعَامُلَ الْبَنَّاءَ مَعَ الرَّفْضِ وَالنَّقْدِ، هُوَ مِنَ الْأُمُورِ الضَّرُورِيَّةِ لِنَجَاحِ الْكَاتِبِ السِّيَاسِيِّ.
+Türkçesi: Reddedilmeye ve eleştiriye yapıcı biçimde yaklaşmak, siyasi yazarın başarılı olması için gerekli hususlardandır.
+Analiz: I–IV, başka yazarlardan öğrenerek yazma becerisini geliştirme yollarını sıralar. V, eleştiri ve reddedilme karşısındaki tutuma geçer; ayrıca genel “başarılı yazar” konusunu siyasi yazarla sınırlar. Konu bütünlüğünü bu nedenle bozar.
+Doğru cevap: E) V.
+Yıl: 2019
+80. soru
+(I) إِنَّ عَمَلِيَّةَ تَنْظِيفِ الْأَسْنَانِ مِنْ أَهَمِّ الْعَادَاتِ الصِّحِّيَّةِ الَّتِي يَجِبُ عَلَى الْإِنْسَانِ اتِّبَاعُهَا ثَلَاثَ مَرَّاتٍ يَوْمِيًّا،
+Türkçesi: Diş temizliği, insanın günde üç kez uygulaması gereken en önemli sağlıklı alışkanlıklardan biridir.
+(II) وَتَسَوُّسُ الْأَسْنَانِ يَتَسَبَّبُ فِي أَلَمٍ مُزْعِجٍ لَا يُحْتَمَلُ،
+Türkçesi: Diş çürüğü, dayanılmaz derecede rahatsız edici bir ağrıya neden olur.
+(III) وَذَلِكَ لِلْحِفَاظِ عَلَى صِحَّةِ وَسَلَامَةِ الْأَسْنَانِ وَإِزَالَةِ بَقَايَا الْأَطْعِمَةِ الْمُتَبَقِّيَةِ فِي الْأَسْنَانِ،
+Türkçesi: Bu, dişlerin sağlığını korumak ve dişlerde kalan yiyecek artıklarını gidermek içindir.
+(IV) وَتُسْتَخْدَمُ فُرْشَاةُ الْأَسْنَانِ، وَخَيْطُ الْأَسْنَانِ لِتَنْظِيفِهَا،
+Türkçesi: Dişleri temizlemek için diş fırçası ve diş ipi kullanılır.
+(V) وَيَجِبُ مَعْرِفَةُ طَرِيقَةِ اسْتِعْمَالِهِمَا بِشَكْلٍ صَحِيحٍ حَتَّى لَا تُؤْذِيَا اللِّثَّةَ.
+Türkçesi: Diş etine zarar vermemeleri için bu ikisinin doğru kullanım biçimini bilmek gerekir.
+Analiz: I’deki diş temizliği, III’te وَذَلِكَ “bu” ile sürdürülür. IV temizlik araçlarını tanıtır; V’teki ـهِمَا “ikisinin” zamiri de fırça ve diş ipine döner. II, temizleme alışkanlığı ve yöntemi zincirinin arasına diş çürüğünün yol açtığı ağrıyı sokar. II’nin bağımsız olarak grameri değil, paragraftaki yeri ve konusu sorunludur.
+Doğru cevap: B) II.
+Yıl: 2019
+Cevap dizisi: 76 B · 77 C · 78 A · 79 E · 80 B

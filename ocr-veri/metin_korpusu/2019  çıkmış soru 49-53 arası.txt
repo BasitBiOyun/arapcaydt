@@ -1,0 +1,118 @@
+2019 YDT Arapça: 49–53. anlamca en yakın cümle
+Bu sorularda şık, kaynak cümlenin yalnızca konusunu değil; zamanını, olumsuzluğunu, karşılaştırmasını ve kurduğu ilişkiyi de korumalıdır.
+49. soru
+Harekeli soru:
+إِنَّ اللُّغَةَ الْعَرَبِيَّةَ مُؤَهَّلَةٌ لِتَكُونَ لُغَةَ إِنْتَاجٍ مَعْرِفِيٍّ، وَلَقَدْ سَبَقَ لَهَا أَنْ كَانَتْ كَذَلِكَ.
+Tercümesi: Arapça, bilgi üretiminin dili olmaya elverişlidir; nitekim geçmişte de böyle olmuştur.
+Korunması zorunlu ifadeler — nelere bakmalıyız? İki yargı birlikte kalmalı: (1) Arapça bilgi üretim dili olabilecek yeterliliktedir; (2) geçmişte de bilgi üretim dili olmuştur. Yalnızca geçmişten söz eden veya yeterliliği başka bir nedene bağlayan şık eksik kalır.
+Şıklara bakalım:
+A) لَقَدْ كَانَتِ اللُّغَةُ الْعَرَبِيَّةُ لُغَةَ إِنْتَاجٍ مَعْرِفِيٍّ سَابِقًا وَأَهْلُهَا كَانُوا كَذَلِكَ بِالْفِعْلِ.
+Tercümesi: Arapça eskiden bilgi üretim diliydi; onu konuşanlar da gerçekten öyleydi.
+Neden olmaz? Geçmişe ilişkin bilgiyi içerir; fakat kaynak cümlenin bugün de buna elverişli olduğu yargısını vermez. “Konuşanlar” hakkında ek bilgi getirir.
+B) لِلُّغَةِ الْعَرَبِيَّةِ كَفَاءَةٌ وَقُدْرَةٌ لِتُصْبِحَ لُغَةَ إِنْتَاجِ الْمَعْرِفَةِ وَقَدْ كَانَتْ كَذَلِكَ مِنْ قَبْلُ.
+Tercümesi: Arapça, bilgi üretim dili olma yeterliliğine ve gücüne sahiptir; daha önce de böyleydi.
+Neden olabilir? Kaynak cümlenin yeterlilik + geçmişte de aynı işlevi görme biçimindeki iki parçasını korur.
+C) الْمَهَارَةُ وَالصِّفَاتُ الْمَوْجُودَةُ فِي اللُّغَةِ الْعَرَبِيَّةِ جَعَلَتْهَا لُغَةَ إِنْتَاجِ الْعُلُومِ سَابِقًا.
+Tercümesi: Arapçada bulunan beceri ve özellikler onu geçmişte bilim üretiminin dili yaptı.
+Neden olmaz? Yalnızca geçmişteki durumu verir; güncel elverişliliği ve bilgi üretimi kapsamını tam korumaz.
+D) الْمَهَارَةُ وَالْقُدُرَاتُ الْعِلْمِيَّةُ الَّتِي تُؤَهِّلُ اللُّغَةَ الْعَرَبِيَّةَ جَعَلَتْهَا لُغَةً عِلْمِيَّةً كُفْؤَةً سَابِقًا.
+Tercümesi: Arapçayı yeterli kılan beceri ve bilimsel kapasiteler, onu eskiden yetkin bir bilim dili yaptı.
+Neden olmaz? Kaynak cümlede söylenmeyen bir neden ekler; “bilgi üretim dili” vurgusunu da “yetkin bilim dili”ne dönüştürür.
+E) الْكَفَاءَةُ الْمَوْجُودَةُ فِي اللُّغَةِ الْعَرَبِيَّةِ مَكَّنَتْهَا مِنْ إِنْتَاجِ الْمَعْرِفَةِ وَالْعُلُومِ فِي الْمَاضِي.
+Tercümesi: Arapçanın sahip olduğu yeterlilik, geçmişte bilgi ve bilim üretmesini sağladı.
+Neden olmaz? Geçmişteki üretimi anlatır; bugün bilgi üretim dili olabilecek durumda olduğu yargısını açıkça korumaz.
+Doğru cevap: B.
+Yıl: 2019
+50. soru
+Harekeli soru:
+يَضُمُّ مَصْنَعُ النَّسِيجِ الْآلَاتِ الضَّخْمَةَ الَّتِي تَعْمَلُ بِشَكْلٍ آلِيٍّ.
+Tercümesi: Dokuma fabrikası, otomatik biçimde çalışan büyük makineleri barındırır.
+Korunması zorunlu ifadeler — nelere bakmalıyız? Üç unsur korunmalı: مَصْنَعُ النَّسِيجِ “dokuma fabrikası”, الْآلَاتُ الضَّخْمَةُ “büyük makineler” ve تَعْمَلُ بِشَكْلٍ آلِيٍّ “otomatik çalışır”. Makinelerin fiyatı, kökeni veya çalışanların durumu kaynak cümlede yoktur.
+Şıklara bakalım:
+A) لِمَعَامِلِ النَّسِيجِ آلَاتٌ ضَخْمَةٌ مُسْتَوْرَدَةٌ مِنَ الْخَارِجِ وَثَمَنُهَا غَالٍ.
+Tercümesi: Dokuma atölyelerinin yurt dışından getirilmiş, pahalı büyük makineleri vardır.
+Neden olmaz? İthal ve pahalı bilgileri eklenir; otomatik çalışma bilgisi kaybolur.
+B) التِّكْنُولُوجِيَا الْحَدِيثَةُ مُمْكِنٌ أَنْ نَرَاهَا فِي مَعَامِلِ النَّسِيجِ خَاصَّةً.
+Tercümesi: Modern teknolojiyi özellikle dokuma atölyelerinde görebiliriz.
+Neden olmaz? Büyük makineler ve onların çalışma biçimi açıkça korunmaz.
+C) مَصْنَعُ النَّسِيجِ يَحْتَوِي عَلَى الْمُعَدَّاتِ الْكَبِيرَةِ الَّتِي تَعْمَلُ بِشَكْلٍ تِلْقَائِيٍّ.
+Tercümesi: Dokuma fabrikası, otomatik çalışan büyük ekipmanları içerir.
+Neden olabilir? يَضُمُّ ≈ يَحْتَوِي عَلَى, الْآلَاتِ الضَّخْمَةَ ≈ الْمُعَدَّاتِ الْكَبِيرَةَ ve بِشَكْلٍ آلِيٍّ ≈ بِشَكْلٍ تِلْقَائِيٍّ karşılıklarıyla temel anlamı korur.
+D) النَّسِيجُ مُهِمٌّ لِكُلِّ شَخْصٍ وَلِذَا تَهْتَمُّ الْحُكُومَاتُ بِمَصَانِعِ النَّسِيجِ وَبِآلَاتِهِ.
+Tercümesi: Dokuma herkes için önemlidir; bu yüzden hükümetler dokuma fabrikalarıyla makinelerine önem verir.
+Neden olmaz? Kaynak cümlede önem veya hükümetlerin tutumu yoktur.
+E) الْعُمَّالُ فِي مَصْنَعِ النَّسِيجِ يَشْتَغِلُونَ سَاعَاتٍ كَثِيرَةً لِلْحُصُولِ عَلَى مَعِيشَتِهِمْ.
+Tercümesi: Dokuma fabrikasındaki işçiler geçimlerini sağlamak için uzun saatler çalışır.
+Neden olmaz? Konu makinelerden işçilere kayar.
+Doğru cevap: C.
+Yıl: 2019
+51. soru
+Harekeli soru:
+مِثْلَمَا تَتْرُكُ بَعْضَ الْأَطْعِمَةِ تَبْرُدُ قَلِيلًا لِيَسْهُلَ عَلَيْكَ أَكْلُهَا، اتْرُكْ بَعْضَ الْخِلَافَاتِ تَهْدَأْ لِيَسْهُلَ عَلَيْكَ حَلُّهَا.
+Tercümesi: Bazı yiyecekleri yemen kolaylaşsın diye biraz soğumaya bıraktığın gibi, bazı anlaşmazlıkları da çözmen kolaylaşsın diye yatışmaya bırak.
+Korunması zorunlu ifadeler — nelere bakmalıyız? Burada bir benzetme var. Her iki tarafta da bekleme → kolaylaşma ilişkisi korunmalı: yiyecek soğur, yenmesi kolaylaşır; anlaşmazlık yatışır, çözülmesi kolaylaşır. “Yemek” ile “çözmek” fiilleri yer değiştirmemeli.
+Şıklara bakalım:
+A) اتْرُكْ بَعْضَ الْمُشْكِلَاتِ تَبْرُدْ لِتَسْتَطِيعَ أَكْلَهَا كَمَا تَتْرُكُ بَعْضَ الطَّعَامِ السَّاخِنِ.
+Tercümesi: Bazı sorunları yiyebilmek için soğumaya bırak; tıpkı bazı sıcak yemekleri bıraktığın gibi.
+Neden olmaz? Sorunlar yenmez, çözülür. İki taraftaki fiiller karışmıştır.
+B) اتْرُكْ بَعْضَ الْخِلَافَاتِ تَهْدَأْ قَلِيلًا لِتَسْتَطِيعَ حَلَّهَا كَمَا تَتْرُكُ بَعْضَ الطَّعَامِ يَبْرُدُ لِتَتَمَكَّنَ مِنْ أَكْلِهِ.
+Tercümesi: Bazı anlaşmazlıkları çözebilmek için biraz yatışmaya bırak; bazı yiyecekleri yiyebilmek için soğumaya bıraktığın gibi.
+Neden olabilir? Benzetmenin iki yönünü ve her iki amaç ilişkisini korur.
+C) اتْرُكْ بَعْضَ الطَّعَامِ وَالْمُشْكِلَاتِ مِثْلَمَا تَتْرُكُ الْبَرْدَ وَالْهُدُوءَ لِتَسْهُلَ عَلَيْكَ الْحَيَاةُ.
+Tercümesi: Hayatın kolaylaşsın diye soğuğu ve sakinliği bıraktığın gibi bazı yemekleri ve sorunları bırak.
+Neden olmaz? Kaynak cümlenin somut benzetmesi ve “yeme/çözme” amaçları kaybolur.
+D) لَا يَجِبُ عَلَيْكَ أَنْ تَتْرُكَ بَعْضَ الطَّعَامِ قَبْلَ أَكْلِهِ مِثْلَمَا لَا يَجِبُ عَلَيْكَ حَلُّ بَعْضِ الْخِلَافَاتِ.
+Tercümesi: Bazı yemekleri yemeden önce bırakmamalısın; bazı anlaşmazlıkları da çözmemelisin.
+Neden olmaz? Kaynak cümledeki öneri olumsuza çevrilmiştir.
+E) لَيْسَ كُلُّ الطَّعَامِ يُمْكِنُ أَكْلُهُ بَارِدًا مِثْلَمَا لَيْسَ كُلُّ الْمُشْكِلَاتِ يُمْكِنُ حَلُّهَا.
+Tercümesi: Her yemek soğuk yenemez; her sorun da çözülemez.
+Neden olmaz? Kaynak cümle “her yemek/her sorun” hakkında genel bir sınır koymaz; beklemenin sağlayacağı kolaylığı anlatır.
+Doğru cevap: B.
+Yıl: 2019
+52. soru
+Harekeli soru:
+فِي الْمَاضِي كَانَ النَّاسُ يُعَانُونَ مِنْ غَلَاءِ أَسْعَارِ السَّفَرِ وَالتَّنَقُّلِ.
+Tercümesi: Geçmişte insanlar seyahat ve ulaşım ücretlerinin pahalılığından sıkıntı çekiyordu.
+Korunması zorunlu ifadeler — nelere bakmalıyız? Geçmiş zaman, sıkıntıyı yaşayan insanlar, sıkıntının sebebi olan seyahat ve ulaşım fiyatlarının yüksekliği birlikte bulunmalı. Yalnızca fiyatların yüksek olması, insanların bundan muzdarip olması bilgisini tam vermez.
+Şıklara bakalım:
+A) كَانَتْ أَسْعَارُ السَّفَرِ وَالتَّنَقُّلِ عَالِيَةً وَكَانَ النَّاسُ مُتْعَبِينَ سَابِقًا.
+Tercümesi: Eskiden seyahat ve ulaşım fiyatları yüksekti, insanlar da yorgundu.
+Neden olmaz? “Yorgunluk” söyler; fiyatların insanlara sıkıntı verdiği nedensel bağını kurmaz.
+B) إِنَّ الْغَلَاءَ فِي الْأَسْعَارِ كَانَ سَبَبًا فِي مُعَانَاةِ النَّاسِ سَابِقًا.
+Tercümesi: Fiyat pahalılığı eskiden insanların sıkıntı çekmesinin sebebiydi.
+Neden olmaz? “Seyahat ve ulaşım” sınırını kaldırır; genel fiyat pahalılığından söz eder.
+C) لَقَدْ عَانَى النَّاسُ مِنِ ارْتِفَاعِ تَكَالِيفِ السَّفَرِ وَالتَّنَقُّلِ سَابِقًا.
+Tercümesi: İnsanlar eskiden seyahat ve ulaşım maliyetlerinin yüksekliğinden sıkıntı çekti.
+Neden olabilir? يُعَانُونَ مِنْ غَلَاءِ أَسْعَارِ anlamını عَانَى… مِنِ ارْتِفَاعِ تَكَالِيفِ ile yeniden kurar; konu ve zaman aynıdır.
+D) كَانَ النَّاسُ يُعَانُونَ مِنَ الْإِرْهَاقِ خِلَالَ السَّفَرِ فِي الْمَاضِي.
+Tercümesi: Geçmişte insanlar seyahat sırasında yorgunluktan sıkıntı çekiyordu.
+Neden olmaz? Sıkıntının sebebi fiyat olmaktan çıkıp fiziksel yorgunluk olur.
+E) كَانَ التَّنَقُّلُ صَعْبًا لِلنَّاسِ فِي الْمَاضِي وَلَكِنَّهُمْ كَانُوا لَا يَتْعَبُونَ.
+Tercümesi: Geçmişte ulaşım insanlar için zordu ama yorulmuyorlardı.
+Neden olmaz? Seyahat ve ulaşımın maliyeti belirtilmez; “yorulmuyorlardı” bilgisi eklenir.
+Doğru cevap: C.
+Yıl: 2019
+53. soru
+Harekeli soru:
+عِنْدَمَا أَتَجَوَّلُ فِي مَدِينَةِ تُونُسَ الْعَتِيقَةِ يَحْمِلُنِي الْحَنِينُ إِلَى بَغْدَادَ.
+Tercümesi: Tunus’un eski kentinde dolaştığımda özlem beni Bağdat’a götürür.
+Korunması zorunlu ifadeler — nelere bakmalıyız? Önce Tunus’un eski kentinde dolaşma, bunun sonucunda Bağdat’a yönelik özlem duyma ilişkisi korunmalı. Şık, iki şehir arasındaki ilişkiyi yalnızca “benzerlik” olarak değiştirmemeli; kişinin o anda yaşadığı duyguyu vermeli.
+Şıklara bakalım:
+A) كُلَّمَا رَأَيْتُ مَدِينَةَ تُونُسَ الْأَثَرِيَّةَ أَشْعُرُ بِالرَّغْبَةِ فِي زِيَارَةِ بَغْدَادَ.
+Tercümesi: Tarihî Tunus şehrini her gördüğümde Bağdat’ı ziyaret etme isteği duyarım.
+Neden olmaz? “Bağdat’a özlem”i yalnızca “ziyaret etme isteği”ne dönüştürür; dolaşma eylemi de görmeye indirgenir.
+B) لَمَّا أَتَنَقَّلُ فِي مَدِينَةِ تُونُسَ الْقَدِيمَةِ يَأْخُذُنِي الشَّوْقُ إِلَى بَغْدَادَ.
+Tercümesi: Tunus’un eski kentinde dolaşınca Bağdat özlemi beni sarar.
+Neden olabilir? أَتَجَوَّلُ ≈ أَتَنَقَّلُ, الْعَتِيقَةِ ≈ الْقَدِيمَةِ, الْحَنِينُ ≈ الشَّوْقُ eşleşmeleriyle eylem, duygu ve yön korunur.
+C) كُلَّمَا شَعَرْتُ بِالشَّوْقِ إِلَى بَغْدَادَ أَذْهَبُ لِزِيَارَةِ مَدِينَةِ تُونُسَ الْعَرِيقَةِ.
+Tercümesi: Bağdat’a özlem duyduğumda köklü Tunus şehrini ziyarete giderim.
+Neden olmaz? Sebep–sonuç yönü tersine çevrilmiştir: Kaynakta Tunus’ta dolaşmak Bağdat özlemini uyandırır.
+D) هُنَاكَ تَشَابُهٌ بَيْنَ مَدِينَةِ تُونُسَ وَبَغْدَادَ مِنْ نَاحِيَةِ الْحَنِينِ وَالْعَرَاقَةِ.
+Tercümesi: Tunus ile Bağdat arasında özlem ve köklülük bakımından benzerlik vardır.
+Neden olmaz? Kaynakta şehirler arasında nesnel bir benzerlik yargısı değil, konuşanın hissettiği özlem vardır.
+E) هَلَّا زُرْتَ مَدِينَةَ تُونُسَ فَرَأَيْتَ كَمْ هِيَ عَتِيقَةٌ وَقَرِيبَةٌ مِنْ مَدِينَةِ بَغْدَادَ.
+Tercümesi: Tunus şehrini ziyaret edip ne kadar eski ve Bağdat’a yakın olduğunu görsen ya!
+Neden olmaz? Anlatım öneriye dönüşür; Bağdat’a duyulan özlem yerine şehirlerin yakınlığı eklenir.
+Doğru cevap: B.
+Yıl: 2019
+Cevap dizisi: 49 B · 50 C · 51 B · 52 C · 53 B

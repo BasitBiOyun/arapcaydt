@@ -1,0 +1,202 @@
+
+
+54. Soru
+Öncelikle verilen durumu okuyup ne istendiğini netleştirelim.
+اِسْتَعَرْتَ مِنْ أُسْتَاذِكَ الْجَامِعِيِّ كِتَابًا قَيِّمًا قَبْلَ شَهْرٍ، ثُمَّ نَسِيتَهُ فِي الْحَافِلَةِ وَلَمْ تَتَمَكَّنْ مِنَ الْعُثُورِ عَلَيْهِ. تَذْهَبُ إِلَيْهِ لِتُخْبِرَهُ بِمَا حَدَثَ مِنْ دُونِ أَنْ تُثِيرَ غَضَبَهُ، فَتَقُولُ مُعْتَذِرًا:
+“Bir ay önce üniversitedeki hocandan değerli bir kitap ödünç aldın. Daha sonra kitabı otobüste unuttun ve bulamadın. Hocana giderek onu kızdırmadan ne olduğunu anlatmak ve özür dilemek istiyorsun.”
+Burada bizim için üç önemli nokta var:
+Birincisi, kitabı kaybettiğimizi açıkça söylememiz gerekiyor.
+İkincisi, özür dilememiz gerekiyor.
+Üçüncüsü de sorumluluk alarak zararı telafi etmeye yönelik bir çözüm sunmamız bekleniyor.
+. Şimdi şıklara bakalım.
+A)
+أُسْتَاذِي، يَبْدُو أَنَّ الْكِتَابَ قَدْ ضَاعَ مِنِّي، فَهَلْ يُمْكِنُ أَنْ تَمْنَحَنِي مَزِيدًا مِنَ الْوَقْتِ لِلْبَحْثِ عَنْهُ؟
+“Hocam, görünüşe göre kitabı kaybettim. Onu aramak için bana biraz daha zaman verebilir misiniz?”
+Bu şık ilk bakışta olabilir gibi görünüyor. Çünkü kitabın kaybolduğu söyleniyor ve kibar bir ifade kullanılıyor.
+Ancak durumda وَلَمْ تَتَمَكَّنْ مِنَ الْعُثُورِ عَلَيْهِ, yani “kitabı bulamadın” deniyor. Ayrıca bizden özür dileyerek konuşmamız isteniyor. Bu şıkta açık bir özür ve zararı telafi etme önerisi yok. Bu nedenle en uygun ifade değil.
+B)
+أَعْتَذِرُ بِشِدَّةٍ يَا أُسْتَاذِي، فَقَدْ فَقَدْتُ الْكِتَابَ الَّذِي أَعَرْتَنِي إِيَّاهُ بَعْدَ أَنْ نَسِيتُهُ فِي الْحَافِلَةِ، وَأَنَا مُسْتَعِدٌّ لِشِرَاءِ نُسْخَةٍ بَدِيلَةٍ مِنْهُ أَوْ تَعْوِيضِكَ عَنْ ثَمَنِهِ.
+“Çok özür dilerim hocam. Bana ödünç verdiğiniz kitabı otobüste unuttuktan sonra kaybettim. Yerine başka bir nüsha almaya veya ücretini karşılamaya hazırım.”
+Burada aradığımız unsurların tamamı var.
+أَعْتَذِرُ بِشِدَّةٍ
+“Çok özür dilerim.”
+فَقَدْ فَقَدْتُ الْكِتَابَ
+“Kitabı kaybettim.”
+ve:
+أَنَا مُسْتَعِدٌّ لِشِرَاءِ نُسْخَةٍ بَدِيلَةٍ ... أَوْ تَعْوِيضِكَ عَنْ ثَمَنِهِ
+“Yerine yeni bir nüsha almaya veya ücretini karşılamaya hazırım.”
+Yani hem hatayı kabul ediyor hem özür diliyor hem de çözüm öneriyor. Bu şık doğru olabilir.
+C)
+أَظُنُّ أَنَّ أَحَدَ الرُّكَّابِ أَخَذَ الْكِتَابَ مِنَ الْحَافِلَةِ، وَلِذَلِكَ لَا أَتَحَمَّلُ مَسْؤُولِيَّةَ ضَيَاعِهِ.
+“Sanırım yolculardan biri kitabı otobüsten aldı, bu yüzden kaybolmasından ben sorumlu değilim.”
+Bu şık olmaz. Çünkü kişi kitabı kendisi otobüste unutmuş. Buna rağmen:
+لَا أَتَحَمَّلُ مَسْؤُولِيَّةَ ضَيَاعِهِ
+“Kaybolmasından sorumlu değilim.”
+diyor. Bu, özür dilemekten çok sorumluluktan kaçmak anlamına geliyor.
+D)
+بِصَرَاحَةٍ، لَمْ أَسْتَفِدْ كَثِيرًا مِنَ الْكِتَابِ، وَلِهَذَا لَمْ أَهْتَمَّ بِالْبَحْثِ عَنْهُ بَعْدَ أَنْ فَقَدْتُهُ.
+“Açıkçası kitaptan çok fazla yararlanmadım. Bu yüzden kaybettikten sonra onu aramaya da pek önem vermedim.”
+Bu şık kesinlikle olmaz. Hem hocaya karşı saygısız bir ifade hem de kitabın kaybolmasını önemsemediğini söylüyor. Soruda ise hocayı kızdırmadan özür dilemek istiyoruz.
+E)
+هَلْ يُمْكِنُكَ أَنْ تُعِيرَنِي كِتَابًا آخَرَ إِلَى أَنْ أَعْثُرَ عَلَى الْكِتَابِ الَّذِي فَقَدْتُهُ؟
+“Kaybettiğim kitabı bulana kadar bana başka bir kitap ödünç verebilir misiniz?”
+Bu şık olmaz. Çünkü kaybettiğimiz kitabın sorumluluğunu çözmek yerine hocadan bir kitap daha istiyoruz. Ayrıca açık bir özür de bulunmuyor.
+Doğru cevabımız B 
+
+55. Soru
+Öncelikle durumu okuyalım.
+دَعَاكَ صَدِيقُكَ الْمُقَرَّبُ إِلَى حُضُورِ حَفْلِ زِفَافِهِ فِي مَدِينَةٍ أُخْرَى، لَكِنَّ لَدَيْكَ فِي الْيَوْمِ نَفْسِهِ مُقَابَلَةَ عَمَلٍ مُهِمَّةً لَا يُمْكِنُكَ تَأْجِيلُهَا. تَتَّصِلُ بِهِ لِتُهَنِّئَهُ وَالِاعْتِذَارِ عَنْ عَدَمِ الْحُضُورِ بِلُطْفٍ، فَتَقُولُ:
+“Yakın arkadaşın seni başka bir şehirdeki düğününe davet ediyor. Ancak aynı gün erteleyemeyeceğin önemli bir iş görüşmen var. Onu arayıp hem tebrik etmek hem de gelemeyeceğin için nazikçe özür dilemek istiyorsun.”
+Burada ne arıyoruz?
+Tebrik + düğüne katılmak istediğimizi gösterme + gelememe sebebini açıklama + nazikçe özür dileme.
+Şimdi şıklara bakalım.
+A)
+أَلْفُ مَبْرُوكٍ زَوَاجُكَ يَا صَدِيقِي. كُنْتُ أَتَمَنَّى حُضُورَ الْحَفْلِ وَمُشَارَكَتَكَ فَرْحَتَكَ، لَكِنَّ لَدَيَّ فِي الْيَوْمِ نَفْسِهِ مُقَابَلَةَ عَمَلٍ مُهِمَّةً لَا يُمْكِنُنِي تَأْجِيلُهَا، فَأَرْجُو أَنْ تَقْبَلَ اعْتِذَارِي.
+“Evliliğin kutlu olsun arkadaşım. Düğüne katılıp mutluluğunu paylaşmayı çok isterdim; ancak aynı gün erteleyemeyeceğim önemli bir iş görüşmem var. Özrümü kabul etmeni rica ediyorum.”
+Burada aradığımız her şey var.
+أَلْفُ مَبْرُوكٍ → tebrik var.
+كُنْتُ أَتَمَنَّى حُضُورَ الْحَفْلِ → katılmak istediğimizi gösteriyoruz.
+مُقَابَلَةَ عَمَلٍ مُهِمَّةً لَا يُمْكِنُنِي تَأْجِيلُهَا → gerçek sebep açıklanıyor.
+فَأَرْجُو أَنْ تَقْبَلَ اعْتِذَارِي → nazik bir özür var.
+Bu şık doğru olabilir.
+B)
+أَلْفُ مَبْرُوكٍ يَا صَدِيقِي. سَأُخْبِرُكَ لَاحِقًا إِنْ كُنْتُ سَأَتَمَكَّنُ مِنْ حُضُورِ الْحَفْلِ بَعْدَ انْتِهَاءِ مُقَابَلَةِ الْعَمَلِ.
+“Tebrik ederim arkadaşım. İş görüşmesi bittikten sonra düğüne katılıp katılamayacağımı sana daha sonra bildiririm.”
+Bu şık olmaz. Durumda iş görüşmesi nedeniyle katılamayacağımız belli ve bizden “katılamadığımız için özür dilememiz” isteniyor. Burada ise karar belirsiz bırakılmış.
+C)
+أَعْتَذِرُ عَنْ عَدَمِ الْحُضُورِ، فَالسَّفَرُ إِلَى مَدِينَتِكَ فِي هَذَا الْوَقْتِ سَيَكُونُ مُتْعِبًا بِالنِّسْبَةِ إِلَيَّ.
+“Katılamayacağım için özür dilerim; çünkü bu zamanda senin şehrine seyahat etmek benim için yorucu olacak.”
+Bu şık olmaz. Özür var ancak durumdaki gerçek gerekçe bu değil. Asıl sebep erteleyemeyeceğimiz iş görüşmesi.
+D)
+أَرْجُو أَنْ تُؤَجِّلَ مَوْعِدَ حَفْلِ الزِّفَافِ إِلَى الْأُسْبُوعِ الْمُقْبِلِ حَتَّى أَسْتَطِيعَ الْحُضُورَ.
+“Katılabilmem için düğünü gelecek haftaya ertelemeni rica ediyorum.”
+Bu şık olmaz. Bir arkadaşımızdan bizim programımız nedeniyle düğün tarihini değiştirmesini istemek duruma uygun ve nazik bir çözüm değil.
+E)
+سَأُحَاوِلُ إِلْغَاءَ مُقَابَلَةِ الْعَمَلِ، فَحُضُورُ حَفْلِ زِفَافِكَ أَهَمُّ مِنْ أَيِّ فُرْصَةٍ مِهْنِيَّةٍ.
+“İş görüşmesini iptal etmeye çalışacağım; çünkü düğününe katılmak her türlü mesleki fırsattan daha önemli.”
+Bu şık olmaz. Durumda iş görüşmesinin لَا يُمْكِنُكَ تَأْجِيلُهَا, yani ertelenemeyeceği açıkça söylenmiş.
+Dolayısıyla durumdaki bütün ayrıntıları değiştirmeden ve uygun bir nezaket diliyle karşılayan seçeneğe ulaşıyoruz.
+Doğru cevabımız A
+56. Soru
+Öncelikle verilen durumu okuyalım.
+تَجْلِسُ فِي حَدِيقَةٍ عَامَّةٍ، فَتُلَاحِظُ أَنَّ طِفْلًا صَغِيرًا يَقْطِفُ الْأَزْهَارَ وَيَكْسِرُ أَغْصَانَ الْأَشْجَارِ، بَيْنَمَا كَانَتْ أُمُّهُ مُنْشَغِلَةً بِهَاتِفِهَا. تُرِيدُ تَنْبِيهَهَا بِطَرِيقَةٍ مُهَذَّبَةٍ مِنْ دُونِ إِحْرَاجِهَا، فَتَقُولُ لَهَا:
+“Bir parkta oturuyorsun. Küçük bir çocuğun çiçekleri koparıp ağaçların dallarını kırdığını görüyorsun. Annesi ise telefonuyla ilgileniyor. Anneyi utandırmadan, nazik bir şekilde uyarmak istiyorsun.”
+Burada en önemli ifade:
+بِطَرِيقَةٍ مُهَذَّبَةٍ مِنْ دُونِ إِحْرَاجِهَا
+“Onu utandırmadan, nazik bir şekilde.”
+Dolayısıyla şıklarda suçlayıcı olmayan, tehdit etmeyen, kibarca durumu bildiren ve çözüm isteyen bir ifade arıyoruz.
+A)
+لِمَاذَا لَا تَنْتَبِهِينَ إِلَى طِفْلِكِ؟ إِنَّهُ يُفْسِدُ الْحَدِيقَةَ بَيْنَمَا تَنْشَغِلِينَ بِهَاتِفِكِ.
+“Çocuğuna neden dikkat etmiyorsun? Sen telefonunla ilgilenirken o parkı mahvediyor.”
+Bu şık olmaz. Sorunun kendisi doğru bir duruma işaret ediyor ama ifade biçimi suçlayıcı.
+Özellikle:
+لِمَاذَا لَا تَنْتَبِهِينَ؟
+ve
+بَيْنَمَا تَنْشَغِلِينَ بِهَاتِفِكِ
+ifadeleri annenin davranışını doğrudan eleştiriyor. Bu, مِنْ دُونِ إِحْرَاجِهَا, yani “onu utandırmadan” şartına uymuyor.
+B)
+سَيِّدَتِي، يَجِبُ عَلَيْكِ تَحَمُّلُ الْمَسْؤُولِيَّةِ كَامِلَةً عَنْ كُلِّ مَا أَتْلَفَهُ طِفْلُكِ فِي الْحَدِيقَةِ.
+“Hanımefendi, çocuğunuzun parkta zarar verdiği her şeyin bütün sorumluluğunu üstlenmeniz gerekiyor.”
+Bu şık olmaz. Bu bir nazik uyarıdan çok sorumluluk yükleyen sert bir ifade.
+C)
+إِذَا لَمْ تَمْنَعِي طِفْلَكِ مِنَ الْعَبَثِ بِالْأَشْجَارِ، فَسَأَتَّصِلُ بِحُرَّاسِ الْحَدِيقَةِ فَوْرًا.
+“Çocuğunuzun ağaçlarla oynamasına engel olmazsanız hemen park görevlilerini arayacağım.”
+Bu şık olmaz. Burada açıkça tehdit var:
+فَسَأَتَّصِلُ ... فَوْرًا
+“Hemen görevlileri arayacağım.”
+Bu da nazikçe uyarmakla uyuşmuyor.
+D)
+عَفْوًا سَيِّدَتِي، يَبْدُو أَنَّ طِفْلَكِ يَقْطِفُ بَعْضَ الْأَزْهَارِ وَيَكْسِرُ الْأَغْصَانَ. هَلْ يُمْكِنُكِ تَوْجِيهُهُ إِلَى اللَّعِبِ بَعِيدًا عَنْهَا حِفَاظًا عَلَى الْحَدِيقَةِ؟
+“Affedersiniz hanımefendi, çocuğunuz bazı çiçekleri koparıyor ve dalları kırıyor gibi görünüyor. Parkı korumak için onu bunlardan uzakta oynamaya yönlendirebilir misiniz?”
+Burada aradığımız nezaket dilini görüyoruz.
+عَفْوًا سَيِّدَتِي
+“Affedersiniz hanımefendi.”
+يَبْدُو أَنَّ...
+“Görünüşe göre...”
+ifadesi suçlayıcı tonu yumuşatıyor.
+Sonra da emir vermek yerine:
+هَلْ يُمْكِنُكِ...؟
+“Yapabilir misiniz?”
+şeklinde kibar bir rica geliyor. Bu şık doğru olabilir.
+E)
+أَرْجُو أَنْ تَأْخُذِي طِفْلَكِ وَتُغَادِرِي، لِأَنَّهُ يُزْعِجُ الْمَوْجُودِينَ فِي الْحَدِيقَةِ.
+“Lütfen çocuğunuzu alıp gidin; çünkü parktaki insanları rahatsız ediyor.”
+Bu şık da olmaz. Problem çocuğun parkta bulunması değil, çiçek ve ağaçlara zarar vermesi. Ayrıca “parkı terk edin” demek gereğinden fazla sert.
+Doğru cevabımız D
+57. Soru
+Öncelikle durumu okuyalım.
+حَجَزْتَ غُرْفَةً فِي فُنْدُقٍ لِقَضَاءِ عُطْلَةِ الصَّيْفِ، وَعِنْدَمَا وَصَلْتَ وَجَدْتَ أَنَّهَا لَا تُطِلُّ عَلَى الْبَحْرِ كَمَا طَلَبْتَ، بَلْ تُطِلُّ عَلَى شَارِعٍ صَاخِبٍ. تَذْهَبُ إِلَى مُوَظَّفِ الِاسْتِقْبَالِ لِتَطْلُبَ تَغْيِيرَهَا، مُعَبِّرًا عَنْ انْزِعَاجِكَ بِاحْتِرَامٍ، فَتَقُولُ:
+“Yaz tatili için bir otel odası ayırttın. Otele geldiğinde istediğin gibi deniz manzaralı olmadığını, aksine gürültülü bir sokağa baktığını gördün. Resepsiyon görevlisine giderek rahatsızlığını saygılı biçimde ifade edip odanın değiştirilmesini istiyorsun.”
+Burada üç unsur arıyoruz:
+Rezervasyonda deniz manzaralı oda istediğimizi söylemek + verilen odanın farklı olduğunu belirtmek + saygılı şekilde oda değişikliği istemek.
+A)
+هَذِهِ الْغُرْفَةُ لَا تُنَاسِبُنِي إِطْلَاقًا، وَلِذَلِكَ أُرِيدُ اسْتِرْدَادَ أَمْوَالِي وَمُغَادَرَةَ الْفُنْدُقِ فَوْرًا.
+“Bu oda bana hiç uygun değil. Bu yüzden paramı geri alıp otelden hemen ayrılmak istiyorum.”
+Bu şık olmaz. Durumda otelden ayrılmak veya para iadesi istemek değil, odayı değiştirmek istiyoruz. Ayrıca فَوْرًا ile oldukça sert bir ton var.
+B)
+الْمَعْذِرَةُ، لَقَدْ حَجَزْتُ غُرْفَةً مُطِلَّةً عَلَى الْبَحْرِ، لَكِنَّ الْغُرْفَةَ الَّتِي تَسَلَّمْتُهَا تُطِلُّ عَلَى شَارِعٍ صَاخِبٍ. فَهَلْ يُمْكِنُكُمْ نَقْلِي إِلَى غُرْفَةٍ بِالْمُوَاصَفَاتِ الَّتِي حَجَزْتُهَا؟
+“Affedersiniz, deniz manzaralı bir oda ayırttım; ancak bana verilen oda gürültülü bir sokağa bakıyor. Beni rezervasyon yaptırdığım özelliklere sahip bir odaya alabilir misiniz?”
+Burada aradığımız bütün bilgiler bulunuyor.
+حَجَزْتُ غُرْفَةً مُطِلَّةً عَلَى الْبَحْرِ
+“Deniz manzaralı oda ayırttım.”
+لَكِنَّ ... تُطِلُّ عَلَى شَارِعٍ صَاخِبٍ
+“Ancak verilen oda gürültülü bir sokağa bakıyor.”
+Sonra da:
+فَهَلْ يُمْكِنُكُمْ نَقْلِي...؟
+“Beni başka bir odaya alabilir misiniz?”
+şeklinde kibarca değişiklik talep ediliyor. Bu şık doğru olabilir.
+C)
+لَا بَأْسَ بِبَقَائِي فِي هَذِهِ الْغُرْفَةِ مَا دَامَتْ نَظِيفَةً وَالسَّرِيرُ فِيهَا مُرِيحًا.
+“Oda temiz ve yatağı rahat olduğu sürece bu odada kalmamda sakınca yok.”
+Bu şık olmaz. Durumda odanın değiştirilmesini talep ediyoruz. Burada ise mevcut odayı kabul ediyoruz.
+D)
+بِمَا أَنَّ الْغُرْفَةَ لَا تُطِلُّ عَلَى الْبَحْرِ، أَرْجُو تَخْفِيضَ سِعْرِهَا بَدَلًا مِنْ تَغْيِيرِهَا.
+“Oda deniz manzaralı olmadığı için, değiştirmek yerine fiyatının düşürülmesini rica ediyorum.”
+Bu şık olmaz. Çünkü durumda açıkça:
+لِتَطْلُبَ تَغْيِيرَهَا
+“odayı değiştirmek istemek”
+deniyor. Burada ise özellikle بَدَلًا مِنْ تَغْيِيرِهَا, “değiştirmek yerine” ifadesi var.
+E)
+أَرْجُو إِغْلَاقَ النَّوَافِذِ جَيِّدًا حَتَّى لَا أَسْمَعَ ضَوْضَاءَ الشَّارِعِ فِي أَثْنَاءِ إِقَامَتِي.
+“Konaklamam sırasında sokak gürültüsünü duymamak için pencerelerin iyice kapatılmasını rica ediyorum.”
+Bu şık da olmaz. Gürültü sorununa bir çözüm öneriyor ama asıl problem rezervasyondaki deniz manzaralı oda şartının karşılanmaması ve bizim oda değiştirmek istememiz.
+Doğru cevabımız B 
+58. Soru
+Öncelikle durumu okuyalım.
+اِشْتَرَيْتَ حَاسُوبًا مَحْمُولًا جَدِيدًا، وَبَعْدَ اسْتِخْدَامِهِ يَوْمَيْنِ فَقَطْ اكْتَشَفْتَ أَنَّ شَاشَتَهُ تَنْطَفِئُ فَجْأَةً. تَعُودُ إِلَى الْمَتْجَرِ وَتَتَحَدَّثُ مَعَ الْبَائِعِ مُطَالِبًا بِحَلِّ الْمُشْكِلَةِ بِحَزْمٍ، فَتَقُولُ:
+“Yeni bir dizüstü bilgisayar satın aldın. Yalnızca iki gün kullandıktan sonra ekranının aniden kapandığını fark ettin. Mağazaya dönüp satıcıyla konuşuyor ve sorunun çözülmesini kararlı bir biçimde talep ediyorsun.”
+Burada önemli kelimemiz:
+بِحَزْمٍ
+“Kararlı, net bir biçimde.”
+Yani aşırı saldırgan olmayacağız; ancak sadece bilgi de istemeyeceğiz. Sorunu açıkça bildirip somut bir çözüm talep edeceğiz.
+A)
+اِشْتَرَيْتُ هَذَا الْحَاسُوبَ مِنْكُمْ قَبْلَ يَوْمَيْنِ، وَيَبْدُو أَنَّ فِي شَاشَتِهِ عَيْبًا؛ إِذْ تَنْطَفِئُ فَجْأَةً أَثْنَاءَ الِاسْتِخْدَامِ. أُطَالِبُ بِاسْتِبْدَالِهِ بِجِهَازٍ سَلِيمٍ أَوِ اسْتِرْدَادِ ثَمَنِهِ.
+“Bu bilgisayarı iki gün önce sizden aldım. Görünüşe göre ekranında bir arıza var; çünkü kullanım sırasında aniden kapanıyor. Cihazın sağlam bir cihazla değiştirilmesini veya ücretinin iade edilmesini talep ediyorum.”
+Burada aradığımız bütün unsurlar bulunuyor.
+Önce olay açıklanıyor:
+اِشْتَرَيْتُ هَذَا الْحَاسُوبَ ... قَبْلَ يَوْمَيْنِ
+“Bu bilgisayarı iki gün önce aldım.”
+Sonra sorun:
+فِي شَاشَتِهِ عَيْبٌ
+“Ekranında bir arıza var.”
+Ve sonunda kararlı talep:
+أُطَالِبُ بِاسْتِبْدَالِهِ ... أَوِ اسْتِرْدَادِ ثَمَنِهِ
+“Değiştirilmesini veya ücretinin iadesini talep ediyorum.”
+Bu şık doğru olabilir.
+B)
+هَلْ يُمْكِنُكُمْ إِخْبَارِي بِمُدَّةِ الضَّمَانِ وَالْإِجْرَاءَاتِ الْمَطْلُوبَةِ لِفَحْصِ الْجِهَازِ؟
+“Garanti süresi ve cihazın kontrol edilmesi için gereken işlemler hakkında bana bilgi verebilir misiniz?”
+Bu şık tek başına mantıklı ve nazik bir ifade. Ancak soruda bizden مُطَالِبًا بِحَلِّ الْمُشْكِلَةِ بِحَزْمٍ, yani “sorunun çözümünü kararlı biçimde talep etmek” isteniyor. Bu seçenek yalnızca bilgi talep ediyor, somut bir çözüm istemiyor.
+C)
+لَا بَأْسَ، سَأُحَاوِلُ إِصْلَاحَ الشَّاشَةِ عَلَى حِسَابِي فِي أَحَدِ مَرَاكِزِ الصِّيَانَةِ.
+“Sorun değil, ekranı kendi paramla bir teknik serviste tamir ettirmeye çalışacağım.”
+Bu şık olmaz. Mağazadan çözüm talep etmek yerine sorumluluğu kendimiz üstleniyoruz.
+D)
+رُبَّمَا لَا أَعْرِفُ طَرِيقَةَ تَشْغِيلِ الْجِهَازِ بِصُورَةٍ صَحِيحَةٍ، فَهَلْ يُمْكِنُكُمْ شَرْحُهَا لِي مَرَّةً أُخْرَى؟
+“Belki cihazı doğru kullanmayı bilmiyorum. Kullanımını bana bir kez daha açıklayabilir misiniz?”
+Bu şık olmaz. Durumda ekranın gerçekten aniden kapandığını ve bir sorun yaşadığımızı biliyoruz. Burada ise cihazın arızalı olabileceğini söylemek yerine problemi kendi kullanım hatamıza bağlıyoruz.
+E)
+أَنْتُمْ تَبِيعُونَ أَجْهِزَةً مَعِيبَةً لِلنَّاسِ، وَسَأَطْلُبُ إِغْلَاقَ الْمَتْجَرِ إِذَا لَمْ تَحُلُّوا الْمُشْكِلَةَ فَوْرًا.
+“Siz insanlara arızalı cihazlar satıyorsunuz. Sorunu hemen çözmezseniz mağazanın kapatılmasını isteyeceğim.”
+Bu şık kararlı görünse de gereğinden fazla saldırgan ve tehditkâr. Doğru cvp olamaz
+Doğru cevabımız A

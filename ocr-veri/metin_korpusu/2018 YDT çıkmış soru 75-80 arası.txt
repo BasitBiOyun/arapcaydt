@@ -1,0 +1,76 @@
+2018 YDT Arapça — 76–80. sorular
+76. soru
+(I) الشَّمْسُ وَالْقَمَرُ جِسْمَانِ كَبِيرَانِ يُؤَثِّرَانِ بِقُوَّةِ جَذْبٍ عَلَى الْأَرْضِ.
+“Güneş ve Ay, Dünya üzerinde çekim kuvveti uygulayan iki büyük gök cismidir.”
+(II) وَتُؤَثِّرُ قُوَّةُ الْجَذْبِ نَفْسُهَا عَلَى الْيَابِسَةِ وَمِيَاهِ الْمُحِيطَاتِ وَالْبِحَارِ.
+“Aynı çekim kuvveti karalar ile okyanus ve deniz sularını da etkiler.”
+(III) وَلَكِنْ يُظْهِرُ الْمَاءُ السَّائِلُ تَأْثِيرَ الْجَاذِبِيَّةِ بِطَرِيقَةٍ أَوْضَحَ مِنَ الْأَرْضِ الصُّلْبَةِ، فَيَرْتَفِعُ مُسْتَوَى سَطْحِ الْمَاءِ فِي الْمُحِيطِ، وَيَنْخَفِضُ بِسَبَبِ جَاذِبِيَّةِ الْقَمَرِ وَالشَّمْسِ يَوْمِيًّا.
+“Ancak sıvı su, yer çekiminin etkisini katı karalara göre daha belirgin gösterir; Ay ve Güneş’in çekimi nedeniyle okyanustaki su seviyesi her gün yükselir ve alçalır.”
+(IV) وَيُسَمَّى التَّغَيُّرُ الْيَوْمِيُّ فِي مُسْتَوَى الْمَاءِ: الْمَدَّ وَالْجَزْرَ.
+“Su seviyesindeki günlük değişime gelgit adı verilir.”
+(V) يُؤَكِّدُ قَانُونُ الْجَاذِبِيَّةِ الْكَوْنِيَّةِ عَلَى وُجُودِ قُوَّةِ جَذْبٍ بَيْنَ أَيِّ كُتْلَتَيْنِ.
+“Evrensel çekim yasası, herhangi iki kütle arasında çekim kuvveti bulunduğunu doğrular.”
+Anlam ve yapı analizi
+I → II → III → IV belirgin bir zincir kuruyor: Güneş ve Ay’ın çekimi → karalara ve sulara etkisi → su seviyesinin yükselip alçalması → bu olayın adı: gelgit. V. cümle çekimle ilgili olduğu için tamamen ilgisiz değildir; fakat gelgitin açıklanmasından sonra genel çekim yasasına geri döner. Parçanın belirli olay üzerindeki ilerleyişini bozar.
+Dil bilgisi notu: I’de جِسْمَانِ كَبِيرَانِ يُؤَثِّرَانِ biçimleri ikil özneyle uyumludur. III’te فَيَرْتَفِعُ ... وَيَنْخَفِضُ fiillerinin öznesi مُسْتَوَى سَطْحِ الْمَاءِ ifadesidir. Bu cümleleri dil bilgisi gerekçesiyle elemek doğru olmaz.
+Bütünlüğü bozan: V → E. — Yıl: 2018
+77. soru
+(I) إِنَّ خَلَّ التُّفَّاحِ صَدِيقٌ لِلْمَعِدَةِ حَيْثُ يَعْمَلُ عَلَى تَنْشِيطِ الْهَضْمِ.
+“Elma sirkesi sindirimi canlandırdığı için mide dostudur.”
+(II) وَحَذَّرَ الْعُلَمَاءُ مِنْ أَنَّ تَنَاوُلَ كَمِّيَّةٍ كَبِيرَةٍ مِنْ خَلِّ الْعِنَبِ النَّقِيِّ الَّذِي قَدْ تَتَرَتَّبُ عَلَيْهِ آثَارٌ سَلْبِيَّةٌ لِذَا يَنْبَغِي تَخْفِيفُهُ.
+“Bilim insanları, çok miktarda saf üzüm sirkesi tüketmenin olumsuz etkileri olabileceği konusunda uyardı; bu nedenle onun seyreltilmesi gerekir.”
+(III) وَيُسَاعِدُ خَلُّ التُّفَّاحِ عَلَى ضَبْطِ الْعُصَارَةِ الْهَضْمِيَّةِ فَيُخَفِّفُ مِنَ الشُّعُورِ بِحُرْقَةِ الْمَعِدَةِ.
+“Elma sirkesi sindirim sıvısının düzenlenmesine yardımcı olur; böylece mide yanması hissini hafifletir.”
+(IV) كَمَا أَنَّ خَلَّ التُّفَّاحِ يَمْتَازُ بِتَأْثِيرٍ مُضَادٍّ لِلْبَكْتِيرِيَا وَيُحَارِبُ بَكْتِيرِيَا الْأَمْعَاءِ الضَّارَّةَ.
+“Ayrıca elma sirkesi bakterilere karşı etkisiyle öne çıkar ve bağırsaklardaki zararlı bakterilerle savaşır.”
+(V) وَيُعَدُّ خَلُّ التُّفَّاحِ مَنْجَمًا مِنَ الْمَعَادِنِ فَهُوَ غَنِيٌّ بِالْكَالْسِيُومِ وَالْفُوسْفُورِ.
+“Elma sirkesi mineral deposu sayılır; kalsiyum ve fosfor bakımından zengindir.”
+Anlam ve yapı analizi
+Parçanın omurgası elma sirkesinin özellikleri ve yararlarıdır. I, III, IV ve V’te خَلُّ التُّفَّاحِ tekrar edilerek konu sürdürülür. II ise خَلُّ الْعِنَبِ yani üzüm sirkesine geçer. Buradaki belirleyici fark yalnızca olumlu/olumsuz değerlendirme değildir; ele alınan sirke türü değişir.
+Dil bilgisi notu: II’de الَّذِي zamirinin bağlandığı ifade ve حَذَّرَ ... مِنْ أَنَّ ... لِذَا dizilişi anlatım bakımından pürüzlü görünür. Ancak sorunun sağlam eleme gerekçesi bu değildir: II’nin konusu üzüm sirkesi, diğerlerinin konusu elma sirkesidir. V’te PDF’de فَهُوَ öncesinde boşluk eksik görünür; bu, anlam bütünlüğünü bozmaz.
+Bütünlüğü bozan: II → B. — Yıl: 2018
+78. soru
+(I) كَانَ التَّعْلِيمُ فِي جَمِيعِ الْبُلْدَانِ الْعَرَبِيَّةِ قَبْلَ الْقَرْنِ التَّاسِعَ عَشَرَ مَحْدُودًا.
+“19. yüzyıldan önce bütün Arap ülkelerinde eğitim sınırlıydı.”
+(II) وَلَمْ تَكُنْ هُنَاكَ مَدَارِسُ بِالْمَفْهُومِ الْحَدِيثِ.
+“Modern anlamda okullar yoktu.”
+(III) بَلْ كَانَتْ هُنَاكَ مَدَارِسُ ذَاتُ طَابِعٍ دِينِيٍّ.
+“Aksine, dinî nitelikli okullar vardı.”
+(IV) وَإِنَّمَا التَّعْلِيمُ فَهُوَ بَعِيدٌ عَنْ مَفْهُومِ الْحَضَارَةِ.
+“Eğitim ise uygarlık kavramından uzaktır.”
+(V) يُعَلَّمُ فِيهَا مَا يَتَّصِلُ بِالدِّينِ وَالْعُلُومِ اللُّغَوِيَّةِ.
+“Bu okullarda din ve dil bilimleriyle ilgili konular öğretilirdi.”
+Anlam ve yapı analizi
+I → II → III → V düzgün ilerler: Eski dönemde eğitim sınırlıdır; modern okullar yoktur; dinî okullar vardır; bu okullarda hangi konuların öğretildiği açıklanır. V’teki فِيهَا “onlarda” zamiri III’teki مَدَارِسُ ذَاتُ طَابِعٍ دِينِيٍّ ifadesine döner. IV araya girince bu yakın bağlantı kesilir; ayrıca “uygarlık kavramından uzaklık” yargısı yeni ve açıklanmayan bir değerlendirmedir.
+Dil bilgisi ve anlatım notu: IV’teki وَإِنَّمَا التَّعْلِيمُ فَهُوَ... kuruluşu da akıcı değildir. إِنَّمَا التَّعْلِيمُ بَعِيدٌ... veya farklı bir konu–haber yapısı daha doğal olurdu. Bununla birlikte cevap için asıl ölçüt, III ile V arasındaki zamir ve açıklama bağını koparmasıdır.
+Bütünlüğü bozan: IV → D. — Yıl: 2018
+79. soru
+(I) لَا نَرَى فِي الْهِنْدِ طُقُوسًا وَمِهْرَجَانَاتٍ مُخْتَلِفَةً عَنْ نَظِيرَتِهَا فِي الْبُلْدَانِ الْأُخْرَى.
+“Hindistan’da diğer ülkelerdekilerden farklı törenler ve festivaller görmeyiz.”
+(II) يُوجَدُ الْعَدِيدُ مِنَ الْمِهْرَجَانَاتِ الَّتِي يَجْتَمِعُ بِهَا الْهُنُودُ لِلِاحْتِفَالِ بِمُنَاسَبَةٍ مَا أَوْ حَدَثٍ مُهِمٍّ كُلَّ عَامٍ.
+“Hintlilerin her yıl bir vesileyi veya önemli olayı kutlamak için bir araya geldiği birçok festival vardır.”
+(III) وَبَعْضُ هَذِهِ الْمِهْرَجَانَاتِ تُقَدِّمُ تَسْلِيَةً لِلْحُضُورِ وَبَعْضُهَا قَدْ يُلْحِقُ الْأَذَى بِهِمْ.
+“Bu festivallerin bazıları katılanlara eğlence sunar, bazıları ise onlara zarar verebilir.”
+(IV) فَقَدْ تُقَامُ طُقُوسٌ غَرِيبَةٌ فِي الِاحْتِفَالِ تَرْمُزُ لِشَيْءٍ مُقَدَّسٍ.
+“Kutlamalarda kutsal bir şeyi simgeleyen tuhaf törenler düzenlenebilir.”
+(V) وَمِنْ هَذِهِ الْمِهْرَجَانَاتِ الْهِنْدِيَّةِ الْغَرِيبَةِ مِهْرَجَانُ «تَهُوكُمْ»، وَمِهْرَجَانُ الْمَشْيِ عَلَى النَّارِ.
+“Bu tuhaf Hint festivalleri arasında ‘Tahokum’ festivali ve ateşte yürüme festivali bulunur.”
+Anlam ve yapı analizi
+II–V, Hindistan’daki festivalleri anlatıp onların alışılmadık/tuhaf örneklerine ulaşır. I ise لَا نَرَى ... مُخْتَلِفَةً yapısıyla “farklı festivaller görmeyiz” der. Bu, IV’teki طُقُوسٌ غَرِيبَةٌ ve V’teki الْمِهْرَجَانَاتِ الْهِنْدِيَّةِ الْغَرِيبَةِ ifadeleriyle ters düşer. Özellikle I’deki لَا olumsuzluk edatı cevabı belirler.
+Dil bilgisi notu: I’i eleme nedeni, Arapça cümlenin kuruluşu değil olumsuzluk nedeniyle parçanın kalanıyla çelişmesidir. II’deki بِهَا zamiri festivallere, III’teki بِهِمْ katılımcılara döner; konu bağı sürer.
+Bütünlüğü bozan: I → A. — Yıl: 2018
+80. soru
+(I) تُعَرَّفُ اللُّغَاتُ بِأَنَّهَا أَصْوَاتٌ تُسْتَخْدَمُ لِلتَّعْبِيرِ عَنِ الِاحْتِيَاجَاتِ وَالْأَغْرَاضِ مِنْ قِبَلِ الشُّعُوبِ.
+“Diller, toplumların ihtiyaç ve amaçlarını ifade etmek için kullandıkları sesler olarak tanımlanır.”
+(II) وَاللُّغَةُ مَجْمُوعَةٌ مِنَ الرُّمُوزِ وَالتَّعَابِيرِ الْمُتَعَارَفِ عَلَيْهَا بَيْنَ مَجْمُوعَةٍ مِنَ النَّاسِ.
+“Dil, bir grup insan arasında üzerinde uzlaşılmış simge ve ifadeler bütünüdür.”
+(III) وَاللُّغَةُ الْعَرَبِيَّةُ هِيَ إِحْدَى اللُّغَاتِ الَّتِي تَنْدَرِجُ ضِمْنَ اللُّغَاتِ السَّامِيَّةِ.
+“Arapça, Sami dilleri arasında yer alan dillerden biridir.”
+(IV) وَمَعَ بِدَايَةِ قُدْرَةِ الْإِنْسَانِ عَلَى النُّطْقِ فَقَدْ شَكَّلَتِ الْبَشَرِيَّةُ لُغَاتٍ كَثِيرَةً.
+“İnsanın konuşma yeteneğinin başlamasıyla insanlık birçok dil oluşturdu.”
+(V) وَقَدْ بَقِيَتْ بَعْضُهَا مُسْتَخْدَمَةً وَبَعْضُهَا زَالَتْ إِلَى الْأَبَدِ.
+“Bunların bir kısmı kullanılmaya devam etti, bir kısmı ise sonsuza dek yok oldu.”
+Anlam ve yapı analizi
+Parçanın genel konusu dilin tanımı ve insanlıkta dillerin ortaya çıkıp sürmesidir. I–II dili genel olarak tanımlar; IV–V yine genel düzeyde dillerin oluşumunu ve durumunu anlatır. III birden yalnızca Arapçanın hangi dil ailesine ait olduğu bilgisine geçer. Bu özel sınıflandırma geliştirilmez; IV’te yeniden bütün dillere dönülür. III çıkarıldığında II → IV → V genel konu akışı korunur.
+Zamir ve dil bilgisi notu: V’teki بَعْضُهَا ifadelerindeki ـهَا, IV’teki لُغَاتٍ كَثِيرَةً ifadesine döner. III çıkarıldığında bu bağ daha görünür olur. V’in بَقِيَتْ بَعْضُهَا kuruluşu editöryal açıdan ayrıca tartışılabilir; fakat sorunun aradığı anlam bütünlüğü bakımından V gereklidir, çünkü IV’te ortaya çıkan dillerin sonraki durumunu anlatır.
+Bütünlüğü bozan: III → C. — Yıl: 2018

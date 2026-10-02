@@ -1,0 +1,195 @@
+İSİM TAMLAMASI DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+إِنَّ هٰذَا لَيْسَ دَفْتَرًا عَادِيًّا، بَلْ هُوَ دَفْتَرُ ----.
+Türkçesi: Bu sıradan bir defter değildir; aksine o ---- defteridir.
+İlk aşamada دَفْتَرُ ---- yapısına bakalım. Burada bir isim tamlaması arıyoruz. boşluğa gelecek kelime مُضافٌ إليه olacağı için mecrur olmalıdır.
+Şimdi şıklara bakalım:
+A) اَلْكَبِيرَ — büyük
+Bir sıfattır ve mansuptur. İsim tamlamasının ikinci unsuru olarak uygun değildir. Olmaz.
+B) اَلْجَدِيدِ — yeni
+Bir sıfattır. Burada amaç bir isme aitlik bildiren isim tamlaması kurmaktır. Olmaz.
+C) نَظِيفًا — temiz
+Bir sıfattır ve mansuptur. Olmaz.
+D) الطَّالِبِ — öğrencinin
+Bir isimdir ve mecrurdur. دَفْتَرُ الطَّالِبِ “öğrencinin defteri” şeklinde doğru bir isim tamlaması oluşturur. Olabilir.
+E) مُهِمًّا — önemli
+Bir sıfattır ve mansuptur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, الطَّالِبِ olur.
+
+2. Soru
+فِي الْمَعْرِضِ رَأَيْنَا خَاتَمًا ثَمِينًا، وَأَوْضَحَ الْمُرْشِدُ أَنَّهُ خَاتَمُ ----.
+Türkçesi: Sergide değerli bir yüzük gördük ve rehber onun ---- yüzüğü olduğunu açıkladı.
+İlk aşamada خَاتَمُ ---- yapısına bakalım. Burada yine isim tamlaması vardır., boşluğa gelecek kelime ise mecrur مُضافٌ إليه  olmalıdır.
+Şimdi şıklara bakalım:
+A) فِضَّةٍ — gümüş
+İsimdir ve mecrurdur. خَاتَمُ فِضَّةٍ “gümüş yüzük” anlamında doğru bir isim tamlamasıdır. Olabilir.
+B) جَمِيلٌ — güzel
+Bir sıfattır ve merfudur. Buradaki isim tamlamasını oluşturmaz. Olmaz.
+C) قَدِيمًا — eski
+Sıfattır ve mansuptur. Olmaz.
+D) لَامِعٌ — parlak
+Bir sıfattır ve merfudur. Olmaz.
+E) ثَمِينًا — değerli
+Bir sıfattır ve mansuptur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, فِضَّةٍ olur.
+3. Soru
+يَحْرِصُ الطُّلَّابُ عَلَى نَظَافَةِ ---- لِأَنَّهَا مَكَانُ الْعِلْمِ وَالتَّعَلُّمِ.
+Türkçesi: Öğrenciler, ilim ve öğrenme yeri olduğu için ---- temizliğine özen gösterirler.
+İlk aşamada نَظَافَةِ ---- yapısına bakalım. “Neyin temizliği?” sorusunun cevabını verecek bir مُضافٌ إليه arıyoruz. Bu nedenle boşluğa mecrur bir isim gelmelidir.
+Şimdi şıklara bakalım:
+A) اَلْجَامِعَةُ — üniversite
+İsimdir fakat merfudur. Burada الْجَامِعَةِ olması gerekirdi. Olmaz.
+B) جَدِيدٌ — yeni
+Bir sıfattır. Olmaz.
+C) الْمَدْرَسَةِ — okulun
+İsimdir ve mecrurdur. نَظَافَةِ الْمَدْرَسَةِ “okulun temizliği” şeklinde doğru isim tamlamasıdır. Olabilir.
+D) الْبَيْتَ — evi
+İsimdir fakat mansuptur. Olmaz.
+E) مُفِيدٌ — faydalı
+Bir sıfattır. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, الْمَدْرَسَةِ olur.
+4. Soru
+تَزْرَعُ الْبَلَدِيَّةُ الْأَشْجَارَ لِحِمَايَةِ ---- وَتَحْسِينِ جَمَالِ الْمَدِينَةِ.
+Türkçesi: Belediye, ---- korunması ve şehrin güzelliğinin artırılması için ağaç dikiyor.
+İlk aşamada حِمَايَةِ ---- “---- korunması” yapısına bakalım. Burada حِمَايَةِ مُضاف, ardından mecrur bir مُضافٌ إليه gelmelidir.
+Şimdi şıklara bakalım:
+A) اَلْجَمِيلَ — güzel
+Bir sıfattır ve mansuptur. Olmaz.
+B) الْبِيئَةِ — çevrenin
+İsimdir ve mecrurdur. حِمَايَةِ الْبِيئَةِ “çevrenin korunması” anlamını verir. Olabilir.
+C) الْمَسْجِدَ — camiyi
+İsimdir fakat mansuptur. Olmaz.
+D) وَاسِعَةٌ — geniş
+Bir sıfattır. Olmaz.
+E) خَضْرَاءَ — yeşil
+Bir sıfattır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, الْبِيئَةِ olur.
+5. Soru
+دَخَلَ التِّلْمِيذُ إِلَى الصَّفِّ مُسْرِعًا، وَأَحْضَرَ كِتَابَ ---- لِيَبْدَأَ الْكِتَابَةَ، لِأَنَّ هٰذَا الشَّيْءَ مُهِمٌّ جِدًّا لِلدَّرْسِ.
+Türkçesi: Öğrenci sınıfa aceleyle girdi ve yazmaya başlamak için ---- kitabını getirdi.
+İlk aşamada كِتَابَ ---- yapısına bakalım. كِتَابَ burada مُضافtır. Boşluğa “kimin kitabı?” sorusunun cevabını veren mecrur bir مُضافٌ إليه  gelmelidir.
+Şimdi şıklara bakalım:
+A) لِلْمُعَلِّمِ — öğretmen için / öğretmene
+Harf-i cerli bir yapıdır. farklı bir yapı oluşturur; burada doğrudan isim tamlaması aranıyor. Olmaz.
+B) اَلْمُعَلِّمُونَ — öğretmenler
+Merfu çoğuldur. Olmaz.
+C) مُعَلِّمًا — bir öğretmeni
+Mansuptur. Olmaz.
+D) الْمُعَلِّمِ — öğretmenin
+İsimdir ve mecrurdur. كِتَابَ الْمُعَلِّمِ “öğretmenin kitabını” şeklinde doğru isim tamlaması oluşturur. Olabilir.
+E) اَلْمُعَلِّمُ — öğretmen
+Merfudur. Müضافٌ إليه mecrur olmalıdır. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, الْمُعَلِّمِ olur.
+6. Soru
+أَغْلَقَ الْبَوَّابُ ---- الْمَدْرَسَةِ فِي نِهَايَةِ الْيَوْمِ، وَبَقِيَ الطُّلَّابُ خَارِجَ الْمَبْنَى يَنْتَظِرُونَ الْحَارِسَ.
+Türkçesi: Kapıcı günün sonunda okulun ---- kapattı ve öğrenciler binanın dışında bekledi.
+İlk aşamada ---- الْمَدْرَسَةِ yapısına bakalım. “Okulun kapısı” anlamında bir isim tamlaması arıyoruz. İlk kelime مُضاف, الْمَدْرَسَةِ ise boşluga muzafın ileyh gelecektir. Ayrıca bu tamlama أَغْلَقَ fiilinin nesnesi olduğu için muzaf mansup olmalıdır.
+Şimdi şıklara bakalım:
+A) بَابًا — bir kapı
+Mansuptur fakat tenvinlidir. مُضاف olan kelime tenvin almaz. Olmaz.
+B) بَابَ — kapısını / kapı
+Mansuptur ve tenvinsizdir. بَابَ الْمَدْرَسَةِ “okulun kapısını” şeklinde doğru tamlamadır. Olabilir.
+C) الْبَابُ — kapı
+Başında ال vardır ve merfudur. Müضاف burada bu şekilde kullanılmaz. Olmaz.
+D) بَابٌ — bir kapı
+Merfu ve tenvinlidir. Olmaz.
+E) بَابِ — kapı
+Mecrurdur. Burada nesne olduğu için mansup olmalıdır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, بَابَ olur.
+7. Soru
+وَصَلَ ---- الْجَامِعَةِ إِلَى الْقَاعَةِ فِي وَقْتٍ وَاحِدٍ، وَجَلَسَا فِي الصَّفِّ الْأَوَّلِ لِيَسْتَمِعَا إِلَى الْمُحَاضَرَةِ.
+Türkçesi: Üniversitenin iki öğrencisi salona aynı anda ulaştı ve konferansı dinlemek için ön sıraya oturdu.
+İlk aşamada ---- الْجَامِعَةِ tamlamasına bakalım. جَلَسَا “ikisi oturdu” ifadesinden iki öğrenciden söz edildiğini anlıyoruz. “İki öğrenci” özne olduğu için merfu olmalı; ancak ikil isim muzaf olduğunda sonundaki ن düşer.
+Şimdi şıklara bakalım:
+A) الطَّالِبَانِ — iki öğrenci
+İkil ve merfudur; ancak başında ال vardır ve ن düşmemiştir. İsim tamlamasına uygun değildir. Olmaz.
+B) طَالِبَانِ — iki öğrenci
+Merfudur fakat izafet yapıldığında ن düşmelidir. Olmaz.
+C) طَالِبَيْنِ — iki öğrenci
+Mansup/mecrur biçimidir; ayrıca ن düşmemiştir. Olmaz.
+D) طَالِبَا — iki öğrenci
+İkil, merfu ve izafet nedeniyle ن düşmüştür. طَالِبَا الْجَامِعَةِ doğru yapıdır. Olabilir.
+E) طَالِبٌ — bir öğrenci
+Tekildir. Cümlede iki kişiden söz ediliyor. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, طَالِبَا olur.
+8. Soru
+تَحَدَّثْتُ مَعَ ---- الْمَدْرَسَةِ حَوْلَ الْاِمْتِحَانِ الْقَادِمِ بَعْدَ الدَّرْسِ، وَطَلَبْتُ مِنْهُمَا بَعْضَ النَّصَائِحِ الْمُفِيدَةِ.
+Türkçesi: Dersten sonra yaklaşan sınav hakkında okulun iki öğretmeniyle konuştum ve ikisinden bazı faydalı tavsiyeler istedim.
+İlk aşamada مَعَ sonrasına ve مِنْهُمَا “o ikisinden” ifadesine bakalım. İkil bir isim arıyoruz aynı zamanda muzaf özelliklerini taşımalı
+Şimdi şıklara bakalım:
+A) أُسْتَاذَ — öğretmen
+Tekildir. Burada tek kişiden söz ediliyor. Olmaz.
+B) أُسْتَاذَانِ — iki öğretmen
+Merfu ikil biçimidir ve ن düşmemiştir. Olmaz.
+C) أُسْتَاذَيْنِ — iki öğretmen
+İ‘rab bakımından uygun yöndedir ancak isim tamlamasına girdiğinde ن düşmelidir. Olmaz.
+D) الْأُسْتَاذَيْ — iki öğretmen
+Mُuzafın başında ال kullanılmaz. Olmaz.
+E) أُسْتَاذَيْ — iki öğretmen
+İkil isimdir; mecrur biçimdedir ve izafet nedeniyle ن düşmüştür. أُسْتَاذَيْ الْمَدْرَسَةِ doğru yapıdır. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, أُسْتَاذَيْ olur.
+9. Soru
+يَحْضُرُ ---- الشَّرِكَةِ الِاجْتِمَاعَ فِي بِدَايَةِ كُلِّ شَهْرٍ، لِمُتَابَعَةِ شُؤُونِ الْمُؤَسَّسَةِ وَاتِّخَاذِ الْقَرَارَاتِ اللَّازِمَةِ.
+Türkçesi: Şirketin yöneticileri, kurumun işlerini takip etmek ve gerekli kararları almak için her ayın başında toplantıya katılırlar.
+İlk aşamada ---- الشَّرِكَةِ tamlamasına bakalım. “Şirketin yöneticileri” anlamını arıyoruz. 
+Şimdi şıklara bakalım:
+A) مُدِيرِينَ — yöneticiler
+Mansup/mecrur biçimidir ve ن düşmemiştir. Olmaz.
+B) مُدِيرُونَ — yöneticiler
+Merfudur ancak isim tamlamasına girdiği için ن düşmelidir. Olmaz.
+C) مُدِيرُو — yöneticileri
+Merfudur ve izafet nedeniyle ن düşmüştür. مُدِيرُو الشَّرِكَةِ doğru isim tamlamasıdır. Olabilir.
+D) الْمُدِيرُونَ — yöneticiler
+Başında ال vardır ve ن düşmemiştir. İsim tamlamasına uygun değildir. Olmaz.
+E) مُدِيرَ — yönetici
+Tekildir ve mansuptur. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, مُدِيرُو olur.
+10. Soru
+كَرَّمَتِ الْإِدَارَةُ ---- الْمَشْرُوعِ فِي الْحَفْلِ السَّنَوِيِّ، تَقْدِيرًا لِجُهُودِهِمْ فِي إِنْجَاحِ الْمَشْرُوعِ.
+Türkçesi: Yönetim, projenin çalışanlarını projenin başarısındaki emeklerinden dolayı yıllık törende ödüllendirdi.
+İlk aşamada ---- الْمَشْرُوعِ tamlamasına bakalım. “Projenin çalışanları” anlamı vardır. Bu ifade كَرَّمَتْ fiilinin nesnesi olduğu için mansup bir kelime gelmeli.
+Şimdi şıklara bakalım:
+A) مُوَظَّفِينَ — çalışanları
+Mansuptur ancak isim tamlamasında ن düşmelidir. Olmaz.
+B) مُوَظَّفِي — çalışanları
+Mansup biçimdedir ve izafet nedeniyle ن düşmüştür. مُوَظَّفِي الْمَشْرُوعِ doğru yapıdır. Olabilir.
+C) مُوَظَّفُونَ — çalışanlar
+Merfudur ve ن düşmemiştir. Olmaz.
+D) الْمُوَظَّفِي — çalışanları
+Mُuzafıın başında ال bulunmaz. Olmaz.
+E) مُوَظَّفُ — çalışan
+Tekildir. Cümlede جُهُودِهِمْ “onların çabaları” ifadesi çoğul kişileri gösteriyor. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, مُوَظَّفِي olur.
+11. Soru
+تَحَدَّثَ الْمُشْرِفُ مَعَ عَامِلِي ---- حَوْلَ الْخُطَّةِ الْجَدِيدَةِ، قَبْلَ بَدْءِ الْعَمَلِ فِي الْأُسْبُوعِ الْمَاضِي.
+Türkçesi: Sorumlu, geçen hafta işe başlamadan önce ---- çalışanlarıyla yeni plan hakkında konuştu.
+İlk aşamada عَامِلِي ---- yapısına bakalım. عَامِلِي burada muzaftır. Boşluğa “neyin çalışanları?” sorusuna cevap veren mecrur bir muzafun ileyh gelmelidir.
+Şimdi şıklara bakalım:
+A) الْمَصْنَعِ — fabrikanın
+İsimdir ve mecrurdur. عَامِلِي الْمَصْنَعِ “fabrikanın çalışanlarıyla” şeklinde doğru isim tamlaması oluşturur. Olabilir.
+B) الْمَصْنَعُ — fabrika
+Merfudur. Müضافٌ إليه mecrur olmalıdır. Olmaz.
+C) الْمَصْنَعَ — fabrikayı
+Mansuptur. Olmaz.
+D) مَصْنَعًا — bir fabrikayı
+Mansup ve tenvinlidir. Olmaz.
+E) مَصْنَعٌ — bir fabrika
+Merfu ve tenvinlidir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, الْمَصْنَعِ olur.
+
+12. Soru
+يَشْتَرِكُ ---- الْمَعْهَدِ فِي الدَّوْرَةِ التَّدْرِيبِيَّةِ كُلَّ عَامٍ، لِرَفْعِ مُسْتَوَاهُمْ الْمِهْنِيِّ وَتَطْوِيرِ مَهَارَاتِهِمْ.
+Türkçesi: Enstitünün öğretmenleri, mesleki seviyelerini yükseltmek ve becerilerini geliştirmek için her yıl eğitim kursuna katılırlar.
+İlk aşamada ---- الْمَعْهَدِ yapısına bakalım. “Enstitünün öğretmenleri” anlamını veren isim tamlamasını arıyoruz. 
+Şimdi şıklara bakalım:
+A) مُدَرِّسِي — öğretmenleri
+Cem‘-i müzekker sâlimin mansup/mecrur biçimidir. özne merfu olmalıdır dolayısıyla. Olmaz.
+B) مُدَرِّسُونَ — öğretmenler
+Merfudur ancak isim tamlamasında ن düşmelidir. Olmaz.
+C) مُدَرِّسِينَ — öğretmenler
+Mansup/mecrurdur ve  ن düşmemiştir. Olmaz.
+D) الْمُدَرِّسُونَ — öğretmenler
+Başında ال vardır ve ن düşmemiştir. İsim tamlamasına uygun değildir. Olmaz.
+E) مُدَرِّسُو — öğretmenleri
+Merfudur ve isim tamlamasına girdiği için ن düşmüştür. مُدَرِّسُو الْمَعْهَدِ doğru yapıdır. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, مُدَرِّسُو olur.

@@ -1,0 +1,165 @@
+MUKARABE, RECA VE UMUT FİİLLERİ DEĞERLENDİRME SORU ANALİZLERİ
+1) كَادَ الْحَبْلُ ---- مِنْ ثِقَلِ الْحَقيبَةِ.
+Cümle كَادَ fiiliyle başlamaktadır. كَادَ, أفعال المقاربة (mukārabe / yaklaşma fiilleri) grubundandır ve bir eylemin gerçekleşmeye çok yaklaştığını bildirir.
+كَادَ → mukārabe fiili
+الْحَبْلُ → كَادَ’nın ismi, merfû
+Boşluk → كَادَ’nın haberi
+Boşlukta, “ipin kopması” eylemini ifade edecek uygun bir fiil yapısı aranmalıdır. 
+Şimdi şıklara bakalım:
+A) يَنْقَطِعُ → muzâri ve merfûdur; كَادَ’nın haber yapısına uygundur. ✅
+B) اِنْقَطَعَ → mâzi fiildir; burada uygun değildir. ❌
+C) أَنْ يَنْقَطِعَ → أَنْ + mansûb muzâri yapısıdır; كَادَ ile kullanılmaz. ❌
+D) يَنْقَطِعَ → mansûb muzâridir; önünde nasb edatı yoktur dolayısıylaolmez. ❌
+E) مُنْقَطِعٌ → isimdir; gereken fiil cümlesi yapısını karşılamaz. ❌
+Doğru cevap: A) يَنْقَطِعُ
+2) أَوْشَكَتْ السَّماءُ ---- بَعْدَ ظُهورِ الْغُيومِ.
+أَوْشَكَ da أفعال المقاربة grubundandır ve “olmak üzere olmak / çok yaklaşmak” anlamı taşır.
+أَوْشَكَتْ → yaklaşma fiili
+السَّماءُ → ismi
+Boşluk → haberi
+Burada “gökyüzünün yağmur yağdırmaya/yağmaya yaklaşması” anlatılmaktadır. Haber kısmında muzâri fiilin hangi yapıyla gelmesi gerektiği kontrol edilmelidir.
+Şimdi şıklara bakalım:
+A) تُمْطِرُ → muzâri fiildir; ancak أَوْشَكَ ile haberin أَنْ ile kullanılması daha yerleşik ve beklenen yapıdır. ❌
+B) أَنْ تُمْطِرَ → أَنْ + mansûb muzâri; أَوْشَكَ’nın haber yapısına uygundur. ✅
+C) تُمْطِرْ → meczûm muzâridir; cezm sebebi yoktur. ❌
+D) أَمْطَرَتْ → mâzi fiildir. ❌
+E) مَطَرٌ → isimdir. ❌
+Doğru cevap: B) أَنْ تُمْطِرَ
+3) كَادَتْ الْأَوْراقُ ---- مِنْ شِدَّةِ الرّيحِ.
+Buradaki كَادَتْ, mukārabe fiilidir.
+الْأَوْراقُ akılsız çoğul olduğundan Arapçada müennes tekil gibi değerlendirilir. Bu nedenle boşluğa gelecek fiilde yalnızca haber yapısı değil, isimle cinsiyet uyumu da önemlidir.
+Şimdi şıklara bakalım:
+A) تَتَطايَرُ → müennes tekil muzâri biçimindedir; hem الْأَوْراقُ ile hem كَادَ yapısıyla uyumludur. ✅
+B) أَنْ يَتَطايَرَ → eril tekil biçimdedir; الْأَوْراقُ ile uyumlu değildir. ❌
+C) تَطايَرَتْ → mâzi fiildir. ❌
+D) تَطايَرَ → hem mâzi hem eril biçimdedir. ❌
+E) مُتَطايِرَةً → isim/sıfat yapısındadır. ❌
+Doğru cevap: A) تَتَطايَرُ
+4) كَرَبَ الْفَجْرُ ---- بَعْدَ لَيْلٍ طَويلٍ.
+كَرَبَ, أفعال المقاربة grubundandır. “Neredeyse / olmak üzere” anlamı taşır.
+الْفَجْرُ → كَرَبَ’nin ismi
+Boşluk → haberi
+Burada “şafağın sökmesi” eylemi beklenmektedir. Haber olarak gelecek fiilin zamanı ve i‘rab biçimi önemlidir.
+Şimdi şıklara bakalım:
+A) أَنْ يَطْلُعَ → أَنْ + mansûb muzâri; كَرَبَ ile bu kullanım esas değildir. ❌
+B) يَطْلُعُ → merfû muzâri; uygun haber yapısıdır. ✅
+C) طَلَعَ → mâzi fiildir. ❌
+D) يَطْلُعَ → mansûb; nasb sebebi yoktur. ❌
+E) طُلوعًا → mastardır. ❌
+Doğru cevap: B) يَطْلُعُ
+5) عَسَى الطَّالِبُ ---- في الْاِخْتِبارِ.
+عَسَى, أفعال الرجاء (reca / umut fiilleri) grubundandır. Bir olayın gerçekleşmesinin umulduğunu ifade eder.
+الطَّالِبُ → عَسَى’nın ismi
+Boşluk → haberi
+Burada öğrencinin sınavda başarılı olması yönünde umut edilen bir eylem bulunmaktadır. Haber kısmında gelecek muzâri fiilin hangi yapıya bağlanacağı belirleyicidir.
+Şimdi şıklara bakalım:
+A) يَنْجَحُ → yalın muzâri kullanımı mümkün olmakla birlikte عَسَى’nın haberinde beklenen temel kullanım değildir. ❌
+B) نَجَحَ → mâzi fiildir. ❌
+C) أَنْ يَنْجَحَ → أَنْ + mansûb muzâri; عَسَى’nın haberinde yaygın ve temel yapıdır. ✅
+D) يَنْجَحْ → meczûm; cezm sebebi yoktur. ❌
+E) نَجَاحًا → mastardır. ❌
+Doğru cevap: C) أَنْ يَنْجَحَ
+6) حَرَى الْغائِبُ ---- إِلى أَهْلِهِ.
+حَرَى, أفعال الرجاء grubundandır ve bir eylemin gerçekleşmesinin umut edildiğini bildirir.
+Burada الْغائِبُ ismi, boşluk ise haberidir. Haber bölümünde “ailesine dönmek” eyleminin doğru gramer yapısı aranmalıdır.
+Şimdi şıklara bakalım:
+A) يَرْجِعُ → yalın muzâridir; حَرَى’nın haberinde gereken yapıyı karşılamaz. ❌
+B) رَجَعَ → mâzi fiildir. ❌
+C) يَرْجِعَ → mansûb muzâridir fakat nasb edatı bulunmamaktadır. ❌
+D) أَنْ يَرْجِعَ → حَرَى’nın haberi أَنْ + muzâri biçiminde gelir. ✅
+E) رُجُوعًا → mastardır. ❌
+Doğru cevap: D) أَنْ يَرْجِعَ
+
+7) اِخْلَوْلَقَ الْمَطَرُ ---- بَعْدَ طولِ الْجَفافِ.
+اِخْلَوْلَقَ, أفعال الرجاء grubunda değerlendirilir. Gerçekleşmesi beklenen veya umut edilen bir durumu bildirir.
+الْمَطَرُ → ismi
+Boşluk → haberi
+Burada yağmurun yağması/bastırması eylemini ifade edecek uygun fiil yapısı gereklidir.
+Şimdi şıklara bakalım:
+A) يَنْزِلُ → yalın muzâridir; gerekli haber yapısını karşılamaz. ❌
+B) نَزَلَ → mâzi fiildir. ❌
+C) يَنْزِلْ → meczûmdur. ❌
+D) نُزُولًا → mastardır. ❌
+E) أَنْ يَنْزِلَ → أَنْ + mansûb muzâri; اِخْلَوْلَقَ’nın haberinde gereken yapıdır. ✅
+Doğru cevap: E) أَنْ يَنْزِلَ
+8) عَسَى الْمَريضُ ---- قَريبًا.
+Cümle عَسَى fiiliyle başlamaktadır. عَسَى, أفعال الرجاء (reca / umut fiilleri) grubundandır ve bir durumun gerçekleşmesinin umulduğunu ifade eder.
+عَسَى → reca fiili
+الْمَريضُ → عَسَى’nın ismi ve merfûdur
+Boşluk → عَسَى’nın haberi konumundadır
+Burada hastanın yakın zamanda iyileşmesi umut edilmektedir. Bu nedenle boşlukta hem anlam bakımından “iyileşmek” fiiline, hem de عَسَى’nın haberinde kullanılan gramer yapısına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) أَنْ يَشْفَى → “iyileşmesi” anlamındadır. عَسَى fiilinin haberinde beklenen أَنْ + muzâri yapısına uygundur. Ayrıca يُشْفَى / يَشْفَى burada hastanın “iyileşmesi, şifa bulması” anlamını verir. ✅
+B) يَشْفَى → “iyileşir” anlamındadır. Ancak bu soruda عَسَى’nın haberinde esas alınan yapı أَنْ + muzâri olduğundan eksik kalır. ❌
+C) شُفِيَ → “iyileşti / şifa buldu” anlamında mâzi fiildir. Reca fiilinin burada gerektirdiği haber yapısına uygun değildir. ❌
+D) يَشْفُو → fiilin doğru muzâri çekimi değildir. ❌
+E) شِفاءً → “şifa, iyileşme” anlamında mastardır; burada gereken fiil yapısını karşılamaz. ❌
+Doğru cevap: A) أَنْ يَشْفَى
+9) حَرَى الْفَريقُ ---- في الْمُباراةِ.
+حَرَى, reca fiilidir. الْفَريقُ onun ismidir. Takımın müsabakada kazanmasının umut edilmesi anlatılmaktadır.
+Boşlukta “kazanmak” fiilinin حَرَى’nın haberine uygun biçimi aranmalıdır.
+Şimdi şıklara bakalım:
+A) يَفوزُ → yalın muzâri; uygun yapı değildir. ❌
+B) أَنْ يَفوزَ → أَنْ + mansûb muzâri; حَرَى’nın haberine uygundur. ✅
+C) فازَ → mâzi. ❌
+D) يَفوزْ → meczûm. ❌
+E) فَوْزًا → mastar. ❌
+Doğru cevap: B) أَنْ يَفوزَ
+10) اِخْلَوْلَقَ الْمُسافِرونَ ---- سالِمينَ.
+اِخْلَوْلَقَ reca fiilidir.
+الْمُسافِرونَ onun ismidir ve çoğuldur. Dolayısıyla boşluğa gelecek fiilde hem haber yapısı hem de çoğul şahıs çekimi dikkate alınmalıdır.
+سالِمينَ ise “sağ salim” anlamında hâl olarak gelmektedir.
+Şimdi şıklara bakalım:
+A) يَعودونَ → çoğul muzâri olmakla birlikte gerekli haber yapısı eksiktir. ❌
+B) عادوا → mâzi fiildir. ❌
+C) أَنْ يَعودوا → أَنْ’den sonra ef‘âl-i hamse olduğu için nûn düşmüş, mansûb muzâri biçimidir; yapıya uygundur. ✅
+D) يَعودوا → nûn düşmüştür fakat bunu gerektirecek nasb/cezm edatı yoktur. ❌
+E) عَوْدَةً → mastardır. ❌
+Doğru cevap: C) أَنْ يَعودوا
+11) أَخَذَ الطِّفْلُ ---- عَلى الدَّفْتَرِ.
+Buradaki أَخَذَ, “almak” anlamındaki normal fiil değil, أفعال الشروع (başlama fiilleri) içerisinde kullanılan “başlamaya koyulmak” anlamındadır.
+الطِّفْلُ → أَخَذَ’nın ismi
+Boşluk → haberi
+Çocuğun defter üzerine “çizmeye başlaması” anlatılmaktadır. Dolayısıyla haber kısmında eylemin devam etmekte olduğunu gösteren uygun fiil yapısı yani muzârî fiil aranmalıdır.
+Şimdi şıklara bakalım:
+A) رَسَمَ → mâzi fiildir. ❌
+B) أَنْ يَرْسُمَ → أَنْ + muzâri; şurû fiillerinin haberinde أَنْ kullanılmaz. ❌
+C) يَرْسُمَ → mansûb muzâri; nasb sebebi yoktur. ❌
+D) يَرْسُمُ → merfû muzâri; şurû fiilinin haberine uygundur. ✅
+E) رَسْمًا → mastardır. ❌
+Doğru cevap: D) يَرْسُمُ
+12) جَعَلَ الْمُعَلِّمُ ---- الطُّلّابَ عَنْ الدَّرْسِ.
+Buradaki جَعَلَ, “bir şeyi bir hâle getirmek” anlamında değil, şurû fiili olarak “başladı” anlamında kullanılmaktadır.
+الْمُعَلِّمُ onun ismidir. Boşluktan sonra الطُّلّابَ nesnesi ve عَنْ الدَّرْسِ tamlayıcısı geldiği için “öğrencilere ders hakkında soru sormaya başladı” anlamını tamamlayacak bir fiil gerekir.
+Şimdi şıklara bakalım:
+A) سَأَلَ → mâzi fiildir. ❌
+B) أَنْ يَسْأَلَ → أَنْ + muzâri; şurû fiillerinin haberinde kullanılmaz. ❌
+C) يَسْأَلَ → mansûb muzâri; nasb sebebi yoktur. ❌
+D) سُؤالًا → mastardır. ❌
+E) يَسْأَلُ → merfû muzâri; جَعَلَ’nın şurû anlamındaki haber yapısına uygundur. ✅
+Doğru cevap: E) يَسْأَلُ
+13) بَدَأَتْ الْبِنْتُ ---- الْقِصَّةَ بِصَوْتٍ واضِحٍ.
+بَدَأَتْ burada başlama bildiren fiil olarak kullanılmaktadır.
+الْبِنْتُ → eylemi gerçekleştiren kişi
+Boşlukta → “hikâyeyi okumaya başlamak” anlamını tamamlayan fiil
+Fiilin الْبِنْتُ ile müennes tekil bakımından uyumlu olması ve şurû yapısının gerektirdiği biçimde gelmesi gerekir.
+Şimdi şıklara bakalım:
+A) تَقْرَأُ → müennes tekil, merfû muzâri; uygun yapıdır. ✅
+B) قَرَأَتْ → mâzi fiildir. ❌
+C) أَنْ تَقْرَأَ → أَنْ + muzâri; şurû yapısında uygun değildir. ❌
+D) تَقْرَأَ → mansûb muzâri; nasb sebebi yoktur. ❌
+E) قِرَاءَةً → mastardır; verilen şurû-fiili kalıbını karşılamaz. ❌
+Doğru cevap: A) تَقْرَأُ
+14) شَرَعَ الْعامِلُ ---- الْبابَ الْمَكْسورَ.
+شَرَعَ, temel أفعال الشروع fiillerinden biridir ve “bir işe başladı/koyuldu” anlamı taşır.
+الْعامِلُ → شَرَعَ’nın ismi
+Boşluk → haberi
+الْبابَ الْمَكْسورَ → “kırık kapıyı”; gelecek fiilin nesnesi
+Dolayısıyla boşlukta işçinin kırık kapıya yönelik gerçekleştirmeye başladığı eylemi ifade eden uygun muzâri yapı aranmalıdır.
+Şimdi şıklara bakalım:
+A) أَنْ يُصْلِحَ → أَنْ + muzâri; şurû fiillerinin haberinde أَنْ kullanılmaz. ❌
+B) يُصْلِحُ → merfû muzâri; شَرَعَ’nın haber yapısına uygundur. ✅
+C) أَصْلَحَ → mâzi fiildir. ❌
+D) يُصْلِحَ → mansûb muzâri; nasb sebebi yoktur. ❌
+E) إِصْلاحًا → mastardır. ❌
+Doğru cevap: B) يُصْلِحُ

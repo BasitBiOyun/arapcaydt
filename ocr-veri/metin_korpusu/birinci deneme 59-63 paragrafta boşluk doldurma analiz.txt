@@ -1,0 +1,283 @@
+59. - 63. sorularda, boş bırakılan yere, parçada anlam bütünlüğünü sağlamak için getirilebilecek cümleyi bulunuz.
+59. Soru
+1. Aşama — Soru
+يُعَدُّ الْوَرَقُ مِنْ أَهَمِّ الِاخْتِرَاعَاتِ فِي تَارِيخِ الْبَشَرِيَّةِ، إِذْ أَسْهَمَ فِي تَسْهِيلِ نَقْلِ الْمَعْرِفَةِ وَتَدْوِينِ الْأَحْدَاثِ التَّارِيخِيَّةِ. وَقَدْ عَرَفَتِ الصِّينُ صِنَاعَةَ الْوَرَقِ فِي أَوَائِلِ الْقَرْنِ الثَّانِي الْمِيلَادِيِّ. ----. وَبَعْدَ عِدَّةِ قُرُونٍ، انْتَقَلَتْ هَذِهِ الصِّنَاعَةُ إِلَى الْعَالَمِ الْإِسْلَامِيِّ وَمِنْهُ إِلَى أُورُوبَّا، مِمَّا أَحْدَثَ تَحَوُّلًا كَبِيرًا فِي نَشْرِ الْعُلُومِ وَالْمَعَارِفِ.
+2. Aşama — Analiz
+Paragraf kısaca kâğıdın insanlık tarihindeki önemi, Çin’de üretilmesi ve daha sonra başka bölgelere yayılması hakkında.
+Boşluğu çözmek için özellikle boşluğun hemen öncesi ve hemen sonrasına bakmalıyız.
+Boşluğun öncesi
+وَقَدْ عَرَفَتِ الصِّينُ صِنَاعَةَ الْوَرَقِ فِي أَوَائِلِ الْقَرْنِ الثَّانِي الْمِيلَادِيِّ.
+“Çin, miladi ikinci yüzyılın başlarında kâğıt üretimini biliyordu.”
+Boşluğun sonrası
+وَبَعْدَ عِدَّةِ قُرُونٍ، انْتَقَلَتْ هَذِهِ الصِّنَاعَةُ إِلَى الْعَالَمِ الْإِسْلَامِيِّ وَمِنْهُ إِلَى أُورُوبَّا.
+“Birkaç yüzyıl sonra bu üretim İslam dünyasına, oradan da Avrupa’ya geçti.”
+En önemli ipucu:
+هَذِهِ الصِّنَاعَةُ = bu üretim / bu üretim tekniği
+Yani boşlukta Çin’de başlayan üretim ile daha sonra başka bölgelere geçiş arasında köprü kuran bir cümle arıyoruz.
+Şıklara bakalım
+A)
+وَاقْتَصَرَ اسْتِخْدَامُ الْوَرَقِ فِي بِدَايَاتِهِ عَلَى الْمُرَاسَلَاتِ التِّجَارِيَّةِ بَيْنَ الْمُدُنِ الصِّينِيَّةِ.
+“Kâğıdın kullanımı başlangıçta Çin şehirleri arasındaki ticari yazışmalarla sınırlı kaldı.”
+اِقْتَصَرَ عَلَى = ... ile sınırlı kalmak
+Neden olamaz?
+Burada kâğıdın kullanımı anlatılıyor. Oysa devamında üretim tekniğinin başka bölgelere geçişi var. Anlam zinciri tam kurulmaz.
+B)
+وَأَدَّى ظُهُورُهُ إِلَى الِاسْتِغْنَاءِ مُبَاشَرَةً عَنْ جَمِيعِ مَوَادِّ الْكِتَابَةِ الَّتِي كَانَتْ مُسْتَخْدَمَةً آنَذَاكَ.
+“Kâğıdın ortaya çıkışı, o dönemde kullanılan bütün yazı malzemelerinden hemen vazgeçilmesine yol açtı.”
+أَدَّى إِلَى = ...e yol açmak
+الِاسْتِغْنَاءُ عَنْ = ...den vazgeçmek
+Neden olamaz?
+مُبَاشَرَةً = hemen ve جَمِيعِ = bütün çok kesin ifadeler. Ayrıca devamındaki “üretimin başka yerlere geçmesi” düşüncesine bağlanmıyor.
+C)
+ثُمَّ تَرَاجَعَتْ أَهَمِّيَّتُهُ بَعْدَ اكْتِشَافِ وَسَائِلَ أَكْثَرَ سُهُولَةً لِحِفْظِ النُّصُوصِ وَتَدَاوُلِهَا.
+“Daha sonra metinleri saklamak ve dolaşıma sokmak için daha kolay araçların keşfedilmesinden sonra kâğıdın önemi azaldı.”
+ثُمَّ = sonra
+تَرَاجَعَتْ أَهَمِّيَّتُهُ = önemi azaldı
+Neden olamaz?
+Kâğıdın öneminin azaldığı çok daha sonraki bir döneme geçiyor. Ardından tekrar birkaç yüzyıl sonraki yayılma aşamasına dönülüyor. Kronolojik akış bozuluyor.
+D)
+وَمَعَ ذَلِكَ، لَمْ تَسْتَخْدِمْهُ الْمُؤَسَّسَاتُ الْعِلْمِيَّةُ فِي نَسْخِ الْمُؤَلَّفَاتِ وَتَوْثِيقِ الْمَعَارِفِ.
+“Buna rağmen bilimsel kurumlar onu eserleri çoğaltmak ve bilgileri belgelemek için kullanmadı.”
+وَمَعَ ذَلِكَ = buna rağmen
+Neden olamaz?
+وَمَعَ ذَلِكَ karşıtlık ister. Önceki “Çin kâğıt üretimini biliyordu” cümlesiyle böyle bir karşıtlık yoktur. Sonraki yayılma cümlesine de bağlanmaz.
+E)
+وَظَلَّتْ تَقْنِيَاتُ صِنَاعَتِهِ مَحْفُوظَةً لَدَى الصِّينِيِّينَ مُدَّةً طَوِيلَةً قَبْلَ أَنْ تَنْتَقِلَ إِلَى مَنَاطِقَ أُخْرَى.
+“Kâğıdın üretim teknikleri, başka bölgelere geçmeden önce uzun süre Çinlilerin elinde korundu.”
+ظَلَّتْ = kalmaya devam etti
+لَدَى الصِّينِيِّينَ = Çinlilerin elinde
+قَبْلَ أَنْ تَنْتَقِلَ = geçmeden önce
+Neden olabilir?
+Önceki “Çin’de üretim” ile sonraki “başka bölgelere geçiş” arasındaki bağı tam kuruyor.
+قَبْلَ أَنْ تَنْتَقِلَ → “geçmeden önce”
+وَبَعْدَ عِدَّةِ قُرُونٍ، انْتَقَلَتْ → “birkaç yüzyıl sonra geçti”.
+Doğru cevap: E
+60. Soru
+1. Aşama — Soru
+يَلْعَبُ النَّوْمُ دَوْرًا حَيَوِيًّا فِي الْحِفَاظِ عَلَى صِحَّةِ الْإِنْسَانِ الْجَسَدِيَّةِ وَالْعَقْلِيَّةِ. فَفِي أَثْنَاءِ النَّوْمِ، يُعَالِجُ الدِّمَاغُ الْمَعْلُومَاتِ الَّتِي اكْتَسَبَهَا الْإِنْسَانُ خِلَالَ الْيَوْمِ وَيُسْهِمُ فِي تَثْبِيتِهَا فِي الذَّاكِرَةِ. ----. وَلِهَذَا السَّبَبِ، يَنْصَحُ الْأَطِبَّاءُ الْبَالِغِينَ بِالنَّوْمِ سَبْعَ سَاعَاتٍ عَلَى الْأَقَلِّ كُلَّ لَيْلَةٍ لِلْمُسَاعَدَةِ عَلَى أَدَاءِ الْجِسْمِ وَظَائِفَهُ بِكَفَاءَةٍ.
+2. Aşama — Analiz
+Paragraf kısaca uykunun zihinsel ve bedensel sağlık için öneminden bahsediyor.
+Boşluğu çözmek için özellikle önceki cümle ile sonrasındaki sonuç cümlesine bakmalıyız.
+Boşluğun öncesi
+يُعَالِجُ الدِّمَاغُ الْمَعْلُومَاتِ الَّتِي اكْتَسَبَهَا الْإِنْسَانُ خِلَالَ الْيَوْمِ وَيُسْهِمُ فِي تَثْبِيتِهَا فِي الذَّاكِرَةِ.
+“Beyin, insanın gün boyunca edindiği bilgileri işler ve bunların hafızaya yerleşmesine katkıda bulunur.”
+Burada zihinsel fayda anlatılıyor.
+Boşluğun sonrası
+وَلِهَذَا السَّبَبِ، يَنْصَحُ الْأَطِبَّاءُ الْبَالِغِينَ بِالنَّوْمِ سَبْعَ سَاعَاتٍ عَلَى الْأَقَلِّ كُلَّ لَيْلَةٍ.
+“Bu nedenle doktorlar yetişkinlere her gece en az yedi saat uyumalarını tavsiye eder.”
+En önemli ipucu:
+وَلِهَذَا السَّبَبِ = bu nedenle
+Boşlukta uykunun başka bir olumlu faydasının, özellikle bedensel faydasının verilmesini bekliyoruz.
+Şıklara bakalım
+A)
+وَيُؤَدِّي انْتِظَامُ مَوَاعِيدِ النَّوْمِ إِلَى الِاسْتِغْنَاءِ عَنْ مُمَارَسَةِ الْأَنْشِطَةِ الْبَدَنِيَّةِ الْيَوْمِيَّةِ.
+“Uyku saatlerinin düzenli olması günlük fiziksel faaliyetleri yapmaya ihtiyaç bırakmaz.”
+أَدَّى إِلَى = yol açmak
+الِاسْتِغْنَاءُ عَنْ = ihtiyaç duymamak
+Neden olamaz?
+Uykunun düzenli olması fiziksel aktiviteyi gereksiz kılmaz. Paragrafın sağlık mesajıyla uyuşmaz.
+B)
+كَمَا تُسْهِمُ فَتَرَاتُ النَّوْمِ الْكَافِيَةُ فِي دَعْمِ عَمَلِيَّاتِ إِصْلَاحِ الْأَنْسِجَةِ وَاسْتِعَادَةِ الطَّاقَةِ.
+“Ayrıca yeterli uyku süreleri dokuların onarılması ve enerjinin yeniden kazanılması süreçlerini destekler.”
+كَمَا = ayrıca
+يُسْهِمُ فِي = katkıda bulunur
+Neden olabilir?
+Öncesindeki zihinsel faydaya, كما = ayrıca ile bedensel fayda ekliyor.
+إِصْلَاحُ الْأَنْسِجَةِ = dokuların onarılması
+اسْتِعَادَةُ الطَّاقَةِ = enerjinin geri kazanılması
+Sonrasındaki “bu nedenle en az yedi saat uyuyun” sonucunu da destekliyor.
+C)
+وَيَقْتَصِرُ أَثَرُ النَّوْمِ عَلَى تَخْفِيفِ الشُّعُورِ الْمُؤَقَّتِ بِالتَّعَبِ وَالْإِرْهَاقِ.
+“Uykunun etkisi yalnızca geçici yorgunluk ve bitkinlik hissini azaltmakla sınırlıdır.”
+اِقْتَصَرَ عَلَى = ... ile sınırlı olmak.
+Neden olamaz?
+يَقْتَصِرُ عَلَى = yalnızca ... ile sınırlıdır deniyor. Oysa önceki cümlede uykunun hafıza üzerindeki faydası zaten anlatılmıştır. Çelişir.
+D)
+وَيُمْكِنُ تَعْوِيضُ جَمِيعِ سَاعَاتِ النَّوْمِ الْمَفْقُودَةِ بِالنَّوْمِ مُدَّةً أَطْوَلَ فِي عُطْلَةِ نِهَايَةِ الْأُسْبُوعِ.
+“Kaybedilen bütün uyku saatleri hafta sonunda daha uzun uyuyarak telafi edilebilir.”
+Neden olamaz?
+Sonraki cümlede كُلَّ لَيْلَةٍ = her gece en az yedi saat uyumak tavsiye ediliyor. Bu şık o tavsiyenin mantığını zayıflatır.
+E)
+بَيْنَمَا يَتَوَقَّفُ نَشَاطُ الدِّمَاغِ بِصُورَةٍ كَامِلَةٍ طَوَالَ سَاعَاتِ النَّوْمِ.
+“Oysa uyku saatleri boyunca beynin faaliyeti tamamen durur.”
+بَيْنَمَا = oysa / iken
+Neden olamaz?
+Öncesinde:
+يُعَالِجُ الدِّمَاغُ الْمَعْلُومَاتِ
+“Beyin bilgileri işler.”
+deniyor. Dolayısıyla beynin tamamen durduğu söylenemez. Doğrudan çelişir.
+Doğru cevap: B
+61. Soru
+1. Aşama — Soru
+تُوَاجِهُ الْبَشَرِيَّةُ الْيَوْمَ تَحَدِّيَاتٍ بِيئِيَّةً مُتَزَايِدَةً بِسَبَبِ الِاعْتِمَادِ الْوَاسِعِ عَلَى الْوَقُودِ الْأُحْفُورِيِّ، مِثْلَ الْفَحْمِ وَالنَّفْطِ. ----. وَتُعَدُّ الطَّاقَةُ الشَّمْسِيَّةُ وَطَاقَةُ الرِّيَاحِ مِنْ أَبْرَزِ مَصَادِرِ الطَّاقَةِ الْمُتَجَدِّدَةِ، إِذْ تُتِيحَانِ تَوْلِيدَ الْكَهْرَبَاءِ بِانْبِعَاثَاتٍ تَشْغِيلِيَّةٍ مُنْخَفِضَةٍ، مِمَّا يَجْعَلُهُمَا مِنَ الْحُلُولِ الْمُهِمَّةِ لِلْحَدِّ مِنِ انْبِعَاثَاتِ غَازَاتِ الدَّفِيئَةِ.
+2. Aşama — Analiz
+Paragraf kısaca fosil yakıtların yol açtığı çevre sorunları ve bunlara çözüm olarak yenilenebilir enerji hakkında.
+Boşluğu çözmek için hem boşluğun öncesine hem sonrasına bakmalıyız.
+Boşluğun öncesi
+تُوَاجِهُ الْبَشَرِيَّةُ الْيَوْمَ تَحَدِّيَاتٍ بِيئِيَّةً مُتَزَايِدَةً بِسَبَبِ الِاعْتِمَادِ الْوَاسِعِ عَلَى الْوَقُودِ الْأُحْفُورِيِّ.
+“İnsanlık bugün fosil yakıtlara yoğun bağımlılık nedeniyle giderek artan çevresel sorunlarla karşı karşıyadır.”
+Burada sorun veriliyor.
+Boşluğun sonrası
+وَتُعَدُّ الطَّاقَةُ الشَّمْسِيَّةُ وَطَاقَةُ الرِّيَاحِ مِنْ أَبْرَزِ مَصَادِرِ الطَّاقَةِ الْمُتَجَدِّدَةِ.
+“Güneş ve rüzgâr enerjisi yenilenebilir enerji kaynaklarının en önemlileri arasındadır.”
+Burada çözüm anlatılıyor.
+Dolayısıyla boşlukta fosil yakıt sorunundan yenilenebilir enerji çözümüne geçiş sağlayan bir cümle arıyoruz.
+Şıklara bakalım
+A)
+وَلِذَلِكَ بَدَأَتْ دُوَلٌ عَدِيدَةٌ تَتَّجِهُ نَحْوَ مَصَادِرِ الطَّاقَةِ الْمُتَجَدِّدَةِ لِلْحَدِّ مِنَ الْآثَارِ الْبِيئِيَّةِ لِاسْتِخْدَامِ الْوَقُودِ الْأُحْفُورِيِّ.
+“Bu nedenle birçok ülke, fosil yakıt kullanımının çevresel etkilerini azaltmak için yenilenebilir enerji kaynaklarına yönelmeye başlamıştır.”
+وَلِذَلِكَ = bu nedenle
+اِتَّجَهَ نَحْوَ = ...e yönelmek
+الْحَدُّ مِنْ = azaltmak
+Neden olabilir?
+Önceki çevresel sorunun sonucunu veriyor ve sonraki yenilenebilir enerji örneklerine hazırlık yapıyor.
+B)
+وَفِي الْمُقَابِلِ، قَرَّرَتْ مُعْظَمُ الدُّوَلِ زِيَادَةَ اعْتِمَادِهَا عَلَى الْفَحْمِ بِوَصْفِهِ أَقَلَّ مَصَادِرِ الطَّاقَةِ تَأْثِيرًا فِي الْبِيئَةِ.
+“Buna karşılık çoğu ülke, çevre üzerinde en az etkili enerji kaynağı olduğu gerekçesiyle kömüre bağımlılığını artırmaya karar verdi.”
+فِي الْمُقَابِلِ = buna karşılık
+Neden olamaz?
+Kömür zaten önceki cümlede çevre sorunlarına yol açan fosil yakıtlardan biri olarak verilmiştir. Sonraki yenilenebilir enerji çözümüne de ters düşer.
+C)
+وَقَدْ أَدَّى انْخِفَاضُ أَسْعَارِ الْوَقُودِ الْأُحْفُورِيِّ إِلَى الِاسْتِغْنَاءِ عَنِ الْأَبْحَاثِ الْمُتَعَلِّقَةِ بِالطَّاقَةِ الْبَدِيلَةِ.
+“Fosil yakıt fiyatlarının düşmesi, alternatif enerjiyle ilgili araştırmalardan vazgeçilmesine yol açtı.”
+أَدَّى إِلَى = yol açmak
+الِاسْتِغْنَاءُ عَنْ = vazgeçmek
+Neden olamaz?
+Alternatif enerji araştırmalarından vazgeçildiği söyleniyor. Sonraki cümlede ise yenilenebilir enerji olumlu bir çözüm olarak anlatılıyor. Akış ters düşer.
+D)
+كَمَا شَجَّعَتْ هَذِهِ التَّحَدِّيَاتُ عَلَى تَوْسِيعِ إِنْتَاجِ الْمَرْكَبَاتِ الَّتِي تَعْتَمِدُ كُلِّيًّا عَلَى الْوَقُودِ التَّقْلِيدِيِّ.
+“Bu sorunlar aynı zamanda tamamen geleneksel yakıtlara dayanan araçların üretiminin artırılmasını teşvik etti.”
+شَجَّعَ عَلَى = teşvik etmek
+Neden olamaz?
+Çevre sorunlarının, soruna yol açan geleneksel yakıt kullanımını artırması mantıksal olarak ters. Sonraki yenilenebilir enerji çözümüne de bağlanmaz.
+E)
+وَمِنْ ثَمَّ أَصْبَحَتْ حِمَايَةُ الْبِيئَةِ أَقَلَّ ارْتِبَاطًا بِالسِّيَاسَاتِ الْمُتَعَلِّقَةِ بِإِنْتَاجِ الطَّاقَةِ وَاسْتِهْلَاكِهَا.
+“Böylece çevrenin korunması, enerji üretimi ve tüketimiyle ilgili politikalarla daha az bağlantılı hâle geldi.”
+وَمِنْ ثَمَّ = böylece / bunun sonucunda
+Neden olamaz?
+Paragraf tam tersine enerji tercihlerinin çevre üzerinde doğrudan etkili olduğunu anlatıyor.
+Doğru cevap: A
+
+
+
+62. Soru
+1. Aşama — Soru
+أَحْدَثَتْ وَسَائِلُ التَّوَاصُلِ الِاجْتِمَاعِيِّ تَغْيِيرًا كَبِيرًا فِي طُرُقِ تَوَاصُلِنَا وَتَفَاعُلِنَا مَعَ الْآخَرِينَ. فَبِفَضْلِ هَذِهِ الْمِنَصَّاتِ، أَصْبَحَ بِإِمْكَانِنَا الْبَقَاءُ عَلَى اتِّصَالٍ مَعَ الْأَصْدِقَاءِ وَأَفْرَادِ الْأُسْرَةِ فِي أَمَاكِنَ مُخْتَلِفَةٍ مِنَ الْعَالَمِ. ----. إِذْ قَدْ يُسْهِمُ الْإِفْرَاطُ فِي اسْتِخْدَامِهَا فِي زِيَادَةِ الشُّعُورِ بِالْعُزْلَةِ وَتَرَاجُعِ التَّوَاصُلِ وَجْهًا لِوَجْهٍ.
+2. Aşama — Analiz
+Paragraf kısaca sosyal medyanın iletişimi kolaylaştıran olumlu yönleri ve aşırı kullanımının olumsuz etkileri hakkında.
+Boşluğu çözmek için boşluğun öncesindeki olumlu anlatımla sonrasındaki olumsuz anlatım arasındaki geçişe bakmalıyız.
+Boşluğun öncesi
+أَصْبَحَ بِإِمْكَانِنَا الْبَقَاءُ عَلَى اتِّصَالٍ مَعَ الْأَصْدِقَاءِ وَأَفْرَادِ الْأُسْرَةِ فِي أَمَاكِنَ مُخْتَلِفَةٍ مِنَ الْعَالَمِ.
+“Dünyanın farklı yerlerindeki arkadaşlarımız ve aile bireylerimizle iletişim hâlinde kalmamız mümkün hâle geldi.”
+Bu olumlu yön.
+Boşluğun sonrası
+إِذْ قَدْ يُسْهِمُ الْإِفْرَاطُ فِي اسْتِخْدَامِهَا فِي زِيَادَةِ الشُّعُورِ بِالْعُزْلَةِ وَتَرَاجُعِ التَّوَاصُلِ وَجْهًا لِوَجْهٍ.
+“Çünkü bunların aşırı kullanımı yalnızlık duygusunun artmasına ve yüz yüze iletişimin azalmasına katkıda bulunabilir.”
+Bu olumsuz yön.
+En önemli ipucu:
+إِذْ = çünkü / zira
+Yani boşlukta önce genel bir olumsuz etki söylenecek, sonra إِذْ ile bunun açıklaması yapılacak.
+Şıklara bakalım
+A)
+كَمَا أَتَاحَتْ لِلشَّرِكَاتِ الْوُصُولَ إِلَى جُمْهُورٍ أَوْسَعَ وَالتَّعْرِيفَ بِمُنْتَجَاتِهَا وَخَدَمَاتِهَا.
+“Ayrıca şirketlerin daha geniş bir kitleye ulaşmasını ve ürünleriyle hizmetlerini tanıtmasını sağladı.”
+كَمَا = ayrıca
+Neden olamaz?
+Öncesi zaten olumlu. Bu şık da olumlu bir fayda ekliyor. Sonrasındaki olumsuz etkiye geçişi sağlayamıyor.
+B)
+وَلِذَلِكَ أَصْبَحَ التَّوَاصُلُ الْمُبَاشِرُ بَيْنَ الْأَفْرَادِ غَيْرَ ضَرُورِيٍّ فِي الْحَيَاةِ الْيَوْمِيَّةِ.
+“Bu nedenle bireyler arasındaki doğrudan iletişim günlük hayatta gereksiz hâle geldi.”
+وَلِذَلِكَ = bu nedenle
+Neden olamaz?
+Yüz yüze iletişimin gereksiz olduğu söyleniyor. Oysa sonraki cümle yüz yüze iletişimin azalmasını olumsuz bir sonuç olarak veriyor.
+C)
+وَمَعَ ذَلِكَ، لَا يَرْتَبِطُ اسْتِخْدَامُهَا بِأَيِّ تَغَيُّرٍ فِي طَبِيعَةِ الْعَلَاقَاتِ الْإِنْسَانِيَّةِ.
+“Bununla birlikte bunların kullanımı insan ilişkilerinin doğasındaki herhangi bir değişiklikle bağlantılı değildir.”
+وَمَعَ ذَلِكَ = bununla birlikte
+Neden olamaz?
+Sonraki cümlede yalnızlığın artması ve yüz yüze iletişimin azalması anlatılıyor. Bunlar insan ilişkilerindeki değişikliklerdir. Dolayısıyla sonraki cümleyle çelişir.
+D)
+وَقَدْ جَعَلَتِ الْعَلَاقَاتِ الِاجْتِمَاعِيَّةَ أَكْثَرَ اسْتِقْرَارًا فِي جَمِيعِ الْحَالَاتِ وَالظُّرُوفِ.
+“Sosyal ilişkileri bütün durum ve şartlarda daha istikrarlı hâle getirmiştir.”
+Neden olamaz?
+فِي جَمِيعِ الْحَالَاتِ وَالظُّرُوفِ = bütün durum ve şartlarda aşırı genellemedir. Ayrıca sonraki olumsuz etkilerle çelişir.
+E)
+غَيْرَ أَنَّ هَذِهِ الْمَزَايَا لَا تَخْلُو مِنْ بَعْضِ الْآثَارِ السَّلْبِيَّةِ الْمُحْتَمَلَةِ.
+“Ancak bu avantajların bazı muhtemel olumsuz etkileri de vardır.”
+غَيْرَ أَنَّ = ancak / ne var ki
+لَا يَخْلُو مِنْ = ...den tamamen yoksun olmamak
+Neden olabilir?
+Tam aradığımız geçişi sağlıyor:
+Olumlu yönler → غَيْرَ أَنَّ = ancak → olumsuz etkiler.
+Sonrasındaki:
+إِذْ قَدْ يُسْهِمُ الْإِفْرَاطُ...
+“Çünkü aşırı kullanım...”
+ifadesi de bu olumsuz etkilerin ne olduğunu açıklıyor.
+Doğru cevap: E
+63. Soru
+1. Aşama — Soru
+يُعَدُّ التُّرَاثُ الثَّقَافِيُّ لِأَيِّ أُمَّةٍ بِمَنْزِلَةِ الذَّاكِرَةِ الْحَيَّةِ الَّتِي تَرْبِطُ حَاضِرَهَا بِمَاضِيهَا. فَهُوَ لَا يَقْتَصِرُ عَلَى الْمَبَانِي التَّارِيخِيَّةِ وَالْآثَارِ الْقَدِيمَةِ فَحَسْبُ، بَلْ يَشْمَلُ أَيْضًا الْعَادَاتِ وَالتَّقَالِيدَ وَاللُّغَةَ وَالْفُنُونَ الشَّعْبِيَّةَ. ----. وَلِذَلِكَ، تَبْذُلُ الْحُكُومَاتُ وَالْمُؤَسَّسَاتُ الدَّوْلِيَّةُ جُهُودًا كَبِيرَةً لِصَوْنِ هَذَا التُّرَاثِ مِنَ الِانْدِثَارِ وَنَقْلِهِ إِلَى الْأَجْيَالِ الْقَادِمَةِ.
+2. Aşama — Analiz
+Paragraf kısaca kültürel mirasın toplumun geçmişi, kimliği ve aidiyet duygusu açısından öneminden bahsediyor.
+Boşluğu çözmek için özellikle boşluğun sonrasındaki “bu nedenle” ifadesine bakmalıyız.
+Boşluğun öncesi
+فَهُوَ لَا يَقْتَصِرُ عَلَى الْمَبَانِي التَّارِيخِيَّةِ وَالْآثَارِ الْقَدِيمَةِ فَحَسْبُ، بَلْ يَشْمَلُ أَيْضًا الْعَادَاتِ وَالتَّقَالِيدَ وَاللُّغَةَ وَالْفُنُونَ الشَّعْبِيَّةَ.
+“Kültürel miras yalnızca tarihî binalar ve eski eserlerle sınırlı değildir; âdetleri, gelenekleri, dili ve halk sanatlarını da kapsar.”
+Boşluğun sonrası
+وَلِذَلِكَ، تَبْذُلُ الْحُكُومَاتُ وَالْمُؤَسَّسَاتُ الدَّوْلِيَّةُ جُهُودًا كَبِيرَةً لِصَوْنِ هَذَا التُّرَاثِ.
+“Bu nedenle hükümetler ve uluslararası kurumlar bu mirası korumak için büyük çaba gösterir.”
+En önemli ipucu:
+وَلِذَلِكَ = bu nedenle
+Demek ki boşlukta kültürel mirasın neden korunması gerektiğini açıklayan bir gerekçe arıyoruz.
+Paragrafın başındaki:
+الذَّاكِرَةِ الْحَيَّةِ الَّتِي تَرْبِطُ حَاضِرَهَا بِمَاضِيهَا
+“Bugününü geçmişine bağlayan canlı hafıza”
+ifadesi de bize kimlik ve aidiyet düşüncesini gösteriyor.
+Şıklara bakalım 
+A)
+وَتَتَحَدَّدُ قِيمَةُ هَذِهِ الْعَنَاصِرِ بِمَدَى قُدْرَتِهَا عَلَى تَحْقِيقِ عَائِدٍ اقْتِصَادِيٍّ مُبَاشِرٍ.
+“Bu unsurların değeri, doğrudan ekonomik gelir sağlama kapasitelerine göre belirlenir.”
+تَتَحَدَّدُ قِيمَةُ = değeri belirlenir
+Neden olamaz?
+Kültürel mirasın değerini yalnızca ekonomik kazanca indirger. Paragrafın ana fikri ise geçmiş, hafıza ve kimliktir.
+
+B)
+وَقَدْ أَصْبَحَتِ الْوَسَائِلُ الرَّقْمِيَّةُ بَدِيلًا كَامِلًا عَنْ حِمَايَةِ عَنَاصِرِ التُّرَاثِ فِي صُورَتِهَا الْأَصْلِيَّةِ.
+“Dijital araçlar, miras unsurlarını özgün biçimleriyle korumanın tamamen alternatifi hâline gelmiştir.”
+بَدِيلًا عَنْ = ...nın alternatifi / yerine geçen
+Neden olamaz?
+Dijital araçların korumanın tam alternatifi olduğu söyleniyor. Oysa sonraki cümlede hükümetlerin bu mirası doğrudan korumak için büyük çaba gösterdiği belirtiliyor.
+C)
+وَيُسْهِمُ الْحِفَاظُ عَلَى هَذِهِ الْعَنَاصِرِ فِي صَوْنِ الْهُوِيَّةِ الثَّقَافِيَّةِ وَتَعْزِيزِ شُعُورِ أَفْرَادِ الْمُجْتَمَعِ بِالِانْتِمَاءِ.
+“Bu unsurların korunması, kültürel kimliğin korunmasına ve toplum bireylerinin aidiyet duygusunun güçlenmesine katkıda bulunur.”
+الْحِفَاظُ عَلَى = ...i korumak
+يُسْهِمُ فِي = katkıda bulunmak
+الْهُوِيَّةُ الثَّقَافِيَّةُ = kültürel kimlik
+شُعُورٌ بِالِانْتِمَاءِ = aidiyet duygusu
+Neden olabilir?
+Önceki:
+هَذِهِ الْعَنَاصِرِ = bu unsurlar
+ifadesiyle gelenek, dil, halk sanatları gibi miras unsurlarına bağlanıyor.
+Ayrıca kültürel mirasın neden korunması gerektiğini açıklıyor.
+Sonrasındaki:
+وَلِذَلِكَ = bu nedenle
+ile de çok güçlü bir neden-sonuç ilişkisi kuruyor.
+D)
+وَيَقْتَصِرُ دَوْرُ هَذَا التُّرَاثِ عَلَى جَذْبِ الزُّوَّارِ وَتَنْشِيطِ السِّيَاحَةِ فِي الْمَوَاقِعِ التَّارِيخِيَّةِ.
+“Bu mirasın rolü yalnızca ziyaretçileri çekmek ve tarihî yerlerde turizmi canlandırmakla sınırlıdır.”
+اِقْتَصَرَ عَلَى = ... ile sınırlı olmak
+Neden olamaz?
+Başta kültürel miras:
+الذَّاكِرَةُ الْحَيَّةُ
+“canlı hafıza”
+olarak tanımlanmıştır. Dolayısıyla rolü yalnızca turizm olamaz.
+E)
+وَلَا يُؤَثِّرُ انْدِثَارُ بَعْضِ عَنَاصِرِهِ فِي ذَاكِرَةِ الْمُجْتَمَعِ أَوِ ارْتِبَاطِهِ بِمَاضِيهِ.
+“Onun bazı unsurlarının yok olması toplumun hafızasını veya geçmişiyle bağını etkilemez.”
+انْدِثَارُ = yok olma / ortadan kalkma
+Neden olamaz?
+Paragrafın ilk cümlesiyle doğrudan çelişiyor:
+الذَّاكِرَةِ الْحَيَّةِ الَّتِي تَرْبِطُ حَاضِرَهَا بِمَاضِيهَا
+“Bugününü geçmişine bağlayan canlı hafıza.”
+E şıkkı ise mirasın yok olmasının bu bağı etkilemeyeceğini söylüyor.
+Doğru cevap: C

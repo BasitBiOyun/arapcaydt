@@ -1,0 +1,301 @@
+MEFULLER DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+اِنْتَظَرَ الْمُسافِرونَ الْحافِلَةَ ----.
+Önce cümlenin yapısına bakalım:
+اِنْتَظَرَ الْمُسافِرونَ الْحافِلَةَ
+“Yolcular otobüsü beklediler.”
+Cümlenin fiili اِنْتَظَرَ, faili الْمُسافِرونَ, nesnesi ise الْحافِلَةَ kelimesidir.
+Boşlukta, bekleme eyleminin ne zaman, hangi sebeple veya hangi biçimde gerçekleştiğini tamamlayan bir unsur aranmalıdır.
+Şimdi şıklara bakalım:
+A) صَبَاحًا — sabahleyin
+Fiilin gerçekleştiği zamanı bildirir:
+اِنْتَظَرَ الْمُسافِرونَ الْحافِلَةَ صَبَاحًا.
+“Yolcular otobüsü sabahleyin beklediler.”
+Burada صَبَاحًا, مفعول فيه / ظرف زمان görevindedir. ✅
+B) اِحْتِرَامًا — saygıdan / saygı amacıyla
+Sebep bildirebilir; ancak otobüs bekleme eylemiyle doğal bir anlam ilişkisi kurmaz. ❌
+C) تَكَلُّمًا — konuşma
+تَكَلَّمَ fiilinin mastarıdır; cümlenin fiiliyle uyumlu değildir. ❌
+D) لِكَيْ — ...mek için
+Kendisinden sonra bir muzâri fiil gerektirir; tek başına kullanılamaz. ❌
+E) مَكْتُوبًا — yazılmış
+İsm-i mef‘ûldür; cümleyi uygun şekilde tamamlamaz. ❌
+Doğru cevap: A) صَبَاحًا
+2. Soru
+جَلَسَ الْأَبُ ---- الشَّجَرَةِ يَقْرَأُ الصَّحيفَةَ.
+Önce cümlenin yapısına bakalım:
+جَلَسَ الْأَبُ
+“Baba oturdu.”
+Ardından الشَّجَرَةِ kelimesinin gelmesi, boşlukta bu ismin mekân bakımından konumunu belirleyen bir ifade bulunması gerektiğini gösterir.
+Burada oturma eyleminin nerede gerçekleştiği önemlidir.
+Şimdi şıklara bakalım:
+A) خَوْفًا — korkudan
+Sebep bildiren bir mastardır; ardından doğrudan الشَّجَرَةِ gelmesiyle uygun yapı oluşturmaz. ❌
+B) تَحْتَ — altında
+جَلَسَ الْأَبُ تَحْتَ الشَّجَرَةِ.
+“Baba ağacın altında oturdu.”
+تَحْتَ, fiilin gerçekleştiği yeri bildiren ظرف مكان / مفعول فيهdir. Ardından gelen الشَّجَرَةِ muzâfun ileyhtir. ✅
+C) قِرَاءَةً — okuma
+Mastar olmakla birlikte burada جَلَسَ fiiliyle mef‘ûl-i mutlak ilişkisi kurmaz. ❌
+D) كَيْ — ...mek için
+Kendisinden sonra muzâri fiil ister. ❌
+E) فَرَحًا — sevinçten
+Sebep bildirebilir; fakat الشَّجَرَةِ ile doğrudan bağlanamaz. ❌
+Doğru cevap: B) تَحْتَ
+3. Soru
+سَنَبْدَأُ النَّدْوَةَ مُبَكِّرًا ---- نَسْتَفِيدَ مِنَ الْوَقْتِ بِشَكْلٍ أَفْضَلَ.
+Önce cümlenin yapısına bakalım:
+سَنَبْدَأُ النَّدْوَةَ مُبَكِّرًا
+“Semineri erken başlatacağız.”
+Cümlenin temel fiili سَنَبْدَأُ olup “başlatacağız” anlamındadır. النَّدْوَةَ fiilin nesnesidir. مُبَكِّرًا ise eylemin nasıl/zamansal olarak ne şekilde gerçekleştirileceğini açıklayan bir tamamlayıcıdır.
+Boşluktan sonra نَسْتَفِيدَ şeklinde muzâri fiil gelmektedir. Bu bölümde, semineri erken başlatma eyleminin hangi amaçla yapıldığını açıklayan bir yapı aranmalıdır.
+Ayrıca boşluktan sonra gelen muzâri fiilin نَسْتَفِيدَ şeklinde mansup olduğuna dikkat edilmelidir. Bu hareke, kendisinden önce nasb etkisi oluşturan bir amaç yapısının bulunduğuna işaret eder.
+Şimdi şıklara bakalım:
+A) شُكْرًا — teşekkür olarak / teşekkür amacıyla
+Mastar niteliğindedir. Ancak ardından doğrudan نَسْتَفِيدَ fiilini bu şekilde bağlayamaz. ❌
+B) بَحْثًا — araştırma amacıyla / araştırarak
+Mastar yapısındadır; cümledeki “zamandan daha iyi yararlanmak” amacıyla uygun bir bağlantı kurmaz ve ardından gelen muzâri fiili bu yapıda yönetmez. ❌
+C) مَسَاءً — akşamleyin
+Zaman bildiren ظرف زمان / مفعول فيهdir. Ancak burada boşluktan sonra gelen fiille amaç ilişkisi kuramaz. ❌
+D) سَيْرًا — yürüme / yürüyerek
+Mastar niteliğindedir ve cümlenin anlamıyla uyumlu değildir. Ayrıca ardından gelen muzâri fiille amaç yapısı oluşturmaz. ❌
+E) لِكَيْ — ...mek için
+Amaç bildirir ve kendisinden sonra gelen muzâri fiili nasb eder:
+لِكَيْ نَسْتَفِيدَ مِنَ الْوَقْتِ بِشَكْلٍ أَفْضَلَ
+“Zamandan daha iyi yararlanabilmek için.” ✅
+Doğru cevap: E) لِكَيْ
+4. Soru
+وَقَفَ الطّالِبُ ---- الْمُعَلِّمِ لِيَسْأَلَهُ عَنِ الدَّرْسِ.
+Önce cümlenin yapısına bakalım:
+وَقَفَ الطَّالِبُ
+“Öğrenci durdu.”
+Ardından الْمُعَلِّمِ kelimesi gelmektedir. Boşluktaki unsurun öğrenci ile öğretmen arasındaki mekânsal ilişkiyi göstermesi beklenmektedir.
+Şimdi şıklara bakalım:
+A) دِرَاسَةً — çalışma / öğrenim
+Mekân bildirmez. ❌
+B) حُبًّا — sevgiden
+Sebep bildirebilir ancak الْمُعَلِّمِ ile mekân ilişkisi kurmaz. ❌
+C) كَيْ — ...mek için
+Kendisinden sonra muzâri fiil ister; ardından isim gelmiştir. ❌
+D) أَمَامَ — önünde
+وَقَفَ الطَّالِبُ أَمَامَ الْمُعَلِّمِ
+“Öğrenci öğretmenin önünde durdu.”
+أَمَامَ, ظرف مكان / مفعول فيه görevindedir. ✅
+E) صَبْرًا — sabırla / sabır
+Mekân bildirmez. ❌
+Doğru cevap: D) أَمَامَ
+5. Soru
+سَيُسافِرُ الْفَرِيقُ إِلَى الْمَدِينَةِ ----.
+Soruda özellikle zaman bildiren bir unsur istenmektedir.
+Cümlenin fiili سَيُسَافِرُ “seyahat edecek” anlamındadır. Boşlukta bu seyahatin ne zaman gerçekleşeceğini belirten bir kelime aranmalıdır.
+Şimdi şıklara bakalım:
+A) تَعَلُّمًا — öğrenme amacıyla / öğrenme
+Zaman bildirmez. ❌
+B) خَوْفًا — korkudan
+Sebep bildirir. ❌
+C) كُلَّ الْحُبِّ — bütün sevgimle / tüm sevgi
+Zaman bildirmez. ❌
+D) أَمَامَ — önünde
+Mekân bildirir. ❌
+E) غَدًا — yarın
+سَيُسَافِرُ الْفَرِيقُ إِلَى الْمَدِينَةِ غَدًا.
+“Takım yarın şehre seyahat edecek.”
+غَدًا, ظرف زمان / مفعول فيهdir. ✅
+Doğru cevap: E) غَدًا
+6. Soru
+حَفِظَتِ الطَّالِبَةُ النَّصَّ ---- لِلْمُسَابَقَةِ.
+Önce cümlenin yapısına bakalım:
+حَفِظَتِ الطَّالِبَةُ النَّصَّ
+“Öğrenci kız metni ezberledi.”
+Ardından لِلْمُسَابَقَةِ “yarışma için” ifadesi gelmektedir. Boşluktaki kelimenin ezberleme eyleminin sebebini veya amacını açıklaması beklenmektedir.
+Şimdi şıklara bakalım:
+A) اِسْتِعْدَادًا — hazırlanmak amacıyla / hazırlık olarak
+حَفِظَتِ الطَّالِبَةُ النَّصَّ اِسْتِعْدَادًا لِلْمُسَابَقَةِ.
+“Öğrenci kız yarışmaya hazırlanmak amacıyla metni ezberledi.”
+Fiilin yapılma gerekçesini açıkladığı için مفعول لأجله görevindedir. ✅
+B) فَوْقَ — üstünde
+Mekân bildirir; yapı uygun değildir. ❌
+C) لَيْلًا — geceleyin
+Zaman bildirir ancak ardından gelen للمسابقة ile hedef yapı kadar doğal değildir. ❌
+D) حِفْظًا — ezberleme
+حَفِظَ fiiliyle aynı kökten mastardır ve mef‘ûl-i mutlak oluşturabilir; ancak حِفْظًا للمسابقة bu cümlede amaç ilişkisini hedefleyen yapı kadar uygun değildir. ❌
+E) خَلْفَ — arkasında
+Mekân bildirir. ❌
+Doğru cevap: A) اِسْتِعْدَادًا
+7. Soru
+يَسْتَمِعُ الطُّلّابُ جَيِّدًا ---- يَفْهَمُوا الشَّرْحَ.
+Cümlede:
+يَسْتَمِعُ الطُّلّابُ جَيِّدًا
+“Öğrenciler dikkatlice dinliyorlar.”
+Boşluktan sonra bir muzâri fiil bulunmaktadır. İki eylem arasında amaç ilişkisi kurulmaktadır: Dinleme eyleminin hangi amaçla yapıldığı sorulmaktadır.
+Şimdi şıklara bakalım:
+A) أَمَامَ — önünde
+Mekân bildirir ve ardından fiil alamaz. ❌
+B) لِكَيْ — ...mek için
+يَسْتَمِعُ الطُّلّابُ جَيِّدًا لِكَيْ يَفْهَمُوا الشَّرْحَ.
+“Öğrenciler açıklamayı anlayabilmek için dikkatlice dinliyorlar.”
+Amaç ilişkisini doğru biçimde kurar. ✅
+C) صَبَاحًا — sabahleyin
+Zaman bildirir; amaç ilişkisi kurmaz. ❌
+D) تَحْتَ — altında
+Mekân bildirir. ❌
+E) دَرْسًا — ders
+Cümlede uygun bir görev üstlenmez. ❌
+Doğru cevap: B) لِكَيْ
+8. Soru
+جَمَعَ الطُّلّابُ التَّبَرُّعَاتِ ---- بِالْفُقَرَاءِ.
+Önce cümlenin anlamına bakalım:
+جَمَعَ الطُّلّابُ التَّبَرُّعَاتِ
+“Öğrenciler bağışları topladılar.”
+Boşluktan sonra بِالْفُقَرَاءِ “fakirlere karşı / fakirler için” bağlantısı bulunmaktadır. Burada bağış toplama eyleminin duygusal sebebini ifade eden bir mastar aranmalıdır.
+Şimdi şıklara bakalım:
+A) دَاخِلَ — içinde
+Mekân bildirir; yapı uygun değildir. ❌
+B) مَسَاءً — akşamleyin
+Zaman bildirir. ❌
+C) رَحْمَةً — merhametten / merhamet ederek
+جَمَعَ الطُّلّابُ التَّبَرُّعَاتِ رَحْمَةً بِالْفُقَرَاءِ.
+“Öğrenciler fakirlere merhametlerinden dolayı bağış topladılar.”
+Eylemin sebebini açıkladığı için مفعول لأجله olarak kullanılabilir. ✅
+D) قِرَاءَتَيْنِ — iki okuma
+Anlam ve yapı bakımından uygun değildir. ❌
+E) خَارِجَ — dışında
+Mekân bildirir. ❌
+Doğru cevap: C) رَحْمَةً
+9. Soru
+يُسَافِرُ الْبَاحِثُ إِلَى الْقَاهِرَةِ ---- عَنْ مَخْطُوطَةٍ قَدِيمَةٍ.
+Önce cümlenin anlamına bakalım:
+“Araştırmacı Kahire’ye ... eski bir el yazması için/arayışıyla seyahat ediyor.”
+Boşluktan sonraki عَنْ مَخْطُوطَةٍ قَدِيمَةٍ yapısı, boşluktaki kelimenin “arama / araştırma” anlamıyla bağlantılı olmasını gerektirir.
+Şimdi şıklara bakalım:
+A) صَبْرًا — sabırla / sabır
+Ardından عن مخطوطة yapısıyla doğal bağlantı kurmaz. ❌
+B) أَمَامَ — önünde
+Mekân bildirir. ❌
+C) غَدًا — yarın
+Zaman bildirir ancak غدًا عن مخطوطة bağlantısı kurulamaz. ❌
+D) بَحْثًا — araştırmak / aramak amacıyla
+يُسَافِرُ الْبَاحِثُ إِلَى الْقَاهِرَةِ بَحْثًا عَنْ مَخْطُوطَةٍ قَدِيمَةٍ.
+“Araştırmacı eski bir el yazması aramak amacıyla Kahire’ye seyahat ediyor.”
+Eylemin amacını ifade etmektedir. ✅
+E) فَوْقَ — üstünde
+Mekân bildirir; uygun değildir. ❌
+Doğru cevap: D) بَحْثًا
+10. Soru
+يَكْتُبُ الطّالِبُ الْمُفْرَداتِ ---- لَا يَنْسَاهَا.
+Cümlenin ilk bölümünde:
+يَكْتُبُ الطّالِبُ الْمُفْرَداتِ
+“Öğrenci kelimeleri yazıyor.”
+İkinci bölümde ise:
+لَا يَنْسَاهَا
+“Onları unutmuyor / unutmasın.”
+anlamı vardır.
+Boşlukta iki eylem arasında amaç veya sonuç ilişkisi kuran bir yapı aranmalıdır.
+Şimdi şıklara bakalım:
+A) دَاخِلَ — içinde
+Mekân bildirir. ❌
+B) كَبِيرًا — büyük
+Cümlede uygun görev üstlenmez. ❌
+C) لَيْلًا — geceleyin
+Zaman bildirir ancak devamındaki لا ينساها ile bağlantı kurmaz. ❌
+D) مَكْتُوبًا — yazılmış
+İsm-i mef‘ûldür; uygun değildir. ❌
+E) حَتَّى — ...mesi için / ...e kadar
+يَكْتُبُ الطّالِبُ الْمُفْرَداتِ حَتَّى لَا يَنْسَاهَا.
+“Öğrenci kelimeleri unutmamak için yazıyor.”
+Amaç ilişkisini doğru biçimde kurar. ✅
+Doğru cevap: E) حَتَّى
+11. Soru
+اِحْتَفَلَ النَّاسُ بِالنَّجَاحِ ----.
+Cümlenin fiili اِحْتَفَلَ “kutladı” fiilidir.
+Boşlukta, fiille aynı kökten gelen ve yapılan eylemi pekiştiren bir mastar bulunabilir. Bu tür kullanımda fiilin anlamı aynı kökten gelen mastarla güçlendirilir.
+Şimdi şıklara bakalım:
+A) اِحْتِفَالًا — kutlama
+اِحْتَفَلَ النَّاسُ بِالنَّجَاحِ اِحْتِفَالًا.
+Fiilin kendi mastarıdır ve eylemi pekiştirir. مفعول مطلق görevindedir. ✅
+B) مُحْتَفِلًا — kutlayan
+İsm-i fâildir. ❌
+C) مُحْتَفَلًا — kutlanan
+İsm-i mef‘ûl yapısındadır. ❌
+D) حَافِلًا — dolu / yoğun
+Fiilin mastarı değildir. ❌
+E) حَفْلَةً — kutlama / tören
+Anlam bakımından ilişkili olsa da اِحْتَفَلَ fiilinin doğrudan mastarı değildir. ❌
+Doğru cevap: A) اِحْتِفَالًا
+12. Soru
+تَكَلَّمَ الْخَطِيبُ ---- مُؤَثِّرًا.
+Cümlenin fiili:
+تَكَلَّمَ — “konuştu”
+Boşluktan sonra مُؤَثِّرًا “etkileyici bir şekilde” anlamında bir sıfat bulunmaktadır.
+Bu nedenle boşlukta fiilin kendi mastarının gelmesi ve bu mastarın ardından bir sıfatla nitelenmesi beklenebilir.
+Şimdi şıklara bakalım:
+A) مُتَكَلِّمًا — konuşan
+İsm-i fâildir; ardından مؤثرًا ile hedeflenen mastar yapısını oluşturmaz. ❌
+B) تَكَلُّمًا — konuşma
+تَكَلَّمَ الْخَطِيبُ تَكَلُّمًا مُؤَثِّرًا.
+“Hatip etkileyici bir konuşmayla/şekilde konuştu.”
+تَكَلُّمًا, تَكَلَّمَ fiilinin mastarıdır ve sıfatla nitelenmiş مفعول مطلق olarak kullanılmıştır. ✅
+C) مَكْلُومًا — yaralı / incinmiş
+Anlam ve kök ilişkisi uygun değildir. ❌
+D) تَكْلِيمًا — konuşturma / konuşma
+كَلَّمَ fiilinin mastarıdır; تَكَلَّمَ fiilinin mastarı değildir. ❌
+E) كَلِمَةً — söz / kelime
+Fiilin kendi mastarı değildir. ❌
+Doğru cevap: B) تَكَلُّمًا
+13. Soru
+سَجَدَ الْمُصَلِّي ----.
+Cümlenin fiili سَجَدَ “secde etti” fiilidir.
+Boşlukta secde eyleminin kaç defa gerçekleştirildiğini belirten bir ifade bulunabilir. Mef‘ûl-i mutlak yalnızca fiili pekiştirmez; eylemin türünü veya sayısını da gösterebilir.
+Şimdi şıklara bakalım:
+A) سَاجِدًا — secde eden hâlde
+İsm-i fâildir; daha çok hâl görevinde kullanılabilir. ❌
+B) مَسْجِدًا — mescit / cami
+Yer ismidir. ❌
+C) سَجْدَتَيْنِ — iki secde
+سَجَدَ الْمُصَلِّي سَجْدَتَيْنِ.
+“Namaz kılan kişi iki kez secde etti.”
+Fiilin gerçekleşme sayısını bildirir. ✅
+D) مَسْجُودًا لَهُ — kendisine secde edilen
+İsm-i mef‘ûl yapısıdır; uygun değildir. ❌
+E) سُجَّدًا — secde edenler
+Çoğul bir isim/sıfat yapısıdır; burada eylemin sayısını göstermez. ❌
+Doğru cevap: C) سَجْدَتَيْنِ
+14. Soru
+دَافَعَ الشَّابُّ عَنْ أُسْرَتِهِ ----.
+Cümlenin temel fiili:
+دَافَعَ — “savundu”
+Boşlukta bu fiilin kendi mastarı kullanılarak savunma eyleminin niteliği veya derecesi açıklanabilir.
+Şimdi şıklara bakalım:
+A) مُدَافِعًا — savunan
+İsm-i fâildir. ❌
+B) مُدَافَعًا — savunulan
+İsm-i mef‘ûldür. ❌
+C) مَدْفُوعًا — itilmiş / ödenmiş
+دَفَعَ fiiliyle ilişkilidir; دَافَعَ fiilinin mastarı değildir. ❌
+D) دِفَاعًا شَدِيدًا — güçlü bir şekilde savunarak
+دَافَعَ الشَّابُّ عَنْ أُسْرَتِهِ دِفَاعًا شَدِيدًا.
+“Genç, ailesini güçlü bir şekilde savundu.”
+دِفَاعًا, دَافَعَ fiilinin mastarıdır; شَدِيدًا ise onun niteliğini açıklamaktadır. ✅
+E) دَافِعًا — iten / ödeyen
+دَفَعَ fiilinin ism-i fâilidir. ❌
+Doğru cevap: D) دِفَاعًا شَدِيدًا
+15. Soru
+أُحِبُّ لُغَتِي ----.
+Cümlenin fiili:
+أُحِبُّ — “seviyorum”
+Boşlukta sevginin derecesini ve kapsamını güçlendiren bir ifade aranmalıdır.
+Burada doğrudan fiilin mastarının gelmesi şart değildir; bazen كُلّ، بَعْض، أَشَدّ gibi kelimeler mef‘ûl-i mutlak yerine geçerek onun görevini üstlenebilir.
+Şimdi şıklara bakalım:
+A) مُحِبًّا — seven olarak
+İsm-i fâildir; cümlede hedeflenen pekiştirme anlamını vermez. ❌
+B) مَحْبُوبًا — sevilen
+İsm-i mef‘ûldür. ❌
+C) حَبِيبًا — sevgili / sevilen
+Bu cümlede fiili pekiştiren yapı oluşturmaz. ❌
+D) مَحَبَّةٌ — sevgi
+Burada merfû gelmiştir. Bu görevde kullanılabilmesi için uygun i‘rab ve yapı gerekir. ❌
+E) كُلَّ الْحُبِّ — bütün sevgimle / çok büyük bir sevgiyle
+أُحِبُّ لُغَتِي كُلَّ الْحُبِّ.
+“Dilimi bütün kalbimle / çok seviyorum.”
+Burada كُلَّ, hazfedilmiş mastarın yerini tutarak fiilin anlamını pekiştirir. كُلَّ mansuptur ve الْحُبِّ ona muzâfun ileyhtir. ✅
+Doğru cevap: E) كُلَّ الْحُبِّ

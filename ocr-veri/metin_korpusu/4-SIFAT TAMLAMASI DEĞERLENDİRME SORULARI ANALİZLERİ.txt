@@ -1,0 +1,162 @@
+SIFAT TAMLAMASI DEĞERLENDİRME SORULARI ANALİZLERİ
+1. Soru
+دَخَلَ طَالِبٌ ---- إِلَى الصَّفِّ مُبَكِّرًا لِيُرَاجِعَ دُرُوسَهُ.
+Türkçesi: Çalışkan bir öğrenci, derslerini tekrar etmek için sınıfa erken girdi.
+İlk aşamada دَخَلَ “girdi” fiilinden sonra fail olan طَالِبٌ “bir öğrenci” ismini görüyoruz. Boşluk bu ismin hemen devamında olduğu için طَالِبٌ kelimesini niteleyecek bir sıfat arıyoruz. طَالِبٌ belirsiz, müzekker, tekil ve merfudur. Sıfatın da onunla tam uyumlu olması gerekir.
+Şimdi şıklara bakalım:
+A) مُجْتَهِدٌ — çalışkan
+Belirsiz, müzekker, tekil ve merfudur. طَالِبٌ ile dört yönden de tam uyumludur. “Çalışkan bir öğrenci” anlamı da uygundur. Olabilir.
+B) مُجْتَهِدٍ — çalışkan
+Belirsiz, müzekker ve tekildir; ancak mecrurdur. Fail olan طَالِبٌ ise merfudur. Hareke uyumu yoktur. Olmaz.
+C) الْمُجْتَهِدِ — çalışkan
+Belirli ve mecrurdur. طَالِبٌ ise belirsiz ve merfudur. Hem belirlilik hem hareke uyumu bozulur. Olmaz.
+D) مُجْتَهِدَةٌ — çalışkan
+Belirsiz ve merfudur; ancak müennestir. طَالِبٌ müzekkerdir. Cinsiyet uyumu yoktur. Olmaz.
+E) مُجْتَهِدًا — çalışkan
+Belirsiz, müzekker ve tekildir; ancak mansuptur. طَالِبٌ merfu olduğu için hareke uyumu yoktur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, مُجْتَهِدٌ olur.
+2. Soru
+شَاهَدْنَا اللَّوْحَةَ ---- فِي الْمَعْرِضِ وَأُعْجِبْنَا بِجَمَالِهَا.
+Türkçesi: Sergide güzel tabloyu gördük ve onun güzelliğini beğendik.
+İlk aşamada شَاهَدْنَا “gördük” fiilinden sonra mef‘ûl olan اللَّوْحَةَ “tabloyu” ismini görüyoruz. Boşluk bu ismin devamında olduğu için onu niteleyecek bir sıfat arıyoruz. اللَّوْحَةَ belirli, müennes, tekil ve mansuptur.
+Şimdi şıklara bakalım:
+A) جَمِيلَةً — güzel
+Müennes, tekil ve mansuptur; ancak belirsizdir. اللَّوْحَةَ belirli olduğu için belirlilik uyumu yoktur. Olmaz.
+B) جَمِيلٌ — güzel
+Belirsiz, müzekker ve merfudur. Birden fazla yönden uyumsuzdur. Olmaz.
+C) الْجَمِيلَ — güzel
+Belirli ve mansuptur; ancak müzekkerdir. اللَّوْحَةَ müennestir. Olmaz.
+D) الْجَمِيلَةَ — güzel
+Belirli, müennes, tekil ve mansuptur. اللَّوْحَةَ ile tam uyumludur. “Güzel tabloyu gördük.” anlamı da uygundur. Olabilir.
+E) جَمِيلَةٍ — güzel
+Müennes ve tekildir; ancak belirsiz ve mecrurdur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, الْجَمِيلَةَ olur.
+3. Soru
+جَلَسَتْ ---- الذَّكِيَّةُ فِي الْمَكْتَبَةِ لِلدِّرَاسَةِ.
+Türkçesi: Zeki kız ders çalışmak için kütüphanede oturdu.
+İlk aşamada جَلَسَتْ “oturdu” fiilinin müennes olduğunu görüyoruz. Boşluğun devamında ise الذَّكِيَّةُ “zeki” sıfatı vardır. Bu sıfat belirli, müennes, tekil ve merfudur. Dolayısıyla öncesine gelecek failin de bu özelliklerle uyumlu olması gerekir.
+Şimdi şıklara bakalım:
+A) فَتَاةِ — kız
+Belirsiz ve mecrurdur. Devamındaki sıfat belirli ve merfudur. Olmaz.
+B) الْفَتَاةَ — kız
+Belirli, müennes ve tekildir; ancak mansuptur. Fail olması gerektiği için merfu olmalıdır. Olmaz.
+C) الْفَتَاةُ — kız
+Belirli, müennes, tekil ve merfudur. الذَّكِيَّةُ ile tam uyumludur. الْفَتَاةُ الذَّكِيَّةُ “zeki kız” anlamını verir. Olabilir.
+D) فَتَاةٌ — bir kız
+Müennes, tekil ve merfudur; ancak belirsizdir. Sıfat belirli olduğu için uyum yoktur. Olmaz.
+E) فَتَاةٍ — bir kız
+Belirsiz ve mecrurdur. Hem belirlilik hem hareke bakımından uymaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, الْفَتَاةُ olur.
+4. Soru
+قَابَلْتُ ---- الصَّالِحَ فِي الْمَسْجِدِ بَعْدَ الصَّلَاةِ.
+Türkçesi: Namazdan sonra camide salih adamla karşılaştım.
+İlk aşamada قَابَلْتُ “karşılaştım/görüştüm” fiilinden sonra boşluğa gelecek ismin mef‘ûl olduğunu görüyoruz. Boşluğun devamında الصَّالِحَ “salih, iyi” sıfatı vardır. Bu sıfat belirli, müzekker, tekil ve mansuptur. Öncesine gelecek isim de aynı özellikleri taşımalıdır.
+Şimdi şıklara bakalım:
+A) الرَّجُلُ — adam
+Belirli, müzekker ve tekildir; ancak merfudur. Mef‘ûl olduğu için mansup olması gerekir. Olmaz.
+B) الرَّجُلَ — adamı
+Belirli, müzekker, tekil ve mansuptur. الصَّالِحَ ile tam uyumludur. الرَّجُلَ الصَّالِحَ “salih adamı” anlamını verir. Olabilir.
+C) الرَّجُلِ — adam
+Belirli, müzekker ve tekildir; ancak mecrurdur. Hareke uyumu yoktur. Olmaz.
+D) رَجُلًا — bir adam
+Müzekker, tekil ve mansuptur; ancak belirsizdir. Sıfat belirli olduğu için olmaz.
+E) الرِّجَالَ — adamlar
+Belirli ve mansuptur; ancak çoğuldur. الصَّالِحَ tekildir. Sayı uyumu yoktur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, الرَّجُلَ olur.
+5. Soru
+هٰذَا ---- مُجْتَهِدٌ يُحِبُّ الْقِرَاءَةَ وَيَسْعَى لِلنَّجَاحِ.
+Türkçesi: Bu, okumayı seven ve başarı için çalışan çalışkan bir öğrencidir.
+İlk aşamada cümlenin başında هٰذَا “bu” işaret ismini görüyoruz. Boşluğun devamında ise مُجْتَهِدٌ “çalışkan” sıfatı vardır. هٰذَا müzekker ve tekildir; مُجْتَهِدٌ ise belirsiz, müzekker, tekil ve merfudur. Aradaki isim hem işaret ismiyle hem de kendisini niteleyen sıfatla uyumlu olmalıdır.
+Şimdi şıklara bakalım:
+A) طَالِبٌ — bir öğrenci
+Belirsiz, müzekker, tekil ve merfudur. مُجْتَهِدٌ ile tam uyumludur. هٰذَا طَالِبٌ مُجْتَهِدٌ “Bu çalışkan bir öğrencidir.” anlamını verir. Olabilir.
+B) طَالِبَةٌ — kız öğrenci
+Müennestir. Hem هٰذَا hem de مُجْتَهِدٌ müzekker olduğu için uyum yoktur. Olmaz.
+C) طَالِبَانِ — iki öğrenci
+İkildir. هٰذَا ve مُجْتَهِدٌ tekildir. Olmaz.
+D) طَالِبَتَانِ — iki kız öğrenci
+Hem müennes hem ikildir. Olmaz.
+E) طَالِبَيْنِ — iki öğrenci
+İkildir ve mansup/mecrur biçimdedir. Hem sayı hem hareke bakımından uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, طَالِبٌ olur.
+6. Soru
+حَضَرَ اللَّاعِبَانِ ---- إِلَى الْمَلْعَبِ مُبَكِّرًا لِلتَّدْرِيبِ.
+Türkçesi: Hızlı iki oyuncu antrenman için sahaya erken geldi.
+İlk aşamada حَضَرَ “geldi” fiilinden sonra fail olan اللَّاعِبَانِ “iki oyuncu” ismini görüyoruz. Boşluk bu ismin devamında olduğu için onu niteleyecek bir sıfat arıyoruz. اللَّاعِبَانِ belirli, müzekker, ikil ve merfudur.
+Şimdi şıklara bakalım:
+A) السَّرِيعَةُ — hızlı
+Belirli ve merfudur; ancak müennes tekildir. Cinsiyet ve sayı uyumu yoktur. Olmaz.
+B) السَّرِيعَيْنِ — hızlı iki
+Belirli, müzekker ve ikildir; ancak mansup/mecrurdur. اللَّاعِبَانِ merfudur. Hareke uyumu yoktur. Olmaz.
+C) السَّرِيعُونَ — hızlılar
+Belirli, müzekker ve merfudur; ancak çoğuldur. Mevsuf ikildir. Olmaz.
+D) السَّرِيعَا
+Müzekker ikil yapıya ait bir biçimdir; fakat burada sıfat tamlamasında merfu ikil sıfatın السَّرِيعَانِ şeklinde olması gerekir. Olmaz.
+E) السَّرِيعَانِ — hızlı iki
+Belirli, müzekker, ikil ve merfudur. اللَّاعِبَانِ ile dört yönden tam uyumludur. Anlam da uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, السَّرِيعَانِ olur.
+7. Soru
+رَأَيْتُ ---- الصَّغِيرَيْنِ فِي السَّاحَةِ يَلْعَبَانِ بِفَرَحٍ.
+Türkçesi: Bahçede neşeyle oynayan küçük iki çocuğu gördüm.
+İlk aşamada رَأَيْتُ “gördüm” fiilinden sonra boşluğa gelecek kelimenin mef‘ûl olduğunu anlıyoruz. Boşluğun devamında الصَّغِيرَيْنِ “küçük iki” sıfatını görüyoruz. Bu sıfat belirli, müzekker, ikil ve mansuptur. Öncesindeki mevsuf da aynı özellikleri taşımalıdır.
+Şimdi şıklara bakalım:
+A) أَطْفَالِ — çocuklar
+Çoğuldur ve mecrurdur. Sıfat ise ikil ve mansuptur. Hem sayı hem hareke uyumu yoktur. Olmaz.
+B) الطِّفْلَانِ — iki çocuk
+Belirli, müzekker ve ikildir; ancak merfudur. Mef‘ûl olması gerektiği için mansup olmalıdır. Olmaz.
+C) طِفْلَانِ — iki çocuk
+Müzekker ve ikildir; ancak belirsiz ve merfudur. Hem belirlilik hem hareke uyumu yoktur. Olmaz.
+D) الطِّفْلَيْنِ — iki çocuğu
+Belirli, müzekker, ikil ve mansuptur. الصَّغِيرَيْنِ ile tam uyumludur. “Küçük iki çocuğu gördüm.” anlamı da uygundur. Olabilir.
+E) طِفْلَيْنِ — iki çocuğu
+Müzekker, ikil ve mansuptur; ancak belirsizdir. Sıfat belirli olduğu için olmaz.
+Dolayısıyla doğru cevap D şıkkı, الطِّفْلَيْنِ olur.
+8. Soru
+سَلَّمْتُ عَلَى الْمُعَلِّمَيْنِ ---- فِي الْمَدْرَسَةِ قَبْلَ دُخُولِ الصَّفِّ.
+Türkçesi: Sınıfa girmeden önce okulda yeni iki öğretmene selam verdim.
+İlk aşamada عَلَى harf-i cerinden sonra الْمُعَلِّمَيْنِ “iki öğretmene” ismini görüyoruz. Bu kelime harf-i cer nedeniyle mecrurdur. Boşluk da hemen ardından geldiği için الْمُعَلِّمَيْنِ kelimesini niteleyecek bir sıfat arıyoruz. İsim belirli, müzekker, ikil ve mecrurdur.
+Şimdi şıklara bakalım:
+A) الْجَدِيدَةِ — yeni
+Belirli ve mecrurdur; ancak müennes tekildir. Cinsiyet ve sayı uyumu yoktur. Olmaz.
+B) جَدِيدَانِ — iki yeni
+Müzekker ve ikildir; ancak belirsiz ve merfudur. Olmaz.
+C) الْجَدِيدَانِ — iki yeni
+Belirli, müzekker ve ikildir; ancak merfudur. Mevsuf mecrur olduğu için hareke uyumu yoktur. Olmaz.
+D) جَدِيدَيْنِ — iki yeni
+Müzekker, ikil ve mecrurdur; ancak belirsizdir. الْمُعَلِّمَيْنِ belirli olduğu için belirlilik uyumu yoktur. Olmaz.
+E) الْجَدِيدَيْنِ — iki yeni
+Belirli, müzekker, ikil ve mecrurdur. الْمُعَلِّمَيْنِ ile dört yönden tam uyumludur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, الْجَدِيدَيْنِ olur.
+9. Soru
+نَجَحَ الطُّلَّابُ ---- فِي الِامْتِحَانِ وَحَصَلُوا عَلَى دَرَجَاتٍ عَالِيَةٍ.
+Türkçesi: Başarılı öğrenciler sınavda başarılı oldular ve yüksek notlar aldılar.
+İlk aşamada نَجَحَ “başarılı oldu” fiilinden sonra fail olan الطُّلَّابُ “öğrenciler” ismini görüyoruz. Boşluk bu ismin devamında olduğuna göre onu niteleyecek bir sıfat arıyoruz. الطُّلَّابُ belirli, akıllı varlık bildiren müzekker çoğul ve merfudur.
+Şimdi şıklara bakalım:
+A) الْمُتَفَوِّقَةُ — başarılı
+Belirli ve merfudur; ancak müennes tekildir. الطُّلَّابُ akıllı müzekker çoğuldur. Olmaz.
+B) الْمُتَفَوِّقُونَ — başarılılar
+Belirli, müzekker, çoğul ve merfudur. الطُّلَّابُ ile tam uyumludur. “Başarılı öğrenciler” anlamı da uygundur. Olabilir.
+C) مُتَفَوِّقُونَ — başarılılar
+Müzekker, çoğul ve merfudur; ancak belirsizdir. الطُّلَّابُ belirli olduğu için olmaz.
+D) مُتَفَوِّقَانِ — iki başarılı kişi
+İkildir. Mevsuf çoğuldur. Sayı uyumu yoktur. Olmaz.
+E) الْمُتَفَوِّقِينَ — başarılılar
+Belirli, müzekker ve çoğuldur; ancak mansup/mecrurdur. Fail olan الطُّلَّابُ merfudur. Hareke uyumu yoktur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, الْمُتَفَوِّقُونَ olur.
+10. Soru
+وَضَعْنَا ---- الْجَدِيدَةَ فِي الْخِزَانَةِ بَعْدَ مُرَاجَعَتِهَا.
+Türkçesi: İnceledikten sonra yeni belgeleri dolaba koyduk.
+İlk aşamada وَضَعْنَا “koyduk” fiilinden sonra boşluğa gelecek ismin mef‘ûl olduğunu anlıyoruz. Boşluğun devamında الْجَدِيدَةَ “yeni” sıfatını görüyoruz. Bu sıfat belirli, müennes tekil ve mansuptur. Burada ayrıca önemli bir kurala dikkat ediyoruz: Akılsız varlıkların çoğulu, sıfat bakımından müennes tekil kabul edilir.
+Şimdi şıklara bakalım:
+A) الْوَثَائِقَ — belgeleri
+Belirli ve mansuptur. وَثَائِق akılsız çoğul olduğu için sıfatının müennes tekil الْجَدِيدَةَ şeklinde gelmesi doğrudur.
+الْوَثَائِقَ الْجَدِيدَةَ = “yeni belgeleri.” Hem gramer hem anlam uygundur. Olabilir.
+B) وَثَائِقٍ — belgeler
+Belirsiz ve mecrurdur. Sıfat ise belirli ve mansuptur. Hem belirlilik hem hareke uyumu yoktur. Olmaz.
+C) الْوَثَائِقُ — belgeler
+Belirlidir ancak merfudur. Mef‘ûl olması gerektiği için mansup olmalıdır. Sıfat da mansuptur. Olmaz.
+D) وَثَائِقًا — belgeler
+Mansuptur ancak belirsizdir. Sıfat belirli olduğu için belirlilik uyumu yoktur. Olmaz.
+E) الْوَثَائِقِ — belgeler
+Belirlidir ancak mecrurdur. Mef‘ûl ve sıfat mansup olmalıdır. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, الْوَثَائِقَ olur.

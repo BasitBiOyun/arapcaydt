@@ -1,0 +1,434 @@
+EDATLAR DEĞERLENDİRMEM SORU ANALİZLERİ
+1. Soru
+أُرِيدُ ---- أَكْتُبَ الدَّرْسَ.
+Türkçesi: Dersi ----- istiyorum.
+İlk olarak أُرِيدُ “istiyorum” fiiline bakıyoruz. Boşluktan sonra أَكْتُبَ muzâri fiili geliyor.
+Burada özellikle أَكْتُبَ fiilinin sonundaki fethaya dikkat ediyoruz. Demek ki boşluğa gelecek yapı, kendisinden sonraki muzâri fiilin i‘rabını etkiliyor.
+Ayrıca anlam bakımından “bir şeyi istemek + yapılmak istenen eylem” ilişkisi vardır.
+Şimdi şıklara bakalım:
+A) لَمْ — ...medi
+Muzâri fiili cezm eder. Ardından أَكْتُبْ gelmesi gerekirdi. Buradaki fiil ise أَكْتُبَ şeklinde mansuptur. Olmaz.
+B) لَنْ — ...meyecek
+Muzâri fiili nasb eder; ancak gelecek zaman olumsuzluğu bildirir. Cümlenin “dersi yazmak istiyorum” anlamına uymaz. Olmaz.
+C) أَنْ — -mek / -mak
+Muzâri fiili nasb eder. Ayrıca أُرِيدُ أَنْ... yapısı “...mek istiyorum” anlamını verir.
+أُرِيدُ أَنْ أَكْتُبَ الدَّرْسَ
+yapısı hem gramer hem anlam bakımından uygundur. Olabilir.
+D) لَا — değil / -me
+Burada “istemek + eylem” yapısını oluşturmaz. Olmaz.
+E) لَمَّا — henüz ...medi
+Muzâri fiili cezm eder. Fiilin أَكْتُبْ olması gerekirdi. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, أَنْ olur.
+2. Soru
+لَنْ ---- الطَّالِبُ إِلَى الْمَدْرَسَةِ الْيَوْمَ.
+Türkçesi: Öğrenci bugün okula -----yecek.
+İlk olarak boşluğun öncesindeki لَنْ edatına bakıyoruz. لَنْ, kendisinden sonra gelen muzâri fiili nasb eder.
+Boşluktan sonra الطَّالِبُ geliyor. Burada yapı:
+fiil + açık fail
+şeklindedir.
+Dolayısıyla الطَّالِبُ, cümlenin açık failidir.
+Fail müzekker tekildir. Fiilin de faille cinsiyet bakımından uyumlu, yani müzekker olması gerekir.
+Ayrıca لَنْ sebebiyle fiilin mansup olması gerekir.
+Şimdi şıklara bakalım:
+A) يَذْهَبُ — gider / gidiyor
+Müzekker tekil muzâridir; ancak damme ile merfudur. لَنْ sonrasında mansup olması gerekir. Olmaz.
+B) يَذْهَبَ — gider / gidecek
+Müzekker tekildir ve fetha ile mansuptur. لَنْ ile uyumludur. Olabilir.
+C) يَذْهَبْ
+Sükûnla meczumdur. Burada cezm değil nasb gerekir. Olmaz.
+D) ذَهَبَ — gitti
+Mâzî fiildir. لَنْ muzâri fiille kullanılır. Olmaz.
+E) يَذْهَبُونَ — giderler
+Çoğul fiildir. Burada zaten açık fail الطَّالِبُ tekildir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَذْهَبَ olur.
+3. Soru
+لَمْ ---- أَحَدٌ الصَّوْتَ جَيِّدًا.
+Türkçesi: Hiç kimse sesi iyi -------.
+İlk olarak لَمْ edatına bakıyoruz. لَمْ, muzâri fiili cezm eder.
+Boşluktan sonra أَحَدٌ geliyor. Yapı:
+fiil + açık fail
+şeklindedir.
+Dolayısıyla أَحَدٌ açık faildir.
+Fail tekil ve müzekker kabul edilir. Bu nedenle fiilin müzekker biçimde olması gerekir. Ayrıca لَمْ sebebiyle fiil meczum olmalıdır.
+Şimdi şıklara bakalım:
+A) يَسْمَعُ — duyuyor
+Muzâri fiildir ancak merfudur. Olmaz.
+B) سَمِعَ — duydu
+Mâzî fiildir. لَمْ doğrudan mâzî fiille kullanılmaz. Olmaz.
+C) يَسْمَعَ
+Fetha ile mansuptur. Burada cezm gerekir. Olmaz.
+D) يَسْمَعْ — duyar
+Muzâri fiildir ve sükûnla meczumdur. لَمْ يَسْمَعْ yapısı doğrudur. Olabilir.
+E) يَسْمَعُونَ — duyuyorlar
+Çoğul biçimdedir ve ayrıca merfudur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَسْمَعْ olur.
+4. Soru
+ذَهَبْتُ إِلَى الْمَكْتَبَةِ ---- أَقْرَأَ الْكُتُبَ.
+Türkçesi: Kitapları okumak ---- kütüphaneye gittim.
+İlk bölümde:
+ذَهَبْتُ إِلَى الْمَكْتَبَةِ
+“Kütüphaneye gittim.” deniliyor.
+Boşluktan sonraki bölüm ise bu gidişin amacını açıklıyor.
+Ayrıca أَقْرَأَ muzâri fiilinin sonu fethalıdır. Yani fiil mansup durumdadır.
+Dolayısıyla hem amaç bildiren hem de ardından gelen muzâri fiilin bu i‘rabıyla uyumlu bir yapı arıyoruz.
+Şimdi şıklara bakalım:
+A) كَيْ — ...mek için
+Amaç bildirir ve ardından gelen muzâri fiili nasb eder.
+كَيْ أَقْرَأَ
+yapısı uygundur. Olabilir.
+B) لَمْ — ...medi
+Cezm eder ve geçmiş zaman olumsuzluğu bildirir. Olmaz.
+C) لَا — değil / -me
+Burada amaç anlamı oluşturmaz. Olmaz.
+D) لَنْ — ...meyecek
+Gelecek zaman olumsuzluğu bildirir. Olmaz.
+E) لَمَّا — henüz ...medi
+Muzâriyi cezm eder ve anlam bakımından da uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, كَيْ olur.
+5. Soru
+اِجْتَهِدْ ---- تَنْجَحَ فِي الِامْتِحَانِ.
+Türkçesi: Sınavda başarılı olmak için / başarılı -------- çalış.
+İlk olarak اِجْتَهِدْ emir fiilini görüyoruz.
+Boşluktan sonra تَنْجَحَ muzâri fiili geliyor ve sonu fethalıdır. Yani fiil mansuptur.
+Cümlede ayrıca çalışma ile başarı arasında amaç / sonuç ilişkisi vardır.
+Dolayısıyla boşluğa gelecek yapının hem bu anlam ilişkisini kurması hem de muzâri fiilin mansup gelmesiyle uyumlu olması gerekir.
+Şimdi şıklara bakalım:
+A) لَمْ
+Muzâri fiili cezm eder. تَنْجَحْ olması gerekirdi. Olmaz.
+B) لَا
+Buradaki kullanımda fiilin bu şekilde mansup olmasını sağlamaz. Olmaz.
+C) لَمَّا
+Muzâriyi cezm eder ve “henüz ...medi” anlamı verir. Olmaz.
+D) حَتَّى — ...inceye kadar / ...mesi için
+Burada amaç veya ulaşılmak istenen sonucu bildirir ve muzâri fiili nasb eder.
+حَتَّى تَنْجَحَ
+uygundur. Olabilir.
+E) إِذَنْ — o hâlde / öyleyse
+Belirli şartlarda muzâriyi nasb edebilir; ancak bu cümledeki amaç ilişkisini karşılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, حَتَّى olur.
+6. Soru
+أُرِيدُ أَنْ ---- الْوَاجِبَ بِنَفْسِكِ.
+Türkçesi: Ödevi kendin ----- istiyorum.
+İlk olarak boşluğun öncesinde أَنْ edatını görüyoruz. أَنْ, ardından gelen muzâri fiili nasb eder.
+Cümlenin sonunda:
+بِنَفْسِكِ
+ifadesi bulunuyor.
+Buradaki ـكِ zamiri, hitap edilen kişinin müennes tekil “sen” olduğunu gösteriyor.
+Dolayısıyla boşluğa gelecek fiilin:
+müennes tekil muhataba uygun olması,
+أَنْ sebebiyle mansup olması
+gerekir.
+Şimdi şıklara bakalım:
+A) تَكْتُبِينَ — sen yazıyorsun
+Müennes tekil muhatap fiilidir. Ancak ef‘âl-i hamseden olduğu için bu biçim merfudur ve sonundaki ن durmaktadır. Olmaz.
+B) تَكْتُبِي — senin yazman
+Müennes tekil muhataba uygundur. Ayrıca أَنْ sebebiyle nasb olduğundan sonundaki ن düşmüştür. Olabilir.
+C) تَكْتُبُ
+Burada müennes tekil muhatap için gereken تَكْتُبِينَ / تَكْتُبِي yapısını karşılamaz. Olmaz.
+D) تَكْتُبْ
+Meczum biçimdedir. Burada nasb gerekir. Olmaz.
+E) كَتَبْتِ — sen yazdın
+Mâzî fiildir. أَنْ sonrasında burada muzâri fiil gerekir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, تَكْتُبِي olur.
+7. Soru
+الطُّلَّابُ لَمْ ---- الْوَاجِبَ أَمْسِ.
+Türkçesi: Öğrenciler dün ödevi -------.
+Burada cümle الطُّلَّابُ ismiyle başlıyor.
+Dolayısıyla الطُّلَّابُ, cümlede özne konumundadır.
+Özne:
+müzekker,
+çoğuldur.
+Fiil özneden sonra geldiği için fiilin özneyle hem sayı hem de cinsiyet bakımından uyumlu olması gerekir.
+Yani aradığımız fiil müzekker çoğul olmalıdır.
+Ayrıca لَمْ, muzâri fiili cezm eder.
+Dolayısıyla hem müzekker çoğul hem de meczum bir fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) يَكْتُبُونَ — yazıyorlar
+Müzekker çoğuldur; ancak sonundaki ن durmaktadır. Yani merfudur. لَمْ sonrasında uygun değildir. Olmaz.
+B) كَتَبُوا — yazdılar
+Müzekker çoğul olsa da mâzî fiildir. لَمْ sonrasında doğrudan bu biçim kullanılmaz. Olmaz.
+C) يَكْتُبَ
+Tekil ve mansuptur. Özne çoğuldur ve burada cezm gerekir. Olmaz.
+D) يَكْتُبْنَ — onlar kadınlar yazarlar
+Müennes çoğuldur. Özne الطُّلَّابُ ise müzekker çoğuldur. Cinsiyet bakımından uymaz. Olmaz.
+E) يَكْتُبُوا — yazarlar
+Müzekker çoğuldur; dolayısıyla özneyle sayı ve cinsiyet bakımından uyumludur.
+Ayrıca ef‘âl-i hamseden olduğu için لَمْ sonrasında sonundaki ن düşmüş ve fiil meczum olmuştur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, يَكْتُبُوا olur.
+8. Soru
+قَالَ: سَأَدْرُسُ كُلَّ يَوْمٍ.
+قُلْتُ: ---- تَنْجَحَ.
+Türkçesi: O, “Her gün çalışacağım.” dedi. Ben de “------- başarılı olacaksın.” dedim.
+İlk cümlede:
+سَأَدْرُسُ كُلَّ يَوْمٍ
+“Her gün çalışacağım.” şeklinde geleceğe yönelik bir söz vardır.
+İkinci cümle bu söze verilen bir cevap ve sonuç niteliğindedir.
+Ayrıca تَنْجَحَ fiilinin sonu fethalıdır; yani muzâri fiil mansuptur.
+Dolayısıyla önceki söze karşılık sonuç bildiren ve burada muzâri fiilin mansup gelmesiyle uyumlu olan bir edat arıyoruz.
+Şimdi şıklara bakalım:
+A) لَمَّا — henüz ...medi
+Muzâri fiili cezm eder. Ayrıca anlam bakımından uygun değildir. Olmaz.
+B) لَمْ — ...medi
+Cezm eder ve geçmiş zaman olumsuzluğu bildirir. Olmaz.
+C) لَا
+Burada beklenen sonuç ilişkisini kurmaz ve fiili bu şekilde nasb etmez. Olmaz.
+D) إِذَنْ — o hâlde / öyleyse
+Önceki söze cevap olarak bir sonuç bildirir.
+إِذَنْ تَنْجَحَ
+“Öyleyse başarılı olacaksın.” anlamını verir ve burada muzâri fiili nasb eder. Olabilir.
+E) كَيْ — ...mek için
+Amaç bildirir. Burada amaç değil, önceki söze verilen bir sonuç cevabı vardır. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, إِذَنْ olur.
+9. Soru
+لَا ---- وَقْتَكَ فِيمَا لَا يَنْفَعُ.
+Türkçesi: Zamanını faydasız şeylerde --------.
+Cümlenin başında لَا bulunuyor.
+Cümlede bir kişiye doğrudan:
+“Zamanını faydasız şeylerde harcama.”
+şeklinde yasaklama anlamı veriliyor.
+Dolayısıyla burada لَا النَّاهِيَةُ kullanımına bakacağız.
+لَا النَّاهِيَةُ, ardından gelen muzâri fiili cezm eder.
+Ayrıca hitap edilen kişi tekil “sen”dir. Dolayısıyla ikinci tekil şahıs muzâri fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) تُضَيِّعُ — boşa harcıyorsun
+İkinci tekil şahıstır; ancak merfudur. Olmaz.
+B) تُضَيِّعَ
+Mansuptur. Burada nasb değil cezm gerekir. Olmaz.
+C) تُضَيِّعْ — boşa harcama
+İkinci tekil şahıs muzâridir ve sükûnla meczumdur.
+لَا تُضَيِّعْ
+yasaklama yapısını doğru oluşturur. Olabilir.
+D) ضَيَّعَ — boşa harcadı
+Mâzî fiildir. Olmaz.
+E) يُضَيِّعُونَ — boşa harcıyorlar
+Üçüncü şahıs müzekker çoğuldur. Hitap edilen tekil kişiye uymaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, تُضَيِّعْ olur.
+10. Soru
+يَسْتَمِعُ الطَّالِبُ إِلَى الدَّرْسِ لِـ ---- الدَّرْسَ جَيِّدًا.
+Türkçesi: Öğrenci dersi iyi ------ için dinliyor.
+İlk bölüm:
+يَسْتَمِعُ الطَّالِبُ إِلَى الدَّرْسِ
+şeklindedir.
+Burada يَسْتَمِعُ fiili önce, الطَّالِبُ ise ardından gelmiştir.
+Dolayısıyla الطَّالِبُ açık faildir.
+Fail müzekker tekildir.
+Boşluğun öncesindeki لِـ ise yapılan eylemin amacını açıklıyor.
+Bu yapıdan sonra gelecek muzâri fiilin mansup olması gerekir.
+Ayrıca eylemi gerçekleştiren kişi aynı öğrenci olduğu için fiilin müzekker tekil biçimi gerekir.
+Şimdi şıklara bakalım:
+A) يَفْهَمُ — anlıyor
+Müzekker tekildir ancak merfudur. Olmaz.
+B) يَفْهَمَ — anlamak
+Müzekker tekil muzâridir ve fetha ile mansuptur.
+لِيَفْهَمَ الدَّرْسَ جَيِّدًا
+“Dersi iyi anlamak için” yapısı uygundur. Olabilir.
+C) يَفْهَمْ
+Meczumdur. Olmaz.
+D) فَهِمَ — anladı
+Mâzî fiildir. Olmaz.
+E) يَفْهَمُونَ — anlıyorlar
+Çoğuldur. Eylemi yapan kişi الطَّالِبُ tekildir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَفْهَمَ olur.
+11. Soru
+لَنْ ---- الطُّلَّابُ فِي الصَّفِّ الْيَوْمَ.
+Türkçesi: Öğrenciler bugün sınıfta ---------.
+İlk olarak لَنْ edatını görüyoruz. لَنْ, ardından gelen muzâri fiili nasb eder.
+Boşluktan sonra الطُّلَّابُ geliyor.
+Burada yapı:
+fiil + açık fail
+şeklindedir.
+Dolayısıyla الطُّلَّابُ, cümlenin açık failidir.
+Fail müzekker çoğul olmasına rağmen fiil failden önce geldiği için fiilde sayı uyumu aranmaz. Fiil tekil gelir.
+Burada yalnızca cinsiyet uyumuna bakarız.
+Fail müzekker olduğu için fiilin müzekker tekil olması gerekir.
+Ayrıca لَنْ sebebiyle fiilin mansup olması gerekir.
+Şimdi şıklara bakalım:
+A) يَجْلِسُونَ — oturuyorlar
+Müzekker çoğuldur. Oysa fiilden sonra açık çoğul fail geldiği için fiilin tekil olması gerekir. Ayrıca merfudur. Olmaz.
+B) يَجْلِسُوا
+Müzekker çoğuldur ve nasb biçimindedir. Ancak açık fail الطُّلَّابُ fiilden sonra geldiği için fiilin çoğul değil tekil olması gerekir. Olmaz.
+C) يَجْلِسَ — oturur
+Müzekker tekildir. Açık fail الطُّلَّابُ müzekker olduğu için cinsiyet uyumu vardır.
+Ayrıca لَنْ sebebiyle fetha ile mansuptur. Olabilir.
+D) يَجْلِسْنَ — onlar kadınlar otururlar
+Müennes çoğuldur. Fail الطُّلَّابُ müzekkerdir. Cinsiyet bakımından uymaz. Olmaz.
+E) جَلَسُوا — oturdular
+Mâzî fiildir. لَنْ sonrasında muzâri fiil gerekir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَجْلِسَ olur.
+12. Soru
+لَنْ ---- الطَّالِبَاتُ فِي الْمَدْرَسَةِ بَعْدَ الظُّهْرِ.
+Türkçesi: Kız öğrenciler öğleden sonra okulda ---------.
+İlk olarak لَنْ edatına bakıyoruz. لَنْ, muzâri fiili nasb eder.
+Boşluktan sonra الطَّالِبَاتُ geliyor.
+Burada yapı:
+fiil + açık fail
+şeklindedir.
+Dolayısıyla الطَّالِبَاتُ, açık faildir.
+Fail müennes çoğuldur.
+Ancak fiil açık failden önce geldiği için sayı bakımından uyum aranmaz. Fiil tekil gelir.
+Yalnızca cinsiyet uyumu aranır.
+Fail müennes olduğu için fiilin müennes tekil olması gerekir.
+Ayrıca لَنْ sebebiyle fiil mansup olmalıdır.
+Şimdi şıklara bakalım:
+A) تَجْلِسَ — oturur
+Müennes tekil muzâridir. Fail الطَّالِبَاتُ müennes olduğu için cinsiyet bakımından uyumludur.
+Fiil açık failden önce geldiği için tekil olması da doğrudur.
+Ayrıca fetha ile mansuptur. Olabilir.
+B) يَجْلِسْنَ — onlar kadınlar otururlar
+Müennes çoğul fiildir.
+Burada sorun fiilin müennes olması değildir; fiilin çoğul olmasıdır. Çünkü açık fail الطَّالِبَاتُ fiilden sonra geliyor ve bu durumda fiil tekil kullanılmalıdır. Olmaz.
+C) تَجْلِسُونَ — siz oturuyorsunuz
+İkinci şahıs müzekker çoğuldur. Yapıya uymaz. Olmaz.
+D) يَجْلِسُونَ — onlar oturuyorlar
+Müzekker çoğuldur. Hem cinsiyet hem de sayı bakımından uygun değildir. Olmaz.
+E) جَلَسْنَ — onlar kadınlar oturdular
+Mâzî fiildir. لَنْ sonrasında muzâri fiil gerekir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, تَجْلِسَ olur.
+13. Soru
+---- أُهْمِلْ دُرُوسِي.
+Türkçesi: Derslerimi ihmal etmedim.
+İlk olarak أُهْمِلْ fiiline bakıyoruz.
+Bu birinci tekil şahıs muzâri fiilidir. Fiilin sonu sükûnludur; yani fiil meczumdur.
+Cümlede aynı zamanda geçmişe yönelik bir olumsuzluk anlamı vardır.
+Dolayısıyla hem geçmiş zaman olumsuzluğu sağlayan hem de muzâri fiili cezm eden bir edat arıyoruz.
+Şimdi şıklara bakalım:
+A) لَمْ — ...medim
+Muzâri fiili cezm eder ve geçmiş zaman olumsuzluğu bildirir.
+لَمْ أُهْمِلْ دُرُوسِي
+“Derslerimi ihmal etmedim.” yapısı doğrudur. Olabilir.
+B) لَا
+Haber cümlesindeki normal olumsuzluk kullanımında fiil merfu olurdu: لَا أُهْمِلُ. Buradaki sükûnlu biçime uymaz. Olmaz.
+C) لَنْ
+Muzâri fiili nasb eder. Fiilin أُهْمِلَ olması gerekirdi. Olmaz.
+D) كَيْ
+Muzâri fiili nasb eder ve amaç bildirir. Olmaz.
+E) حَتَّى
+Buradaki anlam ve i‘rab yapısına uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, لَمْ olur.
+14. Soru
+نَذْهَبُ إِلَى الدَّوْرَةِ لِـ ---- اللُّغَةَ.
+Türkçesi: Dili öğrenmek için kursa gidiyoruz.
+İlk olarak نَذْهَبُ fiiline bakıyoruz.
+Fiilin başındaki نـ harfinden eylemi yapanların “biz” olduğunu anlıyoruz.
+Boşluğun öncesinde لِـ bulunuyor. Bu yapı yapılan işin amacını bildiriyor.
+Dolayısıyla boşluğa gelecek fiilin:
+birinci çoğul şahsa uygun olması,
+amaç bildiren لِـ sonrasında mansup olması
+gerekir.
+Şimdi şıklara bakalım:
+A) نَتَعَلَّمُ — öğreniyoruz
+Birinci çoğul şahıstır; ancak merfudur. Olmaz.
+B) نَتَعَلَّمَ — öğrenmek
+Birinci çoğul şahıstır ve fetha ile mansuptur.
+لِنَتَعَلَّمَ اللُّغَةَ
+“Dili öğrenmek için” yapısı uygundur. Olabilir.
+C) تَتَعَلَّمُ — öğreniyorsun
+Şahıs bakımından uymaz. Olmaz.
+D) تَعَلَّمْنَا — öğrendik
+Birinci çoğul şahıs olsa da mâzî fiildir. Olmaz.
+E) يَتَعَلَّمُونَ — öğreniyorlar
+Üçüncü şahıs müzekker çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, نَتَعَلَّمَ olur.
+15. Soru
+لَمَّا ---- الطَّالِبُ الدَّرْسَ حَتَّى الْآنَ.
+Türkçesi: Öğrenci dersi şimdiye kadar henüz anlamadı.
+İlk olarak لَمَّا edatına bakıyoruz.
+لَمَّا, geçmişten şu ana kadar gerçekleşmemiş bir eylemi ifade eder ve ardından gelen muzâri fiili cezm eder.
+Cümlenin sonunda bulunan:
+حَتَّى الْآنَ
+“şimdiye kadar” ifadesi de bu anlamı destekliyor.
+Boşluktan sonra الطَّالِبُ geliyor.
+Burada yapı:
+fiil + açık fail
+şeklindedir.
+Dolayısıyla الطَّالِبُ, açık faildir.
+Fail müzekker olduğu için fiilin de müzekker olması gerekir. Ayrıca لَمَّا sebebiyle fiil meczum olmalıdır.
+Şimdi şıklara bakalım:
+A) يَفْهَمُ — anlıyor
+Müzekker muzâridir ancak merfudur. Olmaz.
+B) يَفْهَمَ
+Mansuptur. Burada cezm gerekir. Olmaz.
+C) يَفْهَمْ — anlar
+Müzekker tekil muzâridir ve sükûnla meczumdur.
+لَمَّا يَفْهَمْ
+yapısına uygundur. Olabilir.
+D) فَهِمَ — anladı
+Mâzî fiildir. لَمَّا sonrasında burada muzâri fiil gerekir. Olmaz.
+E) يَفْهَمُونَ — anlıyorlar
+Çoğul fiildir. Burada açık fail الطَّالِبُ zaten tekildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَفْهَمْ olur.
+16. Soru
+ذَهَبْتُ إِلَى الْمَتْجَرِ كَيْ ---- طَعَامًا.
+Türkçesi: Yiyecek almak için mağazaya gittim.
+İlk olarak ذَهَبْتُ fiiline bakıyoruz.
+Buradaki ـتُ eki, eylemi yapan kişinin “ben” olduğunu gösteriyor.
+Boşluğun öncesinde كَيْ bulunuyor.
+كَيْ amaç bildirir ve ardından gelen muzâri fiili nasb eder.
+Dolayısıyla boşluğa gelecek fiilin:
+birinci tekil şahıs olması,
+كَيْ sebebiyle mansup olması
+gerekir.
+Şimdi şıklara bakalım:
+A) أَشْتَرِيَ — satın almak / satın alayım
+Birinci tekil şahıs muzâri fiilidir ve nasb durumundadır.
+كَيْ أَشْتَرِيَ طَعَامًا
+“Yiyecek almak için” yapısı uygundur. Olabilir.
+B) يَشْتَرِي — satın alıyor
+Üçüncü şahıs müzekkerdir. Olmaz.
+C) اِشْتَرَيْتَ — sen satın aldın
+İkinci tekil şahıs mâzî fiildir. Olmaz.
+D) اِشْتَرَيْتُ — satın aldım
+Birinci tekil şahıstır ancak mâzî fiildir. Olmaz.
+E) يَشْتَرُونَ — satın alıyorlar
+Üçüncü şahıs çoğuldur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, أَشْتَرِيَ olur.
+17. Soru
+بَعْدَ أَنْ غَضِبَ الْمُعَلِّمُ، لَنْ ---- الطُّلَّابُ عَنِ الْمَدْرَسَةِ بَعْدَ ذَلِكَ.
+Türkçesi: Öğretmen kızdıktan sonra öğrenciler bundan sonra okula geç kalmayacaklar.
+İlk olarak boşluğun öncesindeki لَنْ edatına bakıyoruz.
+لَنْ, ardından gelen muzâri fiili nasb eder.
+Boşluktan sonra الطُّلَّابُ geliyor.
+Burada yapı:
+fiil + açık fail
+şeklindedir.
+Dolayısıyla الطُّلَّابُ açık faildir.
+Fail müzekker çoğuldur.
+Ancak fiil failden önce geldiği için sayı bakımından uyum aranmaz. Fiil tekil gelir.
+Yalnızca cinsiyet uyumuna bakılır.
+Fail müzekker olduğu için fiilin müzekker tekil olması gerekir.
+Ayrıca لَنْ sebebiyle fiil mansup olmalıdır.
+Şimdi şıklara bakalım:
+A) يَتَأَخَّرُونَ — geç kalıyorlar
+Müzekker çoğuldur ve merfudur. Açık fail fiilden sonra geldiği için fiilin tekil olması gerekir. Olmaz.
+B) يَتَأَخَّرُوا
+Müzekker çoğuldur ve nasb biçimindedir. Ancak açık fail الطُّلَّابُ fiilden sonra geldiği için fiilin çoğul değil tekil olması gerekir. Olmaz.
+C) يَتَأَخَّرْ
+Müzekker tekildir; ancak meczumdur. لَنْ sonrasında mansup olması gerekir. Olmaz.
+D) تَأَخَّرُوا — geç kaldılar
+Mâzî fiildir. لَنْ muzâri fiille kullanılır. Olmaz.
+E) يَتَأَخَّرَ — geç kalır
+Müzekker tekildir. Açık fail الطُّلَّابُ müzekker olduğu için cinsiyet uyumu vardır.
+Ayrıca لَنْ sebebiyle fetha ile mansuptur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, يَتَأَخَّرَ olur.
+18. Soru
+لَمْ ---- نَحْنُ إِلَى الْمَلْعَبِ بَعْدُ.
+Türkçesi: Biz henüz sahaya gitmedik.
+İlk olarak لَمْ edatına bakıyoruz.
+لَمْ, ardından gelen muzâri fiili cezm eder.
+Boşluktan sonra نَحْنُ zamiri bulunuyor. Burada fiilin yapacağı eylemin şahsının “biz”, yani birinci çoğul olması gerekir.
+Cümlenin sonundaki بَعْدُ ifadesi de burada “henüz” anlamını destekliyor.
+Dolayısıyla birinci çoğul şahısta ve meczum bir muzâri fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) نَذْهَبُ — gidiyoruz
+Birinci çoğul şahıstır ancak merfudur. Olmaz.
+B) نَذْهَبَ
+Birinci çoğul şahıstır ancak mansuptur. Olmaz.
+C) ذَهَبْنَا — gittik
+Birinci çoğul şahıs olsa da mâzî fiildir. Olmaz.
+D) نَذْهَبْ — gideriz
+Birinci çoğul şahıs muzâridir ve sükûnla meczumdur.
+لَمْ نَذْهَبْ
+yapısı doğrudur. Olabilir.
+E) يَذْهَبُونَ — gidiyorlar
+Üçüncü şahıs müzekker çoğuldur. نَحْنُ ile şahıs bakımından uymaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, نَذْهَبْ olur.

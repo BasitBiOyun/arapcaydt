@@ -1,0 +1,266 @@
+İSİM CÜMLESİ DEĞERLENDİRME SORU ANALİZLERİ
+1. soru
+اَلْمُعَلِّمَةُ ----.
+“Öğretmen hanım ----.”
+Cümle اَلْمُعَلِّمَةُ kelimesiyle başladığı için bir isim cümlesidir.
+اَلْمُعَلِّمَةُ kelimesi cümlenin mübtedasıdır ve şu özelliklere sahiptir:
+Müennes
+Tekil
+Marife
+Merfû
+Boşluğa mübtedayı tamamlayan bir haber gelmelidir. Bu haber:
+Tek bir sıfat olabilir.
+Bir fiil cümlesi olabilir.
+Bir isim cümlesi olabilir.
+Ancak boşluğa getirilecek yapıda öğretmene dönen sıfat, fiil veya zamirin müennes tekil olması gerekir.
+Şimdi şıklara bakalım:
+A) مُخْلِصٌ — “Samimidir / özverilidir.”
+مُخْلِصٌ müzekker tekil bir sıfattır. Doğru kullanım مُخْلِصَةٌ olmalıydı. Bu nedenle uygun değildir.
+B) صَوْتُهُنَّ جَمِيلٌ — “Onların sesi güzeldir.”
+هُنَّ zamiri müennes çoğula dönmektedir. Cümlede ise müennes tekil olan اَلْمُعَلِّمَةُ bulunmaktadır. 
+Bu nedenle uygun değildir.
+C) تَشْرَحُ الدَّرْسَ — “Dersi açıklıyor/anlatıyor.”
+تَشْرَحُ fiili müennes tekil çekimindedir ve اَلْمُعَلِّمَةُ kelimesiyle uyumludur. Burada تَشْرَحُ الدَّرْسَ fiil cümlesi, mübtedanın haberi konumundadır:
+اَلْمُعَلِّمَةُ تَشْرَحُ الدَّرْسَ.
+“Öğretmen hanım dersi anlatıyor.”
+Bu seçenek hem dil bilgisi hem de anlam bakımından uygundur.
+D) صَوْتُهُ جَمِيلٌ — “Onun sesi güzeldir.”
+ـهُ zamiri müzekker tekil bir kişiye dönmektedir. 
+Bu nedenle uygun değildir.
+E) مُخْلِصُونَ — “Samimidirler / özverilidirler.”
+مُخْلِصُونَ müzekker çoğul ve merfû bir sıfattır. اَلْمُعَلِّمَةُ ise müennes tekildir. Bu nedenle uygun değildir.
+Doğru cevap: C) تَشْرَحُ الدَّرْسَ
+2. soru
+اَلطَّالِبانِ ---- فِي الدِّراسَةِ، فَلِذَلِكَ يَحْصُلانِ عَلَى دَرَجاتٍ عالِيَةٍ.
+“İki öğrenci derslerinde ----; bundan dolayı yüksek notlar alıyorlar.”
+Cümle اَلطَّالِبانِ kelimesiyle başladığı için bir isim cümlesidir. اَلطَّالِبانِ kelimesi mübtedadır ve şu özelliklere sahiptir:
+Müzekker
+İkil
+Marife
+Merfû
+Boşluğa gelecek haberin de müzekker ikil ve merfû olması gerekir. Müzekker ikil kelimelerin merfûluk alameti eliftir:
+ـانِ
+Devamındaki يَحْصُلانِ fiili de müzekker ikil çekimindedir ve اَلطَّالِبانِ kelimesiyle uyumludur.
+Şimdi şıklara bakalım:
+A) مُجْتَهِدٌ وَمُنَظَّمٌ — “Çalışkan ve düzenlidir.”
+Her iki kelime de müzekker tekildir. Mübtedamız ikil olduğu için uygun değildir.
+B) مُجْتَهِدانِ وَمُنَظَّمانِ — “Çalışkan ve düzenlidirler.”
+Her iki kelime de müzekker ikil ve merfûdur. Mübtedayla cinsiyet, sayı ve i‘rab bakımından tam uyumludur:
+C) مُجْتَهِدَتانِ وَمُنَظَّمَتانِ — “İki kız öğrenci çalışkan ve düzenlidir.”
+Kelimeler müennes ikildir. Mübtedamız ise müzekker olan اَلطَّالِبانِ kelimesidir. Cinsiyet uyumu bulunmadığı için uygun değildir.
+D) مُجْتَهِدَتَيْنِ وَمُنَظَّمَتَيْنِ
+Kelimeler hem müennes ikil hem de mansûb veya mecrûr durumdadır. Mübtedanın haberi merfû olması gerektiğinden uygun değildir.
+E) مُجْتَهِدَيْنِ وَمُنَظَّمَيْنِ
+Kelimeler müzekker ikil olsa da ـَيْنِ ekiyle mansûb veya mecrûr durumdadır. Haber burada merfû olmalı Bu nedenle uygun değildir.
+Doğru cevap: B) مُجْتَهِدانِ وَمُنَظَّمان
+3. soru
+---- مُديرُها.
+“---- onun müdürüdür.” veya cümlenin kuruluşuna göre “Onun müdürü ----dır.”
+مُديرُها ifadesi iki bölümden oluşur:
+مُديرُ: Müdür
+ـها: Onun; müennes tekil bir isme dönen bitişik zamir
+Şimdi şıklara bakalım:
+A) فِي الْمَدْرَسَةِ — “Okuldadır / okulda”
+Bu seçenek getirildiğinde:
+فِي الْمَدْرَسَةِ مُديرُها.
+“Onun müdürü okuldadır.”
+Burada فِي الْمَدْرَسَةِ öne geçmiş haber, مُديرُها ise sona bırakılmış mübtedadır. Cümle dil bilgisi bakımından mümkündür.
+B) اَلْمُدَرِّسُ الْجَديدُ — “Yeni öğretmen”
+Bu seçenek getirildiğinde:
+اَلْمُدَرِّسُ الْجَديدُ مُديرُها.
+“Yeni öğretmen onun müdürüdür.”
+Dönen zamir uygun olmadığı için olamaz. 
+C) يَكْتُبُ الطَّالِبُ — “Öğrenci yazıyor.”
+يَكْتُبُ الطَّالِبُ مُديرُها biçiminde anlamsal ve söz dizimsel bakımdan düzgün bir cümle oluşmaz. Uygun değildir.
+D) أَمامَ الْبَيْتِ — “Evin önündedir / evin önünde”
+Bu seçenek getirildiğinde:
+أَمامَ الْبَيْتِ مُديرُها.
+“Onun müdürü evin önündedir.”
+Dönen zamir uygun olmadığı için olamaz. .
+E) مُهَذَّبٌ — “Terbiyeli / naziktir.”
+مُهَذَّبٌ مُديرُها dizilişi, bağlamdan bağımsız olarak doğal ve açık bir isim cümlesi meydana getirmemektedir.
+Bu nedenle uygun değildir.
+Editör değerlendirmesi: Bu sorunun tek bir doğru cevabı yoktur. A, B ve D seçenekleri dil bilgisi bakımından doğru cümle oluşturabilmektedir. Bu hâliyle ölçme bakımından hatalıdır.
+4. soru
+اَلطِّفْلُ الصَّغيرُ ----.
+“Küçük çocuk ----.”
+Cümle اَلطِّفْلُ الصَّغيرُ tamlamasıyla başladığı için bir isim cümlesidir:
+اَلطِّفْلُ: Mübtedadır.
+الصَّغيرُ: Mübtedanın sıfatıdır.
+Her ikisi de müzekker, tekil, marife ve merfûdur. Boşluğa bu mübtedayı tamamlayan bir haber gelmelidir. Haber bir fiil cümlesi olarak da gelebilir. Bu durumda fiilin müzekker tekil olması gerekir.
+Şimdi şıklara bakalım:
+A) عِنْدَها خِبْرَةٌ — “Onun tecrübesi vardır.”
+ـها zamiri müennes tekile dönmektedir. Cümlenin mübtedası ise müzekker tekil olan اَلطِّفْلُ kelimesidir. Çocuğa dönmesi istenseydi عِنْدَهُ خِبْرَةٌ denilmeliydi. Uygun değildir.
+B) يَلْعَبُ بِالْكُرَةِ — “Topla oynuyor.”
+يَلْعَبُ fiili müzekker tekil çekimindedir ve اَلطِّفْلُ kelimesiyle uyumludur. Fiil cümlesi, mübtedanın haberi konumundadır:
+اَلطِّفْلُ الصَّغيرُ يَلْعَبُ بِالْكُرَةِ.
+Bu seçenek olabilir.
+C) أُمُّهَا مُعَلِّمَةٌ — “Onun annesi öğretmendir.”
+ـها zamiri müennes tekile dönmektedir. Çocuğa dönmesi için أُمُّهُ kullanılması gerekirdi. Bu nedenle uygun değildir.
+D) عِنْدَ جَدَّتِهِمْ — “Onların büyükannesinin yanındadır.”
+ـهم zamiri müzekker çoğula dönmektedir. Cümlede zamirin dönebileceği çoğul bir isim bulunmamaktadır.
+. Bu nedenle verilen cümle bağlamında uygun değildir.
+E) جَميلَةٌ — “Güzeldir.”
+جَميلَةٌ müennes tekildir. Mübtedamız müzekker tekil olduğu için doğru biçim جَميلٌ olmalıydı. Uygun değildir.
+Doğru cevap: B) يَلْعَبُ بِالْكُرَةِ
+5. soru
+اَلطَّالِبَةُ الْمُجْتَهِدَةُ ----.
+“Çalışkan kız öğrenci ----.”
+Cümle اَلطَّالِبَةُ الْمُجْتَهِدَةُ yapısıyla başladığı için isim cümlesidir:
+اَلطَّالِبَةُ: Mübtedadır.
+الْمُجْتَهِدَةُ: Mübtedanın sıfatıdır.
+Mübteda müennes ve tekildir. Boşluğa gelecek haberin veya mübtedaya dönen zamirin de müennes tekil olması gerekir.
+Şimdi şıklara bakalım:
+A) نَشيطٌ فِي عَمَلِهِ — “İşinde aktiftir.”
+نَشيطٌ müzekker tekildir. Ayrıca عَمَلِهِ kelimesindeki ـهِ zamiri de müzekker tekile dönmektedir. Mübtedamız müennes olduğu için uygun değildir. 
+B) يُنَظِّمُ وَقْتَهُ جَيِّدًا — “Vaktini iyi düzenler.”
+Hem يُنَظِّمُ fiili hem de وَقْتَهُ kelimesindeki zamir müzekker tekile uygundur. dolayısıyla
+Boşluk için Uygun değildir.
+C) أُخْتُهُنَّ طَبيبَةٌ — “Onların kız kardeşi doktordur.”
+ـهُنَّ zamiri müennes çoğula dönmektedir. Cümlede ise müennes tekil bir mübteda vardır. Uygun değildir.
+D) فِي بَيْتِهِ — “Onun evindedir.”
+بَيْتِهِ kelimesindeki ـهِ zamiri müzekker tekile dönmektedir. Kız öğrenciye dönmesi için فِي بَيْتِها denilmeliydi. Uygun değildir.
+E) نَشيطَةٌ فِي دُروسِها — “Derslerinde aktiftir.”
+نَشيطَةٌ müennes tekil ve merfûdur. دُروسِها kelimesindeki ـها zamiri de müennes tekil olan اَلطَّالِبَةُ kelimesine dönmektedir. Cinsiyet, sayı, i‘rab ve zamir uyumu tamdır.
+Doğru cevap: E) نَشيطَةٌ فِي دُروسِها
+6. soru
+فِي الْمَدْرَسَةِ ---- يَسْأَلونَ الْمُعَلِّمَ عَمّا لَمْ يَفْهَموهُ.
+“Okulda ---- anlamadıkları şeyleri öğretmene soruyorlar.”
+Cümlenin başındaki فِي الْمَدْرَسَةِ ifadesi bir harf-i cer ve mecrur haberden oluşmaktadır. Ardından boşluk ve يَسْأَلونَ gelmiş fiili gelmiştir.
+يَسْأَلونَ müzekker çoğul çekimindedir. Dolayısıyla boşluğa bu fiil ile uyumlu haber olarak gelecek müzekker çoğul bir mübteda getirilmelidir ve nekra olmalıdır.
+Şimdi şıklara bakalım:
+A) الطَّالِباتُ — “Kız öğrenciler”
+الطَّالِباتُ müennes çoğuldur ve marifedir. 
+Bu nedenle uygun değildir.
+B) مُجْتَهِدينَ — “Çalışkanlar / çalışkan olarak”
+Kelime ـينَ ekiyle mansûb veya mecrûr durumdadır. Burada merfû bir isim beklendiğinden uygun değildir. 
+C) طُلَّابٌ — “Öğrenciler”
+طُلَّابٌ müzekker çoğul ve merfûdur. Ardından gelen يَسْأَلونَ fiili de müzekker çoğuldur:
+فِي الْمَدْرَسَةِ طُلَّابٌ يَسْأَلونَ الْمُعَلِّمَ عَمّا لَمْ يَفْهَموهُ.
+“Okulda anlamadıkları şeyleri öğretmene soran öğrenciler vardır.”
+Dil bilgisi ve anlam bakımından uygundur.
+D) تَجْلِسونَ — “Siz oturuyorsunuz.”
+Fiil muhatap müzekker çoğul çekimindedir. Boşluğa nekra bir isim gelmeli dolayısıyla olmaz.
+E) الْحَديقَةِ — “Bahçenin/bahçeyi”
+Kelime mecrûr biçimdedir ve anlam olarak da olamaz. Uygun değildir.
+Doğru cevap: C) طُلَّابٌ
+7. soru
+هٰذَا الْكِتابُ ----، لِأَنَّهُ يَجْمَعُ بَيْنَ سُهولَةِ اللُّغَةِ وَفائِدَةِ الْمَعْلومَةِ.
+“Bu kitap ----; çünkü dilin kolaylığı ile bilginin yararlılığını bir araya getiriyor.”
+هٰذَا isim cümlesinin mübtedasıdır. Mübteda müzekker ve tekildir. Boşluğa müzekker tekil bir haber veya mübtedayı açıklayan uygun bir cümle gelmelidir.
+Devamındaki لِأَنَّهُ ifadesinde bulunan ـهُ zamiri de müzekker tekil olan الْكِتابُ kelimesine dönmektedir.
+Şimdi şıklara bakalım:
+A) مُفيدَةٌ لِلْأُمَّهاتِ — “Anneler için yararlıdır.”
+مُفيدٌ müennes tekil ve merfûdur. الْكِتابُ kelimesiyle uyumsuzdur olamaz.
+B) مُفيدَةٌ وَمُمْتِعَةٌ — “Yararlı ve eğlencelidir.”
+Her iki isim de müennes tekildir. الْكِتابُ ise müzekkerdir. Doğru biçim مُفيدٌ وَمُمْتِعٌ olmalıydı. Uygun değildir.
+C) يَقْرَأُها الطَّالِبُ — “Öğrenci onu okur.”
+يَقْرَأُها kelimesindeki ـها zamiri müennes tekile dönmektedir. Kitap kelimesi müzekker olduğu için Uygun değildir.
+D) مُفيدٌ وَمُمْتِعٌ — “Yararlı ve eğlencelidir.”
+Her iki isim de müzekker tekil ve merfûdur. الْكِتابُ kelimesiyle tam olarak uyumludur. Devamındaki gerekçe de bu yargıyı anlam bakımından desteklemektedir.
+E) مُؤَلِّفُكُمْ مُشْتَهِرٌ — “Yazarınız ünlüdür.”
+Bu ifade kendi içinde isim cümlesidir; ancak هٰذَا الْكِتابُ mübtedasına haber olabilmesi için onu kitaba bağlayan bir zamirin bulunması gerekir. Uygun değildir.
+cevap: D) مُفيدٌ وَمُمْتِعٌ
+
+
+
+8. soru 
+اَلْبِنْتُ ---- فِي أَعْمالِ الْبَيْتِ، ثُمَّ تُكْمِلُ واجِباتِها الْمَدْرَسِيَّةَ.
+“Kız, ev işlerinde ----; ardından okul ödevlerini tamamlıyor.”
+Cümlenin mübtedası اَلْبِنْتُ kelimesidir. Müennes ve tekildir. Devamındaki تُكْمِلُ fiili de müennes tekil çekimindedir. Boşluğa gelecek fiilin veya haberin bu yapıyla uyumlu olması gerekir.
+Şimdi şıklara bakalım:
+A) مُتَعاوِنًا — “Yardımlaşan/iş birliği yapan olarak”
+Kelime müzekker tekil ve mansûbdur. Uygun değildir.
+B) تُساعِدُ أُمَّها — “Annesine yardım eder.”
+تُساعِدُ fiili müennes tekildir ve اَلْبِنْتُ kelimesiyle uyumludur. أُمَّها kelimesindeki ـها zamiri de kıza dönmektedir:
+اَلْبِنْتُ تُساعِدُ أُمَّها فِي أَعْمالِ الْبَيْتِ، ثُمَّ تُكْمِلُ واجِباتِها الْمَدْرَسِيَّةَ.
+“Kız, ev işlerinde annesine yardım eder; ardından okul ödevlerini tamamlar.”
+Bu seçenek uygundur.
+C) عِنْدَ جَدَّتِهِ — “Onun büyükannesinin yanındadır.”
+جَدَّتِهِ kelimesindeki ـهِ zamiri müzekker tekile dönmektedir. Kıza dönmesi için جَدَّتِها denilmeliydi. Uygun değildir.
+D) أَخُوها مُسافِرٌ — “Erkek kardeşi yolcudur/yolculuktadır.”
+Bu ifade kendi içinde doğru bir isim cümlesidir; ancak boşluktan sonra gelen فِي أَعْمالِ الْبَيْتِ ifadesiyle anlamlı bir bağlantı kurmaz. “Erkek kardeşi ev işlerinde yolcudur” gibi anlamsız bir yapı ortaya çıkar. Uygun değildir.
+E) مُتَعاوِنٌ — “Yardımseverdir / iş birliğine açıktır.”
+Kelime müzekker tekildir. Mübtedamız müennes olduğu için Uygun değildir.
+Doğru cevap: B) تُساعِدُ أُمَّها
+9. soru
+عَلَى الرَّفِّ ---- قَديمٌ أَخَذْتُهُ مِنْ مَكْتَبَةِ أَبي.
+Cümle haber-i mukaddem + mübteda-i muahhar düzenindedir
+عَلَى الرَّفِّ: Şibh-i cümle şeklinde haber-i mukaddem
+Boşluğa merfû ve müzekker bir isim gelmelidir.
+Şimdi şıklara bakalım:
+A) الْمَدْرَسَةُ: Anlam ve قَديمٌ ile cinsiyet bakımından uyumsuzdur.
+B) كِتابٌ: Merfû, müzekker ve anlamca uygundur.
+C) مُفيدٌ: Ardından gelen قَديمٌ ile doğal ve tamamlanmış bir isim yapısı oluşturmaz.
+D) يَقْرَأُ: Mübteda olması gereken yere fiil getirilemez.
+E) فِي الْغُرْفَةِ: İkinci bir şibh-i cümle olur; mübteda eksik kalır.
+Doğru cevap: B) كِتابٌ
+
+
+
+10. soru
+الْمُديرُ ----.
+Cümle normal bir isim cümlesidir:
+الْمُديرُ: Mübteda; müfred, müzekker ve merfûdur.
+Boşluğa mübteda ile sayı ve cinsiyet bakımından uyumlu bir haber gelmelidir.
+Şimdi şıklara bakalım:
+A) تَسْتَقْبِلُ الزُّوارَ: Fiil müennes tekildir; الْمُديرُ ile uyumsuzdur.
+B) مُنَظَّمٌ فِي عَمَلِهِ: Müzekker, müfred ve merfûdur; haber olmaya uygundur.
+C) فِي غُرْفَتِهِمْ: “Onların odasında” demektir; zamir الْمُديرُ ile uyumsuzdur.
+D) نَشيطانِ: Tesniyedir; müfred mübteda ile uyumsuzdur.
+E) يُسافِرونَ: Çoğul fiildir; müfred mübteda ile uyumsuzdur.
+Doğru cevap: B) مُنَظَّمٌ فِي عَمَلِهِ
+11. soru
+الطّالِبُ ---- وَ---- فِي تَعامُلِهِ مَعَ زُمَلائِهِ.
+الطّالِبُ: Mübteda; müfred, müzekker ve merfûdur.
+İki boşluğa da mübteda ile uyumlu, birbirine وَ ile bağlanan iki haber gelmelidir.
+Şimdi şıklara bakalım:
+A) فِي الْفَصْلِ / الْمُعَلِّمِ: İkinci unsur tek başına haber oluşturmaz.
+B) مُهَذَّبَةٌ / صادِقَةٌ: Müennes sıfatlardır; الطّالِبُ ile uyumsuzdur.
+C) يَلْعَبُ / تَكْتُبُ: İkinci fiil müennes olduğu için uyumsuzdur.
+D) مُهَذَّبٌ / صادِقٌ: İkisi de müfred, müzekker ve merfûdur.
+E) أَبوها مُعَلِّمٌ / أُخْتُها: Yapı ve zamirler cümleyle uyumsuzdur.
+Doğru cevap: D) مُهَذَّبٌ / صادِقٌ
+12. soru
+فِي الْبَيْتِ ---- تَنْتَظِرُ عَوْدَةَ أَوْلادِها مِنَ الْمَدْرَسَةِ.
+Cümle haber-i mukaddem + mübteda-i muahhar düzenindedir:
+فِي الْبَيْتِ: Haber-i mukaddem
+Boşluğa merfû, müennes ve nekre bir isim gelmelidir.
+تَنْتَظِرُ: Müennes tekil fiildir.
+أَوْلادِها: Buradaki ها zamiri de müennes bir isme dönmektedir.
+Şimdi şıklara bakalım:
+A) اَلْمُعَلِّمُ: Müzekkerdir; تَنْتَظِرُ ve ها ile uyumsuzdur.
+B) أُمٌّ: Müennes, merfû ve anlamca uygundur.
+C) مُسافِرٌ: Müzekkerdir ve anlamca uygun değildir.
+D) الْمَطْبَخِ: Mecrûrdur; mübteda olamaz.
+E) الطَّعامَ: Mansûbdur; mübteda olamaz.
+Doğru cevap: B) أُمٌّ
+
+
+
+13. soru
+فَوْقَ الْمَكْتَبِ ---- أَقْرَؤُهُ فِي وَقْتِ الْفَراغِ.
+Cümle yine haber-i mukaddem + mübteda-i muahhar düzenindedir:
+فَوْقَ الْمَكْتَبِ: Haber-i mukaddem
+Boşluğa merfû bir isim gelmelidir.
+أَقْرَؤُهُ: “Onu okuyorum” anlamındadır. ـهُ zamiri müzekker bir isme dönmelidir.
+Şimdi şıklara bakalım:
+A) دَفْتَرًا: Mansûbdur; mübteda olamaz.
+B) جَمِيلٌ: Sıfattır; burada nitelenen isim bulunmamaktadır.
+C) كِتابٌ: Merfû, müzekker ve anlamca uygundur.
+D) قَلَمٍ: Mecrûrdur; ayrıca kalem okunmaz.
+E) حَقيبَةٍ: Mecrûr ve müennestir; ـهُ zamiriyle de uyumsuzdur.
+Doğru cevap: C) كِتابٌ
+14. soru
+أَمامَ الْمَدْرَسَةِ ---- يَنْتَظِرُ ابْنَهُ بَعْدَ انْتِهاءِ الدَّوامِ.
+Cümle haber-i mukaddem + mübteda-i muahhar düzenindedir:
+أَمامَ الْمَدْرَسَةِ: Haber-i mukaddem
+يَنْتَظِرُ: Müzekker tekil fiildir.
+ابْنَهُ: “Oğlunu” demektir; ـهُ zamiri müzekker bir isme dönmektedir.
+Şimdi şıklara bakalım:
+A) الْأُمُّ: Müennestir; fiilin تَنْتَظِرُ olması gerekirdi.
+B) أَبٌ: Müzekker, merfû ve anlamca uygundur.
+C) طَوِيلٌ: Tek başına kişi bildiren uygun bir mübteda değildir.
+D) اَلسَّيّارَةُ: Müennestir; يَنْتَظِرُ ve ابْنَهُ ile uyumsuzdur.
+E) تَقِفُ: Fiildir; cümlede gerekli olan mübteda eksik kalır.
+Doğru cevap: B) أَبٌ

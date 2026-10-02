@@ -1,0 +1,186 @@
+fiil CÜMLESİ değerlendirme SORU ANALİZLERİ
+1. soru
+---- الطَّالِبُ إِلَى الْمَدْرَسَةِ باكِرًا أَمْسِ لِيَسْتَعِدَّ لِاخْتِبارِهِ.
+Fiilden sonra gelen الطَّالِبُ açık faildir ve müfred-müzekkerdir. Ayrıca أَمْسِ “dün” anlamıyla geçmiş zamanı gösterdiği için boşluğa müfred-müzekker bir mâzi fiil gelmelidir.
+Şimdi şıklara bakalım
+A) يَذْهَبُ: Muzâri fiildir; أَمْسِ ile zaman bakımından uyumsuzdur.
+B) اِذْهَبْ: Emir fiilidir; cümlenin yapısına uygun değildir.
+C) ذَهَبَ: Müfred-müzekker mâzi fiildir; yapı ve zamanla uyumludur.
+D) لا يَذْهَبُ: Olumsuz muzâri fiildir; أَمْسِ ile uyumsuzdur.
+E) ما ذَهَبَتْ: Geçmiş zamanlıdır; ancak fiil müennestir.
+Doğru cevap: C) ذَهَبَ
+2. soru
+---- الْمُعَلِّمَةُ الدَّرْسَ بِوُضوحٍ فِي الْحِصَّةِ الْأُولى.
+Fiilden sonra gelen الْمُعَلِّمَةُ açık faildir ve müfred-müennestir. فِي الْحِصَّةِ الْأُولى ifadesi belirli bir derste gerçekleşmiş bir olayı anlattığı için boşluğa müfred-müennes mâzi fiil gelmelidir.
+Şimdi şıklara bakalım
+A) شَرَحَ: Müzekker mâzi fiildir; müennes faille uyumsuzdur.
+B) شَرَحَتْ: Müfred-müennes mâzi fiildir; yapıya uygundur.
+C) يَشْرَحُ: Müzekker muzâri fiildir.
+D) اِشْرَحْ: Müzekker muhataba yönelik emir fiilidir.
+E) تَشْرَحينَ: Müennes muhataba yönelik muzâri fiildir; ardından gelen isim açık fail olamaz.
+Doğru cevap: B) شَرَحَتْ
+3. soru
+---- الطُّلَّابُ إِلَى الْمُديرِ بِأَدَبٍ بَعْدَ الطَّابورِ.
+الطُّلَّابُ fiilden sonra gelen açık faildir. Fiil, açık çoğul failden önce bulunduğu için tekil gelir; yalnızca cinsiyet bakımından faille uyum sağlar. Bu nedenle müfred-müzekker mâzi fiil kullanılmalıdır.
+Şimdi şıklara bakalım
+A) تَحَدَّثَ: Müfred-müzekker mâzi fiildir; açık fail yapısına uygundur.
+B) تَحَدَّثوا: Çoğul fiildir; ardından ayrıca açık fail getirilmiştir.
+C) تَحَدَّثَتْ: Müennes mâzi fiildir.
+D) يَتَحَدَّثونَ: Çoğul muzâri fiildir.
+E) تَحَدَّثْنَ: Müennes çoğul fiilidir.
+Doğru cevap: A) تَحَدَّثَ
+4. soru
+---- الطَّالِباتُ إِلَى الْمَعْمَلِ بِهُدوءٍ.
+الطَّالِباتُ fiilden sonra gelen açık faildir. Açık fail çoğul olsa da kendisinden önceki fiil tekil gelir. Fail müennes olduğu için boşluğa müfred-müennes fiil gelmelidir.
+Şimdi şıklara bakalım
+A) دَخَلَ: Müzekker mâzi fiildir; müennes faille uyumsuzdur.
+B) اُدْخُلْنَ: Müennes çoğul emir fiilidir; ardından açık fail gelmez.
+C) دَخَلْنَ: Müennes çoğul fiilidir; fail zamiri fiilin içindedir. Ardından الطَّالِباتُ açık fail olarak getirilemez.
+D) يَدْخُلونَ: Müzekker çoğul muzâri fiildir.
+E) دَخَلَتْ: Müfred-müennes mâzi fiildir; açık fail yapısına uygundur.
+Doğru cevap: E) دَخَلَتْ
+5. soru
+قَرَأَ التِّلْميذُ ---- فِي الْمَكْتَبَةِ قَبْلَ الْمُسابَقَةِ.
+قَرَأَ geçişli bir fiildir. التِّلْميذُ merfû fail olduğuna göre boşluğa “neyi okudu?” sorusunun cevabı olan mansûb mef‘ûlün bih gelmelidir.
+Şimdi şıklara bakalım
+A) الْقِصَّةِ: Mecrûrdur.
+B) الْقِصَّةُ: Merfûdur.
+C) بِالْقِصَّةِ: Harf-i cerle mecrûrdur.
+D) الْقِصَّةَ: Mansûbdur; mef‘ûlün bih olmaya uygundur.
+E) قِصَّةٍ: Nekre ve mecrûrdur.
+Doğru cevap: D) الْقِصَّةَ
+6. soru
+كَسَرَ ---- الْقَلَمَ عَنْ غَيْرِ قَصْدٍ.
+كَسَرَ fiilinden sonra eylemi gerçekleştiren fail gelmelidir. Fail merfû olmalıdır. Ardından gelen الْقَلَمَ ise mansûb mef‘ûlün bihtir.
+Şimdi şıklara bakalım
+A) الْوَلَدِ: Mecrûrdur.
+B) الْوَلَدَ: Mansûbdur.
+C) الْوَلَدُ: Merfûdur; fail olmaya uygundur.
+D) بِالْوَلَدِ: Harf-i cerle mecrûrdur.
+E) إِلَى الْوَلَدِ: Câr-mecrûrdur; fail olamaz.
+Doğru cevap: C) الْوَلَدُ
+7. soru
+أَغْلَقَ الْحارِسُ ---- بَعْدَ انْتِهاءِ الدَّوامِ.
+أَغْلَقَ geçişli bir fiildir. الْحارِسُ merfû faildir. Boşluğa “neyi kapattı?” sorusunun cevabı olan mansûb mef‘ûlün bih gelmelidir.
+Şimdi şıklara bakalım
+A) الْبابَ: Mansûbdur; mef‘ûlün bih olmaya uygundur.
+B) الْبابُ: Merfûdur.
+C) الْبابِ: Mecrûrdur.
+D) فِي الْبابِ: Câr-mecrûrdur; doğrudan nesne değildir.
+E) يَفْتَحُ: Muzâri fiildir; gerekli nesneyi karşılamaz.
+Doğru cevap: A) الْبابَ
+8. soru
+شَرِبَ الرِّياضِيُّ ---- بَعْدَ التَّمْرينِ.
+شَرِبَ geçişli bir fiildir. الرِّياضِيُّ merfû faildir. Boşluğa “neyi içti?” sorusunun cevabı olan mansûb mef‘ûlün bih gelmelidir.
+Şimdi şıklara bakalım
+A) الْماءِ: Mecrûrdur.
+B) الْماءُ: Merfûdur.
+C) الْماءَ: Mansûbdur; mef‘ûlün bih olmaya uygundur.
+D) إِلَى الْماءِ: “Suya doğru” anlamında câr-mecrûrdur.
+E) عَنِ الْماءِ: “Sudan” anlamında câr-mecrûrdur.
+Doğru cevap: C) الْماءَ
+9. soru
+---- فِي الْمَطارِ حَتَّى مَوْعِدِ رِحْلَتِهِمْ.
+Cümlede açık bir fail bulunmamaktadır. Bu nedenle boşluğa, faili kendi içinde bulunan bir fiil gelmelidir. رِحْلَتِهِمْ kelimesindeki هُمْ zamiri birden fazla kişiden söz edildiğini düşündürmektedir.
+Şimdi şıklara bakalım
+A) جَلَسَ: “O oturdu” anlamında müfred-müzekker fiildir.
+B) جَلَسَتْ: “O kadın oturdu” anlamındadır.
+C) جَلَسا: “O ikisi oturdu” anlamındadır.
+D) اِجْلِسْ: Müfred-müzekker emir fiilidir.
+E) يَجْلِسونَ: “Onlar oturuyorlar/bekliyorlar” anlamında çoğul muzâri fiildir.
+cevap: E) يَجْلِسونَ
+10. soru
+اِسْتَمَعَ الطَّالِبُ ---- شَرْحِ الْمُعَلِّمِ بِانْتِباهٍ.
+اِسْتَمَعَ fiili “dinlemek” anlamında إِلَى harf-i ceriyle kullanılır. Bu nedenle boşluğa إِلَى gelmelidir.
+Şimdi şıklara bakalım
+A) إِلَى: اِسْتَمَعَ إِلَى doğru fiil-harf-i cer birlikteliğidir.
+B) عَنْ: Bu fiille kullanılmaz.
+C) عَلَى: Bu fiille kullanılmaz.
+D) مِنْ: Bu fiille kullanılmaz.
+E) فِي: Bu fiille kullanılmaz.
+Doğru cevap: A) إِلَى
+11. soru
+بَحَثَتِ الْباحِثَةُ ---- مَرْجِعٍ فِي الْمَكْتَبَةِ.
+بَحَثَ fiili “bir şeyi aramak/araştırmak” anlamında عَنْ harf-i ceriyle kullanılır. Boşluktan sonraki مَرْجِعٍ kelimesinin mecrûr olması da harf-i cer gerektiğini göstermektedir.
+Şimdi şıklara bakalım
+A) عَلَى: بَحَثَ fiiliyle bu anlamda kullanılmaz.
+B) إِلَى: Yön bildirir; uygun değildir.
+C) عَنْ: بَحَثَ عَنْ “aramak” anlamında doğru kullanımdır.
+D) بِـ: Bu bağlamda uygun değildir.
+E) مِنْ: “-den” anlamı verir; fiille uyumlu değildir.
+Doğru cevap: C) عَنْ
+12. soru
+حَصَلَ الطَّالِبُ ---- شَهادَةِ التَّفَوُّقِ فِي نِهايَةِ الْعامِ.
+حَصَلَ fiili “elde etmek, kazanmak” anlamında عَلَى harf-i ceriyle kullanılır. Bu nedenle boşluğa عَلَى gelmelidir.
+Şimdi şıklara bakalım
+A) عَلَى: حَصَلَ عَلَى “elde etti/kazandı” anlamında doğru kullanımdır.
+B) عَنْ: Fiille uyuşmaz.
+C) إِلَى: Yön bildirir; uygun değildir.
+D) مِنْ: Bu anlamda kullanılmaz.
+E) فِي: Fiilin istediği harf-i cer değildir.
+Doğru cevap: A) عَلَى
+Tabii. İstediğin düzende gidelim: önce cümlenin yapısını analiz edeceğim, boşluğa hangi tür yapı gerektiğini belirleyeceğim; ardından şıkları tek tek kısa biçimde inceleyip doğru cevabı vereceğim.
+13. SORU
+ذَهَبَتْ الْمُمَرِّضَةُ ---- الْمُسْتَشْفى صَباحًا.
+ذَهَبَتْ “gitti” fiilidir. Fail الْمُمَرِّضَةُ “hemşire”dir. Ardından gidilen yön/yer belirtiliyor: الْمُسْتَشْفى “hastane”.
+ذَهَبَ fiili bir yere yönelmeyi ifade ederken genellikle إِلَى harf-i ceriyle kullanılır:
+Şimdi şıklara bakalım:
+A) عَنْ = -den, hakkında → ذَهَبَ fiiliyle burada yön bildirmez. 
+B) إِلَى = -e, -a → gidilen yönü doğru biçimde gösterir. 
+C) كَـ = gibi → anlamca uygun değildir. 
+D) عَلَى = üzerinde, üzerine → bu bağlamda ذَهَبَ ile uygun değildir. 
+E) بِـ = ile, vasıtasıyla → hedef yer bildirmez. 
+Doğru cevap: B) إِلَى
+14).SORU
+جَلَسَ الطِّفْلُ ---- أُمِّهِ فِي غُرْفَةِ الاِنْتِظارِ.
+جَلَسَ “oturdu” demektir. Fail الطِّفْلُ “çocuk”tur. Boşluktan sonra أُمِّهِ “annesi” geliyor. Burada çocuğun annesiyle birlikte oturduğu anlatılmak isteniyor.
+Dolayısıyla beraberlik bildiren bir yapı gerekir.
+Şimdi şıklara bakalım:
+A) إِلَى = -e, -a → beraberlik bildirmez. 
+B) عَنْ = -den, hakkında → anlamca uygun değildir. 
+C) مَعَ = ile, birlikte → “annesiyle birlikte” anlamını verir. 
+D) مِنْ = -den → uygun değildir. 
+E) بِـ = ile → bazı yapılarda araç/vasıta veya ilişki bildirir; burada doğal beraberlik ifadesi مَعَdır. 
+Doğru cevap: C) مَعَ
+15.SORU
+---- الرِّسالَةَ إِلَى صَديقي بَعْدَ أَنْ أَنْهَيْتُ واجِبي.
+Cümlenin sonunda:
+أَنْهَيْتُ واجِبي
+“ödevimi bitirdim”
+ifadesi bulunuyor. Buradaki تُ zamiri konuşanın أنا = ben olduğunu gösteriyor.
+Dolayısıyla cümlenin başındaki “mektubu yazmak” fiilinin de bağlama göre ben yazdım biçiminde olması gerekir. Ayrıca الرِّسالَةَ nesnedir ve fiil geçmiş zamanda olmalıdır.
+Şimdi şıklara bakalım:
+A) كَتَبَ = o erkek yazdı → kişi uyumu yok. 
+B) كَتَبَتْ = o kadın yazdı → üçüncü tekil şahıs; bağlamdaki “ben” ile uyuşmaz. 
+C) يَكْتُبُ = o yazıyor/yazar → hem şahıs hem zaman uygun değil. 
+D) كَتَبوا = onlar yazdılar → çoğul üçüncü şahıs. 
+E) كَتَبْتُ = ben yazdım → أَنْهَيْتُ ile şahıs ve zaman bakımından tam uyumludur. 
+Doğru cevap: E) كَتَبْتُ
+16.SORU
+---- الدَّرْسَ جَيِّدًا بَعْدَ أَنْ سَمِعْنَا شَرْحَ الْمُعَلِّمِ.
+Cümlenin devamında:
+سَمِعْنَا شَرْحَ الْمُعَلِّمِ
+“öğretmenin açıklamasını dinledik”
+denmektedir.
+سَمِعْنَا fiilindeki نا zamiri “biz” anlamındadır. Dolayısıyla boşluğa gelecek “anlamak” fiilinin de نحن = biz şahsına göre çekimlenmesi gerekir.
+Cümlede olay tamamlanmış olduğundan mâzi fiil beklenir.
+Şimdi şıklara bakalım:
+A) فَهِمَ = o erkek anladı → üçüncü tekil şahıs. 
+B) فَهِمَتْ = o kadın anladı → üçüncü tekil dişil. 
+C) فَهِمْنَا = biz anladık → سَمِعْنَا ile şahıs ve zaman bakımından uyumludur. 
+D) فَهِمْتَ = sen anladın → ikinci tekil eril. 
+E) يَفْهَمُ = o anlıyor/anlar → muzâri ve üçüncü tekil şahıstır. 
+Doğru cevap: C) فَهِمْنَا
+17.SORU
+يا أَحْمَدُ، ---- الْبابَ لِزُمَلائِكَ قَبْلَ دُخولِ الْمُدَرِّسِ.
+
+Cümle يا أَحْمَدُ şeklinde doğrudan Ahmed'e hitap ederek başlıyor.
+Ardından Ahmed'den bir işi yapması isteniyor:
+“Kapıyı arkadaşların için …”
+Dolayısıyla boşluğa ikinci tekil eril şahsa yönelik emir fiili gelmelidir.
+Şimdi şıklara bakalım:
+A) يَفْتَحُ = o açıyor/açar → muzâri, üçüncü tekil eril. 
+B) فَتَحَ = o açtı → mâzi üçüncü tekil eril. 
+C) فَتَحَتْ = o kadın açtı → mâzi üçüncü tekil dişil. 
+D) اِفْتَحْ = aç! → Ahmed'e yönelik ikinci tekil eril emir fiilidir. E) تَفْتَحِي → ikinci tekil dişile yönelik yapıdır; Ahmed eril olduğu için uygun değildir. 
+Doğru cevap: D) اِفْتَحْ

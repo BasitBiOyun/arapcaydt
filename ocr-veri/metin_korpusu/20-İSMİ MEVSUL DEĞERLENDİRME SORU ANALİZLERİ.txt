@@ -1,0 +1,402 @@
+İSMİ MEVSUL DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+قَابَلْتُ الطَّبِيبَ ---- يُعَالِجُ الْفُقَرَاءَ مَجَّانًا.
+Önce cümlenin yapısına bakalım:
+قَابَلْتُ الطَّبِيبَ
+“Doktorla karşılaştım.”
+الطَّبِيبَ belirli, tekil ve eril bir isimdir. Boşluktan sonra gelen يُعَالِجُ الْفُقَرَاءَ مَجَّانًا bölümü, doktoru açıklayan sıla cümlesidir.
+يُعَالِجُ fiilinin faili olan gizli هُوَ zamiri ise ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, tekil-eril bir isme uygun ism-i mevsûlün seçilmesi, sıla cümlesi ve âid zamir ilişkisidir.
+Şimdi şıklara bakalım:
+A) الَّذِي — ... olan
+Tekil eril isimler için kullanılır. الطَّبِيبَ ile cinsiyet ve sayı bakımından uyumludur. ✅
+B) الَّتِي — ... olan
+Tekil dişil isimler için kullanılır. ❌
+C) الَّذِينَ — ... olanlar
+Eril akıllı çoğullar için kullanılır. ❌
+D) مَنْ — kim / kimse ki
+İnsanlar için kullanılan genel ism-i mevsûldür; burada belirli bir ismi niteleyen özel ism-i mevsûl aranır. ❌
+E) مَا — şey ki / her ne
+Genellikle akılsız varlıklar için kullanılır. ❌
+Doğru cevap: A) الَّذِي
+2. Soru
+هَذِهِ الْمُعَلِّمَةُ ---- تَشْرَحُ الدَّرْسَ بِوُضُوحٍ.
+Önce cümlenin yapısına bakalım:
+هَذِهِ الْمُعَلِّمَةُ
+“Bu öğretmen hanım...”
+الْمُعَلِّمَةُ belirli, tekil ve dişil bir isimdir. تَشْرَحُ الدَّرْسَ بِوُضُوحٍ bölümü onu açıklayan sıla cümlesidir.
+تَشْرَحُ fiilindeki gizli هِيَ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, tekil-dişil isme uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) الَّذِي — ... olan
+Tekil eril için kullanılır. ❌
+B) الَّتِي — ... olan
+Tekil dişil isimler için kullanılır ve الْمُعَلِّمَةُ ile uyumludur. ✅
+C) اللَّذَانِ — ... olan iki erkek
+Eril ikil için kullanılır. ❌
+D) مَا — şey ki / her ne
+İnsan dışındaki varlıklarda yaygındır. ❌
+E) الَّذِينَ — ... olanlar
+Eril çoğul için kullanılır. ❌
+Doğru cevap: B) الَّتِي
+3. Soru
+أُعْجَبُ بِالطُّلَّابِ ---- يُحَافِظُونَ عَلَى وَقْتِهِمْ.
+Önce cümlenin yapısına bakalım:
+أُعْجَبُ بِالطُّلَّابِ
+“Zamanlarına dikkat eden öğrencileri beğeniyorum.”
+الطُّلَّابِ akıllı, eril çoğul bir isimdir. يُحَافِظُونَ عَلَى وَقْتِهِمْ bölümü öğrencileri açıklayan sıla cümlesidir.
+Fiildeki واو الجماعة, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, akıllı-eril çoğula uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) اللَّذَانِ — iki erkek olan
+İkil için kullanılır. ❌
+B) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+C) الَّذِينَ — ... olanlar
+Akıllı eril çoğullar için kullanılır ve الطُّلَّابِ ile uyumludur. ✅
+D) مَا — şey ki
+Akılsız varlıklar için kullanılır. ❌
+E) اللَّاتِي — ... olan kadınlar
+Dişil çoğul için kullanılır. ❌
+Doğru cevap: C) الَّذِينَ
+4. Soru
+شَكَرْتُ الطَّالِبَاتِ ---- شَارَكْنَ فِي الْمَشْرُوعِ.
+Önce cümlenin yapısına bakalım:
+شَكَرْتُ الطَّالِبَاتِ
+“Öğrencilere teşekkür ettim.”
+الطَّالِبَاتِ akıllı, dişil çoğul bir isimdir. شَارَكْنَ فِي الْمَشْرُوعِ bölümü onları açıklayan sıla cümlesidir.
+شَارَكْنَ fiilindeki نَ النسوة, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, akıllı-dişil çoğula uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) اللَّتَانِ — ... olan iki kadın
+Dişil ikil içindir. ❌
+B) الَّذِينَ — ... olan erkekler
+Eril çoğul içindir. ❌
+C) مَنْ — kim / kimseler ki
+İnsanlar için kullanılabilir; ancak burada belirli ismi niteleyen özel ism-i mevsûl aranır. ❌
+D) اللَّوَاتِي — ... olan kadınlar
+Dişil akıllı çoğullar için kullanılır. ✅
+E) الَّذِي — ... olan
+Tekil eril içindir. ❌
+Doğru cevap: D) اللَّوَاتِي
+5. Soru
+الْوَلَدَانِ ---- فَازَا فِي الْمُسَابَقَةِ يَسْتَحِقَّانِ الْجَائِزَةَ.
+Önce cümlenin yapısına bakalım:
+الْوَلَدَانِ
+“İki çocuk...”
+Kelime eril ikil ve merfûdur. فَازَا فِي الْمُسَابَقَةِ bölümü iki çocuğu açıklayan sıla cümlesidir.
+فَازَا fiilindeki ikil ا zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, merfû-eril ikil isme uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) اللَّذَيْنِ — ... olan iki erkek
+Nasb ve cer durumunda kullanılır. ❌
+B) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+C) الَّذِينَ — ... olanlar
+Eril çoğul içindir. ❌
+D) مَا — şey ki
+Uygun değildir. ❌
+E) اللَّذَانِ — ... olan iki erkek
+Eril ikilin merfû biçimidir. ✅
+Doğru cevap: E) اللَّذَانِ
+
+6. Soru
+رَأَيْتُ الصَّدِيقَيْنِ ---- سَافَرَا إِلَى الْقَاهِرَةِ.
+Önce cümlenin yapısına bakalım:
+رَأَيْتُ الصَّدِيقَيْنِ
+“İki arkadaşı gördüm.”
+الصَّدِيقَيْنِ eril ikil ve mansuptur. سَافَرَا إِلَى الْقَاهِرَةِ bölümü iki arkadaşı açıklayan sıla cümlesidir.
+سَافَرَا fiilindeki ikil zamir, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, mansup-eril ikile uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) اللَّذَيْنِ — ... olan iki erkek
+Eril ikilin nasb ve cer biçimidir. ✅
+B) اللَّذَانِ — ... olan iki erkek
+Merfû durumda kullanılır. ❌
+C) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+D) الَّذِي — ... olan
+Tekil eril içindir. ❌
+E) مَا — şey ki
+Uygun değildir. ❌
+Doğru cevap: A) اللَّذَيْنِ
+7. Soru
+مَرَرْتُ بِالْمَدْرَسَتَيْنِ ---- تَقَعَانِ قُرْبَ النَّهْرِ.
+Önce cümlenin yapısına bakalım:
+مَرَرْتُ بِالْمَدْرَسَتَيْنِ
+“İki okulun yanından geçtim.”
+الْمَدْرَسَتَيْنِ dişil ikil ve بِـ harf-i cerri sebebiyle mecrurdur. تَقَعَانِ قُرْبَ النَّهْرِ bölümü iki okulu açıklayan sıla cümlesidir.
+تَقَعَانِ fiilindeki ikil zamir, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, mecrur-dişil ikile uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) اللَّتَانِ — ... olan iki kadın/dişil
+Merfû biçimdir. ❌
+B) اللَّتَيْنِ — ... olan iki dişil
+Dişil ikilin nasb ve cer biçimidir. ✅
+C) الَّذِي — ... olan
+Tekil eril içindir. ❌
+D) الَّذِينَ — ... olanlar
+Eril çoğul içindir. ❌
+E) مَا — şey ki
+Bu yapıda uygun değildir. ❌
+Doğru cevap: B) اللَّتَيْنِ
+8. Soru
+أُكْرِمُ ---- يُسَاعِدُ الْمُحْتَاجِينَ.
+Önce cümlenin yapısına bakalım:
+أُكْرِمُ
+“... kişiye ikram ederim / değer veririm.”
+Boşluktan önce açık bir isim bulunmamaktadır. Ardından gelen يُسَاعِدُ الْمُحْتَاجِينَ bölümü, bir kişiyi açıklayan sıla cümlesidir.
+يُسَاعِدُ fiilindeki gizli هُوَ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, insanlar için kullanılan genel ism-i mevsûlün seçimidir.
+Şimdi şıklara bakalım:
+A) الَّذِينَ — ... olanlar
+Öncesinde kendisini niteleyecek belirli çoğul isim yoktur. ❌
+B) مَا — şey ki / her ne
+Esas olarak insan dışı varlıklar için kullanılır. ❌
+C) مَنْ — kim / kimse ki
+Akıllı varlıklar, özellikle insanlar için kullanılan genel ism-i mevsûldür. ✅
+D) الَّتِي — ... olan
+Tekil dişil özel ism-i mevsûldür. ❌
+E) الَّذِينَ — ... olanlar
+A şıkkıyla aynıdır ve uygun değildir. ❌
+Doğru cevap: C) مَنْ
+9. Soru
+قَرَأْتُ ---- كَتَبَهُ الْأُسْتَاذُ عَنِ الْبِيئَةِ.
+Önce cümlenin yapısına bakalım:
+قَرَأْتُ
+“Okudum.”
+Boşluktan sonra كَتَبَهُ الْأُسْتَاذُ “öğretmenin yazdığı” anlamında bir sıla cümlesi gelmektedir.
+كَتَبَهُ fiilindeki ـهُ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, insan dışındaki bir şeyi ifade eden genel ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) الَّذِي — ... olan
+Öncesinde niteleyeceği belirli bir isim yoktur. ❌
+B) مَنْ — kim / kimse ki
+İnsanlar için kullanılır. ❌
+C) أَيّ — hangi / her kim
+Bu cümlede bu biçimde uygun değildir. ❌
+D) الَّذِينَ — ... olanlar
+Eril akıllı çoğul içindir. ❌
+E) مَا — şey ki / her ne
+“Öğretmenin çevre hakkında yazdığı şeyi okudum.” anlamını verir. ✅
+Doğru cevap: E) مَا
+10. Soru
+سَأَقْبَلُ الطَّالِبَ ---- يَجْتَهِدُ فِي دَرْسِهِ.
+Önce cümlenin yapısına bakalım:
+الطَّالِبَ belirli, tekil ve eril bir isimdir. يَجْتَهِدُ فِي دَرْسِهِ bölümü öğrenciyi açıklayan sıla cümlesidir.
+يَجْتَهِدُ fiilindeki gizli هُوَ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, tekil-eril isme uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) الَّذِينَ — ... olanlar
+Eril çoğul içindir. ❌
+B) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+C) الَّذِي — ... olan
+Tekil eril الطَّالِبَ ile uyumludur. ✅
+D) اللَّذَانِ — ... olan iki erkek
+İkil içindir. ❌
+E) اللَّاتِي — ... olan kadınlar
+Dişil çoğul içindir. ❌
+Doğru cevap: C) الَّذِي
+Burada verilen cevap anahtarındaki 10-D yanlıştır; doğru cevap C olmalıdır.
+11. Soru
+رَأَيْتُ طَالِبًا ---- فِي الْمَكْتَبَةِ.
+Önce cümlenin yapısına bakalım:
+طَالِبًا nekra, yani belirsiz bir isimdir. Boşluktan sonra gelen bölüm bu öğrenciyi açıklamaktadır.
+Belirsiz bir isimden sonra gelen fiil cümlesi doğrudan sıfat cümlesi olabilir. Bu nedenle burada ism-i mevsûl kullanılması zorunlu değildir.
+Burada ölçülen yapı, nekra isimden sonra gelen cümle sıfatı ile ism-i mevsûl yapısını ayırt etmektir.
+Şimdi şıklara bakalım:
+A) الَّذِي يَقْرَأُ — okuyan
+الَّذِي belirli bir ismi nitelemeyi gerektirir; طَالِبًا ise nekra olduğu için uygun değildir. ❌
+B) يَقْرَأُ — okuyor
+رَأَيْتُ طَالِبًا يَقْرَأُ فِي الْمَكْتَبَةِ.
+“Kütüphanede okuyan bir öğrenci gördüm.”
+Fiil cümlesi طَالِبًا kelimesinin sıfatıdır. ✅
+C) الَّتِي تَقْرَأُ — okuyan kadın
+Hem belirlilik hem cinsiyet bakımından uymaz. ❌
+D) مَنْ يَقْرَأُ — okuyan kimse
+Öncesindeki طَالِبًا ile bu şekilde kullanılmaz. ❌
+E) مَا يَقْرَأُ — okuyan şey
+İnsan için uygun değildir. ❌
+Doğru cevap: B) يَقْرَأُ
+12. Soru
+اِشْتَرَيْتُ الْكِتَابَ الَّذِي نَصَحَنِي الْأُسْتَاذُ ----.
+Önce cümlenin yapısına bakalım:
+الَّذِي نَصَحَنِي الْأُسْتَاذُ ... bölümü الْكِتَابَ kelimesini açıklayan sıla cümlesidir.
+Burada fiil نَصَحَ “tavsiye etmek”tir ve “bir şeyi tavsiye etmek” anlamında نَصَحَ بِـ yapısı kullanılır.
+Bu nedenle ism-i mevsûle dönen âid zamirin, uygun harf-i cerle birlikte gelmesi gerekir.
+Burada ölçülen yapı, sıla cümlesinde harf-i cerle kullanılan âid zamirdir.
+Şimdi şıklara bakalım:
+A) بِهِ — onu / onunla
+نَصَحَنِي الْأُسْتَاذُ بِهِ “öğretmen onu bana tavsiye etti” anlamını verir. ـهِ zamiri الْكِتَابَ kelimesine döner. ✅
+B) بِهَا — onu
+Dişil zamirdir; الكتاب erildir. ❌
+C) بِهِمْ — onları
+Çoğul zamirdir. ❌
+D) عَنْهُ — onun hakkında / ondan
+نصح عن burada gerekli fiil-edat ilişkisini vermez. ❌
+E) فِيهَا — onun içinde
+Dişil zamir ve yanlış harf-i cer vardır. ❌
+Doğru cevap: A) بِهِ
+13. Soru
+رَأَيْتُ الطَّالِبَةَ الَّتِي كَرَّمَتْ---- الْمَدْرَسَةُ.
+Önce cümlenin yapısına bakalım:
+الطَّالِبَةَ الَّتِي...
+“... olan kız öğrenciyi gördüm.”
+كَرَّمَتْ ... الْمَدْرَسَةُ cümlesinde الْمَدْرَسَةُ faildir. Dolayısıyla boşlukta, fiilin nesnesi olarak الطَّالِبَةَ kelimesine dönen bir âid zamir bulunmalıdır.
+Burada ölçülen yapı, sıla cümlesinde ism-i mevsûle dönen nesne durumundaki âid zamirdir.
+Şimdi şıklara bakalım:
+A) هُنَّ — onları, kadın çoğul
+Çoğul zamirdir. ❌
+B) ـهُ — onu, eril
+Eril tekil zamirdir. ❌
+C) ـهَا — onu, dişil
+كَرَّمَتْهَا الْمَدْرَسَةُ
+“Okul onu ödüllendirdi.”
+ـهَا, الطَّالِبَةَ kelimesine dönen âid zamirdir. ✅
+D) هُمَا — o ikisini
+İkil zamirdir. ❌
+E) هُمْ — onları, eril çoğul
+Çoğul zamirdir. ❌
+Doğru cevap: C) ـهَا
+14. Soru
+أَحْتَرِمُ ---- يَلْتَزِمُ بِوَعْدِهِ.
+Önce cümlenin yapısına bakalım:
+أَحْتَرِمُ
+“Saygı duyarım.”
+Boşluktan sonra يَلْتَزِمُ بِوَعْدِهِ “sözüne bağlı kalan” anlamında bir sıla cümlesi gelmektedir.
+يَلْتَزِمُ fiilindeki gizli هُوَ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, insan için kullanılan genel ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) مَا — şey ki
+İnsan dışındaki varlıklar için kullanılır. ❌
+B) الَّذِينَ — ... olanlar
+Öncesinde niteleyeceği belirli çoğul isim yoktur. ❌
+C) الَّتِي — ... olan
+Tekil dişil özel ism-i mevsûldür. ❌
+D) مَنْ — kim / kimse ki
+İnsan için kullanılan genel ism-i mevsûldür. ✅
+E) اللَّذَانِ — ... olan iki erkek
+İkil içindir. ❌
+Doğru cevap: D) مَنْ
+15. Soru
+قَرَأْتُ الْمَقَالَ ---- نَشَرَهُ الطَّالِبُ فِي الْمَجَلَّةِ.
+Önce cümlenin yapısına bakalım:
+الْمَقَالَ belirli, tekil ve eril bir isimdir. نَشَرَهُ الطَّالِبُ فِي الْمَجَلَّةِ bölümü makaleyi açıklayan sıla cümlesidir.
+نَشَرَهُ fiilindeki ـهُ zamiri, الْمَقَالَ kelimesine dönen âid zamirdir.
+Burada ölçülen yapı, tekil-eril isme uygun ism-i mevsûl ile sıla cümlesindeki âid zamir ilişkisidir.
+Şimdi şıklara bakalım:
+A) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+B) الَّذِينَ — ... olanlar
+Eril çoğul içindir. ❌
+C) اللَّتَيْنِ — ... olan iki dişil
+Dişil ikil içindir. ❌
+D) مَنْ — kim / kimse ki
+İnsanlar için kullanılır. ❌
+E) الَّذِي — ... olan
+Tekil eril الْمَقَالَ ile uyumludur. ✅
+Doğru cevap: E) الَّذِي
+16. Soru
+سَأُكَافِئُ ---- يَطْلُبُ حِفْظَ النَّصِّ.
+Önce cümlenin yapısına bakalım:
+سَأُكَافِئُ
+“Ödüllendireceğim.”
+Boşluktan sonra gelen يَطْلُبُ حِفْظَ النَّصِّ bölümü bir kişiyi açıklayan sıla cümlesidir.
+يَطْلُبُ fiilindeki gizli هُوَ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, insan için kullanılan genel ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) مَنْ — kim / kimse ki
+İnsanları ifade eden genel ism-i mevsûldür. ✅
+B) مَا — şey ki
+İnsan dışındaki varlıklar için kullanılır. ❌
+C) الَّذِينَ — ... olanlar
+Belirli çoğul bir isimle kullanılacak özel ism-i mevsûldür. ❌
+D) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+E) اللَّتَانِ — ... olan iki dişil
+Dişil ikil içindir. ❌
+Doğru cevap: A) مَنْ
+Burada yalnızca anlam açısından يَطْلُبُ حِفْظَ النَّصِّ ifadesi biraz yapaydır; gramer açısından soru çözülebilir.
+17. Soru
+---- يَجْتَهِدُونَ فِي دُرُوسِهِمْ يَنْجَحُونَ.
+Önce cümlenin yapısına bakalım:
+يَجْتَهِدُونَ فِي دُرُوسِهِمْ
+“Derslerinde gayret edenler...”
+Fiildeki واو الجماعة çoğul erkek/karma insan grubuna işaret etmektedir. Ardından يَنْجَحُونَ ana yüklem olarak gelmektedir.
+Burada ölçülen yapı, akıllı-eril çoğulu ifade eden ism-i mevsûl ve ona bağlı sıla cümlesidir.
+Şimdi şıklara bakalım:
+A) اللَّذَانِ — ... olan iki erkek
+İkil içindir. ❌
+B) الَّتِي — ... olan
+Tekil dişil içindir. ❌
+C) الَّذِينَ — ... olanlar
+الَّذِينَ يَجْتَهِدُونَ فِي دُرُوسِهِمْ يَنْجَحُونَ.
+“Derslerinde gayret edenler başarılı olurlar.”
+Çoğul fiil yapısıyla uyumludur. ✅
+D) مَا — şey ki
+İnsan grubu için uygun değildir. ❌
+E) أَيّ — her kim / hangi
+Bu cümlede yalın biçimiyle uygun değildir. ❌
+Doğru cevap: C) الَّذِينَ
+18. Soru
+الْمَوَاقِفُ ---- نُوَاجِهُهَا فِي الْحَيَاةِ تُعَلِّمُنَا الصَّبْرَ.
+Önce cümlenin yapısına bakalım:
+الْمَوَاقِفُ
+“Durumlar / olaylar”
+Bu kelime insan dışı, akılsız çoğuldur. Arapçada akılsız çoğullar gramer bakımından tekil dişil kabul edilir.
+نُوَاجِهُهَا فِي الْحَيَاةِ bölümü الْمَوَاقِفُ kelimesini açıklayan sıla cümlesidir. ـهَا zamiri de ona dönen âid zamirdir.
+Burada ölçülen yapı, akılsız çoğulun tekil-dişil kabul edilerek uygun ism-i mevsûlle kullanılmasıdır.
+Şimdi şıklara bakalım:
+A) الَّذِي — ... olan
+Tekil eril içindir. ❌
+B) الَّتِي — ... olan
+Akılsız çoğullar tekil dişil kabul edildiği için uygundur. ✅
+C) مَنْ — kim / kimse ki
+İnsanlar için kullanılır. ❌
+D) الَّذِينَ — ... olanlar
+Akıllı eril çoğullar için kullanılır. ❌
+E) اللَّذَانِ — ... olan iki erkek
+İkil içindir. ❌
+Doğru cevap: B) الَّتِي
+19. Soru
+تَذَكَّرْتُ ---- قَالَهُ الْمُدِيرُ فِي الِاجْتِمَاعِ.
+Önce cümlenin yapısına bakalım:
+تَذَكَّرْتُ
+“Hatırladım.”
+Boşluktan sonra قَالَهُ الْمُدِيرُ “müdürün söylediği şey” anlamında bir sıla cümlesi gelmektedir.
+قَالَهُ fiilindeki ـهُ zamiri, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, bir söz veya şeyi ifade eden genel ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) مَنْ — kim / kimse ki
+İnsanlar için kullanılır. ❌
+B) الَّتِي — ... olan
+Öncesinde niteleyeceği belirli dişil isim yoktur. ❌
+C) الَّذِينَ — ... olanlar
+Eril çoğul içindir. ❌
+D) مَا — şey ki / her ne
+تَذَكَّرْتُ مَا قَالَهُ الْمُدِيرُ فِي الِاجْتِمَاعِ.
+“Müdürün toplantıda söylediği şeyi hatırladım.” ✅
+E) اللَّذَيْنِ — ... olan iki erkek
+İkil içindir. ❌
+Doğru cevap: D) مَا
+20. Soru
+الطَّالِبَتَانِ ---- تَقْرَآنِ الْقُرْآنَ مُؤَدَّبَتَانِ.
+Önce cümlenin yapısına bakalım:
+الطَّالِبَتَانِ
+“İki kız öğrenci...”
+Kelime dişil ikil ve merfûdur. تَقْرَآنِ الْقُرْآنَ bölümü iki öğrenciyi açıklayan sıla cümlesidir.
+تَقْرَآنِ fiilindeki ikil zamir, ism-i mevsûle dönen âid zamirdir.
+Burada ölçülen yapı, merfû-dişil ikile uygun ism-i mevsûl seçimidir.
+Şimdi şıklara bakalım:
+A) اللَّتَيْنِ — ... olan iki dişil
+Nasb ve cer durumunda kullanılır. ❌
+B) الَّذِينَ — ... olanlar
+Eril çoğul içindir. ❌
+C) مَا — şey ki
+Uygun değildir. ❌
+D) الَّذِي — ... olan
+Tekil eril içindir. ❌
+E) اللَّتَانِ — ... olan iki dişil
+Dişil ikilin merfû biçimidir. ✅
+Doğru cevap: E) اللَّتَانِ

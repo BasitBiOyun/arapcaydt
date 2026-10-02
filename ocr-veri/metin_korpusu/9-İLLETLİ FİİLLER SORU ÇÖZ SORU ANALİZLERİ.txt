@@ -1,0 +1,133 @@
+İLLETLİ FİİLLER SORU ÇÖZ SORU ANALİZLERİ 
+1. Soru
+لَا ---- إِلَى إِضَاعَةِ وَقْتِكَ فِي أُمُورٍ لَا تَنْفَعُكَ فِي الْمُسْتَقْبَلِ.
+Türkçesi: Gelecekte sana fayda sağlamayacak işlerde vaktini boşa harcamaya ----.
+Bizden ne isteniyor?
+Cümlenin başında لَا edatını görüyoruz. Burada karşıdaki kişiye doğrudan bir yasaklama yapılıyor. Dolayısıyla bu لَا النَّاهِيَةُdur ve ardından gelen muzâri fiili cezm eder.
+Ayrıca وَقْتِكَ kelimesindeki ـكَ, hitap edilen kişinin müzekker tekil olduğunu gösteriyor.
+Şimdi şıklara bakalım:
+A) تَسْعَى — sen çabalarsın / yönelirsin
+İkinci tekil şahıstır; ancak fiil normal merfu hâlindedir ve sondaki illet harfi korunmuştur. لَا النَّاهِيَةُ sonrasında meczum olması gerekir. Olmaz.
+B) يَسْعَى — o çabalar
+Üçüncü şahıs müzekkerdir. Muhatap ise ikinci şahıstır. Olmaz.
+C) اِسْعَ — çabala!
+Olumlu emir fiilidir. Cümlede ise لَا ile yasaklama yapılıyor. Olmaz.
+D) تَسْعَوْا
+Çoğul şahıs biçimidir. Burada tek kişiye hitap ediliyor. Olmaz.
+E) تَسْعَ — çabalarsın / yönelirsin
+تَسْعَى fiilinin cezm edilmiş biçimidir. Nâkıs fiil cezm edildiğinde sondaki illet harfi düşer:
+تَسْعَى ← لَا تَسْعَ
+Şahıs bakımından da müzekker tekil muhataba uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, تَسْعَ olur.
+2. Soru
+فِي دِرَاسَةِ النُّصُوصِ الْفَلْسَفِيَّةِ، ---- الْبَاحِثُ الْمَعَانِيَ الدَّقِيقَةَ الَّتِي قَدْ تَغِيبُ عَنِ الْقَارِئِ الْعَادِيِّ.
+Türkçesi: Felsefi metinlerin incelenmesinde araştırmacı, sıradan okuyucunun gözünden kaçabilecek ince anlamları ----.
+Bizden ne isteniyor?
+Boşluktan sonra fail olan الْبَاحِثُ “araştırmacı” kelimesini görüyoruz. Müzekker tekildir. Cümlede genel bir durum anlatıldığı için uygun muzâri fiili arıyoruz.
+Burada herhangi bir nasb veya cezm edatı bulunmadığı için fiilin normal muzâri biçimine ve şahıs uyumuna bakacağız.
+Şimdi şıklara bakalım:
+A) يَعِي — anlar / kavrar
+Müzekker tekil muzâri fiildir. الْبَاحِثُ ile uyumludur. Olabilir.
+B) تَعِي — anlar / anlarsın
+Üçüncü şahıs müennes veya ikinci şahıs biçimidir. الْبَاحِثُ ile uymaz. Olmaz.
+C) تَعِينَ
+Müennes muhatapla ilgili bir çekimdir. Olmaz.
+D) يَعِ
+Fiilin sonundaki illet harfi düşmüştür; bu meczum biçimdir. Burada cezm edatı yoktur. Olmaz.
+E) يَعِينَ
+Bu biçim cümledeki müzekker tekil faille uyumlu değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَعِي olur.
+3. Soru
+يَجِبُ عَلَى الْقَانُونِ أَنْ ---- حُقُوقَ الْأَطْفَالِ وَالضُّعَفَاءِ فِي كُلِّ الْأَحْوَالِ.
+Türkçesi: Kanunun her durumda çocukların ve güçsüzlerin haklarını ---- gerekir.
+Bizden ne isteniyor?
+Boşluğun öncesinde أَنْ nasb edatını görüyoruz. Dolayısıyla ardından gelen muzâri fiil mansup olmalıdır.
+Eylemi gerçekleştiren unsur الْقَانُونُ “kanun”dur ve müzekker tekildir.
+Şimdi şıklara bakalım:
+A) يَقِينَ
+Cümlede gereken müzekker tekil mansup biçimi değildir. Olmaz.
+B) يَقُوا
+Çoğul yapıdır. الْقَانُونُ tekildir. Olmaz.
+C) يَقُونَ
+Müzekker çoğul ve merfu biçimdedir. Olmaz.
+D) يَقِيَ — koruması
+Müzekker tekil muzâridir ve أَنْ nedeniyle mansuptur. Nâkıs yâî fiilde nasb sırasında son ي korunur ve üzerinde fetha görülür:
+يَقِي ← أَنْ يَقِيَ
+Olabilir.
+E) وَقَى — korudu
+Mâzî fiildir. أَنْ sonrasında burada muzâri gerekir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَقِيَ olur.
+4. Soru
+---- الْمُدِيرُ الْوَعْدَ الَّذِي قَطَعَهُ لِمُوَظَّفِيهِ فِي الْعَمَلِ الْمُؤَسَّسِيِّ.
+Türkçesi: Müdür kurumsal çalışma kapsamında çalışanlarına verdiği sözü ----.
+Bizden ne isteniyor?
+Boşluktan sonra fail olan الْمُدِيرُ müzekker tekildir. Cümlede herhangi bir nasb veya cezm edatı bulunmuyor. Dolayısıyla fiilin normal muzâri biçimine ve şahıs uyumuna bakacağız.
+Şimdi şıklara bakalım:
+A) يَفِينَ
+Müzekker tekil faille uyumlu değildir. Olmaz.
+B) يَفُوا
+Çoğul biçimdir. الْمُدِيرُ tekildir. Olmaz.
+C) يَفِي — yerine getirir / bağlı kalır
+Müzekker tekil muzâridir. الْمُدِيرُ ile uyumludur. Olabilir.
+D) يَفِ
+Son illet harfi düşmüştür; meczum biçimdir. Burada cezm edatı yoktur. Olmaz.
+E) يَفِيَ
+Mansup biçimdir. Önünde nasb edatı bulunmuyor. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَفِي olur.
+5. Soru
+---- الشَّابُّ السِّلْكَ بِأَصَابِعِهِ لِيَصْنَعَ مِنْهُ شَكْلًا جَمِيلًا.
+Türkçesi: Genç, ondan güzel bir şekil yapmak için teli parmaklarıyla ----.
+Bizden ne isteniyor?
+Boşluktan sonra الشَّابُّ “genç” müzekker tekil failini görüyoruz. Devamındaki لِيَصْنَعَ “yapmak için” bölümü, bu eylemin amacını açıklıyor. Boşluktaki fiilin önünde ise nasb veya cezm edatı bulunmuyor.
+Şimdi şıklara bakalım:
+A) تَلْوِي — büker / bükersin
+Üçüncü şahıs müennes veya ikinci şahıs biçimidir. الشَّابُّ müzekker üçüncü şahıstır. Olmaz.
+B) يَلْوِي — büker
+Müzekker tekil muzâridir ve الشَّابُّ ile uyumludur. Olabilir.
+C) يَلْوِينَ
+Müennes çoğul biçimle ilgilidir. Olmaz.
+D) تَلْوِينَ
+Müennes muhatap yapısıyla ilgilidir. Olmaz.
+E) لَوَيَا — ikisi büktü
+Mâzî ikil fiildir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَلْوِي olur.
+6. Soru
+لَمْ ---- الطَّالِبُ مَعْنَى النَّصِّ الْأَدَبِيِّ مِنَ الْمَرَّةِ الْأُولَى؛ لِأَنَّهُ كَانَ عَمِيقًا.
+Türkçesi: Öğrenci, edebî metin derin olduğu için anlamını ilk seferde ----.
+Bizden ne isteniyor?
+Boşluğun öncesinde لَمْ cezm edatını görüyoruz. Bu edat muzâri fiili cezm eder ve geçmiş zaman olumsuzluğu verir.
+Boşluktan sonra الطَّالِبُ müzekker tekil faildir.
+Şimdi şıklara bakalım:
+A) يَعِي — anlar
+Müzekker tekil olması uygundur; ancak normal merfu biçimdir ve son ي korunmuştur. لَمْ sonrasında meczum olması gerekir. Olmaz.
+B) يَعُوا
+Çoğul biçimdir. Olmaz.
+C) يَعِيَا
+İkil yapıyla ilgilidir. Olmaz.
+D) يَعِ — anlar
+يَعِي fiilinin cezm edilmiş biçimidir. Cezm sırasında son illet harfi ي düşer:
+يَعِي ← لَمْ يَعِ
+Müzekker tekil faille de uyumludur. Olabilir.
+E) يَعِيَ
+Mansup biçimdir. Burada لَمْ nedeniyle cezm gerekir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَعِ olur.
+7. Soru
+مِنَ الْمُهِمِّ أَنْ ---- الْمُوَظَّفُ بِالْتِزَامَاتِهِ الْمِهَنِيَّةِ لِيَكْسِبَ ثِقَةَ الْمُؤَسَّسَةِ.
+Türkçesi: Çalışanın kurumun güvenini kazanmak için mesleki yükümlülüklerini ---- önemlidir.
+Bizden ne isteniyor?
+Boşluğun öncesinde أَنْ nasb edatını görüyoruz. Dolayısıyla ardından gelen muzâri fiil mansup olmalıdır.
+Boşluktan sonra الْمُوَظَّفُ müzekker tekil fail olarak geliyor.
+Şimdi şıklara bakalım:
+A) يَفِيَ — yerine getirmesi / bağlı kalması
+Müzekker tekil muzâridir. أَنْ nedeniyle mansuptur ve son ي korunarak fetha almıştır:
+يَفِي ← أَنْ يَفِيَ
+Olabilir.
+B) يَفِينَ
+Müzekker tekil faille uyumlu değildir. Olmaz.
+C) يَفِ
+Cezm edilmiş biçimdir; son illet harfi düşmüştür. Burada nasb gerekir. Olmaz.
+D) يَفُوا
+Çoğul biçimdir. الْمُوَظَّفُ tekildir. Olmaz.
+E) يَفِيَا
+İkil çekimle ilgilidir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَفِيَ olur.

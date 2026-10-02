@@ -1,0 +1,525 @@
+64-69. sorularda, verilen Arapça cümleye anlamca en yakın Türkçe cümleyi bulunuz.
+bu soru grubunda 1. Aşamada  çözüm için gereklli ifadeleri söylerken sorudaki metinde altını çizerek söyleyebilirsin.
+64. Soru
+1. Aşama — Soru
+أَسْهَمَ الِاسْتِخْدَامُ الْوَاسِعُ لِلْبِنْسِلِينِ فِي مُنْتَصَفِ الْقَرْنِ الْعِشْرِينَ فِي إِنْقَاذِ حَيَاةِ مَلَايِينِ الْأَشْخَاصِ الَّذِينَ كَانُوا يُعَانُونَ مِنْ أَمْرَاضٍ بَكْتِيرِيَّةٍ خَطِيرَةٍ.
+2. Aşama — Analiz
+Cümle, penisilinin 20. yüzyılın ortalarında yaygın kullanılmasının, tehlikeli bakteriyel hastalıklardan muzdarip milyonlarca insanın hayatının kurtarılmasına katkı sağladığını anlatıyor.
+Çözüm için özellikle:
+أَسْهَمَ ... فِي = ...e katkıda bulundu
+الِاسْتِخْدَامُ الْوَاسِعُ = yaygın kullanım
+إِنْقَاذِ حَيَاةِ = hayatının kurtarılması
+يُعَانُونَ مِنْ = ...den muzdarip olmak
+ifadelerine bakacağız.
+A)
+“Yirminci yüzyılın ortalarında keşfedilen penisilin, tehlikeli bakteriyel hastalıklara yakalanan milyonlarca insanı doğrudan iyileştirmiştir.”
+Neden olamaz?
+Arapçada penisilinin o dönemde keşfedildiği söylenmiyor; yaygın kullanıldığı söyleniyor. Ayrıca أَسْهَمَ فِي = katkıda bulundu, “doğrudan iyileştirdi” değildir.
+B)
+“Penisilinin yirminci yüzyılın ortalarında yaygın olarak kullanılması, tehlikeli bakteriyel hastalıkların milyonlarca insana bulaşmasını önlemiştir.”
+Neden olamaz?
+Arapçada hastalıkların bulaşmasını önlemek değil:
+إِنْقَاذِ حَيَاةِ مَلَايِينِ الْأَشْخَاصِ
+“milyonlarca insanın hayatının kurtarılması” anlatılıyor.
+C)
+“Penisilinin yirminci yüzyılın ortalarında yaygın olarak kullanılması, tehlikeli bakteriyel hastalıklardan muzdarip milyonlarca insanın hayatının kurtarılmasına katkıda bulunmuştur.”
+Neden olabilir?
+Bütün temel ifadeler tam karşılanıyor:
+الِاسْتِخْدَامُ الْوَاسِعُ = yaygın kullanım
+أَسْهَمَ فِي = katkıda bulundu
+إِنْقَاذِ حَيَاةِ = hayatının kurtarılması
+يُعَانُونَ مِنْ = ...den muzdarip olmak
+
+
+D)
+“Milyonlarca insanın tehlikeli bakteriyel hastalıklara yakalanması, penisilinin yirminci yüzyılın ortalarında yaygınlaşmasını sağlamıştır.”
+Neden olamaz?
+Sebep-sonuç ters çevrilmiştir. Arapçada penisilinin yaygın kullanımı neden, insanların hayatının kurtarılması sonuçtur.
+E)
+“Penisilinin yaygın kullanımı, tehlikeli bakteriyel hastalıklara yakalanan milyonlarca insanın yalnızca iyileşme süresini kısaltmıştır.”
+Neden olamaz?
+Arapçada “iyileşme süresini kısaltmak” yok; hayat kurtarmaya katkı var.
+Doğru cevap: C
+65. Soru
+1. Aşama — Soru
+عَلَى الرَّغْمِ مِنَ الْفَوَائِدِ الْعَدِيدَةِ الَّتِي تُقَدِّمُهَا التِّكْنُولُوجِيَا الْحَدِيثَةُ فِي تَسْهِيلِ حَيَاتِنَا الْيَوْمِيَّةِ، فَإِنَّ الْإِفْرَاطَ فِي اسْتِخْدَامِهَا قَدْ يُؤَدِّي إِلَى مُشْكِلَاتٍ نَفْسِيَّةٍ وَاجْتِمَاعِيَّةٍ.
+2. Aşama — Analiz
+Cümle, modern teknolojinin birçok yararı olmasına rağmen aşırı kullanımının psikolojik ve sosyal sorunlara yol açabileceğini anlatıyor.
+Çözüm için:
+عَلَى الرَّغْمِ مِنْ = ...e rağmen
+الْإِفْرَاطُ فِي اسْتِخْدَامِهَا = aşırı kullanımı
+قَدْ يُؤَدِّي إِلَى = ...e yol açabilir
+ifadelerine dikkat edeceğiz. Özellikle قَدْ olasılık bildiriyor.
+A)
+“Modern teknoloji günlük hayatımızı kolaylaştıran pek çok yarar sunsa da aşırı kullanımı psikolojik ve sosyal sorunlara yol açmaktadır.”
+Neden olamaz?
+Arapçada:
+قَدْ يُؤَدِّي = yol açabilir
+deniyor. Şıkta ise “yol açmaktadır” denilerek olasılık kesinleştirilmiştir.
+B)
+“Modern teknolojinin günlük hayatımızı kolaylaştırmak için sunduğu pek çok yarara rağmen aşırı kullanımı psikolojik ve sosyal sorunlara yol açabilir.”
+Neden olabilir?
+Hem:
+عَلَى الرَّغْمِ مِنْ = ...e rağmen
+hem de:
+قَدْ يُؤَدِّي إِلَى = yol açabilir
+doğru aktarılmıştır.
+
+C)
+“Modern teknoloji, günlük hayatı kolaylaştırmak amacıyla ölçülü kullanılsa bile psikolojik ve sosyal sorunlara neden olabilir.”
+Neden olamaz?
+Arapçada ölçülü kullanım değil:
+الْإِفْرَاطُ فِي اسْتِخْدَامِهَا = aşırı kullanım
+deniyor.
+D)
+“Psikolojik ve sosyal sorunlar, modern teknolojinin günlük hayatımızı kolaylaştıran imkânlarından yararlanmamızı engelleyebilir.”
+Neden olamaz?
+Sebep-sonuç değiştirilmiştir. Metinde aşırı teknoloji kullanımı → psikolojik ve sosyal sorunlar ilişkisi vardır.
+E)
+“Modern teknolojinin sağladığı yararlar, aşırı kullanımından kaynaklanabilecek psikolojik ve sosyal sorunların etkisini azaltmaktadır.”
+Neden olamaz?
+Arapça cümlede teknolojinin yararlarının bu sorunların etkisini azalttığına dair hiçbir bilgi yoktur.
+Doğru cevap: B
+
+
+66. Soru
+1. Aşama — Soru
+تُعَدُّ غَابَاتُ الْأَمَازُونِ الْمَطِيرَةُ، الَّتِي تُغَطِّي أَجْزَاءً وَاسِعَةً مِنْ أَمْرِيكَا الْجَنُوبِيَّةِ، مِنْ أَهَمِّ النُّظُمِ الْبِيئِيَّةِ الَّتِي تُؤَدِّي دَوْرًا حَاسِمًا فِي تَنْظِيمِ مُنَاخِ الْأَرْضِ.
+2. Aşama — Analiz
+Cümle, Güney Amerika’nın geniş kesimlerini kaplayan Amazon yağmur ormanlarının, Dünya’nın ikliminin düzenlenmesinde kritik rol oynayan en önemli ekosistemlerden biri olduğunu söylüyor.
+Çözüm için:
+أَجْزَاءً وَاسِعَةً = geniş kesimler
+مِنْ أَهَمِّ النُّظُمِ الْبِيئِيَّةِ = en önemli ekosistemlerden biri
+دَوْرًا حَاسِمًا فِي = ...de kritik rol
+مُنَاخِ الْأَرْضِ = Dünya’nın iklimi
+ifadelerini korumalıyız.
+A)
+“Güney Amerika’nın geniş kesimlerini kaplayan Amazon yağmur ormanları, Dünya’nın ikliminin düzenlenmesinde kritik rol oynayan en önemli ekosistemlerden biri sayılmaktadır.”
+Neden olabilir?
+Cümledeki bütün temel anlam unsurları eksiksiz karşılanmıştır.
+B)
+“Amazon yağmur ormanları, Güney Amerika’nın geniş kesimlerini kapladığı için Dünya’nın iklimini tek başına düzenleyen en önemli ekosistem olarak kabul edilmektedir.”
+Neden olamaz?
+Arapçada “kapladığı için” şeklinde neden-sonuç yoktur. “Tek başına” da yoktur. Ayrıca مِنْ أَهَمِّ = en önemlilerden biri demektir; “tek en önemli” değildir.
+C)
+“Dünya’nın ikliminin düzenlenmesinde önemli rol oynayan Amazon yağmur ormanları, Güney Amerika’nın yalnızca küçük bir bölümünü kaplamaktadır.”
+Neden olamaz?
+Arapçada:
+أَجْزَاءً وَاسِعَةً = geniş kesimler
+deniyor; “küçük bir bölüm” tam tersidir.
+D)
+“Güney Amerika’nın geniş kesimlerine yayılan Amazon yağmur ormanları, Dünya’daki önemli ekosistemlerin korunmasına katkıda bulunmaktadır.”
+Neden olamaz?
+Metinde “diğer ekosistemlerin korunması” değil:
+تَنْظِيمِ مُنَاخِ الْأَرْضِ = Dünya’nın ikliminin düzenlenmesi
+anlatılıyor.
+E)
+“Amazon yağmur ormanları, Güney Amerika’nın geniş kesimlerini kaplayan ve yalnızca bu kıtanın iklimini düzenleyen önemli bir ekosistemdir.”
+Neden olamaz?
+Arapçada:
+مُنَاخِ الْأَرْضِ = Dünya’nın iklimi
+deniyor. Şık bunu yalnızca Güney Amerika’nın iklimiyle sınırlandırmıştır.
+Doğru cevap: A
+67. Soru
+1. Aşama — Soru
+يَعْتَقِدُ بَعْضُ الْخُبَرَاءِ أَنَّ تَنَاوُلَ وَجْبَةِ فُطُورٍ صِحِّيَّةٍ وَمُتَوَازِنَةٍ كُلَّ صَبَاحٍ يُسَاعِدُ الطُّلَّابَ عَلَى زِيَادَةِ تَرْكِيزِهِمْ وَتَحْسِينِ أَدَائِهِمُ الْأَكَادِيمِيِّ.
+2. Aşama — Analiz
+Cümle, bazı uzmanların her sabah sağlıklı ve dengeli kahvaltı yapmanın öğrencilerin odaklanmalarını artırmaya ve akademik performanslarını geliştirmeye yardımcı olduğunu düşündüğünü söylüyor.
+Çözüm için:
+يَعْتَقِدُ بَعْضُ الْخُبَرَاءِ = bazı uzmanlar düşünüyor
+يُسَاعِدُ ... عَلَى = ...e yardımcı oluyor
+زِيَادَةِ تَرْكِيزِهِمْ = odaklanmalarını artırma
+تَحْسِينِ أَدَائِهِمُ الْأَكَادِيمِيِّ = akademik performanslarını geliştirme
+ifadelerine dikkat edeceğiz.
+A)
+“Bazı uzmanlar, öğrencilerin daha iyi odaklanıp akademik performanslarını geliştirebilmeleri için her sabah sağlıklı ve dengeli kahvaltı yapmalarının zorunlu olduğunu düşünmektedir.”
+Neden olamaz?
+Arapçada:
+يُسَاعِدُ = yardımcı olur
+deniyor. “Zorunludur” anlamı yoktur.
+B)
+“Her sabah sağlıklı ve dengeli kahvaltı yapmanın öğrencilerin odaklanmalarını ve akademik performanslarını artırdığı bazı uzmanlar tarafından kesin olarak kanıtlanmıştır.”
+Neden olamaz?
+يَعْتَقِدُ = düşünüyor demektir. “Kesin olarak kanıtlanmıştır” anlamı taşımaz.
+C)
+“Bazı uzmanlar, her sabah sağlıklı ve dengeli kahvaltı yapmanın öğrencilerin daha iyi odaklanmalarına ve akademik performanslarını geliştirmelerine yardımcı olduğunu düşünmektedir.”
+Neden olabilir?
+يَعْتَقِدُ, يُسَاعِدُ عَلَى, odaklanma ve akademik performans unsurlarının tamamı doğru aktarılmıştır.
+D)
+“Bazı uzmanlara göre her sabah sağlıklı ve dengeli kahvaltı yapmak, öğrencilerin akademik performansını geliştirir ancak odaklanma düzeylerini etkilemez.”
+Neden olamaz?
+Arapçada açıkça:
+زِيَادَةِ تَرْكِيزِهِمْ
+“odaklanmalarını artırmak” deniyor.
+E)
+“Bazı uzmanlar, öğrencilerin odaklanma düzeyleri ile akademik performanslarının her sabah sağlıklı ve dengeli kahvaltı yapmalarını kolaylaştırdığını düşünmektedir.”
+Neden olamaz?
+Sebep-sonuç ters çevrilmiştir. Metinde kahvaltı → odaklanma ve akademik performansa yardım ilişkisi vardır.
+Doğru cevap: C
+68. Soru
+1. Aşama — Soru
+يَهْدِفُ الْأَدَبُ فِي جَوْهَرِهِ إِلَى تَصْوِيرِ وَاقِعِ الْمُجْتَمَعِ وَتَسْلِيطِ الضَّوْءِ عَلَى قَضَايَاهُ الْمُخْتَلِفَةِ مِنْ خِلَالِ شَخْصِيَّاتٍ خَيَالِيَّةٍ وَأَحْدَاثٍ دِرَامِيَّةٍ.
+2. Aşama — Analiz
+Cümle, edebiyatın özünde kurgusal karakterler ve dramatik olaylar aracılığıyla toplumun gerçekliğini yansıtmayı ve çeşitli meselelerine ışık tutmayı amaçladığını söylüyor.
+Çözüm için:
+يَهْدِفُ إِلَى = ...i amaçlamak
+تَصْوِيرِ وَاقِعِ الْمُجْتَمَعِ = toplumun gerçekliğini yansıtmak
+تَسْلِيطِ الضَّوْءِ عَلَى = ...e ışık tutmak
+مِنْ خِلَالِ = ...aracılığıyla
+ifadelerine bakacağız.
+A)
+“Edebiyatın temel amacı, kurgusal karakterler ve dramatik olaylar aracılığıyla toplumun çeşitli sorunlarını çözmektir.”
+Neden olamaz?
+تَسْلِيطُ الضَّوْءِ عَلَى = ışık tutmak demektir; “sorunları çözmek” değildir.
+B)
+“Edebiyat, toplumun gerçekliğini kurgusal karakterlere ve dramatik olaylara başvurmadan doğrudan gözlemler yoluyla yansıtmayı amaçlar.”
+Neden olamaz?
+Arapçada tam tersine:
+مِنْ خِلَالِ شَخْصِيَّاتٍ خَيَالِيَّةٍ وَأَحْدَاثٍ دِرَامِيَّةٍ
+“kurgusal karakterler ve dramatik olaylar aracılığıyla” deniyor.
+C)
+“Edebiyat, özünde, kurgusal karakterler ve dramatik olaylar aracılığıyla toplumun gerçekliğini yansıtmayı ve çeşitli meselelerine ışık tutmayı amaçlar.”
+Neden olabilir?
+فِي جَوْهَرِهِ, تَصْوِيرِ وَاقِعِ الْمُجْتَمَعِ, تَسْلِيطِ الضَّوْءِ عَلَى ve مِنْ خِلَالِ yapılarının tümü doğru karşılanmıştır.
+D)
+“Edebiyat, kurgusal karakterler ve dramatik olaylarla toplumun gerçekliğini yansıtmaktan çok bireylerin kişisel deneyimlerini anlatmayı amaçlar.”
+Neden olamaz?
+Arapçada bireylerin kişisel deneyimleri yoktur. Ayrıca “...dan çok” şeklinde bir karşılaştırma da bulunmuyor.
+E)
+“Edebiyat, toplumun çeşitli meselelerinden yararlanarak kurgusal karakterler ve dramatik olaylar oluşturmayı temel amaç edinir.”
+Neden olamaz?
+Anlam yönü ters çevrilmiştir. Metinde kurgusal karakterler ve olaylar, toplumu yansıtmanın aracıdır.
+Doğru cevap: C
+
+
+
+
+69. Soru
+1. Aşama — Soru
+أَدَّتْ جَائِحَةُ كُوفِيد-19 الَّتِي اجْتَاحَتِ الْعَالَمَ إِلَى تَغْيِيرَاتٍ جَذْرِيَّةٍ فِي النِّظَامِ الِاقْتِصَادِيِّ الْعَالَمِيِّ، مِمَّا دَفَعَ شَرِكَاتٍ كَثِيرَةً إِلَى اعْتِمَادِ نِظَامِ الْعَمَلِ عَنْ بُعْدٍ.
+2. Aşama — Analiz
+Cümle, dünyayı etkisi altına alan COVID-19 salgınının küresel ekonomik sistemde köklü değişikliklere yol açtığını ve bunun birçok şirketi uzaktan çalışma sistemini benimsemeye yönelttiğini söylüyor.
+Çözüm için neden-sonuç sırasını korumalıyız:
+جَائِحَةُ كُوفِيد-19
+COVID-19 salgını
+↓
+أَدَّتْ إِلَى تَغْيِيرَاتٍ جَذْرِيَّةٍ
+köklü değişikliklere yol açtı
+↓
+مِمَّا دَفَعَ شَرِكَاتٍ كَثِيرَةً إِلَى...
+bu da birçok şirketi ...e yöneltti
+Yani:
+Salgın → ekonomik değişiklikler → uzaktan çalışma
+A)
+“Dünyayı etkisi altına alan COVID-19 salgını, küresel ekonomik sistemde köklü değişikliklere yol açmış ve bu durum birçok şirketi uzaktan çalışma sistemini benimsemeye yöneltmiştir.”
+Neden olabilir?
+Neden-sonuç sırası ve:
+أَدَّى إِلَى = yol açmak
+دَفَعَ ... إِلَى = ...e yöneltmek
+yapıları tam olarak korunmuştur.
+B)
+“Dünyayı etkisi altına alan COVID-19 salgını, birçok şirketi uzaktan çalışmaya yöneltmiş ve şirketlerin bu tercihi küresel ekonomik sistemde köklü değişikliklere yol açmıştır.”
+Neden olamaz?
+Neden-sonuç sırası ters çevrilmiştir. Metinde ekonomik değişiklikler önce, uzaktan çalışma sonuçtur.
+C)
+“COVID-19 salgınının dünya çapındaki etkileri küresel ekonomik sistemden çok şirketlerin çalışma biçimleriyle sınırlı kalmıştır.”
+Neden olamaz?
+Arapçada küresel ekonomik sistemde:
+تَغْيِيرَاتٍ جَذْرِيَّةً = köklü değişiklikler
+olduğu açıkça söyleniyor.
+
+
+D)
+“COVID-19 salgınının küresel ekonomik sistemde meydana getirdiği köklü değişiklikler, birçok şirketin uzaktan çalışma sisteminden vazgeçmesine neden olmuştur.”
+Neden olamaz?
+Arapçada:
+اعْتِمَادِ نِظَامِ الْعَمَلِ عَنْ بُعْدٍ
+“uzaktan çalışma sistemini benimsemek” deniyor; vazgeçmek değil.
+E)
+“Birçok şirketin COVID-19 salgınından önce uzaktan çalışma sistemini benimsemesi, küresel ekonomik sistemde köklü değişikliklerin ortaya çıkmasına yol açmıştır.”
+Neden olamaz?
+Hem zaman hem neden-sonuç ters çevrilmiştir. Metinde salgın ekonomik değişikliklere, ekonomik değişiklikler de uzaktan çalışmanın benimsenmesine yol açıyor.
+Doğru cevap: A
+
+
+
+
+
+
+
+70. - 75. sorularda, verilen Türkçe cümleye
+anlamca en yakın Arapça cümleyi bulunuz.
+70. Soru  ( bu soru grubunda 1. Aşamada  çözüm için gereklli ifadeleri söylerken Türkçe sorudaki metinde altını çizerek söyleyebilirsin. 
+1. Aşama — Soru
+Küresel ısınmanın etkileri, son yıllarda dünya genelinde yaşanan olağanüstü hava olayları ile daha belirgin hâle gelmiştir.
+2. Aşama — Analiz
+Çözüm için özellikle şu anlamları aramalıyız:
+آثَارُ الِاحْتِبَاسِ الْحَرَارِيِّ = küresel ısınmanın etkileri
+أَصْبَحَتْ أَكْثَرَ وُضُوحًا = daha belirgin hâle geldi
+الظَّوَاهِرُ الْجَوِّيَّةُ الْمُتَطَرِّفَةُ = olağanüstü / aşırı hava olayları
+فِي السَّنَوَاتِ الْأَخِيرَةِ = son yıllarda
+Burada özellikle “hava olayları arttı” denmiyor; bu olaylar sayesinde küresel ısınmanın etkileri daha belirgin hâle geldi deniyor.
+Şıklara bakalım
+A)
+أَدَّتْ آثَارُ الِاحْتِبَاسِ الْحَرَارِيِّ إِلَى زِيَادَةِ عَدَدِ الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ فِي أَنْحَاءِ الْعَالَمِ خِلَالَ السَّنَوَاتِ الْأَخِيرَةِ.
+“Küresel ısınmanın etkileri, son yıllarda dünya genelindeki olağanüstü hava olaylarının sayısının artmasına yol açmıştır.”
+أَدَّى إِلَى = ...e yol açmak
+Neden olamaz?
+Türkçe cümlede olağanüstü hava olaylarının sayısının arttığı söylenmiyor. Asıl ifade, bu olaylarla birlikte küresel ısınmanın etkilerinin daha belirgin hâle gelmesidir. Sebep-sonuç farklılaştırılmıştır.
+B)
+ازْدَادَتْ حِدَّةُ الِاحْتِبَاسِ الْحَرَارِيِّ فِي السَّنَوَاتِ الْأَخِيرَةِ بِسَبَبِ الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ الَّتِي شَهِدَهَا الْعَالَمُ.
+“Dünyanın yaşadığı olağanüstü hava olayları nedeniyle son yıllarda küresel ısınmanın şiddeti artmıştır.”
+بِسَبَبِ = nedeniyle
+Neden olamaz?
+Türkçede “küresel ısınmanın şiddeti arttı” denmiyor; etkileri daha belirgin hâle geldi deniyor. Ayrıca hava olayları küresel ısınmanın şiddetinin nedeni olarak verilmemiştir.
+C)
+أَصْبَحَتْ آثَارُ الِاحْتِبَاسِ الْحَرَارِيِّ أَكْثَرَ وُضُوحًا فِي بَعْضِ مَنَاطِقِ الْعَالَمِ نَتِيجَةَ ارْتِفَاعِ مُتَوَسِّطِ دَرَجَاتِ الْحَرَارَةِ.
+“Küresel ısınmanın etkileri, ortalama sıcaklıkların yükselmesi sonucunda dünyanın bazı bölgelerinde daha belirgin hâle gelmiştir.”
+نَتِيجَةَ = sonucunda
+Neden olamaz?
+Türkçede dünya genelinde yaşanan olağanüstü hava olayları deniyor. Şık bunu bazı bölgeler ve ortalama sıcaklık artışı şeklinde değiştirmiştir.
+D)
+أَصْبَحَتْ آثَارُ الِاحْتِبَاسِ الْحَرَارِيِّ أَكْثَرَ وُضُوحًا مَعَ الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ الَّتِي شَهِدَهَا الْعَالَمُ فِي السَّنَوَاتِ الْأَخِيرَةِ.
+“Küresel ısınmanın etkileri, dünyanın son yıllarda yaşadığı olağanüstü hava olaylarıyla birlikte daha belirgin hâle gelmiştir.”
+Neden olabilir?
+Temel unsurların tamamı doğru karşılanmıştır:
+آثَارُ الِاحْتِبَاسِ الْحَرَارِيِّ = küresel ısınmanın etkileri
+أَكْثَرَ وُضُوحًا = daha belirgin
+مَعَ الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ = olağanüstü hava olaylarıyla birlikte
+فِي السَّنَوَاتِ الْأَخِيرَةِ = son yıllarda
+E)
+ظَلَّتْ آثَارُ الِاحْتِبَاسِ الْحَرَارِيِّ غَيْرَ وَاضِحَةٍ رَغْمَ الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ الَّتِي شَهِدَهَا الْعَالَمُ مُؤَخَّرًا.
+“Küresel ısınmanın etkileri, dünyanın son zamanlarda yaşadığı olağanüstü hava olaylarına rağmen belirsiz kalmıştır.”
+رَغْمَ = ...e rağmen
+Neden olamaz?
+Türkçede etkilerin daha belirgin hâle geldiği söyleniyor. Burada ise belirsiz kaldığı söylenerek anlam tersine çevrilmiştir.
+Doğru cevap: D
+71. Soru
+1. Aşama — Soru
+Modern tıp, hastalıklara karşı geliştirilen aşılar sayesinde milyonlarca insanın hayatını kurtarmayı başarmıştır.
+2. Aşama — Analiz
+Çözüm için:
+الطِّبُّ الْحَدِيثُ = modern tıp
+نَجَحَ فِي = ...mayı başardı
+إِنْقَاذُ حَيَاةِ مَلَايِينِ الْأَشْخَاصِ = milyonlarca insanın hayatını kurtarmak
+بِفَضْلِ = sayesinde
+اللِّقَاحَاتُ الْمُطَوَّرَةُ = geliştirilen aşılar
+ifadelerine bakacağız.
+Harf-i cer / kalıp
+نَجَحَ فِي = ...de başarılı olmak / ...mayı başarmak
+بِفَضْلِ = sayesinde
+Şıklara bakalım
+A)
+نَجَحَ الطِّبُّ الْحَدِيثُ فِي إِنْقَاذِ حَيَاةِ مَلَايِينِ الْأَشْخَاصِ بِفَضْلِ اللِّقَاحَاتِ الْمُطَوَّرَةِ لِلْوِقَايَةِ مِنَ الْأَمْرَاضِ.
+“Modern tıp, hastalıklardan korunmak için geliştirilen aşılar sayesinde milyonlarca insanın hayatını kurtarmayı başarmıştır.”
+Neden olabilir?
+Türkçe cümlenin temel unsurları eksiksizdir:
+نَجَحَ ... فِي = başarmıştır
+إِنْقَاذِ حَيَاةِ = hayatını kurtarmak
+بِفَضْلِ اللِّقَاحَاتِ = aşılar sayesinde
+B)
+نَجَحَ الطِّبُّ الْحَدِيثُ فِي تَطْوِيرِ لِقَاحَاتٍ عَدِيدَةٍ بِهَدَفِ الْحَدِّ مِنِ انْتِشَارِ الْأَمْرَاضِ بَيْنَ مَلَايِينِ الْأَشْخَاصِ.
+“Modern tıp, hastalıkların milyonlarca insan arasında yayılmasını azaltmak amacıyla birçok aşı geliştirmeyi başarmıştır.”
+Neden olamaz?
+Türkçede modern tıbbın başardığı şey aşı geliştirmek değil, aşılar sayesinde milyonlarca insanın hayatını kurtarmaktır.
+C)
+أَسْهَمَتِ اللِّقَاحَاتُ الْمُطَوَّرَةُ ضِدَّ الْأَمْرَاضِ فِي تَحْسِينِ نَوْعِيَّةِ حَيَاةِ مَلَايِينِ الْأَشْخَاصِ.
+“Hastalıklara karşı geliştirilen aşılar, milyonlarca insanın yaşam kalitesinin iyileştirilmesine katkıda bulunmuştur.”
+أَسْهَمَ فِي = katkıda bulunmak
+Neden olamaz?
+Türkçede yaşam kalitesini artırmak değil, hayat kurtarmak anlatılıyor.
+D)
+تَمَكَّنَ مَلَايِينُ الْأَشْخَاصِ مِنْ تَجَنُّبِ الْإِصَابَةِ بِالْأَمْرَاضِ بِفَضْلِ التَّقَدُّمِ الَّذِي أَحْرَزَهُ الطِّبُّ الْحَدِيثُ.
+“Milyonlarca insan, modern tıbbın kaydettiği ilerleme sayesinde hastalıklara yakalanmaktan kaçınabilmiştir.”
+تَمَكَّنَ مِنْ = ...meyi başarmak / yapabilmek
+Neden olamaz?
+Türkçe cümlede hastalığa yakalanmaktan kaçınmak değil, aşılar sayesinde hayatların kurtarılması anlatılıyor.
+E)
+أَدَّى إِنْقَاذُ حَيَاةِ مَلَايِينِ الْأَشْخَاصِ إِلَى تَطْوِيرِ الطِّبِّ الْحَدِيثِ لِقَاحَاتٍ جَدِيدَةً لِلْوِقَايَةِ مِنَ الْأَمْرَاضِ.
+“Milyonlarca insanın hayatının kurtarılması, modern tıbbın hastalıklardan korunmak için yeni aşılar geliştirmesine yol açmıştır.”
+Neden olamaz?
+Sebep-sonuç ters çevrilmiştir. Türkçede aşılar → insanların hayatının kurtarılması ilişkisi vardır.
+Doğru cevap: A
+
+
+
+72. Soru
+1. Aşama — Soru
+Bazı araştırmacılar, düzenli fiziksel egzersizin beyin fonksiyonlarını güçlendirdiğini ve yaşlanmayı yavaşlattığını savunmaktadır.
+2. Aşama — Analiz
+Çözüm için:
+بَعْضُ الْبَاحِثِينَ = bazı araştırmacılar
+يَذْهَبُ ... إِلَى أَنَّ = ... görüşündedir / savunmaktadır
+مُمَارَسَةُ التَّمَارِينِ الْبَدَنِيَّةِ بِانْتِظَامٍ = düzenli fiziksel egzersiz yapmak
+تُعَزِّزُ وَظَائِفَ الدِّمَاغِ = beyin fonksiyonlarını güçlendirir
+تُبَطِّئُ عَمَلِيَّةَ الشَّيْخُوخَةِ = yaşlanma sürecini yavaşlatır
+ifadelerini arıyoruz.
+Şıklara bakalım
+A)
+يُؤَكِّدُ بَعْضُ الْبَاحِثِينَ أَنَّ مُمَارَسَةَ التَّمَارِينِ الْبَدَنِيَّةِ بِانْتِظَامٍ تَمْنَعُ الشَّيْخُوخَةَ وَتُحَافِظُ عَلَى وَظَائِفِ الدِّمَاغِ.
+“Bazı araştırmacılar, düzenli fiziksel egzersizin yaşlanmayı engellediğini ve beyin fonksiyonlarını koruduğunu kesin biçimde belirtmektedir.”
+Neden olamaz?
+Türkçede yaşlanmayı yavaşlatır deniyor; تَمْنَعُ الشَّيْخُوخَةَ = yaşlanmayı engeller çok daha kesin ve farklıdır. Ayrıca savunmaktadır ifadesi يُؤَكِّدُ ile gereğinden daha kesinleştirilmiştir.
+B)
+يَرَى بَعْضُ الْبَاحِثِينَ أَنَّ قُوَّةَ وَظَائِفِ الدِّمَاغِ تَتَوَقَّفُ كُلِّيًّا عَلَى مُمَارَسَةِ التَّمَارِينِ الْبَدَنِيَّةِ بِانْتِظَامٍ.
+“Bazı araştırmacılar, beyin fonksiyonlarının gücünün tamamen düzenli fiziksel egzersiz yapmaya bağlı olduğunu düşünmektedir.”
+تَوَقَّفَ عَلَى = ...e bağlı olmak
+Neden olamaz?
+Türkçede beyin fonksiyonlarının tamamen egzersize bağlı olduğu söylenmiyor; yalnızca egzersizin bu fonksiyonları güçlendirdiği belirtiliyor. Yaşlanmayı yavaşlatma da eksiktir.
+C)
+يَذْهَبُ بَعْضُ الْبَاحِثِينَ إِلَى أَنَّ مُمَارَسَةَ التَّمَارِينِ الْبَدَنِيَّةِ بِانْتِظَامٍ تُعَزِّزُ وَظَائِفَ الدِّمَاغِ وَتُبَطِّئُ عَمَلِيَّةَ الشَّيْخُوخَةِ.
+“Bazı araştırmacılar, düzenli fiziksel egzersiz yapmanın beyin fonksiyonlarını güçlendirdiğini ve yaşlanma sürecini yavaşlattığını savunmaktadır.”
+Neden olabilir?
+Bütün temel anlamlar tam karşılanmıştır:
+يَذْهَبُ ... إِلَى أَنَّ = savunmaktadır / görüşündedir
+تُعَزِّزُ = güçlendirir
+تُبَطِّئُ = yavaşlatır
+D)
+يَنْصَحُ بَعْضُ الْبَاحِثِينَ بِمُمَارَسَةِ التَّمَارِينِ الْبَدَنِيَّةِ بِانْتِظَامٍ لِلتَّخْفِيفِ مِنَ الْآثَارِ النَّفْسِيَّةِ الْمُصَاحِبَةِ لِلشَّيْخُوخَةِ.
+“Bazı araştırmacılar yaşlanmaya eşlik eden psikolojik etkileri azaltmak için düzenli fiziksel egzersiz yapılmasını tavsiye etmektedir.”
+نَصَحَ بِـ = ...yi tavsiye etmek
+Neden olamaz?
+Türkçede bir tavsiye yoktur. Ayrıca psikolojik etkilerden değil, beyin fonksiyonları ve yaşlanmanın yavaşlamasından söz edilmektedir.
+E)
+أَثْبَتَ بَعْضُ الْبَاحِثِينَ أَنَّ التَّمَارِينَ الْبَدَنِيَّةَ الْمُنْتَظِمَةَ تُؤَخِّرُ ظُهُورَ عَلَامَاتِ الشَّيْخُوخَةِ لَدَى جَمِيعِ الْأَشْخَاصِ.
+“Bazı araştırmacılar, düzenli fiziksel egzersizin bütün insanlarda yaşlanma belirtilerinin ortaya çıkmasını geciktirdiğini kanıtlamıştır.”
+Neden olamaz?
+Türkçedeki “savunmaktadır”, burada أَثْبَتَ = kanıtladı şeklinde kesinleştirilmiştir. Ayrıca جَمِيعِ الْأَشْخَاصِ = bütün insanlar ifadesi Türkçede yoktur ve beyin fonksiyonları da eksiktir.
+Doğru cevap: C
+
+
+
+
+
+73. Soru
+1. Aşama — Soru
+Gelişmekte olan ülkeler, ekonomik büyümeyi sağlamak için yabancı yatırımları teşvik etmeye çalışmaktadır.
+2. Aşama — Analiz
+Çözüm için:
+الدُّوَلُ النَّامِيَةُ = gelişmekte olan ülkeler
+تُحَاوِلُ = çalışmaktadır
+تَشْجِيعُ الِاسْتِثْمَارَاتِ الْأَجْنَبِيَّةِ = yabancı yatırımları teşvik etmek
+مِنْ أَجْلِ تَحْقِيقِ النُّمُوِّ الِاقْتِصَادِيِّ = ekonomik büyümeyi sağlamak için
+ifadelerine bakmalıyız.
+Şıklara bakalım
+A)
+تَسْعَى الدُّوَلُ النَّامِيَةُ إِلَى جَذْبِ الِاسْتِثْمَارَاتِ الْأَجْنَبِيَّةِ لِضَمَانِ نُمُوٍّ اقْتِصَادِيٍّ مُسْتَقِرٍّ عَلَى الْمَدَى الطَّوِيلِ.
+“Gelişmekte olan ülkeler, uzun vadede istikrarlı bir ekonomik büyümeyi garanti etmek için yabancı yatırımları çekmeye çalışmaktadır.”
+سَعَى إِلَى = ...meye çalışmak / çabalamak
+Neden olamaz?
+Anlam yakın olsa da Türkçede uzun vadede, istikrarlı ve garanti etmek anlamları yoktur. Cümleye ek bilgi katılmıştır.
+B)
+تُحَاوِلُ الدُّوَلُ النَّامِيَةُ تَشْجِيعَ الِاسْتِثْمَارَاتِ الْأَجْنَبِيَّةِ مِنْ أَجْلِ تَحْقِيقِ النُّمُوِّ الِاقْتِصَادِيِّ.
+“Gelişmekte olan ülkeler, ekonomik büyümeyi gerçekleştirmek için yabancı yatırımları teşvik etmeye çalışmaktadır.”
+Neden olabilir?
+Cümle doğrudan karşılanmıştır:
+تُحَاوِلُ = çalışmaktadır
+تَشْجِيعَ الِاسْتِثْمَارَاتِ الْأَجْنَبِيَّةِ = yabancı yatırımları teşvik etmek
+مِنْ أَجْلِ تَحْقِيقِ النُّمُوِّ الِاقْتِصَادِيِّ = ekonomik büyümeyi sağlamak için
+C)
+تَعْمَلُ الدُّوَلُ النَّامِيَةُ عَلَى تَشْجِيعِ الِاسْتِثْمَارَاتِ الْمَحَلِّيَّةِ لِحِمَايَةِ اقْتِصَادَاتِهَا مِنَ الْمُنَافَسَةِ الْأَجْنَبِيَّةِ.
+“Gelişmekte olan ülkeler ekonomilerini yabancı rekabetten korumak için yerli yatırımları teşvik etmeye çalışmaktadır.”
+عَمِلَ عَلَى = ...meye çalışmak
+Neden olamaz?
+Türkçede yabancı yatırımlar var; burada الِاسْتِثْمَارَاتِ الْمَحَلِّيَّةِ = yerli yatırımlar denmiştir. Amaç da ekonomik büyümeden yabancı rekabetten korunmaya çevrilmiştir.
+D)
+تُشَجِّعُ الدُّوَلُ الْمُتَقَدِّمَةُ الِاسْتِثْمَارَاتِ الْأَجْنَبِيَّةَ بِهَدَفِ دَعْمِ النُّمُوِّ الِاقْتِصَادِيِّ فِي الدُّوَلِ النَّامِيَةِ.
+“Gelişmiş ülkeler, gelişmekte olan ülkelerde ekonomik büyümeyi desteklemek amacıyla yabancı yatırımları teşvik etmektedir.”
+Neden olamaz?
+Türkçede özne gelişmekte olan ülkelerdir. Şıkta özne gelişmiş ülkeler yapılmıştır.
+E)
+تُحَاوِلُ الدُّوَلُ النَّامِيَةُ تَحْقِيقَ النُّمُوِّ الِاقْتِصَادِيِّ بَعْدَ تَرَاجُعِ حَجْمِ الِاسْتِثْمَارَاتِ الْأَجْنَبِيَّةِ فِيهَا.
+“Gelişmekte olan ülkeler, yabancı yatırımların hacminin azalmasından sonra ekonomik büyümeyi sağlamaya çalışmaktadır.”
+Neden olamaz?
+Türkçe cümlede yabancı yatırımların azaldığına dair bilgi yoktur. Ayrıca yabancı yatırımları teşvik etme anlamı kaybolmuştur.
+Doğru cevap: B
+74. Soru
+1. Aşama — Soru
+Sanat, toplumların kültürel değerlerini yansıtan ve nesilden nesile aktaran en önemli araçlardan biridir.
+2. Aşama — Analiz
+Çözüm için üç nokta çok önemli:
+مِنْ أَهَمِّ الْوَسَائِلِ = en önemli araçlardan biri
+تَعْكِسُ الْقِيَمَ الثَّقَافِيَّةَ = kültürel değerleri yansıtır
+تَنْقُلُهَا مِنْ جِيلٍ إِلَى جِيلٍ = onları nesilden nesile aktarır
+Özellikle “en önemli araç” ile “en önemli araçlardan biri” aynı değildir.
+Şıklara bakalım
+A)
+يُعَدُّ الْفَنُّ أَهَمَّ وَسِيلَةٍ تَسْتَخْدِمُهَا الْمُجْتَمَعَاتُ لِلتَّعْبِيرِ عَنْ قِيَمِهَا الثَّقَافِيَّةِ وَنَقْلِهَا إِلَى الْأَجْيَالِ الْقَادِمَةِ.
+“Sanat, toplumların kültürel değerlerini ifade etmek ve gelecek nesillere aktarmak için kullandıkları en önemli araçtır.”
+Neden olamaz?
+Türkçede “en önemli araçlardan biri” deniyor. Burada أَهَمَّ وَسِيلَةٍ = en önemli araç denerek tekleştirilmiştir. Ayrıca “yansıtmak” yerine daha genel ifade etmek kullanılmıştır.
+B)
+يَقْتَصِرُ دَوْرُ الْفَنِّ عَلَى نَقْلِ الْقِيَمِ الثَّقَافِيَّةِ لِلْمُجْتَمَعَاتِ مِنْ جِيلٍ إِلَى آخَرَ مِنْ دُونِ التَّعْبِيرِ عَنْهَا.
+“Sanatın rolü, toplumların kültürel değerlerini ifade etmeden yalnızca nesilden nesile aktarmakla sınırlıdır.”
+اِقْتَصَرَ عَلَى = ...ile sınırlı olmak
+Neden olamaz?
+Türkçede sanatın iki görevi birlikte var: yansıtmak ve aktarmak. Şık ise rolünü yalnızca aktarmakla sınırlandırmıştır.
+
+C)
+يُسْهِمُ الْفَنُّ فِي تَكْوِينِ الْقِيَمِ الثَّقَافِيَّةِ الْجَدِيدَةِ لِلْمُجْتَمَعَاتِ بَدَلًا مِنْ نَقْلِ الْقِيَمِ الْمَوْرُوثَةِ بَيْنَ الْأَجْيَالِ.
+“Sanat, kuşaklar arasında miras kalan değerleri aktarmak yerine toplumlarda yeni kültürel değerlerin oluşmasına katkıda bulunur.”
+بَدَلًا مِنْ = ...yerine
+Neden olamaz?
+Türkçede sanatın mevcut kültürel değerleri yansıttığı ve aktardığı söyleniyor. Burada bunun yerine yeni değerler oluşturduğu ifade edilmiştir.
+D)
+يُعَدُّ الْفَنُّ مِنْ أَهَمِّ الْوَسَائِلِ الَّتِي تَعْكِسُ الْقِيَمَ الثَّقَافِيَّةَ لِلْمُجْتَمَعَاتِ وَتَنْقُلُهَا مِنْ جِيلٍ إِلَى جِيلٍ.
+“Sanat, toplumların kültürel değerlerini yansıtan ve onları nesilden nesile aktaran en önemli araçlardan biri sayılır.”
+Neden olabilir?
+Cümlenin üç temel unsuru da tamdır:
+مِنْ أَهَمِّ الْوَسَائِلِ = en önemli araçlardan biri
+تَعْكِسُ = yansıtır
+تَنْقُلُهَا مِنْ جِيلٍ إِلَى جِيلٍ = nesilden nesile aktarır
+E)
+يُعَدُّ الْفَنُّ وَسِيلَةً أَسَاسِيَّةً لِنَقْلِ الْقِيَمِ الْفَنِّيَّةِ لِلْمُجْتَمَعَاتِ وَالتَّعْرِيفِ بِهَا لَدَى الشُّعُوبِ الْأُخْرَى.
+“Sanat, toplumların sanatsal değerlerini aktarmanın ve bunları diğer halklara tanıtmanın temel bir aracıdır.”
+Neden olamaz?
+Türkçede kültürel değerler deniyor; burada sanatsal değerler denmiştir. Ayrıca “diğer halklara tanıtmak” bilgisi Türkçe cümlede yoktur.
+Doğru cevap: D
+
+75. Soru
+1. Aşama — Soru
+Yapay zekâ teknolojileri, birçok sektörde verimliliği artırmak ve maliyetleri düşürmek amacıyla yaygın bir şekilde kullanılmaktadır.
+2. Aşama — Analiz
+Çözüm için:
+تِقْنِيَاتُ الذَّكَاءِ الِاصْطِنَاعِيِّ = yapay zekâ teknolojileri
+عَلَى نِطَاقٍ وَاسِعٍ = yaygın bir şekilde
+فِي قِطَاعَاتٍ عَدِيدَةٍ = birçok sektörde
+رَفْعُ الْكَفَاءَةِ = verimliliği artırmak
+خَفْضُ التَّكَالِيفِ = maliyetleri düşürmek
+ifadelerini arıyoruz.
+Şıklara bakalım 
+A)
+تُسْتَخْدَمُ تِقْنِيَاتُ الذَّكَاءِ الِاصْطِنَاعِيِّ فِي قِطَاعَاتٍ مَحْدُودَةٍ بِهَدَفِ تَحْسِينِ جَوْدَةِ الْمُنْتَجَاتِ وَتَقْلِيلِ وَقْتِ الْإِنْتَاجِ.
+“Yapay zekâ teknolojileri sınırlı sayıda sektörde ürün kalitesini artırmak ve üretim süresini azaltmak amacıyla kullanılmaktadır.”
+Neden olamaz?
+Türkçede birçok sektörde ve yaygın biçimde deniyor; burada قِطَاعَاتٍ مَحْدُودَةٍ = sınırlı sektörler denmiştir. Amaçlar da “verimlilik ve maliyet” yerine “ürün kalitesi ve üretim süresi” olarak değiştirilmiştir.
+B)
+تَعْتَمِدُ قِطَاعَاتٌ عَدِيدَةٌ عَلَى تِقْنِيَاتِ الذَّكَاءِ الِاصْطِنَاعِيِّ لِلِاسْتِغْنَاءِ عَنِ الْعَامِلِينَ وَخَفْضِ تَكَالِيفِ الْأُجُورِ.
+“Birçok sektör, çalışanlara ihtiyaç duymamak ve ücret maliyetlerini düşürmek için yapay zekâ teknolojilerine dayanmaktadır.”
+اِعْتَمَدَ عَلَى = ...e dayanmak
+الِاسْتِغْنَاءُ عَنْ = ...den vazgeçmek / ihtiyaç duymamak
+Neden olamaz?
+Türkçede amaç verimliliği artırmak ve genel maliyetleri düşürmektir. Çalışanları ortadan kaldırmak veya yalnızca ücret maliyetlerini düşürmek söylenmemiştir.
+C)
+تُسْتَخْدَمُ تِقْنِيَاتُ الذَّكَاءِ الِاصْطِنَاعِيِّ عَلَى نِطَاقٍ وَاسِعٍ فِي قِطَاعَاتٍ عَدِيدَةٍ بِهَدَفِ رَفْعِ الْكَفَاءَةِ وَخَفْضِ التَّكَالِيفِ.
+“Yapay zekâ teknolojileri, verimliliği artırmak ve maliyetleri düşürmek amacıyla birçok sektörde yaygın biçimde kullanılmaktadır.”
+Neden olabilir?
+Bütün temel ifadeler birebir karşılanmıştır:
+عَلَى نِطَاقٍ وَاسِعٍ = yaygın bir şekilde
+فِي قِطَاعَاتٍ عَدِيدَةٍ = birçok sektörde
+رَفْعِ الْكَفَاءَةِ = verimliliği artırmak
+خَفْضِ التَّكَالِيفِ = maliyetleri düşürmek
+D)
+أَدَّى اسْتِخْدَامُ تِقْنِيَاتِ الذَّكَاءِ الِاصْطِنَاعِيِّ إِلَى رَفْعِ الْكَفَاءَةِ وَخَفْضِ التَّكَالِيفِ فِي جَمِيعِ الْقِطَاعَاتِ.
+“Yapay zekâ teknolojilerinin kullanımı bütün sektörlerde verimliliği artırmış ve maliyetleri düşürmüştür.”
+Neden olamaz?
+Türkçede bunlar kullanımın amacıdır:
+“... artırmak ve ... düşürmek amacıyla”
+Şıkta ise gerçekleşmiş sonuç olarak verilmiştir. Ayrıca جَمِيعِ الْقِطَاعَاتِ = bütün sektörler ifadesi de Türkçedeki “birçok sektör”den farklıdır.
+E)
+يَقْتَصِرُ اسْتِخْدَامُ تِقْنِيَاتِ الذَّكَاءِ الِاصْطِنَاعِيِّ عَلَى الْقِطَاعَاتِ الَّتِي تَسْعَى إِلَى زِيَادَةِ الْإِنْتَاجِ وَتَقْلِيلِ عَدَدِ الْمُوَظَّفِينَ.
+“Yapay zekâ teknolojilerinin kullanımı, üretimi artırmayı ve çalışan sayısını azaltmayı amaçlayan sektörlerle sınırlıdır.”
+اِقْتَصَرَ عَلَى = ...ile sınırlı olmak
+Neden olamaz?
+Türkçe cümlede kullanımın belirli sektörlerle sınırlı olduğu söylenmiyor. Ayrıca “çalışan sayısını azaltmak” da verilen amaçlardan biri değildir.
+Doğru cevap: C

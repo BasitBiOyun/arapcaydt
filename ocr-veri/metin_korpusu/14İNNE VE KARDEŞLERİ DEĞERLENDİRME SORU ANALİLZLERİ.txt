@@ -1,0 +1,199 @@
+İNNE VE KARDEŞLERİ DEĞERLENDİRME SORU ANALİLZLERİ
+1. Soru
+---- الْحِوَارَ بَيْنَ الثَّقَافَاتِ ضَرُورِيٌّ لِبِنَاءِ مُجْتَمَعٍ مُتَفَاهِمٍ.
+Anlamı:
+“Kültürler arasındaki diyalog, birbirini anlayan bir toplum inşa etmek için gereklidir.”
+Açıklama:
+Boşluk cümlenin başındadır ve öncesinde bağlanacağı bir fiil veya ifade yoktur. الْحِوَارَ mansûb gelmiştir. Burada inne ve kardeşlerinden, ismini nasb eden ve anlam bakımından cümledeki hükmü pekiştiren bir harf gereklidir.
+Şıklara bakalım:
+A) أَنَّ → “... olduğunu” anlamı verir; genellikle önceki bir yapıya bağlanır . ❌
+B) لَكِنَّ → “fakat” anlamında karşıtlık bildirir; öncesinde karşıtlık yoktur. ❌
+C) إِنَّ → cümle başında tekit bildirir. Hem gramer hem anlam bakımından uygundur. ✅
+D) لَيْتَ → “keşke” anlamında temenni bildirir. ❌
+E) كَأَنَّ → “sanki” anlamında benzetme bildirir. ❌
+Doğru cevap: C) إِنَّ
+2. Soru
+أَثْبَتَتِ التَّجْرِبَةُ ---- التَّدْرِيبَ الْمُنْتَظِمَ يُحَسِّنُ أَدَاءَ الطُّلَّابِ.
+Anlamı:
+“Deney, düzenli eğitimin öğrencilerin performansını geliştirir---- kanıtladı.”
+Açıklama:
+Boşluk cümlenin ortasındadır ve öncesinde أَثْبَتَتِ التَّجْرِبَةُ “deney kanıtladı” ifadesi vardır. Sonraki cümle neyin kanıtlandığını açıklamaktadır. Bu nedenle önceki fiile bağlanarak “... olduğunu” anlamı veren bir harf gerekir.
+Şıklara bakalım:
+A) أَنَّ → önceki fiile bağlanarak “... olduğunu” anlamını verir. Uygundur. ✅
+B) إِنَّ → daha çok cümle başında tekit için kullanılır. ❌
+C) لَعَلَّ → umut/ihtimal bildirir. ❌
+D) لَيْتَ → temenni bildirir. ❌
+E) كَأَنَّ → benzetme bildirir. ❌
+Doğru cevap: A) أَنَّ
+3. Soru
+بَدَا الْقَمَرُ فَوْقَ الْبَحْرِ ---- مِصْبَاحٌ مُعَلَّقٌ فِي السَّمَاءِ.
+Anlamı:
+“Ay, denizin üzerinde gökyüzünde asılı bir lamba --- göründü.”
+Açıklama:
+Burada الْقَمَرُ “ay” ile مِصْبَاحٌ مُعَلَّقٌ “asılı bir lamba” arasında benzetme yapılmaktadır. Dolayısıyla boşlukta “sanki, âdeta” anlamı veren bir yapı gerekir.
+Şıklara bakalım:
+A) لَكِنَّهُ → “fakat o”; karşıtlık bildirir. ❌
+B) أَنَّهُ → “onun ... olduğunu”; benzetme bildirmez. ❌
+C) لَعَلَّهُ → “belki o”; ihtimal bildirir. ❌
+D) لَيْتَهُ → “keşke o”; temenni bildirir. ❌
+E) كَأَنَّهُ → “sanki o”; benzetme bildirir. ✅
+Doğru cevap: E) كَأَنَّهُ
+4. Soru
+كَانَتِ الْمُحَاضَرَةُ قَصِيرَةً، ---- أَثَرَهَا فِي الطُّلَّابِ عَمِيقٌ.
+Anlamı:
+“Konferans kısaydı ---- öğrenciler üzerindeki etkisi derindi.”
+Açıklama:
+İlk bölümde konferansın kısa, ikinci bölümde ise etkisinin derin olduğu belirtilmiştir. İki yargı arasında karşıtlık vardır. Bu nedenle “fakat, ancak” anlamı veren bir harf gerekir.
+Şıklara bakalım:
+A) كَأَنَّ → benzetme bildirir. ❌
+B) لَكِنَّ → “fakat”; karşıtlık anlamını doğru kurar. ✅
+C) لَعَلَّ → umut/ihtimal bildirir. ❌
+D) أَنَّ → “... olduğunu” anlamı verir. ❌
+E) لَيْتَ → temenni bildirir. ❌
+Doğru cevap: B) لَكِنَّ
+5. Soru
+قَالَ الرَّجُلُ بَعْدَ أَنْ تَقَدَّمَ بِهِ الْعُمْرُ: ---- الشَّبَابَ يَعُودُ يَوْمًا.
+Anlamı:
+“Adam yaşlandıktan sonra, ‘------ gençlik bir gün geri dönse.’ dedi.”
+Açıklama:
+Konuşan kişi yaşlanmıştır ve geçmişte kalan gençliğinin geri dönmesini istemektedir. Burada gerçekleşmesi mümkün olmayan veya çok zor olan bir durum için temenni söz konusudur.
+Şıklara bakalım:
+A) لَعَلَّ → umut veya ihtimal bildirir umulur ki anlamına gelir anlam olarak uygun gibi görünsede cümlede gerçekleşmesi mümkün olmayan bir durumdan bahsedildiği için uygun değildir. ❌
+B) إِنَّ → tekit bildirir. ❌
+C) كَأَنَّ → benzetme bildirir. ❌
+D) لَيْتَ → “keşke”; temenni bildirir ve olması mümkün olmayan ya da zor olan durumlar için kullanılır. olabilir. ✅
+E) لَكِنَّ → karşıtlık bildirir. ❌
+Doğru cevap: D) لَيْتَ
+
+6. Soru
+تَأَخَّرَتِ الْغُيُومُ عَنِ الْمَدِينَةِ، وَلَكِنَّ النَّاسَ مَا زَالُوا يَنْتَظِرُونَ؛ ---- الْمَطَرَ قَرِيبٌ.
+Anlamı:
+“Bulutlar şehre gelmekte gecikti ancak insanlar hâlâ bekliyorlar; ------- yağmur yakındır.”
+Açıklama:
+İnsanların hâlâ beklemesi, yağmurun yaklaşmış olabileceğine dair bir umut ve beklenti bulunduğunu göstermektedir. 
+Şıklara bakalım:
+A) لَعَلَّ → umut/beklenti ve ihtimal bildirir. Uygundur. ✅
+B) لَيْتَ → gerçekleşmesi zor bir temenni bildirir. ❌
+C) إِنَّ → kesinlik ve tekit bildirir. ❌
+D) أَنَّ → önceki bir yapıya bağlanarak “... olduğunu” anlamı verir. ❌
+E) كَأَنَّ → benzetme bildirir. ❌
+Doğru cevap: A) لَعَلَّ
+7. Soru
+قَالَ الْمُؤَرِّخُ فِي نِهَايَةِ الْوَثِيقَةِ: ---- الْعَدْلَ أَسَاسُ عُمْرَانِ الدُّوَلِ.
+Anlamı:
+“Tarihçi belgenin sonunda şöyle dedi: Şüphesiz adalet, devletlerin gelişmesinin temelidir.”
+Açıklama:
+İki noktadan sonra yeni ve bağımsız bir cümle başlamaktadır. Tarihçi bir hükmü güçlü ve kesin biçimde ifade etmektedir. Bu nedenle cümle başında tekit bildiren bir harf gerekir.
+Şıklara bakalım:
+A) أَنَّ → genellikle önceki bir yapıya bağlanır. ❌
+B) لَعَلَّ → ihtimal/umut bildirir. ❌
+C) كَأَنَّ → benzetme bildirir. ❌
+D) لَكِنَّ → karşıtlık bildirir. ❌
+E) إِنَّ → bağımsız cümle başında tekit bildirir, ayrıca cümlenin en başında bulunan قَالَ fiilinden sonra cümle ortasındaki gelen diğer cümlenin başında yer alabilir. ✅
+Doğru cevap: E) إِنَّ
+
+8. Soru
+رَأَى الْمُرَاسِلُ الْأَطْفَالَ فِي الْمَلْجَإِ وَ---- يَرْسُمُونَ عَلَى الْجِدَارِ بِهُدُوءٍ.
+Anlamı:
+“Muhabir sığınaktaki çocukları gördü ve onlar sessizce duvara resim çiziyorlardı.”
+Açıklama:
+Boşluktan önce وَ atıf harfi bulunmaktadır. Burada ilk cümleden sonra çocukların içinde bulunduğu durum, yeni ve bağımsız bir cümle olarak aktarılmaktadır. Çocukların gerçekten resim çizdiği ifade edildiği için benzetme, temenni veya ihtimal değil; mevcut durumu pekiştirerek bildiren bir yapı gerekir.
+Şıklara bakalım:
+A) أَنَّهُمْ → “onların ... olduğunu” anlamı verir ve genellikle kendisinden önceki bir fiile bağlı olarak kullanılır. Burada وَأَنَّهُمْ yapısını gerektirecek önceki paralel bir أَنَّ yapısı bulunmamaktadır. ❌
+B) لَعَلَّهُمْ → “belki onlar” anlamında ihtimal veya beklenti bildirir. Çocukların yaptığı eylem doğrudan görüldüğü için uygun değildir. ❌
+C) إِنَّهُمْ → “şüphesiz/onlar gerçekten...” anlamında yeni bir isim cümlesi başlatır. وَإِنَّهُمْ يَرْسُمُونَ yapısı, çocukların durumunu pekiştirerek bildirir. ✅
+D) كَأَنَّهُمْ → “sanki onlar resim çiziyorlar” anlamı verir. Oysa muhabir çocukların gerçekten resim çizdiğini görmektedir; benzetme veya varsayım anlamı uygun değildir. ❌
+E) لَيْتَهُمْ → “keşke onlar...” anlamında temenni bildirir. Bağlama uygun değildir. ❌
+Doğru cevap: C) إِنَّهُمْ
+9. Soru
+وَاللَّهِ، ---- مُسَاعَدَةَ الْمُحْتَاجِينَ وَاجِبٌ لَا يَحْتَاجُ إِلَى تَرَدُّدٍ.
+Anlamı:
+“Allah'a yemin olsun ki muhtaçlara yardım etmek, tereddüt gerektirmeyen bir görevdir.”
+Açıklama:
+Cümle وَاللَّهِ şeklinde bir yemin ile başlamaktadır. Yeminden sonra güçlü ve kesin bir hüküm verilmektedir. Bu nedenle anlamı pekiştiren bir harf aranmalıdır.
+Şıklara bakalım:
+A) أَنَّ → önceki bir fiile veya yapıya bağlanması beklenir. ❌
+B) إِنَّ → cümle başında tekit bildirir ve yeminle uyumludur. ✅
+C) لَيْتَ → temenni bildirir. ❌
+D) لَكِنَّ → karşıtlık bildirir. ❌
+E) كَأَنَّ → benzetme bildirir. ❌
+Doğru cevap: B) إِنَّ
+10. Soru
+ذَكَرَ التَّقْرِيرُ الطِّبِّيُّ ---- نَتَائِجَ الدِّرَاسَةِ مُهِمَّةٌ لِلْبَاحِثِينَ.
+Anlamı:
+“Tıbbi rapor, araştırmanın sonuçlarının araştırmacılar için önemli -------- belirtti.”
+Açıklama:
+Boşluk cümlenin ortasındadır ve öncesinde ذَكَرَ “belirtti” fiili bulunmaktadır. Sonraki cümle neyin belirtildiğini açıklamaktadır. Dolayısıyla “... olduğunu” anlamıyla önceki fiile bağlanan bir harf gerekir.
+Şıklara bakalım:
+A) إِنَّ → daha çok bağımsız cümle başında tekit bildirir. ❌
+B) كَأَنَّ → benzetme bildirir. ❌
+C) لَعَلَّ → ihtimal/umut bildirir. ❌
+D) أَنَّ → önceki fiile bağlanarak “... olduğunu” anlamını verir. ✅
+E) لَيْتَ → temenni bildirir. ❌
+Doğru cevap: D) أَنَّ
+11. Soru
+لَا تُقِمِ الْمُخَيَّمَ حَيْثُ ---- الْأَرْضَ رَخْوَةٌ بَعْدَ الْمَطَرِ.
+Anlamı:
+“Yağmurdan sonra toprağın yumuşak olduğu yerde kamp kurma.”
+Açıklama:
+Burada حَيْثُ mekân zarfıdır ve kendisinden sonra gelen bir cümleye muzaf olabilir. حَيْثُ sonrasında إِنَّ ile başlayan isim cümlesi gelebilir. Bu durumda إِنَّ’nin hemzesi kesralı yazılır. 
+Şıklara bakalım:
+A) إِنَّ → حَيْثُ إِنَّ yapısı nahiv bakımından uygundur. الْأَرْضَ, إِنَّ’nin ismi olarak mansûb; رَخْوَةٌ ise haberi olarak merfûdur. ✅
+B) أَنَّ → hemzesi fethalıdır. جمهور النحاة anlayışına göre حَيْثُ sonrasında esas ve fasih kullanım إِنَّ şeklindedir. ❌
+C) لَيْتَ → “keşke” anlamında temenni bildirir; bağlama uygun değildir. ❌
+D) كَأَنَّ → “sanki” anlamında benzetme bildirir; burada benzetme yoktur. ❌
+E) لَكِنَّ → “fakat” anlamında karşıtlık gerektirir; bağlama uygun değildir. ❌
+Doğru cevap: A) إِنَّ
+12. Soru
+لَا تَتَسَرَّعْ فِي تَصْدِيقِ الْخَبَرِ؛ ---- الْمَصْدَرَ غَيْرُ مَوْثُوقٍ.
+Anlamı:
+“Haberi doğrulamakta acele etme; ----- kaynak güvenilir değildir.”
+Açıklama:
+İlk bölümde haberin hemen doğrulanmaması istenmektedir. İkinci bölümde kaynağın güvenilir olmayabileceğine ilişkin ihtimal ifade edilmektedir. Verilen seçenekler içinde bu ihtimali karşılayacak bir harf aranmalıdır.
+Şıklara bakalım:
+A) لَيْتَ → temenni bildirir. ❌
+B) كَأَنَّ → benzetme bildirir. ❌
+C) لَعَلَّ → ihtimal bildirir; “belki kaynak güvenilir değildir” anlamını verir. ✅
+D) أَنَّ → önceki bir fiile/yapıya bağlanması gerekir. ❌
+E) لَكِنَّ → karşıtlık bildirir. ❌
+Doğru cevap: C) لَعَلَّ
+
+13. Soru
+بِسَبَبِ الْجَفَافِ، بَدَتِ الْأَرْضُ ---- صَفْحَةٌ بَيْضَاءُ خَالِيَةٌ مِنَ الْحَيَاةِ.
+Anlamı:
+“Kuraklık nedeniyle toprak, hayattan yoksun beyaz bir sayfa -------- göründü.”
+Açıklama:
+Burada الْأَرْضُ “toprak” ile صَفْحَةٌ بَيْضَاءُ “beyaz bir sayfa” arasında açık bir benzetme yapılmaktadır. Bu nedenle “sanki, âdeta” anlamı veren bir yapı gerekir.
+Şıklara bakalım:
+A) لَكِنَّهَا → “fakat o”; karşıtlık bildirir. ❌
+B) أَنَّهَا → “onun ... olduğunu”; benzetme bildirmez. ❌
+C) إِنَّهَا → tekit bildirir. ❌
+D) لَعَلَّهَا → “belki o”; ihtimal bildirir. ❌
+E) كَأَنَّهَا → “sanki o”; benzetme bildirir. ✅
+Doğru cevap: E) كَأَنَّهَا
+14. Soru
+سَمِعْتُ فِي النَّشْرَةِ ---- دَرَجَاتِ الْحَرَارَةِ سَتَنْخَفِضُ لَيْلًا.
+Anlamı:
+“Haber bülteninde sıcaklıkların gece düşecek------- duydum.”
+Açıklama:
+Boşluk cümlenin ortasındadır ve öncesinde سَمِعْتُ “duydum” fiili vardır. Sonraki cümle neyin duyulduğunu açıklamaktadır. Dolayısıyla önceki fiile bağlanarak “... olduğunu / ...acağını” anlamı veren bir harf gerekir.
+Şıklara bakalım:
+A) إِنَّ → bağımsız cümle başında tekit kullanımına daha uygundur. ❌
+B) أَنَّ → سَمِعْتُ أَنَّ... “... olduğunu duydum” yapısını kurar. ✅
+C) كَأَنَّ → benzetme bildirir. ❌
+D) لَيْتَ → temenni bildirir. ❌
+E) لَعَلَّ → ihtimal/umut bildirir. ❌
+Doğru cevap: B) أَنَّ
+--15. Soru
+أَلَا ---- الْوَقْتَ أَثْمَنُ مِنْ أَنْ يُهْدَرَ فِي خِلَافَاتٍ صَغِيرَةٍ.
+Anlamı:
+“Dikkat edin! -------- zaman, küçük anlaşmazlıklarda harcanamayacak kadar değerlidir.”
+Açıklama:
+Buradaki أَلَا dikkat çekme ve uyarı edatıdır. Ardından yeni ve bağımsız bir hüküm başlamaktadır. Bu hükmün kuvvetlendirilmesi gerektiğinden tekit bildiren bir harf aranmalıdır.
+Şıklara bakalım:
+A) أَنَّ → önceki bir fiile veya yapıya bağlanması beklenir. ❌
+B) لَعَلَّ → ihtimal/umut bildirir. ❌
+C) لَكِنَّ → karşıtlık bildirir. ❌
+D) إِنَّ → أَلَا إِنَّ... yapısında cümleyi pekiştirerek başlatır ve şüphesiz ki anlamı verir. ✅
+E) لَيْتَ → temenni bildirir. ❌
+Doğru cevap: D) إِنَّ

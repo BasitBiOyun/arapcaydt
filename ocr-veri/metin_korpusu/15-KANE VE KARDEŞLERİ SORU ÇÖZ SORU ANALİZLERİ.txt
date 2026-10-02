@@ -1,0 +1,66 @@
+KANE VE KARDEŞLERİ SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+بَعْدَ سَاعَاتٍ مِنَ الْعَمَلِ، ---- الطَّرِيقُ مُزْدَحِمًا بِالسَّيَّارَاتِ.
+Anlamı:
+“Saatler süren çalışmanın ardından yol araçlarla kalabalık -----
+Açıklama:
+Boşluktan sonra الطَّرِيقُ merfû, مُزْدَحِمًا ise mansûb gelmiştir. Dolayısıyla burada كان وأخواتها grubundan, ismini ref eden ve haberini nasb eden bir yardımcı fiil gerekir. Anlam bakımından da bir durumun sonradan değişmesini / bir hâle dönüşmesini ifade eden yapı aranır. Ayrıca الطَّرِيقُ müzekker tekildir.
+Şıklara bakalım:
+A) أَصْبَحَتْ → müennes tekil çekimidir; الطَّرِيقُ ile uymaz. ❌
+B) أَصْبَحَ → müzekker tekildir ve “bir hâle geldi” anlamını verir. ✅
+C) لَيْسَتْ → müennes çekimidir ve olumsuzluk bildirir. ❌
+D) مَا دَامَ → devamlılık bildirir; ayrıca bu bağlamda anlam uygun değildir. ❌
+E) مَا دَامَتْ → müennes çekimidir. ❌
+Doğru cevap: B) أَصْبَحَ
+2. Soru
+لَيْسَ الْقَرَارُ ---- مَا لَمْ يُبْنَ عَلَى دِرَاسَةٍ دَقِيقَةٍ.
+Anlamı:
+“Karar, ayrıntılı bir çalışmaya dayanmadıkça doğru değildir.”
+Açıklama:
+Cümlede لَيْسَ vardır. الْقَرَارُ onun ismi olarak merfûdur. Boşluğa ise لَيْسَ’nin haberi gelmelidir ve bu haber mansûb olmalıdır. Ayrıca الْقَرَارُ müzekker tekildir.
+Şıklara bakalım:
+A) صَائِبٌ → merfûdur; haber burada mansûb olmalıdır. ❌
+B) يُصِيبُ → fiildir; bağlamdaki sıfat anlamını vermez. ❌
+C) صَائِبَةً → mansûbdur ancak müennes formdadır. ❌
+D) صَوَابٌ → merfû isimdir. ❌
+E) صَائِبًا → mansûb, müzekker tekildir. ✅
+Doğru cevap: E) صَائِبًا
+3. Soru
+مُنْذُ بَدْءِ الْمُؤْتَمَرِ، ---- الْمُتَحَدِّثُونَ حَرِيصِينَ عَلَى تَوْضِيحِ أَفْكَارِهِمْ.
+Anlamı:
+“Konferansın başlangıcından beri konuşmacılar fikirlerini açıklamaya özen göstermeye -------.”
+Açıklama:
+مُنْذُ بَدْءِ الْمُؤْتَمَرِ ifadesi geçmişte başlayan ve devam eden bir duruma işaret eder. Bu nedenle devamlılık bildiren كان وأخواتها grubundan bir fiil aranır. الْمُتَحَدِّثُونَ çoğul müzekkerdir; حَرِيصِينَ ise haber olarak mansûbdur.
+Şıklara bakalım:
+A) كَانَ
+B) كَانَتْ
+C) مَا زَالَ
+D) صَارَ
+E) لَيْسَ
+Doğru cevap: C) مَا زَالَ
+4. Soru
+بَعْدَ تَطَوُّرِ وَسَائِلِ التَّعْلِيمِ، ---- الدَّرْسُ أَكْثَرَ تَفَاعُلًا بَيْنَ الطُّلَّابِ وَالْمُعَلِّمِ.
+Anlamı:
+“Eğitim araçlarının gelişmesinden sonra ders, öğrencilerle öğretmen arasında daha --------.”
+Açıklama:
+Cümlede bir durumdan başka bir duruma dönüşme/değişme anlamı vardır. Boşluktan sonra الدَّرْسُ müzekker tekil isim, أَكْثَرَ تَفَاعُلًا ise haber konumundadır. Bu nedenle dönüşüm bildiren ve müzekker tekille uyumlu “etkileşimli hâle geldi” anlamı vren bir fiil gerekir.
+Şıklara bakalım:
+A) صَارَ → “hâle geldi, dönüştü” anlamındadır ve müzekker tekildir. ✅
+B) صَارَتْ → müennes tekildir. ❌
+C) لَيْسُوا → olumsuzluk ve çoğulluk bildirir. ❌
+D) مَا دَامَ → devamlılık bildirir; anlam uygun değildir. ❌
+E) يَصِيرُونَ → çoğul muzâri fiildir. ❌
+Doğru cevap: A) صَارَ
+5. Soru
+يَحْتَاجُ الطَّالِبُ إِلَى التَّوْجِيهِ ---- الطَّرِيقُ غَيْرَ وَاضِحٍ أَمَامَهُ.
+Anlamı:
+“Yol onun önünde açık olmadığı sürece / yol onun için açık ----------- öğrenci yönlendirmeye ihtiyaç duyar.”
+Açıklama:
+İlk cümlede öğrencinin yönlendirmeye ihtiyaç duyduğu belirtiliyor. İkinci bölüm bu ihtiyacın hangi süre veya şart devam ettiğini açıklamaktadır. Bu nedenle “... olduğu müddetçe” anlamı veren bir yapı gerekir.
+Şıklara bakalım:
+A) كَانَ → geçmişte olma anlamı verir; süreklilik/şart ilişkisini kurmaz. ❌
+B) صَارَ → dönüşüm bildirir. ❌
+C) مَا دَامَ → “... olduğu müddetçe” anlamını verir. ✅
+D) لَيْسَ → yalnızca olumsuzluk bildirir; burada gereken süre ilişkisini tek başına kurmaz. ❌
+E) ظَلَّ → “devam etti” anlamı verir fakat bu yapıda “... olduğu sürece” bağını kurmaz. ❌
+Doğru cevap: C) مَا دَامَ

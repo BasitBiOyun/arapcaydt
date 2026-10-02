@@ -1,0 +1,207 @@
+HARF DEGERLENDİRME SORU ANALİZLERİ
+1. Soru
+ذَهَبَ الطَّالِبُ ---- الْمَكْتَبَةِ لِيُرَاجِعَ دُرُوسَهُ.
+Türkçesi: Öğrenci derslerini tekrar etmek için kütüphaneye gitti.
+İlk aşamada boşluğun öncesinde ذَهَبَ “gitti” fiilini, devamında ise gidilen yer olan الْمَكْتَبَةِ kelimesini görüyoruz. Burada hem yönelme anlamına hem de ذَهَبَ fiilinin hangi harf-i cerle kullanıldığına bakacağız.
+Şimdi şıklara bakalım:
+A) بِـ — ile
+Araç veya vasıta anlamı verebilir. Ancak ذَهَبَ بِـ burada “bir yere gitmek” yapısını oluşturmaz. Olmaz.
+B) مِنْ — -den/-dan
+ذَهَبَ مِنْ bir yerden hareket etmeyi ifade edebilir: “kütüphaneden gitti.” Burada ise gidilen yer soruluyor. Olmaz.
+C) إِلَى — -e/-a
+ذَهَبَ إِلَى “bir yere gitmek” için kullanılan doğru yapıdır.
+ذَهَبَ إِلَى الْمَكْتَبَةِ = “Kütüphaneye gitti.” Olabilir.
+D) عَنْ — -den / hakkında
+ذَهَبَ fiiliyle burada gidilen yönü bildirmez. Olmaz.
+E) فِي — -de/-da
+Yer bildirebilir ancak ذَهَبَ فِي الْمَكْتَبَةِ “kütüphaneye gitti” anlamını vermez. Fiil bu anlamda إِلَى ile kullanılır. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, إِلَى olur.
+2. Soru
+عَادَ الْمُسَافِرُ ---- الْقَرْيَةِ بَعْدَ غِيَابٍ طَوِيلٍ.
+Türkçesi: Yolcu uzun bir ayrılıktan sonra köye döndü.
+İlk aşamada عَادَ “döndü” fiilini ve devamında الْقَرْيَةِ “köy” kelimesini görüyoruz. Burada kişinin nereye döndüğünü ifade eden yapıyı arıyoruz. Dolayısıyla عَادَ fiilinin harf-i cer kullanımına dikkat edeceğiz.
+Şimdi şıklara bakalım:
+A) إِلَى — -e/-a
+عَادَ إِلَى “...-e geri dönmek” anlamında kullanılır.
+عَادَ إِلَى الْقَرْيَةِ = “Köye döndü.” Olabilir.
+B) مِنْ — -den/-dan
+عَادَ مِنَ الْقَرْيَةِ gramer olarak mümkündür; fakat “köyden döndü” anlamına gelir. Cümlenin hedeflediği anlam bu değildir. Olmaz.
+C) فِي — -de/-da
+Türkçede “köyde geri döndü” gibi düşünülebilse de عَادَ فِي burada hedeflenen “köye dönmek” yapısını vermez. Olmaz.
+D) عَنْ — -den / hakkında
+عَادَ عَنْ başka bağlamlarda farklı anlamlar oluşturabilir; ancak bir yere geri dönme anlamında burada kullanılmaz. Olmaz.
+E) لِـ — için / -e
+Yönelme anlamı çağrıştırsa da Arapçada “köye döndü” ifadesi عَادَ إِلَى الْقَرْيَةِ şeklinde kurulur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, إِلَى olur.
+
+3. Soru
+تَحَدَّثَ الْأُسْتَاذُ ---- أَهَمِّيَّةِ الْقِرَاءَةِ فِي حَيَاةِ الْإِنْسَانِ.
+Türkçesi: Öğretmen, okumanın insan hayatındaki önemi hakkında konuştu.
+İlk aşamada تَحَدَّثَ “konuştu” fiilini, boşluğun devamında ise konuşulan konu olan أَهَمِّيَّةِ الْقِرَاءَةِ ifadesini görüyoruz. Burada özellikle “bir konu hakkında konuşmak” anlamında bu fiilin hangi harf-i cerle kullanıldığına bakacağız.
+Şimdi şıklara bakalım:
+A) عَلَى — üzerine
+Türkçede “okumanın önemi üzerine konuştu” anlamca çok uygun görünebilir. Ancak Arapçada تَحَدَّثَ fiili bu anlamda عَلَى ile değil عَنْ ile kullanılır. Olmaz.
+B) بِـ — ile
+“İle konuşmak” anlamını düşündürebilir; ancak تَحَدَّثَ بِـ burada “bir konu hakkında konuşmak” kalıbını oluşturmaz. Olmaz.
+C) مِنْ — -den/-dan
+Bu fiille burada konuşulan konuyu bildirmez. Olmaz.
+D) عَنْ — hakkında
+تَحَدَّثَ عَنْ “bir şey hakkında konuşmak” anlamında kullanılan doğru kalıptır.
+تَحَدَّثَ عَنْ أَهَمِّيَّةِ الْقِرَاءَةِ = “Okumanın önemi hakkında konuştu.” Olabilir.
+E) كَـ — gibi
+Benzetme bildirir. Bu fiille burada uygun bir yapı oluşturmaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, عَنْ olur.
+4. Soru
+وَضَعْتُ الْكِتَابَ ---- الطَّاوِلَةِ قَبْلَ أَنْ أَخْرُجَ.
+Türkçesi: Çıkmadan önce kitabı masanın üzerine koydum.
+İlk aşamada وَضَعْتُ الْكِتَابَ “kitabı koydum” ifadesini, devamında ise الطَّاوِلَةِ “masa” kelimesini görüyoruz. Burada kitabın hangi konuma konulduğunu ifade eden uygun harf-i ceri arıyoruz.
+Şimdi şıklara bakalım:
+A) فِي — içinde
+وَضَعْتُ الْكِتَابَ فِي... doğru bir kullanımdır; fakat “masanın içine koydum” anlamı oluşur. Buradaki anlam “masanın üzerine”dir. Olmaz.
+B) عَنْ — -den / hakkında
+وَضَعَ fiiliyle burada yer bildiren uygun yapı oluşturmaz. Olmaz.
+C) عَلَى — üzerine
+وَضَعَ عَلَى bir şeyi bir yüzeyin üzerine koymayı ifade eder.
+وَضَعْتُ الْكِتَابَ عَلَى الطَّاوِلَةِ = “Kitabı masanın üzerine koydum.” Olabilir.
+D) إِلَى — -e/-a
+Türkçede “masaya koydum” ifadesi nedeniyle anlamca yakın görünebilir. Fakat Arapçada bir şeyi bir yüzeyin üzerine koymak için burada وَضَعَ عَلَى kullanılır; وَضَعَ إِلَى bu anlamı vermez. Olmaz.
+E) مِنْ — -den/-dan
+Başlangıç veya ayrılma bildirir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, عَلَى olur.
+5. Soru
+يَجْلِسُ الطِّفْلُ ---- الْغُرْفَةِ وَيَلْعَبُ وَحْدَهُ.
+Türkçesi: Çocuk odada oturuyor ve tek başına oynuyor.
+İlk aşamada يَجْلِسُ “oturuyor” fiilini ve devamında bulunulan mekânı gösteren الْغُرْفَةِ kelimesini görüyoruz. Burada bir yerin içinde bulunma anlamını veren harf-i ceri arıyoruz.
+Şimdi şıklara bakalım:
+A) عَلَى — üzerinde
+جَلَسَ عَلَى doğru bir kalıptır; “bir şeyin üzerine oturmak” demektir: جَلَسَ عَلَى الْكُرْسِيِّ. Ancak عَلَى الْغُرْفَةِ “odanın üzerinde” anlamı verir. Olmaz.
+B) فِي — içinde/-de
+جَلَسَ فِي bir mekânın içinde oturmayı ifade eder.
+يَجْلِسُ فِي الْغُرْفَةِ = “Odada oturuyor.” Olabilir.
+C) مِنْ — -den/-dan
+Başlangıç veya çıkış bildirir. جَلَسَ مِنْ burada uygun değildir. Olmaz.
+D) كَـ — gibi
+Benzetme bildirir. Olmaz.
+E) عَنْ — -den / hakkında
+جَلَسَ عَنْ burada “odada oturmak” anlamında kullanılmaz. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, فِي olur.
+
+6. Soru
+سَافَرْنَا ---- الْحَافِلَةِ لِتَجَنُّبِ الزِّحَامِ.
+Türkçesi: Trafikten kaçınmak için otobüsle seyahat ettik.
+İlk aşamada سَافَرْنَا “seyahat ettik” fiilini, boşluğun devamında ise ulaşım aracı olan الْحَافِلَةِ “otobüs” kelimesini görüyoruz. Burada hangi araçla seyahat edildiğini ifade eden kullanımı arıyoruz.
+Şimdi şıklara bakalım:
+A) مِنْ — -den/-dan
+Bir yerden hareket etmeyi bildirebilir; ulaşım aracını göstermez. Olmaz.
+B) فِي — içinde
+فِي الْحَافِلَةِ “otobüsün içinde” demektir ve anlam bakımından yakın görünebilir. Ancak burada “otobüsle seyahat ettik” yani vasıta anlamı aranıyor. Bu anlamda بِـ kullanılır. Olmaz.
+C) إِلَى — -e/-a
+Seyahatin yönünü gösterebilir: سَافَرْنَا إِلَى أَنْقَرَةَ. Fakat “otobüsle” anlamını vermez. Olmaz.
+D) بِـ — ile / vasıtasıyla
+Vasıta bildirir.
+سَافَرْنَا بِالْحَافِلَةِ = “Otobüsle seyahat ettik.” Olabilir.
+E) عَنْ — hakkında/-den
+سَافَرَ عَنْ burada araç bildirmek için kullanılmaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, بِـ olur.
+7. Soru
+هٰذَا الطَّالِبُ أَكْثَرُ اجْتِهَادًا ---- أَخِيهِ.
+Türkçesi: Bu öğrenci kardeşinden daha çalışkandır.
+İlk aşamada أَكْثَرُ اجْتِهَادًا “daha çalışkan” ifadesini görüyoruz. Burada iki kişi arasında karşılaştırma yapılıyor ve devamındaki أَخِيهِ karşılaştırılan ikinci kişidir. Dolayısıyla karşılaştırma yapısında kullanılan harf-i ceri arıyoruz.
+Şimdi şıklara bakalım:
+A) مِنْ — -den/-dan
+Arapçada üstünlük ve karşılaştırmada أَفْعَلُ مِنْ yapısı kullanılır.
+أَكْثَرُ اجْتِهَادًا مِنْ أَخِيهِ = “Kardeşinden daha çalışkan.” Olabilir.
+B) عَلَى — üzerine
+Türkçede “ona göre daha çalışkan” gibi bir anlam çağrıştırabilir; ancak standart karşılaştırma yapısı أَكْثَرُ ... مِنْ şeklindedir. Olmaz.
+C) كَـ — gibi
+Benzerlik bildirir: “kardeşi gibi”. Burada ise üstünlük, yani “kardeşinden daha...” anlamı vardır. Olmaz.
+D) فِي — içinde
+Karşılaştırılan kişiyi bu şekilde bağlamaz. Olmaz.
+E) عَنْ — -den / hakkında
+Türkçeye “-den” diye çevrilebilse de Arapçada karşılaştırma عَنْ ile değil مِنْ ile yapılır. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, مِنْ olur.
+8. Soru
+اِشْتَرَيْتُ قَلَمًا ---- أَجْلِ الْكِتَابَةِ فِي الْاِمْتِحَانِ.
+Türkçesi: Sınavda yazmak için bir kalem satın aldım.
+İlk aşamada boşluğun devamında أَجْلِ kelimesini görüyoruz. Dolayısıyla burada tek başına harf-i cer anlamından çok, أَجْلِ ile birlikte oluşan yerleşik kalıbı bulmamız gerekiyor.
+Şimdi şıklara bakalım:
+A) عَلَى — üzerine
+عَلَى أَجْلِ şeklinde “... için” anlamı veren bir kalıp yoktur. Olmaz.
+B) إِلَى — -e/-a
+Yönelme anlamı vardır ancak إِلَى أَجْلِ “... amacıyla” yapısını oluşturmaz. Olmaz.
+C) كَـ — gibi
+Benzetme bildirir. Olmaz.
+D) عَنْ — hakkında
+عَنْ أَجْلِ şeklinde bu anlamda kullanılmaz. Olmaz.
+E) مِنْ — -den/-dan
+مِنْ أَجْلِ kalıp olarak “... için, ... amacıyla” demektir.
+مِنْ أَجْلِ الْكِتَابَةِ = “yazmak için.” Olabilir.
+Dolayısıyla doğru cevap E şıkkı, مِنْ olur.
+9. Soru
+وَقَفَ الْمُدَرِّسُ ---- الطُّلَّابِ وَبَدَأَ الشَّرْحَ.
+Türkçesi: Öğretmen öğrencilerle birlikte durdu ve anlatmaya başladı.
+İlk aşamada وَقَفَ الْمُدَرِّسُ “öğretmen durdu” ifadesini ve devamında الطُّلَّابِ kelimesini görüyoruz. Cümlenin anlamından öğretmenin öğrencilerle birlikte olduğu anlaşılıyor. Buna uygun beraberlik bildiren ifadeyi arıyoruz.
+Şimdi şıklara bakalım:
+A) فِي — içinde
+فِي الطُّلَّابِ “öğrencilerin içinde/arasında” gibi bir anlam çağrıştırabilir; ancak burada doğal beraberlik yapısını vermez. Olmaz.
+B) مِنْ — -den/-dan
+“Öğrencilerden” anlamını verir. Beraberlik bildirmez. Olmaz.
+C) إِلَى — -e/-a
+Yönelme bildirir. وَقَفَ إِلَى الطُّلَّابِ burada doğru kullanım değildir. Olmaz.
+D) مَعَ — ile / birlikte
+مَعَ الطُّلَّابِ “öğrencilerle birlikte” anlamına gelir ve cümleyi doğru tamamlar. Olabilir.
+E) عَلَى — üzerinde
+وَقَفَ عَلَى başka bağlamlarda “bir şeyin üzerinde durmak” veya mecazen “bir konuyu öğrenmek/farkına varmak” gibi anlamlara gelebilir. Ancak burada “öğrencilerle birlikte durdu” anlamını vermez. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, مَعَ olur.
+Not: مَعَ, klasik gramer sınıflandırmasında doğrudan bir harf-i cer değil, beraberlik bildiren bir isim/zarf olarak değerlendirilir; ancak bu tür edat sorularında aynı grupta seçenek olarak verilebilir.
+10. Soru
+يَبْقَى الْمُسَافِرُ فِي الْمَدِينَةِ ---- ثَلَاثَةِ أَيَّامٍ.
+Türkçesi: Yolcu şehirde üç güne kadar kalır.
+İlk aşamada يَبْقَى “kalır” fiilini ve devamında zaman miktarı bildiren ثَلَاثَةِ أَيَّامٍ “üç gün” ifadesini görüyoruz. Şıklardan süreye bir sınır kazandırabilecek olanı arıyoruz.
+Şimdi şıklara bakalım:
+A) مُنْذُ — -den beri
+Geçmişte başlayan bir zamanın başlangıç noktasını bildirir. مُنْذُ ثَلَاثَةِ أَيَّامٍ “üç günden beri” demektir. Ancak cümledeki يَبْقَى ile burada hedeflenen anlam bu değildir. Olmaz.
+B) عَنْ — -den / hakkında
+Zaman süresini bu şekilde bağlamaz. Olmaz.
+C) بِـ — ile
+يَبْقَى بِثَلَاثَةِ أَيَّامٍ şeklinde süre bildiren doğal bir kullanım değildir. Olmaz.
+D) كَـ — gibi
+Benzetme bildirir. Olmaz.
+E) إِلَى — -e kadar
+Bir üst sınır bildirebilir. إِلَى ثَلَاثَةِ أَيَّامٍ “üç güne kadar” anlamına gelir. Verilen seçenekler içinde cümleyi uygun biçimde tamamlar. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, إِلَى olur.
+
+11. Soru
+مَا زِلْتُ أَنْتَظِرُهُ ---- الصَّبَاحِ.
+Türkçesi: Onu sabahtan beri hâlâ bekliyorum.
+İlk aşamada مَا زِلْتُ أَنْتَظِرُهُ “onu hâlâ bekliyorum” ifadesinden eylemin geçmişte başlayıp devam ettiğini görüyoruz. Boşluğun devamındaki الصَّبَاحِ ise bu beklemenin başlangıç zamanını gösteriyor.
+Şimdi şıklara bakalım:
+A) فِي — -de/-da
+فِي الصَّبَاحِ “sabahleyin” anlamına gelir. Gramer ve anlam bakımından tek başına mümkün bir ifade olsa da مَا زِلْتُ ile anlatılan “sabahtan beri devam ediyor” anlamını vermez. Olmaz.
+B) عَلَى — üzerinde
+أَنْتَظِرُ عَلَى الصَّبَاحِ şeklinde bu zaman anlamı kurulmaz. Olmaz.
+C) مُذْ — -den beri
+Bir eylemin başladığı zamanı bildirir.
+مُذِ الصَّبَاحِ = “sabahtan beri.” مَا زِلْتُ ifadesindeki devamlılık anlamıyla da tam uyumludur. Olabilir.
+D) عَنْ — hakkında/-den
+Bu fiille burada zaman başlangıcı ifade etmez. Olmaz.
+E) لِـ — için
+“Sabah için” gibi başka bir anlam oluşturabilir; ancak “sabahtan beri” anlamını vermez. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, مُذْ olur.
+12. Soru
+رُبَّ رَجُلٍ نَجَحَ ---- الصَّبْرِ وَالِاجْتِهَادِ.
+Türkçesi: Nice insan sabır ve gayret sayesinde başarılı olmuştur.
+İlk aşamada نَجَحَ “başarılı oldu” fiilini, devamında ise başarının sebebi veya aracı olan الصَّبْرِ وَالِاجْتِهَادِ “sabır ve gayret” ifadelerini görüyoruz. Burada sebep/vasıta anlamını veren uygun harf-i ceri arıyoruz.
+Şimdi şıklara bakalım:
+A) مِنْ — -den/-dan
+Türkçede “sabırdan dolayı” gibi anlamca yakın düşünülebilir; ancak نَجَحَ مِنَ الصَّبْرِ şeklinde burada başarı sebebini anlatan doğal kullanım değildir. Olmaz.
+B) عَنْ — -den / hakkında
+نَجَحَ عَنْ bu anlamda kullanılmaz. Olmaz.
+C) عَلَى — üzerinde
+نَجَحَ عَلَى الصَّبْرِ şeklinde başarı sebebini ifade eden bir kullanım yoktur. Olmaz.
+D) بِـ — ile / sayesinde
+Sebep ve vasıta bildirebilir.
+نَجَحَ بِالصَّبْرِ وَالِاجْتِهَادِ = “Sabır ve gayret sayesinde başarılı oldu.” Olabilir.
+E) فِي — içinde / konusunda
+نَجَحَ فِي aslında doğru ve yaygın bir kalıptır; ancak “bir şeyde başarılı olmak” anlamına gelir: نَجَحَ فِي الِامْتِحَانِ “sınavda başarılı oldu.” Burada الصَّبْرِ وَالِاجْتِهَادِ başarının alanı değil, sebebidir. Bu yüzden olmaz.
+Dolayısıyla doğru cevap D şıkkı, بِـ olur.

@@ -1,0 +1,105 @@
+HARF SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+يَسْتَمِعُ الطَّالِبُ ---- نَصَائِحِ أُسْتَاذِهِ بِاهْتِمَامٍ.
+Türkçesi: Öğrenci, öğretmeninin tavsiyelerini dikkatle dinliyor.
+İlk aşamada boşluğun öncesinde يَسْتَمِعُ “dinliyor” fiilini, devamında ise dinlenen şey olan نَصَائِحِ أُسْتَاذِهِ “öğretmeninin tavsiyeleri” ifadesini görüyoruz. Burada özellikle اِسْتَمَعَ fiilinin hangi harf-i cerle kullanıldığına bakmamız gerekir.
+Şimdi şıklara bakalım:
+A) فِي — -de/-da
+اِسْتَمَعَ فِي bu anlamda “bir şeyi dinlemek” yapısını oluşturmaz. Olmaz.
+B) إِلَى — -e/-a
+اِسْتَمَعَ إِلَى “bir şeyi/birini dinlemek” anlamında kullanılan doğru kalıptır.
+يَسْتَمِعُ إِلَى نَصَائِحِ أُسْتَاذِهِ = “Öğretmeninin tavsiyelerini dinliyor.” Olabilir.
+C) مِنْ — -den/-dan
+Anlam bakımından “öğretmeninden tavsiye dinlemek” gibi düşünülebilir; ancak اِسْتَمَعَ fiili dinlenen şeyi مِنْ ile değil, إِلَى ile alır. Olmaz.
+D) عَنْ — hakkında
+اِسْتَمَعَ عَنْ burada doğru fiil–harf-i cer kullanımı değildir. Olmaz.
+E) كَـ — gibi
+Benzetme bildirir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, إِلَى olur.
+2. Soru
+نَظَرْتُ ---- السَّاعَةِ فَعَرَفْتُ أَنَّ الْوَقْتَ قَدْ تَأَخَّرَ.
+Türkçesi: Saate baktım ve vaktin ilerlediğini fark ettim.
+İlk aşamada نَظَرْتُ “baktım” fiilini, boşluğun devamında ise bakılan şey olan السَّاعَةِ “saat” kelimesini görüyoruz. Burada “bir şeye bakmak” anlamında نَظَرَ fiilinin hangi harf-i cerle kullanıldığını arıyoruz.
+Şimdi şıklara bakalım:
+A) فِي — içinde / -de
+نَظَرَ فِي Arapçada kullanılabilir; ancak çoğunlukla “bir konuyu incelemek, üzerinde düşünmek” anlamına gelir: نَظَرَ فِي الْمَسْأَلَةِ “meseleyi inceledi.” Burada saate doğrudan bakmaktan söz ediliyor. Olmaz.
+B) مِنْ — -den/-dan
+نَظَرَ مِنْ burada “saate bakmak” anlamını vermez. Olmaz.
+C) إِلَى — -e/-a
+نَظَرَ إِلَى “bir şeye bakmak” için kullanılan doğru kalıptır.
+نَظَرْتُ إِلَى السَّاعَةِ = “Saate baktım.” Olabilir.
+D) عَنْ — hakkında / -den
+Bu anlamda نَظَرَ fiiliyle kullanılmaz. Olmaz.
+E) لِـ — için
+“Bir şeye bakmak” anlamını burada oluşturmaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, إِلَى olur.
+3. Soru
+لَا تَتَكَلَّمْ ---- غَيْرِ عِلْمٍ.
+Türkçesi: Bilmeden / bilgi sahibi olmadan konuşma.
+İlk aşamada لَا تَتَكَلَّمْ “konuşma” ifadesini, devamında ise غَيْرِ عِلْمٍ “bilgi olmaksızın” yapısını görüyoruz. Burada boşluğa gelecek harf-i cerin bu ifadeyle birlikte “bilgisizce, bilgiye dayanmadan” anlamını oluşturması gerekir.
+Şimdi şıklara bakalım:
+A) فِي — hakkında / içinde
+تَكَلَّمَ فِي “bir konu üzerinde konuşmak” anlamında kullanılabilir. Ancak فِي غَيْرِ عِلْمٍ burada hedeflenen “bilmeden” anlamını vermez. Olmaz.
+B) بِـ — ile
+بِغَيْرِ عِلْمٍ “bilgisizce, bilgi olmadan” anlamına gelir.
+لَا تَتَكَلَّمْ بِغَيْرِ عِلْمٍ = “Bilmeden konuşma.” Olabilir.
+C) مِنْ — -den/-dan
+مِنْ غَيْرِ bazı yapılarda “-meden/-maksızın” anlamı verebilir; ancak bu cümlede yerleşik ve daha uygun kullanım بِغَيْرِ عِلْمٍ şeklindedir. Olmaz.
+D) عَنْ — hakkında
+تَكَلَّمَ عَنْ “bir şey hakkında konuşmak” için doğrudur; fakat burada غَيْرِ عِلْمٍ konuşulan konu değil, konuşmanın nasıl yapıldığını anlatıyor. Olmaz.
+E) إِلَى — -e/-a
+Bu fiille burada uygun bir yapı oluşturmaz. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, بِـ olur.
+4. Soru
+سَنَبْقَى هُنَا ---- نِهَايَةِ الدَّرْسِ.
+Türkçesi: Dersin sonuna kadar burada kalacağız.
+İlk aşamada سَنَبْقَى هُنَا “burada kalacağız” ifadesini, devamında ise zamanın bitiş noktasını gösteren نِهَايَةِ الدَّرْسِ “dersin sonu” ifadesini görüyoruz. Burada bir eylemin hangi zamana kadar devam edeceğini gösteren edatı arıyoruz.
+Şimdi şıklara bakalım:
+A) فِي — -de/-da
+فِي نِهَايَةِ الدَّرْسِ “dersin sonunda” demektir. “Dersin sonuna kadar” anlamını vermez. Olmaz.
+B) حَتَّى — -e kadar
+Bir sınır veya bitiş noktası bildirir.
+سَنَبْقَى هُنَا حَتَّى نِهَايَةِ الدَّرْسِ = “Dersin sonuna kadar burada kalacağız.” Olabilir.
+Burada حَتَّى, kendisinden sonra isim geldiğinde harf-i cer olarak kullanılabilir ve ardından gelen isim mecrur olur: نِهَايَةِ.
+C) مِنْ — -den/-dan
+Başlangıç noktası bildirir; bitiş noktası bildirmez. Olmaz.
+D) عَنْ — hakkında / -den
+Zamanın son sınırını bildirmez. Olmaz.
+E) كَـ — gibi
+Benzetme bildirir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, حَتَّى olur.
+5. Soru
+أَخَذَ الطِّفْلُ الْحَقِيبَةَ ---- الْأَرْضِ.
+Türkçesi: Çocuk çantayı yerden aldı.
+İlk aşamada أَخَذَ الطِّفْلُ الْحَقِيبَةَ “çocuk çantayı aldı” ifadesini görüyoruz. Boşluğun devamındaki الْأَرْضِ ise çantanın nereden alındığını, yani hareketin başlangıç noktasını gösteriyor.
+Şimdi şıklara bakalım:
+A) فِي — içinde/-de
+فِي الْأَرْضِ “yerde/toprağın içinde” anlamına gelir. “Yerden aldı” anlamını vermez. Olmaz.
+B) عَلَى — üzerinde
+عَلَى الْأَرْضِ “yerin üzerinde” demektir. Anlam bakımından çantanın bulunduğu yeri gösterebilir; ancak “çantayı yerden aldı” denildiğinde hareketin çıkış noktasını göstermek için مِنْ gerekir. Olmaz.
+C) مِنْ — -den/-dan
+Başlangıç ve ayrılma noktası bildirir.
+أَخَذَ الْحَقِيبَةَ مِنَ الْأَرْضِ = “Çantayı yerden aldı.” Olabilir.
+D) إِلَى — -e/-a
+Yönelme bildirir. Burada bir yerden alma anlamına uygun değildir. Olmaz.
+E) عَنْ — -den / hakkında
+Türkçede “-den” anlamı verebilse de أَخَذَ fiiliyle bir nesnenin nereden alındığını göstermek için burada مِنْ kullanılır. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, مِنْ olur.
+
+6. Soru
+اِعْتَذَرَ الرَّجُلُ ---- تَأَخُّرِهِ فِي الْحُضُورِ.
+Türkçesi: Adam geç kalmasından dolayı özür diledi.
+İlk aşamada اِعْتَذَرَ الرَّجُلُ “adam özür diledi” fiilini, boşluğun devamında ise özrün sebebi olan تَأَخُّرِهِ فِي الْحُضُورِ “geç kalması” ifadesini görüyoruz. Burada özellikle اِعْتَذَرَ fiilinin özür sebebini hangi harf-i cerle aldığını bilmemiz gerekir.
+Şimdi şıklara bakalım:
+A) مِنْ — -den/-dan
+Türkçede “geç kalmasından dolayı” ifadesi nedeniyle anlamca yakın görünebilir. Ancak اِعْتَذَرَ مِنْ burada “bir şey için özür dilemek” anlamında standart kullanım değildir. Olmaz.
+B) فِي — -de/-da
+اِعْتَذَرَ فِي bu anlamda kullanılmaz. Olmaz.
+C) لِـ — için
+اِعْتَذَرَ لِـ bazı bağlamlarda özür dilenen kişiyi gösterebilir; fakat burada boşluktan sonra özrün sebebi geliyor. Bu anlamda uygun olan kullanım değildir. Olmaz.
+D) عَنْ — için / dolayı
+اِعْتَذَرَ عَنْ “bir şeyden dolayı / bir şey için özür dilemek” anlamında kullanılan doğru kalıptır.
+اِعْتَذَرَ عَنْ تَأَخُّرِهِ = “Geç kalmasından dolayı özür diledi.” Olabilir.
+E) كَـ — gibi
+Benzetme bildirir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, عَنْ olur.

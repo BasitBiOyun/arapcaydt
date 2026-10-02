@@ -1,0 +1,249 @@
+MEFULLER SORU CÖZ SORU ANALİZLERİ
+1. Soru
+يَعُودُ الْعَامِلُ إِلَى بَيْتِهِ ---- بَعْدَ انْتِهَاءِ الدَّوَامِ.
+Önce cümlenin yapısına bakalım:
+يَعُودُ الْعَامِلُ إِلَى بَيْتِهِ
+“İşçi evine dönüyor.”
+Cümlenin sonunda ayrıca بَعْدَ انْتِهَاءِ الدَّوَامِ “mesainin bitmesinden sonra” şeklinde zaman bildiren bir ifade vardır.
+Boşlukta da dönüş eyleminin gerçekleştiği zaman dilimini belirten bir unsur bulunabilir. Bu nedenle seçeneklerde özellikle zaman bildiren mef‘ûlün fîh / ظرف زمان yapısına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) مَسَاءً — akşamleyin
+Fiilin gerçekleştiği zamanı bildirir:
+يَعُودُ الْعَامِلُ إِلَى بَيْتِهِ مَسَاءً بَعْدَ انْتِهَاءِ الدَّوَامِ.
+“İşçi mesai bittikten sonra akşamleyin evine döner.”
+مَسَاءً, مفعول فيه / ظرف زمان görevindedir. ✅
+B) شُكْرًا — teşekkür olarak
+Zaman bildirmez ve cümlenin anlamıyla uyuşmaz. ❌
+C) قِرَاءَةً — okuma
+Mastar olmakla birlikte يعود fiiliyle ilişkili değildir. ❌
+D) حَتَّى — ...e kadar / ...mesi için
+Buradaki yapı içinde tek başına uygun değildir. ❌
+E) خَوْفًا — korkudan
+Sebep bildirebilir; ancak bağlamda dönüş eylemini açıklayan doğal bir sebep oluşturmaz. ❌
+Doğru cevap: A) مَسَاءً
+2. Soru
+وَضَعَتِ الْأُمُّ الْمِفْتَاحَ ---- الْحَقِيبَةِ.
+Önce cümlenin yapısına bakalım:
+وَضَعَتِ الْأُمُّ الْمِفْتَاحَ
+“Anne anahtarı koydu.”
+Fiil bir nesnenin belirli bir yere yerleştirilmesini ifade etmektedir. Boşluktan sonra الْحَقِيبَةِ kelimesinin mecrur gelmesi, boşlukta ona muzaf olacak ve konum bildirecek bir kelime aranabileceğini göstermektedir.
+Şimdi şıklara bakalım:
+A) رَغْبَةً — isteyerek / istekten dolayı
+Sebep bildirebilir ancak الْحَقِيبَةِ ile mekânsal ilişki kuramaz. ❌
+B) دَاخِلَ — içinde
+وَضَعَتِ الْأُمُّ الْمِفْتَاحَ دَاخِلَ الْحَقِيبَةِ.
+“Anne anahtarı çantanın içine koydu.”
+دَاخِلَ, yer bildiren ظرف مكان / مفعول فيه görevindedir. الْحَقِيبَةِ ise muzâfun ileyhtir. ✅
+C) فَرَحًا — sevinçten
+Mekân bildirmez. ❌
+D) كَيْ — ...mek için
+Kendisinden sonra muzâri fiil ister; burada ardından isim gelmektedir. ❌
+E) سُجُودًا — secde etme
+Mastar olup cümlenin fiiliyle ilişkili değildir. ❌
+Doğru cevap: B) دَاخِلَ
+3. Soru
+يَلْعَبُ الْأَطْفَالُ ---- الْبَيْتِ بَعْدَ الظُّهْرِ.
+Önce cümlenin yapısına bakalım:
+يَلْعَبُ الْأَطْفَالُ
+“Çocuklar oynuyorlar.”
+Cümlenin sonunda بَعْدَ الظُّهْرِ “öğleden sonra” ifadesi zaman bildirmektedir. Boşluktan sonra ise الْبَيْتِ kelimesi gelmektedir.
+Bu nedenle boşlukta çocukların oyun oynadığı yeri belirten bir unsur aranmalıdır.
+Şimdi şıklara bakalım:
+A) دِفَاعًا — savunma amacıyla
+Mekân bildirmez. ❌
+B) حَتَّى — ...e kadar / ...mesi için
+Ardından gelen isimle bu yapıyı oluşturmaz. ❌
+C) خَارِجَ — dışında
+يَلْعَبُ الْأَطْفَالُ خَارِجَ الْبَيْتِ بَعْدَ الظُّهْرِ.
+“Çocuklar öğleden sonra evin dışında oynuyorlar.”
+خَارِجَ, ظرف مكان / مفعول فيه olarak kullanılmıştır. ✅
+D) تَكَلُّمًا — konuşma
+Mastar olup mekân bildirmez. ❌
+E) اِحْتِرَامًا — saygıdan dolayı
+Sebep bildiren mastardır; bağlama uygun değildir. ❌
+Doğru cevap: C) خَارِجَ
+4. Soru
+يَقْرَأُ الطَّالِبُ الْقُرْآنَ ---- قَبْلَ النَّوْمِ.
+Önce cümlenin yapısına bakalım:
+يَقْرَأُ الطَّالِبُ الْقُرْآنَ
+“Öğrenci Kur’an okuyor.”
+Cümlenin devamındaki قَبْلَ النَّوْمِ “uyumadan önce” ifadesi zaten bir zaman ilişkisi kurmaktadır. Boşlukta da bu eylemin gerçekleştiği daha geniş zaman dilimini belirten bir ifade bulunabilir.
+Şimdi şıklara bakalım:
+A) بَحْثًا — araştırmak amacıyla
+Anlam bakımından doğal değildir. ❌
+B) لِكَيْ — ...mek için
+Kendisinden sonra muzâri fiil ister; burada ardından قَبْلَ gelmektedir. ❌
+C) جُلُوسًا — oturma
+Mastar olup يقرأ fiilinin mastarı değildir. ❌
+D) لَيْلًا — geceleyin
+يَقْرَأُ الطَّالِبُ الْقُرْآنَ لَيْلًا قَبْلَ النَّوْمِ.
+“Öğrenci gece uyumadan önce Kur’an okur.”
+لَيْلًا, zaman bildiren مفعول فيه / ظرف زمانdır. ✅
+E) رَحْمَةً — merhametten
+Bağlama uygun bir sebep oluşturmaz. ❌
+Doğru cevap: D) لَيْلًا
+5. Soru
+خَرَجَ الْمُسَافِرُ مُبَكِّرًا ---- مِنْ زِحَامِ الطَّرِيقِ.
+Önce cümlenin yapısına bakalım:
+خَرَجَ الْمُسَافِرُ مُبَكِّرًا
+“Yolcu erken çıktı.”
+Boşluktan sonra مِنْ زِحَامِ الطَّرِيقِ “yol trafiğinden / yol yoğunluğundan” ifadesi bulunmaktadır. Bu nedenle boşlukta erken çıkma eyleminin sebebini açıklayan bir mastar bulunması beklenmektedir.
+Şimdi şıklara bakalım:
+A) فَوْقَ — üstünde
+Mekân bildirir ve ardından gelen مِنْ ile uygun yapı oluşturmaz. ❌
+B) غَدًا — yarın
+Zaman bildirir; sebep ilişkisi kurmaz. ❌
+C) سَفَرًا — yolculuk / seyahat
+Cümlenin fiilinin sebebini uygun şekilde açıklamaz. ❌
+D) تَحْتَ — altında
+Mekân bildiren zarftır. ❌
+E) خَوْفًا — korkusundan
+خَرَجَ الْمُسَافِرُ مُبَكِّرًا خَوْفًا مِنْ زِحَامِ الطَّرِيقِ.
+“Yolcu yol trafiğinden korktuğu için erken çıktı.”
+خَوْفًا, fiilin gerçekleşme nedenini bildiren مفعول لأجله görevindedir. ✅
+Doğru cevap: E) خَوْفًا
+6. Soru
+يَتَدَرَّبُ اللَّاعِبُ كُلَّ يَوْمٍ ---- يُحَافِظَ عَلَى لِيَاقَتِهِ.
+Önce cümlenin yapısına bakalım:
+يَتَدَرَّبُ اللَّاعِبُ كُلَّ يَوْمٍ
+“Oyuncu her gün antrenman yapıyor.”
+Boşluktan sonra يُحَافِظَ şeklinde muzâri fiil bulunmaktadır. Burada antrenman yapma eyleminin amacını açıklayan bir yapı aranmalıdır.
+Ayrıca يُحَافِظَ fiilinin sonundaki fetha, muzâri fiilin mansup olduğuna işaret etmektedir.
+Şimdi şıklara bakalım:
+A) لِـ — ...mek için
+يَتَدَرَّبُ اللَّاعِبُ كُلَّ يَوْمٍ لِيُحَافِظَ عَلَى لِيَاقَتِهِ.
+“Oyuncu kondisyonunu korumak için her gün antrenman yapıyor.”
+Buradaki لام التعليل, amaç/sebep bildirir ve muzâri fiilin nasb edilmesine yol açar. ✅
+B) أَمَامَ — önünde
+Mekân bildirir. ❌
+C) سَيْرًا — yürüme
+Mastar olup bu amaç ilişkisini kurmaz. ❌
+D) صَبَاحًا — sabahleyin
+Zaman bildirir; ancak ardından muzâri fiille bu bağlantıyı kuramaz. ❌
+E) خَلْفَ — arkasında
+Mekân bildirir. ❌
+Doğru cevap: A) لِـ
+7. Soru
+يَسْتَيْقِظُ الطَّالِبُ بَاكِرًا ---- يَصِلَ إِلَى الْمَدْرَسَةِ فِي الْوَقْتِ.
+Önce cümlenin yapısına bakalım:
+يَسْتَيْقِظُ الطَّالِبُ بَاكِرًا
+“Öğrenci erken uyanıyor.”
+Ardından يَصِلَ إِلَى الْمَدْرَسَةِ فِي الْوَقْتِ “okula zamanında ulaşmak” anlamını veren bir fiil cümlesi gelmektedir.
+İki eylem arasında amaç ilişkisi bulunmaktadır. Ayrıca يَصِلَ fiilinin mansup oluşu da boşlukta buna uygun bir edat bulunması gerektiğini göstermektedir.
+Şimdi şıklara bakalım:
+A) كُلَّ — bütün / her
+Tek başına bu fiil cümlesini amaç bakımından bağlayamaz. ❌
+B) كَيْ — ...mek için
+يَسْتَيْقِظُ الطَّالِبُ بَاكِرًا كَيْ يَصِلَ إِلَى الْمَدْرَسَةِ فِي الْوَقْتِ.
+“Öğrenci okula zamanında ulaşmak için erken uyanıyor.”
+كَيْ, amaç bildirir ve ardından gelen muzâri fiili nasb eder. ✅
+C) أَمْسِ — dün
+Zaman bildiren bir kelimedir; amaç ilişkisi kurmaz. ❌
+D) دَاخِلَ — içinde
+Mekân bildirir. ❌
+E) ضَحِكًا — gülme
+Mastar olup cümleyle anlam ilişkisi kurmaz. ❌
+Doğru cevap: B) كَيْ
+8. Soru
+قَدَّمَ الطَّبِيبُ النَّصِيحَةَ ---- عَلَى صِحَّةِ الْمَرِيضِ.
+Önce cümlenin yapısına bakalım:
+قَدَّمَ الطَّبِيبُ النَّصِيحَةَ
+“Doktor tavsiyede bulundu / tavsiyeyi verdi.”
+Boşluktan sonra عَلَى صِحَّةِ الْمَرِيضِ bulunmaktadır. Burada tavsiye verme eyleminin hangi sebep veya kaygıyla gerçekleştirildiğini ifade eden bir yapı aranmalıdır.
+Şimdi şıklara bakalım:
+A) غَدًا — yarın
+Zaman bildirir. ❌
+B) تَحْتَ — altında
+Mekân bildirir. ❌
+C) حِرْصًا — özen göstererek / önem verdiği için
+قَدَّمَ الطَّبِيبُ النَّصِيحَةَ حِرْصًا عَلَى صِحَّةِ الْمَرِيضِ.
+“Doktor hastanın sağlığına özen gösterdiği için tavsiyede bulundu.”
+حِرْصًا عَلَى Arapçada doğal bir eşdizimdir ve حِرْصًا fiilin sebebini açıklayan مفعول لأجلهdir. ✅
+D) ضَرْبَتَيْنِ — iki vuruş
+Eylem ve anlam bakımından uygun değildir. ❌
+E) كَيْ — ...mek için
+Kendisinden sonra muzâri fiil gerektirir. Burada ardından على gelmektedir. ❌
+Doğru cevap: C) حِرْصًا
+9. Soru
+سَعِدَ الْوَلَدُ ---- بِنَجَاحِ أَخِيهِ.
+Önce cümlenin yapısına bakalım:
+سَعِدَ الْوَلَدُ بِنَجَاحِ أَخِيهِ
+“Çocuk kardeşinin başarısına sevindi.”
+Cümlenin fiili سَعِدَdır. Boşlukta fiilin anlamını kendi kökünden gelen bir mastarla pekiştiren bir yapı bulunabilir.
+Dolayısıyla seçeneklerde ism-i fâil, ism-i mef‘ûl ve mastar ayrımına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) سَعِيدًا — mutlu olarak
+Sıfat niteliğindedir; fiilin mastarı değildir. ❌
+B) مُسْعِدًا — mutlu eden
+أَسْعَدَ fiilinden türemiş ism-i fâildir. ❌
+C) مَسْعُودًا — mutlu edilmiş / mesut
+Mastar değildir. ❌
+D) سَعَادَةً — mutlulukla / büyük bir mutluluk
+سَعِدَ الْوَلَدُ سَعَادَةً بِنَجَاحِ أَخِيهِ.
+سَعَادَةً, سَعِدَ fiilinin mastarıdır ve fiili pekiştiren مفعول مطلق olarak kullanılabilir. ✅
+E) إِسْعَادًا — mutlu etme
+أَسْعَدَ fiilinin mastarıdır; cümledeki سَعِدَ fiilinin mastarı değildir. ❌
+Doğru cevap: D) سَعَادَةً
+10. Soru
+ضَحِكَ الْأَطْفَالُ ---- عَالِيًا.
+Önce cümlenin yapısına bakalım:
+ضَحِكَ الْأَطْفَالُ
+“Çocuklar güldüler.”
+Boşluktan sonra عَالِيًا kelimesi bulunmaktadır. Bu kelimenin, boşlukta gelecek olan mastarı nitelemesi mümkündür.
+Dolayısıyla burada ضَحِكَ fiilinin kendi mastarının gelip gelmediğine dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) ضَاحِكًا — gülen olarak
+İsm-i fâildir. Ayrıca çoğul الأطفال ile bu biçimde uyumlu değildir. ❌
+B) مُضْحِكًا — güldüren / komik
+أَضْحَكَ fiiliyle ilişkili ism-i fâildir. ❌
+C) مَضْحُوكًا — gülünmüş
+İsm-i mef‘ûl yapısındadır. ❌
+D) إِضْحَاكًا — güldürme
+أَضْحَكَ fiilinin mastarıdır; ضَحِكَ fiilinin mastarı değildir. ❌
+E) ضَحِكًا — gülme
+ضَحِكَ الْأَطْفَالُ ضَحِكًا عَالِيًا.
+“Çocuklar yüksek sesli bir şekilde güldüler.”
+ضَحِكًا, cümlenin fiiliyle aynı kökten mastardır; عَالِيًا ise bu mastarın niteliğini açıklar mefulü mutlaktır. ✅
+Doğru cevap: E) ضَحِكًا
+11. Soru
+قَرَأْتُ الْقِصَّةَ ----.
+Önce cümlenin yapısına bakalım:
+قَرَأْتُ الْقِصَّةَ
+“Hikâyeyi okudum.”
+Cümlenin fiili قَرَأَ “okumak”tır.
+Boşlukta, okuma eyleminin kaç kez gerçekleştiğini ifade eden, fiilin köküyle bağlantılı bir mastar yapısı bulunabilir. Mef‘ûl-i mutlak eylemin yalnızca niteliğini değil, sayısını da açıklayabilir.
+Şimdi şıklara bakalım:
+A) قِرَاءَتَيْنِ — iki kez okuma
+قَرَأْتُ الْقِصَّةَ قِرَاءَتَيْنِ.
+“Hikâyeyi iki kez okudum.”
+Fiilin gerçekleşme sayısını bildirir. ✅
+B) قَارِئًا — okuyan
+İsm-i fâildir. ❌
+C) مَقْرُوءًا — okunmuş / okunan
+İsm-i mef‘ûldür. ❌
+D) إِقْرَاءً — okutma
+أَقْرَأَ fiilinin mastarıdır; قَرَأَ fiilinin mastarı değildir. ❌
+E) مَقْرَأً — okuma yeri / okunan bölüm türünde kullanım
+Burada fiilin sayısını bildiren mastar değildir. ❌
+Doğru cevap: A) قِرَاءَتَيْنِ
+12. Soru
+اِهْتَمَّتِ الْمُعَلِّمَةُ بِالطَّالِبَاتِ ----.
+Önce cümlenin yapısına bakalım:
+اِهْتَمَّتِ الْمُعَلِّمَةُ بِالطَّالِبَاتِ
+“Öğretmen hanım kız öğrencilerle ilgilendi.”
+Cümlenin temel fiili اِهْتَمَّdır. Fiilin mastarı aynı kökten ve aynı bâbdan türetilerek eylemin derecesini veya türünü açıklamak üzere kullanılabilir.
+Boşluktaki ifadenin fiili pekiştirmesi veya eylemin derecesini/niteliğini belirtmesi beklenmektedir.
+Şimdi şıklara bakalım:
+A) مُهْتَمَّةً — ilgili olarak / ilgilenen durumda
+İsm-i fâilin müennes biçimidir; fiilin mastarı değildir. ❌
+B) اِهْتِمَامًا كَبِيرًا — büyük bir ilgiyle
+اِهْتَمَّتِ الْمُعَلِّمَةُ بِالطَّالِبَاتِ اِهْتِمَامًا كَبِيرًا.
+“Öğretmen hanım kız öğrencilerle büyük bir ilgiyle ilgilendi.”
+اِهْتِمَامًا, اِهْتَمَّ fiilinin mastarıdır. كَبِيرًا ise bu mastarın niteliğini açıklamaktadır. ✅
+C) مُهْتَمًّا — ilgili
+İsm-i fâildir ve ayrıca müennes المعلّمة ile cinsiyet bakımından uyumsuzdur. ❌
+D) هَمًّا — kaygı / tasa
+Aynı kök harfleriyle ilişkili olsa da اِهْتَمَّ fiilinin mastarı değildir. ❌
+E) مَهْمُومًا — kaygılı / tasalı
+İsm-i mef‘ûl/sıfat niteliğindedir ve ayrıca müennes faille uyumlu değildir. ❌
+Doğru cevap: B) اِهْتِمَامًا كَبِيرًا

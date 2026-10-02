@@ -1,0 +1,196 @@
+KANE VE KARDEŞLERİ DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+فِي الْمَصَادِرِ التَّارِيخِيَّةِ، ---- الْجِسْرُ قَدِيمًا طَرِيقًا رَئِيسِيًّا بَيْنَ الْمَدِينَتَيْنِ.
+Anlamı:
+“Tarihî kaynaklara göre köprü eskiden iki şehir arasında ana bir yol------.”
+Açıklama:
+Cümlede قَدِيمًا “eskiden” ifadesi geçmiş zamanı göstermektedir. الْجِسْرُ müzekker tekildir, طَرِيقًا ise haber olarak mansûbdur. Bu nedenle geçmişte bir durumda bulunmayı bildiren müzekker tekil nakıs bir fiil gerekir.
+Şıklara bakalım:
+A) كَانَ → geçmişte bir durumda bulunmayı bildirir; müzekker tekildir. ✅
+B) كَانَتْ → müennes tekildir. ❌
+C) كُنْ → emir kipidir. ❌
+D) يَكُونُ → muzâridir; geçmiş anlamına uymaz. ❌
+E) لَيْسَ → olumsuzluk bildirir. ❌
+Doğru cevap: A) كَانَ
+2. Soru
+بَعْدَ تَرْمِيمِ الْمَبْنَى، ---- الْمَكْتَبَةُ مَكَانًا مُنَاسِبًا لِلْقِرَاءَةِ الْهَادِئَةِ.
+Anlamı:
+“Binanın onarılmasından sonra kütüphane sessiz okumaya uygun bir yer ---------------.”
+Açıklama:
+بَعْدَ تَرْمِيمِ الْمَبْنَى ifadesi bir durum değişikliğine işaret etmektedir. الْمَكْتَبَةُ müennes tekildir. Bu nedenle “bir hâle gelmek” anlamı veren fiilin müennes tekil çekimi gerekir.
+Şıklara bakalım:
+A) أَصْبَحَ → müzekker tekildir. ❌
+B) أَصْبَحَتْ → müennes tekildir ve değişim bildirir. ✅
+C) يُصْبِحُ → muzâri ve müzekkerdir. ❌
+D) أَصْبِحْ → emir kipidir. ❌
+E) كُونِي → müennes emir “ol!” anlamındadır. ❌
+Doğru cevap: B) أَصْبَحَتْ
+3. Soru
+فِي هٰذَا التَّقْرِيرِ، لَيْسَتِ النَّتِيجَةُ ---- كَمَا تَوَقَّعَ الْفَرِيقُ.
+Anlamı:
+“Bu raporda sonuç, ekibin beklediği kadar/netlikte değildir.”
+Açıklama:
+لَيْسَتْ ناقص fiildir. النَّتِيجَةُ onun ismi olarak merfûdur. Boşluğa ise haber gelmeli ve mansûb, ayrıca النَّتِيجَةُ ile müennes uyumlu olmalıdır.
+Şıklara bakalım:
+A) وَاضِحَةٌ → müennes ancak merfûdur. ❌
+B) وَاضِحٌ → müzekker ve merfûdur. ❌
+C) وَاضِحَةً → müennes ve mansûbdur. ✅
+D) وُضُوحًا → mastardır. ❌
+E) وَاضِحِينَ → çoğul müzekkerdir. ❌
+Doğru cevap: C) وَاضِحَةً
+4. Soru
+يَظَلُّ الْحِوَارُ نَافِعًا ---- الطَّرَفَانِ مُلْتَزِمَيْنِ بِالِاحْتِرَامِ.
+Anlamı:
+“İki taraf karşılıklı saygıya bağlı kaldığı ----- diyalog yararlı olmaya devam eder.”
+Açıklama:
+İlk bölümde bir durumun devam etmesi, ikinci bölümde ise bunun hangi şart/süre boyunca devam edeceği anlatılmaktadır. Bu nedenle “... olduğu müddetçe” anlamı veren yapı gerekir.
+Şıklara bakalım:
+A) حِينَ → “-dığı zaman” anlamındadır; süreklilik şartını tam karşılamaz. ❌
+B) إِذَا → şart/zaman bildirir. ❌
+C) لِأَنَّ → sebep bildirir. ❌
+D) مَا دَامَ → “... olduğu müddetçe” anlamını verir. ✅
+E) قَبْلَ أَنْ → “...meden önce” anlamındadır. ❌
+Doğru cevap: D) مَا دَامَ
+5. Soru
+رَغْمَ كَثْرَةِ الْمَصَادِرِ الرَّقْمِيَّةِ، ---- الْكِتَابُ الْوَرَقِيُّ حَاضِرًا فِي مَكْتَبَاتِ الْقُرَّاءِ.
+Anlamı:
+“Dijital kaynakların çokluğuna rağmen basılı kitap okuyucuların kütüphanelerinde ------ varlığını sürdürmektedir.”
+Açıklama:
+رَغْمَ yapısı, dijital kaynaklara rağmen basılı kitabın varlığının devam ettiğini göstermektedir. Bu nedenle devamlılık bildiren nakıs bir fiil gerekir.
+Şıklara bakalım:
+A) كَانَ → geçmişte bulunmayı bildirir. ❌
+B) صَارَ → değişim/dönüşüm bildirir. ❌
+C) لَيْسَ → olumsuzluk bildirir. ❌
+D) بَاتَ → geceleyin/bir hâle gelme anlamı taşır. ❌
+E) لَا يَزَالُ → “hâlâ, devam etmektedir” anlamını verir. ✅
+Doğru cevap: E) لَا يَزَالُ
+6. Soru
+بِسَبَبِ انْخِفَاضِ دَرَجَةِ الْحَرَارَةِ، ---- الْمَاءُ جَلِيدًا خِلَالَ سَاعَاتٍ قَلِيلَةٍ.
+Anlamı:
+“Sıcaklığın düşmesi nedeniyle su birkaç saat içinde buza ------.”
+Açıklama:
+Su başlangıçtaki durumundan başka bir duruma geçmiştir. Burada açıkça dönüşüm/değişim anlamı gerekir. الْمَاءُ müzekker tekildir.
+Şıklara bakalım:
+A) صَارَ → “hâline geldi, dönüştü”; müzekker tekildir. ✅
+B) صَارَتْ → müennes tekildir. ❌
+C) لَيْسَ → olumsuzluk bildirir. ❌
+D) مَا زَالَ → devamlılık bildirir. ❌
+E) بَاتَتْ → müennes tekildir. ❌
+Doğru cevap: A) صَارَ
+7. Soru
+سَارَ الْفَرِيقُ طَوِيلًا حَتَّى ---- فِي قَرْيَةٍ صَغِيرَةٍ.
+Anlamı:
+“Ekip uzun süre yürüdü ve sonunda küçük bir köyde -------.”
+Açıklama:
+حَتَّى sonrasında uzun yolculuğun ulaştığı sonuç anlatılmaktadır. Burada zamanın akşama ulaşmasını ifade eden “akşamladı” anlamında ve كان وأخواتها grubunda bulunan bir fiil gerekir. 
+Şıklara bakalım:
+A) كَانَ → yalnızca geçmişte bulunmayı bildirir. ❌
+B) أَمْسَى → “akşamladı / akşam olduğunda bir durumda bulundu” anlamını verir. ✅
+C) صَارَتْ → müennes tekildir. ❌
+D) لَيْسَ → olumsuzluk bildirir. ❌
+E) مَا دَامَ → “olduğu müddetçe” anlamındadır. ❌
+Doğru cevap: B) أَمْسَى
+8. Soru
+طُولَ الْمُنَاقَشَةِ، ---- الْبَاحِثُ يَشْرَحُ الْفِكْرَةَ بِأَمْثِلَةٍ دَقِيقَةٍ.
+Anlamı:
+“Tartışma boyunca araştırmacı fikri ayrıntılı örneklerle açıklamaya -----.”
+Açıklama:
+طُولَ الْمُنَاقَشَةِ “tartışma boyunca” ifadesi süreklilik bildirmektedir. Haber de يَشْرَحُ şeklinde fiil cümlesidir. Bu nedenle bir eylemin belli bir süre devam ettiğini bildiren fiil gerekir.
+Şıklara bakalım:
+A) صَارَ → dönüşüm bildirir. ❌
+B) لَيْسَتْ → müennes ve olumsuzdur. ❌
+C) ظَلَّ → bir durumun devam ettiğini bildirir. ✅
+D) مَا دَامَ → “olduğu müddetçe” yapısıdır; burada bağlı bir şart/süre cümlesi gerektirir. ❌
+E) أَصْبَحَتْ → müennes tekildir. ❌
+Doğru cevap: C) ظَلَّ
+9. Soru
+بَعْدَ أَنْ تَحَسَّنَتِ الْأَحْوَالُ الِاقْتِصَادِيَّةُ، ---- الْأَسْعَارُ أَكْثَرَ اسْتِقْرَارًا.
+Anlamı:
+“Ekonomik koşullar iyileştikten sonra fiyatlar daha istikrarlı ---------------.”
+Açıklama:
+بَعْدَ أَنْ تَحَسَّنَتْ ifadesi bir değişimi göstermektedir. الْأَسْعَارُ akılsız çoğuldur ve Arapçada müennes tekil muamelesi görür. Bu nedenle dönüşüm bildiren fiilin müennes tekil biçimi gerekir.
+Şıklara bakalım:
+A) لَيْسَتْ → olumsuzluk bildirir. ❌
+B) أَصْبَحَ → müzekker tekildir. ❌
+C) أَصْبَحُوا → çoğul müzekkerdir. ❌
+D) أَصْبَحَتْ → müennes tekildir ve “hâle geldi” anlamını verir. ✅
+E) مَا زَالَ → devamlılık bildirir. ❌
+Doğru cevap: D) أَصْبَحَتْ
+10. Soru
+مُنْذُ بِدَايَةِ الْمَشْرُوعِ، ---- الْمُهَنْدِسُ حَرِيصًا عَلَى مُتَابَعَةِ التَّفَاصِيلِ.
+Anlamı:
+“Projenin başlangıcından beri mühendis ayrıntıları takip etmeye özen göstermeye ------------------.”
+Açıklama:
+مُنْذُ بِدَايَةِ الْمَشْرُوعِ geçmişte başlayıp devam eden bir duruma işaret etmektedir. Bu nedenle devamlılık bildiren كان وأخواتها fiillerinden biri gerekir.
+Şıklara bakalım:
+A) صَارَ → dönüşüm bildirir. ❌
+B) كَانَتْ → müennes tekildir. ❌
+C) أَمْسَى → akşam vaktiyle ilişkili durum bildirir. ❌
+D) لَيْسَ → olumsuzluk bildirir. ❌
+E) مَا بَرِحَ → “hâlâ / devam etmektedir” anlamını verir. ✅
+Doğru cevap: E) مَا بَرِحَ
+11. Soru
+فِي سَنَوَاتِ الْجَفَافِ، ---- الْأَرْضُ قَاحِلَةً مُعْظَمَ أَيَّامِ الصَّيْفِ.
+Anlamı:
+“Kuraklık yıllarında toprak yaz günlerinin çoğunda çorak------.”
+Açıklama:
+Cümlede geçmiş dönem olan سَنَوَاتِ الْجَفَافِ anlatılmaktadır. الْأَرْضُ müennes tekildir ve قَاحِلَةً haber olarak mansûbdur. Bu nedenle geçmiş zaman bildiren müennes tekil fiil gerekir.
+Şıklara bakalım:
+A) كَانَتْ → geçmiş zaman ve müennes tekildir. ✅
+B) كَانَ → müzekker tekildir. ❌
+C) يَكُونُ → muzâri ve müzekkerdir. ❌
+D) صَارَ → dönüşüm bildirir ve müzekkerdir. ❌
+E) لَيْسَ → olumsuzluk bildirir. ❌
+Doğru cevap: A) كَانَتْ
+12. Soru
+مَعَ ازْدِيَادِ الضَّجِيجِ فِي الْمَدِينَةِ، ---- الصَّمْتُ ضَرُورَةً يَبْحَثُ عَنْهَا الْإِنْسَانُ.
+Anlamı:
+“Şehirde gürültünün artmasıyla sessizlik, insanın aradığı bir ihtiyaç -------.”
+Açıklama:
+Gürültünün artması sonucunda الصَّمْتُ yeni bir niteliğe dönüşmektedir. Burada değişim/dönüşüm anlamı gerekir. الصَّمْتُ müzekker tekildir.
+Şıklara bakalım:
+A) أَضْحَتْ → müennes tekildir. ❌
+B) أَضْحَى → müzekker tekildir ve “hâle geldi. oldu” anlamını verir. ✅.
+C) مَا دَامَ → devam süresi bildirir. ❌
+D) لَيْسَ → olumsuzluk bildirir. ❌
+E) مَا دَامَتْ → müennes tekildir ve anlam uygun değildir. ❌
+Doğru cevap: B) أَضْحَى
+13. Soru
+رَغْمَ كَثْرَةِ الْمَسْؤُولِيَّاتِ، لَا تَزَالُ الْبَاحِثَةُ ---- فِي عَمَلِهَا الْأَكَادِيمِيِّ.
+Anlamı:
+“Sorumluluklarının çokluğuna rağmen araştırmacı akademik çalışmalarında hâlâ gayretlidir.”
+Açıklama:
+لَا تَزَالُ devamlılık bildiren ناقص fiildir. الْبَاحِثَةُ onun ismi olarak merfûdur. Boşluğa haber gelmeli; haber mansûb ve müennes tekil olmalıdır.
+Şıklara bakalım:
+A) مُجْتَهِدَةٌ → müennes ancak merfûdur. ❌
+B) مُجْتَهِدًا → mansûb ancak müzekkerdir. ❌
+C) مُجْتَهِدَةً → müennes tekil ve mansûbdur. ✅
+D) مُجْتَهِدِينَ → çoğul müzekkerdir. ❌
+E) اِجْتَهَدَتْ → mâzi fiildir; burada isim haber gerekmektedir. ❌
+Doğru cevap: C) مُجْتَهِدَةً
+14. Soru
+قَضَى الرُّحَّلُ اللَّيْلَ فِي الطَّرِيقِ، ثُمَّ ---- فِي وَاحَةٍ قَرِيبَةٍ.
+Anlamı:
+“Yolcular geceyi yolda geçirdiler, ardından yakın bir vahada sabahladılar.”
+Açıklama:
+İlk cümlede fail الرُّحَّلُ çoğul müzekkerdir. İkinci bölümde bu fail açıkça tekrar edilmemiştir; fiilin içinde onu karşılayan çoğul zamir bulunmalıdır. Ayrıca bağlam gece sonrasındaki sabah durumunu ifade etmektedir.
+Şıklara bakalım:
+A) أَصْبَحَ → tekil müzekkerdir; gizli faili “هو” olur. ❌
+B) أَصْبَحَتْ → müennes tekildir. ❌
+C) لَيْسُوا → çoğul olsa da olumsuzluk bildirir. ❌
+D) أَصْبَحُوا → çoğul müzekkerdir ve الرُّحَّلُ grubuna döner. ✅
+E) مَا زَالُوا → devamlılık bildirir; bağlama uygun değildir. ❌
+Doğru cevap: D) أَصْبَحُوا
+15. Soru
+فِي مُوَاجَهَةِ الْأَزَمَاتِ، ---- الْإِنْسَانُ مُحْتَاجًا إِلَى الْحِكْمَةِ وَالصَّبْرِ.
+Anlamı:
+“Krizlerle karşı karşıya kaldığında insan hikmete ve sabra ------ ihtiyaç duyar.”
+Açıklama:
+Cümlede insanın krizler karşısında hikmet ve sabra olan ihtiyacının devamlılığı anlatılmaktadır. الْإِنْسَانُ müzekker tekildir ve مُحْتَاجًا haber olarak mansûbdur. Bu nedenle devamlılık bildiren”sürekli” anlamında nakıs bir fiil gerekir.
+Şıklara bakalım:
+A) كَانَتْ → müennes tekildir. ❌
+B) صَارَتْ → müennes ve dönüşüm bildirir. ❌
+C) لَيْسَتْ → müennes ve olumsuzdur. ❌
+D) مَا دَامَ → “olduğu müddetçe” anlamı verir ve kendisinden önce başka bir ana cümle gerektirir. ❌
+E) لَا يَنْفَكُّ → “sürekli, durmadan” anlamında devamlılık bildirir ve müzekker tekildir. ✅
+Doğru cevap: E) لَا يَنْفَكُّ

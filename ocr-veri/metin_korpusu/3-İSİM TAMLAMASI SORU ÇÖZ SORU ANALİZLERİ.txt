@@ -1,0 +1,98 @@
+İSİM TAMLAMASI SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+وَضَعَ الْمُدِيرُ تَقْرِيرَ ---- عَلَى الطَّاوِلَةِ، وَطَلَبَ مِنَ الْجَمِيعِ مُرَاجَعَتَهُ قَبْلَ الِاجْتِمَاعِ الْقَادِمِ.
+Türkçesi: Müdür ---- raporunu masanın üzerine koydu ve herkesten gelecek toplantıdan önce onu incelemesini istedi.
+İlk aşamada تَقْرِيرَ ---- yapısına dikkat edelim. Burada تَقْرِيرَ kelimesinden sonra gelen sözcüğün onunla nasıl bir ilişki kurduğuna ve kelimenin i‘rabına bakmamız gerekiyor.
+Şimdi şıklara bakalım:
+A) مُهِمٌّ — önemli
+Bir sıfattır ve merfudur. تَقْرِيرَ kelimesini niteleyecek olsaydı mansup biçimde gelmesi gerekirdi. Olmaz.
+B) الْجَمِيلَ — güzel
+Sıfattır ve mansuptur; ancak تَقْرِيرَ burada isim tamlaması oluşturacak biçimde kullanılmıştır. Ayrıca “güzel rapor” denilecekse yapı farklı kurulurdu. Olmaz.
+C) الشَّرِكَةِ — şirketin
+Bir isimdir ve mecrurdur. تَقْرِيرَ الشَّرِكَةِ “şirketin raporunu” şeklinde doğru bir isim tamlaması oluşturur. Olabilir.
+D) جَدِيدًا — yeni
+Bir sıfattır ve mansuptur. Ancak bu yapıda isim tamlamasını tamamlamaz. Olmaz.
+E) رَسْمِيٌّ — resmî
+Bir sıfattır ve merfudur. تَقْرِيرَ ile i‘rab bakımından da uyumlu değildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, الشَّرِكَةِ olur.
+2. Soru
+هٰذَا لَيْسَ قَلَمًا عَادِيًّا، بَلْ هُوَ ---- الْمُدِيرِ الَّذِي كُتِبَتْ بِهِ الْوَثَائِقُ الرَّسْمِيَّةُ.
+Türkçesi: Bu sıradan bir kalem değildir; aksine resmî belgelerin kendisiyle yazıldığı müdürün kalemidir.
+İlk aşamada هُوَ ---- الْمُدِيرِ bölümüne bakalım. Boşluğa gelecek kelimenin hem هُوَ zamirinden sonraki görevine hem de ardından gelen الْمُدِيرِ ile kuracağı isim tamlamasına dikkat etmeliyiz.
+Şimdi şıklara bakalım:
+A) قَلَمٍ — kalem
+Mecrurdur. Burada cümlenin yüklemi konumundaki ilk isim merfu olmalıdır. Olmaz.
+B) قَلَمًا — kalem
+Mansuptur. Burada merfu olması gerekir. Olmaz.
+C) قَلَمٌ — bir kalem
+Merfudur; ancak tenvinlidir. İsim tamlamasında مُضاف olan kelime tenvin almaz. Olmaz.
+D) الْقَلَمَ — kalemi
+Mansuptur ve başında ال vardır. Buradaki isim tamlamasına uygun değildir. Olmaz.
+E) قَلَمُ — kalemi / kalem
+Merfudur, tenvin almaz ve ardından gelen الْمُدِيرِ ile قَلَمُ الْمُدِيرِ “müdürün kalemi” tamlamasını oluşturur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, قَلَمُ olur.
+3. Soru
+دَخَلَ ---- الْمَعْهَدِ إِلَى الْقَاعَةِ مَعًا، وَجَلَسَا فِي الصَّفِّ الْأَمَامِيِّ اسْتِعْدَادًا لِلِامْتِحَانِ.
+Türkçesi: Enstitünün iki öğrencisi salona birlikte girdi ve sınava hazırlanmak için ön sıraya oturdu.
+İlk aşamada cümlenin devamındaki جَلَسَا “ikisi oturdu” ve مَعًا “birlikte” ifadelerine dikkat edelim. Boşluktaki kelimenin iki kişiyi göstermesi ve ardından الْمَعْهَدِ ile isim tamlaması kurması gerekiyor.
+Şimdi şıklara bakalım:
+A) الطَّالِبَانِ — iki öğrenci
+İkil ve merfudur; ancak başında ال vardır ve sonundaki ن durmaktadır. İkil bir isim, isim tamlamasında مُضاف olduğunda ن düşer. Olmaz.
+B) طَالِبَيْنِ — iki öğrenci
+İkil biçimidir fakat mansup/mecrurdur; ayrıca ن düşmemiştir. Burada özne olduğu için merfu olmalıdır. Olmaz.
+C) طَالِبَا — iki öğrenci
+İkil ve merfudur. İsim tamlamasına girdiği için sonundaki ن düşmüştür: طَالِبَا الْمَعْهَدِ “enstitünün iki öğrencisi”. Olabilir.
+D) الطَّالِبَيْنِ — iki öğrenci
+Mansup/mecrurdur; ayrıca başında ال vardır ve isim tamlaması yapısına uygun değildir. Olmaz.
+E) طَالِبَةٌ — kız öğrenci
+Tekildir. Cümlenin devamında iki kişiden söz edilmektedir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, طَالِبَا olur.
+4. Soru
+اِسْتَمَعْتُ إِلَى ---- الْمَدْرَسَةِ بِاهْتِمَامٍ كَبِيرٍ، لِأَنَّ كَلَامَهُمَا كَانَ وَاضِحًا وَمُفِيدًا.
+Türkçesi: Okulun iki öğretmenini büyük bir dikkatle dinledim; çünkü ikisinin konuşması açık ve faydalıydı.
+İlk aşamada hem إِلَى harf-i cerine hem de devamındaki كَلَامَهُمَا “ikisinin konuşması” ifadesine bakalım. Burada iki kişiyi gösteren ve ardından الْمَدْرَسَةِ ile isim tamlaması kuran bir yapı gerekiyor.
+Şimdi şıklara bakalım:
+A) مُعَلِّمَانِ — iki öğretmen
+İkil ve merfudur. إِلَى sonrasında mecrur olması gerekir. Ayrıca isim tamlamasında ن düşmelidir. Olmaz.
+B) الْمُعَلِّمَانِ — iki öğretmen
+Merfudur, başında ال vardır ve ن düşmemiştir. Olmaz.
+C) مُعَلِّمَيْنِ — iki öğretmen
+Mecrur biçimdedir; ancak isim tamlamasına girdiğinde sonundaki ن düşmelidir. Olmaz.
+D) مُعَلِّمَيْ — iki öğretmen
+İkil ismin mecrur biçimidir ve isim tamlamasına girdiği için ن düşmüştür. مُعَلِّمَيْ الْمَدْرَسَةِ “okulun iki öğretmeni” doğru yapıdır. Olabilir.
+E) مُعَلِّمُ — öğretmen
+Tekildir. كَلَامَهُمَا ifadesindeki iki kişi anlamını karşılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, مُعَلِّمَيْ olur.
+
+5. Soru
+يُشَارِكُ ---- الشَّرِكَةِ فِي هٰذَا الْمَشْرُوعِ مُنْذُ بَدَايَتِهِ، وَيَسْعَوْنَ إِلَى تَطْوِيرِهِ بِاسْتِمْرَارٍ.
+Türkçesi: Şirketin mühendisleri bu projeye başlangıcından beri katılıyor ve onu sürekli geliştirmeye çalışıyorlar.
+İlk aşamada يَسْعَوْنَ “çalışıyorlar” fiiline dikkat edelim. Burada birden fazla erkek kişiden söz edildiğini anlıyoruz. Ayrıca boşluktaki kelime الشَّرِكَةِ ile isim tamlaması oluşturmalıdır.
+Şimdi şıklara bakalım:
+A) مُهَنْدِسُونَ — mühendisler
+Cem‘-i müzekker sâlimdir ve merfudur; ancak isim tamlamasına girdiğinde sondaki ن düşmelidir. Olmaz.
+B) مُهَنْدِسُو — mühendisleri
+Merfu cem‘-i müzekker sâlimdir ve isim tamlamasına girdiği için ن düşmüştür. مُهَنْدِسُو الشَّرِكَةِ “şirketin mühendisleri” doğru yapıdır. Olabilir.
+C) مُهَنْدِسِينَ — mühendisler
+Mansup/mecrur biçimidir ve ن düşmemiştir. Burada özne merfudur. Olmaz.
+D) الْمُهَنْدِسِينَ — mühendisler
+Mansup/mecrurdur ve başında ال vardır. İsim tamlamasına uygun değildir. Olmaz.
+E) مُهَنْدِسُ — mühendis
+Tekildir. Devamındaki يَسْعَوْنَ çoğul özneyi göstermektedir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, مُهَنْدِسُو olur.
+6. Soru
+تُنَاقِشُ الْإِدَارَةُ آرَاءَ ---- بِعِنَايَةٍ قَبْلَ اتِّخَاذِ أَيِّ قَرَارٍ جَدِيدٍ.
+Türkçesi: Yönetim, herhangi bir yeni karar almadan önce ---- görüşlerini dikkatle değerlendirir.
+İlk aşamada آرَاءَ ---- bölümüne bakalım. Burada “kimin görüşleri?” sorusuna cevap veren bir isim tamlaması kurmamız gerekiyor. Dolayısıyla ikinci kelimenin مُضافٌ إليه görevinde nasıl gelmesi gerektiğine dikkat edeceğiz.
+Şimdi şıklara bakalım:
+A) الْمُوَظَّفِينَ — çalışanların
+Cem‘-i müzekker sâlimdir ve mecrur biçimdedir. آرَاءَ الْمُوَظَّفِينَ “çalışanların görüşlerini” şeklinde doğru bir isim tamlaması oluşturur. Olabilir.
+B) اَلْمُوَظَّفُونَ — çalışanlar
+Merfudur. مُضافٌ إليه olması için mecrur olması gerekir. Olmaz.
+C) مُوَظَّفِي — çalışanları
+Bu biçim, kendisi başka bir isme مُضاف olduğunda kullanılır; örneğin مُوَظَّفِي الشَّرِكَةِ. Burada ardından onu tamamlayacak bir isim gelmiyor. Olmaz.
+D) مُوَظَّفَانِ — iki çalışan
+İkil ve merfudur. Burada mecrur çoğul bir yapı gerekir. Olmaz.
+E) اَلْمُوَظَّفُ — çalışan
+Tekil ve merfudur. Burada hem i‘rab hem anlam bakımından uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, الْمُوَظَّفِينَ olur.

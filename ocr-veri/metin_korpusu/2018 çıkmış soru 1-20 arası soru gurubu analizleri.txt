@@ -1,0 +1,568 @@
+2018 yılı çıkmış soru 1-20 soru grubu analizleri
+1. Soru
+Harekeli Arapça metin
+اَلْقِطُّ مِنْ أَكْثَرِ الْحَيَوَانَاتِ الْأَلِيفَةِ جَمَالًا، وَهُوَ مِنَ الْحَيَوَانَاتِ الَّتِي تَعْتَبِرُ ---- الْإِنْسَانَ فِي الدَّرَجَةِ الْأُولَى.
+Boşluklu tercüme
+“Kedi, evcil hayvanların en güzellerinden biridir ve insanı birinci derecede kabul eden ---- hayvanlardandır.”
+Boşlukta bizden istenen
+Boşluğa الْحَيَوَانَاتِ kelimesini niteleyen ve hayvanların insanlarla olumlu ilişkisini anlatan uygun bir sıfat getirilmelidir. Özellikle şu bölüm dikkate alınmalıdır:
+تَعْتَبِرُ الْإِنْسَانَ فِي الدَّرَجَةِ الْأُولَى
+“İnsanı birinci sırada kabul eder.”
+Soru neyi ölçüyor?
+Şıkların çoğu müennes tekil sıfat biçimindedir. Bu nedenle soru esas olarak kelime anlamını ve bağlama uygun sıfat seçimini ölçmektedir.
+الْحَيَوَانَاتِ akılsız çoğul olduğu için onu niteleyen sıfatın müennes tekil gelmesi mümkündür. Ancak doğru cevabı yalnızca bu gramer kuralı değil, anlam belirlemektedir.
+Şıkların analizi
+A) جَائِعَةٌ — aç
+Gramer bakımından müennes tekil bir sıfattır. Ancak hayvanların aç olmasıyla insanı birinci sırada kabul etmeleri arasında anlam ilişkisi yoktur.
+B) جَمِيلَةٌ — güzel
+Gramer bakımından kullanılabilir. Fakat hayvanların güzel olması, insanlarla kurdukları ilişkiyi açıklamamaktadır.
+C) أُخْتًا — kız kardeş olarak
+Mansup bir isimdir ve الْحَيَوَانَاتِ kelimesini niteleyen sıfat görevine uygun değildir. “İnsanı kız kardeş olarak kabul eden hayvanlar” anlamı da bağlamla uyuşmaz.
+D) شَرِسَةٌ — vahşi, saldırgan
+Gramer bakımından mümkündür. Ancak الْحَيَوَانَاتِ الْأَلِيفَةِ “evcil hayvanlar” ifadesiyle ve insanlarla kurulan olumlu ilişkiyle çelişmektedir.
+E) صَدِيقَةٌ — dost, dost canlısı
+Müennes tekil bir sıfattır ve الْحَيَوَانَاتِ kelimesiyle uyumludur. İnsanlarla olumlu ilişki kuran hayvanları anlattığı için bağlama uygundur.
+Doğru cevap: E) صَدِيقَةٌ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 1. Soru
+2. Soru
+Harekeli Arapça metin
+يَلْجَأُ أَبْنَاءُ هَذِهِ الطَّبَقَةِ إِلَى صِنَاعَةِ الْوَجَبَاتِ الشَّعْبِيَّةِ قَلِيلَةِ التَّكْلِفَةِ، فِي ---- الَّتِي اسْتَأْجَرُوهَا أَوِ اشْتَرَوْهَا.
+Boşluklu tercüme
+“Bu kesimin mensupları, düşük maliyetli geleneksel yemekleri kiraladıkları veya satın aldıkları ---- hazırlamaya yönelirler.”
+Boşlukta bizden istenen
+فِي harf-i cerinden sonra bir mekân ismi gelmelidir. Bu mekânın ayrıca:
+اسْتَأْجَرُوهَا أَوِ اشْتَرَوْهَا
+“Onu kiraladılar veya satın aldılar.”
+ifadesine anlam bakımından uygun olması gerekir.
+Soru neyi ölçüyor?
+Şıkların tamamı فِي harf-i cerinden sonra mecrur olabilir. Bu nedenle soru yalnızca i‘rabı değil; esas olarak kelime anlamını, bağlamı ve ism-i mevsulün gönderimini ölçmektedir.
+الَّتِي ism-i mevsulünün seçilecek isimle uyumlu olması da belirleyicidir. Akılsız çoğullar müennes tekil kabul edildiği için بُيُوت kelimesinden sonra الَّتِي kullanılabilir.
+Şıkların analizi
+A) بُيُوتِهِمْ — evlerinde
+Evler kiralanabilir veya satın alınabilir. بُيُوت akılsız çoğul olduğu için ardından müennes tekil الَّتِي gelmesi doğrudur. Hem anlam hem gramer bakımından uygundur.
+B) قِسْمِهِمْ — bölümlerinde
+قِسْم müzekker tekildir. Bu nedenle ardından الَّذِي gelmesi beklenirdi. Ayrıca “kiraladıkları veya satın aldıkları bölüm” ifadesi bu bağlamda doğal değildir.
+C) شَبَابِهِمْ — gençleri/gençlikleri arasında
+Mekân bildirmez. Ayrıca gençler kiralanan veya satın alınan bir varlık değildir.
+D) مِنْطَقَتِهِمْ — bölgelerinde
+مِنْطَقَة müennes olduğu için الَّتِي ile gramer bakımından uyumludur. Ancak bir bölgenin kiralanması veya satın alınması bağlama uygun değildir.
+E) سَكَنِهِمْ — ikametgâhlarında
+Anlam bakımından yemek hazırlanabilecek bir yeri gösterebilir. Fakat سَكَن müzekker tekildir; ardından الَّذِي gelmesi beklenirdi. Verilen الَّتِي ile uyumlu değildir.
+Doğru cevap: A) بُيُوتِهِمْ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 2. Soru
+
+3. Soru
+Harekeli Arapça metin
+أَعْلَنَتِ السُّلُطَاتُ السُّعُودِيَّةُ عَنْ فَتْحِ بَابِ التَّجْنِيدِ ---- أَمَامَ الْفَتَيَاتِ لِلِالْتِحَاقِ بِالْحَيَاةِ الْعَسْكَرِيَّةِ بِرُتْبَةِ مُجَنَّدٍ.
+Boşluklu tercüme
+“Suudi yetkililer, genç kızların er rütbesiyle askerî hayata katılabilmeleri için ---- askerlik başvurularının açıldığını duyurdu.”
+Boşlukta bizden istenen
+Boşluğa التَّجْنِيدِ kelimesini niteleyen ve askerliğin türünü belirten bir sıfat gelmelidir.
+Soru neyi ölçüyor?
+Şıkların tamamı ال takılı, müzekker tekil ve mecrur sıfat biçimindedir. Dolayısıyla soru gramer uyumundan ziyade kelime anlamını ve التَّجْنِيدُ الِاخْتِيَارِيُّ eşdizimini ölçmektedir.
+Şıkların analizi
+A) الْمُصَادِقِ — onaylayan, tasdik eden
+Gramer bakımından sıfat olabilir; ancak bir askerlik türünü ifade etmez.
+B) الْوَاقِعِيِّ — gerçekçi
+“Gerçekçi askerlik” anlamı oluşur. التَّجْنِيدُ الْوَاقِعِيُّ şeklinde yerleşik bir kullanım bulunmamaktadır.
+C) الْخَشِنِ — sert, kaba
+Gramer bakımından sıfat olabilir; fakat askerliğin türünü belirtmez ve bağlama uygun değildir.
+D) الِاخْتِيَارِيِّ — isteğe bağlı, gönüllü
+التَّجْنِيدُ الِاخْتِيَارِيُّ “isteğe bağlı/gönüllü askerlik” anlamında doğal ve yerleşik bir eşdizimdir.
+E) الْعَشْوَائِيِّ — rastgele, gelişigüzel
+“Rastgele askere alım” anlamı verir ve cümlenin bağlamıyla uyuşmaz.
+Doğru cevap: D) الِاخْتِيَارِيِّ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 3. Soru
+4. Soru
+Harekeli Arapça metin
+مِنَ الْمَعْرُوفِ أَنَّ أَغْلَبَ الْأَطْعِمَةِ الْمُعَلَّبَةِ تَحْتَوِي عَلَى مَوَادَّ ----. 
+Boşluklu tercüme
+“Konserve gıdaların çoğunun ---- maddeler içerdiği bilinmektedir.”
+Boşlukta bizden istenen
+Boşluğa مَوَادَّ kelimesini niteleyen ve konserve gıdaların içeriğine anlam bakımından uygun bir sıfat getirilmelidir.
+Soru neyi ölçüyor?
+Şıkların tamamı müennes tekil sıfat biçimindedir. Bu nedenle soru esas olarak kelime bilgisi, bağlam ve مَوَادّ كِيمْيَاوِيَّة eşdizimini ölçmektedir.
+مَوَادّ akılsız çoğul olduğu için sıfatı müennes tekil gelir. Ancak bütün şıklar bu yapıya uygun olduğundan doğru cevap gramerle değil, anlamla belirlenmektedir.
+Şıkların analizi
+A) شَفَوِيَّةٍ — sözlü
+Gramer bakımından uygundur; ancak “sözlü maddeler” konserve gıdaların içeriğini anlatmaz.
+B) نَصِّيَّةٍ — metinsel
+“Metinsel maddeler” anlamı gıda bağlamıyla uyuşmaz.
+C) تَدْرِيبِيَّةٍ — eğitsel, antrenmana yönelik
+Gıdaların içeriğini niteleyebilecek bir anlam taşımaz.
+D) سَمَاوِيَّةٍ — göksel
+“Göksel maddeler” anlamı verir ve bağlamla ilgisizdir.
+E) كِيمْيَاوِيَّةٍ — kimyasal
+مَوَادّ كِيمْيَاوِيَّة “kimyasal maddeler” doğal bir eşdizimdir ve konserve gıdalar bağlamına uygundur.
+Doğru cevap: E) كِيمْيَاوِيَّةٍ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 4. Soru
+5. Soru
+Harekeli Arapça metin
+إِنَّ سَرَطَانَ الْقَوْلُونِ يُعَدُّ ثَالِثَ أَنْوَاعِ السَّرَطَانَاتِ الْأَكْثَرِ ---- فِي قَطَرَ بَيْنَ الرِّجَالِ وَالنِّسَاءِ.
+Boşluklu tercüme
+“Kolon kanseri, Katar’da erkekler ve kadınlar arasında en çok ---- kanser türleri içinde üçüncü sırada yer almaktadır.”
+Boşlukta bizden istenen
+الْأَكْثَرِ ifadesinden sonra kanser türlerinin hangi bakımdan daha fazla olduğunu açıklayan uygun bir kelime gelmelidir.
+Soru neyi ölçüyor?
+Soru hem kelime ve bağlam bilgisini hem de ism-i tafdilden sonra gelen temyiz yapısını ölçmektedir.
+الْأَكْثَرِ kelimesinden sonra gelen mansup mastar, üstünlüğün veya karşılaştırmanın hangi yönden olduğunu açıklar. تَشْخِيصًا burada temyiz görevindedir:
+الْأَكْثَرِ تَشْخِيصًا — en çok teşhis edilen
+Şıkların çoğu mansup mastar biçimindedir. Bu nedenle doğru cevabı esas olarak tıbbi bağlam belirlemektedir.
+Şıkların analizi
+A) تَسْهِيلًا — kolaylaştırma bakımından
+Mansup mastar olduğu için yapı bakımından temyiz olabilir. Fakat kanser türlerini “kolaylaştırılma” yönünden karşılaştırmak anlamlı değildir.
+B) تَمْثِيلًا — temsil edilme bakımından
+Gramer bakımından temyiz olabilir; ancak tıbbi bağlamda doğal bir anlam oluşturmaz.
+C) تِلْقَائِيًّا — kendiliğinden, otomatik olarak
+Zarf işlevindedir. “En çok kendiliğinden” ifadesi hem yapı hem anlam bakımından uygun değildir.
+D) تَكْرِيمًا — onurlandırma bakımından
+Mansup mastardır; ancak kanser bağlamıyla ilgisi yoktur.
+E) تَشْخِيصًا — teşhis edilme bakımından
+İsm-i tafdilden sonra mansup temyizdir. الْأَكْثَرِ تَشْخِيصًا “en çok teşhis edilen” anlamını verir ve tıbbi bağlama uygundur.
+Doğru cevap: E) تَشْخِيصًا
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 5. Soru
+6. Soru
+Harekeli Arapça metin
+تَمُدُّ السُّكَّرِيَّاتُ جِسْمَ الْإِنْسَانِ بِالطَّاقَةِ الَّتِي ---- لِلْقِيَامِ بِوَظَائِفِهِ بِصُورَةٍ طَبِيعِيَّةٍ.
+Boşluklu tercüme
+“Şekerler, insan vücuduna görevlerini doğal biçimde yerine getirebilmesi için ---- enerjiyi sağlar.”
+Boşlukta bizden istenen
+الَّتِي ile başlayan sıla cümlesinde, insan vücudunun görevlerini yerine getirebilmek için enerjiyle kurduğu ilişkiyi anlatan bir fiil gerekmektedir.
+Fiilin sonundaki هَا zamiri الطَّاقَة kelimesine dönmektedir.
+Soru neyi ölçüyor?
+Şıkların tamamı muzari fiil ve هَا nesne zamiri biçimindedir. Bu nedenle soru esas olarak fiil anlamını, fiil-nesne ilişkisini ve bağlamı ölçmektedir.
+الَّتِي ile başlayan sıla cümlesindeki gizli özne جِسْمُ الْإِنْسَانِ, هَا zamirinin gönderimi ise الطَّاقَة kelimesidir.
+Şıkların analizi
+A) يَأْكُلُهَا — onu yer
+Gramer bakımından cümleye yerleşebilir. Ancak insan vücudu enerjiyi “yemez”; enerjiye ihtiyaç duyar.
+B) يَحْتَاجُهَا — ona ihtiyaç duyar
+İnsan vücudunun görevlerini yapabilmek için enerjiye ihtiyaç duyması anlam bakımından uygundur. هَا zamiri الطَّاقَة kelimesine dönmektedir.
+يَحْتَاجُ إِلَيْهَا kullanımı çok yaygın olmakla birlikte يَحْتَاجُهَا biçimindeki doğrudan geçişli kullanım da mümkündür.
+C) يَنْطِقُهَا — onu telaffuz eder
+Enerjiyle “telaffuz etmek” fiili arasında anlam ilişkisi yoktur.
+D) يُرَتِّبُهَا — onu düzenler
+Gramer bakımından mümkündür; ancak insan vücudunun enerjiye duyduğu ihtiyacı anlatmaz.
+E) يَنْتَظِرُهَا — onu bekler
+Cümle yapısına yerleşebilir; fakat görevlerin yerine getirilmesi bağlamına uygun değildir.
+Doğru cevap: B) يَحْتَاجُهَا
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 6. Soru
+7. Soru
+Harekeli Arapça metin
+اِبْنُ سِينَا مِنْ أَشْهَرِ الْأُدَبَاءِ وَالْعُلَمَاءِ الْمُسْلِمِينَ، وَ---- بِعِلْمِهِ فِي مَجَالِ الطِّبِّ وَالْفَلْسَفَةِ.
+Boşluklu tercüme
+“İbn Sînâ, en meşhur Müslüman edebiyatçı ve âlimlerden biridir; tıp ve felsefe alanındaki bilgisiyle ----.”
+Boşlukta bizden istenen
+Boşluktan sonra gelen بِعِلْمِهِ “bilgisiyle” ifadesine uygun bir fiil aranmalıdır. Bu fiilin, bir kişinin hangi özelliğiyle tanındığını bildirmesi gerekir.
+Soru neyi ölçüyor?
+Şıkların tamamı mâzi ve müzekker tekil fiil biçimindedir. Bu nedenle soru fiilin şahıs veya zaman çekimini değil; fiil anlamını ve fiil-harf-i cer eşdizimini ölçmektedir.
+Belirleyici eşdizim:
+اِشْتَهَرَ بِـ — bir şeyle meşhur oldu
+Şıkların analizi
+A) اِشْتَهَرَ — meşhur oldu
+اِشْتَهَرَ بِعِلْمِهِ “bilgisiyle meşhur oldu” doğru ve doğal bir kullanımdır.
+B) اِجْتَهَدَ — çalıştı, gayret etti
+Genellikle اِجْتَهَدَ فِي şeklinde kullanılır. اِجْتَهَدَ بِعِلْمِهِ ifadesi bu bağlamda doğal değildir.
+C) اِسْتَوْلَى — ele geçirdi
+اِسْتَوْلَى عَلَى kalıbıyla kullanılır. Hem edat hem anlam bakımından uygun değildir.
+D) أَطْلَقَ — serbest bıraktı, adlandırdı
+Geçişli bir fiildir ve nesne ister. بِعِلْمِهِ ile gereken anlamı vermez.
+E) تَأَلَّفَ — oluştu, meydana geldi
+Genellikle تَأَلَّفَ مِنْ “-den oluştu” şeklinde kullanılır. Cümlenin anlamıyla uyuşmaz.
+Doğru cevap: A) اِشْتَهَرَ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 7. Soru
+8. Soru
+Harekeli Arapça metin
+مُنَظَّمَةُ الصِّحَّةِ الْعَالَمِيَّةُ ---- تَلَوُّثَ الْبِيئَةِ، خُصُوصًا فِي مُحَاضَرَتِهَا الْأَخِيرَةِ.
+Boşluklu tercüme
+“Dünya Sağlık Örgütü, özellikle son konferansında çevre kirliliği konusuna ----.”
+Boşlukta bizden istenen
+تَلَوُّثَ الْبِيئَةِ “çevre kirliliği” ifadesiyle birlikte kullanılabilecek ve “konuya değinmek/konuyu ele almak” anlamını veren bir fiil-edat kalıbı aranmalıdır.
+Soru neyi ölçüyor?
+Şıkların tamamı fiil ve harf-i cer kalıbından oluşmaktadır. Bu nedenle soru fiil anlamını, fiil-harf-i cer birlikteliğini ve eşdizimi ölçmektedir.
+Özne olan مُنَظَّمَة müennes tekildir. Fiilin de müennes tekil olması gerekir; ancak şıkların tamamı bu biçimde olduğundan doğru cevabı asıl belirleyen eşdizimdir.
+Şıkların analizi
+A) تَطَرَّقَتْ إِلَى — değindi, ele aldı
+تَطَرَّقَ إِلَى الْمَوْضُوعِ “konuya değindi” doğru ve yerleşik bir kalıptır.
+B) تَطَعَّمَتْ بِـ — aşılandı, bir özellik kazandı
+Çevre kirliliği konusunu ele alma anlamı vermez.
+C) طَعَنَتْ بِـ — sapladı, kötüledi
+Hem anlam hem edat kullanımı bakımından bağlama uygun değildir.
+D) اِنْطَبَقَتْ عَلَى — üzerine uygulandı, uyuştu
+Örgütün çevre kirliliği konusuna değinmesi anlamını karşılamaz.
+E) طَرَأَتْ عَلَى — ortaya çıktı, başına geldi
+طَرَأَ عَلَى “bir şeyin başına gelmek veya sonradan ortaya çıkmak” anlamındadır. Buradaki bağlama uygun değildir.
+Doğru cevap: A) تَطَرَّقَتْ إِلَى
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 8. Soru
+9. Soru
+Harekeli Arapça metin
+طَالَمَا دُوَلُ الشَّرْقِ فِي خِلَافٍ دَائِمٍ، ---- تَتَمَكَّنَ مِنَ التَّقَدُّمِ أَبَدًا.
+Boşluklu tercüme
+“Doğu ülkeleri sürekli anlaşmazlık içinde oldukları müddetçe ilerlemeyi hiçbir zaman ----.”
+Boşlukta bizden istenen
+طَالَمَا “-dığı müddetçe” ifadesinden sonra ortaya çıkacak sonucu olumsuz biçimde bildiren bir edat gerekmektedir. أَبَدًا kelimesi, güçlü ve geleceğe yönelik bir olumsuzluğa işaret etmektedir.
+Soru neyi ölçüyor?
+Şıklar farklı olumsuzluk ve şart edatlarından oluşmaktadır. Bu nedenle soru edatların anlamlarını, zaman bildirimlerini ve muzari fiil üzerindeki gramer etkilerini ölçmektedir.
+Doğru edat hem geleceğe yönelik olumsuzluk bildirmeli hem de تَتَمَكَّنَ fiilinin mansup oluşunu açıklamalıdır.
+Şıkların analizi
+A) فَلَمَّا — henüz … olmadı / ne zaman ki
+لَمَّا olumsuzluk edatı olduğunda muzari fiili cezm eder. فَلَمَّا تَتَمَكَّنْ olması gerekirdi. Ayrıca “henüz” anlamı أَبَدًا ile uyuşmaz.
+B) فَلَمْ — yapmadı
+لَمْ geçmiş zaman olumsuzluğu verir ve muzari fiili cezm eder. Doğru biçim فَلَمْ تَتَمَكَّنْ olmalıydı.
+C) فَلَوْ — eğer, şayet
+لَوْ bir şart yapısı kurar ve uygun bir cevap cümlesi gerektirir. Buradaki anlam ilişkisini tamamlamaz.
+D) فَلَنْ — asla yapmayacak
+لَنْ geleceğe yönelik olumsuzluk bildirir ve muzari fiili nasbeder:
+لَنْ تَتَمَكَّنَ
+أَبَدًا ile birlikte “hiçbir zaman ilerleyemeyecektir” anlamını verir.
+E) فَمَا — yapmıyor/yapmadı
+Olumsuzluk bildirebilir; ancak geleceğe yönelik kesin olumsuzluğu لَنْ kadar açık biçimde karşılamaz. Ayrıca تَتَمَكَّنَ fiilinin mansup oluşunu açıklamaz.
+Doğru cevap: D) فَلَنْ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 9. Soru
+10. Soru
+Harekeli Arapça metin
+---- الطَّلَبَةُ بِالْمَشَاكِلِ الْكَثِيرَةِ أَثْنَاءَ دِرَاسَتِهِمُ الْجَامِعِيَّةِ، مِثْلَ السَّكَنِ وَالْمُوَاصَلَاتِ فِي الْمُدُنِ الْكَبِيرَةِ.
+Boşluklu tercüme
+“Öğrenciler, üniversite öğrenimleri sırasında büyük şehirlerde barınma ve ulaşım gibi pek çok sorunla ----.”
+Boşlukta bizden istenen
+“Karşılaşmak/yüzleşmek” anlamındaki fiilin, kendisinden sonra gelen açık özne الطَّلَبَةُ ile uygun çekimi getirilmelidir.
+Soru neyi ölçüyor?
+Şıklardaki fiiller aynı anlamı taşımakta; şahıs, sayı ve cinsiyet bakımından farklılaşmaktadır. Bu nedenle soru doğrudan fiil-fail uyumunu ve fiilin açık çoğul özneden önce gelmesi kuralını ölçmektedir.
+Fiil açık çoğul özneden önce geldiğinde standart Arapçada tekil kullanılır ve özneyle yalnızca cinsiyet bakımından uyum sağlar:
+يُوَاجِهُ الطَّلَبَةُ
+Şıkların analizi
+A) يُوَاجِهُونَ — onlar karşılaşırlar
+Müzekker çoğul fiildir. Özne fiilden sonra açıkça geldiği için fiilin tekil olması gerekir.
+B) يُوَاجِهْنَ — kadınlar karşılaşırlar
+Müennes çoğul çekimidir. الطَّلَبَةُ ile cinsiyet bakımından uyumlu değildir.
+C) تُوَاجِهِينَ — sen karşılaşıyorsun
+İkinci şahıs müennes tekil çekimidir. Cümlenin öznesine uygun değildir.
+D) تُوَاجِهُ — o kadın karşılaşır
+Müennes tekildir. الطَّلَبَةُ müzekker insanlar grubunu ifade ettiği için uygun değildir.
+E) يُوَاجِهُ — o karşılaşır
+Müzekker tekildir. Fiil, açık çoğul özneden önce geldiği için doğru biçimdir.
+Doğru cevap: E) يُوَاجِهُ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 10. Soru
+11. Soru
+Harekeli Arapça metin
+تُعْتَبَرُ جَائِزَةُ الْأُوسْكَارِ جَائِزَةً رَفِيعَةَ الْمُسْتَوَى، تُقَدَّمُ ---- أَكَادِيمِيَّةِ فُنُونِ وَعُلُومِ الصُّوَرِ الْمُتَحَرِّكَةِ الْأَمْرِيكِيَّةِ.
+Boşluklu tercüme
+“Oscar Ödülü, Amerikan Sinema Sanatları ve Bilimleri Akademisi ---- verilen yüksek düzeyli bir ödül kabul edilmektedir.”
+Boşlukta bizden istenen
+تُقَدَّمُ “sunulur/verilir” edilgen fiilinden sonra ödülü veren kurumu gösterecek uygun bir kalıp gerekmektedir.
+Soru neyi ölçüyor?
+Şıklar farklı anlamlara sahip edat ve kalıplardan oluşmaktadır. Bu nedenle soru edat-kalıp anlamını ve edilgen cümlede eylemi gerçekleştiren tarafın مِنْ قِبَلِ ile gösterilmesini ölçmektedir.
+Şıkların analizi
+A) نَظَرًا لِـ — nedeniyle, göz önüne alındığında
+Gerekçe bildirir; ödülü veren kurumu göstermez.
+B) بِمَثَابَةِ — niteliğinde, konumunda
+Bir şeyin başka bir şeyle aynı konumda kabul edildiğini anlatır. “Akademi tarafından” anlamını vermez.
+C) فَضْلًا عَنْ — ayrıca, bunun yanı sıra
+Ek bilgi bildirir; eylemi gerçekleştiren kurumu göstermez.
+D) بِسَبَبِ — sebebiyle
+Neden bildirir. “Akademi tarafından” anlamını karşılamaz.
+E) مِنْ قِبَلِ — tarafından
+Edilgen yapıdaki eylemi gerçekleştiren tarafı gösterir:
+تُقَدَّمُ مِنْ قِبَلِ الْأَكَادِيمِيَّةِ
+“Akademi tarafından verilir.”
+Doğru cevap: E) مِنْ قِبَلِ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 11. Soru
+12. Soru
+Harekeli Arapça metin
+---- نَتَأَمَّلُ الصِّرَاعَاتِ الَّتِي تَجْتَاحُ الْعَالَمَ، صَغِيرَهَا وَكَبِيرَهَا، سَنَجِدُ أَنَّ أَسَاسَهَا الْأَوَّلَ هُوَ الِاخْتِلَافُ فِي الْفِكْرِ وَالرَّأْيِ وَالْمُخَالَفَةُ فِي الْعَقِيدَةِ.
+Boşluklu tercüme
+“Dünyayı saran küçük büyük çatışmaları ---- düşünüp incelediğimizde, bunların ilk temelinin düşünce ve görüş ayrılığı ile inanç farklılığı olduğunu göreceğiz.”
+Boşlukta bizden istenen
+نَتَأَمَّلُ “düşünüp inceleriz” eylemiyle سَنَجِدُ “göreceğiz” sonucu arasında zaman ilişkisi kuran bir ifade gerekmektedir.
+Soru neyi ölçüyor?
+Şıklar farklı işlevlerdeki edat ve zarflardan oluşmaktadır. Bu nedenle soru zaman zarfı bilgisini, bağlaçların anlamlarını ve yan cümle-ana cümle ilişkisini ölçmektedir.
+Şıkların analizi
+A) عِنْدَهَا — o zaman
+Daha önce belirtilmiş bir zamana veya duruma gönderme yapar. عِنْدَهَا نَتَأَمَّلُ biçimi burada istenen “incelediğimiz zaman” yan cümlesini doğal biçimde kurmaz.
+B) حِينَ — -dığı zaman
+Ardından fiil cümlesi gelebilir:
+حِينَ نَتَأَمَّلُ — düşündüğümüz/incelediğimiz zaman
+İlk eylemle onun sonucunu doğru biçimde bağlar.
+C) إِذْ — o sırada; çünkü
+Daha çok geçmişte meydana gelmiş bir olaya zaman anlamıyla gönderme yapar veya açıklama bildirir. Buradaki genel yargıya حِينَ kadar uygun değildir.
+D) لَوْمَا — eğer … olmasaydı; keşke/yapsana
+Şart, teşvik veya sitem anlamı taşır. Burada gerekli zaman ilişkisini kurmaz.
+E) بِمَا — -dığı şeyle; nedeniyle
+Zaman anlamı vermez ve نَتَأَمَّلُ fiiliyle gerekli ilişkiyi kuramaz.
+Doğru cevap: B) حِينَ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 12. Soru
+13. Soru
+Harekeli Arapça metin
+كُلُّ إِنْسَانٍ يَكْتَسِبُ لُغَتَهُ الْأُمَّ وَهُوَ صَغِيرٌ فِي الْبِيئَةِ ---- يَعِيشُ فِيهَا.
+Boşluklu tercüme
+“Her insan, ana dilini küçükken içinde yaşadığı çevrede edinir.”
+Boşlukta bizden istenen
+Boşluktan önceki الْبِيئَةِ kelimesine uygun bir ism-i mevsul gerekmektedir:
+الْبِيئَةِ: müennes tekil
+يَعِيشُ فِيهَا: onun içinde yaşar
+هَا zamiri الْبِيئَة kelimesine dönmektedir.
+Soru neyi ölçüyor?
+Şıklar farklı cinsiyet ve sayı biçimlerindeki ism-i mevsullerdir. Bu nedenle soru doğrudan ism-i mevsulün öncesindeki isimle sayı ve cinsiyet bakımından uyumunu, sıla cümlesini ve âid zamirini ölçmektedir.
+Şıkların analizi
+A) الَّتِي — ki o
+Müennes tekil isimler için kullanılır. الْبِيئَةِ ile tam uyumludur. Sıla cümlesindeki فِيهَا zamiri de aynı isme dönmektedir.
+B) الَّذِي — ki o
+Müzekker tekil isimler için kullanılır. الْبِيئَة müennes olduğu için uygun değildir.
+C) الَّذِينَ — ki onlar
+Akıllı müzekker çoğul için kullanılır. الْبِيئَة tekil ve müennestir.
+D) اللَّتَانِ — ki o ikisi
+Müennes ikil için kullanılır. الْبِيئَة tekil olduğu için uygun değildir.
+E) اللَّائِي — ki onlar
+Akıllı müennes çoğul için kullanılır. Tekil olan الْبِيئَة ile uyumlu değildir.
+Doğru cevap: A) الَّتِي
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 13. Soru
+14. Soru
+Harekeli Arapça metin
+إِنَّ الْحَرَارَةَ عَلَى سَطْحِ الشَّمْسِ تُقَدَّرُ ---- سِتَّةِ آلَافِ دَرَجَةٍ مِئَوِيَّةٍ، وَيُوجَدُ عَلَى هَذَا السَّطْحِ نِقَاطٌ سَوْدَاءُ.
+Boşluklu tercüme
+“Güneş yüzeyindeki sıcaklığın ---- 6000 santigrat derece olduğu tahmin edilmektedir ve bu yüzeyde siyah noktalar bulunmaktadır.”
+Boşlukta bizden istenen
+تُقَدَّرُ ile sayı arasında, verilen değerin yaklaşık olduğunu gösterecek uygun bir edat veya kalıp gerekmektedir.
+Soru neyi ölçüyor?
+Şıklar farklı anlam ve kullanım özelliklerine sahip edat ve kalıplardan oluşmaktadır. Soru esas olarak edat bilgisini, sayılarla kullanılan yaklaşık değer ifadelerini ve تُقَدَّرُ بِحَوَالِي eşdizimini ölçmektedir.
+Şıkların analizi
+A) بِحَوَالِي — yaklaşık olarak
+Sayıların önünde yaklaşık değer bildirir:
+تُقَدَّرُ بِحَوَالِي سِتَّةِ آلَافٍ
+“Yaklaşık altı bin olarak tahmin edilir.”
+Hem anlam hem kullanım bakımından uygundur.
+B) بِشَكْلٍ — bir biçimde
+Genellikle ardından bir sıfat gelir: بِشَكْلٍ كَبِيرٍ “büyük ölçüde” gibi. Doğrudan sayının önünde yaklaşık değer bildirmez.
+C) بِحَيْثُ — öyle ki
+Ardından sonuç bildiren bir cümle gelir. Doğrudan sayının önüne getirilemez.
+D) بِجَانِبِ — yanında
+Mekânsal veya mecazî yakınlık bildirir. Sayının yaklaşık olduğunu göstermez.
+E) فَحَسْبُ — yalnızca
+Kendisinden önceki unsuru sınırlar ve çoğunlukla sayıdan sonra kullanılır:
+سِتَّةُ آلَافٍ فَحَسْبُ — yalnızca altı bin
+Boşluğun yerine ve “yaklaşık değer” anlamına uygun değildir.
+Doğru cevap: A) بِحَوَالِي
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 14. Soru
+15. Soru
+Harekeli Arapça metin
+مِنَ الْمَعْرُوفِ أَنَّ بَعْضَ الْحَيَوَانَاتِ لَهَا أَرْبَعَةُ أَرْجُلٍ، أَمَّا بَعْضُهَا ---- فَلَهَا رِجْلَانِ فَقَطْ.
+Boşluklu tercüme
+“Bazı hayvanların dört ayağı olduğu bilinmektedir; onların ---- kısmının ise yalnızca iki ayağı vardır.”
+Boşlukta bizden istenen
+Cümlede hayvanlar iki gruba ayrılarak karşılaştırılmaktadır:
+بَعْضَ الْحَيَوَانَاتِ: hayvanların bir kısmı
+بَعْضُهَا الْآخَرُ: onların diğer kısmı
+Boşluğa “diğer” anlamını veren ve بَعْضُهَا ifadesine uygun olan kelime gelmelidir.
+Soru neyi ölçüyor?
+Şıklardaki kelimeler aynı kökle ilişkili olmakla birlikte anlam, sayı ve cinsiyet bakımından farklıdır. Bu nedenle soru hem آخَر kelimesinin anlamını ve çekimini hem de بَعْضُهَا الْآخَرُ kalıbını ölçmektedir.
+بَعْض kelimesi müzekker tekil kabul edildiğinden onu niteleyen sıfat الْآخَرُ biçiminde gelir. Sıfat, هَا zamirine değil, doğrudan بَعْض kelimesine uyar.
+Şıkların analizi
+A) الْأَخِيرَةُ — sonuncu
+“Diğer” değil, “sonuncu” anlamındadır. Ayrıca müennes tekildir ve بَعْض kelimesiyle uyumlu değildir.
+B) الْآخَرُ — diğer
+Müzekker tekildir ve بَعْض kelimesine uyar:
+بَعْضُهَا الْآخَرُ — onların diğer bir kısmı
+Hem anlam hem gramer bakımından uygundur.
+C) الْأُخْرَيَاتُ — diğer kadınlar/diğer müennes varlıklar
+Müennes çoğuldur. بَعْض kelimesinin sıfatı olarak uygun değildir.
+D) الْآخِرَةُ — sonuncu, sonraki; ahiret
+Müennes tekildir ve “diğer kısım” anlamını karşılamaz.
+E) الْأُخْرَوِيُّ — ahiretle ilgili, uhrevî
+Müzekker tekil olsa da “diğer” anlamına gelmez. Bağlama uygun değildir.
+Doğru cevap: B) الْآخَرُ
+Çıkmış Soru Bilgisi: 2018 YDT Arapça – 15. Soru
+2018  çıkmış 16-20 arası soru analizi
+16-20. soruların harekeli metni
+كَشَفَتْ «جَامِعَةُ بِرْمِنْغَهَامَ الْبِرِيطَانِيَّةُ» عَنْ مَخْطُوطَةٍ قُرْآنِيَّةٍ تُعَدُّ مِنْ أَقْدَمِ الْمَخْطُوطَاتِ الْبَاقِيَةِ فِي الْعَالَمِ، ---- (16) قَرَّرَتْ عَرْضَهَا لِلْجُمْهُورِ فِي أُكْتُوبَرَ الْمُقْبِلِ. وَبِاسْتِخْدَامِ نَظَائِرِ الْكَرْبُونِ الْمُشِعِّ لِفَحْصِ الْمَخْطُوطَةِ ثَبَتَ أَنَّ عُمْرَ الْمَخْطُوطَةِ يَصِلُ ---- (17) ١٣٧٠ عَامًا عَلَى الْأَقَلِّ، وَهُوَ مَا أَهَّلَهَا لِتَكُونَ وَاحِدَةً مِنْ أَقْدَمِ الْمَخْطُوطَاتِ الْمَوْجُودَةِ فِي ---- (18). وَ---- (19) الْبَاحِثُونَ إِلَى احْتِمَالِيَّةِ أَنْ تَكُونَ ---- (20) الْمَخْطُوطَةُ، وَبِالنَّظَرِ إِلَى عُمْرِهَا، قَدْ خَطَّهَا أَحَدُ صَحَابَةِ النَّبِيِّ مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ.
+Parçanın boşluklu tercümesi
+“İngiltere’deki Birmingham Üniversitesi, dünyada günümüze ulaşan en eski el yazmalarından kabul edilen bir Kur’an el yazmasını ortaya çıkardı. ---- (16) bu el yazmasını gelecek ekim ayında halka sergilemeye karar verdi. El yazmasının incelenmesinde radyoaktif karbon izotoplarının kullanılmasıyla, yazmanın yaşının en az 1370 yıla ---- (17) tespit edildi. Bu durum, onun ---- (18) bulunan en eski el yazmalarından biri sayılmasını sağladı. Araştırmacılar, yaşı dikkate alındığında ---- (20) el yazmasının Hz. Muhammed’in sahabelerinden biri tarafından yazılmış olabileceği ihtimaline ---- (19).”
+16. Soru
+İlgili bölüm
+كَشَفَتْ «جَامِعَةُ بِرْمِنْغَهَامَ الْبِرِيطَانِيَّةُ» عَنْ مَخْطُوطَةٍ قُرْآنِيَّةٍ ...، ---- قَرَّرَتْ عَرْضَهَا لِلْجُمْهُورِ.
+“İngiltere’deki Birmingham Üniversitesi bir Kur’an el yazmasını ortaya çıkardı; ---- onu halka sergilemeye karar verdi.”
+Boşluğun öncesi-sonrası ilişkisi
+Boşluktan önce iki müennes tekil isim bulunmaktadır:
+جَامِعَةُ بِرْمِنْغَهَامَ: Birmingham Üniversitesi
+مَخْطُوطَةٌ قُرْآنِيَّةٌ: Kur’an el yazması
+Boşluktan sonraki قَرَّرَتْ “karar verdi” fiilinin gerçek öznesi üniversitedir. Çünkü sergilemeye karar veren el yazması değil, Birmingham Üniversitesidir.
+عَرْضَهَا kelimesindeki هَا zamiri ise “el yazmasına” dönmektedir:
+قَرَّرَتْ: Üniversite karar verdi.
+عَرْضَهَا: El yazmasını sergilemeye.
+Boşluğa müennes tekil bir ism-i mevsul gelmelidir.
+Ölçülen yapı
+İsm-i mevsul
+İsm-i mevsul ile öncesindeki isim arasındaki uyum
+Sıla cümlesi
+Zamirlerin hangi isme döndüğünü belirleme
+Şık analizi
+A) الَّذِي — ki o
+Müzekker tekil isimler için kullanılır. Gönderme yapılan جَامِعَة müennes olduğu için kullanılamaz.
+B) الَّتِي — ki o
+Müennes tekil isimler için kullanılır. الْجَامِعَةُ الَّتِي قَرَّرَتْ “karar veren üniversite” yapısını doğru şekilde kurar.
+C) الَّذِينَ — ki onlar
+Akıllı müzekker çoğul isimler için kullanılır. جَامِعَة tekil ve müennestir.
+D) اللَّذَانِ — ki o ikisi
+Müzekker ikil isimler için kullanılır. Burada ikil bir isim yoktur.
+E) اللَّتَانِ — ki o ikisi
+Müennes ikil isimler için kullanılır. جَامِعَة müennes olmakla birlikte tekildir.
+Doğru cevap
+B) الَّتِي
+Tamamlanmış bölüm:
+كَشَفَتْ «جَامِعَةُ بِرْمِنْغَهَامَ الْبِرِيطَانِيَّةُ» عَنْ مَخْطُوطَةٍ قُرْآنِيَّةٍ، الَّتِي قَرَّرَتْ عَرْضَهَا لِلْجُمْهُورِ.
+“Birmingham Üniversitesi, halka sergilemeye karar verdiği bir Kur’an el yazmasını ortaya çıkardı.”
+17. Soru
+İlgili bölüm
+ثَبَتَ أَنَّ عُمْرَ الْمَخْطُوطَةِ يَصِلُ ---- ١٣٧٠ عَامًا عَلَى الْأَقَلِّ.
+“El yazmasının yaşının en az 1370 yıla ---- tespit edildi.”
+Boşluğun öncesi-sonrası ilişkisi
+Boşluktan önce يَصِلُ “ulaşır” fiili, sonrasında ise ulaşılan miktar olan ١٣٧٠ عَامًا bulunmaktadır.
+Arapçada “bir sayıya, seviyeye veya yere ulaşmak” anlamında:
+وَصَلَ / يَصِلُ إِلَى
+kalıbı kullanılır.
+Dolayısıyla doğru yapı:
+يَصِلُ إِلَى ١٣٧٠ عَامًا
+“1370 yıla ulaşır.”
+Ölçülen yapı
+Fiil-harf-i cer birlikteliği, yani يَصِلُ إِلَى eşdizimi ölçülmektedir.
+Şık analizi
+A) إِلَى — -e/-a, kadar
+يَصِلُ إِلَى “ulaşır, varır” kalıbını oluşturur. Hem dil bilgisi hem anlam bakımından uygundur.
+B) بِـ — ile
+يَصِلُ بِـ burada “bir miktara ulaşmak” anlamını vermez.
+C) لِـ — için, -e ait
+Amaç veya aitlik bildirir. يَصِلُ لِـ ١٣٧٠ عَامًا biçiminde bir kullanım doğru değildir.
+D) عَلَى — üzerine
+يَصِلُ عَلَى şeklinde “bir sayıya ulaşmak” anlamında bir kalıp kullanılmaz.
+E) مِنْ — -den/-dan
+Başlangıç noktası bildirir. Burada ulaşılan son miktar ifade edilmektedir.
+Doğru cevap
+A) إِلَى
+Tamamlanmış bölüm:
+ثَبَتَ أَنَّ عُمْرَ الْمَخْطُوطَةِ يَصِلُ إِلَى ١٣٧٠ عَامًا عَلَى الْأَقَلِّ.
+“El yazmasının yaşının en az 1370 yıla ulaştığı tespit edildi.”
+18. Soru
+İlgili bölüm
+وَهُوَ مَا أَهَّلَهَا لِتَكُونَ وَاحِدَةً مِنْ أَقْدَمِ الْمَخْطُوطَاتِ الْمَوْجُودَةِ فِي ----.
+“Bu durum, onun ---- bulunan en eski el yazmalarından biri olmasını sağladı.”
+Boşluğun öncesi-sonrası ilişkisi
+Boşluktan önce:
+مِنْ أَقْدَمِ الْمَخْطُوطَاتِ الْمَوْجُودَةِ
+“Bulunan/mevcut en eski el yazmalarından…”
+ifadesi bulunmaktadır.
+Parçanın ilk cümlesinde de aynı düşünce verilmiştir:
+مِنْ أَقْدَمِ الْمَخْطُوطَاتِ الْبَاقِيَةِ فِي الْعَالَمِ
+“Dünyada günümüze ulaşan en eski el yazmalarından…”
+Bu nedenle boşluğa الْعَالَمِ gelmelidir. Parçanın önceki ve sonraki bölümleri aynı bilgiyi desteklemektedir.
+Ölçülen yapı
+Bağlama uygun kelime seçimi
+Paragraf içi anlam ilişkisi
+Önceki cümlede verilen ifadeden yararlanma
+مَوْجُودٌ فِي kullanımının tamamlanması
+Şık analizi
+A) الْجَامِعَةِ — üniversite
+“Üniversitede bulunan en eski el yazmalarından biri” anlamı dil bilgisi bakımından kurulabilir. Ancak parça, yazmanın yalnızca üniversitedekiler arasında değil, dünyadaki en eski yazmalardan biri olduğunu anlatmaktadır.
+B) الْبَلَدِ — ülke
+“Ülkede bulunan” anlamı oluşur. Ancak hangi ülkeden söz edildiği açıkça belirtilmemiştir ve parçadaki kapsam daha geniştir.
+C) الْمِنْطَقَةِ — bölge
+“Bölgede bulunan” anlamı verir. Metinde belirli bir bölgeden söz edilmemektedir.
+D) الْعَالَمِ — dünya
+الْمَخْطُوطَاتِ الْمَوْجُودَةِ فِي الْعَالَمِ “dünyada bulunan el yazmaları” anlamını verir. Parçanın ilk cümlesindeki bilgiyle tam uyumludur.
+E) الظَّاهِرَةِ — olgu, fenomen
+“Olgunun içinde bulunan el yazmaları” şeklinde anlamsız bir ifade ortaya çıkar.
+Doğru cevap
+D) الْعَالَمِ
+Tamamlanmış bölüm:
+وَهُوَ مَا أَهَّلَهَا لِتَكُونَ وَاحِدَةً مِنْ أَقْدَمِ الْمَخْطُوطَاتِ الْمَوْجُودَةِ فِي الْعَالَمِ.
+“Bu durum, onun dünyada bulunan en eski el yazmalarından biri olmasını sağladı.”
+19. Soru
+İlgili bölüm
+وَ---- الْبَاحِثُونَ إِلَى احْتِمَالِيَّةِ أَنْ تَكُونَ هَذِهِ الْمَخْطُوطَةُ ... قَدْ خَطَّهَا أَحَدُ صَحَابَةِ النَّبِيِّ.
+“Araştırmacılar, bu el yazmasının Peygamber’in sahabelerinden biri tarafından yazılmış olabileceği ihtimaline ----.”
+Boşluğun öncesi-sonrası ilişkisi
+Boşluktan sonra şu yapı bulunmaktadır:
+إِلَى احْتِمَالِيَّةِ
+“Bir ihtimale…”
+Bu nedenle إِلَى harf-i ceriyle kullanılan ve “işaret etmek, dikkat çekmek” anlamına gelen bir fiil aranmalıdır.
+Doğru eşdizim:
+أَشَارَ إِلَى
+“İşaret etti, dikkat çekti.”
+Fiil, çoğul özne الْبَاحِثُونَ kelimesinden önce geldiği için müzekker tekil kullanılmıştır:
+يُشِيرُ الْبَاحِثُونَ
+Ölçülen yapı
+Fiil-harf-i cer birlikteliği
+أَشَارَ إِلَى eşdizimi
+Fiilin açık çoğul özneden önce gelmesi
+Fiil-özne uyumu
+Şık analizi
+A) يُشِيرُ — işaret eder, dikkat çeker
+يُشِيرُ إِلَى احْتِمَالِيَّةِ “bir ihtimale işaret eder” doğru bir kalıptır. Ayrıca fiilin çoğul özneden önce tekil gelmesi de doğrudur.
+B) يَقُولُ — söyler
+يَقُولُ إِلَى şeklinde kullanılmaz. Genellikle doğrudan söz, إِنَّ ile başlayan cümle veya لِـ ile kişi alır.
+C) يُفَكِّرُ — düşünür
+فَكَّرَ فِي “bir şeyi düşündü” şeklinde فِي harf-i ceriyle kullanılır. يُفَكِّرُ إِلَى doğru değildir.
+D) يَزْدَادُ — artar
+يَزْدَادُ إِلَى احْتِمَالِيَّةٍ biçiminde anlamlı bir yapı kurulmaz. Ayrıca “araştırmacılar artar” şeklinde yanlış bir anlam oluşur.
+E) يَهْتَمُّ — önem verir, ilgilenir
+اِهْتَمَّ بِـ kalıbıyla kullanılır. Doğru kullanım يَهْتَمُّ بِاحْتِمَالِيَّةٍ olurdu; إِلَى ile kullanılmaz.
+Doğru cevap
+A) يُشِيرُ
+Tamamlanmış bölüm:
+وَيُشِيرُ الْبَاحِثُونَ إِلَى احْتِمَالِيَّةِ أَنْ تَكُونَ هَذِهِ الْمَخْطُوطَةُ قَدْ خَطَّهَا أَحَدُ صَحَابَةِ النَّبِيِّ.
+“Araştırmacılar, bu el yazmasının Peygamber’in sahabelerinden biri tarafından yazılmış olabileceği ihtimaline işaret etmektedir.”
+20. Soru
+İlgili bölüm
+أَنْ تَكُونَ ---- الْمَخْطُوطَةُ، وَبِالنَّظَرِ إِلَى عُمْرِهَا، قَدْ خَطَّهَا أَحَدُ صَحَابَةِ النَّبِيِّ مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ.
+“Yaşı dikkate alındığında, ---- el yazmasının Hz. Muhammed’in sahabelerinden biri tarafından yazılmış olması…”
+Boşluğun öncesi-sonrası ilişkisi
+Boşluktan sonra gelen isim:
+الْمَخْطُوطَةُ — el yazması
+Bu kelime:
+tekildir,
+müennestir,
+yakındaki bir nesneyi göstermektedir.
+Dolayısıyla müennes tekil için kullanılan yakın işaret ismi هَذِهِ gerekmektedir.
+Yapı:
+هَذِهِ الْمَخْطُوطَةُ
+“Bu el yazması.”
+Ayrıca عُمْرِهَا ve خَطَّهَا kelimelerindeki هَا zamirleri de aynı müennes tekil isim olan الْمَخْطُوطَة kelimesine dönmektedir.
+Ölçülen yapı
+İşaret isimleri
+İşaret ismi ile gösterilen isim arasındaki cinsiyet ve sayı uyumu
+Yakınlık-uzaklık ayrımı
+Şık analizi
+A) هَاتَيْنِ — bu ikisini/bu iki
+Müennes ikil için kullanılır ve nasb/cer durumundadır. الْمَخْطُوطَةُ tekildir.
+B) هَذَا — bu
+Müzekker tekil isimlerle kullanılır. الْمَخْطُوطَة müennestir.
+C) هَؤُلَاءِ — bunlar
+Akıllı varlıkların çoğulu için kullanılır. Buradaki isim tekil ve akılsızdır.
+D) ذَلِكَ — şu/o
+Müzekker tekil ve uzak işaret ismidir. Hem cinsiyet bakımından uyumsuzdur hem de burada sözü edilen yakın isim için uygun değildir.
+E) هَذِهِ — bu
+Müennes tekil isimlerle kullanılan yakın işaret ismidir. هَذِهِ الْمَخْطُوطَةُ doğru bir isim tamlamasıdır.
+Doğru cevap
+E) هَذِهِ
+Tamamlanmış bölüm:
+وَيُشِيرُ الْبَاحِثُونَ إِلَى احْتِمَالِيَّةِ أَنْ تَكُونَ هَذِهِ الْمَخْطُوطَةُ، وَبِالنَّظَرِ إِلَى عُمْرِهَا، قَدْ خَطَّهَا أَحَدُ صَحَابَةِ النَّبِيِّ مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ.
+“Araştırmacılar, yaşı dikkate alındığında bu el yazmasının Hz. Muhammed’in sahabelerinden biri tarafından yazılmış olabileceği ihtimaline işaret etmektedir.”
+
+TASNİF
+Kelime
+---
+Kelime
+Kelime
+-
+Zamir
+Fiil
+Fiil
+Nasb ve cezm edatları
+Fiil cümlesi
+---
+---
+İsmi mevsul
+---
+Kelime
+İsmi mevsul
+Fiil
+Kelime
+Fiil
+İşaret ismi

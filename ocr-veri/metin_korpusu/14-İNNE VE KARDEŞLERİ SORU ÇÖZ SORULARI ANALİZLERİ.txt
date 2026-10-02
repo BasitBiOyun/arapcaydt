@@ -1,0 +1,66 @@
+İNNE VE KARDEŞLERİ SORU ÇÖZ SORULARI ANALİZLERİ 
+1. Soru
+أَكَّدَ الْبَاحِثُ فِي نِهَايَةِ الدِّرَاسَةِ ---- التَّعْلِيمَ الْجَيِّدَ أَسَاسُ تَقَدُّمِ الْمُجْتَمَعَاتِ.
+Anlamı:
+“Araştırmacı, çalışmanın sonunda kaliteli eğitimin toplumların ilerlemesinin temeli ----- vurguladı.”
+Açıklama:
+Boşluk cümlenin ortasındadır ve öncesinde أَكَّدَ “vurguladı, teyit etti” fiili vardır. Sonraki cümle, neyin vurgulandığını açıklamaktadır. Bu nedenle önceki fiile bağlanarak “... olduğunu” anlamı veren bir harf gerekir.
+Şıklara bakalım:
+A) إِنَّ → bağımsız cümle başında tekit için daha uygundur. ❌
+B) أَنَّ → önceki fiile bağlanarak “... olduğunu” anlamını verir. ✅
+C) كَأَنَّ → benzetme bildirir. ❌
+D) لَيْتَ → temenni bildirir. ❌
+E) لَكِنَّ → karşıtlık bildirir. ❌
+Doğru cevap: B) أَنَّ
+2. Soru
+كَانَ الطَّرِيقُ طَوِيلًا، ---- الرِّحْلَةَ كَانَتْ مُفِيدَةً وَمُمْتِعَةً.
+Anlamı:
+“Yol uzundu ------ yolculuk faydalı ve keyifliydi.”
+Açıklama:
+İlk bölümde yolun uzun olduğu, ikinci bölümde ise yolculuğun faydalı ve keyifli olduğu söylenmektedir. İki yargı arasında karşıtlık vardır. Bu nedenle “fakat, ancak” anlamı veren bir harf gerekir.
+Şıklara bakalım:
+A) لَعَلَّ → umut/ihtimal bildirir. ❌
+B) كَأَنَّ → benzetme bildirir. ❌
+C) لَكِنَّ → karşıtlık kurar. ✅
+D) أَنَّ → “... olduğunu” anlamı verir; önceki yapıya bağlanmaz. ❌
+E) لَيْتَ → temenni bildirir. ❌
+Doğru cevap: C) لَكِنَّ
+3. Soru
+وَقَفَ الْخَطِيبُ أَمَامَ الْجُمْهُورِ، فَبَدَا صَوْتُهُ ---- جَرَسٌ يُوقِظُ النَّاسَ مِنْ غَفْلَتِهِمْ.
+Anlamı:
+“Hatip kalabalığın önünde durdu; sesi, insanları gafletlerinden uyandıran bir çan ---- geldi.”
+Açıklama:
+Burada صَوْتُهُ “onun sesi” ile جَرَسٌ “çan” arasında benzetme kurulmaktadır. Bu nedenle “sanki, âdeta” anlamı veren bir yapı gerekir.
+Şıklara bakalım:
+A) أَنَّهُ → “onun ... olduğunu” anlamı verir; benzetme bildirmez. ❌
+B) كَأَنَّهُ → “sanki o”; benzetme bildirir. ✅
+C) إِنَّهُ → tekit bildirir. ❌
+D) لَعَلَّهُ → ihtimal bildirir. ❌
+E) لَيْتَهُ → temenni bildirir. ❌
+Doğru cevap: B) كَأَنَّهُ
+4. Soru
+يَنْظُرُ الْفَلَّاحُ إِلَى السَّمَاءِ رَاجِيًا نُزُولَ الْمَطَرِ، وَيَقُولُ: ---- الْمَطَرَ يَهْطِلُ هٰذِهِ اللَّيْلَةَ.
+Anlamı:
+“Çiftçi yağmurun yağmasını umarak gökyüzüne bakıyor ve ‘Umarım yağmur bu gece yağar.’ diyor.”
+Açıklama:
+Cümlede رَاجِيًا نُزُولَ الْمَطَرِ ifadesi açıkça umut ve beklenti bildirmektedir. İki noktadan sonra doğrudan söz başlamaktadır ve boşlukta bu umut anlamını karşılayan bir harf gerekir.
+Şıklara bakalım:
+A) لَكِنَّ → karşıtlık bildirir. ❌
+B) إِنَّ → tekit ve kesinlik bildirir; umut anlamını vermez. ❌
+C) لَعَلَّ → umut, beklenti ve ihtimal bildirir. ✅
+D) كَأَنَّ → benzetme bildirir. ❌
+E) أَنَّ → önceki bir fiile bağlı “... olduğunu” yapısı kurar. ❌
+Doğru cevap: C) لَعَلَّ
+5. Soru
+قَالَ الْمُدَرِّسُ لِطُلَّابِهِ: ---- النَّجَاحَ لَا يَأْتِي بِلَا صَبْرٍ وَاجْتِهَادٍ.
+Anlamı:
+“Öğretmen öğrencilerine şöyle dedi: --------- başarı sabır ve çaba olmadan gelmez.”
+Açıklama:
+İki noktadan sonra doğrudan ve bağımsız bir söz başlamaktadır. Öğretmen genel bir gerçeği güçlü biçimde ifade etmektedir. Bu nedenle cümle başında tekit bildiren bir harf gerekir.
+Şıklara bakalım:
+A) أَنَّ → genellikle önceki fiile bağlanarak “... olduğunu” anlamı verir. Burada doğrudan söz başladığı için uygun değildir. ❌
+B) لَيْتَ → temenni bildirir. ❌
+C) كَأَنَّ → benzetme bildirir. ❌
+D) إِنَّ → doğrudan sözün başında tekit bildirir Şüpesizki anlamı verir cümleye. ✅
+E) لَكِنَّ → karşıtlık bildirir. ❌
+Doğru cevap: D) إِنَّ

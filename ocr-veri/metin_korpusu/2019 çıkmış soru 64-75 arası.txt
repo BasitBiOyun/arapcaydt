@@ -1,0 +1,241 @@
+2019 YDT Arapça: 64–69. Arapçadan Türkçeye çeviri
+Bu grupta Türkçe şıkları baştan sona çevirmeye çalışmadan önce Arapça cümlenin yüklemini, zamanını, öznesini ve anlamı daraltan sözcükleri belirleyelim. Ardından şıklarda bu parçaların korunup korunmadığına bakalım.
+64. soru
+Harekeli Arapça cümle:
+أَوْضَحَ مَسْؤُولُو الْأُمَمِ الْمُتَّحِدَةِ أَنَّ نَحْوَ ٨٢١ مِلْيُونَ شَخْصٍ فِي الْعَالَمِ لَمْ يَكُنْ لَدَيْهِ الطَّعَامُ الْكَافِي فِي عَامِ ٢٠١٨.
+Tercümesi: Birleşmiş Milletler yetkilileri, 2018 yılında dünyada yaklaşık 821 milyon kişinin yeterli yiyeceğe sahip olmadığını açıkladılar.
+Yüklem ve zorunlu anlam parçaları: أَوْضَحَ “açıkladı/belirtti”; özne مَسْؤُولُو الْأُمَمِ الْمُتَّحِدَةِ “BM yetkilileri”. نَحْوَ “yaklaşık”; لَمْ يَكُنْ لَدَيْهِ الطَّعَامُ الْكَافِي “yeterli yiyeceği yoktu”. Cümlede “rapora göre”, “doğruladılar” veya “harekete geçtiler” denmiyor.
+Şıklara bakalım:
+A) “Birleşmiş Milletler yetkililerinin açıklamasına göre 2018 yılında, dünyada yeterli şekilde beslenemeyenlerin sayısı 821 milyona ulaştı.”
+Neden olmaz? نَحْوَ “yaklaşık” düşer; ulaştı ifadesi de Arapçadaki açıklama yapısını değiştirir.
+B) “Birleşmiş Milletler’in 2018 yılı raporuna göre dünyada yeterli gıda alamayanların sayısı 821 milyon civarındadır.”
+Neden olmaz? Kaynak “BM’nin raporu” demiyor; BM yetkililerinin açıkladığını söylüyor.
+C) “2018 yılında, dünyada yaklaşık 821 milyon kişinin yeterli gıda alamaması gerçeği Birleşmiş Milletler yetkilileri tarafından da doğrulandı.”
+Neden olmaz? أَوْضَحَ “açıkladı/belirtti”dir; “önceden ileri sürülmüş bir gerçeği doğruladı” anlamı eklenir.
+D) “Birleşmiş Milletler yetkilileri, 2018 yılında dünyada yaklaşık 821 milyon kişinin yeterli gıdayı alamadığını belirttiler.”
+Neden olabilir? Özne, yıl, yaklaşık miktarı, yetersiz gıda ve bildirme yüklemi korunur.
+E) “2018 yılında, dünyada 821 milyon kişinin yeterli bir şekilde beslenememesi Birleşmiş Milletler yetkililerini harekete geçirdi.”
+Neden olmaz? BM yetkilileri Arapçada açıklama yapan kişilerdir; harekete geçen kişiler olarak verilmez.
+Doğru cevap: D.
+Yıl: 2019
+65. soru
+Harekeli Arapça cümle:
+أَعْلَنَتْ وِزَارَةُ الصِّحَّةِ أَنَّ ٣٠ فِي الْمِئَةِ مِنْ مُرَاجِعِي عِيَادَاتِ الْإِقْلَاعِ عَنِ التَّدْخِينِ نَجَحُوا فِي التَّخَلُّصِ مِنْ هَذِهِ الْعَادَةِ فِي عَامِ ٢٠١٩.
+Tercümesi: Sağlık Bakanlığı, 2019 yılında sigarayı bırakma kliniklerine başvuranların yüzde 30’unun bu alışkanlıktan kurtulmayı başardığını açıkladı.
+Yüklem ve zorunlu anlam parçaları: أَعْلَنَتْ “açıkladı”; açıklayan Sağlık Bakanlığıdır. ٣٠ فِي الْمِئَةِ مِنْ مُرَاجِعِي… “kliniklere başvuranların yüzde 30’u”; نَجَحُوا “başardılar”. Yüzde 30, klinik sayısındaki veya başarı oranındaki artış değildir.
+Şıklara bakalım:
+A) “Sağlık Bakanlığının verilerine göre, sigarayı bırakma klinikleri sayesinde bu alışkanlıktan kurtulmayı başaranların sayısı 2019 yılı itibarıyla yüzde 30 oranında yükseldi.”
+Neden olmaz? Kaynakta artış yok; başvuranların yüzde 30’unun başarılı olduğu belirtiliyor.
+B) “Sağlık Bakanlığı, 2019 yılında sigarayı bırakma kliniklerine başvuranların yüzde 30’unun bu alışkanlıktan kurtulmayı başardığını bildirdi.”
+Neden olabilir? Bakanlık, yıl, başvuranların yüzde 30’u ve başarı bilgisi korunur.
+C) “Sağlık Bakanlığının verilerine göre 2019 yılında sigarayı bırakma kliniklerine başvuranların yüzde 30’u bu kötü alışkanlıktan kurtulmayı başardı.”
+Neden olmaz? Ana olay yakın görünür; ancak أَعْلَنَتْ وِزَارَةُ الصِّحَّةِ doğrudan “Sağlık Bakanlığı açıkladı”dır. C şıkkı bunu “Bakanlığın verilerine göre” yapısına dönüştürür.
+D) “Sağlık Bakanlığının verilerine göre 2019 yılında sigarayı bırakma kliniklerine başvuranların sayısında yüzde 30 oranında artış oldu.”
+Neden olmaz? Artan başvuru sayısı değil; başvuranlar arasından sigarayı bırakmayı başaranların oranı anlatılıyor.
+E) “Sağlık Bakanlığı, 2019 yılında sigarayı bırakma kliniklerine başvuranların yüzde 30’unun bu kötü alışkanlıktan kurtulma konusunda başarısızlığa uğradıklarını duyurdu.”
+Neden olmaz? نَجَحُوا “başardılar”dır; başarısızlık anlamı tersidir.
+Doğru cevap: B.
+Yıl: 2019
+66. soru
+Harekeli Arapça cümle:
+يَحُدُّ اسْتِخْدَامُ الطَّاقَةِ الْمُتَجَدِّدَةِ، الَّتِي تُوَلِّدُهَا الشَّمْسُ وَالرِّيَاحُ وَالْمِيَاهُ، مِنَ التَّلَوُّثِ الْبِيئِيِّ عَلَى كَوْكَبِ الْأَرْضِ.
+Tercümesi: Güneşin, rüzgârın ve suyun ürettiği yenilenebilir enerjinin kullanımı, Dünya’daki çevre kirliliğini sınırlar/azaltır.
+Yüklem ve zorunlu anlam parçaları: يَحُدُّ … مِنْ “sınırlar, azaltır”; özne اسْتِخْدَامُ الطَّاقَةِ الْمُتَجَدِّدَةِ “yenilenebilir enerjinin kullanımı”. Güneş, rüzgâr ve su enerjinin kaynaklarıdır. يَحُدُّ “tamamen engeller” demek değildir.
+Şıklara bakalım:
+A) “Güneş, rüzgâr ve suyun ürettiği enerjinin kullanılması, yeryüzündeki çevre kirliliğinin engellenmesine yardımcı olmaktadır.”
+Neden olmaz? “Yardımcı olmak” ve “engellemek”, يَحُدُّ مِنْ yükleminin doğrudan “sınırlar/azaltır” anlamını tam karşılamaz; yenilenebilir niteliği de açık değildir.
+B) “Dünyadaki çevre kirliliğini sınırlayan enerji; güneş, rüzgâr ve suyun ürettiği yenilenebilir enerjidir.”
+Neden olmaz? Kaynak cümlenin öznesi enerjinin kendisi değil, kullanımıdır.
+C) “Dünyadaki çevre kirliliğini sınırlayan şey; güneş, rüzgâr ve suyla üretilen yenilenebilir enerjinin kullanılmasıdır.”
+Neden olabilir? Ana anlam büyük ölçüde korunur; ancak ifadeyi tanım cümlesine çevirir. D şıkkı yüklemi ve cümle akışını daha doğrudan karşılar.
+D) “Güneş, rüzgâr ve suyun ürettiği yenilenebilir enerjinin kullanılması, yeryüzündeki çevre kirliliğini sınırlamaktadır.”
+Neden olabilir? اسْتِخْدَامُ öznesini ve يَحُدُّ مِنْ yüklemini doğrudan korur.
+E) “Güneş, rüzgâr ve suyun ürettiği enerjinin kullanılabilmesi, yeryüzündeki çevre kirliliğinin azalmasına katkıda bulunacaktır.”
+Neden olmaz? Kullanılması yerine “kullanılabilmesi”, geniş zaman yerine gelecek zaman, “sınırlar” yerine de “katkıda bulunur” getirilmiştir.
+Doğru cevap: D.
+Yıl: 2019
+67. soru
+Harekeli Arapça cümle:
+الْغَسَاسِنَةُ، هُمْ مَجْمُوعَةٌ مِنْ قَبَائِلَ أَزْدِيَّةٍ ذَاتِ أَصْلٍ يَمَنِيٍّ، هَاجَرُوا مَعَ نِهَايَةِ الْقَرْنِ الثَّالِثِ الْمِيلَادِيِّ إِلَى شَمَالِ شِبْهِ جَزِيرَةِ الْعَرَبِ ثُمَّ اسْتَقَرُّوا فِي بِلَادِ الشَّامِ.
+Tercümesi: Gassânîler, Yemen kökenli Ezd kabilelerinden oluşan bir topluluktur. Miladi üçüncü yüzyılın sonlarına doğru Arap Yarımadası’nın kuzeyine göç etmiş, ardından Bilâdüşşam’a yerleşmişlerdir.
+Yüklem ve zorunlu anlam parçaları: Kimlik Yemen kökenli Ezd kabileleri; zaman üçüncü yüzyılın sonu; olay sırası önce Arap Yarımadası’nın kuzeyine göç → sonra Şam bölgesine yerleşme. ثُمَّ sıralamayı belirler.
+Şıklara bakalım:
+A) “Miladî 3. yüzyılın sonlarına doğru Arabistan Yarımadası’nın kuzeyine, daha sonra da Bilâdü’ş-Şâm’a yerleşen Gassânîler, aslen Yemenli olup Ezd Kabilesi’ne mensupturlar.”
+Neden olmaz? İlk aşamadaki هَاجَرُوا “göç ettiler” eylemini de yerleşme olarak verir; ayrıca قَبَائِلَ çoğul “kabileler” yerine tekil “Ezd Kabilesi” der.
+B) “Yemen kökenli Ezd Kabileler topluluğu olan Gassânîler, Arabistan Yarımadası’nın kuzeyine göç etmişler; Miladî 3. yüzyılın sonlarına doğru da Bilâdü’ş-Şâm’a yerleşmişlerdir.”
+Neden olmaz? Zaman ifadesini ikinci olaya bağlar; Arapçada مَعَ نِهَايَةِ الْقَرْنِ… هَاجَرُوا göç zamanını belirtir.
+C) “Yemen kökenli Ezd Kabileler topluluğu olan Gassânîler, Miladî 3. yüzyılın sonlarına doğru Arabistan Yarımadası’nın kuzeyine göç etmişler; daha sonra Bilâdü’ş-Şâm’a yerleşmişlerdir.”
+Neden olabilir? Kimlik, zaman ve iki aşamalı hareket doğru sırayla korunur.
+D) “Miladî 3. yüzyılın başlarında kuzeye doğru göç eden ve Yemen kökenli Ezd Kabilelerinden oluşan Gassânîler, önce Kuzey Arabistan’a, daha sonra da Bilâdü’ş-Şâm’a yerleşmişlerdir.”
+Neden olmaz? نِهَايَةِ “sonu”, başlarına çevrilmiştir.
+E) “Gassânîler, 3. yüzyılın başlarında Arabistan Yarımadası’nın kuzeyine göç edip oradan da Bilâdü’ş-Şâm’a geçen Yemen kökenli Ezd Kabileleri’dir.”
+Neden olmaz? Yine zaman sonlarından başlarına değiştirilir; Şam’a yerleşme bilgisi de zayıflar.
+Doğru cevap: C.
+Yıl: 2019
+68. soru
+Harekeli Arapça cümle:
+النَّفْطُ مِنْ أَهَمِّ الثَّرَوَاتِ الطَّبِيعِيَّةِ فِي الْعَالَمِ، لِذَلِكَ يَعُدُّهُ بَعْضُ النَّاسِ الذَّهَبَ الْأَسْوَدَ وَيَعُدُّهُ بَعْضٌ آخَرُونَ شِرْيَانَ الْحَيَاةِ.
+Tercümesi: Petrol dünyadaki en önemli doğal zenginliklerden biridir; bu nedenle bazı insanlar onu siyah altın, başkaları da hayatın atardamarı sayar.
+Yüklem ve zorunlu anlam parçaları: İlk yargı petrolün önemli bir doğal kaynak olması; لِذَلِكَ “bu nedenle” bu yargıyı sonraki adlandırmalara bağlar. بَعْضُ النَّاسِ / بَعْضٌ آخَرُونَ iki ayrı insan grubudur.
+Şıklara bakalım:
+A) “Petrol, dünyadaki en önemli doğal kaynaklardan biridir; bu sebeple bazı insanlar onu siyah altın, bazıları da hayatın atardamarı olarak kabul ederler.”
+Neden olabilir? İki yargı ve aralarındaki neden–sonuç bağı tamdır; iki farklı grup da korunur.
+B) “Bazı insanlar petrolü hem siyah altın hem de hayatın atardamarı olarak kabul ettiği için petrol, dünyadaki en önemli doğal zenginlik olarak görülmektedir.”
+Neden olmaz? Sebep–sonuç yönü ters çevrilir; iki ayrı grubun verdiği iki ayrı ad da aynı gruba yüklenir.
+C) “Bazı insanların siyah altın, bazılarının da hayatın atardamarı olarak kabul ettiği petrol, dünyadaki en önemli doğal kaynaklardan biridir.”
+Neden olmaz? İki bilgi vardır; fakat لِذَلِكَ ile kurulan açık “önemli olduğu için böyle adlandırılır” ilişkisi kaybolur.
+D) “Petrolün bazılarca siyah altın, bazılarca hayatın atardamarı olarak kabul edilmesinin nedeni, dünyanın en değerli doğal kaynaklarından olmasıdır.”
+Neden olmaz? Neden–sonuç yakın görünür; ancak أَهَمِّ “en önemli” yerine en değerli getirilir ve cümle daha dar bir değer yargısına dönüşür.
+E) “Dünyadaki en önemli doğal zenginliklerden biri olan petrolü bazı insanlar siyah altın, bazıları da hayatın atardamarı olarak isimlendirmişlerdir.”
+Neden olmaz? Kaynak cümledeki لِذَلِكَ bağı açıkça verilmez; يَعُدُّهُ “sayar/kabul eder” yüklemi geçmişteki “isimlendirdiler”e çevrilir.
+Doğru cevap: A.
+Yıl: 2019
+69. soru
+Harekeli Arapça cümle:
+حَسَبَ دِرَاسَةٍ حَدِيثَةٍ أَجْرَاهَا أَطِبَّاءُ كُلِّيَّةِ الطِّبِّ بِجَامِعَةِ غَازِي إِنَّ دَرَجَةَ الْحَرَارَةِ الْمُرْتَفِعَةَ فِي غُرْفَةِ النَّوْمِ تُصَعِّبُ قُدْرَتَنَا عَلَى التَّفْكِيرِ.
+Tercümesi: Gazi Üniversitesi Tıp Fakültesi doktorlarının yaptığı yeni bir araştırmaya göre yatak odasındaki yüksek sıcaklık, düşünme yeteneğimizi zorlaştırır.
+Yüklem ve zorunlu anlam parçaları: حَسَبَ دِرَاسَةٍ حَدِيثَةٍ “yeni bir araştırmaya göre”; araştırmayı yapanlar doktorlar; asıl yüklem تُصَعِّبُ “zorlaştırır” ve geniş zaman anlamındadır. Sıcaklığın bulunduğu yer غُرْفَةِ النَّوْمِ “yatak odası”dır.
+Şıklara bakalım:
+A) “Gazi Üniversitesi Tıp Fakültesi doktorlarının yaptığı yeni bir çalışma, yatak odasındaki yüksek sıcaklık seviyesinin düşünme yeteneğimizi zorlaştırdığını ortaya koydu.”
+Neden olmaz? İçerik yakın olsa da ana bildirim “araştırmaya göre … zorlaştırır” iken “çalışma … ortaya koydu” yapısına ve geçmiş zamana döner.
+B) “Gazi Üniversitesi Tıp Fakültesi doktorlarının yaptığı yeni bir araştırmaya göre yatak odasındaki yüksek sıcaklık derecesi, düşünme yeteneğimizi zorlaştırmaktadır.”
+Neden olabilir? Araştırma kaynağı, yapanlar, yer, etki ve geniş zaman korunur.
+C) “Yatak odasındaki yüksek sıcaklık derecesinin düşünme yeteneğimizi zorlaştırdığını açıklayan doktorlar, Gazi Üniversitesi Tıp Fakültesinde görev yapmaktadırlar.”
+Neden olmaz? Ana yargı doktorların nerede görev yaptığına dönüşür; kaynakta bu yüklem yoktur.
+D) “Yatak odasındaki yüksek sıcaklık derecesinin düşünme yeteneğimizi zorlaştırdığını söyleyen doktorlar, bu çalışmayı Gazi Üniversitesi Tıp Fakültesinde gerçekleştirdiler.”
+Neden olmaz? Çalışmanın nerede yapıldığı bilgisi eklenir; Arapça yalnızca araştırmayı yapan doktorların kurumsal bağını verir.
+E) “Gazi Üniversitesi Tıp Fakültesi doktorları tarafından yapılan bir araştırmada, yatak odasındaki yüksek sıcaklık derecesinin düşünmeyi zorlaştırdığı ortaya çıktı.”
+Neden olmaz? Yakın anlamlıdır; fakat قُدْرَتَنَا عَلَى التَّفْكِيرِ “bizim düşünme yeteneğimiz” özelliğini yalnızca “düşünme”ye indirger ve geniş zamanlı doğrudan yargıyı geçmişteki “ortaya çıktı”ya dönüştürür.
+Doğru cevap: B.
+Yıl: 2019
+Cevap dizisi: 64 D · 65 B · 66 D · 67 C · 68 A · 69 B
+2019 YDT Arapça: 70–75. Türkçeden Arapçaya çeviri
+Önce Türkçe cümlede değişmemesi gereken bilgileri belirliyorum. Şıkları ardından harekeli Arapça, Türkçe anlamı ve eleme gerekçesiyle inceliyorum. Harekeler sonradan eklenmiştir; şıkların sözcükleri PDF’deki sırayı izler.
+70. soru
+Türkçe soru: Arabistan Yarımadası’nın güneydoğusunda yer alan Birleşik Arap Emirlikleri, 1971 yılında kurulmuştur.
+Korunması gerekenler: Kurulan ülke Birleşik Arap Emirlikleri; yer Arap Yarımadası’nın güneydoğusu; kuruluş yılı 1971. “Ülke, Emirlikleri kurdu” gibi özne–nesne değişimine dikkat etmeliyiz.
+Şıklara bakalım:
+A) تَأَسَّسَتِ الْإِمَارَاتُ الْعَرَبِيَّةُ الْمُتَّحِدَةُ، الْوَاقِعَةُ جَنُوبَ شَرْقِيِّ شِبْهِ الْجَزِيرَةِ الْعَرَبِيَّةِ، سَنَةَ ١٩٧١.
+Tercümesi: Arap Yarımadası’nın güneydoğusunda bulunan Birleşik Arap Emirlikleri 1971’de kuruldu.
+Neden olabilir? Üç temel bilgiyi de karşılıyor. Burada جَنُوبَ شَرْقِيِّ yön ifadesi “güneydoğu” olarak okunabilir.
+B) تَقَعُ جَنُوبَ شَرْقِيِّ شِبْهِ الْجَزِيرَةِ الْعَرَبِيَّةِ دَوْلَةٌ جَدِيدَةٌ تَأَسَّسَتْ سَنَةَ ١٩٧١.
+Tercümesi: Arap Yarımadası’nın güneydoğusunda 1971’de kurulmuş yeni bir devlet bulunur.
+Neden olmaz? Birleşik Arap Emirlikleri’nin adı yoktur; kaynak cümle belirli bir devleti adlandırır.
+C) تَمَّ تَأْسِيسُ الْإِمَارَاتِ الْعَرَبِيَّةِ الْمُتَّحِدَةِ سَنَةَ ١٩٧١ وَذَلِكَ فِي الْجُزْءِ الْجَنُوبِيِّ الشَّرْقِيِّ مِنْ شِبْهِ الْجَزِيرَةِ الْعَرَبِيَّةِ.
+Tercümesi: Birleşik Arap Emirlikleri 1971’de, Arap Yarımadası’nın güneydoğu kesiminde kuruldu.
+Neden olabilir? Ad, yıl ve güneydoğu kesimi açıkça korunur. PDF’deki anahtara göre beklenen seçenek budur.
+D) أَسَّسَتِ الْإِمَارَاتُ الْعَرَبِيَّةُ الْمُتَّحِدَةُ سَنَةَ ١٩٧١ لِتَكُونَ دَوْلَةً اتِّحَادِيَّةً جَنُوبَ شَرْقِيِّ شِبْهِ الْجَزِيرَةِ الْعَرَبِيَّةِ.
+Tercümesi: Birleşik Arap Emirlikleri, Arap Yarımadası’nın güneydoğusunda federal bir devlet olmak için 1971’de kurdu.
+Neden olmaz? أَسَّسَتْ geçişli fiil kullanılmış; neyi kurduğu verilmemiştir. Kaynaktaki “BAE kuruldu” yapısını doğru karşılamaz.
+E) فِي سَنَةِ ١٩٧١ تَأَسَّسَتْ دَوْلَةٌ فِي جَنُوبِ شَرْقِيِّ شِبْهِ الْجَزِيرَةِ الْعَرَبِيَّةِ سُمِّيَتِ الْإِمَارَاتِ الْعَرَبِيَّةَ الْمُتَّحِدَةَ.
+Tercümesi: 1971’de yarımadanın güneydoğusunda, Birleşik Arap Emirlikleri diye adlandırılan bir devlet kuruldu.
+Neden olmaz? Kaynakta bulunmayan “adlandırıldı” olayı eklenir; ayrıca سُمِّيَتِ الْإِمَارَاتِ… kuruluşu da adlandırma fiili bakımından sorunludur.
+Cevap değerlendirmesi: C, “güneydoğu kesimi”ni en açık veren şıktır. Ancak A da kaynak Türkçe cümlenin anlamını karşılıyor. Bu nedenle 70. soruyu tek doğru açısından sorunlu görüyorum; A’yı kesin biçimde yanlış diye elemek doğru olmaz.
+Yıl: 2019
+71. soru
+Türkçe soru: Ülkeler arasında sanayileşme, madencilik ve tarımsal üretim düzeyleri bakımından büyük farklılıklar vardır.
+Korunması gerekenler: Karşılaştırılanlar ülkelerdir; farklılık düzeyler bakımındandır; üç alanın tamamı sanayileşme, madencilik, tarımsal üretim olmalıdır. مَسْتَوَيَات “düzeyler” sözcüğü özellikle önemlidir.
+Şıklara bakalım:
+A) التَّصْنِيعُ وَالتَّعْدِينُ وَالْإِنْتَاجُ الزِّرَاعِيُّ يَخْتَلِفُ كَثِيرًا مِنْ بَلَدٍ لِآخَرَ مِنْ حَيْثُ أَهَمِّيَّةُ الْبُلْدَانِ.
+Tercümesi: Sanayi, madencilik ve tarımsal üretim, ülkelerin önemi bakımından bir ülkeden diğerine çok değişir.
+Neden olmaz? Farkın ölçütünü ülkelerin önemi olarak değiştirir; kaynakta üretim düzeyleri vardır.
+B) أَهَمُّ الِاخْتِلَافَاتِ الْقَائِمَةِ بَيْنَ الْبُلْدَانِ الْكَبِيرَةِ هِيَ فِي التَّصْنِيعِ وَالتَّعْدِينِ وَالْإِنْتَاجِ الزِّرَاعِيِّ.
+Tercümesi: Büyük ülkeler arasındaki en önemli farklılıklar sanayi, madencilik ve tarımsal üretimdedir.
+Neden olmaz? Büyük ülkeler ve en önemli farklılıklar sınırlamaları eklenmiştir.
+C) إِنَّ مُسْتَوَيَاتِ الصِّنَاعَةِ وَالْمَعَادِنِ وَالْإِنْتَاجِ الزِّرَاعِيِّ مُخْتَلِفَةٌ مِنْ بَلَدٍ لِآخَرَ حَسَبَ أَهَمِّيَّتِهَا.
+Tercümesi: Sanayi, madenler ve tarımsal üretim düzeyleri önemlerine göre ülkeden ülkeye değişir.
+Neden olmaz? حَسَبَ أَهَمِّيَّتِهَا “önemlerine göre” eklenir; kaynakta böyle bir ölçüt yoktur.
+D) هُنَاكَ أَهَمِّيَّةٌ لِلِاخْتِلَافِ بَيْنَ الْبُلْدَانِ بِمُسْتَوَيَاتٍ كَبِيرَةٍ فِي الزِّرَاعَةِ وَالصِّنَاعَةِ وَالْمَعَادِنِ.
+Tercümesi: Ülkeler arasındaki farklılığın tarım, sanayi ve madenlerde büyük düzeylerde bir önemi vardır.
+Neden olmaz? “Büyük farklılıklar vardır” yerine farklılığın önemi vardır denir; anlam değişir.
+E) هُنَاكَ اخْتِلَافَاتٌ كَبِيرَةٌ مِنْ حَيْثُ مُسْتَوَيَاتِ التَّصْنِيعِ وَالتَّعْدِينِ وَالْإِنْتَاجِ الزِّرَاعِيِّ بَيْنَ الْبُلْدَانِ.
+Tercümesi: Ülkeler arasında sanayileşme, madencilik ve tarımsal üretim düzeyleri bakımından büyük farklılıklar vardır.
+Neden olabilir? بَيْنَ الْبُلْدَانِ، مِنْ حَيْثُ مُسْتَوَيَاتِ، اخْتِلَافَاتٌ كَبِيرَةٌ parçalarının hepsi korunur.
+Doğru cevap: E.
+Yıl: 2019
+72. soru
+Türkçe soru: Dünya Sağlık Örgütü yetkilileri, 2050 yılının gelmesiyle birlikte dünyadaki gıda üretiminin yüzde 60 oranında artması gerektiğini söylediler.
+Korunması gerekenler: Söyleyen DSÖ yetkilileri; konu gıda üretimi; miktar %60; sınır 2050 yılına kadar/2050’ye gelindiğinde; en önemlisi artması gerekir. “Artacak” ile “artması gerekir” aynı değildir.
+Şıklara bakalım:
+A) قَالَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ إِنَّهُ يَجِبُ زِيَادَةُ نِسْبَةِ إِنْتَاجِ الْأَغْذِيَةِ فِي الْعَالَمِ بِنِسْبَةِ ٦٠ بِالْمِئَةِ بِحُلُولِ عَامِ ٢٠٥٠.
+Tercümesi: DSÖ yetkilileri, dünyada gıda üretiminin 2050 yılına kadar yüzde 60 artırılması gerektiğini söylediler.
+Neden olabilir? Özne, zorunluluk, gıda üretimi, oran ve zaman korunur.
+B) أَشَارَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ إِلَى ضَرُورَةِ نُمُوِّ الْإِنْتَاجِ الزِّرَاعِيِّ بِنِسْبَةِ ٦٠ بِالْمِئَةِ لِتَلْبِيَةِ الطَّلَبِ فِي عَامِ ٢٠٥٠.
+Tercümesi: DSÖ yetkilileri, 2050’de talebi karşılamak için tarımsal üretimin yüzde 60 büyümesi gereğine işaret ettiler.
+Neden olmaz? Gıda üretimi, “tarımsal üretim”e çevrilir; talebi karşılamak için gerekçesi eklenir.
+C) قَالَ خُبَرَاءُ مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ إِنَّ نِسْبَةَ إِنْتَاجِ الْأَغْذِيَةِ فِي عَامِ ٢٠٥٠ سَتَرْتَفِعُ بِنِسْبَةِ ٦٠ بِالْمِئَةِ.
+Tercümesi: DSÖ uzmanları, 2050’de gıda üretimi oranının yüzde 60 artacağını söylediler.
+Neden olmaz? Yetkililer → uzmanlar ve artması gerekir → artacak değişmiştir.
+D) شَدَّدَ الْمَسْؤُولُونَ فِي مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ عَلَى ضَرُورَةِ إِنْتَاجِ الْمَوَادِّ الْغِذَائِيَّةِ بِنِسْبَةِ ٦٠ بِالْمِئَةِ حَتَّى الْعَامِ ٢٠٥٠.
+Tercümesi: DSÖ yetkilileri, 2050’ye kadar gıda maddelerinin yüzde 60 oranında üretilmesi gereğini vurguladılar.
+Neden olmaz? Kaynaktaki mevcut üretimin %60 artması anlamı, %60 oranında üretim ifadesine dönüşür.
+E) أَفَادَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ أَنَّ الْعَالَمَ سَيَكُونُ بِحَاجَةٍ إِلَى إِنْتَاجِ الْغِذَاءِ بِنِسْبَةِ ٦٠ بِالْمِئَةِ عَامَ ٢٠٥٠.
+Tercümesi: DSÖ yetkilileri, dünyanın 2050’de yüzde 60 oranında gıda üretimine ihtiyaç duyacağını bildirdiler.
+Neden olmaz? Üretimin %60 artması gereği, dünyanın “%60 oranında üretime ihtiyaç duyması” biçimine dönüşür.
+Doğru cevap: A.
+Yıl: 2019
+73. soru
+Türkçe soru: Bazı bakteri türleri, hayvanların mide ve bağırsaklarında yaşamakta olup hayvanların besinleri sindirmesine yardımcı olmaktadır.
+Korunması gerekenler: Yaşayanlar bazı bakteri türleri; bulundukları yer hayvanların mide ve bağırsakları; yardımcı oldukları iş hayvanların besinleri sindirmesi. “Bakteriler besinleri kendileri sindirir” ile “hayvanlara yardımcı olur” farklıdır.
+Şıklara bakalım:
+A) يَعِيشُ بَعْضُ أَنْوَاعِ الْبَكْتِيرْيَا فِي مَعِدَةِ كُلِّ الْكَائِنَاتِ الْحَيَّةِ وَأَمْعَائِهَا، وَتُسَهِّلُهَا فِي هَضْمِ الطَّعَامِ.
+Tercümesi: Bazı bakteri türleri bütün canlıların mide ve bağırsaklarında yaşar ve onlara besin sindirmede yardımcı olur.
+Neden olmaz? Hayvanlar yerine bütün canlılar getirilmiştir.
+B) يَعِيشُ بَعْضُ أَنْوَاعِ الْبَكْتِيرْيَا فِي رِئَةِ الْحَيَوَانَاتِ وَمَعِدَتِهَا، وَتُسَاعِدُ هَذِهِ الْجَرَاثِيمُ الْحَيَوَانَاتِ عَلَى هَضْمِ الطَّعَامِ.
+Tercümesi: Bazı bakteri türleri hayvanların akciğer ve midelerinde yaşar; sindirime yardımcı olur.
+Neden olmaz? Kaynakta mide ve bağırsaklar vardır; رِئَةِ “akciğer” yanlıştır.
+C) يَعِيشُ بَعْضُ أَنْوَاعِ الْبَكْتِيرْيَا فِي مَعِدَةِ الْحَيَوَانَاتِ وَأَمْعَائِهَا، وَتُسَاعِدُهَا فِي هَضْمِ الطَّعَامِ.
+Tercümesi: Bazı bakteri türleri hayvanların mide ve bağırsaklarında yaşar; onların besinleri sindirmesine yardımcı olur.
+Neden olabilir? Tür, yer ve yardım edilen iş korunur.
+D) بَعْضُ أَنْوَاعِ الْجَرَاثِيمِ يَعِيشُ فِي مَعِدَةِ الْكَائِنَاتِ الْحَيَّةِ وَأَمْعَائِهَا، وَتُسَاعِدُ هَذِهِ الْجَرَاثِيمُ فِي طَحْنِ الطَّعَامِ.
+Tercümesi: Bazı mikrop türleri canlıların mide ve bağırsaklarında yaşar; besinlerin öğütülmesine yardımcı olur.
+Neden olmaz? Hayvanlar → canlılar, sindirmek → öğütmek değişmiştir.
+E) يَعِيشُ بَعْضُ الْجَرَاثِيمِ فِي مَعِدَةِ الْحَيَوَانَاتِ وَأَمْعَائِهَا، لِتَسْهِيلِ عَمَلِيَّةِ هَضْمِ هَذِهِ الْأَطْعِمَةِ.
+Tercümesi: Bazı mikroplar, bu besinlerin sindirilmesini kolaylaştırmak için hayvanların mide ve bağırsaklarında yaşar.
+Neden olmaz? لِتَسْهِيلِ ile bakterilerin orada yaşama amacı eklenir; Türkçe kaynak yalnızca yaşadıklarını ve yardımcı olduklarını bildirir.
+Doğru cevap: C.
+Yıl: 2019
+74. soru
+Türkçe soru: Bilim insanları, iklim değişikliğinin bir sonucu olarak 2100’den önce, okyanuslardaki mercan resiflerinin parçalanmaya başlayabileceğini söyledi.
+Korunması gerekenler: Bilim insanları söyledi; etkilenen okyanuslardaki mercan resifleri; olay parçalanmaya başlayabilir; zaman 2100’den önce; neden iklim değişikliğinin sonucu. قَدْ olasılığı, تَبْدَأُ başlangıcı verir.
+Şıklara bakalım:
+A) قَالَ الْعُلَمَاءُ إِنَّ الشِّعَابَ الْمَرْجَانِيَّةَ فِي الْمُحِيطَاتِ قَدْ تَبْدَأُ فِي التَّحَلُّلِ قَبْلَ عَامِ ٢١٠٠ نَتِيجَةً مَا يُسَبِّبُهُ تَغَيُّرُ الْمُنَاخِ.
+Tercümesi: Bilim insanları, okyanuslardaki mercan resiflerinin iklim değişikliğinin yol açtıkları sonucunda 2100’den önce çözülmeye başlayabileceğini söyledi.
+Neden olabilir? قَدْ تَبْدَأُ، قَبْلَ عَامِ ٢١٠٠ ve neden bilgisi korunur. التَّحَلُّلِ burada parçalanma/çözülme anlamını karşılar.
+B) يَقُولُ الْعُلَمَاءُ إِنَّ الْحُمُوضَةَ فِي الْمُحِيطَاتِ قَدْ تُؤَدِّي إِلَى تَحَلُّلِ الشِّعَابِ الْمَرْجَانِيَّةِ قَبْلَ عَامِ ٢١٠٠ نَتِيجَةَ تَغَيُّرِ الْمُنَاخِ.
+Tercümesi: Bilim insanları, okyanuslardaki asitliğin iklim değişikliği sonucunda 2100’den önce mercan resiflerinin çözülmesine yol açabileceğini söylüyor.
+Neden olmaz? Asitlik kaynakta yok; ayrıca “parçalanmaya başlama” bilgisi kaybolur.
+C) الْعُلَمَاءُ يَقُولُونَ إِنَّ الطَّحَالِبَ الْمَرْجَانِيَّةَ قَدْ تَبْدَأُ فِي التَّحَلُّلِ بَعْدَ سَنَةِ ٢١٠٠ نَتِيجَةَ مَا يُسَبِّبُهُ تَغَيُّرُ الْمُنَاخِ فِي الْمُحِيطَاتِ.
+Tercümesi: Bilim insanları, mercan alglerinin 2100’den sonra çözülmeye başlayabileceğini söylüyor.
+Neden olmaz? Mercan resifleri → algler ve 2100’den önce → sonra değişmiştir.
+D) أَعْلَنَ الْعُلَمَاءُ إِنَّ الْحُمُوضَةَ فِي الْمُحِيطَاتِ سَتُسَبِّبُ انْقِرَاضَ الطَّحَالِبِ الْمَرْجَانِيَّةِ بَعْدَ سَنَةِ ٢١٠٠ نَتِيجَةَ تَغَيُّرِ الْمُنَاخِ.
+Tercümesi: Bilim insanları, okyanuslardaki asitliğin 2100’den sonra mercan alglerinin yok olmasına neden olacağını açıkladı.
+Neden olmaz? Varlık, olay, zaman ve olasılık değiştirilmiştir.
+E) يَقُولُ الْعُلَمَاءُ إِنَّ الشِّعَابَ الْمَرْجَانِيَّةَ قَدْ تَبْدَأُ فِي الِانْقِرَاضِ قَبْلَ عَامِ ٢١٠٠ نَتِيجَةَ مَا يُسَبِّبُهُ ذَوَبَانُ الْجَلِيدِ فِي الْمُحِيطَاتِ.
+Tercümesi: Bilim insanları, okyanuslardaki buz erimesinin etkisiyle mercan resiflerinin 2100’den önce yok olmaya başlayabileceğini söylüyor.
+Neden olmaz? İklim değişikliği → buz erimesi ve parçalanma → yok olma değiştirilmiştir.
+Doğru cevap: A.
+Yıl: 2019
+75. soru
+Türkçe soru: Evliya Çelebi’nin Seyahatnamesi’nin özellikle Hicaz, Mısır, Sudan ve Irak’la ilgili bazı bölümleri Arapçaya çevrildi.
+Korunması gerekenler: Çevrilen şey Seyahatname’nin tamamı değil, bazı bölümleri; yerler Hicaz, Mısır, Sudan ve Irak; hedef dil Arapça. “Özellikle” sözcüğünün de korunmasına bakmalıyız.
+Şıklara bakalım:
+A) يَتَعَلَّقُ بَعْضُ أَجْزَاءِ رِحْلَةِ أَوْلِيَا جَلَبِي بِالْحِجَازِ وَمِصْرَ وَالسُّودَانِ وَالْعِرَاقِ، وَلِذَا تُرْجِمَتْ إِلَى اللُّغَةِ الْعَرَبِيَّةِ.
+Tercümesi: Evliya Çelebi Seyahatnamesi’nin bazı bölümleri bu yerlerle ilgilidir; bu nedenle Arapçaya çevrilmiştir.
+Neden olmaz? Kaynakta bulunmayan وَلِذَا “bu nedenle” ilişkisini ekler; “özellikle”yi karşılamaz.
+B) تَمَّتْ تَرْجَمَةُ بَعْضِ أَجْزَاءِ رِحْلَةِ أَوْلِيَا جَلَبِي إِلَى اللُّغَةِ الْعَرَبِيَّةِ، بِخَاصَّةٍ تِلْكَ الَّتِي تَتَعَلَّقُ بِالْحِجَازِ وَمِصْرَ وَالسُّودَانِ وَالْعِرَاقِ.
+Tercümesi: Evliya Çelebi Seyahatnamesi’nin bazı bölümleri, özellikle Hicaz, Mısır, Sudan ve Irak’la ilgili olanlar, Arapçaya çevrildi.
+Neden olabilir? Bazı bölümler, özellikle bu yerlerle ilgili olanlar ve Arapçaya çevrilme eksiksiz korunur.
+C) الْفُصُولُ مِنْ رِحْلَةِ أَوْلِيَا جَلَبِي، الَّتِي تَتَعَلَّقُ خَاصَّةً بِالْحِجَازِ وَمِصْرَ وَالسُّودَانِ وَالْعِرَاقِ، قَدْ تَمَّتْ تَرْجَمَتُهَا إِلَى اللُّغَةِ الْعَرَبِيَّةِ.
+Tercümesi: Seyahatname’nin özellikle bu yerlerle ilgili bölümleri Arapçaya çevrildi.
+Neden olmaz? Yakın görünür; ancak kaynakta “bazı bölümleri” sınırlaması vardır. الْفُصُولُ belirli “bölümler” der, بَعْضُ “bazıları” bilgisini açıkça korumaz.
+D) الْفُصُولُ مِنْ رِحْلَةِ أَوْلِيَا جَلَبِي، الَّتِي تُرْجِمَتْ أَخِيرًا إِلَى اللُّغَةِ الْعَرَبِيَّةِ، تَتَنَاوَلُ كُلًّا مِنَ الْحِجَازِ وَمِصْرَ وَالسُّودَانِ وَالْعِرَاقِ.
+Tercümesi: Seyahatname’nin son zamanlarda Arapçaya çevrilen bölümleri bu dört yeri ele alır.
+Neden olmaz? أَخِيرًا “son zamanlarda” eklenir; بَعْضُ ve “özellikle” korunmaz.
+E) الْأَجْزَاءُ الَّتِي تَخُصُّ الْحِجَازَ وَمِصْرَ وَالسُّودَانَ وَالْعِرَاقَ فِي رِحْلَةِ أَوْلِيَا جَلَبِي يَجِبُ تَرْجَمَتُهَا إِلَى اللُّغَةِ الْعَرَبِيَّةِ.
+Tercümesi: Seyahatname’de bu yerlerle ilgili bölümler Arapçaya çevrilmelidir.
+Neden olmaz? Kaynakta çeviri yapılmıştır; bu şık yapılması gerektiğini söyler.
+Doğru cevap: B.
+Yıl: 2019
+Cevap dizisi: 70 C* · 71 E · 72 A · 73 C · 74 A · 75 B
+*70’te A şıkkı da anlamca uygun göründüğü için sorunun tek doğru açısından ayrıca değerlendirilmesi gerekir.

@@ -1,0 +1,248 @@
+ŞART EDATLARI DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+تَحْفَظْ أَسْرارَ الْمَرْضى يَثِقْ بِكَ النّاس. ---
+“----- hastaların sırlarını korursan insanlar sana güvenir.”
+Cümlede تَحْفَظْ ve يَثِقْ fiilleri cezm hâlindedir. Dolayısıyla boşluğa, şart fiilini ve şartın cevabını cezm eden bir şart edatı gelmelidir. Cümlede gerçekleşmesi mümkün bir şart-sonuç ilişkisi vardır.
+Şimdi şıklara bakalım:
+A) إِنْ — eğer
+İki muzari fiili cezm eder. Hem yapı hem anlam bakımından uygundur. ✅
+B) إِذَا — eğer / -dığı zaman
+Şart anlamı taşıyabilir ancak muzari fiilleri cezm etmez. ❌
+C) لَوْ — eğer ... olsaydı
+Gerçekleşmemiş veya varsayımsal şartlarda kullanılır. ❌
+D) كُلَّمَا — her ne zaman / her defasında
+Tekrarlanan olayları anlatır ve cezm yapmaz. ❌
+E) أَمَّا — ...e gelince
+Bu cümledeki cezm yapısına uygun değildir. ❌
+Doğru cevap: A) إِنْ
+2. Soru
+يُساعِدْ الْفُقَراءَ يَكْسِبْ دُعاءَهُمْ. ---
+“---- fakirlere yardım ---- onların duasını kazanır.”
+Boşluktan sonra يُساعِدْ ve ardından يَكْسِبْ gelmektedir. Her iki fiil de cezm hâlindedir. Ayrıca şartı gerçekleştiren kişi söz konusudur.
+Şimdi şıklara bakalım:
+A) مَا — her ne / ne
+Genellikle insan dışındaki varlık veya durumlar için kullanılır. ❌
+B) مَنْ — kim / kim ... ise
+Akıllı varlıklar, özellikle kişiler için kullanılır ve iki fiili cezm eder. ✅
+C) أَيْنَمَا — her nerede
+Yer bildirir; cümlede yer anlamı yoktur. ❌
+D) لَوْلَا — eğer ... olmasaydı
+Bir şeyin varlığı sebebiyle başka bir şeyin gerçekleşmemesini ifade eder. ❌
+E) لَوْ — eğer ... olsaydı
+Bu yapıdaki gerçek ve genel şart anlamına uygun değildir. ❌
+Doğru cevap: B) مَنْ
+3. Soru
+تَكُنْ الظُّروفُ صَعْبَةً فَالصَّبْرُ طَريقُ النَّجاحِ. ---
+“Şartlar ---- zor olursa olsun sabır başarının yoludur.”
+تَكُنْ fiilinin cezmli olması önemlidir. Burada şartların zorluk derecesi ne olursa olsun sonucun değişmediği anlamı vardır. Şartın cevabı isim cümlesi olduğu için başında فَـ kullanılmıştır.
+Şimdi şıklara bakalım:
+A) لَوْلَا — eğer ... olmasaydı
+Cümlenin anlamına uymaz. ❌
+B) حَيْثُمَا — her nerede
+Yer bildirir; burada yer anlamı yoktur. ❌
+C) مَنْ — kim
+Kişiler için kullanılır. ❌
+D) مَهْمَا — her ne olursa olsun / ne kadar ... olursa olsun
+Cümlenin hem anlamına hem de cezm yapısına uygundur. ✅
+E) إِذَا — eğer / -dığı zaman
+Buradaki تَكُنْ biçimini açıklamaz; cezm etmez. ❌
+Doğru cevap: D) مَهْمَا
+4. Soru
+---- تُقِمْ فِي الْمَدينَةِ تَجِدْ مَكْتَبَةً قَريبَةً.
+“Şehirde ---- ikamet === yakın bir kütüphane bulursun.”
+Cümlede تُقِمْ ve تَجِدْ fiilleri cezm hâlindedir. Ayrıca şartın temel anlamı yer ile ilgilidir.
+Şimdi şıklara bakalım:
+A) إِذَا — eğer / -dığı zaman
+Yer anlamı vermez ve cezm etmez. ❌
+B) أَيْنَمَا — her nerede / nerede olursa
+Yer bildirir ve iki muzari fiili cezm eder. ✅
+C) لَوْ — eğer ... olsaydı
+Varsayımsal şart bildirir. ❌
+D) أَمَّا — ...e gelince
+Cümlenin yapısına uygun değildir. ❌
+E) مَنْ — kim
+Kişi bildirir; burada yer sorulmaktadır. ❌
+Doğru cevap: B) أَيْنَمَا
+5. Soru
+كَيْفَمَا تُعامِلْ زُمَلاءَكَ يُعامِلوكَ.
+“Arkadaşlarına ----- davranır---- onlar da sana öyle davranırlar.”
+Burada şartın merkezinde bir eylemin nasıl gerçekleştirildiği, yani davranış biçimi vardır. تُعامِلْ cezm hâlindedir; يُعامِلوكَ da beş fiilden olduğu için cezm alameti nûnun düşmesidir.
+Şimdi şıklara bakalım:
+A) كَيْفَمَا — nasıl ... ise / nasıl ... olursa
+Yapılış biçimini bildirir ve cümleye tam olarak uyar. ✅
+B) كُلَّمَا — her defasında
+Tekrarlanma bildirir; burada esas anlam davranış biçimidir. ❌
+C) لَوْلَا — eğer ... olmasaydı
+Anlam bakımından uygun değildir. ❌
+D) إِذْمَا — eğer
+Şart anlamı taşıyabilse de cümlede özellikle “nasıl davranırsan” anlamı aranmaktadır. ❌
+E) لَمَّا — -dığı zaman
+Zaman bildirir ve bu yapıya uygun değildir. ❌
+Doğru cevap: A) كَيْفَمَا
+6. Soru
+---- يَتَأَخَّرُ الْقِطارُ نَنْتَظِرُ فِي الْقاعَةِ
+“Tren gecikir----salonda bekleriz.”
+Burada يَتَأَخَّرُ ve نَنْتَظِرُ fiilleri merfû durumdadır; yani cezm alameti bulunmamaktadır. Bu nedenle cezm etmeyen ve zaman-şart anlamı veren bir edat aranmalıdır.
+Şimdi şıklara bakalım:
+A) إِذَا — eğer / -dığı zaman
+Cümledeki zaman-şart anlamına uygundur ve muzari fiili cezm etmez. ✅
+B) مَهْمَا — her ne olursa olsun
+Cezm gerektirir ve anlam bakımından da uygun değildir. ❌
+C) مَنْ — kim
+Kişiler için kullanılır. الْقِطارُ ile kullanılması mümkün değildir. ❌
+D) أَيَّانَ — her ne zaman
+Cezm eden şart edatıdır; mevcut fiil biçimleriyle uyuşmaz. ❌
+E) أَيْن — nerede
+Yer bildirir; cümlede yer şartı yoktur. ❌
+Doğru cevap: A) إِذَا
+7. Soru
+----الْعَدْلُ لَانْتَشَرَ الظُّلْمُ بَيْنَ النّاسِ
+“Adalet ------- insanlar arasında zulüm yayılırdı.”
+Boşluktan hemen sonra isim olan الْعَدْلُ gelmektedir. Anlamda da adaletin varlığının zulmün yayılmasını engellediği ifade edilmektedir.
+Şimdi şıklara bakalım:
+A) إِنْ — eğer
+Bu şekilde doğrudan isimle kurulmaz. ❌
+B) لَوْ — eğer ... olsaydı
+Bu yapı için fiilli bir şart cümlesi beklenir. ❌
+C) لَوْلَا — eğer ... olmasaydı / ... olmasaydı
+Ardından isim gelebilir ve “bir şeyin varlığı başka bir sonucu engelledi” anlamı verir. ✅
+D) مَتَى — ne zaman
+Zaman bildirir ve cümleye uygun değildir. ❌
+E) مَا — her ne
+Cümlenin yapısına ve anlamına uymaz. ❌
+Doğru cevap: C) لَوْلَا
+
+8. Soru
+---- قَرَأَ الْباحِثُ مَصْدَرًا جَديدًا ازْدادَ فَهْمُهُ لِلْمَوْضوعِ
+“Araştırmacı ----- yeni kaynak okudu------ konuya ilişkin anlayışı arttı.”
+Her yeni okuma eyleminin ardından aynı sonucun tekrarlandığı görülmektedir. İki fiilin de mâzi olması da bu yapıyla son derece doğaldır.
+Şimdi şıklara bakalım:
+A) حَيْثُمَا — her nerede
+Yer bildirir. ❌
+B) لَوْلَا — eğer ... olmasaydı
+Cümlenin anlamına uymaz. ❌
+C) مَنْ — kim
+Kişi şartı bildirmez. ❌
+D) كُلَّمَا — her ne zaman / her defasında
+Tekrarlanan şart-sonuç ilişkisini tam olarak karşılar. ✅
+E) مَهْمَا — her ne olursa olsun
+Cümlenin tekrar anlamını karşılamaz. ❌
+Doğru cevap: D) كُلَّمَا
+
+9. Soru
+----- يَتَّبِعْ الْفَريقُ تَعْليماتِ الْمُدَرِّبِ يَفُزْ فِي الْمُباراةِ.
+“Takım antrenörün talimatlarına uyar----- maçı kazanır.”
+Cümle إِنْ ile başlamıştır. Bu edattan sonra gelen muzari şart fiilinin cezm edilmesi gerekir. Aranan fiil يَتَّبِعْ biçimidir.
+Şimdi şıklara bakalım:
+A) يَتَّبِعُ — uyar
+Merfûdur; cezm gerekli olduğu için uygun değildir. ❌
+B) يَتَّبِعَ — uysun / uyar
+Mansûbdur; şart edatından sonra gerekli biçim değildir. ❌
+C) يَتَّبِعْ — uyarsa
+Cezm hâlindedir ve yapıya uygundur. ✅
+D) اِتَّبَعَ — uydu
+Mâzi fiildir; seçenekler arasındaki hedeflenen cezm yapısını karşılamaz. ❌
+E) يَتَّبِعونَ — uyarlar
+Hem faille hem de şart yapısıyla uyuşmaz. ❌
+Doğru cevap: C) يَتَّبِعْ
+10. Soru
+---- يَحْتَرِمْ قَواعِدَ الْمُرورِ يَسْلَمْ مِنَ الْحَوادِثِ
+“Trafik kurallarına ---- uyar------ kazalardan korunur.”
+Cümle مَنْ ile kurulmuş bir şart cümlesidir. İlk fiil يَحْتَرِمْ cezm hâlindedir. Şartın cevabındaki ikinci muzari fiilin de cezm edilmesi gerekir.
+Şimdi şıklara bakalım:
+A) يَسْلَمُ — kurtulur
+Merfûdur. ❌
+B) سَلِمَ — kurtuldu
+Mâzi fiildir. ❌
+C) يَسْلَمَ — kurtulsun
+Mansûbdur. ❌
+D) يَسْلَمْ — kurtulur / kurtulursa
+Cezm hâlindedir ve şartın cevabına uygundur. ✅
+E) يَسْلَمونَ — kurtulurlar
+Çoğul biçimdir ve yapı ile uyumlu değildir. ❌
+Doğru cevap: D) يَسْلَمْ
+11. Soru
+----- تُنَظِّموا مَلَفّاتِكُمْ عَلَى الْحاسوبِ تَجِدوها بِسُهولَةٍ.
+“Dosyalarınızı bilgisayarda ----- düzenler----- onları kolaylıkla bulursunuz.”
+مَتَى burada şart anlamında kullanılmıştır ve ardından gelen muzari fiili cezm eder. Fiilin öznesi أنتم olduğundan fiil beş fiilden biridir. Cezm hâlinde ن düşer.
+Şimdi şıklara bakalım:
+A) تُنَظِّمونَ — düzenlersiniz
+Nûn korunmuştur; merfûdur. ❌
+B) تُنَظِّموا — düzenlerseniz
+Nûn düşmüştür ve cezm hâlindedir. ✅
+C) نَظَّمْتُمْ — düzenlediniz
+Mâzi fiildir. ❌
+D) تُنَظِّمَ — düzenlesin
+Tekil ve mansûb biçimdedir. ❌
+E) يُنَظِّمونَ — onlar düzenlerler
+Şahıs bakımından مَلَفّاتِكُمْ ile uyuşmaz. ❌
+Doğru cevap: B) تُنَظِّموا
+12. Soru
+----- يوجَدْ الْعَدْلُ بَيْنَ النّاسِ يَسُدِ الِاطْمِئْنانُ.
+“İnsanlar arasında adalet --- bulunur--- huzur orada hâkim olur.”
+أَيْنَمَا yer bildiren ve cezm eden bir şart edatıdır. Bu nedenle ardından gelen يوجَدْ fiilinin cezm hâlinde olması gerekir.
+Şimdi şıklara bakalım:
+A) يوجَدُ — bulunur
+Merfûdur. ❌
+B) وَجَدَ — buldu
+Hem anlam hem yapı bakımından uygun değildir. ❌
+C) يوجَدْ — bulunursa / bulunur
+Cezm hâlindedir ve yapıya uygundur. ✅
+D) يَجِدُ — bulur
+Etken fiildir; “adalet bulunur” anlamını vermez. ❌
+E) يوجَدَ — bulunması / bulunsun
+Mansûbdur. ❌
+Doğru cevap: C) يوجَدْ
+
+13. Soru
+---- تَفْعَلْ مِنْ خَيْرٍ تَجِدْ أَثَرَهُ فِي حَياتِكَ
+“---- iyilik yapar---hayatında onun etkisini görür----.”
+Buradaki مَا, insan dışındaki şeyler ve yapılan işler için kullanılan şart anlamındadır. Ardından gelen muzari fiilin cezm edilmesi gerekir.
+Şimdi şıklara bakalım:
+A) تَفْعَلُ — yaparsın
+Merfûdur. ❌
+B) تَفْعَلَ — yapasın
+Mansûbdur. ❌
+C) فَعَلْتَ — yaptın
+Mâzi fiildir. ❌
+D) تَفْعَلْ — ne yaparsan
+Cezm hâlindedir ve şart yapısına uygundur. ✅
+E) يَفْعَلونَ — onlar yaparlar
+Şahıs ve yapı bakımından uygun değildir. ❌
+Doğru cevap: D) تَفْعَلْ
+
+14. Soru
+---- اِسْتَمَعَ الْمُديرُ إِلى شَكْوى الْعُمّالِ لَحَلَّ الْمُشْكِلَةَ مُبَكِّرًا
+“Müdür işçilerin şikâyetini dinlemiş ol---dı sorunu daha erken çözerdi.”
+Cümlede geçmişte gerçekleşmemiş bir durum ve onun gerçekleşmemiş sonucu anlatılmaktadır. Cevap kısmındaki لَحَلَّ yapısı da لَوْ ile kurulan varsayımsal geçmiş şartın önemli bir göstergesidir.
+Şimdi şıklara bakalım:
+A) يَسْتَمِعْ — dinlesin
+Cezmli muzari fiildir; burada uygun değildir. ❌
+B) يَسْتَمِعُ — dinler
+Muzari fiildir; geçmişte gerçekleşmemiş şart anlamını karşılamaz. ❌
+C) اِسْتَمَعَ — dinledi / dinlemiş olsaydı
+Mâzi fiildir ve لَوْ yapısına tam olarak uygundur. ✅
+D) اِسْتَمَعوا — dinlediler
+Çoğul fiildir; الْمُديرُ tekildir. ❌
+E) يَسْتَمِعَ — dinlesin
+Mansûb muzari fiildir. ❌
+Doğru cevap: C) اِسْتَمَعَ
+15. Soru
+----- وَصَلَ الْمُسافِرونَ إِلَى الْمَطارِ بَدَأَتْ إِجْراءاتُ السَّفَرِ.
+“Yolcular havaalanına vardıklar---- seyahat işlemleri başladı.”
+Buradaki لَمَّا, “-dığı zaman” anlamında zaman bildirir ve ardından mâzi fiil gelmiştir. Ayrıca çok önemli bir fiil-fail kuralı vardır: Fiil, açık failden önce geldiğinde fail çoğul olsa bile fiil tekil kullanılır.
+Burada:
+وَصَلَ + الْمُسافِرونَ
+şeklindeki kullanım doğrudur.
+Şimdi şıklara bakalım:
+A) يَصِلُ — varıyor / varır
+Muzari fiildir; cümledeki geçmiş zaman bağlamına uygun değildir. ❌
+B) يَصِلْ — varsın / varırsa
+Cezmli muzari fiildir. Buradaki لَمَّا, cezm eden “henüz ...medi” anlamındaki yapı değildir. ❌
+C) وَصَلُوا — vardılar
+Fiil çoğuldur. Ancak fiilden sonra açık fail الْمُسافِرونَ geldiği için fiilin tekil olması gerekir. ❌
+D) وَصَلَ — vardı / vardıklarında
+Mâzi, tekil fiildir ve ardından gelen açık çoğul faille doğru fiil cümlesini oluşturur. ✅
+E) يَصِلَ — varması / varsın
+Mansûb muzari fiildir. ❌
+Doğru cevap: D) وَصَلَ

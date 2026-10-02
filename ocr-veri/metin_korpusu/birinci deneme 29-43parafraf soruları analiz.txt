@@ -1,0 +1,455 @@
+29–31. Sorular
+Öncelikle metnimizi okuyalım. Metni okurken tamamını Türkçeye çevirmiyoruz. Bize metnin konusu, yönü ve düşünce akışı hakkında bilgi veren önemli ifadelerin altını çiziyoruz.
+تُعَدُّ الْهَنْدَسَةُ الْوِرَاثِيَّةُ الزِّرَاعِيَّةُ مِنْ أَبْرَزِ تَطْبِيقَاتِ التِّكْنُولُوجِيَا الْحَيَوِيَّةِ الْحَدِيثَةِ، إِذْ تَقُومُ عَلَى تَعْدِيلِ الْحَمْضِ النَّوَوِيِّ لِلنَّبَاتَاتِ بِهَدَفِ تَحْسِينِ جَوْدَةِ الْمَحَاصِيلِ وَزِيَادَةِ قُدْرَتِهَا عَلَى مُقَاوَمَةِ الْأَمْرَاضِ وَتَحَمُّلِ الْجَفَافِ. وَقَدْ تُسْهِمُ هَذِهِ التِّقْنِيَّةُ فِي تَعْزِيزِ الْأَمْنِ الْغِذَائِيِّ الْعَالَمِيِّ مِنْ خِلَالِ تَمْكِينِ بَعْضِ الْمَحَاصِيلِ مِنَ النُّمُوِّ فِي ظُرُوفٍ بِيئِيَّةٍ قَاسِيَةٍ وَزِيَادَةِ إِنْتَاجِيَّتِهَا، بِمَا يُسَاعِدُ عَلَى مُوَاجَهَةِ أَزْمَةِ الْجُوعِ الْمُتَفَاقِمَةِ بِفِعْلِ التَّغَيُّرِ الْمُنَاخِيِّ. وَمَعَ ذَلِكَ، مَا يَزَالُ اسْتِخْدَامُ الْمَحَاصِيلِ الْمُعَدَّلَةِ وِرَاثِيًّا يُثِيرُ جَدَلًا وَاسِعًا بَيْنَ الْعُلَمَاءِ وَخُبَرَاءِ الْبِيئَةِ بِشَأْنِ آثَارِهِ الْمُحْتَمَلَةِ طَوِيلَةِ الْأَمَدِ عَلَى التَّنَوُّعِ الْبِيُولُوجِيِّ وَصِحَّةِ الْإِنْسَانِ. وَيَرَى الْمُؤَيِّدُونَ أَنَّ بَعْضَ هَذِهِ الْمَحَاصِيلِ قَدْ تُقَلِّلُ الْحَاجَةَ إِلَى اسْتِخْدَامِ الْمُبِيدَاتِ الْحَشَرِيَّةِ، فِي حِينِ يَدْعُو الْمُعَارِضُونَ إِلَى تَوَخِّي الْحَذَرِ خَشْيَةَ أَنْ تَتَسَبَّبَ فِي اخْتِلَالَاتٍ غَيْرِ مُتَوَقَّعَةٍ فِي النُّظُمِ الْبِيئِيَّةِ قَدْ يَصْعُبُ احْتِوَاؤُهَا مُسْتَقْبَلًا
+Metni okurken ilk bölümde tarımsal genetik mühendisliğinin sağlayabileceği faydalardan söz edildiğini görüyoruz. Ürünlerin kalitesinin artırılması, hastalıklara ve kuraklığa karşı daha dayanıklı hâle getirilmesi ve gıda güvenliğinin güçlendirilmesi bunlardan bazıları.
+Daha sonra وَمَعَ ذَلِكَ, yani “bununla birlikte” ifadesiyle metnin yönünün değiştiğini görüyoruz. Bundan sonra artık genetik mühendisliğinin olası riskleri ve bu konudaki tartışmalar üzerinde duruluyor.
+Son bölümde ise الْمُؤَيِّدُونَ, yani destekleyenlerle الْمُعَارِضُونَ, yani karşı çıkanların görüşleri karşılaştırılıyor.
+Dolayısıyla metnin genel olarak tarımsal genetik mühendisliğinin sağlayabileceği yararlar ile bunun olası uzun vadeli riskleri etrafındaki tartışmayı ele aldığını söyleyebiliriz.
+Şimdi sorularımıza geçelim.
+29. Soru
+مَا الْفِكْرَةُ الرَّئِيسَةُ الَّتِي يَدُورُ حَوْلَهَا النَّصُّ؟
+“Metnin temel olarak üzerinde durduğu düşünce nedir?”
+Burada soru kökündeki الْفِكْرَةُ الرَّئِيسَةُ, yani “ana fikir” ifadesine dikkat ediyoruz. Dolayısıyla tek bir cümleye değil, metnin tamamına bakıyoruz.
+Metnin ilk bölümünde genetik mühendisliğinin faydalarından söz ediliyordu. Özellikle:
+تَحْسِينِ جَوْدَةِ الْمَحَاصِيلِ
+“ürünlerin kalitesinin iyileştirilmesi”
+ve
+تَعْزِيزِ الْأَمْنِ الْغِذَائِيِّ الْعَالَمِيِّ
+“küresel gıda güvenliğinin güçlendirilmesi”
+ifadelerini görüyoruz.
+Ancak وَمَعَ ذَلِكَ ifadesinden sonra:
+يُثِيرُ جَدَلًا وَاسِعًا
+“geniş çaplı tartışmalara yol açıyor”
+ve
+آثَارِهِ الْمُحْتَمَلَةِ طَوِيلَةِ الْأَمَدِ
+“uzun vadeli olası etkileri”
+ifadeleri geliyor.
+O hâlde doğru şıkkın hem tarımsal genetik mühendisliğinin sağlayabileceği imkânları hem de bununla ilgili kaygıları kapsamasını bekliyoruz.
+Şıklara bakalım.
+A) أَثَرُ التَّغَيُّرِ الْمُنَاخِيِّ فِي انْتِشَارِ الْأَمْرَاضِ النَّبَاتِيَّةِ وَتَرَاجُعِ الْإِنْتَاجِ الزِّرَاعِيِّ.
+“İklim değişikliğinin bitki hastalıklarının yayılması ve tarımsal üretimin azalması üzerindeki etkisi.”
+Bu şık olmaz. Metinde iklim değişikliğine değiniliyor ancak metnin ana konusu iklim değişikliği değil.
+B) اعْتِمَادُ الزِّرَاعَةِ الْحَدِيثَةِ عَلَى الْمُبِيدَاتِ الْحَشَرِيَّةِ لِتَحْسِينِ جَوْدَةِ الْمَحَاصِيلِ.
+“Modern tarımın ürün kalitesini artırmak için böcek ilaçlarına dayanması.”
+Bu şık da olmaz. Metinde aksine bazı genetiği değiştirilmiş ürünlerin böcek ilacı kullanımına duyulan ihtiyacı azaltabileceği belirtiliyor.
+C) إِمْكَانَاتُ الْهَنْدَسَةِ الْوِرَاثِيَّةِ الزِّرَاعِيَّةِ وَالْمَخَاوِفُ الْمُرْتَبِطَةُ بِآثَارِهَا الْمُحْتَمَلَةِ.
+“Tarımsal genetik mühendisliğinin sunduğu imkânlar ve olası etkileriyle bağlantılı kaygılar.”
+Bu şık olabilir. Çünkü metnin ilk bölümündeki faydaları da ikinci bölümündeki risk ve kaygıları da birlikte kapsıyor.
+D) دَوْرُ خُبَرَاءِ الْبِيئَةِ فِي الْحَدِّ مِنْ تَطْبِيقَاتِ التِّكْنُولُوجِيَا الْحَيَوِيَّةِ فِي الزِّرَاعَةِ.
+“Çevre uzmanlarının tarımda biyoteknoloji uygulamalarını sınırlandırmadaki rolü.”
+Bu şık olmaz. Çevre uzmanlarından söz edilse de metnin ana konusu onların rolü değildir.
+E) أَهَمِّيَّةُ الْمَحَاصِيلِ التَّقْلِيدِيَّةِ فِي تَحْقِيقِ الْأَمْنِ الْغِذَائِيِّ وَحِمَايَةِ التَّنَوُّعِ الْبِيُولُوجِيِّ.
+“Geleneksel ürünlerin gıda güvenliğini sağlamadaki ve biyolojik çeşitliliği korumadaki önemi.”
+Bu şık da olmaz. Geleneksel ürünlerin önemi metnin temel konusu değildir.
+Dolayısıyla metnin hem olumlu yönlerini hem de olası riskleri birlikte kapsayan seçeneği aradığımızda doğru cevabımız C oluyor.
+Ana fikir sorularında dikkat etmemiz gereken nokta şu: Metnin yalnızca bir bölümünü anlatan değil, metnin genelini kapsayan seçeneği buluyoruz.
+30. Soru
+وَفْقًا لِلنَّصِّ، كَيْفَ قَدْ تُسْهِمُ الْهَنْدَسَةُ الْوِرَاثِيَّةُ الزِّرَاعِيَّةُ فِي مُوَاجَهَةِ أَزْمَةِ الْجُوعِ؟
+“Metne göre tarımsal genetik mühendisliği açlık kriziyle mücadeleye nasıl katkıda bulunabilir?”
+Burada soru kökündeki وَفْقًا لِلنَّصِّ, yani “metne göre” ifadesine dikkat ediyoruz. Bu bize cevabın metinde doğrudan bulunabileceğini gösteriyor.
+Soru kökündeki bir diğer önemli ifade:
+مُوَاجَهَةِ أَزْمَةِ الْجُوعِ
+“açlık kriziyle mücadele etmek.”
+Şimdi metinde bu ifadeyle ilgili bölüme dönüyoruz. Burada:
+مِنْ خِلَالِ تَمْكِينِ بَعْضِ الْمَحَاصِيلِ مِنَ النُّمُوِّ فِي ظُرُوفٍ بِيئِيَّةٍ قَاسِيَةٍ وَزِيَادَةِ إِنْتَاجِيَّتِهَا
+ifadesini görüyoruz.
+Bu bölüm, “bazı ürünlerin zorlu çevre koşullarında yetişebilmesini sağlamak ve verimliliklerini artırmak” anlamına geliyor.
+Şimdi şıklarda bu bilginin karşılığını arıyoruz.
+A) مِنْ خِلَالِ حَصْرِ زِرَاعَةِ الْمَحَاصِيلِ فِي الْمَنَاطِقِ ذَاتِ الظُّرُوفِ الْمُنَاخِيَّةِ الْمُعْتَدِلَةِ.
+“Ürünlerin yetiştirilmesini ılıman iklim koşullarına sahip bölgelerle sınırlandırarak.”
+Bu şık olmaz. Metinde ürünlerin ılıman bölgelerle sınırlandırılmasından değil, tam tersine zorlu koşullarda da yetişebilmesinden söz ediliyor.
+B) بِتَمْكِينِ بَعْضِ الْمَحَاصِيلِ مِنْ تَحَمُّلِ الظُّرُوفِ الْبِيئِيَّةِ الْقَاسِيَةِ وَزِيَادَةِ إِنْتَاجِيَّتِهَا.
+“Bazı ürünlerin zorlu çevresel koşullara dayanmasını sağlayarak ve verimliliklerini artırarak.”
+Bu şık olabilir. Metinde verilen bilgiyle doğrudan örtüşüyor.
+C) عَنْ طَرِيقِ زِيَادَةِ الِاعْتِمَادِ عَلَى الْمُبِيدَاتِ الْحَشَرِيَّةِ لِمُقَاوَمَةِ الْأَمْرَاضِ الزِّرَاعِيَّةِ.
+“Tarımsal hastalıklarla mücadele etmek için böcek ilaçlarına olan bağımlılığı artırarak.”
+Bu şık olmaz. Metinde böcek ilacı kullanımının artırılmasından değil, bazı ürünlerde bunun azaltılabileceğinden söz ediliyor.
+D) بِاسْتِبْدَالِ جَمِيعِ الْمَحَاصِيلِ التَّقْلِيدِيَّةِ بِمَحَاصِيلَ مُعَدَّلَةٍ وِرَاثِيًّا.
+“Bütün geleneksel ürünleri genetiği değiştirilmiş ürünlerle değiştirerek.”
+Bu şık olmaz. Metinde bütün geleneksel ürünlerin değiştirilmesi gibi bir bilgi bulunmuyor. Buradaki جَمِيعِ, yani “bütün” ifadesi de bize aşırı genelleme yapıldığını gösteriyor.
+E) مِنْ خِلَالِ تَقْلِيلِ إِنْتَاجِ الْمَحَاصِيلِ الَّتِي تَحْتَاجُ إِلَى كَمِّيَّاتٍ كَبِيرَةٍ مِنَ الْمِيَاهِ.
+“Çok miktarda suya ihtiyaç duyan ürünlerin üretimini azaltarak.”
+Bu şık da olmaz. Metinde böyle bir yöntemden söz edilmiyor.
+Dolayısıyla doğru cevabımız B, بِتَمْكِينِ بَعْضِ الْمَحَاصِيلِ مِنْ تَحَمُّلِ الظُّرُوفِ الْبِيئِيَّةِ الْقَاسِيَةِ وَزِيَادَةِ إِنْتَاجِيَّتِهَا oluyor.
+Burada önemli bir soru çözüm tekniğine dikkat ediyoruz. Metindeki:
+النُّمُوِّ فِي ظُرُوفٍ بِيئِيَّةٍ قَاسِيَةٍ
+ifadesi, şıkta:
+تَحَمُّلِ الظُّرُوفِ الْبِيئِيَّةِ الْقَاسِيَةِ
+şeklinde verilmiş.
+Yani doğru şık, metindeki cümleyi birebir tekrar etmiyor; aynı düşünceyi farklı kelimelerle ifade ediyor. Paragraf sorularında bu tür anlamca yeniden ifade edilen yapılara özellikle dikkat ediyoruz.
+
+31. Soru
+مَا الَّذِي يُمْكِنُ اسْتِنْتَاجُهُ مِنَ النَّصِّ بِشَأْنِ مَوْقِفِ الْمُعَارِضِينَ لِلْمَحَاصِيلِ الْمُعَدَّلَةِ وِرَاثِيًّا؟
+“Metinden genetiği değiştirilmiş ürünlere karşı çıkanların tutumuyla ilgili ne çıkarılabilir?”
+Burada soru kökündeki:
+يُمْكِنُ اسْتِنْتَاجُهُ
+“çıkarılabilir”
+ifadesine dikkat ediyoruz. Bu bir çıkarım sorusu. Dolayısıyla doğru cevabın metinde birebir aynı cümleyle verilmesini beklemiyoruz. 
+Soru bize özellikle:
+مَوْقِفِ الْمُعَارِضِينَ
+yani “karşı çıkanların tutumunu” soruyor.
+Bu nedenle metnin son bölümüne dönüyoruz ve şu ifadeyi görüyoruz:
+يَدْعُو الْمُعَارِضُونَ إِلَى تَوَخِّي الْحَذَرِ
+“Karşı çıkanlar temkinli davranmaya çağırıyorlar.”
+Peki neden temkinli davranılmasını istiyorlar?
+Hemen devamında:
+خَشْيَةَ أَنْ تَتَسَبَّبَ فِي اخْتِلَالَاتٍ غَيْرِ مُتَوَقَّعَةٍ فِي النُّظُمِ الْبِيئِيَّةِ قَدْ يَصْعُبُ احْتِوَاؤُهَا مُسْتَقْبَلًا
+ifadesini görüyoruz.
+Yani gelecekte kontrol altına alınması zor olabilecek beklenmedik çevresel bozulmalara yol açmasından endişe ediliyor.
+Dolayısıyla şıklarda iki unsuru birlikte arıyoruz: temkinli bir yaklaşım ve kontrol edilmesi zor olası çevresel etkiler.
+Şıklara bakalım.
+A) أَنَّهُمْ يَرْفُضُونَ جَمِيعَ تَطْبِيقَاتِ التِّكْنُولُوجِيَا الْحَيَوِيَّةِ فِي مُخْتَلِفِ الْمَجَالَاتِ.
+“Biyoteknolojinin farklı alanlardaki bütün uygulamalarını reddettikleri.”
+Bu şık olmaz. Metin yalnızca genetiği değiştirilmiş tarımsal ürünler bağlamındaki bir endişeden söz ediyor. 
+B) أَنَّهُمْ يَرَوْنَ أَنَّ زِيَادَةَ الْإِنْتَاجِ الزِّرَاعِيِّ أَهَمُّ مِنْ حِمَايَةِ التَّنَوُّعِ الْبِيُولُوجِيِّ.
+“Tarımsal üretimin artırılmasını biyolojik çeşitliliğin korunmasından daha önemli gördükleri.”
+Bu şık olmaz. Tam tersine karşı çıkanların çevresel etkiler konusunda kaygılı olduklarını görüyoruz.
+C) أَنَّهُمْ يَعْتَقِدُونَ أَنَّ آثَارَ هَذِهِ الْمَحَاصِيلِ طَوِيلَةَ الْأَمَدِ قَدْ حُسِمَتْ عِلْمِيًّا.
+“Bu ürünlerin uzun vadeli etkilerinin bilimsel olarak kesin biçimde sonuçlandırıldığına inandıkları.”
+Bu şık da olmaz. Metinde:
+آثَارِهِ الْمُحْتَمَلَةِ
+yani “olası etkileri” ifadesi kullanılıyor. Dolayısıyla bu etkilerin bilimsel olarak kesinleştiğini söyleyemiyoruz.
+D) أَنَّهُمْ يُطَالِبُونَ بِالتَّوَقُّفِ الْفَوْرِيِّ عَنْ زِرَاعَةِ جَمِيعِ الْمَحَاصِيلِ الْمُعَدَّلَةِ وِرَاثِيًّا.
+“Genetiği değiştirilmiş bütün ürünlerin yetiştirilmesinin derhâl durdurulmasını istedikleri.”
+Bu şık olmaz. Metinde “hemen durdurmak” ya da “tamamen yasaklamak” gibi kesin bir talep yok. 
+E) أَنَّهُمْ يَتَبَنَّوْنَ مَوْقِفًا حَذِرًا بِسَبَبِ احْتِمَالِ ظُهُورِ آثَارٍ بِيئِيَّةٍ يَصْعُبُ احْتِوَاؤُهَا.
+“Kontrol altına alınması zor çevresel etkilerin ortaya çıkma ihtimali nedeniyle temkinli bir tutum benimsedikleri.”
+Bu şık olabilir.
+Çünkü metindeki:
+تَوَخِّي الْحَذَرِ
+ifadesi, şıkta:
+يَتَبَنَّوْنَ مَوْقِفًا حَذِرًا
+şeklinde yeniden ifade edilmiş.
+Aynı şekilde metindeki:
+قَدْ يَصْعُبُ احْتِوَاؤُهَا
+ifadesinin karşılığını da şıkta:
+آثَارٍ بِيئِيَّةٍ يَصْعُبُ احْتِوَاؤُهَا
+şeklinde görüyoruz.
+Dolayısıyla karşı çıkanların bu ürünlerin tamamen yasaklanmasını istediği sonucuna değil, olası ve kontrol edilmesi zor çevresel etkiler nedeniyle temkinli bir yaklaşım benimsedikleri sonucuna ulaşıyoruz.
+Doğru cevabımız E oluyor.
+Burada özellikle çıkarım sorularında جَمِيع، فَوْرِيًّا، دَائِمًا، حَتْمًا gibi anlamı aşırı genelleştiren veya kesinleştiren ifadelere dikkat ediyoruz. Metin bu kadar kesin bir hüküm vermiyorsa bu tür seçenekler güçlü çeldiriciler olarak karşımıza çıkabilir.
+32–34. Sorular
+شَهِدَتِ الْأَنْدَلُسُ خِلَالَ فَتَرَاتِ ازْدِهَارِهَا نَشَاطًا عِلْمِيًّا وَثَقَافِيًّا وَاسِعًا، وَأَصْبَحَتِ الْمَكْتَبَاتُ فِي مُدُنٍ كَقُرْطُبَةَ مِنْ أَبْرَزِ مُؤَسَّسَاتِ الْمَعْرِفَةِ آنَذَاكَ. وَلَمْ تَكُنْ هَذِهِ الْمَكْتَبَاتُ مُجَرَّدَ خَزَائِنَ لِحِفْظِ الْكُتُبِ، بَلْ أَدَّتْ أَدْوَارًا مُهِمَّةً فِي خِدْمَةِ الْبَاحِثِينَ وَنَسْخِ الْمُؤَلَّفَاتِ وَتَرْجَمَتِهَا وَتَنْظِيمِهَا. وَحَظِيَتْ بَعْضُ الْمَكْتَبَاتِ بِرِعَايَةِ الْحُكَّامِ الَّذِينَ خَصَّصُوا مَوَارِدَ كَبِيرَةً لِاقْتِنَاءِ مُؤَلَّفَاتٍ فِي الطِّبِّ وَالْفَلَكِ وَالْفَلْسَفَةِ وَغَيْرِهَا مِنَ الْعُلُومِ. وَاشْتَهَرَتْ مَكْتَبَةُ قُرْطُبَةَ بِنِظَامٍ دَقِيقٍ لِفَهْرَسَةِ الْكُتُبِ وَتَصْنِيفِهَا، مِمَّا سَهَّلَ عَلَى الْبَاحِثِينَ الْعُثُورَ عَلَى الْكُتُبِ الْمَطْلُوبَةِ، وَجَعَلَ الْمَكْتَبَةَ مِنْ أَبْرَزِ مَكْتَبَاتِ عَصْرِهَا. وَأَسْهَمَتِ الْحَرَكَةُ الْعِلْمِيَّةُ فِي الْأَنْدَلُسِ، إِلَى جَانِبِ نَشَاطِ التَّرْجَمَةِ فِي مُدُنٍ مِثْلَ طُلَيْطِلَةَ، فِي انْتِقَالِ جَانِبٍ مِنَ التُّرَاثِ الْعِلْمِيِّ وَالْفَلْسَفِيِّ الْعَرَبِيِّ وَالْيُونَانِيِّ إِلَى أُورُوبَّا، وَكَانَ لِذَلِكَ أَثَرٌ مُهِمٌّ فِي تَطَوُّرِ الْحَيَاةِ الْفِكْرِيَّةِ الْأُورُوبِّيَّةِ
+Metni okuduğumuzda ilk olarak Endülüs'teki kütüphanelerin yalnızca kitapların saklandığı yerler olmadığını görüyoruz. Araştırmacılara hizmet etme, eserleri çoğaltma, tercüme etme ve düzenleme gibi farklı görevleri yerine getiriyorlar.
+Daha sonra Kurtuba Kütüphanesi üzerinde özellikle duruluyor. Burada kitapların fihristlenmesi ve sınıflandırılmasında kullanılan düzenli bir sistemin araştırmacıların işini kolaylaştırdığını görüyoruz.
+Son bölümde ise Endülüs'teki bilimsel faaliyetlerin ve tercüme hareketlerinin, Arap ve Yunan bilimsel mirasının Avrupa'ya aktarılmasına katkıda bulunduğu belirtiliyor.
+Dolayısıyla metnin genel olarak Endülüs kütüphanelerinin bilimsel hayattaki işlevlerini ve Endülüs'teki bilimsel hareketin Avrupa üzerindeki etkisini anlattığını söyleyebiliriz.
+Şimdi sorularımıza geçelim.
+32. Soru
+يَتَبَيَّنُ مِنَ النَّصِّ أَنَّ مَكْتَبَاتِ الْأَنْدَلُسِ ----.
+“Metinden Endülüs kütüphanelerinin nasıl bir özelliğe sahip olduğu anlaşılmaktadır?”
+Burada يَتَبَيَّنُ مِنَ النَّصِّ, yani “metinden anlaşılmaktadır” ifadesine dikkat ediyoruz. Metindeki genel bilgiden hareket ederek doğru yargıyı bulmamız gerekiyor.
+Özellikle şu bölüme bakıyoruz:
+وَلَمْ تَكُنْ هَذِهِ الْمَكْتَبَاتُ مُجَرَّدَ خَزَائِنَ لِحِفْظِ الْكُتُبِ، بَلْ أَدَّتْ أَدْوَارًا مُهِمَّةً فِي خِدْمَةِ الْبَاحِثِينَ وَنَسْخِ الْمُؤَلَّفَاتِ وَتَرْجَمَتِهَا وَتَنْظِيمِهَا
+Burada kütüphanelerin yalnızca kitap saklamadığı, farklı bilimsel ve bilgiye yönelik görevler de üstlendiği açıkça belirtiliyor.
+Şıklara bakalım.
+A) أَدَّتْ وَظَائِفَ مَعْرِفِيَّةً مُتَعَدِّدَةً وَلَمْ تَقْتَصِرْ عَلَى حِفْظِ الْكُتُبِ.
+“Çeşitli bilgi ve bilim işlevleri yerine getirmiş ve yalnızca kitapları saklamakla sınırlı kalmamıştır.”
+Bu şık olabilir. 
+B) اعْتَمَدَتْ فِي نَشَاطِهَا عَلَى الْمُؤَلَّفَاتِ الدِّينِيَّةِ دُونَ سِوَاهَا.
+“Faaliyetlerinde yalnızca dinî eserlere dayanmıştır.”
+Bu şık olmaz. Metinde tıp, astronomi ve felsefe gibi farklı bilim alanlarından açıkça söz ediliyor.
+C) خَصَّصَتْ خَدَمَاتِهَا لِلْعُلَمَاءِ الْقَادِمِينَ مِنْ خَارِجِ الْأَنْدَلُسِ.
+“Hizmetlerini Endülüs dışından gelen bilim insanlarına tahsis etmiştir.”
+Bu şık olmaz. Metinde hizmetlerden yararlanan araştırmacıların yalnızca Endülüs dışından gelen kişiler olduğuna dair herhangi bir bilgi yok.
+D) كَانَتْ مُسْتَقِلَّةً عَنْ رِعَايَةِ الْحُكَّامِ وَمَا يُقَدِّمُونَهُ مِنْ دَعْمٍ.
+“Yöneticilerin himayesinden ve sağladıkları destekten bağımsızdı.”
+Bu da olmaz. Çünkü metinde bazı kütüphanelerin yöneticilerin desteğini aldığı açıkça söyleniyor.
+E) اهْتَمَّتْ بِاقْتِنَاءِ الْكُتُبِ أَكْثَرَ مِنْ تَنْظِيمِهَا وَفَهْرَسَتِهَا.
+“Kitapları düzenlemek ve fihristlemekten daha çok kitap edinmeye önem vermiştir.”
+Bu şık da olmaz. Böyle bir karşılaştırma yapılmıyor. 
+Dolayısıyla doğru cevabımız A, oluyor.
+33. Soru
+وَفْقًا لِلنَّصِّ، مَا الَّذِي جَعَلَ مَكْتَبَةَ قُرْطُبَةَ أَكْثَرَ قُدْرَةً عَلَى خِدْمَةِ الْبَاحِثِينَ؟
+“Metne göre Kurtuba Kütüphanesi'ni araştırmacılara hizmet etme konusunda daha etkili hâle getiren şey nedir?”
+وَفْقًا لِلنَّصِّ ifadesini görüyoruz. Dolayısıyla bu bir doğrudan bilgi sorusu.
+Soruda مَكْتَبَةُ قُرْطُبَةَ ve خِدْمَةُ الْبَاحِثِينَ ifadeleri geçiyor. Metinde Kurtuba Kütüphanesi'nin anlatıldığı bölüme dönüyoruz.
+بِنِظَامٍ دَقِيقٍ لِفَهْرَسَةِ الْكُتُبِ وَتَصْنِيفِهَا، مِمَّا سَهَّلَ عَلَى الْبَاحِثِينَ الْعُثُورَ عَلَى الْكُتُبِ الْمَطْلُوبَةِ
+ifadesini görüyoruz.
+Yani kitapların fihristlenmesi ve sınıflandırılması için kullanılan düzenli sistem, araştırmacıların aradıkları kitaplara ulaşmasını kolaylaştırmış.
+Şıklara bakalım.
+A) تَخْصِيصُ مُعْظَمِ مُقْتَنَيَاتِهَا لِلْمُؤَلَّفَاتِ الطِّبِّيَّةِ وَالْفَلَكِيَّةِ.
+“Koleksiyonlarının büyük bölümünü tıp ve astronomi eserlerine ayırması.”
+Bu şık olmaz. Metinde çeşitli bilim alanlarından eserler bulunduğu söyleniyor ancak koleksiyonun çoğunun tıp ve astronomiye ayrıldığı belirtilmiyor.
+B) إِنْشَاءُ فُرُوعٍ تَابِعَةٍ لَهَا فِي عَدَدٍ مِنَ الْمُدُنِ الْأُورُوبِّيَّةِ.
+“Bazı Avrupa şehirlerinde kendisine bağlı şubeler kurması.”
+Bu şık olmaz. Metinde böyle bir bilgi yok.
+C) قَصْرُ الِاسْتِفَادَةِ مِنْهَا عَلَى الْعُلَمَاءِ الْمُقَرَّبِينَ مِنَ الْحُكَّامِ.
+“Kütüphaneden yararlanmayı yöneticilere yakın bilim insanlarıyla sınırlandırması.”
+Bu da olmaz. Böyle bir sınırlamadan söz edilmiyor.
+D) اعْتِمَادُهَا نِظَامًا دَقِيقًا لِفَهْرَسَةِ الْكُتُبِ وَتَصْنِيفِهَا.
+“Kitapların fihristlenmesi ve sınıflandırılması için düzenli bir sistem benimsemesi.”
+Bu şık olabilir. Metindeki ifadeyle doğrudan örtüşüyor.
+E) اسْتِبْدَالُ الْمُؤَلَّفَاتِ الْمُتَرْجَمَةِ بِالْكُتُبِ الْمُؤَلَّفَةِ فِي الْأَنْدَلُسِ.
+“Tercüme edilmiş eserlerin yerine Endülüs'te yazılmış kitapları koyması.”
+Bu şık da olmaz. Metinde böyle bir değişimden söz edilmiyor.
+Dolayısıyla doğru cevabımız D oluyor.
+34. Soru
+مَا الَّذِي يُمْكِنُ اسْتِنْتَاجُهُ مِنَ النَّصِّ بِشَأْنِ الْحَرَكَةِ الْعِلْمِيَّةِ فِي الْأَنْدَلُسِ؟
+“Metinden Endülüs'teki bilimsel hareketle ilgili ne çıkarılabilir?”
+يُمْكِنُ اسْتِنْتَاجُهُ ifadesini görüyoruz. Bu bir çıkarım sorusu. 
+Metnin son bölümüne bakıyoruz:
+أَسْهَمَتِ الْحَرَكَةُ الْعِلْمِيَّةُ فِي الْأَنْدَلُسِ ... فِي انْتِقَالِ جَانِبٍ مِنَ التُّرَاثِ الْعِلْمِيِّ وَالْفَلْسَفِيِّ الْعَرَبِيِّ وَالْيُونَانِيِّ إِلَى أُورُوبَّا
+ve bunun sonucunda:
+أَثَرٌ مُهِمٌّ فِي تَطَوُّرِ الْحَيَاةِ الْفِكْرِيَّةِ الْأُورُوبِّيَّةِ
+deniyor.
+Dolayısıyla Endülüs'teki bilimsel hareketin yalnızca kendi bölgesiyle sınırlı kalmadığını, Avrupa ile bilgi aktarımında bir rol oynadığını görüyoruz.
+A) ظَلَّ تَأْثِيرُهَا مَحْصُورًا فِي الْمُدُنِ الْأَنْدَلُسِيَّةِ الْكُبْرَى.
+“Etkisi Endülüs'ün büyük şehirleriyle sınırlı kalmıştır.”
+Bu şık olmaz. Metinde etkisinin Avrupa'ya kadar ulaştığı belirtiliyor.
+B) قَامَتْ أَسَاسًا عَلَى جَمْعِ الْكُتُبِ دُونَ الِاسْتِفَادَةِ مِنْ مُحْتَوَيَاتِهَا.
+“Temelde kitapların içeriklerinden yararlanmadan onları toplamaya dayanmıştır.”
+Bu şık olmaz. Metin bilimsel araştırma, tercüme, düzenleme ve bilgi aktarımından söz ediyor.
+C) اعْتَمَدَتْ عَلَى التُّرَاثِ الْيُونَانِيِّ وَأَهْمَلَتِ الْمُؤَلَّفَاتِ الْعَرَبِيَّةَ.
+“Yunan mirasına dayanmış ve Arapça eserleri ihmal etmiştir.”
+Bu da olmaz. Metinde hem الْعَرَبِيِّ hem de الْيُونَانِيِّ mirastan söz ediliyor.
+D) فَقَدَتْ أَهَمِّيَّتَهَا بَعْدَ ظُهُورِ مَرَاكِزِ التَّرْجَمَةِ فِي مَدِينَةِ طُلَيْطِلَةَ.
+“Toledo'da tercüme merkezleri ortaya çıktıktan sonra önemini kaybetmiştir.”
+Bu şık olmaz. Metinde tercüme faaliyetleri Endülüs bilimsel hareketinin yanında onu destekleyen bir unsur olarak veriliyor.
+E) أَسْهَمَتْ فِي التَّوَاصُلِ الْمَعْرِفِيِّ بَيْنَ الْحَضَارَةِ الْإِسْلَامِيَّةِ وَأُورُوبَّا.
+“İslam medeniyeti ile Avrupa arasındaki bilgi ve bilim iletişimine katkıda bulunmuştur.”
+Bu şık olabilir. Metindeki bilimsel ve felsefi mirasın Avrupa'ya aktarılması bilgisi bu sonucu destekliyor.
+Dolayısıyla doğru cevabımız E, oluyor.
+35–37. Sorular
+Öncelikle metnimizi okuyalım. Metnin ana düşüncesini ve sorularda bize yol gösterecek ifadeleri belirliyoruz.
+تُعَدُّ مُرُونَةُ الدِّمَاغِ مِنْ أَبْرَزِ الْمَفَاهِيمِ الَّتِي أَسْهَمَتْ أَبْحَاثُ عِلْمِ الْأَعْصَابِ الْحَدِيثَةُ فِي تَغْيِيرِ نَظْرَتِنَا إِلَى عَمَلِ الدِّمَاغِ. فَقَدْ أَظْهَرَتْ هَذِهِ الْأَبْحَاثُ أَنَّ قُدْرَةَ الدِّمَاغِ عَلَى التَّغَيُّرِ لَا تَتَوَقَّفُ بِانْتِهَاءِ مَرْحَلَةِ الطُّفُولَةِ، بَلْ تَظَلُّ قَائِمَةً بِدَرَجَاتٍ مُتَفَاوِتَةٍ طَوَالَ الْحَيَاةِ. وَيُقْصَدُ بِمُرُونَةِ الدِّمَاغِ قُدْرَةُ الشَّبَكَاتِ الْعَصَبِيَّةِ عَلَى تَعْدِيلِ رَوَابِطِهَا وَوَظَائِفِهَا وَإِعَادَةِ تَنْظِيمِ نَفْسِهَا اسْتِجَابَةً لِلتَّعَلُّمِ وَالْخِبْرَاتِ الْمُخْتَلِفَةِ أَوْ بَعْدَ بَعْضِ الْإِصَابَاتِ الدِّمَاغِيَّةِ. وَتُتِيحُ هَذِهِ الْقُدْرَةُ لِلدِّمَاغِ تَكْوِينَ مَسَارَاتٍ عَصَبِيَّةٍ جَدِيدَةٍ وَتَعْدِيلَ الْمَسَارَاتِ الْقَائِمَةِ تَبَعًا لِلْخِبْرَاتِ وَالْحَاجَاتِ. كَمَا قَدْ تُسْهِمُ مُـمَارَسَةُ الْأَنْشِطَةِ الذِّهْنِيَّةِ وَالْبَدَنِيَّةِ بِانْتِظَامٍ فِي دَعْمِ الْوَظَائِفِ الْإِدْرَاكِيَّةِ وَالْحَدِّ مِنْ بَعْضِ مَظَاهِرِ التَّرَاجُعِ الْمَعْرِفِيِّ الْمُرْتَبِطِ بِالتَّقَدُّمِ فِي السِّنِّ. وَبِنَاءً عَلَى ذَلِكَ، لَا تَقْتَصِرُ إِمْكَانِيَّةُ التَّعَلُّمِ وَاكْتِسَابِ مَهَارَاتٍ جَدِيدَةٍ عَلَى مَرْحَلَةٍ عُمُرِيَّةٍ مُحَدَّدَةٍ، وَإِنْ كَانَتْ سُرْعَةُ التَّعَلُّمِ وَطُرُقُهُ تَخْتَلِفُ مِنْ مَرْحَلَةٍ إِلَى أُخْرَى.
+Metni okuduğumuzda ana kavramımızın مُرُونَةُ الدِّمَاغِ, yani beyin esnekliği olduğunu görüyoruz.
+Metin önce beynin değişme kapasitesinin çocukluk dönemiyle sona ermediğini söylüyor. Daha sonra beyin esnekliğinin ne anlama geldiğini tanımlıyor ve sinir ağlarının bağlantılarını değiştirebildiğini belirtiyor.
+Son bölümde ise öğrenme ve yeni beceriler kazanma imkânının belirli bir yaşla sınırlı olmadığı, ancak öğrenmenin hızının ve yöntemlerinin yaşa göre değişebileceği ifade ediliyor.
+Şimdi sorularımıza geçelim.
+
+35. Soru
+الْعُنْوَانُ الْأَنْسَبُ لِلنَّصِّ هُوَ ----.
+“Metin için en uygun başlık hangisidir?”
+Burada الْعُنْوَانُ الْأَنْسَبُ, yani “en uygun başlık” soruluyor. Dolayısıyla ana fikir sorusunda olduğu gibi metnin tamamını kapsayan seçeneği arıyoruz.
+Metnin başından sonuna kadar temel kavram مُرُونَةُ الدِّمَاغِ ve beynin hayat boyunca değişebilme, uyum sağlama ve öğrenme kapasitesidir.
+Şıklara bakalım.
+A) أَثَرُ الْإِصَابَاتِ الدِّمَاغِيَّةِ فِي تَوَقُّفِ الشَّبَكَاتِ الْعَصَبِيَّةِ عَنِ الْعَمَلِ.
+“Beyin yaralanmalarının sinir ağlarının çalışmasının durması üzerindeki etkisi.”
+Bu şık olmaz. metnin ana konusu bu değil.
+B) مُرُونَةُ الدِّمَاغِ وَقُدْرَتُهُ عَلَى التَّكَيُّفِ وَالتَّعَلُّمِ طَوَالَ الْحَيَاةِ.
+“Beyin esnekliği ve beynin hayat boyunca uyum sağlama ve öğrenme kapasitesi.”
+Bu şık olabilir. Metnin tamamını kapsıyor.
+C) دَوْرُ الْأَنْشِطَةِ الْبَدَنِيَّةِ فِي عِلَاجِ التَّرَاجُعِ الْمَعْرِفِيِّ الْمُرْتَبِطِ بِالْعُمُرِ.
+“Fiziksel etkinliklerin yaşa bağlı bilişsel gerilemenin tedavisindeki rolü.”
+Bu şık olmaz. Fiziksel aktiviteler metinde yalnızca bir ayrıntı olarak geçiyor. 
+D) ثَبَاتُ بِنْيَةِ الدِّمَاغِ بَعْدَ انْتِهَاءِ مَرْحَلَةِ الطُّفُولَةِ.
+“Çocukluk dönemi sona erdikten sonra beynin yapısının sabit kalması.”
+Bu şık olmaz. Metnin temel düşüncesinin tam tersidir.
+E) الْفُرُوقُ فِي سُرْعَةِ التَّعَلُّمِ بَيْنَ الْمَرَاحِلِ الْعُمُرِيَّةِ الْمُخْتَلِفَةِ.
+“Farklı yaş dönemleri arasındaki öğrenme hızı farklılıkları.”
+Bu şık da olmaz. Bu bilgi metnin yalnızca son cümlesindeki bir ayrıntıdır.
+Dolayısıyla metnin tamamını kapsayan doğru cevabımız B, 
+oluyor.
+36. oru
+وَفْقًا لِلنَّصِّ، مَا الْمَقْصُودُ بِمُرُونَةِ الدِّمَاغِ؟
+“Metne göre beyin esnekliğiyle kastedilen nedir?”
+Burada hem وَفْقًا لِلنَّصِّ hem de مَا الْمَقْصُودُ بِـ ifadelerini görüyoruz. Bu bize doğrudan bir tanım sorulduğunu gösteriyor.
+Metinde de tanım açık biçimde:
+وَيُقْصَدُ بِمُرُونَةِ الدِّمَاغِ قُدْرَةُ الشَّبَكَاتِ الْعَصَبِيَّةِ عَلَى تَعْدِيلِ رَوَابِطِهَا وَوَظَائِفِهَا وَإِعَادَةِ تَنْظِيمِ نَفْسِهَا
+şeklinde veriliyor.
+Yani beyin esnekliği, sinir ağlarının bağlantılarını ve işlevlerini değiştirme ve kendilerini yeniden düzenleme yeteneğidir.
+Şıklara bakalım.
+A) قُدْرَةُ الدِّمَاغِ عَلَى إِنْتَاجِ خَلَايَا عَصَبِيَّةٍ جَدِيدَةٍ فِي جَمِيعِ مَنَاطِقِهِ بِصُورَةٍ مُسْتَمِرَّةٍ.
+“Beynin bütün bölgelerinde sürekli olarak yeni sinir hücreleri üretme yeteneği.”
+Bu şık olmaz. Metinde böyle bir tanım yapılmıyor.
+B) انْتِقَالُ وَظَائِفِ الدِّمَاغِ كُلِّهَا إِلَى مَنَاطِقَ أُخْرَى بَعْدَ التَّعَرُّضِ لِأَيِّ إِصَابَةٍ.
+“Herhangi bir yaralanmadan sonra beynin bütün işlevlerinin başka bölgelere aktarılması.”
+Bu da olmaz. Hem كُلِّهَا hem de أَيِّ إِصَابَةٍ ifadeleri metinde bulunmayan aşırı genellemelerdir.
+C) قُدْرَةُ الشَّبَكَاتِ الْعَصَبِيَّةِ عَلَى تَعْدِيلِ رَوَابِطِهَا وَوَظَائِفِهَا وَإِعَادَةِ تَنْظِيمِ نَفْسِهَا.
+“Sinir ağlarının bağlantılarını ve işlevlerini değiştirme ve kendilerini yeniden düzenleme yeteneği.”
+Bu şık olabilir. Metindeki tanımla doğrudan aynıdır.
+D) ثَبَاتُ الْمَسَارَاتِ الْعَصَبِيَّةِ مَعَ زِيَادَةِ سُرْعَةِ مُعَالَجَةِ الْمَعْلُومَاتِ.
+“Bilgi işleme hızının artmasıyla sinir yollarının sabit kalması.”
+Bu şık olmaz. Metin sinir yollarının sabitliğini değil değişebilmesini anlatıyor.
+E) اقْتِصَارُ التَّغَيُّرَاتِ الْعَصَبِيَّةِ عَلَى السَّنَوَاتِ الْأُولَى مِنْ مَرْحَلَةِ الطُّفُولَةِ.
+“Sinirsel değişikliklerin çocukluk döneminin ilk yıllarıyla sınırlı olması.”
+Bu şık da olmaz. Metinde bunun tam tersi söyleniyor.
+Dolayısıyla doğru cevabımız C, oluyor.
+
+37. Soru
+مَا الَّذِي يُمْكِنُ اسْتِنْتَاجُهُ مِنَ النَّصِّ بِشَأْنِ التَّعَلُّمِ فِي الْمَرَاحِلِ الْعُمُرِيَّةِ الْمُتَقَدِّمَةِ؟
+“Metinden ileri yaş dönemlerinde öğrenmeyle ilgili ne çıkarılabilir?”
+Burada yine يُمْكِنُ اسْتِنْتَاجُهُ ifadesini görüyoruz. Bir çıkarım yapmamız gerekiyor.
+Metnin son cümlesine dönüyoruz:
+لَا تَقْتَصِرُ إِمْكَانِيَّةُ التَّعَلُّمِ وَاكْتِسَابِ مَهَارَاتٍ جَدِيدَةٍ عَلَى مَرْحَلَةٍ عُمُرِيَّةٍ مُحَدَّدَةٍ، وَإِنْ كَانَتْ سُرْعَةُ التَّعَلُّمِ وَطُرُقُهُ تَخْتَلِفُ مِنْ مَرْحَلَةٍ إِلَى أُخْرَى
+Buradan öğrenmenin ileri yaşlarda da mümkün olduğunu, ancak hızının ve yöntemlerinin farklılaşabileceğini anlıyoruz.
+A) يَقْتَصِرُ عَلَى مُـمَارَسَةِ الْأَنْشِطَةِ الْبَدَنِيَّةِ دُونَ الْأَنْشِطَةِ الذِّهْنِيَّةِ.
+“Zihinsel faaliyetler olmaksızın yalnızca fiziksel etkinliklerle sınırlıdır.”
+Bu şık olmaz. Metinde hem zihinsel hem fiziksel aktivitelerden söz ediliyor.
+B) يُصْبِحُ مُسْتَحِيلًا بِسَبَبِ ثَبَاتِ الرَّوَابِطِ وَالْمَسَارَاتِ الْعَصَبِيَّةِ.
+“Sinir bağlantılarının ve yollarının sabit hâle gelmesi nedeniyle imkânsızlaşır.”
+Bu şık olmaz. Metnin temel düşüncesine aykırıdır.
+C) يَمْنَعُ التَّرَاجُعَ الْمَعْرِفِيَّ الْمُرْتَبِطَ بِالتَّقَدُّمِ فِي السِّنِّ بِصُورَةٍ كَامِلَةٍ.
+“Yaşlanmaya bağlı bilişsel gerilemeyi tamamen önler.”
+Bu da olmaz. Metin الْحَدُّ مِنْ بَعْضِ مَظَاهِرِ, yani “bazı belirtileri azaltmak” diyor. Tamamen önlemekten söz etmiyor.
+D) لَا يَتَحَقَّقُ إِلَّا بَعْدَ التَّعَرُّضِ لِإِصَابَةٍ دِمَاغِيَّةٍ تُؤَثِّرُ فِي وَظَائِفِ الدِّمَاغِ.
+“Yalnızca beyin işlevlerini etkileyen bir yaralanma geçirildikten sonra gerçekleşebilir.”
+Bu şık olmaz. Metin böyle bir şart koymuyor.
+E) يَظَلُّ مُمْكِنًا، وَإِنِ اخْتَلَفَتْ سُرْعَتُهُ وَطُرُقُهُ عَنِ الْمَرَاحِلِ الْعُمُرِيَّةِ السَّابِقَةِ.
+“Önceki yaş dönemlerine göre hızı ve yöntemleri farklılaşsa da mümkün olmaya devam eder.”
+Bu şık olabilir. Metnin son cümlesindeki düşünceyi doğrudan karşılıyor.
+Dolayısıyla doğru cevabımız E, oluyor.
+
+38–40. Sorular
+Öncelikle metnimizi okuyalım ve bize temel bilgileri veren ifadeleri belirleyelim.
+تُعَدُّ الطَّاقَةُ الْحَرَارِيَّةُ الْأَرْضِيَّةُ مِنْ مَصَادِرِ الطَّاقَةِ الْمُتَجَدِّدَةِ مُنْخَفِضَةِ الِانْبِعَاثَاتِ الَّتِي يَتَزَايَدُ الِاهْتِمَامُ بِهَا فِي ظِلِّ الْجُهُودِ الرَّامِيَةِ إِلَى الْحَدِّ مِنِ انْبِعَاثَاتِ غَازَاتِ الدَّفِيئَةِ. وَتَسْتَمِدُّ هَذِهِ الطَّاقَةُ مِنَ الْحَرَارَةِ الْمُخَزَّنَةِ فِي بَاطِنِ الْأَرْضِ، الَّتِي يَعُودُ مَصْدَرُهَا أَسَاسًا إِلَى الْحَرَارَةِ الْمُتَبَقِّيَةِ مُنْذُ تَشَكُّلِ الْكَوْكَبِ وَإِلَى التَّحَلُّلِ الْإِشْعَاعِيِّ لِلْعَنَاصِرِ الْمُشِعَّةِ الْمَوْجُودَةِ طَبِيعِيًّا فِي طَبَقَاتِهِ الدَّاخِلِيَّةِ. وَتَمْتَازُ الطَّاقَةُ الْحَرَارِيَّةُ الْأَرْضِيَّةُ بِقُدْرَتِهَا عَلَى تَوْفِيرِ إِمْدَادَاتٍ مُسْتَقِرَّةٍ مِنَ الطَّاقَةِ، إِذْ لَا يَعْتَمِدُ إِنْتَاجُهَا مُبَاشَرَةً عَلَى تَقَلُّبَاتِ الطَّقْسِ، خِلَافًا لِطَاقَةِ الرِّيَاحِ وَالطَّاقَةِ الشَّمْسِيَّةِ، مِمَّا يَجْعَلُهَا مُنَاسِبَةً لِتَوْلِيدِ الْكَهْرَبَاءِ وَتَوْفِيرِ التَّدْفِئَةِ عَلَى مَدَارِ السَّاعَةِ. غَيْرَ أَنَّ التَّوَسُّعَ فِي اسْتِخْدَامِهَا يُوَاجِهُ تَحَدِّيَاتٍ تِقْنِيَّةً وَاقْتِصَادِيَّةً، مِنْ أَبْرَزِهَا ارْتِفَاعُ تَكَالِيفِ الِاسْتِكْشَافِ وَالْحَفْرِ الْعَمِيقِ، وَاعْتِمَادُ الْمَشْرُوعَاتِ التَّقْلِيدِيَّةِ عَلَى تَوَافُرِ ظُرُوفٍ جِيُولُوجِيَّةٍ مُنَاسِبَةٍ لَا تَتَوَافَرُ بِالدَّرَجَةِ نَفْسِهَا فِي جَمِيعِ الْمَنَاطِقِ. وَلِذَلِكَ، تَعْمَلُ التِّقْنِيَّاتُ الْحَدِيثَةُ عَلَى تَوْسِيعِ نِطَاقِ الْمَوَاقِعِ الْقَابِلَةِ لِلِاسْتِغْلَالِ وَخَفْضِ تَكَالِيفِ تَطْوِيرِ هَذِهِ الْمَشْرُوعَاتِ.
+Metni okuduğumuzda jeotermal enerjinin yenilenebilir ve düşük emisyonlu bir enerji kaynağı olduğunu görüyoruz.
+İkinci bölümde bu enerjinin kaynağı açıklanıyor. Daha sonra jeotermal enerjinin rüzgâr ve güneş enerjisinden farklı olarak hava koşullarındaki değişimlere doğrudan bağlı olmadığı vurgulanıyor.
+Ancak غَيْرَ أَنَّ, yani “ancak” ifadesinden sonra bu enerji türünün bazı teknik ve ekonomik zorluklarından söz ediliyor. Özellikle yüksek arama ve sondaj maliyetleri ile uygun jeolojik koşullara duyulan ihtiyaç vurgulanıyor.
+Şimdi sorularımıza geçelim.
+38. Soru
+وَفْقًا لِلنَّصِّ، مَا الَّذِي يُمَيِّزُ الطَّاقَةَ الْحَرَارِيَّةَ الْأَرْضِيَّةَ عَنْ طَاقَتَيِ الرِّيَاحِ وَالشَّمْسِ؟
+“Metne göre jeotermal enerjiyi rüzgâr ve güneş enerjisinden ayıran özellik nedir?”
+Burada وَفْقًا لِلنَّصِّ ifadesi bize doğrudan metinde verilen bilgiyi arayacağımızı gösteriyor.
+Soruda özellikle عَنْ طَاقَتَيِ الرِّيَاحِ وَالشَّمْسِ deniyor. Metinde karşılaştırmanın yapıldığı bölüme gidiyoruz:
+لَا يَعْتَمِدُ إِنْتَاجُهَا مُبَاشَرَةً عَلَى تَقَلُّبَاتِ الطَّقْسِ، خِلَافًا لِطَاقَةِ الرِّيَاحِ وَالطَّاقَةِ الشَّمْسِيَّةِ
+Yani jeotermal enerji üretimi hava koşullarındaki değişimlere doğrudan bağlı değildir.
+A) إِمْكَانُ تَوْسِيعِ مَشْرُوعَاتِهَا التَّقْلِيدِيَّةِ فِي جَمِيعِ الْمَنَاطِقِ.
+“Geleneksel projelerinin bütün bölgelerde genişletilebilmesi.”
+Bu şık olmaz. Metin tam tersine uygun jeolojik koşulların her yerde bulunmadığını söylüyor.
+B) انْخِفَاضُ تَكَالِيفِ اسْتِكْشَافِهَا وَحَفْرِ آبَارِهَا الْعَمِيقَةِ.
+“Arama ve derin kuyu açma maliyetlerinin düşük olması.”
+Bu şık olmaz. Metinde bu maliyetlerin yüksek olduğu belirtiliyor.
+C) اعْتِمَادُهَا عَلَى تَغَيُّرِ سُرْعَةِ الرِّيَاحِ وَشِدَّةِ أَشِعَّةِ الشَّمْسِ.
+“Rüzgâr hızındaki ve güneş ışınlarının şiddetindeki değişime bağlı olması.”
+Bu da olmaz. Bu özellik rüzgâr ve güneş enerjisiyle ilgilidir.
+D) قُدْرَتُهَا عَلَى تَوْفِيرِ الطَّاقَةِ دُونَ اعْتِمَادٍ مُبَاشِرٍ عَلَى تَقَلُّبَاتِ الطَّقْسِ.
+“Hava koşullarındaki değişimlere doğrudan bağlı olmadan enerji sağlayabilmesi.”
+Bu şık olabilir. Metindeki ifadeyle doğrudan örtüşüyor.
+E) سُهُولَةُ نَقْلِ الْحَرَارَةِ الْمُخَزَّنَةِ فِي بَاطِنِ الْأَرْضِ بَيْنَ الْبُلْدَانِ.
+“Yer altında depolanan ısının ülkeler arasında kolaylıkla taşınabilmesi.”
+Bu şık olmaz. Metinde böyle bir bilgi yok.
+Dolayısıyla doğru cevabımız D, oluyor.
+
+39. Soru
+إِلَى مَاذَا يَعُودُ مَصْدَرُ الْحَرَارَةِ الْمُخَزَّنَةِ فِي بَاطِنِ الْأَرْضِ وَفْقًا لِلنَّصِّ؟
+“Metne göre yerin altında depolanan ısının kaynağı neye dayanmaktadır?”
+Bu soruda hem مَصْدَرُ الْحَرَارَةِ hem de وَفْقًا لِلنَّصِّ ifadelerine bakıyoruz. Cevabın metinde açıkça verildiğini biliyoruz.
+İlgili bölüm:
+الْحَرَارَةِ الْمُتَبَقِّيَةِ مُنْذُ تَشَكُّلِ الْكَوْكَبِ وَإِلَى التَّحَلُّلِ الْإِشْعَاعِيِّ لِلْعَنَاصِرِ الْمُشِعَّةِ الْمَوْجُودَةِ طَبِيعِيًّا فِي طَبَقَاتِهِ الدَّاخِلِيَّةِ
+Yani kaynağın iki temel unsuru var: gezegenin oluşumundan kalan ısı ve doğal radyoaktif elementlerin bozunması.
+A) امْتِصَاصُ الصُّخُورِ السَّطْحِيَّةِ لِأَشِعَّةِ الشَّمْسِ عَلَى مَدَى فَتَرَاتٍ طَوِيلَةٍ.
+“Yüzey kayalarının uzun dönemler boyunca güneş ışınlarını emmesi.”
+Bu şık olmaz. Metinde böyle bir kaynaktan söz edilmiyor.
+B) الْحَرَارَةُ الْمُتَبَقِّيَةُ مُنْذُ تَشَكُّلِ الْأَرْضِ وَالتَّحَلُّلُ الْإِشْعَاعِيُّ لِلْعَنَاصِرِ الْمُشِعَّةِ الْمَوْجُودَةِ طَبِيعِيًّا فِي بَاطِنِهَا.
+“Dünyanın oluşumundan kalan ısı ve yerin altında doğal olarak bulunan radyoaktif elementlerin radyoaktif bozunması.”
+Bu şık olabilir. Metinde verilen iki kaynağı birlikte karşılıyor.
+C) احْتِكَاكُ الْمِيَاهِ الْجَوْفِيَّةِ بِالطَّبَقَاتِ الصَّخْرِيَّةِ فِي أَعْمَاقِ الْأَرْضِ.
+“Yer altı sularının derinlerdeki kaya tabakalarıyla sürtünmesi.”
+Bu şık olmaz. Metinde böyle bir bilgi yok.
+D) تَرَاكُمُ غَازَاتِ الدَّفِيئَةِ فِي الطَّبَقَاتِ الْعُلْيَا مِنَ الْغِلَافِ الْجَوِّيِّ.
+“Sera gazlarının atmosferin üst tabakalarında birikmesi.”
+Bu şık olmaz. Sera gazlarından girişte söz ediliyor fakat jeotermal ısının kaynağı olarak verilmiyor.
+E) تَحَوُّلُ الْمَوَادِّ الْعُضْوِيَّةِ الْمَدْفُونَةِ إِلَى مَصَادِرَ حَرَارِيَّةٍ مُتَجَدِّدَةٍ.
+“Gömülü organik maddelerin yenilenebilir ısı kaynaklarına dönüşmesi.”
+Bu şık da olmaz. Metinde böyle bir açıklama yok.
+Dolayısıyla doğru cevabımız B oluyor.
+
+40. Soru
+مَا الَّذِي يُمْكِنُ اسْتِنْتَاجُهُ مِنَ النَّصِّ بِشَأْنِ مَشْرُوعَاتِ الطَّاقَةِ الْحَرَارِيَّةِ الْأَرْضِيَّةِ؟
+“Metinden jeotermal enerji projeleri hakkında ne çıkarılabilir?”
+Burada yine يُمْكِنُ اسْتِنْتَاجُهُ ifadesini görüyoruz.
+Metinde bir yandan bu enerjinin sürekli ve istikrarlı enerji sağlayabildiği anlatılıyor. Diğer yandan:
+ارْتِفَاعُ تَكَالِيفِ الِاسْتِكْشَافِ وَالْحَفْرِ الْعَمِيقِ، وَاعْتِمَادُ الْمَشْرُوعَاتِ التَّقْلِيدِيَّةِ عَلَى تَوَافُرِ ظُرُوفٍ جِيُولُوجِيَّةٍ مُنَاسِبَةٍ لَا تَتَوَافَرُ بِالدَّرَجَةِ نَفْسِهَا فِي جَمِيعِ الْمَنَاطِقِ
+deniyor.
+Dolayısıyla operasyonel avantajlarının olması, bu projelerin her bölgede aynı kolaylıkla kurulabileceği anlamına gelmiyor. Şıklarımıza bakalım:
+A) أَنَّ مَزَايَاهَا التَّشْغِيلِيَّةَ لَا تَعْنِي إِمْكَانَ إِقَامَتِهَا بِالسُّهُولَةِ نَفْسِهَا فِي جَمِيعِ الْمَنَاطِقِ.
+“İşletme açısından sahip olduğu avantajların, bu projelerin bütün bölgelerde aynı kolaylıkla kurulabileceği anlamına gelmediği.”
+Bu şık olabilir. Metindeki avantaj ve sınırlılıkları birlikte değerlendiriyor.
+B) أَنَّ التَّوَسُّعَ فِيهَا يَتَوَقَّفُ أَسَاسًا عَلَى اسْتِقْرَارِ الْأَحْوَالِ الْجَوِّيَّةِ فِي مَوَاقِعِ الْإِنْتَاجِ.
+“Bu projelerin genişlemesinin temel olarak üretim bölgelerindeki hava koşullarının istikrarına bağlı olduğu.”
+Bu şık olmaz. Metin doğrudan hava koşullarına bağlı olmadığını söylüyor.
+C) أَنَّ الْمَشْرُوعَاتِ التَّقْلِيدِيَّةَ لَا تَحْتَاجُ إِلَى دِرَاسَاتٍ جِيُولُوجِيَّةٍ قَبْلَ تَنْفِيذِهَا.
+“Geleneksel projelerin uygulanmadan önce jeolojik çalışmalara ihtiyaç duymadığı.”
+Bu şık olmaz. Uygun jeolojik koşulların öneminin vurgulanması bunun tersini gösteriyor.
+D) أَنَّ ارْتِفَاعَ تَكَالِيفِ الْحَفْرِ يَحُولُ دُونَ تَطْوِيرِ تِقْنِيَّاتٍ جَدِيدَةٍ لِلِاسْتِفَادَةِ مِنْهَا.
+“Yüksek sondaj maliyetlerinin yeni teknolojilerin geliştirilmesini engellediği.”
+Bu şık olmaz. Metnin sonunda tam tersine yeni teknolojilerin maliyetleri düşürmek için geliştirildiği belirtiliyor.
+E) أَنَّ اسْتِخْدَامَهَا فِي التَّدْفِئَةِ يُقَلِّلُ مِنْ مَوْثُوقِيَّتِهَا فِي تَوْلِيدِ الْكَهْرَبَاءِ.
+“Isıtmada kullanılmasının elektrik üretimindeki güvenilirliğini azalttığı.”
+Bu şık da olmaz. Metinde böyle bir ilişki kurulmamış.
+Dolayısıyla doğru cevabımız A oluyor.
+
+41–43. Sorular
+Öncelikle metnimizi okuyalım ve bize metnin temel düşüncesini veren ifadeleri belirleyelim.
+تُعَدُّ مُقَدِّمَةُ ابْنِ خَلْدُونَ، الَّتِي أَلَّفَهَا فِي الْقَرْنِ الرَّابِعَ عَشَرَ، مِنْ أَبْرَزِ الْمُؤَلَّفَاتِ الْمُبَكِّرَةِ الَّتِي تَنَاوَلَتِ الْمُجْتَمَعَ وَالْعُمْرَانَ الْبَشَرِيَّ بِمَنْهَجٍ تَحْلِيلِيٍّ. فَقَدْ سَعَى ابْنُ خَلْدُونَ إِلَى الْكَشْفِ عَنِ السُّنَنِ وَالْعَوَامِلِ الَّتِي تُؤَثِّرُ فِي نُشُوءِ الْمُجْتَمَعَاتِ وَالدُّوَلِ وَتَطَوُّرِهَا، وَرَأَى أَنَّ الْأَخْبَارَ التَّارِيخِيَّةَ لَا يَنْبَغِي أَنْ تُقْبَلَ مِنْ غَيْرِ تَمْحِيصٍ، بَلْ يَجِبُ مُقَارَنَتُهَا بِأَحْوَالِ الْعُمْرَانِ وَمَا يُعْرَفُ عَنْ طَبَائِعِ الْمُجْتَمَعَاتِ. كَمَا تَنَاوَلَ أَثَرَ الظُّرُوفِ الْجُغْرَافِيَّةِ وَالْمُنَاخِيَّةِ فِي بَعْضِ أَنْمَاطِ الْعَيْشِ وَالسُّلُوكِ، إِلَى جَانِبِ عَوَامِلَ اجْتِمَاعِيَّةٍ وَاقْتِصَادِيَّةٍ وَسِيَاسِيَّةٍ أُخْرَى. وَتَبْرُزُ أَهَمِّيَّةُ مَنْهَجِهِ فِي أَنَّهُ لَمْ يَكْتَفِ بِسَرْدِ الْوَقَائِعِ، بَلْ بَحَثَ فِي الْأَسْبَابِ وَالْعَوَامِلِ الَّتِي تُسَاعِدُ عَلَى تَفْسِيرِ قِيَامِ الدُّوَلِ وَازْدِهَارِهَا ثُمَّ تَرَاجُعِهَا.
+Metni okuduğumuzda İbn Haldun'un toplum ve tarihi yalnızca olayları sıralayarak incelemediğini görüyoruz. Toplumların ve devletlerin ortaya çıkışını, gelişimini ve gerilemesini açıklayan neden ve etkenleri araştırıyor.
+Ayrıca tarihî haberleri sorgulamadan kabul etmiyor; bunları toplumların özellikleri ve العمران, yani toplumsal yapı ve medeniyet koşullarıyla karşılaştırıyor.
+Metinde coğrafi ve iklimsel şartlarla birlikte sosyal, ekonomik ve siyasi etkenlerden de söz edilmesi, İbn Haldun'un olayları tek bir nedene bağlamadığını gösteriyor.
+Şimdi sorularımıza geçelim.
+41. Soru
+الْغَرَضُ الْأَسَاسِيُّ مِنَ النَّصِّ هُوَ ----.
+“Metnin temel amacı nedir?”
+Burada الْغَرَضُ الْأَسَاسِيُّ, yani “temel amaç” soruluyor. Dolayısıyla metnin genel olarak bize ne anlatmak istediğine bakıyoruz.
+Metnin tamamında İbn Haldun'un toplum ve tarihi nasıl incelediği, tarihî bilgileri nasıl değerlendirdiği ve hangi etkenleri dikkate aldığı anlatılıyor.
+A) عَرْضُ الْمَرَاحِلِ السِّيَاسِيَّةِ الْمُخْتَلِفَةِ الَّتِي مَرَّ بِهَا ابْنُ خَلْدُونَ فِي حَيَاتِهِ.
+“İbn Haldun'un hayatında geçirdiği farklı siyasi dönemleri anlatmak.”
+Bu şık olmaz. Metin İbn Haldun'un hayat hikâyesini anlatmıyor.
+B) تَوْضِيحُ مَنْهَجِ ابْنِ خَلْدُونَ فِي دِرَاسَةِ الْمُجْتَمَعِ وَالتَّارِيخِ وَالْعَوَامِلِ الْمُؤَثِّرَةِ فِيهِمَا.
+“İbn Haldun'un toplum ve tarihi inceleme yöntemini ve bunları etkileyen faktörleri açıklamak.”
+Bu şık olabilir. Metnin tamamını kapsıyor.
+C) إِثْبَاتُ أَنَّ الظُّرُوفَ الْمُنَاخِيَّةَ هِيَ الْعَامِلُ الْوَحِيدُ فِي نُشُوءِ الدُّوَلِ وَتَرَاجُعِهَا.
+“İklim koşullarının devletlerin ortaya çıkışı ve gerilemesindeki tek etken olduğunu kanıtlamak.”
+Bu şık olmaz. Metinde iklimsel faktörlerin yanında sosyal, ekonomik ve siyasi faktörlerden de söz ediliyor.
+D) مُقَارَنَةُ آرَاءِ ابْنِ خَلْدُونَ بِآرَاءِ الْمُؤَرِّخِينَ وَالْفَلَاسِفَةِ الَّذِينَ سَبَقُوهُ.
+“İbn Haldun'un görüşlerini kendisinden önceki tarihçi ve filozofların görüşleriyle karşılaştırmak.”
+Bu şık olmaz. Metinde böyle bir karşılaştırma yapılmıyor.
+E) بَيَانُ أَثَرِ مُؤَلَّفَاتِ ابْنِ خَلْدُونَ فِي النُّظُمِ السِّيَاسِيَّةِ الْحَدِيثَةِ.
+“İbn Haldun'un eserlerinin modern siyasi sistemler üzerindeki etkisini açıklamak.”
+Bu şık da olmaz. Metinde modern siyasi sistemlerden söz edilmiyor.
+Dolayısıyla doğru cevabımız B, oluyor.
+
+42. Soru
+وَفْقًا لِلنَّصِّ، كَيْفَ تَعَامَلَ ابْنُ خَلْدُونَ مَعَ الْأَخْبَارِ التَّارِيخِيَّةِ؟
+“Metne göre İbn Haldun tarihî haberleri nasıl ele almıştır?”
+Burada وَفْقًا لِلنَّصِّ ifadesini gördüğümüz için doğrudan bilgi arıyoruz.
+Metindeki الْأَخْبَارَ التَّارِيخِيَّةَ ifadesini buluyoruz:
+الْأَخْبَارَ التَّارِيخِيَّةَ لَا يَنْبَغِي أَنْ تُقْبَلَ مِنْ غَيْرِ تَمْحِيصٍ، بَلْ يَجِبُ مُقَارَنَتُهَا بِأَحْوَالِ الْعُمْرَانِ وَمَا يُعْرَفُ عَنْ طَبَائِعِ الْمُجْتَمَعَاتِ
+Yani tarihî haberler sorgulanmadan kabul edilmemeli; toplumsal koşullar ve toplumların özellikleriyle karşılaştırılmalıdır.
+Şıklara bakalım.
+A) اعْتَمَدَ صِحَّتَهَا مَا دَامَتْ مَنْقُولَةً عَنْ مُؤَرِّخِينَ مَعْرُوفِينَ.
+“Bilinen tarihçilerden aktarıldıkları sürece bunların doğru olduğunu kabul etmiştir.”
+Bu şık olmaz. Metinde haberlerin kaynağı kim olursa olsun sorgulanmadan kabul edilmemesi gerektiği vurgulanıyor.
+B) اكْتَفَى بِتَرْتِيبِهَا زَمَنِيًّا مِنْ دُونِ الْبَحْثِ فِي أَسْبَابِهَا.
+“Nedenlerini araştırmadan onları yalnızca kronolojik olarak sıralamakla yetinmiştir.”
+Bu şık olmaz. Metinde özellikle nedenleri araştırdığı belirtiliyor.
+C) أَخْضَعَهَا لِلتَّمْحِيصِ وَقَارَنَهَا بِأَحْوَالِ الْعُمْرَانِ وَطَبَائِعِ الْمُجْتَمَعَاتِ.
+“Onları inceleme ve sorgulamaya tabi tutmuş, toplumsal yapı koşulları ve toplumların özellikleriyle karşılaştırmıştır.”
+Bu şık olabilir. Metindeki ifadeyi doğrudan karşılıyor.
+D) فَسَّرَهَا بِالظُّرُوفِ الْجُغْرَافِيَّةِ وَالْمُنَاخِيَّةِ وَحْدَهَا.
+“Onları yalnızca coğrafi ve iklimsel koşullarla açıklamıştır.”
+Bu şık olmaz. Metinde başka sosyal, ekonomik ve siyasi faktörlerin de dikkate alındığı belirtiliyor.
+E) فَضَّلَ الرِّوَايَاتِ الشَّائِعَةَ عَلَى الْأَدِلَّةِ الْمُتَعَلِّقَةِ بِأَحْوَالِ الْمُجْتَمَعِ.
+“Yaygın rivayetleri toplumun koşullarıyla ilgili kanıtlara tercih etmiştir.”
+Bu şık da olmaz. Metinde bunun tam tersi bir yaklaşım anlatılıyor.
+Dolayısıyla doğru cevabımız C, oluyor.
+
+43. Soru
+مَا الَّذِي يُمْكِنُ اسْتِنْتَاجُهُ مِنَ النَّصِّ بِشَأْنِ مَنْهَجِ ابْنِ خَلْدُونَ؟
+“Metinden İbn Haldun'un yöntemi hakkında ne çıkarılabilir?”
+Burada يُمْكِنُ اسْتِنْتَاجُهُ ifadesine dikkat ediyoruz. Doğrudan bir cümleyi bulmaktan ziyade metindeki bilgileri birlikte değerlendiriyoruz.
+Metinde İbn Haldun'un coğrafi ve iklimsel koşulları ele aldığı söyleniyor. Ancak hemen devamında:
+إِلَى جَانِبِ عَوَامِلَ اجْتِمَاعِيَّةٍ وَاقْتِصَادِيَّةٍ وَسِيَاسِيَّةٍ أُخْرَى
+ifadesi geliyor.
+Ayrıca:
+بَحَثَ فِي الْأَسْبَابِ وَالْعَوَامِلِ الَّتِي تُسَاعِدُ عَلَى تَفْسِيرِ قِيَامِ الدُّوَلِ وَازْدِهَارِهَا ثُمَّ تَرَاجُعِهَا
+deniyor.
+Dolayısıyla tarihî gelişmeleri tek bir faktörün değil, farklı faktörlerin etkileşimiyle açıklayan bir yöntem görüyoruz.
+A) أَنَّهُ فَصَلَ دِرَاسَةَ التَّارِيخِ عَنْ دِرَاسَةِ الْمُجْتَمَعِ وَأَحْوَالِهِ.
+“Tarih incelemesini toplum ve toplum koşullarının incelenmesinden ayırdığı.”
+Bu şık olmaz. Tam tersine tarihî haberleri toplum koşullarıyla birlikte değerlendiriyor.
+B) أَنَّهُ عَدَّ تَسْجِيلَ الْأَحْدَاثِ الْغَايَةَ الْأَسَاسِيَّةَ مِنَ الْبَحْثِ التَّارِيخِيِّ.
+“Olayların kaydedilmesini tarih araştırmasının temel amacı olarak gördüğü.”
+Bu şık olmaz. Metinde لَمْ يَكْتَفِ بِسَرْدِ الْوَقَائِعِ, yani “olayları aktarmakla yetinmedi” deniyor.
+C) أَنَّهُ أَنْكَرَ وُجُودَ عِلَاقَةٍ بَيْنَ الْبِيئَةِ وَأَنْمَاطِ عَيْشِ الْمُجْتَمَعَاتِ.
+“Çevre ile toplumların yaşam biçimleri arasında ilişki bulunduğunu reddettiği.”
+Bu şık olmaz. Metinde coğrafi ve iklimsel koşulların yaşam biçimleri üzerindeki etkisini ele aldığı açıkça belirtiliyor.
+D) أَنَّهُ نَظَرَ إِلَى التَّحَوُّلَاتِ التَّارِيخِيَّةِ بِوَصْفِهَا نَتِيجَةَ تَفَاعُلِ عَوَامِلَ مُتَعَدِّدَةٍ.
+“Tarihsel dönüşümleri birden fazla etkenin etkileşiminin sonucu olarak değerlendirdiği.”
+Bu şık olabilir. Metindeki sosyal, ekonomik, siyasi, coğrafi ve iklimsel faktörlerin birlikte ele alınmasından bu sonuca ulaşıyoruz.
+E) أَنَّهُ قَصَرَ مَفْهُومَ الْعُمْرَانِ عَلَى قِيَامِ الدُّوَلِ وَسُقُوطِهَا.
+“Umran kavramını yalnızca devletlerin kurulması ve yıkılmasıyla sınırlandırdığı.”
+Bu şık olmaz. Metin العمران kavramını toplumların genel yapısı ve özellikleri bağlamında daha geniş biçimde kullanıyor.
+Dolayısıyla doğru cevabımız D, oluyor.
+Burada çıkarımı yaparken özellikle metindeki إِلَى جَانِبِ ifadesine dikkat ediyoruz. Bu ifade bize tek bir etken değil, birbirine eklenen birden fazla etken bulunduğunu gösteriyor.

@@ -1,0 +1,86 @@
+2018 YDT Arapça — 59–63. sorular
+59. soru
+لِلتَّعْلِيمِ مَرَاحِلُ مُخْتَلِفَةٌ يَمُرُّ بِهَا الطَّالِبُ خِلَالَ دِرَاسَتِهِ، ــــ، وَتَتَكَوَّنُ مَرَاحِلُ التَّعْلِيمِ فِي كَثِيرٍ مِنَ الدُّوَلِ مِنْ أَرْبَعِ مَرَاحِلَ هِيَ الِابْتِدَائِيَّةُ وَالْمُتَوَسِّطَةُ وَالثَّانَوِيَّةُ وَالْجَامِعِيَّةُ.
+Tercümesi: “Eğitimin, öğrencinin öğrenimi sırasında geçtiği farklı aşamaları vardır, …… ve birçok ülkede eğitim aşamaları ilkokul, ortaokul, lise ve üniversite olmak üzere dört aşamadan oluşur.”
+Boşluğun öncesi ve sonrası: Önce eğitimin aşamaları olduğu söyleniyor. Sonra bu aşamalar tek tek sayılıyor. Araya, öğrencinin bir aşamayı bitirince sonrakine geçtiğini anlatan genel bir cümle gelmeli.
+Noktalama ve zamir: Boşluk iki virgül arasında; kısa bir açıklama cümlesi ana düşünceye bağlanıyor. İlk cümledeki بِهَا zamiri مَرَاحِلُ sözcüğüne döner: “öğrencinin onlardan geçtiği aşamalar.” Doğru şıktaki بَعْدَهَا ise “bir sonraki aşama” anlamını kurar.
+Şıklara bakalım:
+A) فَلَوْ حَصَلَ عَلَى تَقْدِيرٍ جَيِّدٍ يَنَالُ الشَّهَادَةَ الْجَامِعِيَّةَ.
+Tercümesi: “İyi bir derece alırsa üniversite diplomasını elde eder.” Bütün eğitim aşamaları yerine üniversite diplomasına ilişkin özel bir koşul getirir. Olmaz.
+B) إِنِ الْتَحَقَ بِالدِّرَاسَاتِ الْعُلْيَا حَصَلَ عَلَى الْمَاجِسْتِيرِ.
+Tercümesi: “Lisansüstü eğitime katılırsa yüksek lisans derecesi alır.” Metinde ardından sayılan dört temel aşamanın dışına çıkar. Olmaz.
+C) فَإِذَا أَنْهَى تَعْلِيمَهُ انْتَقَلَ إِلَى الْمَرْحَلَةِ الَّتِي بَعْدَهَا.
+Tercümesi: “Öğrenimini bitirince sonraki aşamaya geçer.” Aşamalar arasındaki ilerlemeyi anlatır ve ardından gelen dört aşama listesine geçiş sağlar. Olur. Buradaki “öğrenimini bitirince” ifadesini, bağlam içinde bulunduğu aşamadaki öğrenimini tamamlayınca diye okumak gerekir.
+D) بَعْدَ إِكْمَالِ دِرَاسَتِهِ الثَّانَوِيَّةِ لَهُ الْحَقُّ بِمُتَابَعَةِ الدِّرَاسَةِ.
+Tercümesi: “Lise öğrenimini tamamladıktan sonra eğitimine devam etme hakkı vardır.” Yalnızca lise sonrasına odaklanır. Olmaz.
+E) فَإِذَا تَخَرَّجَ مِنَ الْجَامِعَةِ حَصَلَ عَلَى شَهَادَةٍ جَامِعِيَّةٍ.
+Tercümesi: “Üniversiteden mezun olursa üniversite diploması alır.” Dört aşamanın yalnızca sonuncusuyla ilgilidir. Olmaz.
+Doğru cevap: C. — Yıl: 2018
+60. soru
+يَتَكَوَّنُ السِّلْكُ مِنْ جُزْأَيْنِ مُهِمَّيْنِ وَهُمَا: الْجُزْءُ الْمَعْدِنِيُّ وَيَكُونُ عَادَةً مَصْنُوعًا مِنَ النُّحَاسِ. ــــ وَهَذَا الْجُزْءُ مَصْنُوعٌ مِنْ مَادَّةٍ عَازِلَةٍ. أَيْ لَا يُوصِلُ الْكَهْرَبَاءَ. فَالْكَهْرَبَاءُ لَا تَسْتَطِيعُ الْمُرُورَ فِيهِ.
+Tercümesi: “Tel iki önemli parçadan oluşur: Genellikle bakırdan yapılan metal bölüm. …… Bu bölüm yalıtkan bir maddeden yapılmıştır; yani elektriği iletmez. Dolayısıyla elektrik onun içinden geçemez.”
+Boşluğun öncesi ve sonrası: İki parça olduğu söylenip birincisi, metal bölüm, tanıtılıyor. Boşlukta ikinci parçanın adı gelmeli. Sonraki وَهَذَا الْجُزْءُ “ve bu parça” sözü doğrudan o ikinci parçaya dönüyor.
+Noktalama ve zamir: وَهُمَا: ifadesinden sonraki iki nokta üst üste (:), iki parçanın sayılacağını haber verir. Metal bölümün açıklaması noktayla biter. Doğru şıktaki الَّذِي يَغْطِي “onu örten” yapısının nesnesi metal bölümdür. Sonraki هَذَا الْجُزْءُ ve فِيهِ ise plastik bölüme döner.
+Şıklara bakalım:
+A) جَمِيعُ الْمَوَادِّ مِنْ حَوْلِنَا مُكَوَّنَةٌ مِنْ أَشْيَاءَ صَغِيرَةٍ.
+Tercümesi: “Çevremizdeki bütün maddeler küçük şeylerden oluşur.” Telin ikinci parçasını tanıtmaz. Olmaz.
+B) وَالْجُزْءُ الْبِلَاسْتِيكِيُّ الَّذِي يُغَطِّي الْجُزْءَ الْمَعْدِنِيَّ.
+Tercümesi: “Ve metal bölümü örten plastik bölüm.” Sayılması beklenen ikinci parçayı verir. Ardından gelen “bu bölüm yalıtkandır” ifadesi plastik bölüme bağlanır. Olur.
+C) إِنَّ الْمَعَادِنَ مِثْلَ الْحَدِيدِ وَالنُّحَاسِ تُوصِلُ الْكَهْرَبَاءَ.
+Tercümesi: “Demir ve bakır gibi metaller elektriği iletir.” Metal bölümle ilgilidir; ikinci parçayı tanıtmaz. Ayrıca ardından gelen “bu bölüm yalıtkandır” sözüyle çelişir. Olmaz.
+D) فَفِي بَعْضِ الْمَوَادِّ الْأُخْرَى لَا تَسْتَطِيعُ التَّحَرُّكَ.
+Tercümesi: “Başka bazı maddelerde ise hareket edemez.” Buradaki gizli özneye ve hangi maddeden söz edildiğine önceki bağlamda açık bir dayanak yoktur; ikinci parçanın adı da verilmez. Olmaz.
+E) وَفِي الْمَوَادِّ الْمُوصِلَةِ لِلْكَهْرَبَاءِ تَسْتَطِيعُ التَّحَرُّكَ.
+Tercümesi: “Elektriği ileten maddelerde ise hareket edebilir.” İletken maddelere geçer; sonraki yalıtkan bölüm açıklamasını hazırlamaz. Olmaz.
+Doğru cevap: B. — Yıl: 2018
+61. soru
+ــــ فَقَدِ اسْتُخْدِمَ فِي كِتَابَةِ الرَّسَائِلِ الْعَادِيَّةِ وَالْمُخْتَصَرَةِ بَدِيلًا عَنْ رَسَائِلِ الْبَرِيدِ الْعَادِيِّ بِكُلْفَةٍ أَقَلَّ وَبِسُرْعَةٍ أَكْبَرَ. كَمَا اسْتُخْدِمَ بَدِيلًا عَنْ آلَةِ التَّصْوِيرِ وَالتِّلْفَازِ وَالْآلَةِ الْحَاسِبَةِ وَالْمَعَاجِمِ وَالْقَوَامِيسِ الْعَامَّةِ وَالْخَاصَّةِ بِلُغَاتٍ مُتَعَدِّدَةٍ.
+Tercümesi: “…… Çünkü normal ve kısa mesajların yazılmasında, sıradan posta mektuplarının yerine daha düşük maliyetle ve daha hızlı biçimde kullanılmıştır. Ayrıca fotoğraf makinesi, televizyon, hesap makinesi ve farklı dillerdeki genel ve özel sözlüklerin yerine de kullanılmıştır.”
+Boşluğun öncesi ve sonrası: Boşluk parçanın başında. Sonraki cümleler bir aracın çok sayıda işlevini örnekliyor. Bu örnekleri toplayan genel bir giriş gerekir.
+Bağlaç ve zamir: فَقَدْ gerekçelendirme/örneklendirme bağlantısı kurar: “Nitekim/çünkü kullanılmıştır.” Edilgen اسْتُخْدِمَ fiilinin gizli öznesi, boşlukta adı verilen araca döner. İkinci cümledeki كَمَا “ayrıca” diyerek başka kullanımları ekler.
+Şıklara bakalım:
+A) لِلْإِنْتَرْنِتِ دَوْرٌ غَيْرُ هَامٍّ فِي حَيَاةِ النَّاسِ،
+Tercümesi: “İnternetin insanların hayatında önemsiz bir rolü vardır.” Ardından çok sayıda yararlı kullanım sıralanması “önemsiz” yargısıyla uyuşmaz. Olmaz.
+B) آلَةُ التَّصْوِيرِ جِهَازٌ ذُو أَهَمِّيَّةٍ كَبِيرَةٍ،
+Tercümesi: “Fotoğraf makinesi çok önemli bir cihazdır.” Fotoğraf makinesi sonraki cümlede yerine kullanılan araçlardan biri olarak geçer; parçanın ana konusu olamaz. Olmaz.
+C) لَقَدْ أَثَّرَ الْهَاتِفُ عَلَى حَيَاتِنَا بِشَكْلٍ سَلْبِيٍّ،
+Tercümesi: “Telefon hayatımızı olumsuz biçimde etkiledi.” Sonrasında faydaları anlatılır; olumsuz değerlendirme bağlama uymaz. Olmaz.
+D) لِلرَّادْيُو أَهَمِّيَّةٌ كَبِيرَةٌ فِي حَيَاتِنَا الْيَوْمِيَّةِ،
+Tercümesi: “Radyonun günlük hayatımızda büyük önemi vardır.” Sayılan mesajlaşma, görüntüleme ve sözlük işlevleri radyoya bağlanmaz. Olmaz.
+E) لَقَدْ أَدَّى الْهَاتِفُ الْجَوَّالُ خَدَمَاتٍ كَثِيرَةً لِلنَّاسِ،
+Tercümesi: “Cep telefonu insanlara birçok hizmet sundu.” Devamındaki farklı kullanımlar bu genel yargının örnekleridir; اسْتُخْدِمَ fiilinin gönderdiği araç da cep telefonudur. Olur.
+Doğru cevap: E. — Yıl: 2018
+62. soru
+الْحِوَارُ هُوَ تَدَاوُلُ الْكَلَامِ بَيْنَ شَخْصَيْنِ أَوْ فَرِيقَيْنِ وَكَمَا أَنَّ الْجِدَالَ تَدَاوُلُ الْكَلَامِ، كَذَلِكَ الْحِوَارُ تَدَاوُلُ الْكَلَامِ ــــ وَإِنَّمَا يَحْمِلُ صِفَةَ الْحِرْصِ عَلَى الْعِلْمِ وَالْمَعْرِفَةِ وَالِاطِّلَاعِ.
+Tercümesi: “Diyalog, iki kişi veya iki grup arasında söz alışverişidir. Tartışma nasıl söz alışverişiyse diyalog da söz alışverişidir …… fakat bilgiye, öğrenmeye ve araştırmaya özen gösterme niteliği taşır.”
+Boşluğun öncesi ve sonrası: Önce diyalogla tartışmanın ortak yanı, yani söz alışverişi olmaları veriliyor. Sonra diyaloğun ayırıcı niteliği söyleniyor. Araya, diyaloğun tartışmadaki husumet/çekişme niteliğini taşımadığını belirten ifade gerekir.
+Bağlaç ve noktalama: وَكَمَا ... كَذَلِكَ ... “nasıl … ise … de öyle” karşılaştırmasıdır. Boşluktan sonraki وَإِنَّمَا (“aksine / bilakis”) önce olumsuzlanan bir nitelikten sonra olumlu niteliği vurgular. Doğru şıktaki لَكِنْ ve لَا bu karşıtlığı hazırlar.
+Şıklara bakalım:
+A) لَكِنَّ الْحِوَارَ لَا يَحْمِلُ صِفَةَ الْخُصُومَةِ،
+Tercümesi: “Fakat diyalog husumet niteliği taşımaz.” Ardından “bilakis bilgi ve öğrenmeye özen niteliği taşır” denmesiyle düşünce tamamlanır. Olur.
+B) إِنَّ أَفْضَلَ السُّبُلِ لِحَلِّ الْمَشَاكِلِ هُوَ الْحِوَارُ،
+Tercümesi: “Sorunları çözmenin en iyi yolu diyalogdur.” Yeni bir konu açar; ardından gelen وَإِنَّمَا ile karşıtlık kurmaz. Olmaz.
+C) وَالْحِوَارُ ثَقَافَةٌ حَضَارِيَّةٌ وَهُوَ لُغَةُ الْعَقْلِ،
+Tercümesi: “Diyalog uygar bir kültürdür ve aklın dilidir.” Olumlu nitelikler sıralar; sonrasındaki وَإِنَّمَا karşıtlığını hazırlamaz. Olmaz.
+D) وَلَا شَكَّ فِي أَنَّ بَعْضَ الْحِوَارِ قَدْ يَنْقَلِبُ إِلَى جَدَلٍ،
+Tercümesi: “Kuşkusuz bazı diyaloglar tartışmaya dönüşebilir.” Ardından “bilakis bilgiye özen niteliği taşır” sözüyle beklenen ayrımı kurmaz. Olmaz.
+E) وَالْحِوَارُ أُسْلُوبٌ حَضَارِيٌّ وَأَخْلَاقِيٌّ فِي نَفْسِ الْوَقْتِ،
+Tercümesi: “Diyalog aynı zamanda uygar ve ahlaki bir yöntemdir.” Yine olumlu bilgi ekler; olumsuzlama → düzeltme ilişkisini kurmaz. Olmaz.
+Doğru cevap: A. — Yıl: 2018
+63. soru
+الْمِيَاهُ الْعَذْبَةُ هِيَ الْمِيَاهُ الَّتِي يَتَعَامَلُ مَعَهَا الْإِنْسَانُ بِشَكْلٍ مُبَاشِرٍ ــــ وَقَدْ شَهِدَتْ مَصَادِرُ الْمِيَاهِ الْعَذْبَةِ تَدَهْوُرًا كَبِيرًا فِي الْآوِنَةِ الْأَخِيرَةِ لِعَدَمِ تَوْجِيهِ قَدْرٍ وَافِرٍ مِنَ الِاهْتِمَامِ لَهَا.
+Tercümesi: “Tatlı su, insanın doğrudan kullandığı sudur …… Tatlı su kaynakları ise son dönemde kendilerine yeterince önem verilmemesi nedeniyle büyük bir bozulma yaşamıştır.”
+Boşluğun öncesi ve sonrası: İlk bölüm insanın tatlı suyla doğrudan ilişkisini söylüyor. Boşlukta bunun nasıl bir ilişki olduğu açıklanmalı. Sonraki bölüm tatlı su kaynaklarının durumuna geçiyor.
+Zamir ve bağlaç: Doğru şıktaki لِأَنَّهُ “çünkü o” ifadesindeki ـهُ, hemen önceki الْإِنْسَانُ sözcüğüne döner; “çünkü insan onu içer” anlamındadır. يَشْرَبُهَا / يَسْتَخْدِمُهَا fiillerindeki ـهَا ise الْمِيَاهُ الْعَذْبَةُ ifadesine döner. Boşluktan sonraki وَقَدْ yeni bir bilgiye geçer.
+Şıklara bakalım:
+A) يَقْتَصِرُ ضَرَرُهُ عَلَى الْإِنْسَانِ وَمَا يُسَبِّبُهُ مِنْ أَمْرَاضٍ.
+Tercümesi: “Zararı insanla ve neden olduğu hastalıklarla sınırlıdır.” Öncesinde tatlı suyun zararlı olduğundan söz edilmez; ضَرَرُهُ için uygun dayanak yoktur. Olmaz.
+B) لِأَنَّهُ يَشْرَبُهَا وَيَسْتَخْدِمُهَا فِي طَعَامِهِ الَّذِي يَتَنَاوَلُهُ.
+Tercümesi: “Çünkü insan onu içer ve tükettiği yiyeceklerde kullanır.” İnsanla tatlı su arasındaki doğrudan ilişkinin gerekçesini verir. Zamirler de doğru sözcüklere döner. Olur.
+C) كَمَا أَنَّهَا تُسَاعِدُ عَلَى تَكَاثُرِ الْحَشَرَاتِ مِثْلَ الْبَعُوضِ.
+Tercümesi: “Ayrıca sivrisinek gibi böceklerin çoğalmasına yardım eder.” İnsanların tatlı suyla doğrudan ilişkisini açıklamaz. Olmaz.
+D) إِنَّمَا يَمْتَدُّ لِيَشْمَلَ الْحَيَاةَ فِي مِيَاهِ الْأَنْهَارِ.
+Tercümesi: “Bilakis nehir sularındaki yaşamı kapsayacak biçimde genişler.” يَمْتَدُّ fiilinin gönderdiği uygun bir önceki unsur kurulmamıştır; konu da kayar. Olmaz.
+E) بِسَبَبِ النَّفْطِ النَّاتِجِ عَنْ حَوَادِثِ السُّفُنِ.
+Tercümesi: “Gemi kazalarından kaynaklanan petrol nedeniyle.” Tatlı suyun insan tarafından doğrudan kullanılmasını açıklamaz. Olmaz.
+Doğru cevap: B. — Yıl: 2018

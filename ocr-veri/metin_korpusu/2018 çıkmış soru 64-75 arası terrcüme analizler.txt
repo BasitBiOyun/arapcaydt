@@ -1,0 +1,159 @@
+2018 YDT Arapça — 64–75 TERCÜME soruları
+64. soru
+وَظِيفَةُ التَّرْجَمَةِ تَحْقِيقُ نَقْلٍ فِكْرِيٍّ وَثَقَافِيٍّ بَيْنَ الْمُجْتَمَعَاتِ.
+Tercümesi: “Çevirinin görevi, toplumlar arasında düşünsel ve kültürel aktarımı gerçekleştirmektir.”
+Yüklem ve dikkat noktası: Bu bir isim cümlesidir. وَظِيفَةُ التَّرْجَمَةِ “çevirinin görevi”, haber olan تَحْقِيقُ نَقْلٍ... ise “aktarımı gerçekleştirmek”tir. Görev edinmiştir, amaçtır, çalışmaktır ve birlik sağlamaktır aynı yargılar değildir.
+Şıklar:
+A) “Çevirinin görevi, toplumlar arasında fikirsel ve kültürel aktarımı gerçekleştirmektir.” Özne, görev ve aktarım aynen korunur. Olur.
+B) “Çeviri, toplumlar arasında kültürel ve fikirsel aktarımı gerçekleştirmeyi görev edinmiştir.” “Görev edinmiştir” ifadesi bir edinme/üstlenme anlamı katar; özgün cümle görevin ne olduğunu tanımlar. Olmaz.
+C) “Çevirinin amacı, toplumlar arasında hem kültürel hem de fikirsel aktarımı gerçekleştirmeye çalışmaktır.” Görev → amaç, gerçekleştirmek → gerçekleştirmeye çalışmak değişmiştir. Olmaz.
+D) “Çevirinin görevi, toplumlar arasında kültürel ve fikirsel birliği sağlamaktır.” Aktarım, birlik sağlama olarak değiştirilmiştir. Olmaz.
+E) “Çeviri, toplumlara sadece kültürel aktarım yapmayı sağlamaz aynı zamanda fikirsel aktarım yapmayı da gerçekleştirir.” Özgün cümlede bulunmayan sadece … değil, aynı zamanda … karşıtlığı ve farklı bir cümle yapısı eklenmiştir. Olmaz.
+Doğru cevap: A. — Yıl: 2018
+65. soru
+ازْدَهَرَتْ مِيلَانُو، وَهِيَ مِنْ أَجْمَلِ وَأَكْبَرِ مُدُنِ إِيطَالِيَا، اعْتِبَارًا مِنَ الْعُصُورِ الْوُسْطَى فَأَصْبَحَتْ مَرْكَزًا تِجَارِيًّا وَمَالِيًّا هَامًّا.
+Tercümesi: “İtalya’nın en güzel ve en büyük şehirlerinden biri olan Milano, Orta Çağ’dan itibaren gelişti ve önemli bir ticari ve mali merkez hâline geldi.”
+Yüklem ve dikkat noktası: ازْدَهَرَتْ “gelişti/serpildi”; فَأَصْبَحَتْ “böylece hâline geldi”. مِنْ أَجْمَلِ وَأَكْبَرِ “en güzel ve en büyük şehirlerinden biri” anlamındadır. Metinde bugün, gittikçe veya borçludur denmiyor.
+Şıklar:
+A) “Ortaçağ’dan itibaren büyük bir gelişme kaydeden güzel İtalyan şehri Milano, bugün önemli bir malî ve ticari merkez haline gelmiştir.” En güzel ve en büyük şehirlerden biri bilgisi eksik; bugün eklenmiş. Olmaz.
+B) “İtalya’nın Ortaçağ’dan beri en büyük şehirlerinden biri olan Milano, gittikçe gelişerek önemli bir ticari ve malî merkez olmuştur.” En güzellerinden biri bilgisi eksik; gittikçe eklenmiş. Olmaz.
+C) “İtalya’nın en güzel ve en büyük şehirlerinden biri olan Milano, Ortaçağ’dan itibaren gelişerek önemli bir ticari ve malî merkez olmuştur.” Bütün temel bilgiler ve gelişme → sonuç ilişkisi korunur. Olur.
+D) “Ortaçağ’dan beri İtalya’nın en güzel ve en büyük şehri olan Milano, gittikçe gelişerek bugün önemli bir ticari ve malî merkez olmuştur.” Şehirlerinden biri yerine en güzel ve en büyük şehri denerek derece değiştirilmiş; ayrıca yeni zaman ifadeleri eklenmiş. Olmaz.
+E) “İtalya’nın en güzel ve en büyük şehirlerinden biri olan Milano, önemli bir ticari ve malî merkez olmasını, Ortaçağ’dan beri kaydettiği gelişmesine borçludur.” Genel düşünce yakın olsa da borçlu olma biçiminde yeni bir nedensellik kuruluyor. C daha doğrudan karşılıktır. Olmaz.
+Doğru cevap: C. — Yıl: 2018
+66. soru — 
+Soru:
+بَدَأَتْ أَوَّلُ مُحَاوَلَاتٍ لِإِنْشَاءِ قَنَاةِ بَنَمَا، الَّتِي تَصِلُ بَيْنَ الْمُحِيطِ الْهَادِئِ وَالْمُحِيطِ الْأَطْلَسِيِّ وَالْبَحْرِ الْكَارِيبِيِّ، سَنَةَ ١٨٨٠.
+Tercümesi: “Pasifik Okyanusu ile Atlas Okyanusu ve Karayip Denizi arasında bağlantı sağlayan Panama Kanalı’nı inşa etmeye yönelik ilk girişimler 1880 yılında başladı.”
+Şıklara bakmadan önce neyi yakalamalıyız? Cümlenin yüklemi بَدَأَتْ “başladı”dır. Başlayan şey أَوَّلُ مُحَاوَلَاتٍ “ilk girişimler”dir. لِإِنْشَاءِ قَنَاةِ بَنَمَا bu girişimlerin amacını, سَنَةَ ١٨٨٠ ise ne zaman başladığını söyler. Kanalın yapımının veya projesinin 1880’de tamamlandığı söylenmez. الَّتِي تَصِلُ بَيْنَ... bölümü de kanalın hangi yerler arasında bağlantı kurduğunu açıklar.
+Şıklara bakalım:
+A) “Panama Kanalı’nı Pasifik Okyanusu ile Atlas Okyanusu arasında yer alan Karayipler Denizi’ne bağlama çalışmalarına 1880 yılında başlanmıştır.”
+Olmaz. Arapça cümlede Panama Kanalı’nın Karayip Denizi’ne bağlanması anlatılmıyor; Panama Kanalı’nın söz konusu deniz ve okyanuslar arasında bağlantı sağlaması anlatılıyor. Bağlantının yönü değişmiş.
+B) “Pasifik Okyanusu, Atlas Okyanusu ve Karayipler Denizi’ni bağlayan Panama Kanalı’nın yapımı için ilk çalışmalar, 1880 yılında başlamıştır.”
+Olur. “Yapımı için ilk çalışmalar başladı” ifadesi, بَدَأَتْ أَوَّلُ مُحَاوَلَاتٍ لِإِنْشَاءِ yapısını karşılıyor. Özneyi, yüklemi, amacı ve başlangıç tarihini koruyor.
+C) “Yapımına 1880 yılında başlanan Panama Kanalı, Pasifik Okyanusu’nu Atlas Okyanusu ve Karayipler Denizi’ne bağlamaktadır.”
+Olmaz. Arapçada 1880’de ilk girişimlerin başladığı söylenirken bu şıkta yapımın başladığı söyleniyor. “İlk girişimler” bilgisi kaybolmuş.
+D) “Pasifik Okyanusu’nu Atlas Okyanusu ve Karayipler Denizi’ne bağlayan Panama Kanalı’nın inşası için ilk kazma, 1880 yılında vurulmuştur.”
+Olmaz. “İlk kazma vuruldu” ifadesi, fiilî inşaatın başladığını bildirir. أَوَّلُ مُحَاوَلَاتٍ ise “ilk girişimler” demektir; kazı yapıldığı bilgisi vermez. Bu şık, metnin söylediğinden daha ileri bir anlam taşır.
+E) “Projesi 1880 yılında tamamlanan Panama Kanalı, Pasifik ve Atlas Okyanusları ile Karayipler Denizi arasında bir geçit oluşturmaktadır.”
+Olmaz. Arapçada bir başlangıç anlatılır; projenin tamamlanması anlatılmaz.
+Doğru cevap: B. — Yıl: 2018
+67. soru
+يُعَدُّ الضَّوْءُ وَالْحَرَارَةُ وَالْهَوَاءُ وَالتُّرَابُ وَالْمَاءُ مِنَ الْعَوَامِلِ الطَّبِيعِيَّةِ الْأَسَاسِيَّةِ فِي تَحْقِيقِ تَوَازُنِ النِّظَامِ الْبِيئِيِّ.
+Tercümesi: “Işık, ısı, hava, toprak ve su; ekosistemin dengesinin sağlanmasında temel doğal etkenlerden sayılır.”
+Yüklem ve dikkat noktası: يُعَدُّ ... مِنْ yapısı “...-den sayılır” anlamındadır. فِي تَحْقِيقِ “sağlanmasında” ilişkisini verir. Etkenlerin dengeye olumsuz etkisi söylenmiyor.
+Şıklar:
+A) “Ekolojik dengenin sağlanmasında önemli olan unsurlar arasında ışık, ısı, hava, toprak ve su gibi elementler bulunur.” Yakındır; ancak temel doğal etkenlerden sayılma yargısını daha gevşek biçimde “önemli olan unsurlar arasında … gibi” diye verir. Olmaz.
+B) “Temel doğa unsurları arasında ışık, ısı, hava, toprak ve su bulunmaktadır ki bunlar ekolojik dengeyi sağlar.” Anlam yakın olsa da “bunlar … sağlar”, özgün cümledeki dengenin sağlanmasında temel etkenlerden sayılır derecesinden daha kesin bir yargıdır. Olmaz.
+C) “Su, toprak, hava, ısı ve ışık, temel doğa elementleri arasındadır ve bunlar ekolojik denge için gereklidir.” Gerekli olma yargısı, özgün temel etkenlerden sayılma yargısının tam karşılığı değildir. Olmaz.
+D) “Işık, ısı, hava, toprak ve su, ekolojik dengeyi sağlayan temel doğa elementlerinden sayılmaktadır.” يُعَدُّ ... مِنْ yapısını ve temel öğe anlamını en yakın biçimde korur. Olur.
+E) “Ekolojik denge, ışık, ısı, hava, toprak ve su gibi doğal elementlerin olumsuz etkisi sonucunda bozulur.” Özgün cümlenin anlamını tersine çevirir. Olmaz.
+Doğru cevap: D. — Yıl: 2018
+68. soru
+يُؤَكِّدُ مُعْظَمُ الْعُلَمَاءِ أَنَّ الْحِمْيَةَ الْغِذَائِيَّةَ لَهَا تَأْثِيرٌ قَوِيٌّ لَا عَلَى وَزْنِ الشَّخْصِ فَحَسْبُ، بَلْ عَلَى صِحَّةِ الدِّمَاغِ وَالْقَلْبِ وَالْأَوْعِيَةِ الدَّمَوِيَّةِ أَيْضًا.
+Tercümesi: “Bilim insanlarının çoğu, diyetin yalnızca kişinin kilosu üzerinde değil, beynin, kalbin ve kan damarlarının sağlığı üzerinde de güçlü bir etkisi olduğunu vurguluyor.”
+Yüklem ve dikkat noktası: Ana yüklem يُؤَكِّدُ “vurguluyor”; özne مُعْظَمُ الْعُلَمَاءِ “bilim insanlarının çoğu”. لَا ... فَحَسْبُ، بَلْ ... أَيْضًا yapısı “yalnızca … değil, … de” demektir. الْقَلْبِ “kalp” bilgisinin çeviride korunmasına dikkat edin.
+Şıklar:
+A) “Yeme alışkanlıklarının beyin ve kan damarlarının sağlığına güçlü bir etkisi olduğuna dikkat çeken bilim insanları, yiyeceklerin, kişilerin kilo almasında da etkili olduğunu vurguluyor.” Çoğu ve kalp eksik; “kilo” kilo almaya dönüşmüş. Olmaz.
+B) “Bilim insanları, kişinin yeme alışkanlıklarının sadece kilosunu değil, aynı zamanda beyin ve kan damarlarının sağlığını da doğrudan etkilediğini belirtiyor.” Çoğu, kalp ve güçlü etki korunmamış; doğrudan eklenmiş. Olmaz.
+C) “Diyetin beyin ve kan damarlarının sağlığına güçlü bir etkisi olduğunu vurgulayan bilim insanları, kişilerin kilo almasında yiyeceklerin doğrudan etkisi olduğunu söylüyor.” Çoğu, kalp ve yalnızca … değil yapısı kaybolur; kilo alma ve doğrudan etki eklenir. Olmaz.
+D) “Bilim insanlarının çoğu diyetin sadece kişinin kilosuna değil, beyin ve kan damarlarının sağlığına da büyük bir etkisi olduğunu vurguluyor.” Ana yüklem, özne ve karşıtlık en iyi korunur.. Olur.
+E) “Bilim insanlarının çoğu, kişinin yeme düzeninin hem kilosuna hem de beyin ve kan damarlarının sağlığına doğrudan etki ettiğini söylüyor.” Güçlü etki → doğrudan etki, vurguluyor → söylüyor değişmiş; kalp eksik. Olmaz.
+PDF cevap anahtarı: D. Editör notu: 
+Yıl: 2018.
+69. soru
+تَضُمُّ مَكْتَبَةُ أَسْكُورِيَالَ، الْوَاقِعَةُ بِإِسْبَانْيَا وَالَّتِي أُنْشِئَتْ فِي الْقَرْنِ السَّادِسَ عَشَرَ، عَشَرَاتِ الْآلَافِ مِنَ الْكُتُبِ وَكَثِيرًا مِنَ الْخَرَائِطِ الْقَدِيمَةِ وَالْأَعْمَالِ الْفَنِّيَّةِ وَالْأَدَوَاتِ الْعِلْمِيَّةِ.
+Tercümesi: “İspanya’da bulunan ve 16. yüzyılda inşa edilmiş olan Escurial Kütüphanesi, on binlerce kitap ile çok sayıda eski harita, sanat eseri ve bilimsel araç barındırır.”
+Yüklem ve dikkat noktası: تَضُمُّ “barındırır/içerir” yüklemidir. أُنْشِئَتْ فِي الْقَرْنِ السَّادِسَ عَشَرَ ifadesindeki tarih kütüphanenin inşasına aittir; kitapların veya araçların tarihine değil. Liste dört gruptan oluşur: kitaplar, eski haritalar, sanat eserleri, bilimsel araçlar.
+Şıklar:
+A) “İspanya’da bulunan ve XVI. yüzyılda inşa edilen Escurial Kütüphanesi, on binlerce kitap, çok sayıda eski harita, sanat eseri ve bilimsel malzeme barındırmaktadır.” Yer, inşa tarihi, yüklem ve içerik listesi korunur. Olur.
+B) “XVI. yüzyılda İspanya’da inşa edilen mükemmel bir sanat eseri olan Escurial Kütüphanesi, on binlerce kitabın yanı sıra bazı eski haritaları ve bilimsel malzemeleri de bünyesinde barındırmaktadır.” Kütüphaneyi mükemmel sanat eseri diye niteler; içerdiği sanat eserlerini listeden çıkarır. Olmaz.
+C) “On binlerce kitap, eski haritalar, çok sayıda sanat eseri ve bilimsel malzemenin muhafaza edildiği İspanya’daki Escurial Kütüphanesi, XVI. yüzyılda inşa edilmiştir.” Temel bilgiler yakındır; ancak çok sayıda ifadesini sanat eserlerine bağlayarak listedeki nicelik ilişkisini değiştirir. A daha tam karşılıktır. Olmaz.
+D) “İspanya’da bulunan Escurial Kütüphanesi, on binlerce kitap ve çok sayıda eski haritanın yanı sıra XVI. yüzyıla ait birtakım bilimsel malzeme barındırmaktadır.” XVI. yüzyıl bilimsel malzemeye bağlanmış; sanat eserleri de eksik. Olmaz.
+E) “İspanya’da bulunan Escurial Kütüphanesi, XVI. yüzyıla ait on binlerce kitabın yanı sıra çok sayıda eski harita, sanat eseri ve bilimsel malzemeyi de barındırmaktadır.” Tarih kitaplara bağlanmış; oysa kütüphanenin inşa tarihidir. Olmaz.
+Doğru cevap: A. — Yıl: 2018
+2018 YDT Arapça — 70–75. sorular
+70. soru
+Türkçe cümle: “Sosyal medya siteleri, çocukları çok fazla kalori içeren fast-food yiyecekleri yemeye teşvik ediyor.”
+Arayacağımız unsurlar: Siteler teşvik ediyor → مَوَاقِعُ التَّوَاصُلِ ... تُشَجِّعُ; çocukları → الْأَطْفَالَ; fast-food yiyecekleri → أَطْعِمَةَ الْوَجَبَاتِ السَّرِيعَةِ; çok kalori içeren → تَحْتَوِي عَلَى سُعُرَاتٍ حَرَارِيَّةٍ كَثِيرَةٍ. Özellikle teşvik edenin kim olduğuna bakın.
+A) مَوَاقِعُ التَّوَاصُلِ الِاجْتِمَاعِيِّ تُشَجِّعُ الْأَطْفَالَ عَلَى تَنَاوُلِ أَطْعِمَةِ الْوَجَبَاتِ السَّرِيعَةِ الَّتِي تَحْتَوِي عَلَى سُعُرَاتٍ حَرَارِيَّةٍ كَثِيرَةٍ.
+Olabilir: Teşvik eden siteler, teşvik edilen çocuklar; yiyecek türü ve yüksek kalori bilgisi korunuyor.
+B) مَوَاقِعُ التَّوَاصُلِ الِاجْتِمَاعِيِّ تُعْطِي الْأَطْفَالَ فُرْصَةَ تَنَاوُلِ أَطْعِمَةِ الْوَجَبَاتِ السَّرِيعَةِ الَّتِي تَحْتَوِي عَلَى السُّعُرَاتِ الْحَرَارِيَّةِ مَجَّانًا.
+Olmaz: تُعْطِي ... فُرْصَةَ “fırsat veriyor”, تُشَجِّعُ “teşvik ediyor” değildir. مَجَّانًا “ücretsiz” bilgisi de eklenmiştir.
+C) مَوَاقِعُ التَّوَاصُلِ الِاجْتِمَاعِيِّ تَدْفَعُ الْأَطْفَالَ إِلَى تَنَاوُلِ الْأَطْعِمَةِ الدَّسِمَةِ الَّتِي تَحْتَوِي عَلَى السُّعُرَاتِ الْحَرَارِيَّةِ الْكَثِيرَةِ.
+Olmaz: تَدْفَعُ teşvike yakın görünür; fakat الْأَطْعِمَةُ الدَّسِمَةُ “yağlı yiyecekler”dir. Türkçedeki fast-food yiyecekleri aynen karşılanmıyor.
+D) يُشَجِّعُ الْأَطْفَالُ أَصْدِقَاءَهُمْ فِي مَوَاقِعِ التَّوَاصُلِ الِاجْتِمَاعِيِّ عَلَى تَنَاوُلِ أَطْعِمَةِ الْوَجَبَاتِ السَّرِيعَةِ الَّتِي تَحْتَوِي عَلَى الْكَثِيرِ مِنَ السُّعُرَاتِ الْحَرَارِيَّةِ.
+Olmaz: يُشَجِّعُ الْأَطْفَالُ أَصْدِقَاءَهُمْ “çocuklar arkadaşlarını teşvik ediyor.” Özne değişmiş.
+E) مَوَاقِعُ التَّوَاصُلِ الِاجْتِمَاعِيِّ تَمْنَعُ الْأَطْفَالَ مِنْ تَنَاوُلِ أَطْعِمَةِ الْوَجَبَاتِ السَّرِيعَةِ الَّتِي تَحْتَوِي عَلَى السُّعُرَاتِ الْحَرَارِيَّةِ الْكَثِيرَةِ.
+Olmaz: تَمْنَعُ ... مِنْ “...-den alıkoyuyor” demektir; teşvik ediyor anlamının tersidir.
+Doğru cevap: A. — Yıl: 2018
+71. soru
+Türkçe cümle: “Sözlükler, kelimeleri alfabetik sıraya göre dizen, anlamlarını veren, bazıları resimlerle süslenmiş başvuru eserleridir.”
+Arayacağımız unsurlar: Başvuru eserleri → مَرَاجِعُ; alfabetik sıra → التَّرْتِيبُ الْأَبْجَدِيُّ; kelimelerin anlamları → مَعَانِيهَا; bazıları → بَعْضُهَا. “Resimli olanlar” bütün sözlükler değil, yalnızca bazılarıdır.
+A) الْمَعَاجِمُ مَصَادِرُ تَضُمُّ كَلِمَاتٍ مُرَتَّبَةً حَسَبَ التَّرْتِيبِ الْأَبْجَدِيِّ وَتُعْطِي مَعَانِيَ الْأَلْفَاظِ مُوَضَّحَةً بِالصُّوَرِ.
+Olmaz: بَعْضُهَا “bazıları” yok; resimle açıklama bütün sözlüklerin genel niteliğiymiş gibi bağlanıyor.
+B) تُعْتَبَرُ الْمَعَاجِمُ مَرَاجِعَ تَسْرُدُ الْكَلِمَاتِ حَسَبَ التَّرْتِيبِ وَتُقَدِّمُ مَعَانِيَهَا وَقَدْ تَكُونُ بَعْضُهَا مُصَوَّرَةً.
+Olmaz: حَسَبَ التَّرْتِيبِ yalnızca “sıraya göre”dir; الْأَبْجَدِيِّ yani alfabetik bilgisi eksik.
+C) الْمَعَاجِمُ هِيَ مَرَاجِعُ تُرَتِّبُ الْكَلِمَاتِ حَسَبَ التَّرْتِيبِ الْأَبْجَدِيِّ وَتُعْطِي مَعَانِيَهَا وَتَكُونُ بَعْضُهَا مُزَيَّنَةً بِالصُّوَرِ.
+Olabilir: Başvuru kaynağı, alfabetik diziliş, anlamların verilmesi ve bazılarının resimlerle süslenmesi korunuyor.
+D) الْمَعَاجِمُ بِمَثَابَةِ الْمَرَاجِعِ مِنْ حَيْثُ إِنَّهَا مُرَتَّبَةٌ حَسَبَ التَّرْتِيبِ الْأَلْفِبَائِيِّ بِالْإِضَافَةِ إِلَى كَوْنِهَا مُزَيَّنَةً بِالصُّوَرِ.
+Olmaz: Kelimelerin anlamlarını verme bilgisi yok; ayrıca resim niteliği bazılarıyla sınırlandırılmamış.
+E) الْمَعَاجِمُ مَصَادِرُ مُهِمَّةٌ لِأَنَّهَا تُنَظِّمُ الْأَلْفَاظَ تَنْظِيمًا أَبْجَدِيًّا وَتُعْطِي مَعَانِيَهَا الْمُتَعَدِّدَةَ وَتَحْتَوِي عَلَى صُوَرٍ.
+Olmaz: Önemli, birden çok anlamları gibi ek bilgiler var; resim içermenin bazı sözlüklerle sınırlı olduğu korunmamış.
+Doğru cevap: C. — Yıl: 2018
+72. soru
+Türkçe cümle: “Dünya Sağlık Örgütü Yetkilileri, son yıllarda artış kaydeden kızıl humma vakalarının 2017 yılında azaldığını; ancak tamamen ortadan kalkmadığını belirttiler.”
+Arayacağımız unsurlar: Yetkililer belirtti; vakalar son yıllarda arttı; 2017’de azaldı; ama tamamen yok olmadı. Son karşıtlık belirleyici: إِلَّا أَنَّهَا لَمْ تَزُلْ تَمَامًا.
+A) صَرَّحَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ أَنَّ نِسْبَةَ حَالَاتِ الْحُمَّى الْقِرْمِزِيَّةِ ارْتَفَعَتْ فِي السَّنَوَاتِ الْأَخِيرَةِ وَأَنَّهَا أَخَذَتْ بِالِانْخِفَاضِ فِي عَامِ ٢٠١٧َ تَدْرِيجِيًّا.
+Olmaz: Artış ve düşüş var; fakat “tamamen ortadan kalkmadı” bilgisi yok.
+B) قَالَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ إِنَّ الْحُمَّى الْقِرْمِزِيَّةَ الَّتِي ازْدَادَتْ نِسْبَةُ حَالَاتِهَا فِي السَّنَوَاتِ الْأَخِيرَةِ امَّحَتْ تَمَامًا بِحُلُولِ عَامِ ٢٠١٧َ.
+Olmaz: امَّحَتْ تَمَامًا “tamamen yok oldu”; Türkçe cümlenin tersi.
+C) أَشَارَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ إِلَى أَنَّ حَالَاتِ الْحُمَّى الْقِرْمِزِيَّةِ انْخَفَضَتْ نِسْبِيًّا فِي عَامِ ٢٠١٧َ بَعْدَ أَنْ سَجَّلَتْ رَقْمًا قِيَاسِيًّا فِي الْعُقُودِ الْأَخِيرَةِ.
+Olmaz: Son yıllarda artış, son on yıllarda rekora dönüşmüş; tamamen ortadan kalkmama bilgisi de yok.
+D) صَرَّحَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ أَنَّ الْحُمَّى الْقِرْمِزِيَّةَ الَّتِي ازْدَادَتْ حَالَاتُهَا فِي السَّنَوَاتِ الْأَخِيرَةِ انْخَفَضَتْ فِي عَامِ ٢٠١٧َ وَتَمَّ الْقَضَاءُ عَلَيْهَا تَمَامًا.
+Olmaz: وَتَمَّ الْقَضَاءُ عَلَيْهَا تَمَامًا “tamamen ortadan kaldırıldı” der; yine tersidir.
+E) أَفَادَ مَسْؤُولُو مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ أَنَّ حَالَاتِ الْحُمَّى الْقِرْمِزِيَّةِ الَّتِي سَجَّلَتِ ارْتِفَاعًا فِي السَّنَوَاتِ الْأَخِيرَةِ قَدْ قَلَّتْ فِي عَامِ ٢٠١٧َ إِلَّا أَنَّهَا لَمْ تَزُلْ تَمَامًا.
+Olabilir: Artış → 2017’de azalış → tamamen yok olmama sırası aynen korunuyor.
+Doğru cevap: E. — Yıl: 2018
+73. soru
+Türkçe cümle: “Futbolda ilk dünya kupası 1930 yılında Uruguay’da düzenlenmiş ve ev sahibi ülke, Arjantin’i yenerek ‘ilk dünya kupası şampiyonu’ unvanını elde etmiştir.”
+Arayacağımız unsurlar: İlk turnuva → أَوَّلُ بُطُولَةٍ; 1930, Uruguay; ev sahibi ülke → الدَّوْلَةُ الْمُسْتَضِيفَةُ; Arjantin’i yenerek; ilk şampiyon unvanı. Özellikle final veya iki gol gibi ek bilgiler aramayın.
+A) أُقِيمَتْ أَوَّلُ بُطُولَةٍ لِكَأْسِ الْعَالَمِ لِكُرَةِ الْقَدَمِ فِي الْأُورُغْوَايِ فِي عَامِ ١٩٣٠َ وَقَدْ حَصَلَتِ الدَّوْلَةُ الْمُسْتَضِيفَةُ عَلَى لَقَبِ «أَوَّلِ بَطَلٍ فِي كَأْسِ الْعَالَمِ» بَعْدَ فَوْزِهَا عَلَى الْأَرْجَنْتِينِ.
+Olabilir: İlk turnuva, tarih, yer, ev sahibi, Arjantin’i yenme ve unvan birlikte korunmuş.
+B) فِي نِهَائِيَّاتِ كَأْسِ الْعَالَمِ لِكُرَةِ الْقَدَمِ، الَّتِي أُقِيمَتْ فِي الْأُورُغْوَايِ سَنَةَ ١٩٣٠َ، فَازَتِ الدَّوْلَةُ الْمُسْتَضِيفَةُ عَلَى الْأَرْجَنْتِينِ وَأَصْبَحَتْ أَوَّلَ بَطَلٍ عَالَمِيٍّ فِي كُرَةِ الْقَدَمِ.
+Olmaz: نِهَائِيَّاتِ “finaller” der; Türkçedeki ilk dünya kupası turnuvası düzenlendi bilgisini aynı açıklıkta vermez.
+C) فِي سَنَةِ ١٩٣٠َ، أُقِيمَتْ أَوَّلُ بُطُولَةٍ لِكَأْسِ الْعَالَمِ بِاسْتِضَافَةِ الْأُورُغْوَايِ وَحَصَلَتْ هَذِهِ الدَّوْلَةُ عَلَى لَقَبِ «أَوَّلِ بَطَلٍ فِي كَأْسِ الْعَالَمِ» بِفَوْزِهَا عَلَى خَصْمِهَا الْأَرْجَنْتِينِ بِهَدَفَيْنِ نَظِيفَيْنِ.
+Olmaz: بِهَدَفَيْنِ نَظِيفَيْنِ “iki golle, gol yemeden” ayrıntısı Türkçe cümlede yok.
+D) الْأُورُغْوَايُ هِيَ أَوَّلُ دَوْلَةٍ فَازَتْ بِلَقَبِ «أَوَّلِ بَطَلٍ فِي كَأْسِ الْعَالَمِ» وَهَذَا بَعْدَ أَنْ اسْتَضَافَتْ نِهَائِيَّاتِ أَوَّلِ بُطُولَةٍ لِكَأْسِ الْعَالَمِ لِكُرَةِ الْقَدَمِ سَنَةَ ١٩٣٠َ وَغَلَبَتِ الْأَرْجَنْتِينَ.
+Olmaz: Konu yakın olsa da نِهَائِيَّاتِ أَوَّلِ بُطُولَةٍ “ilk turnuvanın finalleri” biçiminde farklı bir yapı kurar; A, verilen yargıyı daha doğrudan karşılar.
+E) أُقِيمَتْ بُطُولَةٌ لِكَأْسِ الْعَالَمِ فِي سَنَةِ ١٩٣٠َ فِي الْأُورُغْوَايِ وَانْتَهَتِ الْمُبَارَيَاتُ النِّهَائِيَّةُ بِبُطُولَةِ الدَّوْلَةِ الْمُسْتَضِيفَةِ، كَأَوَّلِ بَطَلٍ عَالَمِيٍّ، بَعْدَ أَنْ هَزَمَتِ الْأَرْجَنْتِينَ.
+Olmaz: İlk cümlede بُطُولَةٌ “bir turnuva” denir; turnuvanın ilk olduğu doğrudan belirtilmez. Finaller ayrıntısı eklenir.
+Doğru cevap: A. — Yıl: 2018
+74. soru
+Türkçe cümle: “Kaynağını yağmurlar, göller, denizler, yeraltı suları ve diğer kaynakların oluşturduğu sular, yeryüzünün toplam alanının yaklaşık %70’ini kaplar.”
+Arayacağımız unsurlar: Özne sular, yüklem kaplar → تُغَطِّي الْمِيَاهُ; kaynaklar arasında yeraltı suları mutlaka var → الْمِيَاهُ الْجَوْفِيَّةُ; yaklaşık → مَا يُقَارِبُ / عَلَى وَجْهِ التَّقْرِيبِ; toplam alan → مُجْمَلُ مِسَاحَةِ الْأَرْضِ.
+A) تُغَطِّي الْمِيَاهُ، الَّتِي تُشَكِّلُ مَصَادِرَهَا الْأَمْطَارُ وَالْبُحَيْرَاتُ وَالْبِحَارُ وَالْمِيَاهُ الْجَوْفِيَّةُ وَيَنَابِيعُ أُخْرَى، مَا يُقَارِبُ السَّبْعِينَ بِالْمِائَةِ مِنْ مُجْمَلِ مِسَاحَةِ الْأَرْضِ.
+Olabilir: Suların kaynakları, yeraltı suları, yaklaşık oran ve toplam alan korunuyor.
+B) إِنَّ نِسْبَةَ السَّبْعِينَ بِالْمِائَةِ مِنْ مِسَاحَةِ الْأَرْضِ تَتَأَلَّفُ مِنَ الْمِيَاهِ وَمَصَادِرُ هَذِهِ الْمِيَاهِ هِيَ الْأَمْطَارُ وَالْبُحَيْرَاتُ وَالْبِحَارُ وَيَنَابِيعُ أُخْرَى.
+Olmaz: الْمِيَاهُ الْجَوْفِيَّةُ yok; ayrıca yaklaşık yerine kesin %70 var.
+C) أَكْثَرُ مِنْ مَجْمُوعِ مِسَاحَةِ الْكُرَةِ الْأَرْضِيَّةِ مُغَطًّى بِالْمِيَاهِ وَمَصَادِرُهَا هِيَ الْأَمْطَارُ الْغَزِيرَةُ وَالْبُحَيْرَاتُ وَالْبِحَارُ وَالْمِيَاهُ الْجَوْفِيَّةُ وَيَنَابِيعُ مُتَعَدِّدَةٌ.
+Olmaz: Yaklaşık %70 bilgisi yok; bol yağmur gibi ek niteleme var.
+D) تُغَطِّي الْمِيَاهُ بِنِسْبَةِ السَّبْعِينَ بِالْمِائَةِ مِنْ مِسَاحَةِ الْأَرْضِ عَلَى وَجْهِ التَّقْرِيبِ، وَأَهَمُّ مَصَادِرِهَا هِيَ الْأَمْطَارُ وَالْبُحَيْرَاتُ وَالْبِحَارُ وَالْمُحِيطَاتُ وَالْأُخْرَى.
+Olmaz: Yeraltı suları çıkarılmış, okyanuslar eklenmiş. “Kaynaklarını oluşturan” ifadesi de en önemli kaynaklarına dönüşmüş.
+E) تُعَدُّ بَيْنَ أَهَمِّ مَصَادِرِ الْمِيَاهِ، الَّتِي تُغَطِّي السَّبْعِينَ بِالْمِائَةِ مِنْ مَجْمُوعِ مِسَاحَةِ الْعَالَمِ، الْأَمْطَارُ وَالْبُحَيْرَاتُ وَالْبِحَارُ وَالْمِيَاهُ الْجَوْفِيَّةُ وَمَنَابِعُ أُخْرَى.
+Olmaz: Yaklaşık yok; ana yargı “sular kaplar” yerine “bunlar önemli kaynaklardan sayılır” biçimine kaymış.
+Doğru cevap: A. — Yıl: 2018
+75. soru
+Türkçe cümle: “Yapılan son araştırmalar, çok sayıda insanın yeterli miktarda E vitamini alamadığını ve bu nedenle çeşitli hastalıklara yakalandığını ortaya koydu.”
+Arayacağımız unsurlar: Son araştırmalar çoğul → الدِّرَاسَاتُ الَّتِي أُجْرِيَتْ أَخِيرًا; ortaya koydu → أَظْهَرَتْ; çok sayıda insan; yeterli miktarda alamama; bu nedenle hastalığa yakalanma. “Yakalanabilir” ya da “risk altında” yeterli değildir; sonuç gerçekleşmiş olarak anlatılıyor.
+A) أَظْهَرَتْ دِرَاسَةٌ أُجْرِيَتْ أَخِيرًا أَنَّ الَّذِينَ لَا يَحْصُلُونَ عَلَى نِسْبَةٍ كَافِيَةٍ مِنْ فِيتَامِينِ E، يُشَكِّلُونَ فِئَةً كَبِيرَةً وَهُمْ مُعَرَّضُونَ بِأَمْرَاضٍ مُتَعَدِّدَةٍ.
+Olmaz: دِرَاسَةٌ tek bir araştırmadır; مُعَرَّضُونَ hastalığa yakalanmış olmayı değil, risk altında olmayı anlatır.
+B) أَظْهَرَتْ دِرَاسَةٌ جَدِيدَةٌ أَنَّ إِصَابَةَ عَدَدٍ كَبِيرٍ مِنَ النَّاسِ بِأَمْرَاضٍ مُخْتَلِفَةٍ يَتَوَلَّدُ عَنْ عَدَمِ تَنَاوُلِهِمْ فِيتَامِينَ E بِكَمِّيَّةٍ كَافِيَةٍ يَوْمِيًّا.
+Olmaz: دِرَاسَةٌ tekil; يَوْمِيًّا “günlük” bilgisi eklenmiş. Türkçe cümle son araştırmalar der.
+C) أَظْهَرَ آخِرُ دِرَاسَةٍ أُجْرِيَتْ عَنْ فَوَائِدِ فِيتَامِينِ E أَنَّ الْحُصُولَ عَلَيْهِ بِحَظٍّ غَيْرِ مَوْفُورٍ قَدْ يُؤَدِّي إِلَى إِصَابَةِ كَثِيرٍ مِنَ النَّاسِ بِأَمْرَاضٍ مُخْتَلِفَةٍ.
+Olmaz: قَدْ يُؤَدِّي “yol açabilir” anlamındadır; Türkçede yakalandıkları söyleniyor. Araştırmanın konusu “E vitamininin faydaları” diye de değiştirilmiş.
+D) قَدْ ظَهَرَتْ مِنْ خِلَالِ الدِّرَاسَاتِ الْأَخِيرَةِ عَنْ فِيتَامِينِ E أَنَّ تَنَاوُلَ كَمِّيَّاتٍ مُتَفَاوِتَةٍ مِنْ هَذَا الْفِيتَامِينِ يَوْمِيًّا يُحْدِثُ أَمْرَاضًا مُخْتَلِفَةً لَدَى كَثِيرٍ مِنَ النَّاسِ.
+Olmaz: Yeterince alamamak yerine farklı miktarlarda tüketmek hastalık nedeni yapılmış; anlam değişir.
+E) أَظْهَرَتِ الدِّرَاسَاتُ الَّتِي أُجْرِيَتْ أَخِيرًا أَنَّ الْكَثِيرَ مِنَ النَّاسِ لَا يَسْتَطِيعُونَ الْحُصُولَ عَلَى كَمِّيَّاتٍ كَافِيَةٍ مِنْ فِيتَامِينِ E، وَلِذَا إِنَّهُمْ يُصَابُونَ بِأَمْرَاضٍ مُخْتَلِفَةٍ.
+Olabilir: Çoğul araştırmalar, çok sayıda insan, yeterli miktarda vitamin alamama ve وَلِذَا “bu nedenle” ilişkisi korunuyor.
+Doğru cevap: E. — Yıl: 2018

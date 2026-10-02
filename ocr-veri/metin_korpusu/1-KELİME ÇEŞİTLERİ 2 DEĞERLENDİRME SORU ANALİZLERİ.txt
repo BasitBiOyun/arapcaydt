@@ -1,0 +1,195 @@
+KELİME ÇEŞİTLERİ 2 DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+اَلطَّالِبُ ---- إِلَى الْمَدْرَسَةِ كُلَّ يَوْمٍ.
+Türkçesi: Öğrenci her gün okula ----.
+İlk aşamada cümlenin anlamına bakalım. اَلطَّالِبُ “öğrenci”, إِلَى الْمَدْرَسَةِ “okula”, كُلَّ يَوْمٍ ise “her gün” demektir. Boşluğa cümleyi anlam bakımından tamamlayan uygun bir yüklem gelmelidir.
+Şimdi şıklara bakalım:
+A) يَذْهَبُ — gider
+Fiildir ve yüklem olabilir. “Öğrenci her gün okula gider.” anlamı uygundur. Olabilir.
+B) كِتَابٌ — kitap
+Bir isimdir. Cümleyi anlam bakımından tamamlamaz. Olmaz.
+C) صَبَاحًا — sabahleyin
+Bir zarftır. Burada cümleyi tamamlayan uygun yüklem değildir. Olmaz.
+D) تَذْهَبُ — gider
+Fiildir; ancak اَلطَّالِبُ müzekkerdir, تَذْهَبُ ise burada müennes özneyle uyumludur. Olmaz.
+E) كَتَبَ — yazdı
+Fiildir; ancak “öğrenci her gün okula yazdı” anlamı uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَذْهَبُ olur.
+
+2. Soru
+كَتَبَ ---- فِي الْفَصْلِ بِالْقَلَمِ.
+Türkçesi: ---- sınıfta kalemle yazdı.
+İlk aşamada كَتَبَ “yazdı” fiiline bakalım. Burada “Kim yazdı?” sorusuna cevap verecek, anlam bakımından uygun bir özne arıyoruz.
+Şimdi şıklara bakalım:
+A) اَلْقَلَمُ — kalem
+Bir isimdir ve özne olabilir; ancak “Kalem kalemle yazdı.” anlamı uygun değildir. Olmaz.
+B) اَلطَّالِبَةُ — kız öğrenci
+Bir isimdir; ancak اَلطَّالِبَةُ müennestir. Buna uygun fiil كَتَبَتْ olmalıydı. Olmaz.
+C) الدَّرْسُ — ders
+Bir isimdir fakat “Ders yazdı.” anlamı uygun değildir. Olmaz.
+D) كِتَابٌ — kitap
+Bir isimdir fakat “Kitap yazdı.” anlamı uygun değildir. Olmaz.
+E) اَلطَّالِبُ — öğrenci
+Bir isimdir, müzekkerdir ve كَتَبَ fiilinin öznesi olabilir. Anlam da uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, اَلطَّالِبُ olur.
+3. Soru
+اَلْوَلَدُ يَذْهَبُ مِنَ الْبَيْتِ إِلَى ----.
+Türkçesi: Çocuk evden ---- gidiyor.
+İlk aşamada إِلَى harf-i cerine bakalım. Boşluğa, إِلَى ile kullanılabilecek ve cümlenin anlamını tamamlayacak uygun bir isim gelmelidir.
+Şimdi şıklara bakalım:
+A) الْمَدْرَسَةِ — okul / okula
+Bir isimdir. إِلَى ile kullanımı ve “evden okula gidiyor” anlamı uygundur. Olabilir.
+B) كِتَابٍ — kitap
+Bir isimdir; ancak “evden kitaba gidiyor” anlamı uygun değildir. Olmaz.
+C) قَلَمٌ — kalem
+Bir isimdir; hem kullanım hem de anlam bakımından uygun değildir. Olmaz.
+D) كَتَبَ — yazdı
+Bir fiildir. Burada إِلَى sonrasında uygun değildir. Olmaz.
+E) فِي — -de, -da
+Bir harf-i cerdir. Burada إِلَى sonrasında uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, الْمَدْرَسَةِ olur.
+4. Soru
+قَرَأَ ---- الدَّرْسَ مِنَ الْكِتَابِ أَمَامَ الطُّلَّابِ.
+Türkçesi: ---- dersi kitaptan öğrencilerin önünde okudu.
+İlk aşamada قَرَأَ “okudu” fiiline bakalım. Boşlukta “Kim okudu?” sorusuna cevap verecek uygun bir özne arıyoruz.
+Şimdi şıklara bakalım:
+A) ذَهَبَ — gitti
+Bir fiildir. Burada özne olarak kullanılamaz. Olmaz.
+B) اَلطَّالِبُ — öğrenci
+Bir isimdir ve özne olabilir. “Öğrenci dersi okudu.” anlamı uygundur. Olabilir.
+C) شَجَرَةٌ — ağaç
+Bir isimdir; ancak “Ağaç dersi okudu.” anlamı uygun değildir. Olmaz.
+D) يَقْرَأُ — okuyor
+Bir fiildir. Burada özne görevini karşılamaz. Olmaz.
+E) الْبِنْتَ — kızı / kız
+Bir isimdir; ancak mansuptur. Özne olması için merfu olması gerekir anlam bakımından da uymaz. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, اَلطَّالِبُ olur.
+5. Soru
+دَخَلَتْ ---- الْفَصْلَ وَجَلَسَ فِي مَقْعَدِهَا بَيْنَ الطُّلَّابِ.
+Türkçesi: ---- sınıfa girdi ve öğrencilerin arasında yerine oturdu.
+İlk aşamada دَخَلَتْ “girdi” fiiline bakalım. Fiil müennes biçimdedir. Bu nedenle boşluğa anlam ve gramer bakımından uygun müennes bir özne gelmelidir.
+Şimdi şıklara bakalım:
+A) اَلطَّالِبَةُ — kız öğrenci
+Bir isimdir ve müennestir. دَخَلَتْ fiiliyle uyumludur. Olabilir.
+B) كَتَبَ — yazdı
+Bir fiildir. Burada özne olamaz. Olmaz.
+C) الطَّالِبُ — erkek öğrenci
+Bir isimdir fakat müzekkerdir. دَخَلَتْ fiiliyle uyumlu değildir. Olmaz.
+D) إِلَى — -e, -a
+Bir harf-i cerdir. Özne olamaz. Olmaz.
+E) مِنْ — -den, -dan
+Bir harf-i cerdir. Özne olamaz. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, اَلطَّالِبَةُ olur.
+6. Soru
+فَتَحَ ---- الْبَابَ لِلتَّلَامِيذِ قَبْلَ بَدْءِ الدَّرْسِ.
+Türkçesi: ---- ders başlamadan önce öğrenciler için kapıyı açtı.
+İlk aşamada فَتَحَ “açtı” fiiline bakalım. Boşlukta “Kapıyı kim açtı?” sorusuna cevap verecek uygun bir özne arıyoruz.
+Şimdi şıklara bakalım:
+A) مِنْ — -den, -dan
+Bir harf-i cerdir. Özne olamaz. Olmaz.
+B) اَلدَّرْسَ — dersi
+Bir isimdir; ancak mansuptur ve anlam bakımından da özne olmaya uygun değildir. Olmaz.
+C) كَتَبَ — yazdı
+Bir fiildir. Burada özne olamaz. Olmaz.
+D) يَذْهَبُ — gidiyor
+Bir fiildir. Burada özne görevini karşılamaz. Olmaz.
+E) اَلْمُعَلِّمُ — öğretmen
+Bir isimdir ve özne olabilir. “Öğretmen kapıyı açtı.” Anlam olarak uygun ve müzekker bir isim olduğu için Olabilir.
+Dolayısıyla doğru cevap E şıkkı, اَلْمُعَلِّمُ olur.
+7. Soru
+ذَهَبَ الطَّالِبُ إِلَى ---- لِلدَّرْسِ.
+Türkçesi: Öğrenci ders için ---- gitti.
+İlk aşamada إِلَى harf-i cerine ve cümlenin anlamına bakalım. Boşluğa gidilen yeri bildiren ve “ders için” ifadesiyle anlamca uyum sağlayan bir isim gelmelidir.
+Şimdi şıklara bakalım:
+A) تَكْتُبُ — yazıyor
+Bir fiildir. Burada uygun değildir. Olmaz.
+B) اَلْمُسْتَشْفَى — hastane
+Bir isimdir ve إِلَى ile kullanılabilir; ancak “ders için hastaneye gitti” anlamı burada uygun değildir. Olmaz.
+C) بَيْتًا — ev
+Bir isimdir; ancak burada إِلَى sonrasında hareke olarak  uygun biçimde kullanılmamıştır. Olmaz.
+D) مَدْرَسَةِ — okul
+Bir isimdir. “Öğrenci ders için okula gitti.” anlamını doğru tamamlar. Olabilir.
+E) فِي — -de, -da
+Bir harf-i cerdir harfi cerden sonra yine bir harfi cer değil isim gelir dolayısıyla. Bu da uygun değildir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, مَدْرَسَةِ olur.
+8. Soru
+---- مُجْتَهِدٌ فِي دُرُوسِهِ.
+Türkçesi: ---- derslerinde çalışkandır.
+İlk aşamada مُجْتَهِدٌ “çalışkan” kelimesine bakalım. Bu kelime müzekkerdir. Buna uygun müzekker bir isim yani özne arıyoruz.
+Şimdi şıklara bakalım:
+A) هِيَ — o (kadın)
+Bir zamirdir ve müennestir. Buna uygun ifade مُجْتَهِدَةٌ olmalıydı. Olmaz.
+B) اَلطَّالِبُ — öğrenci
+Bir isimdir ve müzekkerdir. مُجْتَهِدٌ ile uyumludur. Olabilir.
+C) يَفْتَحُ — açıyor
+Bir fiildir. Buradaki yapıya uygun değildir. Olmaz.
+D) تَكْتُبُ — yazıyor
+Bir fiildir. Buradaki yapıya uygun değildir. Olmaz.
+E) مِنْ — -den, -dan
+Bir harf-i cerdir. Burada uygun değildir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, اَلطَّالِبُ olur.
+
+9. Soru
+---- نَشِيطٌ فِي الْفَصْلِ.
+Türkçesi: ---- sınıfta aktiftir.
+İlk aşamada نَشِيطٌ “aktif, hareketli” kelimesine bakalım. Bu kelime müzekkerdir. Buna uygun müzekker bir isim arıyoruz.
+Şimdi şıklara bakalım:
+A) اَلْمُدَرِّسَةُ — kadın öğretmen
+Bir isimdir fakat müennestir. نَشِيطَةٌ olması gerekirdi. Olmaz.
+B) طَالِبَةٌ — kız öğrenci
+Bir isimdir fakat müennestir. نَشِيطَةٌ olması gerekirdi. Olmaz.
+C) اَلطَّالِبُ — öğrenci
+Bir isimdir ve müzekkerdir. نَشِيطٌ ile uyumludur. Olabilir.
+D) اَلْبِنْتُ — kız
+Bir isimdir fakat müennestir. نَشِيطَةٌ olması gerekirdi. Olmaz.
+E) مِنْ — -den, -dan
+Bir harf-i cerdir. Burada uygun değildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, اَلطَّالِبُ olur.
+10. Soru
+---- كَرِيمٌ وَيُسَاعِدُ النَّاسَ.
+Türkçesi: ---- cömerttir ve insanlara yardım eder.
+İlk aşamada كَرِيمٌ “cömert” ve يُسَاعِدُ “yardım eder” ifadelerine bakalım. Her ikisi de müzekker bir özneyle uyumludur. Bu nedenle anlamca uygun müzekker bir isim arıyoruz.
+Şimdi şıklara bakalım:
+A) اَلْأَبُ — baba
+Bir isimdir ve müzekkerdir. Hem كَرِيمٌ hem de يُسَاعِدُ ile uyumludur. Olabilir.
+B) اَلْأُمُّ — anne
+Bir isimdir fakat müennestir. كَرِيمَةٌ وَتُسَاعِدُ olması gerekirdi. Olmaz.
+C) مُعَلِّمَةٌ — kadın öğretmen
+Bir isimdir fakat müennestir. Devamındaki ifadelerle uyumlu değildir. Olmaz.
+D) تَذْهَبُ — gidiyor
+Bir fiildir. Buradaki yapıya uygun değildir. Olmaz.
+E) مِنْ — -den, -dan
+Bir harf-i cerdir. Burada uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, اَلْأَبُ olur.
+11. Soru
+رَأَيْتُ ---- فِي الْفَصْلِ.
+Türkçesi: Sınıfta ---- gördüm.
+İlk aşamada رَأَيْتُ “gördüm” fiiline bakalım. Burada “Kimi gördüm?” sorusuna cevap verecek bir nesne arıyoruz. Nesnenin mansup olması gerekir.
+Şimdi şıklara bakalım:
+A) طُلَّابٌ — öğrenciler
+Bir isimdir fakat merfu biçimdedir. Nesne olarak uygun değildir. Olmaz.
+B) طَالِبَانِ — iki öğrenci
+İkil isimdir fakat merfu biçimdedir. Nesne olması için mansup olması gerekir. Olmaz.
+C) طَالِبٌ — öğrenci
+Bir isimdir fakat merfudur. Nesne olarak uygun değildir. Olmaz.
+D) طَالِبَيْنِ — iki öğrenciyi
+İkil isimdir ve mansup biçimdedir. رَأَيْتُ fiilinin nesnesi olabilir. Olabilir.
+E) يَرْكَبُ — biniyor
+Bir fiildir. Burada nesne olamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, طَالِبَيْنِ olur.
+12. Soru
+جَاءَ ---- إِلَى الْمَدْرَسَةِ مَعًا.
+Türkçesi: ---- birlikte okula geldi.
+İlk aşamada مَعًا “birlikte” ifadesine bakalım. Burada iki kişiden söz edildiğini anlıyoruz. Ayrıca جَاءَ fiilinden sonra gelecek öznenin merfu olması gerekir. Bu nedenle ikil ve merfu bir isim arıyoruz.
+Şimdi şıklara bakalım:
+A) طَالِبَةٌ — bir kız öğrenci
+Tekil bir isimdir. مَعًا ifadesindeki iki kişi anlamını karşılamaz. Olmaz.
+B) طَالِبَيْنِ — iki öğrenci
+İkil isimdir fakat mansup/mecrur biçimdedir. Özne olması için merfu olması gerekir. Olmaz.
+C) طَالِبَانِ — iki öğrenci
+İkil isimdir ve merfu biçimdedir. Hem özne olmaya hem de مَعًا anlamına uygundur. Olabilir.
+D) طَالِبَاتٌ — kız öğrenciler
+Çoğul ve müennes bir isimdir. Buradaki yapı ve fiille uyumlu değildir. Olmaz.
+E) يَجِيئَانِ — ikisi geliyor
+Bir fiildir. Burada جَاءَ fiilinin öznesi olarak kullanılamaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, طَالِبَانِ olur.

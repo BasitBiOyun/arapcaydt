@@ -1,0 +1,86 @@
+SIFAT TAMLAMASI SORJ ÇÖZ SORULARI ANALİZLERİ
+1. Soru
+مَرَرْتُ بِحَدِيقَةٍ ---- قَرِيبَةٍ مِنَ الْمَدْرَسَةِ.
+Türkçesi: Okula yakın, ---- bir bahçenin yanından geçtim.
+İlk aşamada بِـ harf-i cerinden sonra حَدِيقَةٍ “bir bahçe” ismini görüyoruz. Bu nedenle حَدِيقَةٍ mecrurdur. Boşluğun devamında da قَرِيبَةٍ “yakın” sıfatını görüyoruz. Demek ki boşluğa da حَدِيقَةٍ kelimesini niteleyen başka bir sıfat gelmelidir. حَدِيقَةٍ belirsiz, müennes, tekil ve mecrurdur.
+Şimdi şıklara bakalım:
+A) جَمِيلٍ — güzel
+Belirsiz ve mecrurdur; ancak müzekkerdir. حَدِيقَةٍ müennes olduğu için cinsiyet uyumu yoktur. Olmaz.
+B) جَمِيلَةٌ — güzel
+Belirsiz, müennes ve tekildir; ancak merfudur. حَدِيقَةٍ mecrur olduğu için hareke uyumu yoktur. Olmaz.
+C) الْجَمِيلَةَ — güzel
+Müennes tekildir; ancak belirli ve mansuptur. Hem belirlilik hem hareke uyumu yoktur. Olmaz.
+D) الْجَمِيلَةُ — güzel
+Müennes tekildir; fakat belirli ve merfudur. Olmaz.
+E) جَمِيلَةٍ — güzel
+Belirsiz, müennes, tekil ve mecrurdur. حَدِيقَةٍ ile dört yönden tam uyumludur.
+حَدِيقَةٍ جَمِيلَةٍ قَرِيبَةٍ = “güzel ve yakın bir bahçe.” Anlam da uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, جَمِيلَةٍ olur.
+2. Soru
+فِي الْمَكْتَبَةِ كُتُبٌ ---- تَحْتَاجُ إِلَى تَرْتِيبٍ.
+Türkçesi: Kütüphanede düzenlenmesi gereken ---- kitaplar vardır.
+İlk aşamada كُتُبٌ “kitaplar” ismini görüyoruz. Bu kelime belirsiz ve merfudur. Boşluk hemen ardından geldiği için كُتُبٌ kelimesini niteleyecek bir sıfat arıyoruz. Burada önemli bir kural var: كُتُبٌ akılsız varlıkların çoğuludur; akılsız çoğulların sıfatı müennes tekil gelir.
+Şimdi şıklara bakalım:
+A) قَدِيمُونَ — eski olanlar
+Müzekker akıllı çoğul biçimidir. كُتُبٌ için kullanılmaz. Olmaz.
+B) قَدِيمٌ — eski
+Müzekker tekildir. Akılsız çoğulun sıfatının müennes tekil olması gerekir. Olmaz.
+C) قَدِيمَةٌ — eski
+Belirsiz, müennes, tekil ve merfudur. Akılsız çoğul olan كُتُبٌ için doğru sıfat biçimidir.
+كُتُبٌ قَدِيمَةٌ = “eski kitaplar.” Anlam da uygundur. Olabilir.
+D) قَدِيمَانِ — iki eski
+İkildir. كُتُبٌ çoğuldur ve burada akılsız çoğul kuralı uygulanır. Olmaz.
+E) قَدِيمَاتِ — eski kadınlar/dişil çoğul biçimi
+Müennes çoğul biçimidir; ayrıca burada gerekli olan biçim müennes tekil sıfattır. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, قَدِيمَةٌ olur.
+3. Soru
+إِنَّ الطَّالِبَ ---- يُحِبُّ مُسَاعَدَةَ الْآخَرِينَ دَائِمًا.
+Türkçesi: Cömert öğrenci her zaman başkalarına yardım etmeyi sever.
+İlk aşamada إِنَّ edatından sonra الطَّالِبَ ismini görüyoruz. Bu kelime إِنَّ’nin ismi olduğu için mansuptur. Boşluk da hemen ardından geldiğine göre الطَّالِبَ kelimesini niteleyen bir sıfat arıyoruz. الطَّالِبَ belirli, müzekker, tekil ve mansuptur.
+Şimdi şıklara bakalım:
+A) الْكَرِيمَ — cömert
+Belirli, müzekker, tekil ve mansuptur. الطَّالِبَ ile tam uyumludur.
+إِنَّ الطَّالِبَ الْكَرِيمَ = “Şüphesiz cömert öğrenci...” Anlam da uygundur. Olabilir.
+B) الْكَرِيمُ — cömert
+Belirli, müzekker ve tekildir; ancak merfudur. Mevsuf mansup olduğu için hareke uyumu yoktur. Olmaz.
+C) كَرِيمٌ — cömert
+Müzekker ve tekildir; fakat belirsiz ve merfudur. Hem belirlilik hem hareke uyumu yoktur. Olmaz.
+D) كَرِيمًا — cömert
+Müzekker, tekil ve mansuptur; ancak belirsizdir. الطَّالِبَ belirli olduğu için belirlilik uyumu yoktur. Olmaz.
+E) الْكَرِيمِ — cömert
+Belirli, müzekker ve tekildir; ancak mecrurdur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, الْكَرِيمَ olur.
+4. Soru
+الْمُدَرِّسَةُ أَثْنَتْ عَلَى الطَّالِبَاتِ، لِأَنَّهُنَّ طَالِبَاتٌ ---- فِي الصَّفِّ.
+Türkçesi: Öğretmen, kız öğrencileri övdü; çünkü onlar sınıfta ---- öğrencilerdir.
+İlk aşamada لِأَنَّهُنَّ طَالِبَاتٌ ---- bölümüne bakalım. Boşluğun hemen öncesinde طَالِبَاتٌ “kız öğrenciler” ismini görüyoruz. Bu kelime belirsiz, müennes, çoğul ve merfudur. Boşluğa onu niteleyen sıfat geleceği için sıfatın da bu özelliklerle tam uyumlu olması gerekir.
+Şimdi şıklara bakalım:
+A) مُجْتَهِدُونَ — çalışkanlar
+Müzekker çoğuldur. طَالِبَاتٌ müennes çoğul olduğu için cinsiyet uyumu yoktur. Olmaz.
+B) مُجْتَهِدَاتٍ — çalışkan kızlar
+Belirsiz, müennes ve çoğuldur; ancak mansup/mecrurdur. طَالِبَاتٌ merfudur. Hareke uyumu yoktur. Olmaz.
+C) مُجْتَهِدَةٌ — çalışkan
+Müennes ve merfudur; ancak tekildir. Burada akıllı insan çoğulu olduğu için sıfat da çoğul gelmelidir. Olmaz.
+D) مُجْتَهِدَاتٌ — çalışkan kızlar
+Belirsiz, müennes, çoğul ve merfudur. طَالِبَاتٌ ile dört yönden tam uyumludur.
+طَالِبَاتٌ مُجْتَهِدَاتٌ = “çalışkan kız öğrenciler.” Anlam da uygundur. Olabilir.
+E) مُجْتَهِدَانِ — iki çalışkan kişi
+Müzekker ve ikildir. طَالِبَاتٌ ise müennes çoğuldur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, مُجْتَهِدَاتٌ olur.
+5. Soru
+رَأَيْتُ كِتَابَيْنِ ---- عَلَى الطَّاوِلَةِ.
+Türkçesi: Masanın üzerinde ---- iki kitap gördüm.
+İlk aşamada رَأَيْتُ “gördüm” fiilinden sonra mef‘ûl olan كِتَابَيْنِ “iki kitap” ismini görüyoruz. Mef‘ûl olduğu için mansuptur. Aynı zamanda belirsiz, müzekker ve ikildir. Boşluk hemen ardından geldiğine göre كِتَابَيْنِ kelimesini niteleyen sıfat da belirsiz, müzekker, ikil ve mansup olmalıdır.
+Şimdi şıklara bakalım:
+A) جَدِيدٌ — yeni
+Müzekkerdir ancak tekil ve merfudur. Hem sayı hem hareke uyumu yoktur. Olmaz.
+B) جَدِيدَانِ — iki yeni
+Müzekker ve ikildir; ancak merfudur. كِتَابَيْنِ mansup olduğu için hareke uyumu yoktur. Olmaz.
+C) جَدِيدَيْنِ — iki yeni
+Belirsiz, müzekker, ikil ve mansuptur. كِتَابَيْنِ ile dört yönden tam uyumludur.
+كِتَابَيْنِ جَدِيدَيْنِ = “iki yeni kitap.” Anlam da uygundur. Olabilir.
+D) جَدِيدَاتٍ — yeni olanlar
+Müennes çoğuldur. كِتَابَيْنِ müzekker ikildir. Olmaz.
+E) جَدِيدُونَ — yeni olanlar
+Müzekker çoğul ve merfudur. Mevsuf ikil ve mansuptur. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, جَدِيدَيْنِ olur.

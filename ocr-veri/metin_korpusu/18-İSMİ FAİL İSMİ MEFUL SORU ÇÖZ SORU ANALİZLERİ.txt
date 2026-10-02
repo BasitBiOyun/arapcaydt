@@ -1,0 +1,162 @@
+İSMİ FAİL İSMİ MEFUL SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+“اِسْتَخْرَجَ” fiilinden türetilen ism-i mef‘ûl aşağıdakilerden hangisidir?
+اِسْتَخْرَجَ, اِسْتَفْعَلَ vezninde, üç harfli olmayan mezîd bir fiildir. Muzârisi:
+يَسْتَخْرِجُ
+Üç harfli olmayan fiillerden ism-i mef‘ûl türetilirken muzâri fiil esas alınır. Muzâraat harfi kaldırılarak yerine dammeli مُـ getirilir ve sondan bir önceki harf fethalı yapılır.
+Dolayısıyla seçeneklerde aynı kökten gelen kelimelerin yalnızca anlamlarına değil, özellikle sondan bir önceki harfin harekesine ve hangi fiil kalıbından türediklerine dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) مُسْتَخْرِجٌ — çıkaran / elde eden
+Aynı fiilden türemiştir ancak eylemi gerçekleştiren kişiyi ifade eden ism-i fâildir. ❌
+B) خَارِجٌ — çıkan / dışarıda olan
+خَرَجَ fiilinin ism-i fâilidir. Sorudaki mezîd fiilin türevi değildir. ❌
+C) مُسْتَخْرَجٌ — çıkarılmış / elde edilmiş
+اِسْتَخْرَجَ fiilinden türemiştir ve eylemden etkilenen unsuru ifade eder. Sondan bir önceki harfin fethalı olması da ism-i mef‘ûl yapısına uygundur. ✅
+D) مُخْرِجٌ — çıkaran
+أَخْرَجَ fiilinden türemiş ism-i fâildir. ❌
+E) اِسْتِخْرَاجٌ — çıkarma / elde etme
+Fiilin mastarıdır. ❌
+Doğru cevap: C) مُسْتَخْرَجٌ
+2. Soru
+Aşağıdaki kelimelerden hangisi üç harfli olmayan bir fiilden türetilmiş ism-i fâildir?
+Burada iki aşamalı düşünmek gerekir. Öncelikle verilen kelimenin ism-i fâil olup olmadığına, ardından hangi fiilden türetildiğine bakılmalıdır.
+Üç harfli yalın fiillerin ism-i fâilleri فَاعِلٌ veznindedir. Üç harfli olmayan fiillerde ise muzâri fiilden hareketle farklı bir türetme sistemi kullanılır.
+Şimdi şıklara bakalım:
+A) كَاتِبٌ — yazan / yazar
+كَتَبَ üç harfli yalın fiilinden türemiştir. ❌
+B) شَارِبٌ — içen
+شَرِبَ üç harfli yalın fiilinden türemiştir. ❌
+C) جَالِسٌ — oturan
+جَلَسَ üç harfli yalın fiilinden türemiştir. ❌
+D) نَاصِرٌ — yardım eden
+نَصَرَ üç harfli yalın fiilinden türemiştir. ❌
+E) مُخْرِجٌ — çıkaran
+أَخْرَجَ — يُخْرِجُ fiilinden türemiştir. أَخْرَجَ üç harfli olmayan mezîd bir fiildir ve مُخْرِجٌ eylemi yapanı ifade eder. ✅
+Doğru cevap: E) مُخْرِجٌ
+3. Soru
+Burada da kelimenin hem ism-i mef‘ûl olması hem de türediği fiilin üç harfli yalın değil, mezîd olması gerekmektedir.
+Özellikle مَفْعُولٌ kalıbındaki kelimelerle, mezîd fiillerden türetilen ism-i mef‘ûller birbirinden ayrılmalıdır.
+Şimdi şıklara bakalım:
+A) مَكْتُوبٌ — yazılmış
+كَتَبَ üç harfli yalın fiilinden türemiştir. ❌
+B) مُعَلَّمٌ — öğretilmiş
+عَلَّمَ — يُعَلِّمُ fiilinden türemiştir. عَلَّمَ, فَعَّلَ veznindeki mezîd bir fiildir ve kelime eylemden etkileneni ifade etmektedir. ✅
+C) مَفْتُوحٌ — açılmış
+فَتَحَ üç harfli yalın fiilinden türemiştir. ❌
+D) مَأْكُولٌ — yenmiş / yenilen
+أَكَلَ üç harfli yalın fiilinden türemiştir. ❌
+E) مَقْتُولٌ — öldürülmüş
+قَتَلَ üç harfli yalın fiilinden türemiştir. ❌
+Doğru cevap: B) مُعَلَّمٌ
+
+4. Soru
+Bu soruda önce ism-i fâilin neyi ifade ettiğini hatırlamak gerekir. İsm-i fâil, fiilin bildirdiği eylemi gerçekleştiren kişi veya varlığı gösteren türemiş isimdir.
+Ancak şıklarda mâzi fiil, muzâri fiil, meçhul fiil ve ism-i mef‘ûl gibi farklı yapılar da bulunabilir. Dolayısıyla yalnızca cümlenin Türkçe anlamına değil, kelimenin sarf bakımından türüne bakılmalıdır.
+Şimdi şıklara bakalım:
+A) كَتَبَ التِّلْمِيذُ الدَّرْسَ.
+“Öğrenci dersi yazdı.”
+كَتَبَ mâzi fiildir. İsm-i fâil kullanılmamıştır. ❌
+B) الدَّرْسُ مَكْتُوبٌ.
+“Ders yazılmıştır.”
+مَكْتُوبٌ, eylemden etkileneni bildiren ism-i mef‘ûldür. ❌
+C) كُتِبَ الدَّرْسُ.
+“Ders yazıldı.”
+كُتِبَ meçhul mâzi fiildir; ism-i fâil değildir. ❌
+D) التِّلْمِيذُ كَاتِبٌ الدَّرْسَ.
+“Öğrenci dersi yazandır / yazmaktadır.”
+كَاتِبٌ, كَتَبَ fiilinden türemiş ve yazma eylemini gerçekleştiren kişiyi ifade eden ism-i fâildir. ✅
+E) يَكْتُبُ التِّلْمِيذُ الرِّسَالَةَ.
+“Öğrenci mektubu yazıyor.”
+يَكْتُبُ muzâri fiildir; ism-i fâil değildir. ❌
+Doğru cevap: D)
+5. Soru
+İsm-i mef‘ûl, fiilin bildirdiği eylemi yapanı değil, eylemden etkilenen kişi veya varlığı ifade eder.
+Bu nedenle şıklarda fiil ile isim ayrımına ve türemiş ismin etken mi edilgen mi anlam taşıdığına dikkat edilmelidir.
+Şimdi şıklara bakalım:
+A) الْوَلَدُ آكِلٌ الطَّعَامَ.
+“Çocuk yemeği yiyendir / yemektedir.”
+آكِلٌ, yeme eylemini yapanı ifade eden ism-i fâildir. ❌
+B) أَكَلَ الْوَلَدُ الطَّعَامَ.
+“Çocuk yemeği yedi.”
+أَكَلَ mâzi fiildir. ❌
+C) الطَّعَامُ مَأْكُولٌ.
+“Yemek yenmiştir / yenmiş durumdadır.”
+مَأْكُولٌ, أَكَلَ fiilinden türemiş ve yeme eyleminden etkilenen şeyi ifade eden ism-i mef‘ûldür. ✅
+D) يَأْكُلُ الْوَلَدُ الطَّعَامَ.
+“Çocuk yemeği yiyor.”
+يَأْكُلُ muzâri fiildir. ❌
+E) الْوَلَدُ أَكَلَ الطَّعَامَ.
+“Çocuk yemeği yedi.”
+Burada da أَكَلَ mâzi fiildir. ❌
+Doğru cevap: C)
+6. Soru
+Aşağıdaki cümlelerin hangisinde anlam bakımından muzâri fiile yakın kullanılmış bir ism-i fâil vardır?
+İsm-i fâil yalnızca bir kişinin genel niteliğini bildirmek için kullanılmaz; bağlama göre hâl veya istikbal anlamı taşıyarak muzâri fiile yakın bir anlam da verebilir.
+Bu nedenle seçeneklerde yalnızca herhangi bir isim değil, bir eylemi gerçekleştiren kişiyi gösteren türemiş bir yapı aranmalıdır.
+Şimdi şıklara bakalım:
+A) هٰذَا كِتَابٌ جَدِيدٌ.
+“Bu yeni bir kitaptır.”
+جَدِيدٌ bir sıfattır; burada ism-i fâil yapısı yoktur. ❌
+B) هُوَ كَاتِبٌ دَرْسَهُ.
+“O dersini yazmaktadır / yazandır.”
+كَاتِبٌ, كَتَبَ fiilinden türemiş ism-i fâildir. Burada eylemi gerçekleştiren kişiyi ifade etmekte ve bağlama göre يَكْتُبُ دَرْسَهُ yapısına yakın bir anlam taşımaktadır. ✅
+C) الْكِتَابُ عَلَى الْمَكْتَبِ.
+“Kitap masanın üzerindedir.”
+İsm-i fâil bulunmamaktadır. ❌
+D) هٰذَا بَابٌ كَبِيرٌ.
+“Bu büyük bir kapıdır.”
+كَبِيرٌ sıfattır; soruda aranan yapı değildir. ❌
+E) ذٰلِكَ قَلَمٌ جَمِيلٌ.
+“Şu güzel bir kalemdir.”
+جَمِيلٌ bir sıfattır. ❌
+Doğru cevap: B)
+7. Soru
+İsm-i mef‘ûl, eylemden etkileneni ifade ettiği için bazı kullanımlarda edilgen fiile yakın bir anlam taşıyabilir.
+Ancak burada önemli olan, ism-i mef‘ûlün yalnızca bir ismin kalıcı veya yerleşmiş sıfatı olarak değil, cümlede doğrudan bir hüküm bildirerek edilgen fiile yakın biçimde kullanılmasıdır.
+Şimdi şıklara bakalım:
+A) رَأَيْتُ الطَّالِبَ الْمَحْبُوبَ.
+“Sevilen öğrenciyi gördüm.”
+الْمَحْبُوبَ ism-i mef‘ûldür ancak burada الطَّالِبَ kelimesini niteleyen sıfat görevindedir. ❌
+B) اشْتَرَيْتُ الْكِتَابَ الْمَطْبُوعَ.
+“Basılmış kitabı satın aldım.”
+الْمَطْبُوعَ ism-i mef‘ûldür ancak burada kitabı niteleyen sıfattır. ❌
+C) الْكِتَابُ مَكْتُوبٌ.
+“Kitap yazılmıştır / yazılıdır.”
+مَكْتُوبٌ burada cümlenin haberi olarak doğrudan kitap hakkında hüküm vermektedir. Anlam bakımından كُتِبَ الْكِتَابُ “Kitap yazıldı.” şeklindeki edilgen yapıya ulaşılmaktadır. ✅
+D) جَلَسْتُ عَلَى الْكُرْسِيِّ الْمَكْسُورِ.
+“Kırık sandalyeye oturdum.”
+الْمَكْسُورِ burada الْكُرْسِيِّ kelimesini niteleyen sıfattır. ❌
+E) زُرْتُ الْمَسْجِدَ الْمَعْرُوفَ.
+“Tanınmış camiyi ziyaret ettim.”
+الْمَعْرُوفَ burada الْمَسْجِدَ kelimesini nitelemektedir. ❌
+Doğru cevap: C)
+8. Soru
+Bu soruda iki ayrı şart aynı anda aranmalıdır:
+Birinci kelime eylemi gerçekleştiren kişi veya varlığı, ikinci kelime ise aynı eylemden etkilenen kişi veya varlığı ifade etmelidir. Ayrıca iki kelimenin de aynı köke dayanması gerekir.
+Şimdi şıklara bakalım:
+A) كَاتِبٌ - مَكْتُوبٌ
+Her ikisi de ك ـ ت ـ ب kökünden türemiştir. İlki yazma eylemini yapanı, ikincisi yazma eyleminden etkileneni ifade eder. ✅
+B) جَالِسٌ - مُجَلَّسٌ
+جَالِسٌ, جَلَسَ fiiliyle; مُجَلَّسٌ ise farklı bir türetim kalıbıyla ilişkilidir. Aynı fiilin düzenli ism-i fâil–ism-i mef‘ûl çifti değildir. ❌
+C) شَارِبٌ - مُسْتَشْرِبٌ
+Kök harfleri ilişkili görünse de iki kelime aynı fiil kalıbının ism-i fâil–ism-i mef‘ûl çifti değildir. ❌
+D) نَاصِرٌ - مُنْصِرٌ
+İkinci kelime نَصَرَ fiilinin ism-i mef‘ûlü değildir. Üç harfli نَصَرَ fiilinin ism-i mef‘ûlü مَنْصُورٌ şeklindedir. ❌
+E) فَاتِحٌ - مُفْتِحٌ
+İkinci kelime فَتَحَ fiilinin ism-i mef‘ûlü değildir. Bu fiilin ism-i mef‘ûlü مَفْتُوحٌ şeklindedir. ❌
+Doğru cevap: A) كَاتِبٌ - مَكْتُوبٌ
+9. Soru
+Burada önemli bir ayrıntı var: Soru “ism-i fâil eşleştirmesi” veya “ism-i mef‘ûl eşleştirmesi” demiyor. Dolayısıyla ikinci kelimenin verilen fiilden doğru biçimde türetilmiş olması yeterlidir.
+Bu nedenle her seçenekte kök, fiilin vezni ve türemiş ismin yapısı birlikte değerlendirilmelidir.
+Şimdi şıklara bakalım:
+A) كَتَبَ ← كَاتِبٌ
+كَاتِبٌ, كَتَبَ fiilinden türemiş ism-i fâildir. Eşleştirme doğrudur. ✅
+B) شَرِبَ ← مَشْرُوبٌ
+مَشْرُوبٌ, شَرِبَ fiilinden مَفْعُولٌ vezninde türemiş ism-i mef‘ûldür. Eşleştirme doğrudur. ✅
+C) أَكْرَمَ ← مُكْرِمٌ
+أَكْرَمَ — يُكْرِمُ fiilinden türemiş ism-i fâildir. Eşleştirme doğrudur. ✅
+D) عَلَّمَ ← مُعَلَّمٌ
+عَلَّمَ — يُعَلِّمُ fiilinden türemiş ism-i mef‘ûldür. Eşleştirme doğrudur. ✅
+E) اِسْتَخْرَجَ ← مَخْرُوجٌ
+مَخْرُوجٌ, اِسْتَخْرَجَ fiilinin ism-i fâili veya ism-i mef‘ûlü değildir. اِسْتَخْرَجَ fiilinin ism-i fâili مُسْتَخْرِجٌ, ism-i mef‘ûlü ise مُسْتَخْرَجٌ şeklindedir. Bu nedenle eşleştirme yanlıştır. ❌
+Doğru cevap: E) اِسْتَخْرَجَ ← مَخْرُوجٌ

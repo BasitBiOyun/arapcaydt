@@ -1,0 +1,202 @@
+2019 YDT Arapça: 21–28. sorular
+Bu grupta boşluk her soruda cümlenin başında veya sonunda bulunuyor. Harekeleri okumayı kolaylaştırmak için ekledim; boşluğun konumunu ve şık sırasını PDF’ye göre korudum.
+21. soru
+Harekeli soru:
+----، إِذْ أَدَّتْ إِلَى تَوْفِيرِ الْجُهْدِ وَالْوَقْتِ وَزِيَادَةِ الْإِنْتَاجِ.
+Boşluğun yeri: Başta.
+Tercümesi: […]; çünkü bunlar emek ve zamandan tasarruf edilmesini ve üretimin artmasını sağladı.
+Bizden istenen: Boşluğa gelecek cümlede, sonraki أَدَّتْ “yol açtı” fiilinin neye döndüğünü bulmalıyız. إِذْ sonrasındaki bölüm, ilk cümlenin gerekçesini açıklıyor.
+Ölçülen bilgi: إِذْ ile kurulan gerekçe–sonuç ilişkisi ve zamir gönderimi. أَدَّتْ fiilindeki gizli özne, önceki cümledeki الْأَسَالِيبُ الزِّرَاعِيَّةُ ifadesine dönebilir.
+Şıklara bakalım:
+A) تَحْسِينُ نَوْعِيَّةِ الْإِنْتَاجِ مُعْتَمِدًا عَلَى الرَّيِّ وَالتَّسْمِيدِ
+Tercümesi: Sulama ve gübrelemeye dayanarak üretim kalitesinin iyileştirilmesi.
+Neden olmaz? Üretim kalitesinden söz etse de أَدَّتْ fiilinin döneceği uygun çoğul unsur bu ifadede yoktur. Ayrıca sonraki “üretimin artması” gerekçesiyle ilişki ters kurulur.
+B) تَكْمُنُ الِاسْتِفَادَةُ مِنْ سُطُوحِ الْأَبْنِيَةِ فِي الزِّرَاعَةِ
+Tercümesi: Binaların çatılarından yararlanma, tarımda kendini gösterir.
+Neden olmaz? Çatıların kullanımı ile emek ve zamandan tasarruf arasındaki ilişki cümlede kurulmamıştır; أَدَّتْ fiilinin gönderimi de belirsiz kalır.
+C) الْبَيْتُ الْبِلَاسْتِيكِيُّ يُوَفِّرُ الظُّرُوفَ الْمُلَائِمَةَ لِلنَّبَاتَاتِ الْمَزْرُوعَةِ فِيهِ
+Tercümesi: Sera, içinde yetiştirilen bitkilere uygun koşulları sağlar.
+Neden olmaz? الْبَيْتُ eril tekildir. Ardından gelen أَدَّتْ fiilinin açık gönderimi olamaz.
+D) مَعَ التَّقَدُّمِ الْعِلْمِيِّ، تَطَوَّرَتِ الْأَسَالِيبُ الزِّرَاعِيَّةُ
+Tercümesi: Bilimsel ilerlemeyle tarım yöntemleri gelişti.
+Neden olabilir? Gelişen tarım yöntemlerinin emek ve zaman tasarrufu ile üretim artışı sağlaması mantıklıdır. أَدَّتْ de bu yöntemlere döner.
+E) لِلْحُصُولِ عَلَى ثِمَارٍ وَخُضَارٍ فِي غَيْرِ مَوْسِمِهَا نَحْتَاجُ إِلَى الْبَيْتِ الْبِلَاسْتِيكِيِّ
+Tercümesi: Mevsimi dışında meyve ve sebze elde etmek için seraya ihtiyaç duyarız.
+Neden olmaz? Sera eril tekildir; sonraki أَدَّتْ için uygun gönderim kurulmaz. Devamındaki tasarruf ve üretim artışı da bu cümlenin doğrudan gerekçesi değildir.
+Doğru cevap: D.
+Yıl: 2019
+22. soru
+Harekeli soru:
+----، وَقِلَّةُ تَحْفِيزِ الدِّمَاغِ عَلَى التَّفْكِيرِ تُؤَدِّي إِلَى تَقَلُّصٍ أَوْ تَلَفٍ فِي خَلَايَا الدِّمَاغِ.
+Boşluğun yeri: Başta.
+Tercümesi: […]; beynin düşünmeye az teşvik edilmesi ise beyin hücrelerinde küçülmeye veya hasara yol açar.
+Bizden istenen: وَقِلَّةُ ile başlayan ikinci bölüm olumsuz bir durumu veriyor. Öncesinde düşünmenin beyne yararını anlatan bir ifade aranmalı.
+Ölçülen bilgi: Olumlu durum–olumsuz durum karşıtlığı ve cümleler arası anlam bütünlüğü.
+Şıklara bakalım:
+A) التَّفْكِيرُ هُوَ أَفْضَلُ طَرِيقَةٍ لِتَمْرِينِ الدِّمَاغِ
+Tercümesi: Düşünmek, beyni çalıştırmanın en iyi yoludur.
+Neden olabilir? Devamındaki “beyni düşünmeye az teşvik etmek” ifadesiyle doğrudan karşıtlık kurar.
+B) هُنَاكَ دِرَاسَةٌ عِلْمِيَّةٌ أَثْبَتَتْ أَنَّ الْأَدْمِغَةَ تَخْتَلِفُ فِي كُلِّ إِنْسَانٍ
+Tercümesi: Beyinlerin her insanda farklı olduğunu kanıtlayan bilimsel bir çalışma vardır.
+Neden olmaz? Beyinlerin farklılığı ile düşünmenin azalmasının hücrelere etkisi arasında gerekli bağ yoktur.
+C) الْعَصَبُ حَبْلٌ أَبْيَضُ اللَّوْنِ يَتَرَكَّبُ مِنْ حُزْمَةٍ
+Tercümesi: Sinir, bir demetten oluşan beyaz renkli bir kordondur.
+Neden olmaz? Sinirin tanımından beyni düşünmeye teşvik etme konusuna geçiş kopuktur.
+D) الْمُخُّ هُوَ مَرْكَزُ الْحَرَكَاتِ الْإِرَادِيَّةِ وَالْإِحْسَاسِ الشُّعُورِيِّ
+Tercümesi: Beyin, istemli hareketlerin ve bilinçli duyumun merkezidir.
+Neden olmaz? Beyinle ilgili doğru bir açıklama olsa da düşünme–uyarılma karşıtlığını kurmaz.
+E) التَّعَلُّمُ وَالذَّاكِرَةُ وَظِيفَتَانِ أَسَاسِيَّتَانِ لِلْخِبْرَةِ الْإِنْسَانِيَّةِ
+Tercümesi: Öğrenme ve hafıza, insan deneyiminin iki temel işlevidir.
+Neden olmaz? Devamındaki “düşünmeye az teşvik” sonucunu açıklayan doğrudan bir başlangıç değildir.
+Doğru cevap: A.
+Yıl: 2019
+23. soru
+Harekeli soru:
+---- الَّتِي يُوَرِّثُهَا بِدَوْرِهِ إِلَى أَبْنَائِهِ وَأَحْفَادِهِ، وَهَذِهِ الصِّفَاتُ كُلُّهَا نُسَمِّيهَا بِالصِّفَاتِ الْوِرَاثِيَّةِ.
+Boşluğun yeri: Başta.
+Tercümesi: […]; o da bunları kendi çocuklarına ve torunlarına aktarır. Bütün bu özelliklere kalıtsal özellikler deriz.
+Bizden istenen: الَّتِي يُوَرِّثُهَا ifadesindeki هَا zamirinin ve sonraki هَذِهِ الصِّفَاتُ ifadesinin hangi özelliklere döndüğünü bulmalıyız. İlk bölüm, bu özelliklerin önceki kuşaktan nasıl alındığını anlatmalıdır.
+Ölçülen bilgi: الَّتِي ilgi cümlesinin bağlandığı isim, هَا zamirinin gönderimi ve kalıtımın kuşaklar arası yönü.
+Şıklara bakalım:
+A) السِّبَاحَةُ وَقِيَادَةُ السَّيَّارَةِ صِفَاتٌ مُكْتَسَبَةٌ عِنْدَ الْإِنْسَانِ
+Tercümesi: Yüzme ve araba kullanma, insanın sonradan kazandığı özelliklerdir.
+Neden olmaz? مُكْتَسَبَةٌ “edinilmiş” özelliklerdir; bunların kalıtsal olarak aktarıldığı söylenemez.
+B) إِنَّ الصِّفَاتِ الَّتِي يَكْتَسِبُهَا الْفَرْدُ مِنْ بِيئَتِهِ تَكُونُ نَتِيجَةً لِلتَّدْرِيبِ الْمُسْتَمِرِّ
+Tercümesi: Bireyin çevresinden edindiği özellikler, sürekli eğitimin sonucu olur.
+Neden olmaz? Çevre ve eğitimle edinilen özelliklerden söz eder; sonraki الْوِرَاثِيَّةِ “kalıtsal” ifadesiyle çelişir.
+C) قَدْ يَرِثُ الْفَرْدُ صِفَةَ الْعَضَلَاتِ النَّامِيَةِ إِنْ كَانَ أَبُوهُ رِيَاضِيًّا
+Tercümesi: Babası sporcuysa birey gelişmiş kas özelliğini miras alabilir.
+Neden olmaz? Tekil صِفَةَ ile örnek verir; sonrasındaki çoğul الَّتِي يُوَرِّثُهَا ve هَذِهِ الصِّفَاتُ كُلُّهَا akışını uygun biçimde kurmaz.
+D) يَرِثُ الْكَائِنُ الْحَيُّ عَنْ أَبَوَيْهِ وَأَجْدَادِهِ مَجْمُوعَةً مِنَ الصِّفَاتِ
+Tercümesi: Canlı, anne babasından ve atalarından bir dizi özellik miras alır.
+Neden olabilir? الصِّفَاتِ sonraki الَّتِي ve هَا için gönderim sağlar. Kişi önce özellikleri devralır, sonra çocuklarına aktarır.
+E) لَيْسَ كُلُّ الصِّفَاتِ الَّتِي يَمْتَلِكُهَا الْفَرْدُ يُوَرِّثُهَا إِلَى أَبْنَائِهِ
+Tercümesi: Bireyin sahip olduğu bütün özellikler çocuklarına aktarılmaz.
+Neden olmaz? Devamında الَّتِي يُوَرِّثُهَا gelmesi, “aktarılmaz” yargısından sonra anlatımı tekrarlı ve çelişkili hâle getirir.
+Doğru cevap: D.
+Yıl: 2019
+24. soru
+Harekeli soru:
+الْهَاتِفُ النَّقَّالُ هُوَ الْجِهَازُ الَّذِي سَهَّلَ عَمَلِيَّةَ الِاتِّصَالِ بَيْنَ النَّاسِ ----.
+Boşluğun yeri: Sonda.
+Tercümesi: Cep telefonu, insanlar arasındaki iletişimi kolaylaştıran […] cihazdır.
+Bizden istenen: Son bölüm, iletişimi nasıl kolaylaştırdığını açıklamalıdır. Boşluktan önce olumlu bir işlev belirtiliyor.
+Ölçülen bilgi: وَ ile bağlı ikinci yargının ilk yargıyla anlamca uyumu.
+Şıklara bakalım:
+A) وَاخْتَصَرَ الْحُدُودَ وَقَلَّلَ الْمَسَافَاتِ
+Tercümesi: Sınırları daralttı ve mesafeleri azalttı.
+Neden olabilir? İnsanlar arasındaki iletişimi kolaylaştırma düşüncesini tamamlar; uzaklığın iletişim üzerindeki etkisini mecazen anlatır.
+B) وَنَشْعُرُ بِاقْتِرَابِ الْأَشْخَاصِ مِنَّا
+Tercümesi: Ve insanların bize yakınlaştığını hissederiz.
+Neden olmaz? Anlamca ilgili görünse de الْجِهَازُ الَّذِي سَهَّلَ… yapısındaki özne ve anlatım düzeninden نَشْعُرُ “biz hissederiz”e geçiş uygun tamamlamayı vermez.
+C) كَمَا تَمَّ اسْتِخْدَامُهُ فِي الْمَاضِي
+Tercümesi: Geçmişte kullanıldığı gibi.
+Neden olmaz? İletişimin nasıl kolaylaştığını açıklamaz.
+D) وَبَقِيَ وَزْنُ الْهَاتِفِ النَّقَّالِ ثَابِتًا
+Tercümesi: Cep telefonunun ağırlığı sabit kaldı.
+Neden olmaz? Telefonun ağırlığı, insanlar arasındaki iletişimin kolaylaşmasıyla ilgili değildir.
+E) وَبَعْدَ عِدَّةِ مُحَاوَلَاتٍ تَمَّ تَقْلِيلُهُ
+Tercümesi: Birkaç denemeden sonra o azaltıldı.
+Neden olmaz? ـهُ zamirinin neyin azaltılmasına döndüğü açık değildir; iletişimi kolaylaştırma düşüncesini de tamamlamaz.
+Doğru cevap: A.
+Yıl: 2019
+25. soru
+Harekeli soru:
+عِنْدَمَا نَضَعُ أُذُنَنَا عَلَى سِكَّةِ الْقِطَارِ نَسْمَعُ صَوْتَ الْقِطَارِ الْقَادِمِ مِنْ بَعِيدٍ ----.
+Boşluğun yeri: Sonda.
+Tercümesi: Kulağımızı tren rayına koyduğumuzda uzaktan gelen trenin sesini […] duyarız.
+Bizden istenen: Raydan duyulan tren sesi ile trenin görülme zamanı arasındaki ilişkiyi tamamlamalıyız. Başlangıçtaki عِنْدَمَا zaten zaman cümlesini kuruyor; şık bu durumun sonucunu açıklamalıdır.
+Ölçülen bilgi: عَلَى الرَّغْمِ مِنْ أَنَّ ile kurulan karşıtlık ve cümlenin mantıksal tamamlanması.
+Şıklara bakalım:
+A) لِأَنَّ الْقِطَارَ أَسْرَعُ بِكَثِيرٍ مِنَ الضَّوْءِ
+Tercümesi: Çünkü tren ışıktan çok daha hızlıdır.
+Neden olmaz? Verilen duruma uygun bir açıklama değildir.
+B) عَلَى الرَّغْمِ مِنْ أَنَّنَا لَا نَرَاهُ بِعُيُونِنَا
+Tercümesi: Onu gözlerimizle görmememize rağmen.
+Neden olabilir? “Treni henüz görmesek de sesini duyarız” karşıtlığını kurar.
+C) وَنَحْنُ عَلَى عِلْمٍ يَقِينٍ بِهَذَا الْخُصُوصِ
+Tercümesi: Ve bu konuda kesin bilgi sahibiyiz.
+Neden olmaz? Ne duyma olayını tamamlar ne de gerekli karşıtlığı açıklar.
+D) لِأَنَّ الْقِطَارَ يَأْتِي قَبْلَ أَنْ يَأْتِيَ صَوْتُهُ
+Tercümesi: Çünkü tren, sesi gelmeden önce gelir.
+Neden olmaz? Verilen “uzaktan gelen trenin sesini duyma” durumuyla ters düşer.
+E) لِأَنَّ آذَانَنَا أَسْلَمُ مِنْ عُيُونِنَا بِكَثِيرٍ
+Tercümesi: Çünkü kulaklarımız gözlerimizden çok daha sağlamdır.
+Neden olmaz? Raydan sesi duyma durumunu açıklayan gerekçe değildir.
+Doğru cevap: B.
+Yıl: 2019
+26. soru
+Harekeli soru:
+تَبْدُو الْأَرْضُ مِنَ الْجَوِّ كَرُخَامٍ أَزْرَقِ اللَّوْنِ، ----.
+Boşluğun yeri: Sonda.
+Tercümesi: Dünya havadan bakıldığında mavi renkli bir mermer gibi görünür; […].
+Bizden istenen: Dünyanın neden mavi göründüğünü açıklayan devam cümlesini arıyoruz.
+Ölçülen bilgi: Görünüşü açıklayan فَـ ile sebep–sonuç bağlantısı.
+Şıklara bakalım:
+A) فَالْمِيَاهُ تَغْمُرُ مُعْظَمَ سَطْحِ الْأَرْضِ وَتَجْعَلُهَا تَبْدُو زَرْقَاءَ
+Tercümesi: Çünkü sular yeryüzünün büyük bölümünü kaplar ve onun mavi görünmesini sağlar.
+Neden olabilir? İlk cümledeki mavi görünüşün nedenini doğrudan açıklar.
+B) وَمِنْ دُونِ الْمَاءِ لَا حَيَاةَ عَلَى الْأَرْضِ كَمَا هُوَ مَعْلُومٌ
+Tercümesi: Bilindiği gibi su olmadan yeryüzünde hayat yoktur.
+Neden olmaz? Su ile ilgili olsa da mavi görünmenin nedenini açıklamaz.
+C) لِأَنَّ الرَّيَّ الطَّبِيعِيَّ هُوَ وُصُولُ الْمِيَاهِ بِشَكْلٍ طَبِيعِيٍّ دُونَ تَدَخُّلٍ
+Tercümesi: Çünkü doğal sulama, suların müdahale olmadan doğal biçimde ulaşmasıdır.
+Neden olmaz? Konu sulama değildir.
+D) فَنَعْرِفُ جَمِيعًا كَيْفَ يَتِمُّ رَيُّ الْحَدَائِقِ الْعَامَّةِ فِي بِلَادِنَا
+Tercümesi: Hepimiz ülkemizdeki halka açık bahçelerin nasıl sulandığını biliriz.
+Neden olmaz? Dünyanın havadan görünüşüyle ilgisizdir.
+E) وَبَعْضُ الْمَوَارِدِ غَيْرُ مُتَجَدِّدَةٍ مِثْلَ الْفَحْمِ الْحَجَرِيِّ وَالنَّفْطِ
+Tercümesi: Taş kömürü ve petrol gibi bazı kaynaklar yenilenemez.
+Neden olmaz? Konu değişir.
+Doğru cevap: A.
+Yıl: 2019
+27. soru
+Harekeli soru:
+تُشِيرُ تَقَارِيرُ مُنَظَّمَةِ الصِّحَّةِ الْعَالَمِيَّةِ إِلَى أَنَّ الِاكْتِئَابَ وَالتَّوَتُّرَ النَّفْسِيَّ ----.
+Boşluğun yeri: Sonda.
+Tercümesi: Dünya Sağlık Örgütü raporları, depresyonun ve ruhsal gerginliğin […] işaret ediyor.
+Bizden istenen: أَنَّ sonrasında verilen iki unsur hakkında cümleyi tamamlayan bir haber aranıyor. Şıklarda hem anlam hem de bu iki unsura uygun fiil biçimi kontrol edilmeli.
+Ölçülen bilgi: أَنَّ’nin ismi–haberi ve الِاكْتِئَابَ وَالتَّوَتُّرَ ikilisine uygun ikil fiil kullanımı.
+Şıklara bakalım:
+A) يُؤَثِّرَانِ بِشَكْلٍ سَلْبِيٍّ عَلَى قُدْرَةِ الْفَرْدِ عَلَى الْعَمَلِ وَالْإِنْتَاجِيَّةِ
+Tercümesi: Bireyin çalışma ve üretkenlik kapasitesini olumsuz etkilediğine.
+Neden olabilir? يُؤَثِّرَانِ ikil fiili, depresyon ve ruhsal gerginliğe birlikte döner. Cümle anlamca da tamamlanır.
+B) لَا يَشْعُرُ الْفَرْدُ بِالْخَجَلِ بَعْدَمَا يُعَانِيهِ مِنَ الِاضْطِرَابَاتِ النَّفْسِيَّةِ
+Tercümesi: Birey, ruhsal bozukluklardan yaşadıklarının ardından utanç duymaz.
+Neden olmaz? Depresyon ve gerginliği yüklemle doğrudan bağlamaz; anlatımın odağı bireye kayar.
+C) وَالَّذِي يَكُونُ لَهُ أَثَرٌ سَلْبِيٌّ غَالِبًا عَلَى الصِّحَّةِ النَّفْسِيَّةِ
+Tercümesi: Ve genellikle ruh sağlığı üzerinde olumsuz etkisi olan.
+Neden olmaz? الَّذِي eril tekildir; öncesindeki iki unsuru birlikte karşılamaz. Ayrıca أَنَّ ile başlayan yapıyı uygun biçimde tamamlamaz.
+D) مِنَ الضَّرُورِيِّ الْمُحَافَظَةُ عَلَى الصِّحَّةِ النَّفْسِيَّةِ لِلْفَرْدِ
+Tercümesi: Bireyin ruh sağlığını korumak gereklidir.
+Neden olmaz? Tek başına anlamlıdır; fakat أَنَّ الِاكْتِئَابَ وَالتَّوَتُّرَ… yapısının haberi olamaz.
+E) يَحْتَاجُ إِلَى تَقْدِيمِ الرِّعَايَةِ الصِّحِّيَّةِ اللَّازِمَةِ فِي الْوَقْتِ الْمُنَاسِبِ
+Tercümesi: Uygun zamanda gerekli sağlık hizmetinin sunulmasına ihtiyaç duyar.
+Neden olmaz? يَحْتَاجُ tekildir; iki unsurla uymaz. Anlamca da kimin ihtiyaç duyduğu belirsizleşir.
+Doğru cevap: A.
+Yıl: 2019
+28. soru
+Harekeli soru:
+لِلْغِذَاءِ دَوْرٌ مُهِمٌّ وَلَا يَقْتَصِرُ ذَلِكَ عَلَى الْأَطْفَالِ، ----.
+Boşluğun yeri: Sonda.
+Tercümesi: Beslenmenin önemli bir rolü vardır ve bu rol yalnızca çocuklarla sınırlı değildir; […].
+Bizden istenen: وَلَا يَقْتَصِرُ ذَلِكَ عَلَى الْأَطْفَالِ “bu, çocuklarla sınırlı değildir” ifadesinin devamını bulmalıyız. Cümle, beslenmenin öneminin başka kimler için de geçerli olduğunu söylemelidir.
+Ölçülen bilgi: لَا يَقْتَصِرُ… وَإِنَّمَا… karşılayıcı yapısı ve kapsamın çocuklardan bütün yaşlara genişletilmesi.
+Şıklara bakalım:
+A) وَيَتَعَرَّضُ الْهَيْكَلُ الْعَظْمِيُّ لِتَشَوُّهَاتٍ نَتِيجَةَ وَضْعِيَّاتٍ مَغْلُوطَةٍ أَثْنَاءَ الْجُلُوسِ
+Tercümesi: İskelet, oturma sırasındaki yanlış duruşlar nedeniyle şekil bozukluklarına uğrar.
+Neden olmaz? Beslenmeden yanlış oturma biçimine geçilir.
+B) وَذَلِكَ نَقْصُ فِيتَامِينِ د فِي غِذَاءِ الْأَطْفَالِ يَنْجُمُ عَنْهُ الْإِصَابَةُ بِمَرَضِ الْكُسَاحِ
+Tercümesi: Çocukların beslenmesindeki D vitamini eksikliği raşitizm hastalığına yol açar.
+Neden olmaz? Yeniden yalnızca çocuklara döner; oysa önceki bölüm önemin çocuklarla sınırlı olmadığını söylüyor.
+C) كَمَا أَنَّ عَدَمَ تَنَاوُلِ مَوَادَّ غِذَائِيَّةٍ تَحْوِي أَمْلَاحَ الْكَالْسِيُومِ قَدْ يُؤَدِّي إِلَى هَشَاشَةِ الْعَظْمِ
+Tercümesi: Ayrıca kalsiyum tuzları içeren besinleri tüketmemek kemik erimesine yol açabilir.
+Neden olmaz? Beslenmeyle ilgilidir; ancak “yalnızca çocuklarla sınırlı değildir” ifadesinin beklediği kapsam açıklamasını doğrudan vermez.
+D) وَإِنَّمَا هُوَ ضَرُورِيٌّ عِنْدَ الْإِنْسَانِ فِي جَمِيعِ مَرَاحِلِ حَيَاتِهِ
+Tercümesi: Aksine, insan için hayatının bütün dönemlerinde gereklidir.
+Neden olabilir? وَلَا يَقْتَصِرُ… وَإِنَّمَا… bağlantısını tamamlar: önem yalnızca çocuklukta değil, hayatın her dönemindedir.
+E) لِلْوِقَايَةِ مِنْ ذَلِكَ لَا بُدَّ مِنْ تَجَنُّبِ التَّدْخِينِ بِشَكْلٍ دَائِمٍ
+Tercümesi: Bundan korunmak için sigaradan sürekli kaçınmak gerekir.
+Neden olmaz? ذَلِكَ ile gönderimde bulunulan bir hastalık veya zarar önceki cümlede anlatılmamıştır; konu da beslenmeden sigaraya kayar.
+Doğru cevap: D.
+Yıl: 2019

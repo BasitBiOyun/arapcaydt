@@ -1,0 +1,131 @@
+ZAMİR DEĞERLENDİRME SORU ANALİZLERİ
+
+1. Soru
+---- طَالِبَةٌ مُجْتَهِدَةٌ فِي الدَّرْسِ.
+Türkçesi: ---- derste çalışkan bir kız öğrencidir.
+İlk aşamada طَالِبَةٌ مُجْتَهِدَةٌ ifadesine bakalım. Hem طَالِبَةٌ hem de مُجْتَهِدَةٌ müennes tekildir. Bu nedenle boşluğa “o” anlamında müennes tekil bir zamir gelmelidir.
+Şimdi şıklara bakalım:
+A) هِيَ — o (kadın)
+Müennes tekil zamirdir. طَالِبَةٌ ile uyumludur. Olabilir.
+B) هُوَ — o (erkek)
+Müzekker tekil zamirdir. Müennes olan طَالِبَةٌ ile uyumlu değildir. Olmaz.
+C) هُمْ — onlar
+Müzekker çoğul zamirdir. Burada tekil bir kişiden söz ediliyor. Olmaz.
+D) أَنْتُمْ — siz
+Müzekker çoğul hitap zamiridir. Buradaki tekil müennes yapıyla uyumlu değildir. Olmaz.
+E) أَنْتَ — sen
+Müzekker tekil hitap zamiridir. Müennes olan طَالِبَةٌ ile uyumlu değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, هِيَ olur.
+
+2. Soru
+---- مُعَلِّمَانِ فِي الْمَدْرَسَةِ.
+Türkçesi: ---- okulda iki öğretmendir.
+İlk aşamada مُعَلِّمَانِ “iki öğretmen” kelimesine bakalım. Kelime ikil yapıdadır. Buna uygun olarak “o ikisi” anlamındaki ikil zamiri arıyoruz.
+Şimdi şıklara bakalım:
+A) هُوَ — o (erkek)
+Tekil zamirdir. مُعَلِّمَانِ ikil olduğu için olmaz.
+B) هُمْ — onlar
+Çoğul zamirdir. Burada iki kişiden söz ediliyor. Olmaz.
+C) هِيَ — o (kadın)
+Müennes tekil zamirdir. İkil yapıyla uyumlu değildir. Olmaz.
+D) أَنْتُنَّ — siz kadınlar
+Müennes çoğul hitap zamiridir. İkil yapıyla uyumlu değildir. Olmaz.
+E) هُمَا — o ikisi
+İkil zamirdir. مُعَلِّمَانِ ile sayı bakımından tam uyumludur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, هُمَا olur.
+3. Soru
+نَنْتَظِرُ ---- فِي الْفَصْلِ.
+Türkçesi: Sınıfta ---- bekliyoruz.
+İlk aşamada نَنْتَظِرُ “bekliyoruz” fiiline bakalım. Burada “Kimi bekliyoruz?” sorusuna cevap verecek nesne konumunda zamir gerekir. Bu nedenle fiile bitişen bir muttasıl zamir arıyoruz.
+Şimdi şıklara bakalım:
+A) أَنْتَ — sen
+Munfasıl, yani ayrı yazılan özne zamiridir. Burada nesne olarak doğrudan kullanılamaz. Olmaz.
+B) هِيَ — o (kadın)
+Munfasıl zamirdir. Burada fiilin nesnesi olarak uygun değildir. Olmaz.
+C) أَنْتُمْ — siz
+Munfasıl özne zamiridir. “Sizi bekliyoruz” demek için fiile bitişen zamir gerekir. Olmaz.
+D) ـكُمْ — sizi / sizin
+Muttasıl zamirdir. Fiile bağlandığında نَنْتَظِرُكُمْ “sizi bekliyoruz” anlamını verir. Olabilir.
+E) أَنْتُمَا — siz ikiniz
+Munfasıl zamirdir. Burada nesne olarak bu biçimde kullanılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, ـكُمْ olur.
+4. Soru
+رَأَيْتُ ---- فِي الْمَدْرَسَةِ.
+Türkçesi: Okulda ---- gördüm.
+İlk aşamada رَأَيْتُ “gördüm” fiiline bakalım. Burada “Kimi gördüm?” sorusuna cevap verecek bir nesne konumunda bir zamir gerekir. Bu nedenle fiile bitişen bir zamir arıyoruz.
+Şimdi şıklara bakalım:
+A) أَنْتُمْ — siz
+Munfasıl özne zamiridir. Burada nesne olarak bu biçimde kullanılamaz. Olmaz.
+B) هُوَ — o (erkek)
+Munfasıl özne zamiridir. “Onu gördüm” demek için fiile bitişen zamir gerekir. Olmaz.
+C) ـكَ — seni / senin
+Muttasıl zamirdir. Fiile bağlandığında رَأَيْتُكَ “seni gördüm” anlamını verir. Olabilir.
+D) أَنْتَ — sen
+Munfasıl özne zamiridir. Burada nesne olarak kullanılamaz. Olmaz.
+E) هِيَ — o (kadın)
+Munfasıl özne zamiridir. Burada nesne göreviyle uygun değildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, ـكَ olur.
+5. Soru
+---- كَبِيرٌ وَقَرِيبٌ مِنَ الْمَدْرَسَةِ.
+Türkçesi: ---- büyük ve okula yakındır.
+İlk aşamada كَبِيرٌ وَقَرِيبٌ ifadelerine bakalım. Her ikisi de müzekker tekildir. Boşluğa bunlarla uyumlu ve cümlenin anlamını tamamlayan bir isim veya isim grubu gelmelidir.
+Şimdi şıklara bakalım:
+A) بَيْتُهُمْ — onların evi
+Bir isim grubudur. بَيْتٌ müzekker tekildir; bu nedenle كَبِيرٌ وَقَرِيبٌ ile uyumludur. “Onların evi büyük ve okula yakındır.” anlamı uygundur. Olabilir.
+B) طُلَّابٌ — öğrenciler
+Çoğul isimdir anlamı tamamlamaz.. Olmaz.
+C) هِيَ — o (kadın)
+Müennes tekil zamirdir. Buna uygun yüklemlerin كَبِيرَةٌ وَقَرِيبَةٌ olması gerekirdi. Olmaz.
+D) هُمْ — onlar
+Çoğul zamirdir. Tekil yüklemlerle uyumlu değildir. Olmaz.
+E) أَنْتُمْ — siz
+Çoğul hitap zamiridir. Tekil olan كَبِيرٌ وَقَرِيبٌ ile uyumlu değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, بَيْتُهُمْ olur.
+6. Soru
+رَأَيْتُ ---- فِي السُّوقِ.
+Türkçesi: Pazarda ---- gördüm.
+İlk aşamada yine رَأَيْتُ “gördüm” fiiline bakalım. “Kimi gördüm?” sorusuna cevap verecek bir nesne zamiri gerekir. Bu nedenle fiile bitişen muttasıl zamiri arıyoruz.
+Şimdi şıklara bakalım:
+A) أَنْتَ — sen
+Munfasıl özne zamiridir. Burada nesne olarak uygun değildir. Olmaz.
+B) هُوَ — o (erkek)
+Munfasıl zamirdir. “Onu gördüm” anlamında bu biçimde kullanılamaz. Olmaz.
+C) أَنْتُمْ — siz
+Munfasıl özne zamiridir. Burada nesne görevinde kullanılamaz. Olmaz.
+D) ـهُ — onu / onun
+Muttasıl zamirdir. Fiile bağlandığında رَأَيْتُهُ “onu gördüm” anlamını verir. Olabilir.
+E) أَنْتُمْ — siz
+Yine munfasıl özne zamiridir. Nesne olarak uygun değildir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, ـهُ olur.
+7. Soru
+---- أَقْرَأُ الْكِتَابَ.
+Türkçesi: ---- kitabı okuyorum.
+İlk aşamada أَقْرَأُ “okuyorum” fiiline bakalım. Fiilin başındaki أَ-harfi bize öznenin “ben” olduğunu gösterir. Buna uygun zamiri arıyoruz.
+Şimdi şıklara bakalım:
+A) نَحْنُ — biz
+“Biz” zamiridir. Bununla fiilin نَقْرَأُ olması gerekirdi. Olmaz.
+B) أَنَا — ben
+Tekil birinci şahıs zamiridir. أَقْرَأُ fiiliyle tam uyumludur. Olabilir.
+C) أَنْتَ — sen
+İkinci şahıs zamiridir. Bununla تَقْرَأُ kullanılır. Olmaz.
+D) هُوَ — o
+Üçüncü şahıs zamiridir. Bununla يَقْرَأُ kullanılır. Olmaz.
+E) ـي — benim / beni
+Muttasıl zamirdir. Burada özne zamiri olarak kullanılamaz. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, أَنَا olur.
+8. Soru
+---- نَفْهَمُ الدَّرْسَ جَيِّدًا.
+Türkçesi: ---- dersi iyi anlıyoruz.
+İlk aşamada نَفْهَمُ “anlıyoruz” fiiline bakalım. Fiilin başındaki  نَـ  harfi burada öznenin “biz” olduğunu gösterir. Buna uygun zamiri arıyoruz.
+Şimdi şıklara bakalım:
+A) ـنَا — bizim / bizi
+Muttasıl zamirdir. Burada bağımsız özne zamiri olarak kullanılamaz. Olmaz.
+B) أَنَا — ben
+Tekil birinci şahıs zamiridir. Bununla fiilin أَفْهَمُ olması gerekirdi. Olmaz.
+C) هُمْ — onlar
+Üçüncü şahıs çoğul zamiridir. Bununla fiilin يَفْهَمُونَ olması gerekirdi. Olmaz.
+D) هُوَ — o
+Üçüncü şahıs tekil zamiridir. Bununla يَفْهَمُ kullanılır. Olmaz.
+E) نَحْنُ — biz
+Birinci şahıs çoğul zamiridir. نَفْهَمُ fiiliyle tam uyumludur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, نَحْنُ olur.

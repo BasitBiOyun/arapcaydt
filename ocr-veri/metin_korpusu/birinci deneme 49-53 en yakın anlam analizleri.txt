@@ -1,0 +1,262 @@
+49. - 53. sorularda, verilen cümleye anlamca en yakın cümleyi bulunuz.
+49. Soru
+Öncelikle verilen cümleyi okuyup anlamını netleştirelim.
+يُؤَدِّي التَّغَيُّرُ الْمُنَاخِيُّ إِلَى فُقْدَانِ التَّنَوُّعِ الْبِيُولُوجِيِّ، مِمَّا يُهَدِّدُ اسْتِقْرَارَ النُّظُمِ الْبِيئِيَّةِ
+“İklim değişikliği biyolojik çeşitliliğin kaybına yol açar; bu da ekosistemlerin istikrarını tehdit eder.”
+Şimdi doğru şıkkı bulmamızı kolaylaştıracak ilişkiye bakalım.
+Burada aslında üç aşamalı bir neden-sonuç zinciri var:
+التَّغَيُّرُ الْمُنَاخِيُّ
+iklim değişikliği
+→ فُقْدَانُ التَّنَوُّعِ الْبِيُولُوجِيِّ
+biyolojik çeşitliliğin kaybı
+→ تَهْدِيدُ اسْتِقْرَارِ النُّظُمِ الْبِيئِيَّةِ
+ekosistemlerin istikrarının tehdit edilmesi.
+Dolayısıyla şıklarda aynı neden-sonuç sırasını koruyan, ancak bunu farklı kelimelerle ifade eden cümleyi arıyoruz.
+A)
+يُؤَدِّي فُقْدَانُ التَّنَوُّعِ الْبِيُولُوجِيِّ إِلَى تَغَيُّرَاتٍ مُنَاخِيَّةٍ تُهَدِّدُ اسْتِقْرَارَ النُّظُمِ الْبِيئِيَّةِ.
+“Biyolojik çeşitliliğin kaybı, ekosistemlerin istikrarını tehdit eden iklim değişikliklerine yol açar.”
+Bu şık olmaz. Çünkü verilen cümlede iklim değişikliği biyolojik çeşitlilik kaybına yol açıyor. Burada ise neden-sonuç ilişkisi ters çevrilmiş.
+B)
+يُهَدِّدُ التَّغَيُّرُ الْمُنَاخِيُّ اسْتِقْرَارَ النُّظُمِ الْبِيئِيَّةِ مِنْ دُونِ أَنْ يُؤَثِّرَ فِي التَّنَوُّعِ الْبِيُولُوجِيِّ.
+“İklim değişikliği biyolojik çeşitliliği etkilemeden ekosistemlerin istikrarını tehdit eder.”
+Bu şık olmaz. Çünkü kaynak cümlede iklim değişikliğinin biyolojik çeşitlilik kaybına yol açtığı açıkça söyleniyor. Buradaki مِنْ دُونِ أَنْ يُؤَثِّرَ, yani “etkilemeden” ifadesi verilen anlamı değiştiriyor.
+C)
+يُشَكِّلُ فُقْدَانُ التَّنَوُّعِ الْبِيُولُوجِيِّ النَّاجِمُ عَنِ التَّغَيُّرِ الْمُنَاخِيِّ خَطَرًا عَلَى اسْتِقْرَارِ النُّظُمِ الْبِيئِيَّةِ.
+“İklim değişikliğinden kaynaklanan biyolojik çeşitlilik kaybı, ekosistemlerin istikrarı için bir tehdit oluşturur.”
+Bu şık anlamca en yakın gibi duruyor.
+Çünkü aradığımız iki ilişki de burada var:
+النَّاجِمُ عَنِ التَّغَيُّرِ الْمُنَاخِيِّ
+“iklim değişikliğinden kaynaklanan”
+ifadesi, kaynak cümledeki يُؤَدِّي التَّغَيُّرُ الْمُنَاخِيُّ إِلَى yapısını karşılıyor.
+Ayrıca:
+يُشَكِّلُ ... خَطَرًا عَلَى اسْتِقْرَارِ النُّظُمِ الْبِيئِيَّةِ
+“ekosistemlerin istikrarı için tehdit oluşturur”
+ifadesi de يُهَدِّدُ اسْتِقْرَارَ النُّظُمِ الْبِيئِيَّةِ anlamını koruyor.
+Dolayısıyla bu şık doğru olabilir.
+D)
+يَرْتَبِطُ فُقْدَانُ التَّنَوُّعِ الْبِيُولُوجِيِّ بِاسْتِقْرَارِ النُّظُمِ الْبِيئِيَّةِ، لَكِنَّهُ لَا يَنْتُجُ عَنِ التَّغَيُّرِ الْمُنَاخِيِّ.
+“Biyolojik çeşitliliğin kaybı ekosistemlerin istikrarıyla ilişkilidir ancak iklim değişikliğinden kaynaklanmaz.”
+Bu şık olmaz. Çünkü لَا يَنْتُجُ عَنِ التَّغَيُّرِ الْمُنَاخِيِّ, “iklim değişikliğinden kaynaklanmaz” ifadesi kaynak cümlenin tam tersidir.
+E)
+تَسْتَطِيعُ النُّظُمُ الْبِيئِيَّةُ الْحِفَاظَ عَلَى اسْتِقْرَارِهَا رَغْمَ فُقْدَانِ التَّنَوُّعِ الْبِيُولُوجِيِّ النَّاتِجِ عَنِ التَّغَيُّرِ الْمُنَاخِيِّ.
+“Ekosistemler, iklim değişikliğinden kaynaklanan biyolojik çeşitlilik kaybına rağmen istikrarlarını koruyabilir.”
+Bu şık da olmaz. Kaynak cümlede biyolojik çeşitlilik kaybının ekosistemlerin istikrarını tehdit ettiği söyleniyor. Burada ise buna rağmen istikrarın korunabileceği söylenmiş.
+Dolayısıyla neden-sonuç zincirini bozmadan farklı ifadelerle yeniden veren seçeneği buluyoruz.
+Doğru cevabımız C
+
+
+50. Soru
+Öncelikle cümlemizi okuyalım.
+لَمْ تَعُدِ الطَّاقَةُ الْمُتَجَدِّدَةُ خِيَارًا ثَانَوِيًّا، بَلْ أَصْبَحَتْ ضَرُورَةً مُلِحَّةً لِمُوَاجَهَةِ الطَّلَبِ الْعَالَمِيِّ الْمُتَزَايِدِ عَلَى الطَّاقَةِ.
+“Yenilenebilir enerji artık ikincil bir seçenek olmaktan çıkmış, artan küresel enerji talebini karşılamak için acil bir gereklilik hâline gelmiştir.”
+Burada özellikle:
+لَمْ تَعُدْ ... بَلْ أَصْبَحَتْ
+“artık ... değil, aksine ... hâline geldi”
+yapısına dikkat ediyoruz.
+Ana düşüncemiz şu:
+Yenilenebilir enerji artık ikinci planda bir seçenek değil, artan enerji ihtiyacı nedeniyle zorunlu ve temel bir ihtiyaç hâline gelmiş.
+Şıklarda bu iki anlamı koruyan ifadeyi arıyoruz.
+A)
+أَصْبَحَتِ الطَّاقَةُ الْمُتَجَدِّدَةُ مَصْدَرًا مُكَمِّلًا يُمْكِنُ الِاسْتِغْنَاءُ عَنْهُ مَعَ تَزَايُدِ الطَّلَبِ الْعَالَمِيِّ عَلَى الطَّاقَةِ.
+“Yenilenebilir enerji, artan küresel enerji talebi karşısında vazgeçilebilecek tamamlayıcı bir kaynak hâline gelmiştir.”
+Bu şık olmaz. Kaynak cümlede yenilenebilir enerji artık vazgeçilebilir bir seçenek değil, tam tersine zorunluluk olarak anlatılıyor.
+B)
+أَدَّى ارْتِفَاعُ الطَّلَبِ الْعَالَمِيِّ عَلَى الطَّاقَةِ إِلَى تَرَاجُعِ أَهَمِّيَّةِ مَصَادِرِ الطَّاقَةِ الْمُتَجَدِّدَةِ.
+“Küresel enerji talebinin artması yenilenebilir enerji kaynaklarının öneminin azalmasına yol açmıştır.”
+Bu şık olmaz. Kaynak cümlede talebin artması yenilenebilir enerjinin önemini artırıyor, burada ise azaltıyor.
+C)
+قَدْ تُصْبِحُ الطَّاقَةُ الْمُتَجَدِّدَةُ ضَرُورِيَّةً مُسْتَقْبَلًا إِذَا عَجَزَتِ الْمَصَادِرُ التَّقْلِيدِيَّةُ عَنْ تَلْبِيَةِ الطَّلَبِ.
+“Geleneksel kaynaklar talebi karşılayamazsa yenilenebilir enerji gelecekte gerekli hâle gelebilir.”
+Bu şık olmaz. Burada قَدْ تُصْبِحُ ... مُسْتَقْبَلًا, yani “gelecekte gerekli hâle gelebilir” deniyor.
+Kaynak cümlede ise yenilenebilir enerjinin şimdiden bir zorunluluk hâline geldiği kesin olarak belirtiliyor. Zaman ve kesinlik derecesi değişmiş.
+D)
+غَدَتِ الطَّاقَةُ الْمُتَجَدِّدَةُ ضَرُورَةً أَسَاسِيَّةً لِتَلْبِيَةِ الِاحْتِيَاجَاتِ الْعَالَمِيَّةِ الْمُتَزَايِدَةِ مِنَ الطَّاقَةِ.
+“Yenilenebilir enerji, giderek artan küresel enerji ihtiyaçlarını karşılamak için temel bir gereklilik hâline gelmiştir.”
+Bu şık anlamca en yakın gibi duruyor.
+Çünkü kaynak cümledeki:
+أَصْبَحَتْ ضَرُورَةً مُلِحَّةً
+“acil bir zorunluluk hâline geldi”
+anlamını burada:
+غَدَتْ ... ضَرُورَةً أَسَاسِيَّةً
+“temel bir zorunluluk hâline geldi”
+şeklinde görüyoruz.
+Ayrıca:
+الطَّلَبِ الْعَالَمِيِّ الْمُتَزَايِدِ
+ifadesinin anlamı da:
+الِاحْتِيَاجَاتِ الْعَالَمِيَّةِ الْمُتَزَايِدَةِ
+şeklinde korunmuş. Bu nedenle bu şık doğru olabilir.
+E)
+مَا تَزَالُ الطَّاقَةُ الْمُتَجَدِّدَةُ خِيَارًا مَحْدُودَ الْأَهَمِّيَّةِ رَغْمَ تَزَايُدِ الْحَاجَةِ الْعَالَمِيَّةِ إِلَى الطَّاقَةِ.
+“Yenilenebilir enerji, küresel enerji ihtiyacının artmasına rağmen hâlâ sınırlı öneme sahip bir seçenektir.”
+Bu şık olmaz. Kaynak cümlede لَمْ تَعُدْ خِيَارًا ثَانَوِيًّا, yani “artık ikincil bir seçenek değildir” deniyor. Burada ise hâlâ sınırlı öneme sahip olduğu söylenmiş.
+Dolayısıyla temel anlamı koruyan seçeneğe ulaşıyoruz.
+Doğru cevabımız 
+
+
+
+51. Soru
+Öncelikle verilen cümleyi okuyalım.
+يَسْتَطِيعُ الذَّكَاءُ الِاصْطِنَاعِيُّ مُعَالَجَةَ كَمِّيَّاتٍ هَائِلَةٍ مِنَ الْبَيَانَاتِ فِي ثَوَانٍ، وَهُوَ أَمْرٌ يَعْجِزُ عَنْهُ الْعَقْلُ الْبَشَرِيُّ.
+“Yapay zekâ çok büyük miktardaki veriyi saniyeler içinde işleyebilir; bu, insan zihninin yapamadığı bir şeydir.”
+Burada bizim için iki önemli nokta var:
+كَمِّيَّاتٍ هَائِلَةً مِنَ الْبَيَانَاتِ فِي ثَوَانٍ
+“çok büyük miktarda veriyi saniyeler içinde işlemek”
+ve:
+يَعْجِزُ عَنْهُ الْعَقْلُ الْبَشَرِيُّ
+“insan zihninin bunu yapamaması.”
+Yani temel karşılaştırmamız veri işleme hızı ve kapasitesi bakımından yapay zekâ ile insan zihni arasında.
+Şıklarda bunu koruyan ifadeyi arıyoruz.
+A)
+يَسْتَطِيعُ الذَّكَاءُ الِاصْطِنَاعِيُّ وَالْعَقْلُ الْبَشَرِيُّ مُعَالَجَةَ الْقَدْرِ نَفْسِهِ مِنَ الْبَيَانَاتِ بِالسُّرْعَةِ نَفْسِهَا.
+“Yapay zekâ ve insan zihni aynı miktardaki veriyi aynı hızda işleyebilir.”
+Bu şık olmaz. Kaynak cümlede ikisinin eşit olduğundan değil, insan zihninin yapamadığı bir işlemi yapay zekânın çok hızlı yapabildiğinden söz ediliyor.
+B)
+تَكْمُنُ مِيزَةُ الذَّكَاءِ الِاصْطِنَاعِيِّ فِي دِقَّةِ مُعَالَجَةِ الْبَيَانَاتِ لَا فِي سُرْعَتِهَا.
+“Yapay zekânın üstünlüğü veri işlemenin hızında değil, doğruluğundadır.”
+Bu şık olmaz. Kaynak cümlede دِقَّة, yani doğruluktan söz edilmiyor. Asıl vurgu فِي ثَوَانٍ, yani işlem hızında.
+C)
+يَحْتَاجُ الذَّكَاءُ الِاصْطِنَاعِيُّ إِلَى وَقْتٍ أَطْوَلَ مِنَ الْعَقْلِ الْبَشَرِيِّ لِمُعَالَجَةِ الْبَيَانَاتِ الضَّخْمَةِ.
+“Yapay zekâ büyük verileri işlemek için insan zihninden daha uzun zamana ihtiyaç duyar.”
+Bu şık olmaz. Kaynak cümlenin tam tersini söylüyor.
+D)
+يَتَفَوَّقُ الذَّكَاءُ الِاصْطِنَاعِيُّ عَلَى الْعَقْلِ الْبَشَرِيِّ فِي سُرْعَةِ مُعَالَجَةِ كَمِّيَّاتٍ هَائِلَةٍ مِنَ الْبَيَانَاتِ.
+“Yapay zekâ, çok büyük miktardaki verileri işleme hızı bakımından insan zihninden üstündür.”
+Burada aradığımız temel karşılaştırmayı görüyoruz.
+Kaynak cümlede:
+فِي ثَوَانٍ
+ve:
+يَعْجِزُ عَنْهُ الْعَقْلُ الْبَشَرِيُّ
+denilmişti.
+Burada ise bu iki bilgi:
+يَتَفَوَّقُ ... عَلَى الْعَقْلِ الْبَشَرِيِّ فِي سُرْعَةِ الْمُعَالَجَةِ
+“işleme hızında insan zihninden üstündür”
+şeklinde tek bir karşılaştırma yapısıyla ifade edilmiş. Anlam korunmuş gibi görünüyor; bu şık doğru olabilir.
+E)
+يَعْجِزُ الْعَقْلُ الْبَشَرِيُّ عَنْ فَهْمِ نَتَائِجِ مُعَالَجَةِ الْبَيَانَاتِ الَّتِي يُقَدِّمُهَا الذَّكَاءُ الِاصْطِنَاعِيُّ.
+“İnsan zihni, yapay zekânın sunduğu veri işleme sonuçlarını anlamaktan acizdir.”
+Bu şık olmaz. Kaynak cümlede insanın sonuçları anlayamamasından söz edilmiyor. İnsan zihninin yapamadığı şey, çok büyük miktarda veriyi saniyeler içinde işlemek.
+Dolayısıyla kaynak cümledeki hız ve kapasite karşılaştırmasını koruyan seçenek:
+Doğru cevabımız D
+
+52. Soru
+Öncelikle verilen cümleyi okuyalım.
+إِذَا اسْتَمَرَّتِ الدُّوَلُ فِي إِهْمَالِ التَّعْلِيمِ، فَسَوْفَ تُوَاجِهُ تَحَدِّيَاتٍ اقْتِصَادِيَّةً وَاجْتِمَاعِيَّةً صَعْبَةً فِي الْمُسْتَقْبَلِ.
+“Devletler eğitimi ihmal etmeye devam ederlerse gelecekte ciddi ekonomik ve sosyal sorunlarla karşılaşacaklardır.”
+Burada إِذَا ... فَسَوْفَ şart-sonuç yapısına dikkat ediyoruz.
+Şartımız:
+اسْتِمْرَارُ إِهْمَالِ التَّعْلِيمِ
+“eğitimin ihmal edilmeye devam edilmesi.”
+Sonucumuz:
+مُوَاجَهَةُ تَحَدِّيَاتٍ اقْتِصَادِيَّةٍ وَاجْتِمَاعِيَّةٍ صَعْبَةٍ مُسْتَقْبَلًا
+“gelecekte ciddi ekonomik ve sosyal sorunlarla karşılaşılması.”
+Şıklarda aynı şart-sonuç ilişkisini koruyan ifadeyi arıyoruz.
+A)
+اسْتِمْرَارُ الدُّوَلِ فِي إِهْمَالِ التَّعْلِيمِ سَيُعَرِّضُهَا لِتَحَدِّيَاتٍ اقْتِصَادِيَّةٍ وَاجْتِمَاعِيَّةٍ صَعْبَةٍ مُسْتَقْبَلًا.
+“Devletlerin eğitimi ihmal etmeye devam etmesi, onları gelecekte ciddi ekonomik ve sosyal sorunlarla karşı karşıya bırakacaktır.”
+Burada aradığımız iki temel unsur da var.
+Kaynak cümledeki:
+إِذَا اسْتَمَرَّتِ الدُّوَلُ فِي إِهْمَالِ التَّعْلِيمِ
+ifadesi burada:
+اسْتِمْرَارُ الدُّوَلِ فِي إِهْمَالِ التَّعْلِيمِ
+şeklinde isim yapısına dönüştürülmüş.
+Kaynak cümledeki:
+فَسَوْفَ تُوَاجِهُ تَحَدِّيَاتٍ
+ifadesi ise:
+سَيُعَرِّضُهَا لِتَحَدِّيَاتٍ
+şeklinde yeniden verilmiş.
+Yani yapı değişmiş ama şart ile sonuç arasındaki ilişki korunmuş. Bu şık anlamca en yakın olabilir.
+B)
+قَدْ يُسَاعِدُ اسْتِمْرَارُ إِهْمَالِ التَّعْلِيمِ الدُّوَلَ عَلَى تَجَنُّبِ بَعْضِ التَّحَدِّيَاتِ الِاقْتِصَادِيَّةِ وَالِاجْتِمَاعِيَّةِ.
+“Eğitimin ihmal edilmeye devam edilmesi, devletlerin bazı ekonomik ve sosyal sorunlardan kaçınmasına yardımcı olabilir.”
+Bu şık olmaz. Kaynak cümlede eğitimi ihmal etmek sorunlara yol açıyor. Burada ise sorunlardan kaçınmaya yardımcı olduğu söyleniyor. Sonuç tamamen tersine çevrilmiş.
+C)
+لَنْ تَظْهَرَ آثَارُ إِهْمَالِ التَّعْلِيمِ إِلَّا بَعْدَ انْتِهَاءِ التَّحَدِّيَاتِ الِاقْتِصَادِيَّةِ وَالِاجْتِمَاعِيَّةِ الْحَالِيَّةِ.
+“Eğitimi ihmal etmenin etkileri, mevcut ekonomik ve sosyal sorunlar sona erdikten sonra ortaya çıkacaktır.”
+Bu şık olmaz. Kaynak cümlede mevcut sorunların bitmesinden veya etkilerin ancak ondan sonra ortaya çıkmasından söz edilmiyor.
+
+D)
+تَدْفَعُ التَّحَدِّيَاتُ الِاقْتِصَادِيَّةُ وَالِاجْتِمَاعِيَّةُ الدُّوَلَ إِلَى مُوَاصَلَةِ إِهْمَالِ التَّعْلِيمِ.
+“Ekonomik ve sosyal sorunlar, devletleri eğitimi ihmal etmeye devam etmeye yöneltir.”
+Bu şık olmaz. Burada neden-sonuç yönü ters çevrilmiş.
+Kaynak cümlede:
+eğitimi ihmal etmek → ekonomik ve sosyal sorunlar
+vardı.
+Bu şıkta ise:
+ekonomik ve sosyal sorunlar → eğitimi ihmal etmek
+deniyor.
+E)
+يُمْكِنُ لِلدُّوَلِ تَفَادِي التَّحَدِّيَاتِ الْمُسْتَقْبَلِيَّةِ حَتَّى إِنْ وَاصَلَتْ إِهْمَالَ التَّعْلِيمِ.
+“Devletler eğitimi ihmal etmeye devam etseler bile gelecekteki sorunlardan kaçınabilirler.”
+Bu şık da olmaz. Kaynak cümle, ihmal devam ederse sorunların ortaya çıkacağını söylüyor. Burada ise ihmal devam etmesine rağmen sorunlardan kaçınılabileceği belirtiliyor.
+Dolayısıyla aynı şart-sonuç ilişkisini koruyup yalnızca cümle yapısını değiştiren seçeneğe ulaşıyoruz.
+Doğru cevabımız A
+
+53. Soru
+Öncelikle verilen cümleyi okuyalım.
+دَأَبَتِ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ عَلَى تَحْدِيثِ مَنَاهِجِهَا لِتُوَاكِبَ مُتَطَلَّبَاتِ الْعَصْرِ الْحَدِيثِ.
+“Eğitim kurumları, modern çağın gerekliliklerine ayak uydurmak için müfredatlarını sürekli olarak güncellemeyi sürdürmüştür.”
+Burada özellikle iki ifadeye dikkat ediyoruz:
+دَأَبَتْ عَلَى
+“bir şeyi sürekli yapmayı sürdürmek, devamlı yapmak”
+ve:
+لِتُوَاكِبَ مُتَطَلَّبَاتِ الْعَصْرِ الْحَدِيثِ
+“modern çağın gerekliliklerine ayak uydurmak için.”
+Dolayısıyla şıklarda şu iki anlamı birlikte arıyoruz:
+müfredatın sürekli geliştirilmesi + çağın gerekliliklerine uyum sağlanması.
+Şimdi şıklara bakalım.
+A)
+تُرَاجِعُ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ مَنَاهِجَهَا أَحْيَانًا مِنْ دُونِ رَبْطِهَا بِمُتَطَلَّبَاتِ الْعَصْرِ.
+“Eğitim kurumları müfredatlarını bazen, çağın gereklilikleriyle ilişkilendirmeden gözden geçirir.”
+Bu şık olmaz.
+Kaynak cümlede دَأَبَتْ, yani süreklilik var. Burada ise أَحْيَانًا, “bazen” denmiş.
+Ayrıca kaynak cümlede müfredatın güncellenme amacı çağın gereklerine uyum sağlamakken burada:
+مِنْ دُونِ رَبْطِهَا بِمُتَطَلَّبَاتِ الْعَصْرِ
+“çağın gereklilikleriyle ilişkilendirmeden”
+deniyor. Anlam değişiyor.
+B)
+تُحَافِظُ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ عَلَى مَنَاهِجِهَا ثَابِتَةً رَغْمَ تَغَيُّرِ احْتِيَاجَاتِ الْعَصْرِ.
+“Eğitim kurumları, çağın ihtiyaçları değişmesine rağmen müfredatlarını değişmeden korur.”
+Bu şık olmaz.
+Kaynak cümlede تَحْدِيثِ مَنَاهِجِهَا, yani “müfredatlarını güncellemek” deniyor.
+Burada ise:
+تُحَافِظُ ... عَلَى مَنَاهِجِهَا ثَابِتَةً
+“müfredatlarını sabit tutar”
+denmiş. Kaynak cümlenin tam tersi.
+C)
+تُوَاصِلُ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ تَطْوِيرَ مَنَاهِجِهَا بِمَا يَنْسَجِمُ مَعَ مُتَطَلَّبَاتِ الْعَصْرِ.
+“Eğitim kurumları, müfredatlarını çağın gereklilikleriyle uyumlu olacak şekilde geliştirmeye devam eder.”
+Burada aradığımız anlamların ikisini de görüyoruz.
+Kaynak cümledeki:
+دَأَبَتْ عَلَى تَحْدِيثِ مَنَاهِجِهَا
+ifadesi burada:
+تُوَاصِلُ ... تَطْوِيرَ مَنَاهِجِهَا
+“müfredatlarını geliştirmeye devam ediyor”
+şeklinde verilmiş.
+Ayrıca kaynak cümledeki:
+لِتُوَاكِبَ مُتَطَلَّبَاتِ الْعَصْرِ
+ifadesinin karşılığını da:
+بِمَا يَنْسَجِمُ مَعَ مُتَطَلَّبَاتِ الْعَصْرِ
+“çağın gereklilikleriyle uyumlu olacak şekilde”
+olarak görüyoruz.
+Yani hem süreklilik hem de çağın gereklerine uyum anlamı korunmuş. Bu şık anlamca en yakın gibi duruyor, doğru olabilir.
+D)
+تُرَكِّزُ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ عَلَى تَغْيِيرِ أَسَالِيبِ التَّدْرِيسِ بَدَلًا مِنْ تَحْدِيثِ الْمَنَاهِجِ.
+“Eğitim kurumları müfredatı güncellemek yerine öğretim yöntemlerini değiştirmeye odaklanır.”
+Bu şık olmaz.
+Kaynak cümlede doğrudan müfredatların güncellenmesinden söz ediliyor.
+Buradaki:
+بَدَلًا مِنْ تَحْدِيثِ الْمَنَاهِجِ
+“müfredatı güncellemek yerine”
+ifadesi kaynak cümledeki bilgiyi reddediyor.
+E)
+تَسْعَى الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ إِلَى زِيَادَةِ عَدَدِ الْمَنَاهِجِ مِنْ دُونِ تَطْوِيرِ مُحْتَوَاهَا.
+“Eğitim kurumları, müfredatların içeriğini geliştirmeden sayılarını artırmaya çalışır.”
+Bu şık da olmaz.
+Kaynak cümlede müfredatların sayısının artırılmasından değil, mevcut müfredatların güncellenmesi ve geliştirilmesinden söz ediliyor.
+Ayrıca:
+مِنْ دُونِ تَطْوِيرِ مُحْتَوَاهَا
+“içeriklerini geliştirmeden”
+ifadesi de kaynak anlamla uyuşmuyor.
+Dolayısıyla kaynak cümledeki süreklilik, müfredatı geliştirme ve çağın gerekliliklerine uyum sağlama anlamlarını birlikte koruyan seçenek:
+Doğru cevabımız C
+

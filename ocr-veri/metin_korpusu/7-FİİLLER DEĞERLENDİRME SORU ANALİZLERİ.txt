@@ -1,0 +1,328 @@
+FİİLLER DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+---- الطَّالِبُ إِلَى الْمَدْرَسَةِ بَاكِرًا لِيَسْتَعِدَّ لِلِامْتِحَانِ يَوْمَ أَمْسِ.
+Türkçesi: Öğrenci dün sınava hazırlanmak için erkenden okula ----.
+İlk aşamada boşluğun devamında الطَّالِبُ “öğrenci” öznesini yani failini görüyoruz. Cümlenin sonunda ise يَوْمَ أَمْسِ “dün” ifadesi var. Bu ifade eylemin geçmiş zamanda gerçekleştiğini gösteriyor. Ayrıca fail müzekker tekildir.
+Şimdi şıklara bakalım:
+A) يَذْهَبُ — gider / gidiyor
+Muzâri fiildir. أَمْسِ geçmiş zamanı gösterdiği için olmaz.
+B) اِذْهَبْ — git!
+Emir fiilidir. Burada emir değil, dün gerçekleşen bir olay anlatılıyor. Olmaz.
+C) ذَهَبَ — gitti
+Mâzî fiildir ve müzekker tekil faile uygundur. أَمْسِ ile zaman bakımından da uyumludur. Olabilir.
+D) لَا يَذْهَبُ — gitmez / gitmiyor
+Olumsuz muzâridir. Hem zaman hem anlam bakımından uygun değildir. Olmaz.
+E) مَا ذَهَبَ — gitmedi
+Geçmiş zamandır ancak مَا fiili olumsuz yapar. Cümlede olumlu bir eylem anlatılıyor. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, ذَهَبَ olur.
+2. Soru
+لَا ---- فِي سَاحَةِ الْمَدْرَسَةِ أَثْنَاءَ الِاسْتِرَاحَةِ.
+Türkçesi: Teneffüs sırasında okul bahçesinde koşma.
+İlk aşamada cümlenin başında لَا görüyoruz. Burada bir kişiye “koşma” şeklinde yasaklama yapılmaktadır. Dolayısıyla لَا النَّاهِيَةُ sonrasında cezmedilmiş muzâri fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) تَرْكُضُ — koşuyorsun / koşarsın
+Muzâri fiildir fakat sonu dammelidir. لَا النَّاهِيَةُ fiili cezm ettiği için تَرْكُضْ olması gerekir. Olmaz.
+B) رَكَضَ — koştu
+Mâzî fiildir. Yasaklama yapısına uygun değildir. Olmaz.
+C) مَا تَرْكُضْ
+Zaten başta لَا vardır; ayrıca مَا ile böyle bir yapı kurulmaz. Olmaz.
+D) تَرْكُضْ — koş
+Muzâri fiilin cezmedilmiş biçimidir. Başındaki لَا ile birlikte:
+لَا تَرْكُضْ = “Koşma.” Olabilir.
+E) اُرْكُضْ — koş!
+Emir fiilidir ve olumlu emir verir. Cümlenin anlamına ters düşer. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, تَرْكُضْ olur.
+
+3. Soru
+الطَّالِبُ الْمُجْتَهِدُ ---- دُرُوسَهُ كُلَّ يَوْمٍ دُونَ تَأْخِيرٍ.
+Türkçesi: Çalışkan öğrenci her gün derslerini geciktirmeden ----.
+İlk aşamada özne olarak الطَّالِبُ الْمُجْتَهِدُ “çalışkan öğrenci” ifadesini görüyoruz. كُلَّ يَوْمٍ “her gün” ifadesi ise düzenli ve tekrarlanan bir eylemi gösteriyor. Bu nedenle genel alışkanlık bildiren uygun fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) كَتَبَ — yazdı
+Mâzî fiildir. Geçmişte tamamlanmış bir eylem bildirir. Burada كُلَّ يَوْمٍ ile düzenli alışkanlık anlatılıyor. Olmaz.
+B) يَكْتُبُ — yazar / yazıyor
+Muzâri fiildir. Müzekker tekil özneyle ve “her gün” anlamıyla uyumludur. Olabilir.
+C) لَا يَكْتُبُ — yazmaz
+fail ve zaman bakımından mümkün görünse de cümleyi olumsuz yapar. “Çalışkan öğrenci” ve دُونَ تَأْخِيرٍ bağlamıyla uygun değildir. Olmaz.
+D) اُكْتُبْ — yaz!
+Emir fiilidir. Burada bir öğrenci hakkında bilgi veriliyor. Olmaz.
+E) مَا كَتَبَ — yazmadı
+Olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَكْتُبُ olur.
+4. Soru
+---- الدَّرْسَ جَيِّدًا ثُمَّ أَجِبْ عَنِ الْأَسْئِلَةِ.
+Türkçesi: Dersi iyi oku, sonra soruları cevapla.
+İlk aşamada boşluğun devamındaki ثُمَّ أَجِبْ “sonra cevapla” ifadesine bakıyoruz. أَجِبْ emir fiilidir. Cümlede art arda iki talimat verilmesi beklendiği için ilk fiilin de emir olması gerekir.
+Şimdi şıklara bakalım:
+A) يَقْرَأُ — okuyor / okur
+Muzâri fiildir. Talimat anlamını vermez. Olmaz.
+B) لَا تَقْرَأْ — okuma
+Olumsuz emir/yasaklamadır. Devamındaki “sonra cevapla” anlamıyla uyuşmaz. Olmaz.
+C) قَرَأَ — okudu
+Mâzî fiildir. Olmaz.
+D) اِقْرَأْ — oku!
+Emir fiilidir. ثُمَّ أَجِبْ ile aynı emir yapısını oluşturur. Olabilir.
+E) مَا قَرَأَ — okumadı
+Olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, اِقْرَأْ olur.
+5. Soru
+مَا ---- أَحْمَدُ الرِّسَالَةَ لِأَنَّهُ مَشْغُولٌ.
+Türkçesi: Ahmed mektubu yazmıyor; çünkü meşgul.
+İlk aşamada cümlenin başında مَا olumsuzluk edatını, devamında ise müzekker tekil fail أَحْمَدُ kelimesini görüyoruz. Cümlede Ahmed'in meşgul olması nedeniyle yaptığı/yapmadığı bir eylem anlatılıyor. Şıklardan مَا ile birlikte doğru ve anlamlı yapı kuranı arıyoruz.
+Şimdi şıklara bakalım:
+A) يَكْتُبُ — yazıyor / yazar
+Muzâri fiildir ve müzekker tekil faille uyumludur.
+مَا يَكْتُبُ أَحْمَدُ الرِّسَالَةَ = “Ahmed mektubu yazmıyor.” Olabilir.
+B) اُكْتُبْ — yaz!
+Emir fiilidir. مَا ile bu yapı kurulmaz. Olmaz.
+C) كَتَبَتْ — yazdı
+Müennes tekil mâzî fiildir. أَحْمَدُ müzekkerdir. Olmaz.
+D) لَا يَكْتُبُ — yazmıyor
+Kendi içinde olumsuz bir yapıdır. Başta zaten مَا bulunduğu için مَا لَا يَكْتُبُ burada uygun değildir. Olmaz.
+E) كَتَبْتُ — yazdım
+Birinci tekil şahıstır. fail Ahmed olduğu için olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَكْتُبُ olur.
+6. Soru
+الطُّلَّابُ ---- إِلَى الْمُعَلِّمِ بِانْتِبَاهٍ أَثْنَاءَ الشَّرْحِ.
+Türkçesi: Öğrenciler anlatım sırasında öğretmeni dikkatle dinliyorlar.
+İlk aşamada özne olarak الطُّلَّابُ “öğrenciler” ifadesini görüyoruz. Özne fiilden önce geldiği için fiilin de çoğul özneyle uyumlu olması gerekir. Ayrıca أَثْنَاءَ الشَّرْحِ devam eden/genel bir durumu anlatıyor.
+Şimdi şıklara bakalım:
+A) اِسْتَمَعَا — ikisi dinledi
+Mâzî ve ikil fiildir. fail çoğuldur. Olmaz.
+B) يَسْتَمِعُونَ — dinliyorlar
+Muzâri ve müzekker çoğuldur. الطُّلَّابُ ile tam uyumludur. Olabilir.
+C) لَمْ يَسْتَمِعُوا — dinlemediler
+Müzekker çoğul bakımından uygundur ancak olumsuz geçmiş anlamı verir. Cümlede öğrencilerin dikkatle dinlediği anlatılıyor. Olmaz.
+D) اِسْتَمِعْ — dinle!
+Müzekker tekile emir fiilidir. Olmaz.
+E) اِسْتَمِعِي — dinle!
+Müennes tekile emir fiilidir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَسْتَمِعُونَ olur.
+7. Soru
+---- تَتَأَخَّرْ مَرَّةً أُخْرَى.
+Türkçesi: Bir daha geç kalma.
+İlk aşamada boşluğun devamındaki تَتَأَخَّرْ fiilinin sonunun sükûnlu olduğunu görüyoruz. Yani muzâri fiil cezmedilmiş durumdadır. Ayrıca cümlede “bir daha geç kalma” şeklinde yasaklama anlamı vardır.
+Şimdi şıklara bakalım:
+A) لَا — yapma
+لَا النَّاهِيَةُ muzâri fiili cezm eder:
+لَا تَتَأَخَّرْ = “Geç kalma.” Olabilir.
+B) مَا — değil / -medi
+Bu şekilde تَتَأَخَّرْ fiilini cezmetmez. Olmaz.
+C) لَنْ — asla / -meyecek
+Muzâri fiili nasb eder; تَتَأَخَّرَ olması gerekirdi. Olmaz.
+D) لَمَّا — henüz ...medi
+Cezmedebilir; ancak “bir daha geç kalma” şeklinde yasaklama anlamı vermez. Olmaz.
+E) قَدْ
+Muzâri fiili bu şekilde cezmetmez ve yasaklama bildirmez. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, لَا olur.
+8. Soru
+الْمُدِيرُ ---- الِاجْتِمَاعَ فِي السَّاعَةِ التَّاسِعَةِ صَبَاحًا.
+Türkçesi: Müdür toplantıyı sabah saat dokuzda yaptı.
+İlk aşamada özne olarak الْمُدِيرُ “müdür” kelimesini görüyoruz. Müzekker tekildir. Şıklarda bu özneyle kişi ve cinsiyet bakımından uyumlu fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) تَعْقِدُ — düzenler
+Bu biçim üçüncü şahıs müennes veya ikinci şahıs müzekker olabilir. الْمُدِيرُ üçüncü şahıs müzekkerdir; onunla يَعْقِدُ gerekir. Olmaz.
+B) عَقَدَ — düzenledi / yaptı
+Mâzî, üçüncü şahıs müzekker tekildir. الْمُدِيرُ ile uyumludur. Olabilir.
+C) لَا تَعْقِدُ — düzenleme / düzenlemiyor
+Hem şahıs bakımından hem de olumsuzluk açısından uygun değildir. Olmaz.
+D) اِعْقِدِي — düzenle!
+Müennes tekile emirdir. Olmaz.
+E) مَا عَقَدَتْ — düzenlemedi
+Müennes tekil mâzî fiildir ve olumsuzdur. الْمُدِيرُ ile uymaz. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, عَقَدَ olur.
+9. Soru
+---- وَاجِبَكَ الْآنَ قَبْلَ أَنْ تَخْرُجَ مِنَ الْبَيْتِ.
+Türkçesi: Evden çıkmadan önce ödevini şimdi yaz.
+İlk aşamada وَاجِبَكَ “ödevini” ve الْآنَ “şimdi” ifadelerini görüyoruz. Ayrıca قَبْلَ أَنْ تَخْرُجَ “çıkmadan önce” denilerek karşıdaki kişiye doğrudan bir talimat veriliyor.
+Şimdi şıklara bakalım:
+A) تَكْتُبُ — yazıyorsun
+Muzâri fiildir. Burada doğrudan emir isteniyor. Olmaz.
+B) مَا تَكْتُبُ — yazmıyorsun
+Olumsuz muzâridir. Olmaz.
+C) اُكْتُبْ — yaz!
+Müzekker tekile emir fiilidir. Cümlenin anlamını doğru tamamlar. Olabilir.
+D) لَا يَكْتُبْ — yazmasın
+Üçüncü şahısla ilgili olumsuz yapı görünümündedir; hitap edilen kişiye emir değildir. Olmaz.
+E) كَتَبَ — yazdı
+Mâzî fiildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, اُكْتُبْ olur.
+10. Soru
+الطَّالِبَةُ الْمُجْتَهِدَةُ ---- إِلَى الْمَكْتَبَةِ كُلَّ أُسْبُوعٍ.
+Türkçesi: Çalışkan kız öğrenci her hafta kütüphaneye gider.
+İlk aşamada özne olarak الطَّالِبَةُ الْمُجْتَهِدَةُ görüyoruz. özne müennes tekildir. كُلَّ أُسْبُوعٍ “her hafta” ifadesi de tekrarlanan bir alışkanlığı gösteriyor.
+Şimdi şıklara bakalım:
+A) ذَهَبَتْ — gitti
+Müennes tekil olması doğru olsa da mâzî fiildir. Burada düzenli alışkanlık anlatılıyor. Olmaz.
+B) تَذْهَبُ — gider
+Muzâri, müennes tekildir. Hem özneyle hem كُلَّ أُسْبُوعٍ ifadesiyle uyumludur. Olabilir.
+C) لَا يَذْهَبُ — gitmez
+Fiil müzekkerdir ve ayrıca olumsuzdur. Olmaz.
+D) اِذْهَبْ — git!
+Müzekker tekile emirdir. Olmaz.
+E) مَا ذَهَبَتْ — gitmedi
+Müennes tekil olsa da olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, تَذْهَبُ olur.
+11. Soru
+مَا ---- اللَّاعِبُونَ الْمُبَارَاةَ بِسَبَبِ سُوءِ الطَّقْسِ.
+Türkçesi: Oyuncular kötü hava koşulları nedeniyle maçı kazanmıyorlar.
+İlk aşamada cümlenin başında مَا olumsuzluk edatını görüyoruz. Boşluğun devamında ise اللَّاعِبُونَ “oyuncular” faili vardır. Burada önemli nokta, fiilin failden önce gelmesidir. Arapçada fiil, failden önce geldiğinde tekil biçimde kullanılır. Ayrıca مَا, muzâri fiili olumsuz yapabilir. Bu nedenle şıklarda hem bu yapıya hem de cümlenin anlamına uygun fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) يَفُوزُ — kazanıyor / kazanır
+Muzâri ve müzekker tekil fiildir. Fiil, çoğul özne اللَّاعِبُونَ kelimesinden önce geldiği için tekil biçimde kullanılması uygundur. Başındaki مَا ile birlikte مَا يَفُوزُ “kazanmıyor / kazanmaz” anlamını verir. Olabilir.
+B) فَازُوا — kazandılar
+Mâzî ve müzekker çoğul fiildir. Burada fiil özneden önce geldiği için فَازُوا اللَّاعِبُونَ biçiminde çoğul fiil kullanımı uygun değildir. Olmaz.
+C) لَا يَفُوزُونَ — kazanmıyorlar / kazanmazlar
+Muzâri çoğuldur; ayrıca başta zaten مَا olumsuzluk edatı vardır. مَا لَا يَفُوزُونَ şeklinde yapı burada uygun değildir. Olmaz.
+D) اُفُوزُوا
+Emir anlamı taşıyan bir yapı olarak cümleye uygun değildir. Burada oyuncular hakkında bilgi veriliyor. Olmaz.
+E) فُوزُوا
+Cümlede gereken muzâri fiil yapısını karşılamaz ve anlam bakımından da uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَفُوزُ olur.
+12. Soru
+---- بِصَوْتٍ مُرْتَفِعٍ أَثْنَاءَ الِامْتِحَانِ.
+Türkçesi: Sınav sırasında yüksek sesle konuşma.
+İlk aşamada أَثْنَاءَ الِامْتِحَانِ “sınav sırasında” ve بِصَوْتٍ مُرْتَفِعٍ “yüksek sesle” ifadelerini görüyoruz. Burada bir kişiye yasaklama yapılması anlamca en uygun yapıdır.
+Şimdi şıklara bakalım:
+A) يَتَكَلَّمُ — konuşuyor
+Üçüncü şahıs muzâridir. Doğrudan hitap ve yasaklama anlamı vermez. Olmaz.
+B) لَا تَتَكَلَّمْ — konuşma!
+لَا النَّاهِيَةُ + muzâri meczum yapısıdır. Sınav sırasında yüksek sesle konuşmayı yasaklar. Olabilir.
+C) تَكَلَّمَ — konuştu
+Mâzî fiildir. Olmaz.
+D) يَتَكَلَّمْنَ — onlar (kadınlar) konuşuyorlar
+Müennes çoğul fiildir. Cümlenin hedeflediği hitap yapısına uygun değildir. Olmaz.
+E) مَا تَكَلَّمُ
+Doğru bir fiil yapısı değildir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, لَا تَتَكَلَّمْ olur.
+13. Soru
+الْوَلَدُ ---- الْمَاءَ لِأَنَّهُ عَطْشَانُ.
+Türkçesi: Çocuk susadığı için su içiyor.
+İlk aşamada özne olarak الْوَلَدُ “çocuk” kelimesini görüyoruz. Müzekker tekildir. Devamındaki لِأَنَّهُ عَطْشَانُ “çünkü susamış” ifadesi de mevcut durumu açıklıyor.
+Şimdi şıklara bakalım:
+A) شَرِبَتْ — içti
+Müennes tekil mâzî fiildir. Özne müzekkerdir. Olmaz.
+B) يَشْرَبُ — içiyor / içer
+Muzâri, müzekker tekildir. الْوَلَدُ ile uyumludur ve anlam da doğrudur. Olabilir.
+C) لَا يَشْرَبُ — içmiyor
+Özneyle uyumludur ancak olumsuzdur. Susamış olması bağlamıyla uygun değildir. Olmaz.
+D) اِشْرَبْ — iç!
+Emir fiilidir. Burada çocuk hakkında bilgi veriliyor. Olmaz.
+E) مَا شَرِبَ — içmedi
+Olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَشْرَبُ olur.
+14. Soru
+الطَّالِبُ الْكَسُولُ لَا ---- وَاجِبَاتِهِ فِي وَقْتِهَا.
+Türkçesi: Tembel öğrenci ödevlerini zamanında yazmaz.
+İlk aşamada cümlenin başında الطَّالِبُ الْكَسُولُ “tembel öğrenci” öznesini görüyoruz. Ardından لَا geliyor. Buradaki لَا, bir kişiye “yapma” diye emir vermiyor; öğrenci hakkında genel olumsuz bilgi veriyor. Dolayısıyla لَا النَّافِيَةُ sonrasında merfu muzâri fiil gerekir.
+Şimdi şıklara bakalım:
+A) كَتَبَ — yazdı
+Mâzî fiildir. لَا ile bu şekilde genel olumsuzluk kurulmaz. Olmaz.
+B) اُكْتُبْ — yaz!
+Emir fiilidir. Olmaz.
+C) يَكْتُبُ — yazar
+Muzâri, müzekker tekildir. لَا يَكْتُبُ = “yazmaz.” Özne ve anlamla uyumludur. Olabilir.
+D) مَا كَتَبَ — yazmadı
+Zaten başta لَا bulunduğu için uygun değildir. Olmaz.
+E) كَتَبْنَ — onlar (kadınlar) yazdılar
+Müennes çoğul mâzî fiildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَكْتُبُ olur.
+15. Soru
+---- الْبَابَ بَعْدَ أَنْ تَخْرُجَ مِنَ الْفَصْلِ.
+Türkçesi: Sınıftan çıktıktan sonra kapıyı kapat.
+İlk aşamada بَعْدَ أَنْ تَخْرُجَ ifadesine bakıyoruz. تَخْرُجَ burada hitap edilen müzekker tekil kişiyi gösteriyor. Cümlenin bütünü de ona verilen bir talimat niteliğindedir.
+Şimdi şıklara bakalım:
+A) أَغْلَقَتْ — kapattı
+Müennes tekil mâzî fiildir. Olmaz.
+B) يُغْلِقُونَ — kapatıyorlar
+Müzekker çoğul muzâridir. Olmaz.
+C) لَا يُغْلِقْ — kapatmasın
+Olumsuz ve üçüncü şahıs yapısıdır. Olmaz.
+D) أَغْلِقْ — kapat!
+Müzekker tekile emir fiilidir. تَخْرُجَ ile şahıs bakımından da uyumludur. Olabilir.
+E) أَغْلِقِي — kapat!
+Müennes tekile emirdir. Eğer muhatap kadın olsaydı devamında أَنْ تَخْرُجِي beklenirdi. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, أَغْلِقْ olur.
+16. Soru
+مَا ---- الْمُعَلِّمُ السُّؤَالَ بِوُضُوحٍ فِي الْحِصَّةِ الْمَاضِيَةِ.
+Türkçesi: Öğretmen geçen derste soruyu açıkça açıklamadı.
+İlk aşamada başta مَا olumsuzluk edatını, sonda ise فِي الْحِصَّةِ الْمَاضِيَةِ “geçen derste” ifadesini görüyoruz. Bu açıkça geçmiş zamanı gösteriyor. fail الْمُعَلِّمُ müzekker tekildir.
+Şimdi şıklara bakalım:
+A) يَشْرَحُ — açıklıyor
+Muzâri fiildir. Geçmiş zaman ipucuyla uyumlu değildir. Olmaz.
+B) اِشْرَحْ — açıkla!
+Emir fiilidir. Olmaz.
+C) شَرَحَ — açıkladı
+Mâzî, müzekker tekildir. Başındaki مَا ile:
+مَا شَرَحَ الْمُعَلِّمُ = “Öğretmen açıklamadı.” Olabilir.
+D) لَا يَشْرَحُ — açıklamıyor
+Başta zaten مَا vardır; ayrıca muzâri yapı geçmiş zamanla uyuşmaz. Olmaz.
+E) تَشْرَحُ — açıklıyor
+Müennes üçüncü şahıs/ikinci şahıs biçimidir. الْمُعَلِّمُ ile uymaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, شَرَحَ olur.
+17. Soru
+الطَّالِبَانِ ---- إِلَى الْمَدْرَسَةِ مَعًا كُلَّ صَبَاحٍ.
+Türkçesi: İki öğrenci her sabah birlikte okula gider.
+İlk aşamada özne olarak الطَّالِبَانِ “iki öğrenci” ifadesini görüyoruz. Özne fiilden önce geldiği için fiilin ikil özneyle tam uyum göstermesi gerekir. كُلَّ صَبَاحٍ da alışkanlık bildirdiği için muzâri fiil bekliyoruz.
+Şimdi şıklara bakalım:
+A) ذَهَبَا — ikisi gitti
+İkil olması doğru ancak mâzî fiildir. Burada “her sabah” şeklinde genel alışkanlık anlatılıyor. Olmaz.
+B) يَذْهَبَانِ — ikisi gider
+Muzâri ve müzekker ikildir. الطَّالِبَانِ ile tam uyumludur. Olabilir.
+C) لَا يَذْهَبُونَ — gitmezler
+Çoğuldur ve ayrıca olumsuzdur. Olmaz.
+D) اِذْهَبْ — git!
+Tekil emir fiilidir. Olmaz.
+E) مَا ذَهَبُوا — gitmediler
+Çoğul ve olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَذْهَبَانِ olur.
+18. Soru
+---- تُهْمِلْ وَقْتَكَ فِيمَا لَا يَنْفَعُ.
+Türkçesi: Zamanını fayda vermeyen şeylerde boşa harcama.
+İlk aşamada boşluğun devamında تُهْمِلْ fiilini görüyoruz. Fiilin sonu sükûnludur; yani muzâri fiil cezmedilmiştir. Ayrıca bir kişiye “zamanını boşa harcama” şeklinde yasaklama yapılmaktadır.
+Şimdi şıklara bakalım:
+A) مَا
+Bu şekilde yasaklama yapmaz ve تُهْمِلْ fiilini bu kullanımda cezmetmez. Olmaz.
+B) لَنْ
+Gelecek zaman olumsuzluğu verir ve muzâriyi nasb eder: لَنْ تُهْمِلَ olması gerekirdi. Olmaz.
+C) لَا
+لَا النَّاهِيَةُ fiili cezm eder:
+لَا تُهْمِلْ = “İhmal etme.” Olabilir.
+D) فَقَدْ
+Yasaklama bildirmez. Olmaz.
+E) قَدْ
+Yasaklama ve cezm oluşturmaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, لَا olur.
+19. Soru
+الطَّالِبَةُ ---- الدَّرْسَ الْآنَ فِي غُرْفَتِهَا.
+Türkçesi: Kız öğrenci şu anda odasında ders çalışıyor.
+İlk aşamada özne الطَّالِبَةُ müennes tekildir. Ayrıca الْآنَ “şimdi” kelimesi eylemin şu anda gerçekleştiğini açıkça gösteriyor. Dolayısıyla müennes tekil muzâri fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) دَرَسَ — çalıştı
+Müzekker tekil mâzî fiildir. Hem cinsiyet hem zaman bakımından uygun değildir. Olmaz.
+B) تَدْرُسُ — çalışıyor
+Muzâri ve müennes tekildir. الْآنَ ile de tam uyumludur. Olabilir.
+C) لَا تَدْرُسُ — çalışmıyor
+Şahıs ve zaman bakımından mümkün olsa da cümleyi olumsuz yapar. Verilen bağlamda olumlu eylem aranıyor. Olmaz.
+D) اُدْرُسْ — çalış!
+Müzekker tekile emir fiilidir. Olmaz.
+E) مَا دَرَسَتْ — çalışmadı
+Müennes tekildir ancak olumsuz geçmiş zamandır. الْآنَ ile uymaz. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, تَدْرُسُ olur.
+20. Soru
+---- إِلَى كَلَامِ وَالِدَيْكَ بِاحْتِرَامٍ.
+Türkçesi: Anne ve babanın sözünü saygıyla dinle.
+İlk aşamada وَالِدَيْكَ “anne ve baban” ifadesindeki ـكَ zamirinden doğrudan bir erkeğe hitap edildiğini görüyoruz. Ayrıca cümle öğüt/talimat niteliğindedir. Bu nedenle müzekker tekile yönelik emir fiili arıyoruz. اِسْتَمَعَ fiilinin إِلَى ile kullanılması da cümlede hazır verilmiş.
+Şimdi şıklara bakalım:
+A) اِسْتَمَعَ — dinledi
+Mâzî fiildir. Talimat anlamını vermez. Olmaz.
+B) يَسْتَمِعُ — dinliyor
+Muzâri üçüncü şahıs müzekkerdir. Doğrudan hitap değildir. Olmaz.
+C) لَا يَسْتَمِعْ — dinlemesin
+Olumsuz üçüncü şahıs yapısıdır. Cümlenin anlamına ters düşer. Olmaz.
+D) اِسْتَمِعْ — dinle!
+Müzekker tekile emir fiilidir.
+اِسْتَمِعْ إِلَى كَلَامِ وَالِدَيْكَ = “Anne ve babanın sözünü dinle.” Olabilir.
+E) مَا اِسْتَمَعَ — dinlemedi
+Olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, اِسْتَمِعْ olur.

@@ -1,0 +1,79 @@
+MUKARABE YAKLAŞMA UMUT FİİLLERİ SORU ÇÖZ SORU ANALİZLERİ
+1) طَفِقَ الْحارِسُ ---- الْبابَ لِلزّائِرينَ
+Cümle طَفِقَ fiiliyle başlamaktadır. طَفِقَ, أفعال الشروع (şurû / başlama fiilleri) grubundandır ve “bir işe başlamaya koyulmak” anlamı verir.
+طَفِقَ → şurû fiili
+الْحارِسُ → طَفِقَ’nın ismi
+Boşluk → طَفِقَ’nın haberi
+Burada güvenlik görevlisinin ziyaretçiler için kapıyı açmaya başlaması anlatılmaktadır. Bu nedenle boşlukta bir fiil gerekir; fiilin zamanı, i‘rabı ve önünde bir edat bulunup bulunmaması kontrol edilmelidir.
+Şimdi şıklara bakalım:
+A) فَتَحَ → mâzi fiildir; burada uygun değildir. ❌
+B) أَنْ يَفْتَحَ → أَنْ + muzâri yapısıdır; şurû fiillerinin haberinde uygun değildir. ❌
+C) يَفْتَحُ → merfû muzâri fiildir; şurû fiilinin haber yapısına uygundur. ✅
+D) يَفْتَحَ → mansûb muzâridir; nasb sebebi yoktur. ❌
+E) فَتْحًا → mastardır; burada gereken fiil cümlesini karşılamaz. ❌
+Doğru cevap: C) يَفْتَحُ
+2) جَعَلَ النَّجّارُ ---- كُرْسِيًّا.
+Buradaki جَعَلَ, “yapmak / bir şeyi bir hâle getirmek” anlamında değil, şurû fiili olarak “başladı” anlamında kullanılmıştır.
+جَعَلَ → şurû fiili
+النَّجّارُ → جَعَلَ’nın ismi
+Boşluk → haberi
+Marangozun bir sandalye yapmaya başlaması anlatılmaktadır. Dolayısıyla boşlukta uygun fiil yapısı aranmalıdır.
+Şimdi şıklara bakalım:
+A) يَصْنَعُ → merfû muzâri fiildir; şurû fiilinin haberine uygundur. ✅
+B) أَنْ يَصْنَعَ → أَنْ + muzâri yapısıdır; şurû fiillerinin haberinde kullanılmaz. ❌
+C) صَنَعَ → mâzi fiildir. ❌
+D) الْخَشَبَ → isimdir; anlam ve yapı bakımından uygun değildir. ❌
+E) صُنْعًا → mastardır; gereken fiil cümlesini karşılamaz. ❌
+Doğru cevap: A) يَصْنَعُ
+3) هَبَّ الطُّلّابُ ---- الْكُتُبَ بَعْدَ انْتِهاءِ الدَّرْسِ.
+Buradaki هَبَّ, أفعال الشروع içerisinde “bir işe girişmek / hemen başlamaya koyulmak” anlamında kullanılmaktadır.
+هَبَّ → şurû fiili
+الطُّلّابُ → ismi
+Boşluk → haberi
+الطُّلّابُ çoğul olduğu için boşluğa gelecek fiilde çoğul şahıs uyumu da aranmalıdır. Ayrıca fiilin şurû yapısına uygun olması gerekir.
+Şimdi şıklara bakalım:
+A) جَمَعوا → mâzi çoğul fiildir. ❌
+B) أَنْ يَجْمَعوا → أَنْ + muzâri çoğul yapısıdır; şurû fiillerinin haberinde uygun değildir. ❌
+C) يَجْمَعونَ → merfû muzâri ve çoğuldur; hem şahıs uyumu hem haber yapısı bakımından uygundur. ✅
+D) جَمْعًا → mastardır. ❌
+E) تَجْمَعونَ → “siz topluyorsunuz” anlamında ikinci çoğul şahıstır; الطُّلّابُ ile kişi uyumu yoktur. ❌
+Doğru cevap: C) يَجْمَعونَ
+4) كَرَبَ الْمِصْباحُ ---- بَعْدَ ضَعْفِ النّورِ.
+كَرَبَ, أفعال المقاربة (mukārabe / yaklaşma fiilleri) grubundandır. Bir olayın gerçekleşmeye çok yaklaştığını bildirir.
+كَرَبَ → mukārabe fiili
+الْمِصْباحُ → ismi
+Boşluk → haberi
+Burada ışığın zayıflamasından sonra lambanın sönmeye yaklaşması anlatılmaktadır. Dolayısıyla boşlukta uygun bir fiil yapısı aranmalıdır.
+Şimdi şıklara bakalım:
+A) أَنْ يَنْطَفِئَ → أَنْ + mansûb muzâri yapısıdır; كَرَبَ ile burada beklenen temel yapı değildir. ❌
+B) اِنْطَفَأَ → mâzi fiildir. ❌
+C) يَنْطَفِئُ → merfû muzâri fiildir; كَرَبَ’nın haberine uygundur. ✅
+D) يَنْطَفِئَ → mansûb muzâridir; nasb sebebi yoktur. ❌
+E) مُنْطَفِئًا → isim/sıfat yapısındadır; gereken fiil cümlesini karşılamaz. ❌
+Doğru cevap: C) يَنْطَفِئُ
+5) يَكادُ الْوَلَدُ ---- مِنْ شِدَّةِ الْأَلَمِ.
+يَكادُ, كَادَ fiilinin muzâri şeklidir ve أفعال المقاربة grubundandır.
+يَكادُ → mukārabe fiili
+الْوَلَدُ → ismi
+Boşluk → haberi
+Burada çocuğun şiddetli ağrıdan dolayı ağlamaya çok yaklaşması anlatılmaktadır. Bu nedenle “ağlamak” fiilinin doğru muzâri biçimi ve i‘rabı kontrol edilmelidir.
+Şimdi şıklara bakalım:
+A) بُكاءً → mastardır. ❌
+B) أَنْ يَبْكِيَ → أَنْ + mansûb muzâri yapısıdır; كَادَ ile burada temel kullanım değildir. ❌
+C) بَكَى → mâzi fiildir. ❌
+D) يَبْكي → muzâri fiildir ve burada merfû durumdadır; كَادَ’nın haber yapısına uygundur. ✅
+E) يَبْكِيَ → mansûb muzâridir; önünde nasb edatı yoktur. ❌
+Doğru cevap: D) يَبْكي
+6) أَوْشَكَ الْمُسافِرونَ ---- إِلَى الْمَطارِ.
+أَوْشَكَ, أفعال المقاربة grubundandır ve bir eylemin gerçekleşmesinin çok yaklaştığını ifade eder.
+أَوْشَكَ → mukārabe fiili
+الْمُسافِرونَ → ismi
+Boşluk → haberi
+الْمُسافِرونَ çoğul olduğundan boşluğa gelecek fiilin çoğul çekimi doğru olmalıdır. Ayrıca haberin yapısında kullanılan edat ve ef‘âl-i hamse kuralı da kontrol edilmelidir.
+Şimdi şıklara bakalım:
+A) تَصِلونَ → “siz ulaşıyorsunuz” anlamında ikinci çoğul şahıstır; الْمُسافِرونَ ile kişi uyumu yoktur. ❌
+B) وَصَلوا → mâzi çoğul fiildir. ❌
+C) أَنْ يَصِلُو → yapı amaç bakımından yakındır; ancak ef‘âl-i hamse çekiminde yazım yanlıştır. Doğru biçim يَصِلوا olmalıdır. ❌
+D) وَصَلْنَ → “onlar kadınlar ulaştılar” anlamında üçüncü çoğul dişildir; الْمُسافِرونَ ile uyumsuzdur. ❌
+E) أَنْ يَصِلوا → أَنْ + mansûb muzâri yapısıdır; çoğul çekimde nûn düşmüştür ve أَوْشَكَ’nın haberine uygundur. ✅
+Doğru cevap: E) أَنْ يَصِلوا

@@ -1,0 +1,230 @@
+İŞARET İSİMLERİ DEĞERLENİDİRME SORU ANALİZLERİ
+1. Soru
+اَلطَّالِبُ مُجْتَهِدٌ فِي ---- الدَّرْسِ.
+Türkçesi: Öğrenci bu derste çalışkandır.
+İlk aşamada boşluğun öncesinde فِي harf-i cerini, devamında ise الدَّرْسِ “ders” ismini görüyoruz. الدَّرْسِ müzekker ve tekildir. Buna uygun bir işaret ismi arıyoruz..
+Şimdi şıklara bakalım:
+A) هٰذِهِ — bu
+Müennes tekil için kullanılır. الدَّرْسِ müzekker olduğu için olmaz.
+B) هٰذَا — bu
+Müzekker tekildir. الدَّرْسِ de müzekker tekil olduğu için uyumludur.
+فِي هٰذَا الدَّرْسِ = “bu derste.” Olabilir.
+C) هٰذَانِ — bu ikisi
+Müzekker ikildir. Burada tek bir dersten söz ediliyor. Olmaz.
+D) هَاتَانِ — bu ikisi
+Müennes ikildir. Hem cinsiyet hem sayı bakımından uygun değildir. Olmaz.
+E) هٰؤُلَاءِ — bunlar
+Çoğul kişiler için kullanılır. الدَّرْسِ tekil bir isimdir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, هٰذَا olur.
+
+2. Soru
+رَأَى الْمُعَلِّمُ وَلَدَيْنِ وَقَالَ: ---- طَالِبَانِ مُهَذَّبَانِ.
+Türkçesi: Öğretmen iki çocuk gördü ve “---- terbiyeli iki öğrencidir.” dedi.
+İlk aşamada cümlenin başında وَلَدَيْنِ “iki çocuk” ifadesini görüyoruz. Boşluğun devamında da طَالِبَانِ مُهَذَّبَانِ şeklinde müzekker, ikil ve merfu bir yapı vardır. Dolayısıyla müzekker ikil ve merfu bir işaret ismi arıyoruz.
+Şimdi şıklara bakalım:
+A) هٰذِهِ — bu
+Müennes tekildir. Olmaz.
+B) هٰذَا — bu
+Müzekkerdir ancak tekildir. Burada iki kişiden söz ediliyor. Olmaz.
+C) هٰذَانِ — bu ikisi
+Müzekker, ikil ve merfu biçimdedir. Devamındaki طَالِبَانِ ile sayı ve cinsiyet bakımından uyumludur. Olabilir.
+D) هَاتَانِ — bu ikisi
+İkil ve merfudur ancak müennestir. Olmaz.
+E) هٰؤُلَاءِ — bunlar
+Çoğuldur. Burada iki kişi vardır. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, هٰذَانِ olur.
+3. Soru
+قَالَتِ الْمُعَلِّمَةُ: ---- الطَّالِبَةُ نَشِيطَةٌ.
+Türkçesi: Öğretmen, “----   kızöğrenci aktiftir.” dedi.
+İlk aşamada boşluğun devamında الطَّالِبَةُ “kız öğrenci” ismini görüyoruz. Bu kelime müennes ve tekildir. Buna uygun bir işaret ismi arıyoruz.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker tekildir. الطَّالِبَةُ müennes olduğu için olmaz.
+B) هٰؤُلَاءِ — bunlar
+Çoğuldur. Burada tek bir kız öğrenciden söz ediliyor. Olmaz.
+C) هَاتَيْنِ — bu iki
+Müennes ikildir ve mansup/mecrur biçimidir. Burada tekil isim vardır. Olmaz.
+D) هٰذَانِ — bu ikisi
+Müzekker ikildir. Olmaz.
+E) هٰذِهِ — bu
+Müennes tekildir. هٰذِهِ الطَّالِبَةُ doğru ve anlamlı bir yapıdır. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, هٰذِهِ olur.
+4. Soru
+دَخَلَتِ الْمُعَلِّمَةُ الْفَصْلَ، فَرَأَتْ ---- الطَّالِبَتَيْنِ الْمُجْتَهِدَتَيْنِ.
+Türkçesi: Öğretmen sınıfa girdi ve ----- çalışkan ikikız öğrenciyi gördü.
+İlk aşamada رَأَتْ “gördü” fiilinden sonra mef‘ûl olan الطَّالِبَتَيْنِ “iki kız öğrenciyi” görüyoruz. Kelime müennes, ikil ve mansuptur. Dolayısıyla işaret isminin de müennes ikil ve mansup biçimde olması gerekir.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker tekildir. Olmaz.
+B) هٰذِهِ — bu
+Müennes olsa da tekildir. Burada iki kişiden söz ediliyor. Olmaz.
+C) هٰذَانِ — bu ikisi
+Müzekker ikil ve merfudur. Hem cinsiyet hem hareke bakımından uygun değildir. Olmaz.
+D) هَاتَيْنِ — bu iki
+Müennes ikil ve mansup/mecrur biçimidir. Burada رَأَتْ fiilinin mef‘ûlü olduğu için mansup kullanım uygundur.
+هَاتَيْنِ الطَّالِبَتَيْنِ doğru yapıdır. Olabilir.
+E) هٰؤُلَاءِ — bunlar
+Çoğuldur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, هَاتَيْنِ olur.
+5. Soru
+أَشَارَ الْمُعَلِّمُ إِلَى الطُّلَّابِ وَقَالَ: ---- مُجْتَهِدُونَ فِي أَعْمَالِهِمْ.
+Türkçesi: Öğretmen öğrencilere işaret etti ve “---- çalışmalarında gayretlidir.” dedi.
+İlk aşamada الطُّلَّابِ “öğrenciler” kelimesinden birden fazla kişiden söz edildiğini görüyoruz. Boşluğun devamındaki مُجْتَهِدُونَ da müzekker çoğuldur. Dolayısıyla kişiler için kullanılan çoğul bir işaret ismi arıyoruz.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker tekildir. Olmaz.
+B) هٰذِهِ — bu
+Müennes tekildir. Olmaz.
+C) هٰذَانِ — bu ikisi
+Müzekker ikildir. Burada çoğuldan söz ediliyor. Olmaz.
+D) هَاتَانِ — bu ikisi
+Müennes ikildir. Olmaz.
+E) هٰؤُلَاءِ — bunlar
+Akıllı varlıklar için kullanılan çoğul işaret ismidir. مُجْتَهِدُونَ ile de anlam bakımından uyumludur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, هٰؤُلَاءِ olur.
+6. Soru
+أَمْسَكَتِ الْمُعَلِّمَةُ كِتَابًا جَدِيدًا وَقَالَتْ: ---- الْكِتَابُ مُفِيدٌ.
+Türkçesi: Öğretmen yeni bir kitap tuttu ve “….. kitap faydalıdır.” dedi.
+İlk aşamada önce كِتَابًا “bir kitap” kelimesini, boşluğun devamında ise الْكِتَابُ ismini görüyoruz. كِتَابٌ müzekker ve tekildir. Buna uygun işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) هٰذِهِ — bu
+Müennes tekildir. Olmaz.
+B) هٰذَا — bu
+Müzekker tekildir. هٰذَا الْكِتَابُ “bu kitap” şeklinde doğru yapı oluşturur. Olabilir.
+C) هٰذَانِ — bu ikisi
+İkildir. Burada tek kitap vardır. Olmaz.
+D) هَاتَيْنِ — bu iki
+Müennes ikildir. Olmaz.
+E) هٰؤُلَاءِ — bunlar
+Çoğuldur ve kişiler için kullanılır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, هٰذَا olur.
+7. Soru
+رَأَى الْمُعَلِّمُ بِنْتَيْنِ تُنَظِّفَانِ السَّبُّورَةَ وَقَالَ: ---- الْبِنْتَانِ مُنَظَّمَتَانِ.
+Türkçesi: Öğretmen tahtayı temizleyen iki kız gördü ve “--- iki kız düzenlidir.” dedi.
+İlk aşamada بِنْتَيْنِ ifadesinden iki kızdan söz edildiğini görüyoruz. Boşluğun devamında ise الْبِنْتَانِ مُنَظَّمَتَانِ müennes, ikil ve merfu yapıdadır. Dolayısıyla müennes ikilin merfu biçimini arıyoruz.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker tekildir. Olmaz.
+B) هٰذِهِ — bu
+Müennes ancak tekildir. Olmaz.
+C) هٰذَانِ — bu ikisi
+İkil ve merfudur ancak müzekkerdir. Olmaz.
+D) هَاتَانِ — bu ikisi
+Müennes, ikil ve merfudur. الْبِنْتَانِ ile tam uyumludur. Olabilir.
+E) هٰؤُلَاءِ — bunlar
+Çoğuldur. Burada iki kişi vardır. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, هَاتَانِ olur.
+8. Soru
+اِسْتَقْبَلَ الْمُدِيرُ طَالِبَيْنِ عِنْدَ بَابِ الْمَدْرَسَةِ، ثُمَّ قَالَ: أُحِبُّ ---- الطَّالِبَيْنِ لِأَنَّهُمَا مُنْضَبِطَانِ.
+Türkçesi: Müdür okul kapısında iki öğrenciyi karşıladı, sonra “--- iki öğrenciyi seviyorum; çünkü onlar disiplinlidir.” dedi.
+İlk aşamada أُحِبُّ “seviyorum” fiilinden sonra mef‘ûl gelecek. Devamında الطَّالِبَيْنِ müzekker, ikil ve mansup durumdadır. İşaret isminin de buna uygun biçimde olması gerekir.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker olsa da tekildir. Olmaz.
+B) هٰذِهِ — bu
+Müennes tekildir. Olmaz.
+C) هٰذَيْنِ — bu iki
+Müzekker ikilin mansup/mecrur biçimidir. Burada أُحِبُّ fiilinin mef‘ûlü olduğu için mansup kullanılır.
+أُحِبُّ هٰذَيْنِ الطَّالِبَيْنِ doğru yapıdır. Olabilir.
+D) هَاتَيْنِ — bu iki
+Müennes ikildir. Olmaz.
+E) هٰؤُلَاءِ — bunlar
+Çoğuldur. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, هٰذَيْنِ olur.
+9. Soru
+---- الطَّالِبُ مُتَفَوِّقٌ فِي الْاِمْتِحَانِ.
+Türkçesi: -----öğrenci sınavda başarılıdır.
+İlk aşamada boşluğun devamında الطَّالِبُ “öğrenci” ismini görüyoruz. Bu kelime müzekker ve tekildir. Dolayısıyla müzekker tekil bir işaret ismi arıyoruz.
+Şimdi şıklara bakalım:
+A) تِلْكَ — o
+Müennes tekildir. الطَّالِبُ müzekker olduğu için olmaz.
+B) ذٰلِكَ — o
+Müzekker tekildir. ذٰلِكَ الطَّالِبُ doğru yapıdır. Olabilir.
+C) ذَانِكَ — o ikisi
+Müzekker ikildir. Olmaz.
+D) تَانِكَ — o ikisi
+Müennes ikildir. Olmaz.
+E) أُولٰئِكَ — onlar
+Çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, ذٰلِكَ olur.
+10. Soru
+قَالَتِ الْمُعَلِّمَةُ: ---- الطَّالِبَةُ نَشِيطَةٌ فِي الدَّرْسِ.
+Türkçesi: Öğretmen, “--- kız öğrenci derste aktiftir.” dedi.
+İlk aşamada boşluğun devamında الطَّالِبَةُ müennes ve tekil ismini görüyoruz. Buna uygun müennes tekil işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) ذٰلِكَ — o
+Müzekker tekildir. Olmaz.
+B) ذَانِكَ — o ikisi
+Müzekker ikildir. Olmaz.
+C) تِلْكَ — o
+Müennes tekildir. تِلْكَ الطَّالِبَةُ doğru yapıdır. Olabilir.
+D) أُولٰئِكَ — onlar
+Çoğuldur. Olmaz.
+E) تَيْنِكَ — o iki
+Müennes ikilin mansup/mecrur biçimidir. Burada tekil isim vardır. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, تِلْكَ olur.
+11. Soru
+رَأَى الْمُدَرِّسُ وَلَدَيْنِ فِي الْمَلْعَبِ، فَقَالَ: ---- الطَّالِبَانِ مَاهِرَانِ.
+Türkçesi: Öğretmen sahada iki çocuk gördü ve “---- iki öğrenci beceriklidir.” dedi.
+İlk aşamada وَلَدَيْنِ ifadesinden iki erkek kişiden söz edildiğini görüyoruz. Boşluğun devamındaki الطَّالِبَانِ مَاهِرَانِ da müzekker, ikil ve merfudur. Buna uygun işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) ذَانِكَ — o ikisi
+Müzekker, ikil ve merfu biçimdedir. الطَّالِبَانِ ile uyumludur. Olabilir.
+B) تِلْكَ — o
+Müennes tekildir. Olmaz.
+C) أُولٰئِكَ — onlar
+Çoğuldur. Burada iki kişiden söz ediliyor. Olmaz.
+D) ذٰلِكَ — o
+Müzekker ancak tekildir. Olmaz.
+E) تَانِكَ — o ikisi
+Müennes ikildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, ذَانِكَ olur.
+12. Soru
+دَخَلَتِ الْمُعَلِّمَةُ الْقَاعَةَ، فَرَأَتْ بِنْتَيْنِ، فَقَالَتْ: ---- الْبِنْتَانِ مِنْ إِسْطَنْبُولَ.
+Türkçesi: Öğretmen salona girdi, iki kız gördü ve “--- iki kız İstanbul’dandır.” dedi.
+İlk aşamada بِنْتَيْنِ ifadesinden iki kızdan söz edildiğini görüyoruz. Boşluğun devamındaki الْبِنْتَانِ ise müennes, ikil ve merfudur. Buna uygun işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) ذَانِكَ — o ikisi
+Müzekker ikildir. Olmaz.
+B) ذٰلِكَ — o
+Müzekker tekildir. Olmaz.
+C) أُولٰئِكَ — onlar
+Çoğuldur. Olmaz.
+D) تَانِكَ — o ikisi
+Müennes, ikil ve merfudur. الْبِنْتَانِ ile uyumludur. Olabilir.
+E) تِلْكَ — o
+Müennes ancak tekildir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, تَانِكَ olur.
+13. Soru
+أَشَارَ الْمُعَلِّمُ إِلَى الطُّلَّابِ الْبَعِيدِينَ وَقَالَ: ---- مُجْتَهِدُونَ.
+Türkçesi: Öğretmen öğrencilere işaret ederek “---çalışkandır.” dedi.
+İlk aşamada الطُّلَّابِ “öğrenciler” kelimesini görüyoruz. Bu kelime akıllı varlık bildiren müzekker çoğuldur. Boşluğun devamındaki مُجْتَهِدُونَ da müzekker çoğuldur. Dolayısıyla çoğul kişiler için kullanılan işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) ذٰلِكَ — o
+Müzekker tekildir. Olmaz.
+B) تِلْكَ — o
+Müennes tekildir. Olmaz.
+C) ذَانِكَ — o ikisi
+Müzekker ikildir. Olmaz.
+D) تَانِكَ — o ikisi
+Müennes ikildir. Olmaz.
+E) أُولٰئِكَ — onlar
+Akıllı çoğullar için kullanılır. مُجْتَهِدُونَ ile sayı ve anlam bakımından uyumludur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, أُولٰئِكَ olur.
+
+14. Soru
+أَشَارَ الْمُدَرِّسُ إِلَى دَفْتَرٍ قَدِيمٍ وَقَالَ: ---- الدَّفْتَرُ غَيْرُ نَظِيفٍ.
+Türkçesi: Öğretmen eski bir deftere işaret etti ve “---- defter temiz değildir.” dedi.
+İlk aşamada دَفْتَرٍ قَدِيمٍ ifadesinden tek bir müzekker nesneden söz edildiğini görüyoruz. Boşluğun devamındaki الدَّفْتَرُ da müzekker ve tekildir. Buna uygun işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) تِلْكَ — o
+Müennes tekildir. الدَّفْتَرُ müzekker olduğu için olmaz.
+B) ذٰلِكَ — o
+Müzekker tekildir. ذٰلِكَ الدَّفْتَرُ doğru yapıdır. Olabilir.
+C) ذَانِكَ — o ikisi
+Müzekker ikildir. Burada tek bir defter vardır. Olmaz.
+D) تَانِكَ — o ikisi
+Müennes ikildir. Olmaz.
+E) أُولٰئِكَ — onlar
+Çoğuldur ve burada tek bir nesne vardır. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, ذٰلِكَ olur.

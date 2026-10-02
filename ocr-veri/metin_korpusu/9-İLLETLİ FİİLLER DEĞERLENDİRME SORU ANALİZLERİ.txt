@@ -1,0 +1,402 @@
+İLLETLİ FİİLLER DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+فِي عَالَمِ التِّكْنُولُوجِيَا الْحَدِيثَةِ، ---- الْبَيَانَاتُ إِلَى الْمُسْتَخْدِمِ فِي ثَوَانٍ قَلِيلَةٍ بِفَضْلِ سُرْعَةِ الشَّبَكَاتِ
+Türkçesi: Modern teknoloji dünyasında veriler, ağların hızı sayesinde birkaç saniye içinde kullanıcıya ----.
+Bizden ne isteniyor?
+Boşluktan sonra الْبَيَانَاتُ “veriler” kelimesini görüyoruz. Bu, insan dışı çoğuldur ve fiil de özneden önce gelmektedir. Dolayısıyla cümlenin anlamına ve öznenin yapısına uygun fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) تَصِلُ — ulaşır / ulaşıyor
+Muzâri fiildir. İnsan dışı çoğul الْبَيَانَاتُ ile müennes tekil kullanım uygundur. Olabilir.
+B) يَصِلْنَ — onlar (kadınlar) ulaşırlar
+Müennes çoğul şahıs çekimidir. Olmaz.
+C) يَصِلُ — o (erkek) ulaşır
+Müzekker tekildir. Buradaki الْبَيَانَاتُ ile hedeflenen uyumu sağlamaz. Olmaz.
+D) وَصَلْتُ — ulaştım
+Mâzî, birinci tekil şahıstır. Olmaz.
+E) وَصَلْنَ — onlar (kadınlar) ulaştılar
+Mâzî müennes çoğuldur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, تَصِلُ olur.
+2. Soru
+فِي الْمَخَابِرِ الْعِلْمِيَّةِ، ---- الْبَاحِثُ الْمَوَادَّ بِدِقَّةٍ قَبْلَ بَدْءِ التَّجْرِبَةِ.
+Türkçesi: Bilimsel laboratuvarlarda araştırmacı, deneye başlamadan önce maddeleri dikkatlice ----.
+Bizden ne isteniyor?
+Boşluktan sonra fail olan الْبَاحِثُ “araştırmacı” kelimesini görüyoruz. Müzekker tekildir. Cümle genel olarak laboratuvarda yapılan bir işlemi anlattığı için uygun muzâri fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) يَزِنُونَ — tartarlar
+Müzekker çoğuldur. Fail الْبَاحِثُ tekildir. Olmaz.
+B) تَزِنُونَ — siz tartarsınız
+İkinci şahıs çoğuldur. Olmaz.
+C) تَزِنُ — o kadın tartar / sen tartarsın
+Fiilin şahsı faille uymaz. Olmaz.
+D) يَزِنُ — tartar
+Müzekker tekil muzâridir. الْبَاحِثُ ile uyumludur. Olabilir.
+E) يَزِنَّ
+Buradaki şahıs ve çekim yapısıyla uygun değildir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَزِنُ olur.
+3. Soru
+عِنْدَ حُدُوثِ زِلْزَالٍ، ---- رِجَالُ الْإِنْقَاذِ فِي الْمَكَانِ الْخَطِرِ حَتَّى يَسْتَكْمِلُوا عَمَلَهُمْ.
+Türkçesi: Bir deprem meydana geldiğinde kurtarma görevlileri, çalışmalarını tamamlayıncaya kadar tehlikeli yerde ----.
+Bizden ne isteniyor?
+Boşluktan sonra رِجَالُ الْإِنْقَاذِ müzekker çoğul açık fail olarak geliyor. Fiil failden önce olduğu için fiil tekil kullanılır; failin cinsiyetiyle uyum aranır.
+Şimdi şıklara bakalım:
+A) يَقِفُ — durur 
+Müzekker tekil muzâridir. Fiil açık çoğul failden önce geldiği için uygundur. Olabilir.
+B) يَقِفُونَ — dururlar
+Müzekker çoğuldur. Fiil burada açık failden önce gelmektedir. Olmaz.
+C) تَقِفُونَ — siz durursunuz
+İkinci şahıs çoğuldur. Olmaz.
+D) يَقِفْنَ — onlar (kadınlar) dururlar
+Müennes çoğuldur. Olmaz.
+E) وَقَفُوا — durdular
+Mâzî çoğuldur ve cümlenin genel anlatımına uygun değildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَقِفُ olur.
+
+
+
+4. Soru
+بَعْضُ النَّاسِ ---- مِنْ آثَارِ الذَّكَاءِ الِاصْطِنَاعِيِّ عَلَى فُرَصِ الْعَمَلِ فِي الْمُسْتَقْبَلِ.
+Türkçesi: Bazı insanlar yapay zekânın gelecekte iş imkânları üzerindeki etkilerinden ----.
+Bizden ne isteniyor?
+Cümlenin başında بَعْضُ النَّاسِ “insanların bir kısmı/bazı insanlar” yapısını görüyoruz. Burada temel unsur بَعْضُ kelimesidir. Cümlede geleceğe ilişkin genel bir endişe anlatılmaktadır.
+Şimdi şıklara bakalım:
+A) تَوْجَلُونَ — siz endişeleniyorsunuz
+İkinci şahıs çoğuldur. Olmaz.
+B) يَوْجَلُونَ — endişeleniyorlar
+Çoğul fiildir; ancak cümlenin öznesi بَعْضُ النَّاسِ yapısında baş unsur olan بَعْضُ tekildir. Olmaz.
+C) يَوْجَلُ — endişelenir
+Müzekker tekil muzâridir ve بَعْضُ النَّاسِ yapısıyla uyumludur. Olabilir.
+D) وَجِلُوا — endişelendiler
+Mâzî çoğuldur. Olmaz.
+E) وَجِلَ — endişelendi
+Mâzî tekildir; cümlede genel bir durum anlatılıyor. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَوْجَلُ olur.
+
+
+
+5. Soru
+فِي الصَّيْفِ، إِذَا ارْتَفَعَتْ دَرَجَاتُ الْحَرَارَةِ كَثِيرًا، ---- الْعُشْبُ سَرِيعًا إِنْ لَمْ يُسْقَ بِالْمَاءِ.
+Türkçesi: Yazın sıcaklık çok yükselirse, ot suyla sulanmadığında hızla ----.
+Bizden ne isteniyor?
+Boşluktan sonra الْعُشْبُ müzekker tekil failini görüyoruz. إِذَا ile genel bir şart-sonuç ilişkisi kuruluyor.
+Şimdi şıklara bakalım:
+A) يَيْبَسُ — kurur
+Müzekker tekil muzâridir ve الْعُشْبُ ile uyumludur. Olabilir.
+B) تَبْيَسُ
+Fiilin doğru muzâri kalıbını karşılamaz. Olmaz.
+C) يَبِسَتْ — kurudu
+Mâzî müennes tekildir. Olmaz.
+D) يَبِسْنَ — onlar (kadınlar) kurudular/kururlar
+Müennes çoğuldur. Olmaz.
+E) تَبِسْنَ
+Müennes çoğul şahısla ilgilidir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَيْبَسُ olur.
+6. Soru
+عِنْدَمَا تَتَوَافَرُ الظُّرُوفُ الْمُنَاسِبَةُ، ---- الْفَاكِهَةُ بِأَسْرَعِ وَقْتٍ مُمْكِنٍ وَتَصِيرُ صَالِحَةً لِلْبَيْعِ.
+Türkçesi: Uygun şartlar oluştuğunda meyve mümkün olan en kısa sürede ---- ve satışa uygun hâle gelir.
+Bizden ne isteniyor?
+Boşluktan sonra الْفَاكِهَةُ müennes tekil failini görüyoruz. Devamında وَتَصِيرُ muzâri fiili bulunduğu için cümle genel bir süreci anlatıyor.
+Şimdi şıklara bakalım:
+A) يَيْنَعْنَ
+Müennes çoğul şahısla ilgilidir. Olmaz.
+B) تَيْنَعُ — olgunlaşır
+Müennes tekil muzâridir. الْفَاكِهَةُ ile uyumludur. Olabilir.
+C) يَنَعَ — olgunlaştı
+Mâzî müzekker tekildir. Olmaz.
+D) يَنَعَتْ — olgunlaştı
+Mâzî müennes tekildir; ancak devamındaki genel muzâri anlatımla uyumlu değildir. Olmaz.
+E) يَيْنَعُ — olgunlaşır
+Müzekker tekildir. الْفَاكِهَةُ müennestir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, تَيْنَعُ olur.
+7. Soru
+فِي الْمُحَاضَرَاتِ الْجَامِعِيَّةِ، ---- الطُّلَّابُ عِنْدَ الْبَابِ بَعْضَ الدَّقَائِقِ قَبْلَ دُخُولِ الْأُسْتَاذِ.
+Türkçesi: Üniversite derslerinde öğrenciler, öğretim üyesi içeri girmeden birkaç dakika önce kapıda ----.
+Bizden ne isteniyor?
+Boşluktan sonra الطُّلَّابُ müzekker çoğul açık faildir. Fiil failden önce geldiği için fiil müzekker tekil kullanılacaktır. Cümlede alışkanlık niteliğinde genel bir durum anlatılıyor.
+Şimdi şıklara bakalım:
+A) وَقَفْنَ — onlar (kadınlar) durdular
+Mâzî müennes çoğuldur. Olmaz.
+B) يَقِفُونَ — dururlar
+Müzekker çoğuldur. Fiil açık çoğul failden önce gelmektedir. Olmaz.
+C) تَقِفُونَ — siz durursunuz
+İkinci şahıs çoğuldur. Olmaz.
+D) يَقِفْنَ — onlar (kadınlar) dururlar
+Müennes çoğuldur. Olmaz.
+E) يَقِفُ — durur
+Müzekker tekil muzâridir ve fiil-fail sıralamasına uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, يَقِفُ olur.
+8. Soru
+فِي عَصْرِ الْأَخْبَارِ السَّرِيعَةِ، ---- كَثِيرٌ مِنَ النَّاسِ مِنَ الْمَعْلُومَاتِ غَيْرِ الدَّقِيقَةِ الَّتِي تُنْشَرُ عَلَى بَعْضِ الْمِنَصَّاتِ.
+Türkçesi: Hızlı haber çağında birçok insan, bazı platformlarda yayımlanan doğru olmayan bilgilerden ----.
+Bizden ne isteniyor?
+Boşluktan sonra كَثِيرٌ مِنَ النَّاسِ “insanların birçoğu” ifadesini görüyoruz. Temel kelime كَثِيرٌ müzekker tekildir. Cümlenin anlamı da yanlış bilgilerden duyulan endişeyi ifade ediyor.
+Şimdi şıklara bakalım:
+A) يَوْجَلْنَ
+Müennes çoğul şahısla ilgilidir. Olmaz.
+B) تَوْجَلْنَ
+Müennes çoğul/ikinci şahıs yapısındadır. Olmaz.
+C) يَوْجَلُ — endişelenir
+Müzekker tekil muzâridir ve كَثِيرٌ مِنَ النَّاسِ ile uyumludur. Olabilir.
+D) وَجِلْنَ — onlar (kadınlar) endişelendiler
+Mâzî müennes çoğuldur. Olmaz.
+E) يَوْجَلَانِ — ikisi endişelenir
+İkildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَوْجَلُ olur.
+9. Soru
+يَرَى الْمُؤَرِّخُونَ أَنَّ الْإِنْسَانَ قَدِيمًا كَانَ ---- الْقِصَصَ شَفَوِيًّا قَبْلَ ظُهُورِ الْكِتَابَةِ.
+Türkçesi: Tarihçiler, insanın eski dönemlerde yazının ortaya çıkmasından önce hikâyeleri sözlü olarak ---- olduğunu düşünmektedir.
+Bizden ne isteniyor?
+أَنَّ الْإِنْسَانَ ... كَانَ yapısında söz konusu kişi الْإِنْسَانُ, yani müzekker tekildir. كَانَ sonrasında geçmişte devam eden bir davranışı anlatan muzâri olan aynı zamanda müzekker olan fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) تَحْكِي — anlatıyor
+Üçüncü şahıs müennes veya ikinci şahıs biçimidir. Olmaz.
+B) يَحْكِي — anlatıyor/anlatır
+Müzekker tekil muzâridir. كَانَ يَحْكِي = “anlatırdı/anlatıyordu.” Olabilir.
+C) أَحْكِي — anlatıyorum
+Birinci tekil şahıstır. Olmaz.
+D) تَحْكِينَ — sen (kadın) anlatıyorsun
+İkinci tekil müennestir. Olmaz.
+E) تَحْكُونَ — siz anlatıyorsunuz
+İkinci çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَحْكِي olur.
+10. Soru
+فِي السُّوقِ الرَّقْمِيَّةِ، ---- التَّاجِرُ مُنْتَجَاتِهِ عَبْرَ الْإِنْتَرْنِتِ دُونَ حَاجَةٍ إِلَى مَتْجَرٍ تَقْلِيدِيٍّ.
+Türkçesi: Dijital pazarda tüccar, geleneksel bir mağazaya ihtiyaç duymadan ürünlerini internet üzerinden ----.
+Bizden ne isteniyor?
+Boşluktan sonra التَّاجِرُ müzekker tekil failini görüyoruz. Cümle genel bir ticaret uygulamasını anlattığı için uygun muzâri fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) يَبِيعُونَ — satarlar
+Çoğuldur. Olmaz.
+B) يَبِيعَانِ — ikisi satar
+İkildir. Olmaz.
+C) تَبِيعُ — o kadın satar / sen satarsın
+Şahıs bakımından uymaz. Olmaz.
+D) يَبِيعُ — satar
+Müzekker tekil muzâridir. التَّاجِرُ ile uyumludur. Olabilir.
+E) بَاعَ — sattı
+Mâzî fiildir; cümlede genel bir durum anlatılıyor. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَبِيعُ olur.
+11. Soru
+عِنْدَ تَحْلِيلِ الظَّوَاهِرِ الِاجْتِمَاعِيَّةِ، ---- الْبَاحِثُ إِلَى الْأَدِلَّةِ الْمَيْدَانِيَّةِ وَلَا يَكْتَفِي بِالِافْتِرَاضَاتِ.
+Türkçesi: Araştırmacı toplumsal olguları analiz ederken saha verilerine ---- ve varsayımlarla yetinmez.
+Bizden ne isteniyor?
+Boşluktan sonra الْبَاحِثُ müzekker tekil faildir. Devamındaki وَلَا يَكْتَفِي muzâri fiili de cümlenin genel bir yöntemi anlattığını gösteriyor.
+Şimdi şıklara bakalım:
+A) يَعُودُ — döner / başvurur
+Müzekker tekil muzâridir ve يَعُودُ إِلَى الْأَدِلَّةِ anlam bakımından uygundur. Olabilir.
+B) يُعَدُّ — sayılır/kabul edilir
+Başka bir fiildir ve anlamı uygun değildir. Olmaz.
+C) تَعُودُ — döner
+Müennes tekil/ikinci şahıstır. Olmaz.
+D) يَعُودُونَ — dönerler
+Çoğuldur. Olmaz.
+E) عَادُوا — döndüler
+Mâzî çoğuldur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَعُودُ olur.
+12. Soru
+فِي قَاعَةِ الِامْتِحَانِ ---- الطَّالِبُ بِتَعْلِيمَاتِ الْمُرَاقِبِ، وَلَا يَتَحَدَّثُ مَعَ زُمَلَائِهِ.
+Türkçesi: Sınav salonunda öğrenci gözetmenin talimatlarına ---- ve arkadaşlarıyla konuşmaz.
+Bizden ne isteniyor?
+Boşluktan sonra الطَّالِبُ müzekker tekil faildir. Devamında وَلَا يَتَحَدَّثُ muzâri yapısı olduğundan genel bir davranış anlatılıyor.
+Şimdi şıklara bakalım:
+A) يَفِي — yerine getirir / bağlı kalır
+Müzekker tekil muzâridir. يَفِي بِتَعْلِيمَاتِ doğru kullanımdır. Olabilir.
+B) يَفُونَ — yerine getirirler
+Çoğuldur. Olmaz.
+C) وَفَى — yerine getirdi
+Mâzî fiildir. Olmaz.
+D) فِ — yerine getir!
+Emir fiilidir. Olmaz.
+E) تَفِي — yerine getirir
+Müennes tekil/ikinci şahıs biçimidir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَفِي olur.
+13. Soru
+لَمْ ---- الْمُتَحَدِّثُ شَيْئًا غَيْرَ مُؤَكَّدٍ فِي الْمُقَابَلَةِ التِّلْفَازِيَّةِ.
+Türkçesi: Konuşmacı televizyon röportajında doğrulanmamış hiçbir şey ----.
+Bizden ne isteniyor?
+Boşluğun öncesinde لَمْ cezm edatını görüyoruz. Ardından الْمُتَحَدِّثُ müzekker tekil fail geliyor. Dolayısıyla fiilin muzâri, müzekker tekil ve meczum olması gerekir.
+Şimdi şıklara bakalım:
+A) يَقُولُ — söyler
+Merfu muzâridir. لَمْ sonrasında meczum olması gerekir. Olmaz.
+B) يَقُلْ — söyler
+يَقُولُ fiilinin cezm edilmiş hâlidir; ortadaki و düşmüştür. Olabilir.
+C) تَقُلْ
+Cezm bakımından biçim mümkün olsa da şahıs الْمُتَحَدِّثُ ile uymaz. Olmaz.
+D) قَالَ — söyledi
+Mâzî fiildir. لَمْ ile kullanılmaz. Olmaz.
+E) يَقُولَ
+Mansuptur. Burada cezm gerekir. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَقُلْ olur.
+14. Soru
+لَمَّا ارْتَفَعَ الطَّلَبُ عَلَى الْكُتُبِ الْإِلِكْتُرُونِيَّةِ، لَمْ ---- أَصْحَابُ الْمَكْتَبَاتِ النُّسَخَ الْوَرَقِيَّةَ كُلَّهَا.
+Türkçesi: Elektronik kitaplara talep arttığında kitapçı sahipleri basılı nüshaların tamamını ----.
+Bizden ne isteniyor?
+Boşluğun öncesinde لَمْ vardır; dolayısıyla muzâri fiil meczum olmalıdır. Boşluktan sonra أَصْحَابُ الْمَكْتَبَاتِ müzekker çoğul açık fail geliyor. Fiil failden önce olduğu için tekil kullanılacaktır.
+Şimdi şıklara bakalım:
+A) يَبِيعَانِ — ikisi satar
+İkil ve merfudur. Olmaz.
+B) يَبِعْ — satar
+يَبِيعُ fiilinin meczum hâlidir; ortadaki illet harfi düşmüştür. Tekil fiil olarak açık çoğul failin önünde kullanılabilir. Olabilir.
+C) تَبِعْ
+Şahıs bakımından uygun değildir. Olmaz.
+D) بَاعَ — sattı
+Mâzî fiildir. لَمْ sonrasında kullanılmaz. Olmaz.
+E) بَاعُوا — sattılar
+Mâzî çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, يَبِعْ olur.
+15. Soru
+يَنْبَغِي لِلطَّالِبِ أَنْ ---- الْحَقَّ وَلَا يَخَافَ مِنْ نَقْدِ الْآخَرِينَ.
+Türkçesi: Öğrencinin doğruyu ---- ve başkalarının eleştirisinden korkmaması gerekir.
+Bizden ne isteniyor?
+Boşluğun öncesinde أَنْ nasb edatını görüyoruz. Özne anlam bakımından الطَّالِبُ, yani müzekker tekildir. Dolayısıyla muzâri fiilin mansup biçimini arıyoruz.
+Şimdi şıklara bakalım:
+A) يَقُولُ — söyler
+Merfudur. أَنْ sonrasında mansup olması gerekir. Olmaz.
+B) يَقُلْ
+Meczumdur ve illet harfi düşmüştür. Olmaz.
+C) يَقُولَانِ — ikisi söyler
+İkildir. Olmaz.
+D) يَقُولَ — söylemesi
+Müzekker tekil muzâridir ve fetha ile mansuptur. Olabilir.
+E) قَالَ — söyledi
+Mâzî fiildir. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَقُولَ olur.
+
+16. Soru
+يَسْعَى الْبَائِعُ الْمَاهِرُ أَنْ ---- مُنْتَجَهُ بِطَرِيقَةٍ تُقْنِعُ الْعُمَلَاءَ دُونَ مُبَالَغَةٍ.
+Türkçesi: Usta satıcı, ürününü müşterileri ikna edecek şekilde abartmadan ---- çalışır.
+Bizden ne isteniyor?
+Boşluğun öncesinde أَنْ nasb edatı vardır. Özne الْبَائِعُ müzekker tekildir. Fiilin muzâri ve mansup olması gerekir.
+Şimdi şıklara bakalım:
+A) يَبِيعُ — satar
+Merfudur. Olmaz.
+B) بَاعَ — sattı
+Mâzîdir. Olmaz.
+C) يَبِعْ
+Meczumdur ve ortadaki illet harfi düşmüştür. Olmaz.
+D) يَبِيعَانِ — ikisi satar
+İkildir. Olmaz.
+E) يَبِيعَ — satması
+Müzekker tekil muzâridir ve mansuptur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, يَبِيعَ olur.
+17. Soru
+فِي كَثِيرٍ مِنَ الْمُجْتَمَعَاتِ، ---- الْمُنَظَّمَاتُ الْخَيْرِيَّةُ إِلَى دَعْمِ الْأُسَرِ الْفَقِيرَةِ فِي فَصْلِ الشِّتَاءِ.
+Türkçesi: Birçok toplumda hayır kuruluşları kış mevsiminde yoksul aileleri desteklemeye ----.
+Bizden ne isteniyor?
+Boşluktan sonra الْمُنَظَّمَاتُ الْخَيْرِيَّةُ insan dışı çoğul açık fail geliyor. Fiil önce bulunduğu için müennes tekil fiil kullanımı gerekir.
+Şimdi şıklara bakalım:
+A) تَدْعِينَ — sen (kadın) çağırırsın
+İkinci tekil müennestir. Olmaz.
+B) تَدْعُو — çağırır
+Müennes tekil muzâridir nasb veya cezm edatı bulunmadığından illet harfi korunmuştur. Olabilir.
+C) تَدْعُونَ — siz çağırırsınız
+İkinci çoğuldur. Olmaz.
+D) تَدْعُ
+İllet harfi düşmüştür; bu meczum biçimdir. Burada cezm edatı yoktur. Olmaz.
+E) دَعَوْنَا — biz çağırdık
+Mâzî birinci çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, تَدْعُو olur.
+18. Soru
+فِي الرِّيَاضَةِ، ---- اللَّاعِبُ الْكُرَةَ بِإِصَابَةٍ إِذَا جَمَعَ بَيْنَ الْقُوَّةِ وَالْمَهَارَةِ.
+Türkçesi: Sporda oyuncu, güç ile beceriyi birleştirirse topu isabetli bir şekilde ----.
+Bizden ne isteniyor?
+Boşluktan sonra اللَّاعِبُ müzekker tekil fail geliyor. Cümlede genel bir durum anlatılıyor ve önünde nasb veya cezm edatı bulunmuyor.
+Şimdi şıklara bakalım:
+A) يَرْمِي — atar
+Müzekker tekil muzâridir ve merfu hâlde illet harfi korunmuştur. Olabilir.
+B) يَرْمُونَ — atarlar
+Çoğuldur. Olmaz.
+C) يَرْمِ
+İllet harfi düşmüş meczum biçimdir. Burada cezm yoktur. Olmaz.
+D) يَرْمُوا
+Çoğul nasb/cezm biçimidir. Olmaz.
+E) رَمَتْ — attı
+Mâzî müennes tekildir. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَرْمِي olur.
+19. Soru
+لِكَيْ يَنْجَحَ الْمُجْتَمَعُ، ---- أَفْرَادُهُ إِلَى التَّعَاوُنِ وَتَحَمُّلِ الْمَسْؤُولِيَّةِ.
+Türkçesi: Toplumun başarılı olabilmesi için bireyleri iş birliğine ve sorumluluk üstlenmeye ----.
+Bizden ne isteniyor?
+لِكَيْ يَنْجَحَ الْمُجْتَمَعُ bölümü amaç bildiriyor. Boşluk ise bundan sonraki ana cümlededir; dolayısıyla لِكَيْ boşluktaki fiili yönetmez.
+Boşluktan sonra أَفْرَادُهُ müzekker çoğul açık faildir. Fiil failden önce olduğu için müzekker tekil kullanılması gerekir.
+Şimdi şıklara bakalım:
+A) يَسْعَوْنَ — çabalarlar
+Çoğuldur. Fiil açık çoğul failden önce geliyor. Olmaz.
+B) يَسْعَيْنَ
+Müennes çoğulla ilgilidir. Olmaz.
+C) تَسْعَيْنَ — sen (kadın) çabalarsın
+İkinci tekil müennestir. Olmaz.
+D) يَسْعَى — çabalar
+Müzekker tekil muzâridir ve açık çoğul failin önünde uygundur. Olabilir.
+E) سَعَوْا — çabaladılar
+Mâzî çoğuldur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, يَسْعَى olur.
+20. Soru
+---- الطُّلَّابُ فِي الْحَدِيقَةِ حَتَّى غُرُوبِ الشَّمْسِ فِي أَيَّامِ الصَّيْفِ.
+Türkçesi: Öğrenciler yaz günlerinde güneş batıncaya kadar bahçede ----.
+Bizden ne isteniyor?
+Boşluktan sonra الطُّلَّابُ müzekker çoğul açık faildir. Fiil failden önce olduğundan müzekker tekil kullanılması gerekir. Cümle yaz günlerinde tekrarlanan genel bir durumu anlatıyor.
+Şimdi şıklara bakalım:
+A) يَبْقَى — kalır
+Müzekker tekil muzâridir. Açık çoğul failden önce uygundur. Olabilir.
+B) يَبْقَوْنَ — kalırlar
+Çoğuldur. Olmaz.
+C) تَبْقَى — kalır
+Müennes tekil/ikinci şahıs biçimidir. Olmaz.
+D) يَبْقَيْنَ — onlar (kadınlar) kalırlar
+Müennes çoğuldur. Olmaz.
+E) نَبْقَى — kalırız
+Birinci çoğul şahıstır. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَبْقَى olur.
+21. Soru
+لَنْ ---- الْمُعَلِّمَةُ الطَّالِبَاتِ إِلَى الْمَكْتَبَةِ إِلَّا لِلْقِرَاءَةِ وَالِاسْتِفَادَةِ.
+Türkçesi: Öğretmen, kız öğrencileri kütüphaneye yalnızca okumaları ve yararlanmaları için ----.
+Bizden ne isteniyor?
+Boşluğun öncesinde لَنْ nasb edatı vardır. Boşluktan sonra fail الْمُعَلِّمَةُ müennes tekildir. Dolayısıyla müennes tekil muzâri fiilin mansup biçimini arıyoruz.
+Şimdi şıklara bakalım:
+A) تَدْعُ
+İllet harfi düşmüş meczum biçimdir. Olmaz.
+B) تَدْعُونَ — siz çağırırsınız
+Çoğuldur ve merfudur. Olmaz.
+C) تَدْعِي
+Buradaki fiilin kökü ve çekimiyle uygun değildir. Olmaz.
+D) تَدْعُوا
+Bu biçim çoğul çekimle ilişkilidir. Olmaz.
+E) تَدْعُوَ — çağırması/davet etmesi
+Müennes tekil muzâridir ve لَنْ nedeniyle mansuptur. Son و korunmuştur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, تَدْعُوَ olur.
+22. Soru
+يَجِبُ عَلَى الْمُتَسَابِقِ أَنْ ---- الْكُرَةَ فِي الْوَقْتِ الْمُنَاسِبِ لِيُحَقِّقَ النَّتِيجَةَ الْمَطْلُوبَةَ.
+Türkçesi: Yarışmacının istenen sonucu elde etmek için topu uygun zamanda ---- gerekir.
+Bizden ne isteniyor?
+Boşluğun öncesinde أَنْ nasb edatı vardır. الْمُتَسَابِقُ müzekker tekildir. Dolayısıyla müzekker tekil muzâri fiilin mansup biçimini arıyoruz.
+Şimdi şıklara bakalım:
+A) يَرْمِيَ — atması
+Müzekker tekil muzâridir ve fetha ile mansuptur. Olabilir.
+B) يَرْمِ
+Cezm hâlidir; son illet harfi düşmüştür. Olmaz.
+C) يَرْمُوا
+Çoğul nasb/cezm biçimidir. Olmaz.
+D) يَرْمِيَا
+İkil çekimle ilgilidir. Olmaz.
+E) يَرْمُونَ — atarlar
+Çoğul ve merfudur. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَرْمِيَ olur.
+23. Soru
+لَمْ ---- الطَّالِبُ إِلَى الْهَدَفِ الَّذِي خَطَّطَهُ لِنَفْسِهِ؛ لِأَنَّهُ أَهْمَلَ الْجِدَّ مُنْذُ أَسَابِيعَ.
+Türkçesi: Öğrenci, haftalardır ciddi çalışmayı ihmal ettiği için kendisi için belirlediği hedefe ulaşmak için ----.
+Bizden ne isteniyor?
+Boşluğun öncesinde لَمْ cezm edatı vardır. Boşluktan sonra الطَّالِبُ müzekker tekil failini görüyoruz. Dolayısıyla müzekker tekil muzâri fiilin meczum biçimini arıyoruz.
+Şimdi şıklara bakalım:
+A) يَسْعَى — çabalar
+Muzâri fiilin normal merfu biçimidir; illet harfi korunmuştur. Olmaz.
+B) يَسْعَيَ
+Burada cezm yapısını karşılamaz. Olmaz.
+C) يَسْعَ — çabalar
+يَسْعَى fiilinin cezm edilmiş biçimidir. Son illet harfi düşmüştür:
+يَسْعَى ← لَمْ يَسْعَ
+Şahıs bakımından da الطَّالِبُ ile uyumludur. Olabilir.
+D) يَسْعَيَا
+İkil yapıdır. Olmaz.
+E) تَسْعَ
+Cezm biçimi olsa da şahıs/cinsiyet bakımından الطَّالِبُ ile uymaz. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, يَسْعَ olur.

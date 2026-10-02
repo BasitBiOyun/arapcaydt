@@ -1,0 +1,135 @@
+Birinci deneme 1-8 soru analizleri
+
+1. Soru
+1. Aşama — Harekeli ve bölerek anlama
+تُؤَدِّي الْغَابَاتُ دَوْرًا أَسَاسِيًّا فِي الْحِفَاظِ عَلَى التَّوَازُنِ الْبِيئِيِّ
+Ormanlar çevresel dengenin korunmasında temel bir rol oynar.
+إِذْ تَمْتَصُّ كَمِّيَّاتٍ كَبِيرَةً مِنْ ثَانِي أُكْسِيدِ الْكَرْبُونِ
+Çünkü büyük miktarda karbondioksit emerler.
+مِمَّا يُسْهِمُ فِي الْحَدِّ مِنْ ---- غَازَاتِ الدَّفِيئَةِ فِي الْغِلَافِ الْجَوِّيِّ
+Bu da atmosferdeki sera gazlarının ---- azaltılmasına / sınırlandırılmasına katkıda bulunur.
+2. Aşama Soruyu çözdüren ipucu ve şıklar
+Bu soruda öncelikle boşluğun hemen öncesine bakıyorum. Burada فِي الْحَدِّ مِنْ yapısını görüyorum. الْحَدُّ مِنْ; “bir şeyi azaltmak, sınırlandırmak” anlamına geliyor. O hâlde boşluğa, sera gazlarıyla ilgili azaltılması gereken bir durum gelmeli.
+Şıklara bakalım. تَصْرِيفٌ tahliye etmek, احْتِجَازٌ tutmak veya hapsetmek, اسْتِهْلَاكٌ tüketmek, تَدْوِيرٌ ise geri dönüştürmek anlamında. Bunlar bağlama uygun değil.
+تَرَاكُمٌ ise “birikme” demek. Böylece الْحَدُّ مِنْ تَرَاكُمِ غَازَاتِ الدَّفِيئَةِ, yani “sera gazlarının birikimini azaltmak” anlamı ortaya çıkıyor.
+Burada özellikle الْحَدُّ مِنْ + تَرَاكُمٍ eşdizimine dikkat ediyoruz.
+Doğru cevabımız A, تَرَاكُمِ.
+
+2. Soru
+1. Aşama — Harekeli ve bölerek anlama
+يَهْدِفُ الْمُؤْتَمَرُ الدَّوْلِيُّ لِلْمُنَاخِ إِلَى ---- الْجُهُودِ الْعَالَمِيَّةِ
+Uluslararası İklim Konferansı küresel çabaları ---- amaçlamaktadır.
+الرَّامِيَةِ إِلَى حِمَايَةِ الْبِيئَةِ وَالتَّنَوُّعِ الْبِيُولُوجِيِّ
+çevreyi ve biyolojik çeşitliliği korumayı amaçlayan.
+2. Aşama Soruyu çözdüren ipucu ve şıklar
+Bu soruda boşluğun hem öncesine hem de sonrasına bakıyorum. Öncesinde يَهْدِفُ ... إِلَى, yani “... amaçlamaktadır” yapısı var. Sonrasında ise الْجُهُودُ الْعَالَمِيَّةُ, yani “küresel çabalar” geliyor.
+Dolayısıyla burada الْجُهُودُ kelimesiyle doğal olarak kullanılan ifadeyi arıyorum.
+Şıklara baktığımızda تَقْوِيضٌ baltalamak, تَشْتِيتٌ dağıtmak, اسْتِنْزَافٌ tüketmek ve عَرْقَلَةٌ engellemek anlamında. Bunların hepsi konferansın çevreyi koruma amacıyla çelişiyor.
+تَوْحِيدُ الْجُهُودِ ise “çabaları birleştirmek” demektir ve Arapçada yerleşik bir kullanımdır.
+Yani burada hem bağlam hem de eşdizim bizi aynı cevaba götürüyor.
+Doğru cevabımız D, تَوْحِيدِ.
+
+
+3. Soru	
+1. Aşama Harekeli ve bölerek anlama
+تُمَثِّلُ التِّكْنُولُوجِيَا الْحَدِيثَةُ وَسِيلَةً ----
+Modern teknoloji ---- bir araçtır.
+بِتَيْسِيرِ الْمُعَامَلَاتِ الْيَوْمِيَّةِ
+günlük işlemleri kolaylaştırmaya...
+وَتَوْفِيرِ الْوَقْتِ وَالْجُهْدِ لِلْمُؤَسَّسَاتِ
+ve kurumlara zaman ve emek tasarrufu sağlamaya...
+2. Aşama Soruyu çözdüren ipucu ve şıklar
+Bu soruda benim için en önemli ipucu boşluktan sonra gelen بِـ harf-i ceridir. Çünkü şıklardaki sıfatların hangi harf-i cerle kullanıldığına bakmam gerekiyor.
+حَرِيصٌ genellikle عَلَى ile kullanılır: حَرِيصٌ عَلَى.
+مَسْؤُولٌ ise عَنْ ile kullanılır: مَسْؤُولٌ عَنْ.
+مَعْنِيٌّ بِـ ve جَدِيرٌ بِـ dil bilgisi açısından mümkün görünse de burada verilen anlamı tam karşılamıyor.
+كَفِيلٌ بِـ ise “bir şeyi sağlamaya yeterli, gerçekleştirebilecek nitelikte” anlamındadır.
+Burada وَسِيلَةً كَفِيلَةً بِتَيْسِيرِ الْمُعَامَلَاتِ, yani “işlemleri kolaylaştırabilecek bir araç” anlamı oluşuyor.
+Demek ki bu soruda sadece kelime anlamına değil, kelime + harf-i cer birlikteliğine bakıyoruz.
+Doğru cevabımız B, كَفِيلَةً.
+4. Soru
+1. Aşama — Harekeli ve bölerek anlama
+تَزْدَادُ الْحَاجَةُ إِلَى التَّحَقُّقِ مِنْ مَصَادِرِ الْأَخْبَارِ
+Haber kaynaklarını doğrulama ihtiyacı artmaktadır.
+فِي ظِلِّ ---- الْمُحْتَوَى الْمُضَلِّلِ
+yanıltıcı içeriğin ---- ortamında / karşısında...
+عَلَى مَنَصَّاتِ التَّوَاصُلِ الِاجْتِمَاعِيِّ
+sosyal medya platformlarında.
+2. Aşama — Soruyu çözdüren ipucu ve şıklar
+Bu soruda önce cümlenin kurduğu neden-sonuç ilişkisine bakıyorum. Cümlede haber kaynaklarını doğrulama ihtiyacının arttığı söyleniyor. O hâlde sosyal medyada olumsuz bir durumun da artıyor veya yayılıyor olması gerekir.
+Şıklara bakalım. انْحِسَارٌ azalma demek; bu nedenle cümlenin mantığına ters. اخْتِزَالٌ indirgeme, احْتِكَارٌ tekelleşme, اسْتِقْرَارٌ ise istikrar anlamına geliyor.
+انْتِشَارٌ ise “yayılma, yaygınlaşma” demek.
+Böylece انْتِشَارُ الْمُحْتَوَى الْمُضَلِّلِ, yani “yanıltıcı içeriğin yayılması” ifadesini elde ediyoruz.
+Burada çözümü sağlayan nokta, kelimeyi tek başına çevirmek değil; doğrulama ihtiyacı neden artıyor? sorusunu sormaktır.
+Doğru cevabımız E, انْتِشَارِ.
+5. Soru
+1. Aşama — Harekeli ve bölerek anlama
+تُطَالِبُ مُنَظَّمَاتُ حُقُوقِ الْإِنْسَانِ بِـ ---- الْقَوَانِينِ
+İnsan hakları örgütleri yasaların ---- talep etmektedir.
+الَّتِي تَضْمَنُ حِمَايَةَ الْأَطْفَالِ
+çocukların korunmasını güvence altına alan...
+مِنَ الِاسْتِغْلَالِ فِي سُوقِ الْعَمَلِ
+iş gücü piyasasında sömürülmekten.
+2. Aşama Soruyu çözdüren ipucu ve şıklar
+Bu soruda boşluktan sonra gelen الْقَوَانِينِ, yani “kanunlar” kelimesine dikkat ediyorum. Burada kanunlarla kullanılan doğru fiil-mastar eşdizimini bulmam gerekiyor.
+Cümlenin bağlamı olumlu: İnsan hakları örgütleri çocukları sömürüden koruyan kanunlarla ilgili bir talepte bulunuyor.
+خَرْقُ الْقَوَانِينِ kanunları ihlal etmek, تَعْطِيلُ الْقَوَانِينِ kanunları işlemez hâle getirmek, إِلْغَاءُ الْقَوَانِينِ kanunları kaldırmak, تَجَاوُزُ الْقَوَانِينِ ise kanunları aşmak veya ihlal etmek demektir. Bunların tamamı bağlama ters.
+تَفْعِيلُ الْقَوَانِينِ ise “kanunları etkin hâle getirmek, uygulanmasını sağlamak” anlamına gelir.
+Dolayısıyla burada temel eşdizimimiz تَفْعِيلُ الْقَوَانِينِ.
+Doğru cevabımız A, تَفْعِيلِ.
+6. Soru
+1. Aşama — Harekeli ve bölerek anlama
+لَمْ يَعُدْ خَافِيًا عَلَى أَحَدٍ
+Artık hiç kimse için gizli değildir / herkesçe bilinmektedir ki...
+أَنَّ الْإِفْرَاطَ فِي اسْتِخْدَامِ الْهَوَاتِفِ الذَّكِيَّةِ
+akıllı telefonların aşırı kullanımı...
+سَلْبًا عَلَى الْعَلَاقَاتِ الِاجْتِمَاعِيَّةِ
+sosyal ilişkiler üzerinde olumsuz biçimde ----.
+2. Aşama — Soruyu çözdüren ipucu ve şıklar
+Bu soruda boşluğun öncesinden çok sonrasına bakmam gerekiyor. Çünkü boşluktan hemen sonra سَلْبًا عَلَى ifadesi geliyor.
+Arapçada çok sık kullanılan bir kalıp var:
+يَنْعَكِسُ سَلْبًا عَلَى
+Bu ifade “bir şeyi olumsuz yönde etkilemek” anlamına gelir.
+Şıklara baktığımızda يَعْتَمِدُ عَلَى “dayanmak, bağlı olmak”, يَقْتَصِرُ عَلَى “ile sınırlı olmak”, يَحْصُلُ عَلَى “elde etmek”, يُرَكِّزُ عَلَى ise “üzerinde yoğunlaşmak” demektir.
+Bunların hiçbiri سَلْبًا عَلَى ile bu anlamı oluşturmaz.
+Cümlede akıllı telefonların aşırı kullanımının sosyal ilişkileri olumsuz etkilediği söyleniyor.
+Dolayısıyla kalıbımızı doğrudan tamamlıyoruz:
+يَنْعَكِسُ سَلْبًا عَلَى.
+Doğru cevabımız B, يَنْعَكِسُ.
+
+7. Soru
+1. Aşama Harekeli ve bölerek anlama
+تُوَفِّرُ الْغَابَاتُ الْكَثِيفَةُ لِكَثِيرٍ مِنَ الْكَائِنَاتِ الْبَرِّيَّةِ ---- طَبِيعِيًّا
+Sık ormanlar birçok yabani canlıya doğal bir ---- sağlar.
+تَعِيشُ فِيهِ وَتَتَكَاثَرُ
+içinde yaşadıkları ve çoğaldıkları...
+بَعِيدًا عَنْ أَخْطَارِ الصَّيْدِ
+avlanma tehlikelerinden uzakta.
+2. Aşama Soruyu çözdüren ipucu ve şıklar
+Bu soruda doğru cevabı bulmak için özellikle boşluktan sonraki açıklamaya bakıyorum.
+Cümlede تَعِيشُ فِيهِ وَتَتَكَاثَرُ, yani “içinde yaşar ve çoğalır” deniliyor. O hâlde burada canlıların yaşadığı ve çoğaldığı bir yerden söz ediliyor.
+Şıkları inceleyelim. مَعْبَرٌ geçit, حَاجِزٌ engel veya bariyer, مَسْلَكٌ yol veya güzergâh, مَنْفَذٌ ise çıkış veya geçiş noktasıdır.
+مَوْئِلٌ ise doğrudan “yaşam alanı, habitat” anlamına gelir.
+Ayrıca مَوْئِلٌ طَبِيعِيٌّ Arapçada doğal bir eşdizimdir ve “doğal yaşam alanı” demektir.
+Burada bize cevabı veren esas ipucu:
+تَعِيشُ فِيهِ وَتَتَكَاثَرُ.
+Yani “orada yaşayıp çoğalıyorlarsa” aradığımız kelime yaşam alanıdır.
+Doğru cevabımız D, مَوْئِلًا.
+8. Soru
+1. Aşama — Harekeli ve bölerek anlama
+تَسْعَى الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ إِلَى الْقِيَمِ الْأَخْلَاقِيَّةِ
+Eğitim kurumları ahlaki değerleri ---- çalışmaktadır.
+فِي نُفُوسِ الطُّلَّابِ
+öğrencilerin benliklerine / zihinlerine...
+وَإِكْسَابِهِمُ الْمَهَارَاتِ الْحَيَاتِيَّةَ مُنْذُ الصِّغَرِ
+ve onlara küçük yaştan itibaren yaşam becerileri kazandırmaya.
+2. Aşama Soruyu çözdüren ipucu ve şıklar
+Bu soruda boşluktan sonra gelen الْقِيَمَ الْأَخْلَاقِيَّةَ, yani “ahlaki değerler” ifadesine dikkat ediyorum. Burada الْقِيَمُ kelimesiyle kullanılan doğal eşdizimi bulmamız gerekiyor.
+Cümlede eğitim kurumlarının öğrencilerde ahlaki değerleri geliştirmesinden söz ediliyor. Yani bağlam tamamen olumlu.
+Şıklara baktığımızda تَهْمِيشٌ önemsizleştirme, تَشْوِيهٌ bozma veya çarpıtma, اخْتِزَالٌ indirgeme, تَقْوِيضٌ ise temellerini zayıflatma anlamına geliyor. Bunların hepsi olumsuz.
+تَرْسِيخٌ ise “yerleştirmek, kökleştirmek” anlamındadır.
+Arapçada çok sık kullanılan:
+تَرْسِيخُ الْقِيَمِ فِي النُّفُوسِ
+yapısı da “değerleri insanların zihnine ve kişiliğine yerleştirmek” demektir.
+Dolayısıyla hem anlam hem de eşdizim bakımından tek uygun seçenek budur.
+Doğru cevabımız C, تَرْسِيخِ.

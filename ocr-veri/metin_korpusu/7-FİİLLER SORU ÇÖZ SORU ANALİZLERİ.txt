@@ -1,0 +1,106 @@
+FİİLLER SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+مَا ---- الطَّالِبُ الدَّرْسَ جَيِّدًا قَبْلَ الِامْتِحَانِ.
+Türkçesi: Öğrenci sınavdan önce dersi iyi anlamadı.
+İlk aşamada cümlenin başında مَا olumsuzluk edatını görüyoruz. Boşluğun devamında الطَّالِبُ müzekker tekil faili var. Ayrıca قَبْلَ الِامْتِحَانِ “sınavdan önce” ifadesi, burada gerçekleşmiş bir durumdan söz edildiğini gösteriyor. Bu nedenle مَا ile geçmiş zamanı olumsuz yapan ve müzekker tekil faile uygun fiili arıyoruz.
+Şimdi şıklara bakalım:
+A) يَفْهَمُ — anlıyor / anlar
+Muzâri fiildir. مَا يَفْهَمُ şeklinde “anlamıyor” denebilir; ancak burada قَبْلَ الِامْتِحَانِ bağlamında geçmişte gerçekleşmeyen bir eylem anlatılıyor. Olmaz.
+B) اِفْهَمْ — anla!
+Emir fiilidir. Burada öğrenciye emir verilmiyor. Olmaz.
+C) فَهِمَ — anladı
+Mâzî ve müzekker tekil fiildir. Başındaki مَا ile:
+مَا فَهِمَ الطَّالِبُ = “Öğrenci anlamadı.”
+Hem zaman hem özne bakımından uygundur. Olabilir.
+D) لَا يَفْهَمُ — anlamıyor / anlamaz
+Zaten kendi içinde olumsuz bir yapıdır. Başta da مَا bulunduğu için مَا لَا يَفْهَمُ burada uygun değildir. Olmaz.
+E) فَهِمَا — ikisi anladı
+İkil mâzî fiildir. الطَّالِبُ ise tekildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, فَهِمَ olur.
+2. Soru
+الطُّلَّابُ لَا ---- التَّعْلِيمَاتِ أَحْيَانًا.
+Türkçesi: Öğrenciler bazen talimatlara uymazlar.
+İlk aşamada özne olarak الطُّلَّابُ “öğrenciler” kelimesini görüyoruz. Özne fiilden önce geldiği için fiilin müzekker ve çoğul olması gerekir. Çünkü isim cümlesinde kural böyledir ilerleyen soru çözümlerinde daha detaylı bu konuyu göreceğiz. Ayrıca لَا burada yasaklama değil, öğrenciler hakkında genel bir olumsuzluk bildiriyor. أَحْيَانًا “bazen” ifadesi de alışkanlık bildiren muzâri yapıyı destekliyor.
+Şimdi şıklara bakalım:
+A) يَتَّبِعُونَ — uyarlar / takip ederler
+Muzâri ve müzekker çoğuldur. Başındaki لَا ile:
+لَا يَتَّبِعُونَ = “uymazlar.”
+Özne ve anlamla uyumludur. Olabilir.
+B) اِتَّبَعُوا — uydular / takip ettiler
+Mâzî çoğul fiildir. Burada genel ve tekrarlanan bir durum anlatılıyor. Olmaz.
+C) مَا يَتَّبِعُونَ — uymuyorlar
+Kendi içinde zaten olumsuzdur. Cümlenin başında da لَا bulunduğu için uygun değildir. Olmaz.
+D) اِتَّبِعْ — uy! / takip et!
+Müzekker tekile emir fiilidir. Olmaz.
+E) اِتَّبِعْنَ — uyun!
+Müennes çoğula emir fiilidir. Burada emir değil, öğrenciler hakkında bilgi veriliyor. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, يَتَّبِعُونَ olur.
+3. Soru
+---- الدَّرْسَ بِعِنَايَةٍ ثُمَّ نَاقِشْهُ مَعَ زُمَلَائِكِ.
+Türkçesi: Dersi dikkatlice çalış, sonra onu arkadaşlarınla tartış.
+İlk aşamada boşluğun devamında ثُمَّ نَاقِشْهُ “sonra onu tartış” şeklinde bir emir fiili görüyoruz. Ayrıca زُمَلَائِكِ kelimesindeki ـكِ zamiri, hitap edilen kişinin müennes tekil olduğunu gösteriyor. Dolayısıyla ilk fiilin de müennes tekile bir isme emir olması gerekir.
+Şimdi şıklara bakalım:
+A) اُدْرُسِي — çalış!
+Müennes tekile emir fiilidir. Devamındaki زُمَلَائِكِ ile şahıs ve cinsiyet bakımından uyumludur. Olabilir.
+B) لَا تَدْرُسِي — çalışma!
+Müennes tekile olumsuz emir verir. Ancak devamında “sonra tartış” denildiği için önce dersi çalışması isteniyor. Olmaz.
+C) دَرَسَ — çalıştı
+Mâzî ve müzekker tekildir. Olmaz.
+D) اُدْرُسْ — çalış!
+Emir fiilidir ancak müzekker tekile yöneliktir. Devamındaki زُمَلَائِكِ müennes muhatabı gösteriyor. Olmaz.
+E) مَا دَرَسَ — çalışmadı
+Olumsuz geçmiş zamandır. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, اُدْرُسِي olur.
+4. Soru
+الْوَلَدُ ---- إِلَى بَيْتِهِ بَعْدَ انْتِهَاءِ الْمُبَارَاةِ.
+Türkçesi: Çocuk maç bittikten sonra evine döndü.
+İlk aşamada özne olarak الْوَلَدُ “çocuk” kelimesini görüyoruz. Müzekker tekildir. Ayrıca بَعْدَ انْتِهَاءِ الْمُبَارَاةِ “maç bittikten sonra” ifadesi, gerçekleşmiş bir olayın ardından yapılan eylemi anlatıyor. Bu nedenle müzekker tekil mâzî fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) عَادَ — döndü
+Mâzî, müzekker tekildir. الْوَلَدُ ile uyumludur ve cümlenin geçmiş zaman anlamını doğru tamamlar. Olabilir.
+B) يَعُدْنَ — onlar (kadınlar) dönerler
+Müennes çoğul fiildir. الْوَلَدُ müzekker tekildir. Olmaz.
+C) لَا تَعُودُ — dönmüyorsun / dönme
+Olumsuzdur ve şahıs bakımından da burada uygun değildir. Olmaz.
+D) عُدْ — dön!
+Müzekker tekile emir fiilidir. Burada çocuk hakkında bilgi veriliyor. Olmaz.
+E) مَا عُدْتَ — dönmedin
+Olumsuz geçmiş zamandır ve ikinci şahsa yöneliktir. Özne ise الْوَلَدُ üçüncü şahıstır. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, عَادَ olur.
+
+5. Soru
+مَا ---- الطَّالِبَةُ السُّؤَالَ لِأَنَّهَا لَمْ تَفْهَمْهُ.
+Türkçesi: Kız öğrenci soruyu cevaplamadı; çünkü onu anlamadı.
+İlk aşamada cümlenin başında مَا olumsuzluk edatını görüyoruz. Devamında الطَّالِبَةُ müennes tekil faili var. Ayrıca لَمْ تَفْهَمْهُ “onu anlamadı” ifadesi geçmiş zamanda gerçekleşmeyen bir durumu gösteriyor. Dolayısıyla müennes tekil mâzî fiil arıyoruz.
+Şimdi şıklara bakalım:
+A) يُجِيبُ — cevaplıyor / cevaplar
+Muzâri ve müzekker tekildir. الطَّالِبَةُ ile cinsiyet bakımından uymaz. Olmaz.
+B) أَجِبْنَ — cevap verin!
+Müennes çoğula emir fiilidir. Olmaz.
+C) أَجَابَتْ — cevap verdi
+Mâzî, müennes tekildir. Başındaki مَا ile:
+مَا أَجَابَتِ الطَّالِبَةُ = “Kız öğrenci cevap vermedi.”
+Hem özne hem geçmiş zaman anlamıyla uygundur. Olabilir.
+D) لَا يُجِيبُ — cevaplamıyor
+Müzekkerdir; ayrıca başta zaten مَا bulunmaktadır. Olmaz.
+E) أَجِبْ — cevap ver!
+Müzekker tekile emir fiilidir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, أَجَابَتْ olur.
+
+6. Soru
+---- صَدِيقَكَ عِنْدَ الْحَاجَةِ وَلَا تَتْرُكْهُ وَحْدَهُ.
+Türkçesi: İhtiyaç anında arkadaşına yardım et ve onu yalnız bırakma.
+İlk aşamada boşluğun devamında وَلَا تَتْرُكْهُ “ve onu yalnız bırakma” şeklinde doğrudan muhataba verilen bir yasaklama görüyoruz. صَدِيقَكَ kelimesindeki ـكَ de hitap edilen kişinin müzekker tekil olduğunu gösteriyor. Dolayısıyla ilk bölümde de müzekker tekile yönelik olumlu emir bekliyoruz.
+Şimdi şıklara bakalım:
+A) تُسَاعِدُ — yardım ediyorsun
+Muzâri ikinci şahıs fiilidir ancak emir değildir. Burada doğrudan öğüt veriliyor. Olmaz.
+B) لَا تُسَاعِدْ — yardım etme!
+Olumsuz emirdir. Devamındaki “onu yalnız bırakma” anlamıyla ters düşer. Olmaz.
+C) سَاعَدَ — yardım etti
+Mâzî, üçüncü şahıs müzekker fiildir. Olmaz.
+D) سَاعِدْ — yardım et!
+Müzekker tekile emir fiilidir. Devamındaki لَا تَتْرُكْهُ ile aynı muhataba yönelik iki öğüt oluşturur. Olabilir.
+E) سَاعِدْتُمْ
+Bu biçim cümlede gereken müzekker tekil emir yapısını karşılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, سَاعِدْ olur.
+

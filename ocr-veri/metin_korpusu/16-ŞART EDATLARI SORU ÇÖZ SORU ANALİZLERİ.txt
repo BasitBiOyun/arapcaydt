@@ -1,0 +1,100 @@
+ŞART EDATLARI SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+---- تَحْتَرِمْ آراءَ الآخَرينَ تَكْسِبْ ثِقَتَهُمْ.
+“Başkalarının görüşlerine saygı gösterir---- onların güvenini kazanır-----.”
+Cümlede تَحْتَرِمْ ve تَكْسِبْ fiilleri cezm hâlindedir. Bu nedenle boşluğa, şart fiilini ve şartın cevabını cezm eden bir şart edatı gelmelidir.
+Şimdi şıklara bakalım:
+A) إِنْ — eğer
+İki muzari fiili cezm eder. Hem gramer hem anlam bakımından uygundur. ✅
+B) إِذَا — eğer / -dığı zaman
+Şart anlamı taşıyabilir ancak muzari fiilleri cezm etmez. ❌
+C) لَوْ — eğer ... olsaydı
+Genellikle gerçekleşmemiş veya varsayımsal şartlarda kullanılır. ❌
+D) كُلَّمَا — her ne zaman / her defasında
+Tekrarlanan olayları ifade eder ve cezm yapmaz. ❌
+E) أَمَّا — ...e gelince
+Bu cezm yapısına uygun değildir. ❌
+Doğru cevap: A) إِنْ
+
+2. Soru
+---- يُنَظِّمْ وَقْتَهُ يَنْجَحْ في عَمَلِهِ.
+“Kim zamanını düzenler---işinde başarılı -----.”
+Cümle مَنْ ile kurulmuş bir şart cümlesidir. مَنْ cezm eden şart edatlarındandır. Şart fiili olan boşluktaki muzari fiilin cezm hâlinde olması gerekir. Devamındaki يَنْجَحْ fiilinin de cezmli olması bunu desteklemektedir.
+Şimdi şıklara bakalım:
+A) يُنَظِّمُ — düzenler
+Merfûdur; şart yapısına uygun değildir. ❌
+B) يُنَظِّمَ — düzenlesin / düzenlemesi
+Mansûbdur. ❌
+C) يُنَظِّمْ — düzenlerse
+Cezm hâlindedir ve şart yapısına uygundur. ✅
+D) نَظَّمَ — düzenledi
+Mâzi fiildir. Soruda hedeflenen muzari cezm yapısını karşılamaz. ❌
+E) يُنَظِّمونَ — düzenlerler
+Çoğul biçimdir ve مَنْ ile kurulan bu yapıya uygun değildir. ❌
+Doğru cevap: C) يُنَظِّمْ
+3. Soru
+=== يَجْتَهِدُ الطّالِبُ في بَحْثِهِ يَنالُ تَقْديرَ أُسْتاذِهِ.
+“Öğrenci araştırmasında gayret gösterdi---- hocasının takdirini kazanır.”
+Cümlede يَجْتَهِدُ ve يَنالُ fiilleri merfûdur. Yani fiillerde cezm alameti yoktur. Ayrıca cümlede gerçekleşmesi beklenen bir durum ile bunun sonucu ifade edilmektedir.
+Şimdi şıklara bakalım:
+A) لَوْلَا — eğer ... olmasaydı
+Cümlenin anlam ve yapısına uygun değildir. ❌
+B) إِذَا — eğer / -dığı zaman
+Şart-zaman anlamı verir ve muzari fiili cezm etmez. Mevcut fiil biçimleriyle uyumludur. ✅
+C) أَمَّا — ...e gelince
+Bu yapıda kullanılmaz. ❌
+D) مَهْمَا — her ne olursa olsun
+Cezm eden bir şart edatıdır. Fiillerin يَجْتَهِدْ / يَنَلْ biçiminde olması gerekirdi. ❌
+E) أَيْنَمَا — her nerede
+Yer anlamı gerektirir; cümlede yer ilişkisi yoktur. ❌
+Doğru cevap: B) إِذَا
+4. Soru
+---- تَبْحَثوا عَنِ الْحَقيقَةِ تَزْدادوا وَعْيًا.
+“Gerçeği ne zaman araştırır------farkındalığınız artar.”
+مَتى burada şart anlamı taşıyan ve muzari fiilleri cezm eden bir edattır. Hitap أنتم olduğu için fiiller beş fiilden oluşmaktadır. Beş fiiller cezm edildiğinde sondaki ن düşer.
+Devamındaki تَزْدادوا biçiminde de nûnun düşmüş olması aynı cezm yapısını göstermektedir.
+Şimdi şıklara bakalım:
+A) تَبْحَثونَ — araştırırsınız
+Nûn korunmuştur; merfûdur. ❌
+B) تَبْحَثوا — araştırırsanız
+Nûn düşmüştür ve cezm hâlindedir. ✅
+C) بَحَثْتُمْ — araştırdınız
+Mâzi fiildir. ❌
+D) تَبْحَثَ — araştırması / araştırsın
+Mansûb tekil biçimdir. ❌
+E) يَبْحَثونَ — onlar araştırırlar
+Hem şahıs hem de i‘rab bakımından uygun değildir. ❌
+Doğru cevap: B) تَبْحَثوا
+5. Soru
+=== الْقانونُ لَضاعَتْ حُقوقُ النّاسِ.
+“Kanun ----- insanların hakları kaybolurdu.”
+Boşluktan sonra doğrudan isim olan الْقانونُ gelmektedir. Cümlede kanunun varlığının insanların haklarının kaybolmasını engellediği anlatılmaktadır. Cevap kısmındaki لَضاعَتْ yapısı da bunu desteklemektedir.
+Şimdi şıklara bakalım:
+A) لَوْ — eğer ... olsaydı
+Genellikle ardından fiilli bir şart cümlesi gelir. Bu yapıya uygun değildir. ❌
+B) كَيْفَمَا — nasıl ... olursa
+Durum veya biçim bildirir. ❌
+C) إِنْ — eğer
+Cezm eden şart edatıdır ancak ardından burada olduğu gibi yalın isimle bu yapı kurulmaz. ❌
+D) مَنْ — kim
+Kişiler için kullanılır. ❌
+E) لَوْلَا — eğer ... olmasaydı
+Ardından isim gelebilir ve bir şeyin varlığının başka bir sonucu engellediğini ifade eder. ✅
+Doğru cevap: E) لَوْلَا
+6. Soru
+---- مَقالٍ تَقْرَأْ في الصَّحيفَةِ تَسْتَفِدْ مِنْ أُسْلوبِهِ.
+“Gazetede ----- makaleyi okursan onun üslubundan faydalanırsın.”
+Burada أَيَّ şart anlamında kullanılmıştır. Ardından gelen fiilin cezm edilmesi gerekir. Ayrıca devamındaki تَسْتَفِدْ fiili de cezm hâlindedir ve şart-cevap ilişkisini açıkça göstermektedir.
+أَيَّ kelimesinin fethalı gelmesinin sebebi de burada fiilin nesnesi olmasıdır: “Hangi makaleyi...”
+Şimdi şıklara bakalım:
+A) تَقْرَأُ — okursun
+Merfûdur; şart yapısına uygun değildir. ❌
+B) تَقْرَأَ — okuyasın / okuman
+Mansûbdur. ❌
+C) تَقْرَأْ — okursan
+Cezm hâlindedir ve yapıya uygundur. ✅
+D) قَرَأْتَ — okudun
+Mâzi fiildir; soruda hedeflenen muzari şart yapısını karşılamaz. ❌
+E) يَقْرَأونَ — onlar okurlar
+Hem şahıs hem yapı bakımından uygun değildir. ❌
+Doğru cevap: C) تَقْرَأْ

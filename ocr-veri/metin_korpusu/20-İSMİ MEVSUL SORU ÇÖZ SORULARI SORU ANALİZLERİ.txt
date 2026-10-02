@@ -1,0 +1,140 @@
+İSMİ MEVSUL SORU ÇÖZ SORULARI SORU ANALİZLERİ
+1. Soru
+جَاءَ الطَّالِبَانِ ---- شَارَكَا فِي الْمُسَابَقَةِ الْعِلْمِيَّةِ.
+“Bilimsel yarışmaya katılan iki öğrenci geldi.”
+Ölçülen yapı: İsm-i mevsûlde ikil-müzekker ve i‘rab uyumu; sıla cümlesinde aid zamir.
+Cümlenin başındaki جَاءَ الطَّالِبَانِ yapısında الطَّالِبَانِ, جاء fiilinin failidir ve merfûdur. Ayrıca müzekker ve ikildir. Bu nedenle boşluğa gelecek ism-i mevsûl de müzekker, ikil ve merfû biçimde olmalıdır.
+Boşluktan sonra gelen شَارَكَا فِي الْمُسَابَقَةِ الْعِلْمِيَّةِ kısmı sıla cümlesidir. شَارَكَا fiilindeki ikil zamiri, الطَّالِبَانِ kelimesine dönen aid zamirdir.
+Şimdi şıklara bakalım:
+A) اللَّذَيْنِ — “iki erkek ki/onlar ki”
+Müzekker ikildir ancak nasb ve cer hâlindedir. Burada merfû biçim gerekir.
+B) اللَّذَانِ — “iki erkek ki/onlar ki”
+Müzekker ikil ve merfûdur. الطَّالِبَانِ ile sayı, cinsiyet ve i‘rab bakımından uyumludur. ✅
+C) الَّذِينَ — “erkekler/onlar ki”
+Müzekker çoğuldur; ikil isimle uyuşmaz.
+D) الَّتِي — “kadın/dişil olan ki”
+Müennes tekildir.
+E) مَا — “şey/şeyler ki”
+Akılsız varlıklar veya genel anlamlar için kullanılır; burada iki erkek öğrenci için uygun değildir.
+Doğru cevap: B) اللَّذَانِ
+2. Soru
+أُحِبُّ الْمُعَلِّمِينَ ---- يُعَلِّمُونَ الطُّلَّابَ بِإِخْلَاصٍ.
+“Öğrencilere içtenlikle eğitim veren öğretmenleri severim.”
+Ölçülen yapı: İsm-i mevsûlde akıllı müzekker çoğul uyumu; sıla cümlesinde aid zamir.
+Cümlenin başındaki الْمُعَلِّمِينَ kelimesi akıllı varlıkları ifade eden müzekker çoğuldur. Boşluktan sonra gelen يُعَلِّمُونَ الطُّلَّابَ بِإِخْلَاصٍ kısmı sıla cümlesidir.
+يُعَلِّمُونَ fiilindeki واو الجماعة, öğretmenlere dönen aid zamirdir. Bu nedenle ism-i mevsûl de müzekker çoğul olmalıdır.
+Şimdi şıklara bakalım:
+A) الَّذِي — “erkek/tekil olan ki”
+Müzekker tekildir.
+B) الَّتِي — “dişil tekil olan ki”
+Müennes tekildir.
+C) الَّذِينَ — “erkekler/onlar ki”
+Akıllı müzekker çoğul için kullanılan ism-i mevsûldür. ✅
+D) اللَّتَانِ — “iki kadın ki”
+Müennes ikildir.
+E) مَا — “şey/şeyler ki”
+Burada insanlardan söz edildiği için uygun değildir.
+Doğru cevap: C) الَّذِينَ
+3. Soru
+أُقَدِّرُ ---- يَقُولُ الْحَقَّ وَلَوْ كَانَ صَعْبًا.
+“Zor olsa bile doğruyu söyleyen kişiye değer veririm.”
+Ölçülen yapı: Genel anlamda insan için kullanılan ism-i mevsûl مَنْ; sıla cümlesi.
+Cümlede ism-i mevsûlden önce belirli bir isim bulunmuyor. Boşluk doğrudan “doğruyu söyleyen kişi” anlamını oluşturacaktır.
+Boşluktan sonraki يَقُولُ الْحَقَّ sıla cümlesidir. Burada söz konusu olan akıllı bir varlık, yani insandır.
+Şimdi şıklara bakalım:
+A) مَا — “şey/şeyler ki”
+Genellikle akılsız varlıklar veya şeyler için kullanılır.
+B) مَنْ — “kim/kimse ki”
+Akıllı varlıklar, özellikle insanlar için kullanılan ortak ism-i mevsûldür. ✅
+C) الَّذِينَ — “onlar ki”
+Müzekker çoğuldur; öncesinde bunu belirleyen çoğul bir isim bulunmamaktadır.
+D) الَّتِي — “kadın/dişil olan ki”
+Müennes tekildir ve cümlede böyle bir öncül yoktur.
+E) اللَّذَيْنِ — “iki erkek ki”
+Müzekker ikil nasb/cer biçimidir; cümlede ikil bir yapı bulunmamaktadır.
+Doğru cevap: B) مَنْ
+4. Soru
+حَفِظْتُ ---- سَمِعْتُهُ مِنَ الْمُعَلِّمِ.
+“Öğretmenden duyduğum şeyi ezberledim.”
+Ölçülen yapı: Akılsız varlık veya “şey” anlamında kullanılan مَا; sıla cümlesinde aid zamir.
+Cümlede boşluk, belirli bir kişi veya isimden ziyade “duyduğum şey” anlamını ifade etmektedir.
+سَمِعْتُهُ مِنَ الْمُعَلِّمِ kısmı sıla cümlesidir. سَمِعْتُهُ kelimesindeki ـهُ, boşluktaki ism-i mevsûle dönen aid zamirdir.
+Şimdi şıklara bakalım:
+A) الَّذِي — “erkek/tekil olan ki”
+Öncesinde ona bağlanacak müzekker tekil belirli bir isim yoktur.
+B) الَّذِينَ — “onlar ki”
+Müzekker çoğuldur.
+C) مَنْ — “kim/kimse ki”
+İnsanlar için kullanılır; burada duyulan bir şeyden söz edilmektedir.
+D) مَا — “şey/şey ki”
+“Duyduğum şeyi” anlamını doğru şekilde oluşturur. ✅
+E) اللَّتَانِ — “iki kadın ki”
+Müennes ikildir ve bağlama uygun değildir.
+Doğru cevap: D) مَا
+5. Soru
+وَجَدْتُ كِتَابًا ---- قَوَاعِدَ النَّحْوِ بِطَرِيقَةٍ سَهْلَةٍ.
+“Dil bilgisi kurallarını kolay bir şekilde açıklayan bir kitap buldum.”
+Ölçülen yapı: Nekre isimden sonra sıfat cümlesi ile ism-i mevsûllü yapı arasındaki fark.
+Cümlenin başındaki كِتَابًا nekredir. Arapçada nekre bir isimden sonra onu niteleyen fiil cümlesi doğrudan gelebilir.
+Bu nedenle burada “bir kitap ki…” biçiminde ism-i mevsûl kullanmak zorunlu değildir. يَشْرَحُ قَوَاعِدَ النَّحْوِ ifadesi, كِتَابًا kelimesini niteleyen bir sıfat cümlesi olabilir.
+Şimdi şıklara bakalım:
+A) الَّذِي يَشْرَحُ — “açıklayan ki”
+الذي belirli bir öncül bekler. كتابًا nekre olduğu için bu yapı uygun değildir.
+B) الَّتِي تَشْرَحُ — “açıklayan dişil…”
+Hem isim nekredir hem de كتاب müzekkerdir.
+C) يَشْرَحُ — “açıklıyor/açıklayan”
+Nekre olan كِتَابًا kelimesini niteleyen fiil cümlesini oluşturur. ✅
+D) مَنْ يَشْرَحُ — “açıklayan kişi”
+مَنْ insanlar için kullanılır; kitap için uygun değildir.
+E) مَا تَشْرَحُ — “açıklayan şey…”
+Hem yapı hem de تشرح fiilinin müennes oluşu كتاب ile uyuşmaz.
+Doğru cevap: C) يَشْرَحُ.
+6. Soru
+قَرَأْتُ الْكِتَابَ ---- يَشْرَحُ قَوَاعِدَ النَّحْوِ بِطَرِيقَةٍ سَهْلَةٍ.
+“Dil bilgisi kurallarını kolay bir şekilde açıklayan kitabı okudum.”
+Ölçülen yapı: Marife isimden sonra ism-i mevsûl ve sıla cümlesi.
+Burada 5. sorudan farklı olarak الْكِتَابَ marifedir. “Açıklayan kitap” anlamında bu belirli isme uygun bir ism-i mevsûl bağlanmalıdır.
+يَشْرَحُ قَوَاعِدَ النَّحْوِ ise sıla cümlesidir. Fiilin gizli faili هو, الكتاب kelimesine dönen aid zamirdir.
+Şimdi şıklara bakalım:
+A) مَنْ — insanlar için kullanılır.
+B) مَا — “şey ki” anlamındadır; burada önceden belirtilmiş الكتاب için uygun yapı değildir.
+C) الَّذِي — müzekker tekil ism-i mevsûldür ve الكتاب ile tam uyumludur. ✅
+D) الَّذِينَ — müzekker çoğuldur.
+E) اللَّتَانِ — müennes ikildir.
+Doğru cevap: C) الَّذِي
+7. Soru
+هَذِهِ هِيَ الْبِنْتُ الَّتِي رَأَيْتُ ---- فِي الْمَدْرَسَةِ.
+“Bu, okulda gördüğüm kızdır.”
+Ölçülen yapı: Sıla cümlesinde aid zamir.
+Cümlede الَّتِي, الْبِنْتُ kelimesine bağlı ism-i mevsûldür. Sonrasında gelen رَأَيْتُ ---- فِي الْمَدْرَسَةِ sıla cümlesidir.
+رأيتُ fiili geçişlidir ve “kimi gördüm?” sorusunun cevabı olan bir mef‘ûle ihtiyaç duyar. Bu zamir, müennes tekil olan البنت kelimesine dönmelidir.
+Şimdi şıklara bakalım:
+A) ـهُ — “onu”, müzekker tekil.
+Müennes olan البنت ile uyuşmaz.
+B) هُمْ — “onları”, müzekker çoğul.
+Uyumsuzdur.
+C) كُمْ — “sizi”, müzekker çoğul ikinci şahıs.
+İsm-i mevsûlün öncülüne dönmez. 
+D) هُمَا — “o ikisini”, ikil.
+Tekil isimle uyuşmaz.
+E) هَا — “onu”, müennes tekil.
+البنت kelimesine dönen doğru aid zamirdir. ✅
+Doğru cevap: E) هَا
+8. Soru
+سَأُسَاعِدُ الطَّالِبَ ---- يَحْتَاجُ إِلَى الْمُسَاعَدَةِ.
+“Yardıma ihtiyaç duyan öğrenciye yardım edeceğim.”
+Ölçülen yapı: İsm-i mevsûlde müzekker tekil uyumu; sıla cümlesinde aid zamir.
+Cümlenin başındaki الطَّالِبَ belirli, müzekker ve tekil bir isimdir. Bu nedenle ona bağlanacak ism-i mevsûl de müzekker tekil olmalıdır.
+يَحْتَاجُ إِلَى الْمُسَاعَدَةِ sıla cümlesidir. يحتاج fiilindeki gizli هو zamiri, الطالب kelimesine dönen aid zamirdir.
+Şimdi şıklara bakalım:
+A) الَّذِي — “erkek/tekil olan ki”
+Müzekker tekildir ve الطالب ile uyumludur. ✅ 
+B) الَّذِينَ — “onlar ki”
+Müzekker çoğuldur.
+C) الَّتِي — “kadın/dişil olan ki”
+Müennes tekildir.
+D) اللَّذَانِ — “iki erkek ki”
+Müzekker ikildir.
+E) اللَّاتِي — “kadınlar/onlar ki”
+Müennes çoğuldur.
+Doğru cevap: A) الَّذِي

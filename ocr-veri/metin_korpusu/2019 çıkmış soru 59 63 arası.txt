@@ -1,0 +1,118 @@
+2019 YDT Arapça: 59–63. paragrafta cümle tamamlama
+Bu grupta doğru şık, boşluğun hem öncesine hem sonrasına bağlanmalı. Özellikle وَمِنْ جِهَةٍ أُخْرَى، لِذَلِكَ، وَبِذَلِكَ gibi bağlayıcıların neye gönderme yaptığını kontrol edeceğiz.
+59. soru
+Harekeli paragraf — boşluk yerinde bırakılmıştır:
+لِلْقَنَوَاتِ الْفَضَائِيَّةِ تَأْثِيرٌ مُهِمٌّ فِي شَخْصِيَّةِ الطِّفْلِ، ---- وَمِنْ جِهَةٍ أُخْرَى تُؤَدِّي إِلَى تَأْثِيرَاتٍ سَلْبِيَّةٍ تَتَمَثَّلُ فِي الْعَجْزِ عَنْ ضَبْطِ النَّفْسِ وَاللُّجُوءِ إِلَى الْعُنْفِ بَدَلًا مِنَ التَّفَاوُضِ.
+Tercümesi: Uydu kanallarının çocuğun kişiliği üzerinde önemli bir etkisi vardır. […] Öte yandan öz denetim yetersizliği ve uzlaşma yerine şiddete başvurma gibi olumsuz etkilere de yol açarlar.
+Boşluk nerede, bizden ne isteniyor? Boşluk ortada. Sonrasındaki وَمِنْ جِهَةٍ أُخْرَى “öte yandan” ifadesi bir karşıt yön açıyor. Ardından olumsuz etkiler anlatıldığına göre, boşlukta önceki genel “etki” ifadesinin olumlu yönünü örnekleyen bir cümle beklenir. Ölçülen bilgi olumlu–olumsuz karşıtlığı ve paragraf akışıdır.
+Şıklara bakalım:
+A) وَالْعُنْفُ ظَاهِرَةٌ مُنْتَشِرَةٌ فِي جَمِيعِ بِلَادِ الْعَالَمِ وَخَاصَّةً أَمْرِيكَا.
+Tercümesi: Şiddet, dünyanın bütün ülkelerinde, özellikle de Amerika’da yaygın bir olgudur.
+Neden olmaz? Boşluğa da olumsuz bir konu getirir; sonraki “öte yandan” karşıtlığını kurmaz.
+B) فَلَهَا تَأْثِيرَاتٌ سَلْبِيَّةٌ عَدِيدَةٌ عَلَى صِحَّةِ الرَّجُلِ وَالْمُجْتَمَعِ الَّذِي يَعِيشُ فِيهِ.
+Tercümesi: Onun erkeğin sağlığı ve yaşadığı toplum üzerinde birçok olumsuz etkisi vardır.
+Neden olmaz? صِحَّةِ الرَّجُلِ ile konu çocuktan erkeğe kayar; yine olumlu–olumsuz karşıtlığı kurulmaz.
+C) فَهِيَ تُسَاعِدُ الطِّفْلَ عَلَى التَّعَاوُنِ مَعَ الْأَطْفَالِ الْأَصْغَرِ سِنًّا مِنْهُ.
+Tercümesi: Çünkü bunlar çocuğun kendinden küçük çocuklarla iş birliği yapmasına yardımcı olur.
+Neden olabilir? Çocuğa yönelik olumlu bir etki söyler. Ardından وَمِنْ جِهَةٍ أُخْرَى ile olumsuz etkilere geçiş anlamlı olur.
+D) فَهِيَ تُعَزِّزُ عِنْدَ الطِّفْلِ قِيَمَ اسْتِقْلَالِ الرَّأْيِ وَالرَّغْبَةِ فِي الْحِوَارِ.
+Tercümesi: Bunlar çocukta bağımsız düşünme ve diyalog isteği değerlerini güçlendirir.
+Neden olabilir? Bu da olumlu etki bildirir. Üstelik devamdaki التَّفَاوُضِ “uzlaşma/müzakere” ile الْحِوَارِ “diyalog” arasında güçlü bir karşıt bağlantı kurar: Bir yanda diyaloğa yöneltme, öte yanda diyalog yerine şiddete başvurma.
+E) وَالْبَرَامِجُ الْفَضَائِيَّةُ تُعَلِّمُنَا الْكَثِيرَ مِنَ الْعَادَاتِ وَالتَّقَالِيدِ غَيْرِ الْمَعْرُوفَةِ.
+Tercümesi: Uydu programları bize bilinmeyen birçok âdet ve geleneği öğretir.
+Neden olmaz? تُعَلِّمُنَا “bize öğretir” diyerek çocuk üzerindeki kişilik etkisinden genel izleyiciye geçer.
+Doğru cevap: D. C şıkkı da olumlu bir etki söylediği için ilk bakışta mümkün görünür; D’yi belirleyen nokta, sonraki cümledeki “uzlaşma yerine şiddet” karşıtlığını doğrudan hazırlamasıdır.
+Yıl: 2019
+60. soru
+Harekeli paragraf — boşluk yerinde bırakılmıştır:
+يَقَعُ مَتْحَفُ مَوْلَانَا فِي قَلْبِ مَدِينَةِ قُونِيَا إِلَى جَانِبِ عَدَدٍ مِنَ الْمَسَاجِدِ التَّارِيخِيَّةِ وَالْمَعَالِمِ الْأَثَرِيَّةِ الْمُهِمَّةِ وَمَحَالِّ بَيْعِ الْحَلَوِيَّاتِ وَالتَّذْكَارَاتِ السِّيَاحِيَّةِ الْمُرْتَبِطَةِ بِالْمَوْلَوِيَّةِ. ---- وَغَيْرِهَا مِنَ الْمَعَالِمِ الْأُخْرَى الَّتِي تَزْخَرُ بِهَا الْمَدِينَةُ وَتَسْتَحِقُّ الزِّيَارَةَ.
+Tercümesi: Mevlânâ Müzesi; tarihî camilerin, önemli tarihî yapıların ve Mevlevilikle ilgili tatlı ve hediyelik eşya dükkânlarının yanında, Konya’nın merkezinde yer alır. […] Şehirde bulunan ve ziyaret edilmeyi hak eden diğer yerler de vardır.
+Boşluk nerede, bizden ne isteniyor? Boşluk ortada. Öncesinde Konya’nın ziyaret edilebilecek tarihî ve kültürel yerleri sayılıyor; sonrasındaki وَغَيْرِهَا مِنَ الْمَعَالِمِ الْأُخْرَى “ve diğer yerler” ifadesi bu listeyi sürdürüyor. Ölçülen bilgi listeleme ve genel konu bütünlüğü.
+Şıklara bakalım:
+A) وَيَعُودُ تَارِيخُ الْمَتْحَفِ إِلَى حَدِيقَةِ الْوَرْدِ الَّتِي أَهْدَاهَا لِلْمَتْحَفِ سُلْطَانُ السَّلَاجِقَةِ الْأَوَّلُ.
+Tercümesi: Müzenin geçmişi, ilk Selçuklu sultanının müzeye hediye ettiği gül bahçesine dayanır.
+Neden olmaz? Müzeyle ilgili tarihî ayrıntıdır; sonrasındaki “ve diğer ziyaret edilecek yerler” listesini sürdürmez.
+B) وَتُعْرَضُ فِي الْقَاعَةِ نُسْخَةٌ أَصْلِيَّةٌ مِنْ كِتَابِ الْمَثْنَوِيِّ وَهِيَ أَقْدَمُ نُسْخَةٍ تَحْتَوِي عَلَى مِئَاتِ الْأَبْيَاتِ مِنَ الشِّعْرِ.
+Tercümesi: Salonda Mesnevi’nin, yüzlerce beyit içeren en eski nüshası olan özgün bir kopyası sergilenir.
+Neden olmaz? Müzenin içindeki eser anlatılır; şehirdeki başka yerleri sayan devamla uymaz.
+C) مَنْ يَزُرْ قُونِيَا وَيَقِفْ أَمَامَ قَبْرِ الرُّومِيِّ، حَتْمًا سَتَسْتَرْجِعُ ذَاكِرَتُهُ رُوحَ الرُّومِيِّ الْغَارِقَةَ فِي السَّلَامِ وَالْمَحَبَّةِ.
+Tercümesi: Konya’yı ziyaret edip Rûmî’nin mezarı önünde duran kişinin hafızası, onun barış ve sevgiyle dolu ruhunu yeniden hatırlar.
+Neden olmaz? Duygusal bir yorumdur; sonrasındaki yer listesine bağlanmaz.
+D) وَيُوجَدُ فِي فِنَاءِ الْمَتْحَفِ كَذَلِكَ نَافُورَةٌ أُخْرَى كَبِيرَةٌ صُمِّمَتْ بِشَكْلِ سُدَاسِيِّ الْأَضْلَاعِ.
+Tercümesi: Müzenin avlusunda altıgen biçiminde tasarlanmış başka bir büyük çeşme de vardır.
+Neden olmaz? Müzeyle ilgili bir ayrıntı ekler; sonraki الْمَعَالِمِ الْأُخْرَى الَّتِي تَزْخَرُ بِهَا الْمَدِينَةُ ifadesinin şehir genelindeki yerleri sayma akışına en iyi bağlanmaz.
+E) بِالْإِضَافَةِ إِلَى الْمَعَالِمِ الثَّقَافِيَّةِ كَمَرْكَزِ مَوْلَانَا الثَّقَافِيِّ، كَمَا يُوجَدُ فِي قُونِيَا ثَلَاثُ مَدَارِسَ سَلْجُوقِيَّةٍ.
+Tercümesi: Mevlânâ Kültür Merkezi gibi kültürel yerlerin yanı sıra Konya’da üç Selçuklu medresesi de bulunur.
+Neden olabilir? Şehirdeki başka kültürel ve tarihî yerleri ekler; ardından gelen “ve diğer yerler” ifadesiyle liste sürer.
+Doğru cevap: E.
+Yıl: 2019
+61. soru
+Harekeli paragraf — boşluk yerinde bırakılmıştır:
+تُعَدُّ الْهِجْرَةُ مِنْ مَكَانٍ إِلَى آخَرَ مِنْ صِفَاتِ الْبَشَرِ مُنْذُ قَدِيمِ الزَّمَانِ بَحْثًا عَنِ الِاسْتِقْرَارِ وَالْحَيَاةِ الْكَرِيمَةِ، وَلَكِنَّ هَذِهِ الظَّاهِرَةَ انْتَشَرَتْ فِي الْفَتْرَةِ الْأَخِيرَةِ بِشَكْلٍ كَبِيرٍ مِمَّا جَعَلَهَا مِنَ الظَّوَاهِرِ الْمُقْلِقَةِ لِلْحُكُومَاتِ، ---- لِذَلِكَ تَسْعَى دُوَلُ الْعَالَمِ لِإِيجَادِ الْحُلُولِ الَّتِي تُقَلِّلُ مِنْ نِسْبَةِ الْهِجْرَةِ وَخَاصَّةً بَيْنَ فِئَةِ الشَّبَابِ وَالْأَيْدِي الْعَامِلَةِ.
+Tercümesi: İnsanlar eskiden beri istikrar ve iyi bir hayat arayışıyla göç eder. Ancak göçün son dönemde çok artması hükümetleri kaygılandırır hâle gelmiştir. […] Bu nedenle dünya ülkeleri, özellikle gençler ve çalışanlar arasındaki göçü azaltacak çözümler aramaktadır.
+Boşluk nerede, bizden ne isteniyor? Boşluk ortada. Öncesindeki hükümetlerin kaygısı ile sonrasındaki لِذَلِكَ “bu nedenle” arasında gerekçe kurulmalı. Ölçülen bilgi neden–sonuç bağı: Göç neden azaltılmak isteniyor?
+Şıklara bakalım:
+A) فَلِهَذِهِ الْهِجْرَةِ آثَارٌ سَلْبِيَّةٌ مُتَعَدِّدَةٌ عَلَى الدَّوْلَةِ الْأَصْلِيَّةِ وَالدَّوْلَةِ الْمُضِيفَةِ،
+Tercümesi: Çünkü bu göçün hem kaynak ülke hem de ev sahibi ülke üzerinde çeşitli olumsuz etkileri vardır.
+Neden olabilir? Hükümetlerin kaygısını açıklar; لِذَلِكَ ile başlayan çözüm arayışına gerekçe sağlar.
+B) بَاتَتْ ظَاهِرَةً مُتَوَقَّعَةً فِي جَمِيعِ الدُّوَلِ وَمَوْجُودَةً فِي جَمِيعِ أَنْحَاءِ الْعَالَمِ،
+Tercümesi: Bütün ülkelerde beklenen ve dünyanın her yerinde görülen bir olgu hâline gelmiştir.
+Neden olmaz? Yaygınlığı yineler; hükümetlerin neden göçü azaltmak istediğini olumsuz sonuçlarıyla açıklamaz.
+C) فَلِهَذِهِ الْهِجْرَةِ فَوَائِدُ عَدِيدَةٌ مِنْهَا كَسْبُ الْمَالِ وَالشُّعُورُ بِالْحُرِّيَّةِ الْمَادِّيَّةِ وَهَكَذَا،
+Tercümesi: Bu göçün para kazanmak ve maddi özgürlük hissetmek gibi birçok yararı vardır.
+Neden olmaz? Göçün yararlarını sıralamak, ardından onu azaltacak çözümler aranmasını açıklamaz.
+D) فَهُنَاكَ الْعَدِيدُ مِنَ الْحُلُولِ وَالِاقْتِرَاحَاتِ لِتَشْجِيعِ هَذِهِ الظَّاهِرَةِ عَلَى الِانْتِشَارِ،
+Tercümesi: Bu olgunun yayılmasını teşvik edecek pek çok çözüm ve öneri vardır.
+Neden olmaz? Sonraki cümle göçün azaltılmasını istiyor; bu şık yayılmasını teşvik ediyor.
+E) جَمِيعُ أَبْنَاءِ الْوَطَنِ الْعَرَبِيِّ يَحْلُمُونَ بِالسَّفَرِ وَالِاسْتِقْرَارِ فِي بَلَدٍ غَيْرِ بَلَدِهِمْ،
+Tercümesi: Arap dünyasındaki herkes başka bir ülkeye gidip yerleşmeyi hayal ediyor.
+Neden olmaz? جَمِيعُ “herkes” biçiminde metnin desteklemediği kesin bir genelleme yapar; dünya ülkelerinin çözüm arayışına da uygun gerekçe vermez.
+Doğru cevap: A.
+Yıl: 2019
+62. soru
+Harekeli paragraf — boşluk yerinde bırakılmıştır:
+لِقَنَاةِ السُّوَيْسِ أَهَمِّيَّةٌ دَوْلِيَّةٌ عَظِيمَةٌ، ---- وَتُؤَثِّرُ بِذَلِكَ عَلَى التِّجَارَةِ الْعَالَمِيَّةِ. وَلَيْسَ فِي الْعَالَمِ قَنَاةٌ أُخْرَى لَهَا أَهَمِّيَّتُهَا سِوَى قَنَاةِ بَنَمَا.
+Tercümesi: Süveyş Kanalı’nın büyük bir uluslararası önemi vardır; […] ve bu sayede dünya ticaretini etkiler. Dünyada Panama Kanalı dışında onun kadar önemli başka bir kanal yoktur.
+Boşluk nerede, bizden ne isteniyor? Boşluk ortada. وَتُؤَثِّرُ بِذَلِكَ içindeki بِذَلِكَ “böylece/bununla” sözcüğü, boşluğa gelecek işleve dönmeli. Ölçülen bilgi gönderim ve neden–sonuç ilişkisi.
+Şıklara bakalım:
+A) وَتَرْبِطُ بَيْنَ مَدِينَتَي بُورْسَعِيدَ وَالسُّوَيْسِ،
+Tercümesi: Port Said ile Süveyş şehirlerini birbirine bağlar.
+Neden olmaz? Coğrafi bir bilgi verir; “bu sayede dünya ticaretini etkiler” sonucunu en açık biçimde kurmaz.
+B) كَانَتْ فِي الْبِدَايَةِ شَرِكَةً مِصْرِيَّةً فَرَنْسِيَّةً،
+Tercümesi: Başlangıçta Mısır–Fransız ortaklığında bir şirketti.
+Neden olmaz? Kanalın ticaretteki işlevini değil, geçmişe ilişkin başka bir bilgiyi verir.
+C) وَتَأَثَّرَتْ حَيَاةُ مِصْرَ الِاقْتِصَادِيَّةُ مِنْهَا،
+Tercümesi: Mısır’ın ekonomik hayatı ondan etkilendi.
+Neden olmaz? Bu bir sonuçtur; dünya ticaretini hangi işleviyle etkilediğini açıklamaz.
+D) فَهِيَ تُقَصِّرُ الْمَسَافَةَ بَيْنَ الشَّرْقِ وَالْغَرْبِ،
+Tercümesi: Çünkü Doğu ile Batı arasındaki mesafeyi kısaltır.
+Neden olabilir? بِذَلِكَ doğrudan mesafeyi kısaltma işlevine döner: Mesafe kısalır, böylece dünya ticareti etkilenir.
+E) وَأَشْرَفَ عَلَى حَفْرِهَا مُهَنْدِسُونَ مِصْرِيُّونَ،
+Tercümesi: Kanalın kazılmasına Mısırlı mühendisler nezaret etti.
+Neden olmaz? Kazı bilgisi, sonraki ticaret sonucunun gerekçesi değildir.
+Doğru cevap: D.
+Yıl: 2019
+63. soru
+Harekeli paragraf — boşluk yerinde bırakılmıştır:
+إِنَّ اتِّبَاعَ إِرْشَادَاتِ نَظَافَةِ الْفَمِ وَالْأَسْنَانِ سَيَكُونُ لَهُ دَوْرٌ كَبِيرٌ فِي التَّقْلِيلِ مِنْ خَطَرِ الْإِصَابَةِ بِآلَامِ الْأَسْنَانِ وَتَشْمَلُ الْإِرْشَادَاتُ الْعَادَاتِ مِثْلَ تَفْرِيشِ الْأَسْنَانِ بِانْتِظَامٍ بِاسْتِخْدَامِ مَعْجُونِ الْأَسْنَانِ، وَالتَّنْظِيفِ بِاسْتِخْدَامِ خَيْطِ الْأَسْنَانِ مَرَّةً فِي الْيَوْمِ، ---- وَالتَّقْلِيلِ مِنَ السُّكَّرِيَّاتِ.
+Tercümesi: Ağız ve diş temizliği önerilerine uymak, diş ağrısı riskini azaltmada önemli rol oynar. Bu öneriler; diş macunuyla düzenli fırçalamayı, günde bir kez diş ipiyle temizlemeyi, […] ve şekerli gıdaları azaltmayı içerir.
+Boşluk nerede, bizden ne isteniyor? Boşluk ortada, bir listenin içinde. Önce ve sonra ağız–diş sağlığına yönelik uygulanacak alışkanlıklar sıralanıyor. Seçilecek ifade listeye hem konu hem de dil bilgisi yapısı bakımından bağlanmalı. Ölçülen bilgi atıfla sürdürülen liste ve anlam bütünlüğüdür.
+Şıklara bakalım:
+A) وَالْتِهَابَاتُ اللِّثَةِ هِيَ الْمَرْحَلَةُ الْأُولَى لِأَمْرَاضِ اللِّثَةِ،
+Tercümesi: Diş eti iltihapları, diş eti hastalıklarının ilk aşamasıdır.
+Neden olmaz? Uygulanacak bir temizlik alışkanlığı değil, hastalık hakkında açıklamadır.
+B) وَلَا يُمْكِنُ عِلَاجُ الْتِهَابَاتِ اللِّثَةِ بِصُورَةٍ مِثَالِيَّةٍ،
+Tercümesi: Diş eti iltihapları ideal biçimde tedavi edilemez.
+Neden olmaz? Korunma alışkanlıkları listesinden tedaviye geçer.
+C) وَالسَّبَبُ الْمُبَاشِرُ لِتَسَوُّسِ الْأَسْنَانِ هُوَ الْبِلَاكُ،
+Tercümesi: Diş çürüğünün doğrudan sebebi plaktır.
+Neden olmaz? Yine uygulanacak bir alışkanlık değil, neden açıklamasıdır.
+D) وَتَتَكَوَّنُ اللِّثَةُ مِنْ عَظْمٍ قَوِيٍّ يَرْبِطُ الْأَسْنَانَ بِالْفَكِّ،
+Tercümesi: Diş eti, dişleri çeneye bağlayan güçlü bir kemikten oluşur.
+Neden olmaz? Konu anatomik tanıma kayar; listeyi sürdürmez.
+E) وَمُرَاجَعَةِ طَبِيبِ الْأَسْنَانِ مَرَّتَيْنِ فِي السَّنَةِ عَلَى الْأَقَلِّ،
+Tercümesi: Diş hekimine yılda en az iki kez gitmeyi.
+Neden olabilir? Fırçalama, diş ipi kullanma ve şekeri azaltma arasına giren bir başka koruyucu alışkanlıktır. مُرَاجَعَةِ sözcüğü de listedeki تَفْرِيشِ، التَّنْظِيفِ، التَّقْلِيلِ mastarlarıyla yapıca uyumludur.
+Doğru cevap: E.
+Yıl: 2019
+Cevap dizisi: 59 D · 60 E · 61 A · 62 D · 63 E

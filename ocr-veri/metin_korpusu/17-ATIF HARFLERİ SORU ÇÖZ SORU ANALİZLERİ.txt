@@ -1,0 +1,85 @@
+ATIF HARFLERİ SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+أَتَشْتَري الْكِتابَ ---- الدَّفْتَرَ؟
+“Kitabı mı ---- defteri mi satın alıyorsun?”
+Cümle أَ soru hemzesiyle başlamaktadır. Burada konuşan kişi iki belirli seçenekten hangisinin tercih edildiğini sormaktadır: الْكِتابَ ve الدَّفْتَرَ. Dolayısıyla iki seçenek arasında seçim yaptıran ve soru hemzesiyle uyumlu bir atıf harfi aranmalıdır.
+Şimdi şıklara bakalım:
+A) أَوْ — veya
+Genel olarak iki veya daha fazla seçenek arasında tercih veya ihtimal bildirir; ancak soru hemzesiyle iki belirli seçenekten birini tayin ettiren bu yapıda aranan kullanım değildir. ❌
+B) أَمْ — yoksa
+Soru hemzesinden sonra iki belirli seçenek arasında hangisinin kastedildiğini sormak için kullanılır. ✅
+C) لَا — değil / fakat ... değil
+Bir hükmü ikinci unsurdan uzaklaştırmak için kullanılır. Buradaki soru yapısına uygun değildir. ❌
+D) بَلْ — bilakis / aksine
+Önceki hükümden vazgeçip sonraki unsura yönelmeyi ifade eder. ❌
+E) ثُمَّ — sonra
+Sıralama ve zaman aralığı bildirir. ❌
+Doğru cevap: B) أَمْ
+
+2. Soru
+لا تُصاحِبْ طالِبًا مُهْمِلًا ---- طالِبًا مُجْتَهِدًا.
+“İhmalkâr bir öğrenciyle arkadaşlık etme; ----- çalışkan bir öğrenciyle arkadaşlık et.”
+Cümlenin ilk bölümünde لا تُصاحِبْ ile olumsuz bir emir bulunmaktadır. İlk unsur reddedilirken ikinci unsurun tercih edilmesi istenmektedir. Dolayısıyla olumsuz ifadeden sonra karşıt “AKSİNE”ANLAMINDA ve olumlu bir unsura geçiş sağlayan yapı aranmalıdır.
+Şimdi şıklara bakalım:
+A) لَكِنْ — fakat / ancak
+Olumsuz hükümden sonra karşıt bir unsura geçiş sağlayabilir. Buradaki “ihmalkâr öğrenci değil, çalışkan öğrenci” karşıtlığını kurmaya uygundur. ✅
+B) أَوْ — veya
+İki seçenek arasında alternatif bildirir; cümlede amaç bu değildir. ❌
+C) حَتَّى — hatta / -e kadar
+Son nokta veya kapsam bildirir. Karşıtlık ilişkisine uygun değildir. ❌
+D) لَا — değil
+Önceki unsurun hükmünü ikinci unsurdan uzaklaştırır. Buradaki anlamın tersine yol açar. ❌
+E) ثُمَّ — sonra
+Sıralama ve zaman aralığı bildirir. ❌
+Doğru cevap: A) لَكِنْ
+3. Soru
+ناقَشَ الْأُسْتاذُ السُّؤالَ الْأَوَّلَ ---- الثّانِيَ؛ لِأَنَّ الْوَقْتَ لَمْ يَكْفِ.
+“Öğretmen birinci soruyu tartıştı, ikinciyi ise tartışmadı; çünkü zaman yetmedi.”
+Cümlenin sonundaki لِأَنَّ الْوَقْتَ لَمْ يَكْفِ ifadesi belirleyicidir: “Çünkü zaman yetmedi.”
+Dolayısıyla birinci sorunun görüşüldüğü, fakat ikinci sorunun bu hükmün dışında bırakıldığı anlaşılmaktadır. Aranan atıf harfinin ilk unsur için geçerli olan hükmü ikinci unsurdan kaldırması gerekir.
+Şimdi şıklara bakalım:
+A) حَتَّى — hatta / -e kadar
+İkinci unsuru hükmün dışında bırakmaz. ❌
+B) فَـ — ardından / hemen sonra
+Sıralama ve hızlı takip bildirir; anlamı tersine çevirir. ❌
+C) ثُمَّ — sonra
+İkinci sorunun da tartışıldığını ifade eder. Oysa gerekçe zamanın yetmediğini göstermektedir. ❌
+D) أَمْ — yoksa
+Soru yapısında tercih veya tayin için kullanılır. Burada soru yoktur. ❌
+E) لَا — değil / ama ... değil
+İlk unsur için verilen hükmün ikinci unsur için geçerli olmadığını gösterir: “Birinci soruyu tartıştı, ikinciyi değil.” ✅
+Doğru cevap: E) لَا
+4. Soru
+سَأُرْسِلُ الرِّسالَةَ ---- بِالْبَريدِ الْإِلِكْتُرونِيِّ ---- بِالْهاتِفِ.
+“Mesajı ya e-postayla --- ----- telefonla göndereceğim.”
+Cümlede gelecekte yapılacak tek bir eylem için iki alternatif yöntem sunulmaktadır. Bu iki seçeneğin birbirine paralel ve dengeli biçimde bağlanması gerekir.
+Şimdi şıklara bakalım:
+A) إِمَّا / وَإِمَّا — ya ... ya da
+İki alternatiften birinin seçileceğini ifade eden düzenli bir yapıdır. Cümlenin anlamına tam olarak uygundur. ✅
+B) أَمْ / أَوْ — yoksa / veya
+Birbiriyle eşleşen paralel bir yapı oluşturmaz. ❌
+C) بَلْ / لَكِنْ — aksine / fakat
+Düzeltme ve karşıtlık bildirir; alternatif sunma anlamına uygun değildir. ❌
+D) ثُمَّ / فَـ — sonra / ardından
+İki eylemin sıralanmasını gerektirir. Burada ise iki alternatif vardır. ❌
+E) لَا / وَ — değil / ve
+İki alternatif arasında seçim anlamını karşılamaz. ❌
+Doğru cevap: A) إِمَّا / وَإِمَّا
+
+5. Soru
+ما كانَ الْخَلَلُ في الْجِهازِ ---- في طَريقَةِ اسْتِخْدامِهِ.
+“Sorun cihazda değildi; ----- onun kullanım biçimindeydi.”
+Cümle ما كانَ ile olumsuz başlamaktadır. Önce sorunun cihazda olduğu düşüncesi reddediliyor, ardından gerçek sorunun başka bir yerde, yani kullanım biçiminde olduğu belirtiliyor.
+Burada basit bir karşıtlıktan ziyade, ilk hükmün düzeltilerek ikinci hükme geçilmesi söz konusudur.
+Şimdi şıklara bakalım:
+A) فَـ — böylece / ardından
+Sonuç veya hızlı sıralama bildirir. ❌
+B) ثُمَّ — sonra
+Zamansal sıralama bildirir. ❌
+C) أَوْ — veya
+İki ihtimal arasında seçim bildirir; burada ilk ihtimal açıkça reddedilmektedir. ❌
+D) بَلْ — bilakis / aksine
+Önceki düşünceyi bırakıp doğru hükmü ikinci unsur üzerine yöneltir. “Cihazda değil, aksine kullanım biçimindeydi” anlamını verir. ✅
+E) أَمْ — yoksa
+Temel olarak soru ve alternatif yapılarıyla ilişkilidir; burada uygun değildir. ❌
+Doğru cevap: D) بَلْ

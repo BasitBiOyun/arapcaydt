@@ -1,0 +1,270 @@
+ATF HARFLERİ DEĞERLENDİRME SORU ANALİZLERİ
+1. Soru
+حَضَرَ الْمُدَرِّسُ ---- الطُّلَّابُ إِلَى الْقاعَةِ.
+“Öğretmen --- öğrenciler salona geldi.”
+Cümlede الْمُدَرِّسُ ile الطُّلَّابُ aynı hükme ortak edilmektedir. İki unsur arasında herhangi bir sıralama, karşıtlık veya seçim anlamı yoktur. Bu nedenle yalnızca ortaklık bildiren bir atıf harfi gerekir.
+Şimdi şıklara bakalım:
+A) وَ — ve
+İki unsuru aynı hükümde birleştirir; sıralama bildirmez. ✅
+B) بَلْ — aksine
+Önceki hükümden vazgeçip ikinci unsura geçiş bildirir. ❌
+C) لَا — değil
+İkinci unsuru hükmün dışında bırakır. ❌
+D) لَكِنْ — fakat
+Karşıtlık veya düzeltme gerektirir. ❌
+E) أَمْ — yoksa
+Soru ve seçim yapılarında kullanılır. ❌
+Doğru cevap: A) وَ
+2. Soru
+دَخَلَ الْمُديرُ الْمَكْتَبَ ----وَقَفَ الْمُوَظَّفونَ.
+“Müdür ofise girdi, bunun )hemen ardından-----(çalışanlar ayağa kalktı.”
+İki eylem arasında hem sıralama hem de hemen gerçekleşme ilişkisi vardır. Müdürün girmesinin hemen ardından çalışanlar ayağa kalkmaktadır.
+Şimdi şıklara bakalım:
+A) ثُمَّ — sonra
+Sıralama bildirir ancak arada zaman bulunduğunu düşündürür. ❌
+B) فَـ — hemen ardından / bunun üzerine
+Sıralama ve hızlı takip bildirir. ✅
+C) أَوْ — veya
+Alternatif bildirir. ❌
+D) أَمْ — yoksa
+Soru yapısına uygundur. ❌
+E) حَتَّى — hatta / -e kadar
+Bu anlam ilişkisine uygun değildir. ❌
+Doğru cevap: B) فَـ
+3. Soru
+قَرَأَ الْباحِثُ الْمَقالَ --- كَتَبَ مُلَخَّصًا بَعْدَ يَوْمٍ.
+“Araştırmacı makaleyi okudu, ardından bir gün ---- özet yazdı.”
+Cümledeki بَعْدَ يَوْمٍ “bir gün sonra” ifadesi belirleyicidir. İki eylem sıralıdır fakat aralarında zaman vardır.
+Şimdi şıklara bakalım:
+A) وَ — ve
+Yalnızca ortaklık bildirir; zaman sıralamasını açıkça göstermez. ❌
+B) فَـ — hemen ardından
+Eylemlerin peş peşe gerçekleşmesini bildirir; “bir gün sonra” ifadesiyle uyuşmaz. ❌
+C) ثُمَّ — sonra
+Sıralama ve zaman aralığı bildirir. ✅
+D) لَا — değil
+Olumsuzlama ilişkisi yoktur. ❌
+E) أَمْ — yoksa
+Soru yapısı yoktur. ❌
+Doğru cevap: C) ثُمَّ
+4. Soru
+حَضَرَ الضُّيوفُ ---- الْأَطْفالُ.
+“Misafirler geldi, hatta çocuklar ----.”
+Önce genel bir grup zikredilmiş, ardından bu grubun içinde gelmesi daha az beklenen çocuklar özellikle vurgulanmıştır.
+Şimdi şıklara bakalım:
+A) حَتَّى — hatta / bile
+İkinci unsuru önceki hükme dâhil ederek özellikle vurgular. ✅
+B) لَكِنْ — fakat
+Karşıtlık bildirir. ❌
+C) أَوْ — veya
+Alternatif bildirir. ❌
+D) أَمْ — yoksa
+Soru yapısında kullanılır. ❌
+E) لَا — değil
+İkinci unsuru hükümden çıkarır. ❌
+Doğru cevap: A) حَتَّى
+5. Soru
+أَتُفَضِّلُ الدِّراسَةَ في الصَّباحِ ---- في الْمَساءِ؟
+“Sabah mı ---- akşam mı çalışmayı tercih ediyorsun?”
+Cümle soru hemzesiyle başlamaktadır ve iki belirli seçenekten hangisinin tercih edildiği sorulmaktadır.
+Şimdi şıklara bakalım:
+A) أَوْ — veya
+Genel alternatif bildirir; burada iki seçenek arasında tayin sorusu vardır. ❌
+B) وَ — ve
+Ortaklık bildirir. ❌
+C) أَمْ — yoksa
+Soru hemzesiyle birlikte iki belirli seçenekten birini tayin ettirir. ✅
+D) فَـ — ardından
+Sıralama bildirir. ❌
+E) بَلْ — aksine
+Düzeltme veya yön değiştirme bildirir. ❌
+Doğru cevap: C) أَمْ
+6. Soru
+يُمْكِنُ لِلطَّالِبِ أَنْ يَخْتارَ أَحَدَ الْخِيارَيْنِ: أَنْ يَكْتُبَ بَحْثًا --- تَقْريرًا.
+“Öğrenci iki seçenekten birini seçebilir: bir araştırma ------ rapor yazmak.”
+Cümlede açıkça أَحَدَ الْخِيارَيْنِ “iki seçenekten biri” denilmektedir. Dolayısıyla iki alternatiften birini bildiren yapı gerekir.
+Şimdi şıklara bakalım:
+A) بَلْ — aksine
+Düzeltme bildirir. ❌
+B) أَوْ — veya / ya da
+İki alternatiften birini ifade eder. ✅
+C) حَتَّى — hatta
+Alternatif bildirmez. ❌
+D) لَا — değil
+İkinci seçeneği dışlar. ❌
+E) أَمْ — yoksa
+Burada doğrudan soru yapısı bulunmamaktadır. ❌
+Doğru cevap: B) أَوْ
+7. Soru
+ما قابَلْتُ مُديرًا ---- مُعَلِّمًا.
+“Bir müdürle ----, bir öğretmenle görüştüm.”
+Cümle ما قابَلْتُ şeklinde olumsuz başlamaktadır. İlk unsur hakkında verilen olumsuz hükümden sonra ikinci unsur olumlu olarak öne çıkarılmaktadır.
+Şimdi şıklara bakalım:
+A) وَ — ve
+İki unsuru aynı hükme ortak eder. ❌
+B) فَـ — ardından
+Sıralama bildirir. ❌
+C) ثُمَّ — sonra
+Zaman sıralaması bildirir. ❌
+D) لَكِنْ — fakat / ancak/DEĞİL
+Olumsuz ifadeden sonra ikinci unsuru karşıt biçimde öne çıkarır. ✅
+E) حَتَّى — hatta
+Dâhil etme ve vurgu bildirir. ❌
+Doğru cevap: D) لَكِنْ
+8. Soru
+لَا يَحْتاجُ هٰذَا السُّؤالُ إِلَى الْحِفْظِ، ---- إِلَى التَّفْكيرِ وَالتَّرْكيزِ.
+“Bu soru ezbere değil, ----- düşünmeye ve odaklanmaya ihtiyaç duyar.”
+İlk unsur reddedilmekte, ardından doğru olan ikinci unsur belirtilmektedir. Yani bir hüküm düzeltilmektedir.
+Şimdi şıklara bakalım:
+A) فَـ — böylece / ardından
+Düzeltme anlamı taşımaz. ❌
+B) ثُمَّ — sonra
+Sıralama bildirir. ❌
+C) بَلْ — aksine / bilakis
+İlk hükmü reddedip ikinci hükme yöneltir. ✅
+D) أَوْ — veya
+Alternatif bildirir. ❌
+E) أَمْ — yoksa
+Soru yapısına uygun değildir. ❌
+Doğru cevap: C) بَلْ
+9. Soru
+لَمْ أَشْتَرِ الرِّوَايَةَ، بَلِ اشْتَرَيْتُ الْقَامُوسَ ---- الرِّوَايَةَ.
+Önce cümlenin başındaki yapıya bakalım:
+لَمْ أَشْتَرِ الرِّوَايَةَ
+“Romanı satın almadım.”
+Burada لَمْ, muzâri fiili cezm eden bir edattır. أَشْتَرِي fiili illetli bir fiil olduğu için لَمْ ile cezm edildiğinde sondaki illet harfi düşer ve لَمْ أَشْتَرِ biçimini alır.
+Ardından:
+بَلِ اشْتَرَيْتُ الْقَامُوسَ
+“Bilakis sözlüğü satın aldım.”
+ifadesi gelmektedir. İlk bölümde romanın satın alınmadığı belirtilmiş, ardından gerçekte satın alınan şeyin الْقَامُوسَ “sözlük” olduğu açıklanmıştır.
+Boşluktan sonra tekrar الرِّوَايَةَ “roman” kelimesinin gelmesi, satın alma hükmünün sözlük için geçerli olduğunu; roman için ise geçerli olmadığını vurgulayan bir atıf ilişkisi gerektirmektedir.
+Şimdi şıklara bakalım:
+A) لَا — değil
+Burada لَا, لا العاطفة görevinde kullanılabilir:
+اِشْتَرَيْتُ الْقَامُوسَ لَا الرِّوَايَةَ.
+“Sözlüğü satın aldım, romanı değil.”
+لَا العاطفة, kendisinden önceki unsur için hükmü sabit bırakırken kendisinden sonraki unsurdan aynı hükmü kaldırır. Buna göre sözlük satın alınmış, roman satın alınmamıştır. Cümlenin önceki bölümü de bu anlamı açıkça desteklemektedir. ✅
+B) لَكِنْ — fakat / ancak
+Atıf görevindeki لَكِنْ, istidrak bildirir ve kullanımında kendisinden önce olumsuzluk veya nehiy bulunması gibi belirli şartlar aranır. Buradaki doğrudan yapıise اِشْتَرَيْتُ الْقَامُوسَ olumlu bir hükümdür. Ayrıca hedeflenen anlam, ikinci unsura hüküm vermek değil, satın alma hükmünü ondan kaldırmaktır. ❌
+C) أَمْ — yoksa / veya
+أَمْ çoğunlukla soru yapısında iki seçenek arasında belirleme veya karşılaştırma amacıyla kullanılır. Cümlede herhangi bir soru yapısı bulunmamaktadır. ❌
+D) ثُمَّ — sonra
+ثُمَّ, sıralama ile birlikte zaman bakımından aralık bildirir. اِشْتَرَيْتُ الْقَامُوسَ ثُمَّ الرِّوَايَةَ denirse “Sözlüğü, sonra romanı satın aldım.” anlamı ortaya çıkar. Bu ise ilk cümledeki لَمْ أَشْتَرِ الرِّوَايَةَ “Romanı satın almadım.” ifadesiyle açıkça çelişir. ❌
+E) وَ — ve
+وَ iki unsuru aynı hükümde birleştirir. اِشْتَرَيْتُ الْقَامُوسَ وَالرِّوَايَةَ denirse “Sözlüğü ve romanı satın aldım.” anlamına gelir. Bu da romanın satın alınmadığını bildiren ilk cümleyle çelişmektedir. ❌
+Doğru cevap: A) لَا
+10. Soru
+سَيُقَدِّمُ الْباحِثُ عَرْضَهُ ---- بِالْعَرَبِيَّةِ وَ---- بِالتُّرْكِيَّةِ.
+“Araştırmacı sunumunu ya Arapça --- ---- Türkçe yapacak.”
+İki alternatiften yalnızca birinin seçileceği ifade edilmektedir. Bu nedenle karşılıklı bir seçim yapısı gereklidir.
+Şimdi şıklara bakalım:
+A) فَـ / ثُمَّ
+Sıralama bildirir. ❌
+B) وَ / وَ
+İki seçeneği birlikte gerçekleştirme anlamına gelir. ❌
+C) بَلْ / لَكِنْ
+Karşıtlık ve düzeltme yapısıdır. ❌
+D) أَوْ / أَمْ
+Birbiriyle eşleşen düzenli yapı değildir. ❌
+E) إِمَّا / وَإِمَّا — ya ... ya da
+İki alternatiften birinin seçileceğini bildirir. ✅
+Doğru cevap: E) إِمَّا / وَإِمَّا
+-
+11. Soru
+جَمَعَ الْمُحَرِّرُ الصُّوَرَ ---- النُّصوصَ في مَلَفٍّ واحِدٍ.
+“Editör resimleri ----- metinleri tek bir dosyada topladı.”
+الصُّوَرَ ve النُّصوصَ aynı fiilin hükmüne ortak iki nesnedir. Her ikisi de birlikte toplanmıştır.
+Şimdi şıklara bakalım:
+A) وَ — ve
+İki unsuru ortak hüküm altında birleştirir. ✅
+B) بَلْ — aksine
+Düzeltme bildirir. ❌
+C) لَا — değil
+İkinci unsuru hükümden çıkarır. ❌
+D) لَكِنْ — fakat
+Karşıtlık gerektirir. ❌
+E) أَمْ — yoksa
+Soru yapısı gerektirir. ❌
+Doğru cevap: A) وَ
+12. Soru
+أَهْمَلَ الطّالِبُ الْمُراجَعَةَ ---أَخْطَأَ في الِاخْتِبارِ.
+“Öğrenci tekrar yapmayı ihmal etti, -------sınavda hata yaptı.”
+İkinci eylem ilk eylemin doğal sonucu olarak ve onun ardından gerçekleşmektedir. Burada yalnızca zaman sıralaması değil, sebep-sonuç ilişkisi de vardır.
+Şimdi şıklara bakalım:
+A) ثُمَّ — sonra
+Zaman sıralaması verir ancak sebep-sonuç ilişkisini yeterince yansıtmaz. ❌
+B) أَمْ — yoksa
+Soru yapısına uygun değildir. ❌
+C) حَتَّى — hatta / -e kadar
+Bu yapıya uygun değildir. ❌
+D) فَـ — bunun üzerine / böylece
+Hızlı takip ve sebep-sonuç ilişkisini ifade eder “bunun sonucunda” ANLAMINA GELEBİLİR  . ✅
+E) لَا — değil
+Olumsuzlama ilişkisi yoktur. ❌
+Doğru cevap: D) فَـ
+13. Soru
+ وَضَعَ الْمُهَنْدِسُ الْخُطَّةَ ----- بَدَأَ التَّنْفيذَ بَعْدَ أُسْبوعٍ.
+“Mühendis planı hazırladı, ardından bir hafta ----- uygulamaya başladı.”
+بَعْدَ أُسْبوعٍ ifadesi iki eylem arasında açık bir zaman aralığı bulunduğunu göstermektedir.
+Şimdi şıklara bakalım:
+A) ثُمَّ — sonra
+Sıralama ve zaman aralığı bildirir. ✅
+B) فَـ — hemen ardından
+Bir haftalık zaman aralığıyla uyuşmaz. ❌
+C) أَوْ — veya
+Alternatif bildirir. ❌
+D) أَمْ — yoksa
+Soru yapısı yoktur. ❌
+E) لَا — değil
+Dışlama bildirir. ❌
+Doğru cevap: A) ثُمَّ
+14. Soru
+حَضَرَ جَميعُ طُلَّابِ الصَّفِّ حَتَّى الطَّالِبُ الَّذي يَغيبُ عادَةً.
+“Sınıftaki bütün öğrenciler, ------ normalde sürekli devamsızlık yapan öğrenci bile geldi.”
+İlk bölümde bütün öğrencilerin geldiği belirtilmiş, ardından gelmesi en az beklenen öğrenci özellikle vurgulanmıştır. İkinci unsur da ilk hükmün kapsamına dâhildir.
+Şimdi şıklara bakalım:
+A) أَوْ — veya
+Alternatif bildirir. ❌
+B) حَتَّى — hatta / bile
+Daha uç veya beklenmedik bir unsuru önceki hükme dâhil eder. ✅
+C) لَكِنْ — fakat
+Karşıtlık bildirir; oysa öğrenci de gelmiştir. ❌
+D) أَمْ — yoksa
+Soru yapısı yoktur. ❌
+E) بَلْ — aksine
+İlk hükümden vazgeçmeyi gerektirir. ❌
+Doğru cevap: B) حَتَّى
+
+15. Soru
+يُمْكِنُكَ أَنْ تُرَاجِعَ الدَّرْسَ ---- تَحُلَّ التَّمْرِينَاتِ الإِضَافِيَّةَ.
+Önce cümlenin başındaki yapıya bakalım:
+يُمْكِنُكَ أَنْ تُرَاجِعَ الدَّرْسَ
+“Dersi tekrar edebilirsin.”
+Burada يُمْكِنُكَ “senin için mümkündür / yapabilirsin” anlamındadır. Ardından gelen أَنْ تُرَاجِعَ yapısında أَنْ, muzâri fiili nasb eden edatlardandır. Bu nedenle fiil:
+تُرَاجِعَ
+şeklinde mansup gelmiştir.
+Boşluktan sonra ise:
+تَحُلَّ التَّمْرِينَاتِ الإِضَافِيَّةَ
+“Ek alıştırmaları çözersin / çözebilirsin.”
+ifadesi bulunmaktadır.
+Cümlede iki farklı eylem arasında bir seçenek sunma anlamı vardır:
+“Dersi tekrar edebilirsin … ek alıştırmaları çözebilirsin.”
+Ayrıca boşluktan sonraki تَحُلَّ fiilinin mansup oluşuna dikkat edilmelidir. Bu fiil, önceki أَنْ تُرَاجِعَ yapısına atfedildiği için aynı i‘rab konumunu korumaktadır.
+Şimdi şıklara bakalım:
+A) بَلْ — bilakis / aksine
+بَلْ genellikle önceki hükümden vazgeçip ikinci unsura yönelme anlamı verir. Burada iki alternatif arasında böyle bir düzeltme veya önceki ifadeyi terk etme anlamı bulunmamaktadır. ❌
+B) لَكِنْ — fakat / ancak
+لَكِنْ karşıtlık veya istidrak bildirir. Cümlede ise “dersi tekrar etmek” ile “ek alıştırmaları çözmek” arasında bir karşıtlık değil, iki seçenek söz konusudur. ❌
+C) أَوْ — veya
+أَوْ, iki unsur arasında seçim veya alternatif bildirir:
+يُمْكِنُكَ أَنْ تُرَاجِعَ الدَّرْسَ أَوْ تَحُلَّ التَّمْرِينَاتِ الإِضَافِيَّةَ.
+“Dersi tekrar edebilir veya ek alıştırmaları çözebilirsin.”
+Anlam ve yapı bakımından cümleye tam olarak uygundur. Ayrıca تَحُلَّ, أَنْ تُرَاجِعَ yapısına atfedildiği için mansup gelmiştir. ✅
+D) حَتَّى — hatta / -e kadar
+حَتَّى burada iki eş değer seçenek arasında tercih bildirmez. Kullanılması hâlinde cümlenin anlam ilişkisi değişir ve mevcut yapı doğal olmaz. ❌
+E) لَا — değil / ... değil
+Atıf harfi olarak kullanılan لَا, önceki olumlu hükmü ikinci unsurdan nefyetmek için kullanılır. Burada ise “birini yap, diğerini yapma” şeklinde bir anlam hedeflenmemektedir. Cümlenin seçenek bildiren yapısıyla uyuşmaz. ❌
+Doğru cevap: C) أَوْ
+Nihai Cevap Anahtarı
+1-A | 2-B | 3-C | 4-A | 5-C | 6-B | 7-D | 8-C | 9-⚠️ | 10-E | 11-A | 12-D | 13-A | 14-B | 15-⚠️
+Bu sette 9. ve 15. soruları nihai soru bankasına bu hâlleriyle koymamayı öneririm. 9. soru bağlam yetersizliği nedeniyle birden fazla yoruma açık; 15. soruda ise seçeneklerle cümlenin gramer/anlam yapısı tam örtüşmüyor.

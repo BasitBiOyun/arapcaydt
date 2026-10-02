@@ -1,0 +1,400 @@
+
+76. Soru
+(1)
+يُعَدُّ التَّغَيُّرُ الْمُنَاخِيُّ مِنْ أَبْرَزِ التَّحَدِّيَاتِ الْبِيئِيَّةِ الَّتِي تُوَاجِهُ الْعَالَمَ فِي الْعَصْرِ الْحَدِيثِ.
+
+İklim değişikliği, modern çağda dünyanın karşı karşıya olduğu en önemli çevresel sorunlardan biri sayılmaktadır.
+Cümleyi inceleyelim:
+Burada paragrafın konusu doğrudan verilmiş:
+التَّغَيُّرُ الْمُنَاخِيُّ = iklim değişikliği
+مِنْ أَبْرَزِ التَّحَدِّيَاتِ
+“en önemli sorunlardan biri”
+Cümlenin sonunda nokta var. İlk cümle olduğu için önceki bir cümleye bağlanmıyor; paragrafın temel konusunu ortaya koyuyor.
+O hâlde devamındaki cümlelerde iklim değişikliği ve onun etkileri ile ilgili bir anlatım bekliyoruz.
+(2)
+وَتُؤَدِّي هٰذِهِ الظَّاهِرَةُ إِلَى ارْتِفَاعِ مُتَوَسِّطِ دَرَجَاتِ الْحَرَارَةِ وَذَوَبَانِ الْجَلِيدِ فِي الْمَنَاطِقِ الْقُطْبِيَّةِ.
+Bu olgu, ortalama sıcaklıkların yükselmesine ve kutup bölgelerindeki buzların erimesine yol açmaktadır.
+Devamlılığı gösteren unsurlar:
+Cümlenin başındaki:
+وَ = ve / ayrıca
+bir atıf harfidir. İkinci cümlenin birinci cümlenin devamı olduğunu gösteriyor.
+Daha önemlisi:
+هٰذِهِ الظَّاهِرَةُ = bu olgu
+Buradaki هٰذِهِ, işaret ismidir.
+Peki “bu olgu” dediği nedir?
+Bir önceki cümlede geçen:
+التَّغَيُّرُ الْمُنَاخِيُّ
+yani iklim değişikliği.
+Dolayısıyla ikinci cümle, ilk cümleye doğrudan bağlanıyor.
+Ayrıca:
+تُؤَدِّي ... إِلَى = ... yol açar
+Buradaki إِلَى harf-i cerdir ve أَدَّى إِلَى / يُؤَدِّي إِلَى kalıbının parçasıdır.
+فِي الْمَنَاطِقِ الْقُطْبِيَّةِ
+“kutup bölgelerinde”
+Anlatım devam ediyor.
+(3)
+كَمَا يُسْهِمُ هٰذَا الِارْتِفَاعُ فِي زِيَادَةِ تَوَاتُرِ بَعْضِ الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ، مِثْلَ مَوْجَاتِ الْجَفَافِ وَالْفَيَضَانَاتِ.
+Ayrıca bu yükseliş, kuraklık dalgaları ve seller gibi bazı aşırı hava olaylarının daha sık görülmesine katkıda bulunmaktadır.
+Devamlılığı nereden görüyoruz?
+Cümle:
+كَمَا = ayrıca / bunun yanı sıra
+ile başlıyor.
+كَمَا, önceki düşünceye yeni bir bilgi ekliyor. Dolayısıyla burada çok açık bir devam ilişkisi var.
+Ardından:
+هٰذَا الِارْتِفَاعُ = bu yükseliş
+geliyor.
+Buradaki هٰذَا işaret ismidir.
+“Bu yükseliş” dediği ne?
+İkinci cümlede geçen:
+ارْتِفَاعُ مُتَوَسِّطِ دَرَجَاتِ الْحَرَارَةِ
+yani ortalama sıcaklıkların yükselmesi.
+Dolayısıyla:
+2. cümle → ارْتِفَاع
+3. cümle → هٰذَا الِارْتِفَاعُ
+şeklinde açık bir bağ kurulmuş.
+Ayrıca:
+يُسْهِمُ فِي = ... katkıda bulunur
+Buradaki فِي harf-i cerdir ve أَسْهَمَ فِي / يُسْهِمُ فِي kalıbıyla kullanılmıştır.
+Cümlenin ortasında:
+virgül var.
+Virgülden sonra gelen:
+مِثْلَ مَوْجَاتِ الْجَفَافِ وَالْفَيَضَانَاتِ
+önceki الظَّوَاهِرِ الْجَوِّيَّةِ الْمُتَطَرِّفَةِ ifadesine örnek veriyor.
+Anlatım hâlâ aynı konu üzerinde devam ediyor.
+(4)
+وَلِلْحَدِّ مِنْ هٰذِهِ الْآثَارِ، يَتَطَلَّبُ الْأَمْرُ تَعَاوُنًا دَوْلِيًّا لِخَفْضِ انْبِعَاثَاتِ غَازَاتِ الدَّفِيئَةِ.
+Bu etkileri azaltmak için sera gazı salımlarını düşürmeye yönelik uluslararası iş birliği gerekmektedir.
+Burada hangi bağlar var?
+Cümle yine:
+وَ
+atıf harfiyle başlıyor.
+Ardından:
+لِلْحَدِّ مِنْ
+geliyor.
+لِـ = için
+مِنْ = -den / -dan
+الْحَدُّ مِنْ = azaltmak, sınırlamak
+kalıbıdır.
+Daha önemlisi:
+هٰذِهِ الْآثَارِ = bu etkiler
+Buradaki هٰذِهِ işaret ismidir.
+Peki “bu etkiler” ne?
+İkinci ve üçüncü cümlede anlatılan:
+sıcaklıkların yükselmesi,
+buzulların erimesi,
+kuraklık,
+seller.
+Yani هٰذِهِ الْآثَارِ önceki cümlelerin tamamına dönüyor.
+Cümlede ayrıca:
+لِخَفْضِ = azaltmak için
+ifadesindeki لِـ, amaç bildiren harf-i cerdir.
+Dolayısıyla 1 → 2 → 3 → 4 arasında çok güçlü bir anlam zinciri var.
+(5)
+وَتَتَمَيَّزُ الدِّبَبَةُ الْقُطْبِيَّةُ بِطَبَقَةٍ سَمِيكَةٍ مِنَ الْفَرَاءِ تُسَاعِدُهَا عَلَى تَحَمُّلِ الْبُرُودَةِ الشَّدِيدَةِ.
+Kutup ayıları, şiddetli soğuğa dayanmalarına yardımcı olan kalın bir kürk tabakasıyla özellik gösterir.
+Cümle yine وَ ile başlamış olabilir; ancak çok önemli bir nokta:
+Sadece وَ bulunması, cümlenin paragrafla anlam bakımından bağlı olduğunu göstermez.
+Burada konu bir anda:
+التَّغَيُّرُ الْمُنَاخِيُّ
+iklim değişikliğinden,
+الدِّبَبَةُ الْقُطْبِيَّةُ
+kutup ayılarının fiziksel özelliklerine geçiyor.
+Harf-i cerler:
+بِطَبَقَةٍ → bir tabaka ile
+مِنَ الْفَرَاءِ → kürkten
+عَلَى تَحَمُّلِ → dayanmasına
+Bunlar cümlenin kendi içinde doğru kullanılmasına rağmen önceki anlatımla bağlantı kurmuyor.
+❌ İşte burada anlatım bozuluyor, bağlam kopuyor.
+Beşinci cümleyi çıkardığımızda:
+iklim değişikliği → etkileri → aşırı hava olayları → bu etkileri azaltma yolları
+şeklinde düzenli bir paragraf elde ediyoruz.
+Dolayısıyla doğru cevap: E) V
+77. Soru
+(1)
+تُعَدُّ اللُّغَةُ الْعَرَبِيَّةُ مِنَ اللُّغَاتِ الْغَنِيَّةِ بِمُفْرَدَاتِهَا وَتَرَاكِيبِهَا.
+Arapça, kelime hazinesi ve yapıları bakımından zengin dillerden biridir.
+Ana konu:
+اللُّغَةُ الْعَرَبِيَّةُ
+Buradaki:
+بِمُفْرَدَاتِهَا وَتَرَاكِيبِهَا
+ifadesindeki بِـ harf-i cerdir.
+Ayrıca:
+ـهَا zamiri iki defa اللُّغَةُ الْعَرَبِيَّةُya dönmektedir.
+Ana konu Arapçadır.
+(2)
+وَلَهَا تُرَاثٌ أَدَبِيٌّ وَفِكْرِيٌّ يَمْتَدُّ قُرُونًا طَوِيلَةً.
+Onun yüzyıllar boyunca uzanan edebî ve fikrî bir mirası vardır.
+Cümle:
+وَ
+ile başlıyor.
+لَهَا
+ifadesindeki لِـ harf-i cerdir.
+هَا = onun
+zamiri doğrudan:
+اللُّغَةُ الْعَرَبِيَّةُ
+ifadesine dönüyor.
+Açık bir devamlılık var.
+(3)
+وَقَدْ أَثَّرَتِ الْعَرَبِيَّةُ فِي لُغَاتٍ عَدِيدَةٍ نَتِيجَةَ التَّفَاعُلِ الْحَضَارِيِّ وَالتِّجَارِيِّ عَبْرَ التَّارِيخِ.
+Arapça, tarih boyunca medeniyetler arası ve ticari etkileşim sonucunda birçok dili etkilemiştir.
+Başta:
+وَقَدْ
+var.
+وَ önceki cümleye bağlıyor.
+قَدْ ise geçmiş zaman fiiliyle gerçekleşmiş bir durumu vurguluyor.
+Özne yine açıkça:
+الْعَرَبِيَّةُ
+Ayrıca:
+أَثَّرَ فِي = ... üzerinde etkili oldu
+kalıbında فِي harf-i cerdir.
+Arapçanın özelliklerinden tarihsel etkisine geçilmiş ama ana konu değişmemiş.
+(4)
+كَمَا تَتَمَيَّزُ بِنِظَامٍ اشْتِقَاقِيٍّ مَرِنٍ يُسَاعِدُهَا عَلَى تَوْلِيدِ أَلْفَاظٍ جَدِيدَةٍ وَاسْتِيعَابِ الْمُصْطَلَحَاتِ الْحَدِيثَةِ.
+Ayrıca yeni kelimeler üretmesine ve modern terimleri bünyesine almasına yardımcı olan esnek bir türetme sistemiyle özellik gösterir.
+Başta:
+كَمَا = ayrıca
+var. Önceki bilgilere yeni bir özellik ekliyor.
+Fiilin öznesi açıkça yazılmamış:
+تَتَمَيَّزُ
+Fakat gizli özne:
+هِيَ = o
+ve bu zamir اللُّغَةُ الْعَرَبِيَّةُya dönüyor.
+بِنِظَامٍ → بِـ harf-i cer.
+يُسَاعِدُهَا
+içindeki هَا yine Arapçaya dönüyor.
+عَلَى تَوْلِيدِ
+ifadesindeki عَلَى da harf-i cerdir:
+سَاعَدَ عَلَى = ... yapmaya yardımcı oldu.
+Zincir devam ediyor.
+(5)
+وَتُؤَدِّي التَّرْجَمَةُ دَوْرًا مُهِمًّا فِي نَقْلِ الْمَعَارِفِ الْعِلْمِيَّةِ بَيْنَ اللُّغَاتِ الْمُخْتَلِفَةِ.
+Çeviri, bilimsel bilgilerin farklı diller arasında aktarılmasında önemli rol oynar.
+Başında وَ var; ancak yine aynı noktaya dikkat:
+وَ tek başına anlam bütünlüğü sağlamaz.
+Burada özne artık:
+التَّرْجَمَةُ = çeviri
+olmuştur.
+İlk dört cümlede:
+اللُّغَةُ الْعَرَبِيَّةُ
+konuşulurken burada genel anlamda çevirinin önemine geçiliyor.
+فِي نَقْلِ ifadesindeki فِي harf-i cerdir.
+Cümle kendi içinde doğrudur fakat paragrafın ana zincirinden ayrılıyor.
+❌ Burada bağlam kopuyor.
+Beşinci cümleyi çıkardığımızda Arapçanın zenginliği, mirası, diğer dillere etkisi ve türetme sistemi kesintisiz anlatılmış oluyor.
+Dolayısıyla doğru cevap: E) V
+
+78. Soru
+(1)
+تُعَدُّ الْقِرَاءَةُ مِنْ أَهَمِّ الْوَسَائِلِ الَّتِي تُسْهِمُ فِي تَوْسِيعِ مَدَارِكِ الْإِنْسَانِ وَتَنْمِيَةِ ثَقَافَتِهِ.
+Okuma, insanın ufkunu genişletmeye ve kültürünü geliştirmeye katkı sağlayan en önemli araçlardan biridir.
+Ana konu:
+الْقِرَاءَةُ = okuma
+مِنْ أَهَمِّ → مِنْ harf-i cer.
+تُسْهِمُ فِي → katkıda bulunur; فِي harf-i cer.
+Devamında okumanın yararlarını bekliyoruz.
+(2)
+وَتُؤَدِّي الْكِتَابَةُ دَوْرًا أَسَاسِيًّا فِي تَوْثِيقِ الْأَفْكَارِ وَنَقْلِهَا إِلَى الْأَجْيَالِ الْقَادِمَةِ.
+Yazma, düşüncelerin kaydedilmesi ve gelecek nesillere aktarılmasında temel rol oynar.
+Başında وَ var.
+Ancak özne değişmiş:
+الْقِرَاءَةُ → الْكِتَابَةُ
+okumadan yazmaya geçilmiş.
+Şimdilik bunu şüpheli olarak işaretliyoruz.
+
+(3)
+فَالْقِرَاءَةُ تَفْتَحُ آفَاقًا جَدِيدَةً لِلْفِكْرِ وَتُنَمِّي لَدَى الْقَارِئِ مَهَارَاتِ التَّحْلِيلِ وَالنَّقْدِ.
+Okuma düşünceye yeni ufuklar açar ve okuyucuda analiz ve eleştiri becerilerini geliştirir.
+Burada çok önemli bir ipucu var:
+فَـ
+Cümle:
+فَالْقِرَاءَةُ
+diye başlıyor.
+فَـ, önceki düşünceyi açıklama, gerekçelendirme veya sonuçlandırma ilişkisi kurabilir.
+Fakat dikkat:
+Tekrar doğrudan:
+الْقِرَاءَةُ
+konusuna dönüldü.
+Bu durum ikinci cümlenin araya girdiğini daha da belirginleştiriyor.
+لِلْفِكْرِ → لِـ harf-i cer.
+✅ Birinci cümledeki “okuma önemlidir” düşüncesinin nedenini açıklıyor.
+(4)
+كَمَا تُسَاعِدُ الْقِرَاءَةُ الْمُنْتَظَمَةُ عَلَى تَحْسِينِ الْقُدْرَةِ عَلَى التَّرْكِيزِ وَالتَّخْفِيفِ مِنَ الضُّغُوطِ النَّفْسِيَّةِ.
+Düzenli okuma ayrıca odaklanma yeteneğini geliştirmeye ve psikolojik baskıları azaltmaya yardımcı olur.
+Başta:
+كَمَا = ayrıca
+var.
+Özne yine:
+الْقِرَاءَةُ الْمُنْتَظَمَةُ
+Yani okumanın başka bir yararı ekleniyor.
+Ana konu devam ediyor.
+(5)
+وَلِذٰلِكَ يَنْصَحُ التَّرْبَوِيُّونَ بِتَخْصِيصِ وَقْتٍ يَوْمِيٍّ لِلْقِرَاءَةِ.
+Bu nedenle eğitimciler her gün okumaya zaman ayrılmasını tavsiye etmektedirler.
+Buradaki en güçlü bağ:
+وَلِذٰلِكَ = ve bundan dolayı / bu nedenle
+Bu ifade bir sonuç bağlantısı kuruyor.
+Neyin sonucunda?
+Önceki cümlelerde anlatılan okumanın yararları sonucunda.
+Ayrıca:
+يَنْصَحُ بِـ = tavsiye eder
+Buradaki بِـ harf-i cerdir.
+لِلْقِرَاءَةِ → okumaya / okuma için; لِـ harf-i cer.
+Sonuç cümlesi de doğrudan okumaya bağlanıyor.
+Şimdi zincire bakalım:
+الْقِرَاءَةُ → فَالْقِرَاءَةُ → كَمَا تُسَاعِدُ الْقِرَاءَةُ → وَلِذٰلِكَ ... لِلْقِرَاءَةِ
+Araya yalnızca:
+الْكِتَابَةُ
+girmiş.
+❌ Dolayısıyla ikinci cümle anlatımı bozuyor.
+İkinci cümleyi çıkardığımızda birinci cümleden üçüncü cümleye فَـ ile çok doğal biçimde geçebiliyoruz:
+“Okuma çok önemlidir. Çünkü okuma yeni ufuklar açar…”
+Dolayısıyla doğru cevap: B) II
+79. Soru
+(1)
+اعْتَمَدَ الْأَطِبَّاءُ الْمُسْلِمُونَ عَلَى النَّبَاتَاتِ وَالْمَعَادِنِ فِي تَحْضِيرِ كَثِيرٍ مِنَ الْأَدْوِيَةِ.
+Müslüman doktorlar birçok ilacın hazırlanmasında bitkilerden ve minerallerden yararlanmıştır.
+Buradaki ana konu:
+الْأَطِبَّاءُ – الْأَدْوِيَةُ
+yani tıp ve ilaç.
+اعْتَمَدَ عَلَى = ...e dayandı / ...den yararlandı
+(2)
+اهْتَمَّ الْعُلَمَاءُ الْمُسْلِمُونَ بِعِلْمِ الْفَلَكِ وَطَوَّرُوا أَدَوَاتٍ عَدِيدَةً لِرَصْدِ الْأَجْرَامِ السَّمَاوِيَّةِ.
+Müslüman bilim insanları astronomiyle ilgilenmiş ve gök cisimlerini gözlemlemek için birçok araç geliştirmiştir.
+Burada konu:
+عِلْمُ الْفَلَكِ = astronomi
+oluyor.
+اهْتَمَّ بِـ = ... ile ilgilendi
+Buradaki بِـ harf-i cer.
+لِرَصْدِ → gözlemlemek için; لِـ amaç bildiriyor.
+Şimdilik 1 ile 2 arasında konu değişimi olduğunu fark ediyoruz.
+(3)
+وَمِنْ أَبْرَزِ هٰذِهِ الْأَدَوَاتِ الْإِسْطُرْلَابُ، الَّذِي اسْتُخْدِمَ فِي تَحْدِيدِ الْمَوَاقِيتِ وَاتِّجَاهِ الْقِبْلَةِ.
+Bu araçların en önemlilerinden biri, vakitlerin ve kıble yönünün belirlenmesinde kullanılan usturlaptır.
+Buradaki:
+هٰذِهِ الْأَدَوَاتِ = bu araçlar
+ifadesine çok dikkat.
+هٰذِهِ işaret ismidir.
+Hangi araçlar?
+İkinci cümledeki:
+أَدَوَاتٍ عَدِيدَةً
+Dolayısıyla 2 ile 3 arasında doğrudan bağ var.
+Cümle başındaki وَ da atıf kuruyor.
+Devam ediyor.
+(4)
+كَمَا أَعَدُّوا خَرَائِطَ لِلنُّجُومِ وَجَدَاوِلَ فَلَكِيَّةً أَسْهَمَتْ لَاحِقًا فِي تَطَوُّرِ عِلْمِ الْمِلَاحَةِ.
+Ayrıca yıldız haritaları ve daha sonra denizcilik biliminin gelişimine katkıda bulunan astronomik tablolar hazırladılar.
+Başta:
+كَمَا = ayrıca
+var.
+Fiildeki:
+أَعَدُّوا
+“onlar hazırladılar”
+Buradaki gizli/açık çoğul özne, önceki cümledeki:
+الْعُلَمَاءُ الْمُسْلِمُونَ
+ifadesine dönüyor.
+Astronomi devam ediyor.
+(5)
+وَلَمْ تَقْتَصِرْ إِنْجَازَاتُهُمْ عَلَى الرَّصْدِ، بَلْ وَضَعُوا نَمَاذِجَ وَحِسَابَاتٍ رِيَاضِيَّةً لِتَفْسِيرِ حَرَكَةِ الْأَجْرَامِ السَّمَاوِيَّةِ.
+Başarıları yalnızca gözlemle sınırlı kalmamış, aksine gök cisimlerinin hareketini açıklamak için modeller ve matematiksel hesaplamalar ortaya koymuşlardır.
+Başta:
+وَلَمْ
+var.
+وَ atıf sağlıyor.
+ـهُمْ:
+إِنْجَازَاتُهُمْ = onların başarıları
+zamiri önceki Müslüman bilim insanlarına dönüyor.
+Daha sonra:
+بَلْ = aksine / bununla sınırlı olmayıp
+geliyor.
+Bu çok güçlü bir bağlaçtır:
+لَمْ ... بَلْ ...
+“... ile sınırlı kalmadılar, aksine ...”
+تَقْتَصِرْ عَلَى → عَلَى harf-i cer.
+لِتَفْسِيرِ → açıklamak için; لِـ amaç bildiriyor.
+2-3-4-5 tamamen birbirine bağlı.
+Buna karşılık 1. cümle tıp ve ilaçlardan söz ediyor.
+❌ Anlatım burada kopuyor.
+Özellikle 2. cümleden itibaren:
+عِلْمُ الْفَلَكِ → هٰذِهِ الْأَدَوَاتُ → خَرَائِطُ النُّجُومِ → الرَّصْدُ وَالْأَجْرَامُ السَّمَاوِيَّةُ
+şeklinde kesintisiz bir astronomi zinciri var.
+Birinci cümleyi çıkardığımızda paragraf bütünüyle Müslüman bilim insanlarının astronomi alanındaki çalışmalarını anlatıyor.
+Dolayısıyla doğru cevap: A) I
+80. Soru
+(1)
+تُعَدُّ الرِّيَاضَاتُ الْجَمَاعِيَّةُ، مِثْلَ كُرَةِ الْقَدَمِ وَكُرَةِ السَّلَّةِ، وَسِيلَةً فَعَّالَةً لِتَعْزِيزِ رُوحِ الْعَمَلِ الْجَمَاعِيِّ.
+Futbol ve basketbol gibi takım sporları, takım çalışması ruhunu güçlendirmek için etkili bir araçtır.
+Ana konu:
+الرِّيَاضَاتُ الْجَمَاعِيَّةُ = takım sporları
+Virgüller:
+، مِثْلَ كُرَةِ الْقَدَمِ وَكُرَةِ السَّلَّةِ،
+arasında örnek veriliyor.
+لِتَعْزِيزِ ifadesindeki لِـ, amaç bildiriyor.
+(2)
+وَيَتَعَلَّمُ اللَّاعِبُونَ مِنْ خِلَالِهَا التَّنْسِيقَ وَالتَّفَاهُمَ مَعَ زُمَلَائِهِمْ لِتَحْقِيقِ هَدَفٍ مُشْتَرَكٍ.
+Oyuncular bunlar aracılığıyla ortak bir hedefe ulaşmak için takım arkadaşlarıyla koordinasyon ve uyum sağlamayı öğrenirler.
+Başında:
+وَ
+atıf harfi var.
+En önemli unsur:
+مِنْ خِلَالِهَا = bunlar aracılığıyla
+Buradaki:
+هَا
+zamiri:
+الرِّيَاضَاتُ الْجَمَاعِيَّةُ
+ifadesine dönüyor.
+مِنْ خِلَالِ yapısında مِنْ harf-i cerdir.
+مَعَ زُمَلَائِهِمْ → takım arkadaşlarıyla.
+لِتَحْقِيقِ → gerçekleştirmek için.
+İkinci cümle birincinin doğrudan devamıdır.
+(3)
+كَمَا تُسْهِمُ هٰذِهِ الرِّيَاضَاتُ فِي تَنْمِيَةِ الِانْضِبَاطِ وَاحْتِرَامِ الْقَوَاعِدِ وَتَحَمُّلِ الْمَسْؤُولِيَّةِ.
+Bu sporlar ayrıca disiplinin, kurallara saygının ve sorumluluk duygusunun gelişmesine katkıda bulunur.
+Başta:
+كَمَا = ayrıca
+var.
+Ardından:
+هٰذِهِ الرِّيَاضَاتُ = bu sporlar
+Buradaki هٰذِهِ işaret ismidir.
+Doğrudan:
+الرِّيَاضَاتُ الْجَمَاعِيَّةُ
+ifadesine dönüyor.
+Zincir devam ediyor.
+(4)
+وَتَتَطَلَّبُ الرِّيَاضَاتُ الْفَرْدِيَّةُ، مِثْلَ السِّبَاحَةِ وَالْعَدْوِ، جُهْدًا ذَاتِيًّا كَبِيرًا مِنْ مُمَارِسِيهَا.
+Yüzme ve koşu gibi bireysel sporlar, bunları yapan kişilerden büyük bireysel çaba gerektirir.
+Başında yine:
+وَ
+var.
+Ama özneye bakalım:
+الرِّيَاضَاتُ الْفَرْدِيَّةُ = bireysel sporlar
+İlk üç cümlede:
+الرِّيَاضَاتُ الْجَمَاعِيَّةُ = takım sporları
+anlatılıyordu.
+Burada konu bir anda takım sporlarından bireysel sporlara geçti.
+Virgüllerin arasında:
+مِثْلَ السِّبَاحَةِ وَالْعَدْوِ
+örnek verilmiş.
+❌ Fakat bütün bunlar cümlenin kendi iç yapısıdır; önceki paragrafla anlam bağı kurmamaktadır.
+Şüpheli cümlemiz bu.
+(5)
+وَبِالْإِضَافَةِ إِلَى فَوَائِدِهَا الِاجْتِمَاعِيَّةِ، تُسَاعِدُ الرِّيَاضَاتُ الْجَمَاعِيَّةُ عَلَى تَحْسِينِ اللِّيَاقَةِ الْبَدَنِيَّةِ وَالصِّحَّةِ الْعَامَّةِ.
+Sosyal yararlarının yanı sıra takım sporları fiziksel kondisyonun ve genel sağlığın geliştirilmesine de yardımcı olur.
+Başta:
+وَبِالْإِضَافَةِ إِلَى = ayrıca / ...nın yanı sıra
+var.
+Bu yapı önceki bilgilere başka bir yarar ekliyor.
+بِالْإِضَافَةِ إِلَى yapısında hem بِـ hem de إِلَى harf-i cer bulunmaktadır.
+Daha önemlisi:
+فَوَائِدِهَا
+“onun/bunların yararları”
+Buradaki هَا, takım sporlarına dönüyor.
+Sonra özne yeniden açıkça:
+الرِّيَاضَاتُ الْجَمَاعِيَّةُ
+olarak geliyor.
+Yani 1-2-3 ve 5. cümlelerin konusu açık biçimde aynı.
+Beşinci cümle dördüncü cümleyi değil, önceki takım sporları anlatımını devam ettiriyor.
+Bu nedenle dördüncü cümle araya girmiş ve anlatımı bozmuştur.
+Dördüncü cümleyi çıkardığımızda:
+takım sporları → takım çalışması → disiplin ve sorumluluk → sosyal faydalarının yanı sıra fiziksel faydaları
+şeklinde kusursuz bir anlatım elde ediyoruz.
+Dolayısıyla doğru cevap: D) IV

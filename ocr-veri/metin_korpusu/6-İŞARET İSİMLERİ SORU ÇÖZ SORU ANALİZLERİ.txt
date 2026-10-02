@@ -1,0 +1,102 @@
+İŞARET İSİMLERİ SORU ÇÖZ SORU ANALİZLERİ
+1. Soru
+رَأَى الْمُعَلِّمُ بِنْتَيْنِ فِي الْمَمَرِّ، فَقَالَ: أُحِبُّ ---- لِأَنَّهُمَا مُنْضَبِطَتَانِ.
+Türkçesi: Öğretmen koridorda iki kız gördü ve “---- seviyorum; çünkü ikisi de disiplinlidir.” dedi.
+İlk aşamada önceki cümlede بِنْتَيْنِ “iki kız” ifadesini görüyoruz. Devamındaki لِأَنَّهُمَا مُنْضَبِطَتَانِ ifadesi de iki kızdan söz edildiğini doğruluyor. Ayrıca boşluk أُحِبُّ “seviyorum” fiilinin mef‘ûlüdür. Dolayısıyla müennes, ikil ve mansup bir işaret ismi arıyoruz.
+Şimdi şıklara bakalım:
+A) ذَانِكَ — o iki
+Müzekker, ikil ve merfu biçimidir. Burada hem müennes hem de mansup bir yapı gerekiyor. Olmaz.
+B) ذٰلِكَ — o
+Müzekker tekildir. İki kızı karşılamaz. Olmaz.
+C) أُولٰئِكَ — onlar
+Çoğul kişiler için kullanılır. Burada ise tam olarak iki kişiden söz ediliyor. Olmaz.
+D) تَيْنِكَ — o iki
+Müennes ikilin mansup/mecrur biçimidir. Burada أُحِبُّ fiilinin mef‘ûlü olduğu için mansup kullanım uygundur. Olabilir.
+E) تِلْكَ — o
+Müennes fakat tekildir. İki kişiyi karşılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, تَيْنِكَ olur.
+
+2. Soru
+أَشَارَ الْمُعَلِّمُ إِلَى الطُّلَّابِ الْوَاقِفِينَ فِي آخِرِ السَّاحَةِ وَقَالَ: ---- مُهْمِلُونَ فِي وَاجِبَاتِهِمْ.
+Türkçesi: Öğretmen bahçenin sonunda duran öğrencilere işaret etti ve “---- ödevlerinde ihmalkârdırlar.” dedi.
+İlk aşamada الطُّلَّابِ الْوَاقِفِينَ ifadesini görüyoruz. Burada birden fazla insandan, yani akıllı müzekker çoğuldan söz ediliyor. Boşluğun devamındaki مُهْمِلُونَ da müzekker çoğuldur. Dolayısıyla çoğul kişiler için kullanılan işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) ذٰلِكَ — o
+Müzekker tekildir. Olmaz.
+B) تِلْكَ — o
+Müennes tekildir. Olmaz.
+C) ذَانِكَ — o iki
+Müzekker ikildir. Burada ikiden fazla öğrenci vardır. Olmaz.
+D) تَانِكَ — o iki
+Müennes ikildir. Olmaz.
+E) أُولٰئِكَ — onlar
+Akıllı çoğullar için kullanılır. أُولٰئِكَ مُهْمِلُونَ “Onlar ihmalkârdırlar.” anlam ve gramer bakımından uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, أُولٰئِكَ olur.
+
+3. Soru
+فِي الْمَكْتَبَةِ كُتُبٌ كَثِيرَةٌ، فَقَالَ الْمُعَلِّمُ: ---- الْكُتُبُ مُفِيدَةٌ لِلطُّلَّابِ.
+Türkçesi: Kütüphanede çok sayıda kitap vardır. Öğretmen, “---- kitaplar öğrenciler için faydalıdır.” dedi.
+İlk aşamada boşluğun devamında الْكُتُبُ “kitaplar” kelimesini görüyoruz. كُتُبٌ akılsız varlık bildiren çoğuldur. Arapçada akılsız çoğullar müennes tekil kabul edilir. Nitekim devamındaki مُفِيدَةٌ sıfatının müennes tekil gelmesi de bunu gösteriyor. Dolayısıyla müennes tekil işaret ismini arıyoruz.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker tekildir. Akılsız çoğul olan الْكُتُبُ için uygun değildir. Olmaz.
+B) هٰذِهِ — bu
+Müennes tekildir. Akılsız çoğullar müennes tekil kabul edildiği için هٰذِهِ الْكُتُبُ doğru yapıdır. Olabilir.
+C) هٰذَانِ — bu iki
+Müzekker ikildir. Olmaz.
+D) هَاتَانِ — bu iki
+Müennes ikildir. Burada çoğul kitaplardan söz ediliyor; akılsız çoğul için ikil değil müennes tekil işaret ismi kullanılır. Olmaz.
+E) هٰؤُلَاءِ — bunlar
+Çoğunlukla akıllı çoğullar için kullanılır. الْكُتُبُ akılsız çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, هٰذِهِ olur.
+4. Soru
+عَلَى الطَّاوِلَةِ أَقْلَامٌ جَدِيدَةٌ، فَقَالَتِ الْمُعَلِّمَةُ: ---- الْأَقْلَامُ جَيِّدَةٌ لِلْكِتَابَةِ.
+Türkçesi: Masanın üzerinde yeni kalemler vardır. Öğretmen, “---- kalemler yazmak için iyidir.” dedi.
+İlk aşamada boşluğun devamında الْأَقْلَامُ “kalemler” kelimesini görüyoruz. Bu da akılsız varlık bildiren çoğuldur. Devamındaki جَيِّدَةٌ sıfatının müennes tekil olması da aynı kuralı gösteriyor. Dolayısıyla işaret isminin de müennes tekil olması gerekir.
+Şimdi şıklara bakalım:
+A) هٰذَا — bu
+Müzekker tekildir. Olmaz.
+B) هٰؤُلَاءِ — bunlar
+Akıllı çoğullar için kullanılır. Kalemler akılsız çoğuldur. Olmaz.
+C) هٰذَانِ — bu iki
+Müzekker ikildir. Olmaz.
+D) هَاتَانِ — bu iki
+Müennes ikildir. Burada ikil değil çoğul vardır. Olmaz.
+E) هٰذِهِ — bu
+Müennes tekildir. Akılsız çoğul olan الْأَقْلَامُ ile doğru kullanımdır: هٰذِهِ الْأَقْلَامُ. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, هٰذِهِ olur.
+
+
+5. Soru
+فِي آخِرِ الْفَصْلِ مَقَاعِدُ قَدِيمَةٌ، فَقَالَ الْمُدَرِّسُ: ---- الْمَقَاعِدُ غَيْرُ نَظِيفَةٍ.
+Türkçesi: Sınıfın sonunda eski sıralar vardır. Öğretmen, “---- sıralar temiz değildir.” dedi.
+İlk aşamada boşluğun devamında الْمَقَاعِدُ “sıralar/oturaklar” kelimesini görüyoruz. Bu kelime akılsız çoğuldur. Devamındaki غَيْرُ نَظِيفَةٍ ifadesinde de sıfatın müennes tekil geldiğini görüyoruz. Bu nedenle müennes tekil işaret ismi arıyoruz.
+Şimdi şıklara bakalım:
+A) ذٰلِكَ — o
+Müzekker tekildir. Akılsız çoğul olan الْمَقَاعِدُ ile uygun değildir. Olmaz.
+B) تِلْكَ — o
+Müennes tekildir. Akılsız çoğul olan الْمَقَاعِدُ ile doğru kullanılır: تِلْكَ الْمَقَاعِدُ. Olabilir.
+C) ذَانِكَ — o iki
+Müzekker ikildir. Olmaz.
+D) تَانِكَ — o iki
+Müennes ikildir. Burada çoğul isim vardır. Olmaz.
+E) أُولٰئِكَ — onlar
+Akıllı çoğullar için kullanılır. الْمَقَاعِدُ akılsız çoğuldur. Olmaz.
+Dolayısıyla doğru cevap B şıkkı, تِلْكَ olur.
+
+6. Soru
+بِجَانِبِ الْمَلْعَبِ سَيَّارَاتٌ مُتَوَقِّفَةٌ، فَقَالَ الْحَارِسُ: ---- السَّيَّارَاتُ مُغْلَقَةٌ.
+Türkçesi: Sahanın yanında park etmiş arabalar vardır. Görevli, “---- arabalar kapalıdır.” dedi.
+İlk aşamada boşluğun devamında السَّيَّارَاتُ “arabalar” kelimesini görüyoruz. Arabalar akılsız varlıklardır ve kelime çoğuldur. Arapçada akılsız çoğullar müennes tekil kabul edilir. Nitekim hem مُتَوَقِّفَةٌ hem de مُغْلَقَةٌ sıfatlarının müennes tekil olması da bunu gösteriyor.
+Şimdi şıklara bakalım:
+A) ذٰلِكَ — o
+Müzekker tekildir. Olmaz.
+B) تَانِكَ — o iki
+Müennes ikildir. Burada çoğul arabalar vardır. Olmaz.
+C) ذَانِكَ — o iki
+Müzekker ikildir. Olmaz.
+D) تِلْكَ — o
+Müennes tekildir. Akılsız çoğul olan السَّيَّارَاتُ ile doğru kullanımdır: تِلْكَ السَّيَّارَاتُ. Olabilir.
+E) أُولٰئِكَ — onlar
+Akıllı çoğullar için kullanılır. Arabalar akılsız çoğuldur. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, تِلْكَ olur.

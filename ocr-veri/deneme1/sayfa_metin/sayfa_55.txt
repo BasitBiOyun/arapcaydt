@@ -1,0 +1,28 @@
+YDT Arapça Deneme Sınavı – 1
+2. Aşama — Analiz
+Cümlenin fiili  تَت ََطل َُّب(gerektirir), fâiliُ  ُموَاجَهَة(mücadele), mef‘ûlü  ت َْنسِيقًا(koordinasyon)'dır. ُ... يَت ََجاوَز cümlesi nekre olan  ت َْنسِيقًاkelimesinin sıfatıdır (cümle hâlinde sıfat): “... aşan bir koordinasyon”.
+A şıkkı bütün unsurları doğru sırayla ve doğru ilişkilerle verir. B: Bir gereklilik yerine “sağlanamamaktadır”
+diyerek bir tespit yapar. C: Yapıyı korur, ama ُ يَت ََجاوَز(aşan) fiilini “gözeten” diye çevirerek anlamı tersine
+çevirir; en güçlü çeldirici budur. D: “Uluslararası koordinasyon” yerine her ülkenin kendi tedbirlerini koyar. E: Cümlede olmayan bir sebep-sonuç ilişkisi kurar.
+Doğru cevabımız A.
+67. Soru
+1. Aşama — Soru
+ُِكل ََّما ازْدَادَ اعْت َِمادُ الطُّلَّابِ عَلَى مُحَرِكَاتِ الْب َْحثِ فِي الْحُصُولِ عَلَى الْمَعْلُومَاتِ، ت ََراجَع َْت ق ُْدرَت ُُهمْ عَلَى الِاحْتِفَاظ .ب َِها فِي الذَّاكِرَة ِِلفَت ََراتٍ طَوِيل ٍَة
+Çözüm için özellikle şu ifadelere bakacağız:
+ ... = ُكل ََّما ازْدَاد َ… ت ََراجَع َْتarttıkça ... azalır ... = اعْت َِماد ُ… َعلَىe dayanma, bağımlılık ِ = الِاحْتِفَاظُ ب َِها فِي الذَّاكِرَةonları hafızada tutma
+2. Aşama — Analiz
+ ُكل ََّماyapısı iki durum arasında orantı kurar; burada ters orantı söz konusudur: biri arttıkça diğeri azalır. Artan
+“arama motorlarına bağımlılık”, azalan ise “bilgileri uzun süre hafızada tutma yeteneği”dir. Mazi fiiller
+ (ازْدَادَ، ت ََراجَع َْت)genel bir hüküm bildirdiği için Türkçede geniş / şimdiki zamanla çevrilir.
+C şıkkı orantıyı ve yönü doğru verir. A: Orantı yapısını korur, ama “unutma eğilimi azalır” demek “hafızada tutma yeteneği artar” demektir; yön ters çevrilmiştir. B: Sebep ile sonucun yerini değiştirir. D: “arttıkça ... azalır” orantısı yerine iki öğrenci grubu arasında bir karşılaştırma yapar. E: Varsayım (şart) cümlesidir; cümledeki orantıyı ve süreklilik anlamını vermez.
+Doğru cevabımız C.
+68. Soru
+1. Aşama — Soru
+َْلا ت َْكمُنُ قِيمَةُ الْمَخْطُوطَاتِ الْق َِديمَةِ فِي ن ُْدرَت َِها ف ََحسْبُ، ب َْل فِي مَا ت َْحمِلُه ُِمنْ مَعَارِفَ ت َْكشِفُ جَوَان َِب مَجْهُولَة ًِمن .ِتَارِيخِ الْحَضَارَات
+Çözüm için özellikle şu ifadelere bakacağız:
+…  = َلا ت َْكمُنُ … ف ََحسْبُ، ب َْلyalnızca ...de değil, ...de de yatmaktadır َ = َما ت َْحمِلُه ُِمنْ مَعَارِفtaşıdıkları / barındırdıkları bilgiler ً = ت َْكشِفُ جَوَان َِب مَجْهُولَةbilinmeyen yönleri açığa çıkaran
+2. Aşama — Analiz
+ ... َلا … ف ََحسْبُ، ب َْلyapısı “yalnızca ... değil, aynı zamanda ...” anlamında ekleme bildirir. İki unsur da (nadirlik ve bilgi içeriği) değerin kaynağıdır; ikincisi vurgulanır. َ َما ت َْحمِلُه ُِمنْ مَعَارِفifadesinde ْ ِمنbeyan içindir: “taşıdığı bilgiler”. ُ ... ت َْكشِفcümlesi nekre olan َ َمعَارِفkelimesinin sıfatıdır.
+D şıkkı ekleme yapısını ve bütün unsurları korur. A: Ağırlığı nadirliğe verir; cümledeki vurguyu ters çevirir. B: “yalnızca”nın yerini değiştirir: “nadirlikte değil, yalnızca bilgilerde” diyerek nadirliği değer kaynağı olmaktan çıkarır; en güçlü çeldirici budur. C: “tamamen açığa çıkarılmıştır” gibi cümlede olmayan bir sonuç ekler. E: “en değerli kaynaklar arasında” diyerek bir üstünlük hükmü ekler ve “bilinmeyen yönleri açığa çıkarma” unsurunu düşürür.
+55
+

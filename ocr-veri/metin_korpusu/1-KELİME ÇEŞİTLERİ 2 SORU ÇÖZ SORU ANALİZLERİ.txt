@@ -1,0 +1,82 @@
+KELİME ÇEŞİTLERİ 2 SORU ÇÖZ SORU ANALİZLERİ
+1.Soru
+كَتَبَ ---- الدَّرْسَ فِي الْبَيْتِ.
+Türkçesi: ---- dersi evde yazdı.
+İlk aşamada كَتَبَ “yazdı” fiiline bakalım. Burada “Kim yazdı?” sorusuna cevap verecek, fiille ve cümlenin anlamıyla uyumlu bir özne arıyoruz.
+Şimdi şıklara bakalım:
+A) بِنْتٌ — kız
+Bir isimdir ve özne olabilir; ancak بِنْتٌ müennestir. Fiilin كَتَبَتْ olması gerekirdi. Olmaz.
+B) يَكْتُبُ — yazıyor
+Bir fiildir. Burada كَتَبَ fiilinin öznesi olamaz. Olmaz.
+C) اَلطَّالِبُ — öğrenci
+Bir isimdir, müzekkerdir ve كَتَبَ fiilinin öznesi olabilir. “Öğrenci dersi evde yazdı.” anlamı da uygundur. Olabilir.
+D) مِنْ — -den, -dan
+Bir harf-i cerdir. Özne olamaz. Olmaz.
+E) اَلْمَدْرَسَةُ — okul
+Bir isimdir; ancak “Okul dersi evde yazdı.” anlamı uygun değildir. Olmaz.
+Dolayısıyla doğru cevap C şıkkı, اَلطَّالِبُ olur.
+2. Soru
+رَأَيْتُ ---- فِي الْحَقِيبَةِ.
+Türkçesi: Çantada ---- gördüm.
+İlk aşamada رَأَيْتُ “gördüm” fiiline bakalım. Burada “Neyi gördüm?” sorusuna cevap verecek bir nesne arıyoruz. Nesnenin mansup olması gerekir.
+Şimdi şıklara bakalım:
+A) كِتَابًا — bir kitap
+Bir isimdir ve mansuptur. رَأَيْتُ fiilinin nesnesi olabilir. “Çantada bir kitap gördüm.” anlamı da uygundur. Olabilir.
+B) ذَهَبْتُ — gittim
+Bir fiildir. Burada nesne olamaz dolayısıyla. Olmaz.
+C) قَلَمٌ — kalem
+Bir isimdir fakat merfudur. Nesne olması için قَلَمًا olması gerekirdi. Olmaz.
+D) بِـ — ile / -le
+Bir harf-i cerdir. Harf olduğu için nesne olamaz dolayısıyla. Olmaz.
+E) الْوَلَدِ — çocuk
+Bir isimdir fakat mecrur durumdadır. Burada nesne olması için mansup olması gerekirdi. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, كِتَابًا olur.
+3. Soru
+ذَهَبْنَا إِلَى ---- فِي الصَّيْفِ.
+Türkçesi: Yazın ---- gittik.
+İlk aşamada إِلَى harf-i cerine bakalım. Boşluğa إِلَى ile kullanılabilecek, mecrur durumda olan ve gidilen yeri anlam bakımından uygun şekilde ifade eden bir isim gelmelidir.
+Şimdi şıklara bakalım:
+A) اَلْمُعَلِّمُ — öğretmen
+Bir isimdir fakat merfudur. إِلَى sonrasında mecrur olması gerekir. Ayrıca burada gidilen yer anlamına uygun değildir. Olmaz.
+B) بَيْتٌ — ev
+Bir isimdir ve anlam bakımından gidilen bir yer olabilir; ancak merfudur. إِلَى sonrasında mecrur olması gerekirdi. Olmaz.
+C) يَفْتَحُ — açıyor
+Bir fiildir. إِلَى sonrasında burada uygun değildir. Olmaz.
+D) قَرْيَتِنَا — köyümüz
+Bir isimdir ve إِلَى ile kullanıma uygundur. “Yazın köyümüze gittik.” anlamı da doğru şekilde tamamlanır. Olabilir.
+E) مُحَمَّدٌ — Muhammed
+Bir isimdir fakat merfudur. Ayrıca burada gidilen yer anlamını karşılamaz. Olmaz.
+Dolayısıyla doğru cevap D şıkkı, قَرْيَتِنَا olur.
+
+4. Soru
+---- طَوِيلٌ وَجَمِيلٌ.
+Türkçesi: ---- uzun ve güzeldir.
+İlk aşamada طَوِيلٌ وَجَمِيلٌ “uzun ve güzel” ifadelerine bakalım. Her ikisi de müzekker biçimdedir. Buna uygun müzekker bir isim  yani özne arıyoruz.
+Şimdi şıklara bakalım:
+A) تَجْرِي — akıyor / koşuyor
+Bir fiildir. Buradaki isim cümlesine uygun değildir. Olmaz.
+B) مِنْ — -den, -dan
+Bir harf-i cerdir. Burada uygun değildir. Olmaz.
+C) اَلْبِنْتُ — kız
+Bir isimdir fakat müennestir. Devamının طَوِيلَةٌ وَجَمِيلَةٌ olması gerekirdi. Olmaz.
+D) اَلشَّجَرَةُ — ağaç
+Bir isimdir fakat Arapçada müennestir. Yine طَوِيلَةٌ وَجَمِيلَةٌ olması gerekirdi. Olmaz.
+E) النَّهْرُ — nehir
+Bir isimdir ve müzekkerdir. طَوِيلٌ وَجَمِيلٌ ile uyumludur. “Nehir uzun ve güzeldir.” Dediğimiz zaman özne olarak anlamı da uygundur. Olabilir.
+Dolayısıyla doğru cevap E şıkkı, النَّهْرُ olur.
+5. Soru
+وَقَفَ ---- أَمَامَ الْفَصْلِ.
+Türkçesi: ---- sınıfın önünde durdu.
+İlk aşamada وَقَفَ “durdu” fiiline bakalım. Burada “Kim durdu?” sorusuna cevap verecek bir özne arıyoruz. Özne merfu olmalıdır.
+Şimdi şıklara bakalım:
+A) طَالِبَانِ — iki öğrenci
+İkil bir isimdir ve merfu biçimdedir. Fiilden sonra özne olarak gelebilir. “İki öğrenci sınıfın önünde durdu.” anlamı da uygundur. Olabilir.
+B) طَالِبَيْنِ — iki öğrenci
+İkil isimdir fakat mansup/mecrur biçimdedir. Özne olması için طَالِبَانِ olması gerekir. Olmaz.
+C) نَجَحَ — başarılı oldu
+Bir fiildir. Burada وَقَفَ fiilinin öznesi olamaz. Olmaz.
+D) طَالِبَاتُ — kız öğrenciler
+Bir isimdir; ancak müennes çoğuldur. Burada وَقَفَ fiiliyle uyumlu değildir. Olmaz.
+E) يَقِفُ — duruyor
+Bir fiildir. Burada özne görevini karşılamaz. Olmaz.
+Dolayısıyla doğru cevap A şıkkı, طَالِبَانِ olur.
