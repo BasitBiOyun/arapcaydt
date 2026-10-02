@@ -10,6 +10,7 @@ import { logged } from '../../server/errorLog.js';
  *   GET /api/admin/monitor?feedback=<id>    one report's teşhis record
  *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks, a 10-minute picture link; no audio)
  *   GET /api/admin/monitor?project=<id>&picture=1   that question's picture itself
+ *   GET /api/admin/monitor?list=1           question ids with a picture (for measuring the reader)
  */
 export function tokenMatches(header: unknown, token: string | undefined): boolean {
   if (!token || token.length < 24 || typeof header !== 'string' || !header.startsWith('Bearer ')) return false;
@@ -34,6 +35,12 @@ async function handler(req: any, res: any) {
     const { data, error } = await db.from('feedback').select('id,diagnostics').eq('id', id(req.query.feedback)).maybeSingle();
     if (error) return res.status(500).json({ error: error.message });
     return data ? res.status(200).json(data.diagnostics ?? null) : res.status(404).json({ error: 'Not found' });
+  }
+  if (req.query?.list) {
+    const { data, error } = await db.from('projects').select('id,updated_at,category:data->>category,vision:data->videoConfig->visionReading->>key')
+      .not('data->imageUrl', 'is', null).order('updated_at', { ascending: false }).limit(1000);
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json((data || []).map((p: any) => ({ id: p.id, updated_at: p.updated_at, category: p.category, vision: !!p.vision })));
   }
   if (req.query?.project) {
     const { data, error } = await db.from('projects').select('id,owner_id,updated_at,image:data->imageUrl,title:data->>title,category:data->>category,solutionText:data->>solutionText,'
