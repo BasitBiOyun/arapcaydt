@@ -246,7 +246,7 @@ test('saving a key verifies it with Google, stores it encrypted and never return
   assert.equal(world.keys[0].last4, 'TTTT');
   assert.ok(!world.keys[0].ciphertext.includes(TEACHER_KEY));
   assert.ok(!JSON.stringify(saved.payload).includes(TEACHER_KEY));
-  assert.deepEqual(saved.payload.today.shared, { used: 0, limit: 25, exhausted: false, ttsUsedAll: 0, ttsLimit: 30, ttsExhausted: false });
+  assert.deepEqual(saved.payload.today.shared, { used: 0, limit: 25, exhausted: false, ttsUsedAll: 0, ttsLimit: 30, ttsExhausted: false, topExhausted: false });
   const removed = await call(key, 'DELETE');
   assert.equal(removed.payload.key, null);
 });

@@ -93,12 +93,14 @@ async function handler(req: any, res: any) {
     key: row ? { last4: row.last4, status: row.status, updatedAt: row.updated_at } : null,
     today: {
       tracking: today.tracking,
-      tts: { used: today.own.ttsUsed, limit: GEMINI_TTS_MODELS.length * FREE_TTS_PER_MODEL, exhaustedModels: today.own.ttsExhausted.length, models: GEMINI_TTS_MODELS.length },
+      tts: { used: today.own.ttsUsed, limit: GEMINI_TTS_MODELS.length * FREE_TTS_PER_MODEL, exhaustedModels: today.own.ttsExhausted.length, models: GEMINI_TTS_MODELS.length,
+        topExhausted: today.own.ttsExhausted.includes(GEMINI_TTS_MODELS[0]) },
       transcribe: { used: today.own.transcribeUsed, limit: FREE_TRANSCRIBE_PER_DAY, exhausted: today.own.transcribeExhausted },
       shared: {
         used: today.shared.transcribeUsed, limit: capped ? today.limits.sharedTranscribe : null, exhausted: today.shared.transcribeExhausted,
         ttsUsedAll: today.shared.ttsUsedAll, ttsLimit: GEMINI_TTS_MODELS.length * FREE_TTS_PER_MODEL,
         ttsExhausted: today.shared.ttsExhausted.length >= GEMINI_TTS_MODELS.length,
+        topExhausted: today.shared.ttsExhausted.includes(GEMINI_TTS_MODELS[0]),
       },
       elevenlabs: { used: today.elevenlabsAlignUsed, limit: capped ? today.limits.elevenlabsAlign : null },
     },

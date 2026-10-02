@@ -18,6 +18,14 @@ export const NEWS: NewsEntry[] = [
           { text: '**Yedek modele geçmeden önce sorulur:** En üst düzey ses modelinin günlük kullanım hakkı bitince stüdyo artık sessizce yedek modele geçmez. “Yedek modelle seslendir” ya da “Yarını bekleyeceğim” diye sorar. Yedek model araya olmayan cümle katabilir, olumsuzu olumlu okuyabilir, Türkçeyi yanlış telaffuz edebilir.', help: 'seslendirme' },
           { text: 'Yedek modelle üretilen sesin altında bunu söyleyen bir not çıkar; sesi dinleyip hatalı cümleyi **Sesi düzelt** ile yenileyin.', help: 'seslendirme' },
           { text: 'Kendi Google anahtarı olan hocalarda, kendi anahtarındaki en üst düzey modelin hakkı bitince önce stüdyonun anahtarındaki en üst düzey model denenir (önceden hemen yedek modele geçiliyordu).', help: 'seslendirme' },
+          { text: 'Ses adımında en üst düzey modelin bugünkü hakkı bittiyse sağdaki kullanım satırı bunu açıkça yazar (kalan haklar yedek model içindir).', help: 'seslendirme' },
+          { text: 'Açık kalmış eski bir sayfada “En üst düzey modelin hakkı bitti” yazıp seçili cümle seslendirilmiyorsa sayfayı yenileyin; yenileyince soru sorulur.' },
+        ],
+      },
+      {
+        title: 'Düzeltmeler',
+        items: [
+          { text: 'Ses adımında **Cümle listesi** açıkken soru küçücük kalmıyor: liste ekran yüksekliğine göre kısalıyor, soru büyük kalıyor (kaydırarak bütün cümleler görülür).', help: 'seslendirme' },
         ],
       },
     ],
