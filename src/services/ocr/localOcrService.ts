@@ -6,6 +6,9 @@ import { missingMarkerCrops } from './markerRecovery';
 import { detectYdtQuestionRegions } from './ydtQuestionDetector';
 import { readWithVision } from './cloudOcr';
 
+const OCR_MODEL_PATH = '/tessdata';
+const OCR_MODEL_CACHE = 'tessdata-2026-10-02';
+
 class LocalOcrService {
   private static instance: LocalOcrService;
   private worker: Worker | null = null;
@@ -56,6 +59,11 @@ class LocalOcrService {
       });
 
       const worker = await createWorker(['ara', 'tur', 'eng'], 1, {
+        // Our own Arabic model (trained on teachers' question pictures) is served with the site;
+        // Turkish and English are the stock ones. A new cache name keeps browsers from reusing
+        // the stock Arabic model they cached before.
+        langPath: OCR_MODEL_PATH,
+        cachePath: OCR_MODEL_CACHE,
         logger: (m) => {
           const onProgress = this.progressListener;
           if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract') {

@@ -29,6 +29,13 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
+        title: 'Görsel okuma',
+        items: [
+          { text: 'Stüdyonun kendi görsel okuyucusu Arapçayı artık hocaların soru görselleriyle eğitilmiş kendi modeliyle okuyor. Denemelerde hatasız okunan satırlar 177’de 110’dan 131’e çıktı.', help: 'isaretler' },
+          { text: 'Okuyucu ilk açılışta yeni modeli bir kez indirir; bu yüzden ilk **İşaretleri hazırla** biraz uzun sürebilir.', help: 'isaretler' },
+        ],
+      },
+      {
         title: 'Düzeltmeler',
         items: [
           { text: 'Ses adımında **Cümle listesi** açıkken soru küçücük kalmıyor: liste ekran yüksekliğine göre kısalıyor, soru büyük kalıyor (kaydırarak bütün cümleler görülür).', help: 'seslendirme' },
