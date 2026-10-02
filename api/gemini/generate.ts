@@ -270,8 +270,10 @@ async function handler(req: any, res: any) {
   if (!allowLower && GEMINI_MODELS.length > 1) {
     // Only the best model was tried: the teacher decides whether the backups may voice it.
     const daily = tries.length === 0 || (attempts.length > 0 && attempts.every(a => a.daily));
+    // A page opened before this rule cannot ask; its teacher is told to reload instead.
+    const reload = req.body?.canAsk === true ? '' : ' Yedek modelle seslendirebilmek için sayfayı yenileyin (F5).';
     return res.status(409).json({
-      error: daily ? 'En üst düzey modelin bugünkü kullanım hakkı bitti.' : 'En üst düzey model şu anda yanıt vermiyor.',
+      error: (daily ? 'En üst düzey modelin bugünkü kullanım hakkı bitti.' : 'En üst düzey model şu anda yanıt vermiyor.') + reload,
       code: 'TOP_MODEL_UNAVAILABLE', reason: daily ? 'daily' : 'busy', fallbackAllowed: false, attempts,
     });
   }

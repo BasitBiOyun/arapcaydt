@@ -7,10 +7,10 @@ export interface TeacherKeyStatus {
   today: {
     tracking: boolean;
     /** limit: Google's free daily allowance for the teacher's own key (3 models × 10 voices, 25 timings). */
-    tts: { used: number; limit?: number; exhaustedModels: number; models: number };
+    tts: { used: number; limit?: number; exhaustedModels: number; models: number; topExhausted?: boolean };
     transcribe: { used: number; limit?: number; exhausted: boolean };
     /** Shared (studio) key: the teacher's timings with their cap (null for admins), and voices used by everyone today. */
-    shared: { used: number; limit: number | null; exhausted: boolean; ttsUsedAll?: number; ttsLimit?: number; ttsExhausted?: boolean };
+    shared: { used: number; limit: number | null; exhausted: boolean; ttsUsedAll?: number; ttsLimit?: number; ttsExhausted?: boolean; topExhausted?: boolean };
     elevenlabs: { used: number; limit: number | null };
   };
 }
@@ -46,6 +46,16 @@ export function quotaResetClock(now = new Date()): string {
 
 /** One plain sentence for the audio step: which capacity the next narration will use and how much is left today. */
 export function capacityLine(status: TeacherKeyStatus | null): string | null {
+  const line = usageLine(status);
+  if (!line || !status) return line;
+  // The counts include the backup models; say plainly when the best one is used up for today.
+  const ownTop = status.key && status.key.status !== 'invalid' ? status.today.tts.topExhausted : true;
+  return ownTop && status.today.shared.topExhausted
+    ? `${line} En üst düzey modelin bugünkü kullanım hakkı bitti; kalan haklar yedek model içindir ve kullanmadan önce size sorulur.`
+    : line;
+}
+
+function usageLine(status: TeacherKeyStatus | null): string | null {
   // An unexpected answer from the key service leaves the line out rather than breaking the editor.
   if (!status?.today?.tts || !status.today.shared || !status.today.transcribe) return null;
   const { key, today } = status;

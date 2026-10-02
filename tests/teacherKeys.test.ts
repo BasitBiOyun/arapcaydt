@@ -145,6 +145,12 @@ test('the audio step tells the teacher in one sentence which capacity is used', 
     shared: { ...base.today.shared, ttsUsedAll: 7, ttsLimit: 30 } } };
   assert.match(capacityLine(counted)!, /12 \/ 30 ses · 8 \/ 25 kelime zamanı/);
   assert.match(capacityLine({ ...counted, key: null })!, /herkes için toplam 7 \/ 30 ses.*günde 30 ses ve 25 kelime zamanı/);
+  // Only when the best model is used up on every key the teacher can use.
+  const ownTop = { ...counted, today: { ...counted.today, tts: { ...counted.today.tts, topExhausted: true } } };
+  assert.doesNotMatch(capacityLine(ownTop)!, /En üst düzey/);
+  const bothTop = { ...ownTop, today: { ...ownTop.today, shared: { ...ownTop.today.shared, topExhausted: true } } };
+  assert.match(capacityLine(bothTop)!, /En üst düzey modelin bugünkü kullanım hakkı bitti/);
+  assert.match(capacityLine({ ...bothTop, key: null })!, /En üst düzey modelin/);
 });
 
 test('teacher key migration applies on the membership schema alone, is re-runnable and hides keys from browsers', async () => {

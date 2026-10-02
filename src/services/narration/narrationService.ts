@@ -197,7 +197,7 @@ class NarrationService {
         method: 'POST',
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         headers: { 'Content-Type': 'application/json', ...await authHeaders() },
-        body: JSON.stringify({ projectId: req.projectId, text: req.text, ...(allowLower ? { allowLower: true } : {}) }),
+        body: JSON.stringify({ projectId: req.projectId, text: req.text, canAsk: true, ...(allowLower ? { allowLower: true } : {}) }),
       });
     } catch (error) {
       throw new VoiceUnavailableError(timedOut(error)
