@@ -46,7 +46,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     ],
     tips: [
       'Sorunun adını, koleksiyonunu (deneme adı) ve yılını sağdaki **Proje bilgileri** bölümünden değiştirebilirsiniz.',
-      'Görseli yanlış yüklediyseniz **Görseli Değiştir** ile yenisini seçebilirsiniz.',
+      'Görseli yanlış yüklediyseniz **1 Soru** adımında **Görseli Değiştir** ile yenisini seçebilirsiniz. Ses daha önce hazırlandıysa yeniden seslendirmeniz gerekmez: ses ve çözüm metni korunur, işaretler yeni görsele göre kendiliğinden yeniden hazırlanır. Eski görselde elle yaptığınız işaret düzeltmeleri silinir; gerekirse yeni görselde tekrar yapın.',
     ],
   },
   {

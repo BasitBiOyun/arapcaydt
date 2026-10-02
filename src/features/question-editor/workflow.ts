@@ -60,3 +60,14 @@ export function clock(t: number): string {
   const m = Math.floor(tenths / 600), s = Math.floor((tenths % 600) / 10);
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')},${tenths % 10}`;
 }
+
+/**
+ * What a new picture keeps and what it throws away, said plainly for the confirm dialog.
+ * `losses` is the drawn work on the old picture ("" when none); with an approved voice the
+ * voice and text stay and the marks are prepared again on the new picture, no new audio.
+ */
+export function imageChangeNote(losses: string, keepsVoice: boolean): string {
+  const lost = losses ? `Yeni görselle birlikte ${losses} ${losses.endsWith('işaretler') ? 'de' : 'da'} silinir; elle yaptığınız düzeltmeler varsa yeni görselde yeniden yapmanız gerekir.` : '';
+  if (!keepsVoice) return lost ? `${lost} Bu işlem geri alınamaz.` : '';
+  return `${lost ? `${lost} ` : ''}Ses ve çözüm metni korunur, yeniden seslendirme gerekmez: işaretler yeni görsele göre kendiliğinden yeniden hazırlanır.`;
+}

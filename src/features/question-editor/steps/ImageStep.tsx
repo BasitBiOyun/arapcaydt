@@ -9,10 +9,12 @@ export interface ImageStepProps {
   replaceImageInputRef: React.RefObject<HTMLInputElement | null>;
   handleImageFile: (file: File) => void;
   handleDeleteImage: () => void;
+  /** An approved voice is kept when the picture changes; only the marks are prepared again. */
+  keepsVoice?: boolean;
 }
 
 /** STEP 1: Soru Görseli */
-export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef, handleImageFile, handleDeleteImage }: ImageStepProps) {
+export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef, handleImageFile, handleDeleteImage, keepsVoice }: ImageStepProps) {
   return (
     <div hidden={step!==0} className="space-y-2.5">
       <h2 className="text-sm font-bold text-[#1C1917] tracking-tight">
@@ -64,7 +66,13 @@ export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef
             </button>
           </div>
         </div>
-      ) : (
+      ) : null}
+      {hasImage && keepsVoice && (
+        <p className="text-sm text-[#55544F]">
+          Görsel yanlışsa <strong>Görseli Değiştir</strong> ile doğrusunu yükleyin: ses ve çözüm metni korunur, işaretler yeni görsele göre yeniden hazırlanır.
+        </p>
+      )}
+      {!hasImage && (
         <label
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {

@@ -1,4 +1,4 @@
-import { steps, resumeStep, checkNarration } from '../features/question-editor/workflow';
+import { steps, resumeStep, checkNarration, imageChangeNote } from '../features/question-editor/workflow';
 import { VoiceSample } from '../features/question-editor/VoiceSample';
 import { type ReadinessAction } from '../features/question-editor/readiness';
 import { applyPipelineResult, narrationFromTts, timeGeneratedNarration, withWordTimings } from '../features/question-editor/projectUpdates';
@@ -36,6 +36,10 @@ import { toast } from 'sonner';
 import { useConfirm } from '../components/common/ConfirmDialog';
 import { useAuth } from '../features/auth/AuthContext';
 import { CollectionInput } from '../features/projects/CollectionInput';
+
+function voiceApproved(project: QuestionProject) {
+  return Boolean(project.audioApproved || project.narrationSource?.isApproved || project.audioNarration?.isApproved);
+}
 
 function hasAnimationPlan(project: QuestionProject | null | undefined) {
   return Boolean(
@@ -273,11 +277,19 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       return;
     }
     const losses = currentProject.imageUrl ? imageLosses() : '';
-    if (losses && !await confirm({ title: 'Görsel değiştirilsin mi?', message: `Yeni görselle birlikte ${losses} ${losses.endsWith('işaretler') ? 'de' : 'da'} silinir. Bu işlem geri alınamaz.`, confirmLabel: 'Görseli değiştir', danger: true })) return;
+    // A wrong picture under a right voice: the voice and text stay, only the marks are prepared again.
+    const keepsVoice = Boolean(currentProject.imageUrl) && voiceApproved(currentProject) && Boolean(currentProject.solutionText?.trim());
+    if (losses && !await confirm({ title: 'Görsel değiştirilsin mi?', message: imageChangeNote(losses, keepsVoice), confirmLabel: 'Görseli değiştir', danger: !keepsVoice })) return;
     try {
       setImage(await readCompressedImage(file), file.name);
     } catch {
       toast.error('Görsel açılamadı.', { description: 'Dosya bozuk olabilir. Başka bir görsel deneyin ya da ekran görüntüsü alıp onu yükleyin.' });
+      return;
+    }
+    if (keepsVoice) {
+      toast.success('Görsel değiştirildi; ses korundu.', { description: 'İşaretler yeni görsele göre hazırlanıyor.' });
+      setStep(3);
+      setIsVideoModalOpen(true);
     }
   };
   const handleDeleteImage = async () => {
@@ -572,9 +584,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   const hasImage = Boolean(currentProject.imageUrl);
   const hasSolution = Boolean(currentProject.solutionText && currentProject.solutionText.trim().length > 0);
   const hasAudio = Boolean(activeAudioUrl);
-  const isAudioApproved = Boolean(
-    currentProject.audioApproved || currentProject.narrationSource?.isApproved || currentProject.audioNarration?.isApproved,
-  );
+  const isAudioApproved = voiceApproved(currentProject);
   const isUploadedAudio = currentProject.narrationSource?.type === 'uploaded';
 
   const handleAttemptCreateVideo = () => {
@@ -775,6 +785,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             replaceImageInputRef={replaceImageInputRef}
             handleImageFile={handleImageFile}
             handleDeleteImage={handleDeleteImage}
+            keepsVoice={isAudioApproved && hasSolution}
           />
           <SolutionStep
             step={step}

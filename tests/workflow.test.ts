@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createSaveQueue} from '../src/features/projects/saveQueue';
-import {checkNarration,moveRegion,resumeStep,shiftAction} from '../src/features/question-editor/workflow';
+import {checkNarration,imageChangeNote,moveRegion,resumeStep,shiftAction} from '../src/features/question-editor/workflow';
 import type {QuestionProject,VideoAction,AnnotationRegion} from '../src/types';
 
 test('saves remain ordered and identical pending revisions share one request',async()=>{
@@ -84,3 +84,11 @@ test('player and marks list share one time format', async () => {
   assert.equal(clock(59.97), '01:00,0', 'rounding carries into the minute');
 });
 
+test('a new picture under an approved voice keeps the voice and says the marks are prepared again',()=>{
+ const kept=imageChangeNote('görsel üzerindeki kutular ve videodaki işaretler',true);
+ assert.match(kept,/işaretler de silinir/);assert.match(kept,/Ses ve çözüm metni korunur/);assert.doesNotMatch(kept,/geri alınamaz/);
+ assert.match(imageChangeNote('',true),/^Ses ve çözüm metni korunur/);
+ const lost=imageChangeNote('görsel üzerindeki kutular',false);
+ assert.match(lost,/kutular da silinir/);assert.match(lost,/geri alınamaz/);assert.doesNotMatch(lost,/Ses/);
+ assert.equal(imageChangeNote('',false),'');
+});

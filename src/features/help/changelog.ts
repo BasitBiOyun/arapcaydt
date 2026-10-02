@@ -23,6 +23,12 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
+        title: 'Soru görseli',
+        items: [
+          { text: '**Yalnız görseli değiştirin, sesi koruyun:** Ses hazırlandıktan sonra görselin yanlış olduğu anlaşılırsa **1 Soru** adımında **Görseli Değiştir** ile doğrusunu yükleyin. Ses ve çözüm metni olduğu gibi kalır, yeniden seslendirme gerekmez; işaretler yeni görsele göre kendiliğinden yeniden hazırlanır. Eski görselde elle yaptığınız işaret düzeltmeleri silinir.', help: 'yeni-soru' },
+        ],
+      },
+      {
         title: 'Düzeltmeler',
         items: [
           { text: 'Ses adımında **Cümle listesi** açıkken soru küçücük kalmıyor: liste ekran yüksekliğine göre kısalıyor, soru büyük kalıyor (kaydırarak bütün cümleler görülür).', help: 'seslendirme' },
