@@ -12,7 +12,7 @@ import { localWhisperService } from '../services/whisper/localWhisperService';
 import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
-import { narrationService } from '../services/narration/narrationService';
+import { askLowerWith, LOWER_MODEL_NOTE, narrationService } from '../services/narration/narrationService';
 import { cutAtPauses, matchLoudness, moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
 import { NARRATION_RATE, decodeAudio, encodeMp3 } from '../services/narration/audioCodec';
 import { alignSolutionNarration } from '../services/analysis/timelineAligner';
@@ -314,7 +314,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
         outputFormat: STANDARD_VOICE_CONFIG.outputFormat,
       }, (done, total) => setAudioInfo(done < total
         ? `Uzun çözüm ${total} bölümde seslendiriliyor: ${done + 1}. bölüm hazırlanıyor…`
-        : 'Bölümler tek ses dosyasında birleştiriliyor…'));
+        : 'Bölümler tek ses dosyasında birleştiriliyor…'), askLowerWith(confirm));
 
       const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
 
@@ -340,6 +340,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
         }
       }
       setVideoGenerated(false);
+      if (result.lowerModel) setAudioInfo(LOWER_MODEL_NOTE);
     } catch (err: any) {
       console.error('Audio generation error:', err);
       setAudioError(err instanceof Error ? err.message : 'Seslendirme oluşturulamadı.');
@@ -370,7 +371,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     try {
       if (!(await saveCurrentProject())) throw new Error('Önce proje kaydedilmelidir.');
       const piece = await narrationService.generateNarration({ projectId: currentProject.id, text: range.text,
-        voiceId: STANDARD_VOICE_CONFIG.voiceId, modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat });
+        voiceId: STANDARD_VOICE_CONFIG.voiceId, modelId: STANDARD_VOICE_CONFIG.modelId, outputFormat: STANDARD_VOICE_CONFIG.outputFormat }, undefined, askLowerWith(confirm));
       setAudioInfo('Yeni parça sesin içine yerleştiriliyor…');
       if (!piece.audioUrl) throw new Error('Yeni parçanın sesi alınamadı. Tekrar deneyin.');
       const [base, insert] = await Promise.all([decodeAudio(activeAudioUrl), decodeAudio(piece.audioUrl)]);
@@ -404,7 +405,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
           ? alignSolutionNarration(persisted.solutionText, timing.words, duration).captions : persisted.videoConfig.captions;
         await saveCurrentProject({ ...timed, videoConfig: { ...persisted.videoConfig, captions } });
       }
-      setAudioInfo(null);
+      setAudioInfo(piece.lowerModel ? LOWER_MODEL_NOTE : null);
     } catch (err) {
       setAudioInfo(null);
       setLastFix(null);

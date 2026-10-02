@@ -8,6 +8,21 @@ export interface NewsEntry { id: string; date: string; title: string; groups: { 
 
 export const NEWS: NewsEntry[] = [
   {
+    id: '2026-10-02',
+    date: '2 Ekim 2026',
+    title: 'Yedek ses modeli artık sorulmadan kullanılmıyor',
+    groups: [
+      {
+        title: 'Seslendirme',
+        items: [
+          { text: '**Yedek modele geçmeden önce sorulur:** En üst düzey ses modelinin günlük kullanım hakkı bitince stüdyo artık sessizce yedek modele geçmez. “Yedek modelle seslendir” ya da “Yarını bekleyeceğim” diye sorar. Yedek model araya olmayan cümle katabilir, olumsuzu olumlu okuyabilir, Türkçeyi yanlış telaffuz edebilir.', help: 'seslendirme' },
+          { text: 'Yedek modelle üretilen sesin altında bunu söyleyen bir not çıkar; sesi dinleyip hatalı cümleyi **Sesi düzelt** ile yenileyin.', help: 'seslendirme' },
+          { text: 'Kendi Google anahtarı olan hocalarda, kendi anahtarındaki en üst düzey modelin hakkı bitince önce stüdyonun anahtarındaki en üst düzey model denenir (önceden hemen yedek modele geçiliyordu).', help: 'seslendirme' },
+        ],
+      },
+    ],
+  },
+  {
     id: '2026-10-01',
     date: '1 Ekim 2026',
     title: 'Daha hızlı düzenleme: alt çizgi, daire, “Şimdi”; şık düzeltmeleri',

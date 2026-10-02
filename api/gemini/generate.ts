@@ -182,13 +182,21 @@ async function handler(req: any, res: any) {
     return res.status(503).json({ error: 'Gemini ses servisi yapılandırılmamış.', code: 'MISSING_GEMINI_API_KEY', fallbackAllowed: true });
   }
 
+  // The best model on every key first; the weaker backups only after the teacher agreed
+  // (they add or drop sentences, flip negations, mispronounce Turkish).
+  const allowLower = req.body?.allowLower === true;
+  const tries = GEMINI_MODELS.slice(0, allowLower ? undefined : 1)
+    .flatMap(model => lanes.filter(lane => !lane.skip.includes(model)).map(lane => ({ model, lane })));
+
   // The function stops at 120 s: keep ~25 s for storing the audio and logging usage.
   const deadline = Date.now() + REQUEST_BUDGET_MS;
   const attempts: Attempt[] = [];
-  lanes: for (const lane of lanes) {
-    for (const model of GEMINI_MODELS.filter(m => !lane.skip.includes(m))) {
+  const refusedKeys = new Set<KeySource>();
+  tries: for (const { model, lane } of tries) {
+    // A key Google refused (invalid or not allowed) is not tried with the other models.
+    if (!refusedKeys.has(lane.source)) {
       const remaining = deadline - Date.now();
-      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(text.replace(/[\u064B-\u065F\u0670\u0640]/g, '').length))) break lanes;
+      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(text.replace(/[\u064B-\u065F\u0670\u0640]/g, '').length))) break tries;
       try {
         const upstream = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
@@ -211,7 +219,7 @@ async function handler(req: any, res: any) {
           }
           attempts.push({ model, status: upstream.status, detail, daily: isDailyQuotaError(upstream.status, raw), quota: quotaTag(upstream.status, raw), keySource: lane.source });
           if (lane.source === 'teacher' && isInvalidKeyError(upstream.status, raw)) await markTeacherKeyInvalid(db, member.user.id);
-          if (upstream.status === 401 || upstream.status === 403 || isInvalidKeyError(upstream.status, raw)) break;
+          if (upstream.status === 401 || upstream.status === 403 || isInvalidKeyError(upstream.status, raw)) refusedKeys.add(lane.source);
           continue;
         }
 
@@ -250,6 +258,7 @@ async function handler(req: any, res: any) {
           voiceName: VOICE_NAME,
           attempts: attempts.length + 1,
           keySource: lane.source,
+          lowerModel: model !== GEMINI_MODELS[0],
         });
       } catch (error: any) {
         attempts.push({ model, status: 502, detail: error?.message || 'Ağ hatası', keySource: lane.source });
@@ -258,6 +267,14 @@ async function handler(req: any, res: any) {
   }
 
   await recordUsage(member.user.id, projectId, failedUsage(attempts, text.length));
+  if (!allowLower && GEMINI_MODELS.length > 1) {
+    // Only the best model was tried: the teacher decides whether the backups may voice it.
+    const daily = tries.length === 0 || (attempts.length > 0 && attempts.every(a => a.daily));
+    return res.status(409).json({
+      error: daily ? 'En üst düzey modelin bugünkü kullanım hakkı bitti.' : 'En üst düzey model şu anda yanıt vermiyor.',
+      code: 'TOP_MODEL_UNAVAILABLE', reason: daily ? 'daily' : 'busy', fallbackAllowed: false, attempts,
+    });
+  }
   const compact = attempts.length
     ? attempts.map(a => `${a.keySource === 'teacher' ? 'kendi anahtarı' : 'ortak anahtar'} ${a.model}: HTTP ${a.status}${a.detail ? ` (${a.detail.slice(0, 120)})` : ''}`).join(' | ')
     : 'Bugünkü Gemini seslendirme kotaları dolu.';
