@@ -5,6 +5,7 @@ import { OCRWord, OCRLine, OCRResult, OCRProgress } from './ocrTypes';
 import { missingMarkerCrops } from './markerRecovery';
 import { detectYdtQuestionRegions } from './ydtQuestionDetector';
 import { readWithVision } from './cloudOcr';
+import { OWN_ARABIC, STOCK_ARABIC, arabicConfidence, preferStockArabic } from './modelChoice';
 
 const OCR_MODEL_PATH = '/tessdata';
 const OCR_MODEL_CACHE = 'tessdata-2026-10-02';
@@ -12,6 +13,8 @@ const OCR_MODEL_CACHE = 'tessdata-2026-10-02';
 class LocalOcrService {
   private static instance: LocalOcrService;
   private worker: Worker | null = null;
+  /** Stock Arabic model, read alongside ours (see modelChoice); null if it could not load. */
+  private stockWorker?: Promise<Worker | null>;
   private isInitializing = false;
 
   public static getInstance(): LocalOcrService {
@@ -35,6 +38,7 @@ class LocalOcrService {
    */
   public warmUp(): void {
     void this.getWorker().catch(() => { /* the real scan reports errors */ });
+    void this.getStockWorker();
   }
 
   private async getWorker(onProgress?: (progress: OCRProgress) => void): Promise<Worker> {
@@ -58,7 +62,7 @@ class LocalOcrService {
         message: 'Yerel OCR motoru başlatılıyor (Arapça + Türkçe)...',
       });
 
-      const worker = await createWorker(['ara', 'tur', 'eng'], 1, {
+      const worker = await createWorker([OWN_ARABIC, 'tur', 'eng'], 1, {
         // Our own Arabic model (trained on teachers' question pictures) is served with the site;
         // Turkish and English are the stock ones. A new cache name keeps browsers from reusing
         // the stock Arabic model they cached before.
@@ -93,6 +97,14 @@ class LocalOcrService {
     } finally {
       this.isInitializing = false;
     }
+  }
+
+  private getStockWorker(): Promise<Worker | null> {
+    // Same files and cache as ours; the stock Arabic model is served as "araeski". Loading quietly:
+    // progress messages come from our own worker.
+    this.stockWorker ??= createWorker([STOCK_ARABIC, 'tur', 'eng'], 1, { langPath: OCR_MODEL_PATH, cachePath: OCR_MODEL_CACHE })
+      .catch(() => null);
+    return this.stockWorker;
   }
 
   private async getImageDimensions(imageUrl: string): Promise<{ width: number; height: number }> {
@@ -197,7 +209,7 @@ class LocalOcrService {
       message: 'Görsel boyutları doğrulandı, OCR başlatılıyor...',
     });
 
-    const worker = await this.getWorker(onProgress);
+    const [ownWorker, stockWorker] = await Promise.all([this.getWorker(onProgress), this.getStockWorker()]);
 
     onProgress?.({
       status: 'recognizing',
@@ -209,7 +221,16 @@ class LocalOcrService {
     const prepared = await prepareForReading(imageUrl, imgWidth, imgHeight);
     const scale = prepared?.scale ?? 1;
     // Tesseract v6/v7: text is on by default, blocks must be explicitly enabled.
-    const result = await worker.recognize(prepared?.image ?? imageUrl, {}, { text: true, blocks: true });
+    const image = prepared?.image ?? imageUrl;
+    const [ownResult, stockResult] = await Promise.all([
+      ownWorker.recognize(image, {}, { text: true, blocks: true }),
+      stockWorker?.recognize(image, {}, { text: true, blocks: true }).catch(() => null),
+    ]);
+    // Keep whichever Arabic model read this picture more confidently; the follow-up passes use it too.
+    const useStock = !!stockWorker && !!stockResult && preferStockArabic(arabicConfidence(ownResult.data), arabicConfidence(stockResult.data));
+    const worker = useStock ? stockWorker : ownWorker;
+    const arabic = useStock ? STOCK_ARABIC : OWN_ARABIC;
+    const result = useStock ? stockResult : ownResult;
     const data = result.data as any;
 
     const words: OCRWord[] = [];
@@ -298,7 +319,7 @@ class LocalOcrService {
         // Re-read just the stem in Arabic, keeping the option geometry unchanged.
         const root = detectYdtQuestionRegions(output).questionPromptRegion;
         if (root) {
-          await worker.reinitialize('ara');
+          await worker.reinitialize(arabic);
           const stemLines = groupOcrWordsIntoLines(output.words.filter(w =>
             w.x+w.width/2 >= root.x && w.x+w.width/2 <= root.x+root.width &&
             w.y+w.height/2 >= root.y && w.y+w.height/2 <= root.y+root.height));
@@ -318,7 +339,7 @@ class LocalOcrService {
           output.arabicStemWords = stemWords;
         }
       } finally {
-        await worker.reinitialize('ara+tur+eng');
+        await worker.reinitialize(`${arabic}+tur+eng`);
         await worker.setParameters({ tessedit_pageseg_mode: PSM.AUTO });
       }
     }
@@ -330,6 +351,9 @@ class LocalOcrService {
       await this.worker.terminate();
       this.worker = null;
     }
+    const stock = await this.stockWorker;
+    this.stockWorker = undefined;
+    await stock?.terminate();
   }
 }
 

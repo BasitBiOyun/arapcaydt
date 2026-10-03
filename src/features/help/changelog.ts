@@ -8,6 +8,20 @@ export interface NewsEntry { id: string; date: string; title: string; groups: { 
 
 export const NEWS: NewsEntry[] = [
   {
+    id: '2026-10-03',
+    date: '3 Ekim 2026',
+    title: 'Görsel okuyucu iki Arapça modelden iyi okuyanı seçiyor',
+    groups: [
+      {
+        title: 'Görsel okuma',
+        items: [
+          { text: 'Stüdyonun kendi okuyucusu her görseli hem kendi eğittiğimiz Arapça modelle hem de hazır modelle okur, hangisi daha emin okuduysa onu kullanır. Kendi modelimiz Soru çöz görsellerinde, hazır model ÖSYM baskısında daha iyi. Denemelerde ÖSYM tarzı sorularda hatasız okunan satırlar 178’de 131’den 144’e çıktı; Soru çöz görsellerinde kazanç korundu.', help: 'isaretler' },
+          { text: 'İkinci model ilk açılışta bir kez indirilir; ilk **İşaretleri hazırla** biraz uzun sürebilir.', help: 'isaretler' },
+        ],
+      },
+    ],
+  },
+  {
     id: '2026-10-02',
     date: '2 Ekim 2026',
     title: 'Yedek ses modeli artık sorulmadan kullanılmıyor',
