@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PaperPlaneRight } from '@phosphor-icons/react';
 import { loadConversation, markRead, messageTime, QUICK_MESSAGES, sendMessage, type Message } from './messages';
+import { FormattedText } from '../../components/common/FormattedText';
 
 /**
  * One teacher's conversation with the studio admins, oldest first, with a box to write.
@@ -56,9 +57,9 @@ export function Conversation({ teacherId, asAdmin, otherName, onChange }: {
           const mine = m.from_admin === asAdmin;
           return (
             <div key={m.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] rounded-lg px-3 py-2 text-sm whitespace-pre-line ${mine ? 'bg-[#8B1E2D] text-white' : 'bg-white border text-[#33322E]'}`}>
+              <div className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${mine ? 'bg-[#8B1E2D] text-white' : 'bg-white border text-[#33322E]'}`}>
                 <p className={`text-xs mb-0.5 ${mine ? 'text-white/75' : 'text-[#787670]'}`}>{mine ? 'Siz' : otherName} · {messageTime(m.created_at)}</p>
-                {m.body}
+                <FormattedText text={m.body} />
               </div>
             </div>
           );

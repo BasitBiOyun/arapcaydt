@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Buildings } from '@phosphor-icons/react';
 import { CardHeader, Result, card, field, primary } from './MySettingsCards';
 import {
-  ANNOUNCEMENT_DURATIONS, MIGRATION_PENDING, announcementState, announcementUntil, loadStudioSettings, parseAutoApprove,
+  ANNOUNCEMENT_DURATIONS, ANNOUNCEMENT_MAX, MIGRATION_PENDING, announcementState, announcementUntil, loadStudioSettings, parseAutoApprove,
   saveStudioSettings, updateAnnouncement, type StudioSettings,
 } from './studioSettings';
 import { useConfirm } from '../../components/common/ConfirmDialog';
+import { FormattedText } from '../../components/common/FormattedText';
 
 const endsAt = (iso: string) => new Date(iso).toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
@@ -64,8 +65,15 @@ export function StudioSettingsCard() {
         <div className="space-y-4 text-xs text-[#33322E]">
           <fieldset className="space-y-2">
             <legend className="font-medium mb-1">Duyuru</legend>
-            <textarea aria-label="Duyuru metni" className={`${field} min-h-16`} maxLength={500} placeholder="Örnek: Cuma akşamına kadar Eylül denemesinin videolarını tamamlayalım."
+            <textarea aria-label="Duyuru metni" className={`${field} min-h-24`} maxLength={ANNOUNCEMENT_MAX} placeholder="Örnek: Cuma akşamına kadar Eylül denemesinin videolarını tamamlayalım."
               value={settings.announcement} onChange={e => set({ announcement: e.target.value })} />
+            <p className="text-xs text-[#787670]">**kalın** yazdığınız yer kalın, "- " ile başlayan satırlar madde olarak görünür. {settings.announcement.length}/{ANNOUNCEMENT_MAX}</p>
+            {settings.announcement.trim() && (
+              <div className="rounded border border-[#E5D7B0] bg-[#FAF5E6] px-3 py-2 text-sm text-[#5C420B]" aria-label="Duyuru önizlemesi">
+                <p className="text-xs font-semibold text-[#78540E] mb-1">Öğretmenler böyle görecek:</p>
+                <FormattedText text={settings.announcement} />
+              </div>
+            )}
             <p className="text-xs" role="status">
               {live === 'live' ? <span className="text-[#1E562A] font-semibold">● Yayında{settings.announcement_until ? ` · ${endsAt(settings.announcement_until)} tarihine kadar` : ' · siz kaldırana kadar'}</span>
                 : live === 'expired' ? <span className="text-[#78540E] font-semibold">Süresi doldu; öğretmenler artık görmüyor.</span>

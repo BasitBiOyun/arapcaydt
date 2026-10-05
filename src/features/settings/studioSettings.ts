@@ -70,6 +70,10 @@ export function announcementState(s: Pick<StudioSettings, 'announcement' | 'anno
   return s.announcement_until && Date.parse(s.announcement_until) <= now ? 'expired' : 'live';
 }
 
+/** Longest announcement (20261011_announcement_length.sql); before that migration the database allows 500. */
+export const ANNOUNCEMENT_MAX = 2000;
+const ANNOUNCEMENT_OLD_MAX = 500;
+
 /**
  * Publish, withdraw or delete the announcement without touching the other settings.
  * Before the expiry migration the end time is dropped and the announcement stays until withdrawn.
@@ -81,6 +85,9 @@ export async function updateAnnouncement(patch: Pick<StudioSettings, 'announceme
     const { announcement_until: _dropped, ...rest } = row;
     ({ error } = await database().from('studio_settings').update(rest).eq('id', true));
     if (!error) return { patch: { ...rest, announcement_until: null }, expiryPending: true };
+  }
+  if (error?.code === '23514' && patch.announcement.length > ANNOUNCEMENT_OLD_MAX) {
+    throw new Error(`Duyuru ${ANNOUNCEMENT_OLD_MAX} karakterden uzun. Daha uzun duyuru için veritabanı güncellemesi bekleniyor (supabase/migrations/20261011_announcement_length.sql); o zamana kadar kısaltın.`);
   }
   if (error) throw new Error(friendly(error));
   return { patch: row, expiryPending: false };

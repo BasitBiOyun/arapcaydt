@@ -345,6 +345,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'Sol menüdeki ya da editörün sağ üstündeki **Sorun bildir**’e basın, ne olduğunu kısaca yazın ve gönderin. Hangi sayfada olduğunuz gibi teknik bilgiler kendiliğinden eklenir.', image: 'sorun-bildir', alt: 'Sorun bildir penceresi' },
       { text: 'Sol menüdeki **Mesajlar** yöneticiyle birebir yazışmanızdır: yöneticinin size gönderdiği mesajları orada okur, ona oradan yazarsınız. Yeni mesaj ya da bildiriminize yanıt gelince yanında sayı çıkar.' },
       { text: 'Gönderdiğiniz sorun bildirimleri de **Mesajlar**’ın altında, çözülüp çözülmediği ve yöneticinin yanıtıyla birlikte görünür.' },
+      { text: 'Mesaj yazarken bir sözün başına ve sonuna iki yıldız (**) koyarsanız o söz kalın görünür; “- ” ile başlayan satırlar madde olur. Yöneticinin duyuruları da aynı biçimde görünür.' },
     ],
     tips: [
       '**Çalışmam kayboldu mu?** Hayır. Stüdyo her değişikliği birkaç saniye içinde kaydeder. İnternet kesilirse değişiklikler bu bilgisayarda saklanır ve bağlantı gelince gönderilir.',

@@ -51,6 +51,7 @@ export const NEWS: NewsEntry[] = [
         items: [
           { text: 'Sol menüde yeni **Mesajlar** var: stüdyo yöneticisiyle birebir yazışabilirsiniz. Yönetici size özel mesaj gönderebilir, siz de ona buradan yazabilirsiniz. Yeni mesaj gelince yanında sayı çıkar.', help: 'sorun-bildir' },
           { text: 'Gönderdiğiniz sorun bildirimlerine yönetici artık kısa bir yanıt yazabiliyor. Bildirimleriniz, durumları ve yanıtlar da **Mesajlar**’da görünür.', help: 'sorun-bildir' },
+          { text: 'Duyurularda ve mesajlarda kalın yazılar artık kalın, maddeler de madde işaretli görünüyor; yanlarında yıldız çıkmıyor.', help: 'sorun-bildir' },
         ],
       },
     ],
