@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck, Question, Megaphone } from '@phosphor-icons/react';
+import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge, Stack, ShieldCheck, Question, Megaphone, Toolbox } from '@phosphor-icons/react';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 import { BrandMark } from './BrandMark';
@@ -8,7 +8,7 @@ import { PAGE_LABELS } from '../../config/pages';
 import { ReportProblem } from '../../features/feedback/ReportProblem';
 import { readSeen, unseenNews } from '../../features/help/changelog';
 
-export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin' | 'help' | 'news';
+export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin' | 'help' | 'news' | 'tools';
 
 interface AppSidebarProps {
   currentPage: AppPage;
@@ -35,6 +35,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   const items: Array<{ page: AppPage; label: string; icon: React.ElementType; badge?: string }> = [
     ...(user?.role === 'admin' ? [{ page: 'admin' as const, label: PAGE_LABELS.admin, icon: ShieldCheck }] : []),
     { page: 'dashboard', label: PAGE_LABELS.dashboard, icon: SquaresFour },
+    { page: 'tools', label: PAGE_LABELS.tools, icon: Toolbox },
     { page: 'questions', label: PAGE_LABELS.questions, icon: ListDashes, badge: projects.length ? String(projects.length) : undefined },
     { page: 'batch', label: PAGE_LABELS.batch, icon: Stack },
   ];

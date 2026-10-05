@@ -41,6 +41,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onSele
         <div>
           <h2>{firstName ? `Merhaba, ${firstName}` : 'Merhaba'}</h2>
           <p>Kaldığınız yerden devam edin ya da yeni bir soru ekleyin.</p>
+          <p>Görseliniz ya da çözüm metniniz hazır değil mi?{' '}
+            <button onClick={() => onNavigate('tools')} className="font-semibold text-[#8B1E2D] hover:underline">Hazırlık araçlarına bakın</button>
+          </p>
         </div>
       </header>
 

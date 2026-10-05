@@ -8,6 +8,20 @@ export interface NewsEntry { id: string; date: string; title: string; groups: { 
 
 export const NEWS: NewsEntry[] = [
   {
+    id: '2026-10-05',
+    date: '5 Ekim 2026',
+    title: 'Yeni sayfa: Hazırlık araçları',
+    groups: [
+      {
+        title: 'Hazırlık araçları',
+        items: [
+          { text: 'Sol menüde yeni **Hazırlık Araçları** sayfası var. Komisyonumuzdan bir öğretmenin hazırladığı iki araç yeni sekmede açılır: **Soru şablonu yerleştirici** soruları Bakanlık şablonuna yerleştirip resim olarak toplu indirir, **Çözüm senaryosu oluşturucu** çözüm metnini hazırlamanıza yardım eder. Hazırladığınız resmi ve metni sonra stüdyoya eklersiniz.', help: 'hazirlik-araclari' },
+          { text: '**Kontrol Paneli**’nin üstündeki “Hazırlık araçlarına bakın” bağlantısı da bu sayfayı açar.', help: 'hazirlik-araclari' },
+        ],
+      },
+    ],
+  },
+  {
     id: '2026-10-03',
     date: '3 Ekim 2026',
     title: 'Görsel okuyucu iki Arapça modelden iyi okuyanı seçiyor',

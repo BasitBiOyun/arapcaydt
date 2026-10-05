@@ -14,6 +14,7 @@ import { SettingsPage } from '../pages/SettingsPage';
 import { BatchPage } from '../pages/BatchPage';
 import { HelpPage } from '../pages/HelpPage';
 import { NewsPage } from '../pages/NewsPage';
+import { ToolsPage } from '../pages/ToolsPage';
 import { FirstRunGuide, guideSeen } from '../features/help/FirstRunGuide';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
@@ -190,6 +191,7 @@ export const AppLayout: React.FC = () => {
           {currentPage === 'settings' && <SettingsPage />}
           {currentPage === 'help' && <HelpPage onShowGuide={() => setShowGuide(true)} />}
           {currentPage === 'news' && <NewsPage />}
+          {currentPage === 'tools' && <ToolsPage />}
         </main>
       </div>
 

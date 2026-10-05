@@ -25,7 +25,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     summary: 'Soru Stüdyosu, soru görselinizi ve çözümünüzü sesli, işaretli bir çözüm videosuna dönüştürür. Her şey tarayıcıda, beş kolay adımda olur.',
     steps: [
       { text: 'Girişten sonra **Kontrol Paneli** açılır. Burada kaldığınız soruyu, soru sayılarınızı ve son çalıştığınız soruları görürsünüz.', image: 'panel', alt: 'Kontrol Paneli ve sol menü' },
-      { text: 'Soldaki menüden sayfalar arasında geçersiniz: **Yeni soru**, **Sorularım**, **Toplu Üretim**, **Ayarlar** ve bu **Yardım** sayfası.' },
+      { text: 'Soldaki menüden sayfalar arasında geçersiniz: **Yeni soru**, **Hazırlık Araçları**, **Sorularım**, **Toplu Üretim**, **Ayarlar** ve bu **Yardım** sayfası.' },
       { text: 'Bir soru her zaman aynı beş adımdan geçer: **1 Soru** (görsel) → **2 Metin** (çözüm) → **3 Ses** → **4 İşaretler** → **5 İndir** (MP4 video).', image: 'adimlar', alt: 'Editörün üstündeki beş adım' },
       { text: 'Çalışmanız kendiliğinden kaydedilir. Sağ üstte **Kaydedildi** yazısını gördüğünüzde her şey hesabınızdadır; başka bir bilgisayardan girince kaldığınız yerden devam edersiniz.' },
     ],
@@ -33,6 +33,18 @@ export const HELP_TOPICS: HelpTopic[] = [
       'Yazılar size küçük geliyorsa **Ayarlar → Yazı boyutu** bölümünden “Büyük” veya “Çok büyük” seçebilirsiniz.',
       'Tarayıcının geri tuşu stüdyo içinde bir önceki sayfaya döner; sayfayı yenilediğinizde aynı soru açık kalır.',
     ],
+  },
+  {
+    id: 'hazirlik-araclari',
+    title: 'Hazırlık araçları',
+    summary: 'Stüdyoya gelmeden önce soru görselinizi ve çözüm metninizi komisyonumuzdan bir öğretmenin hazırladığı iki araçla hazırlayabilirsiniz.',
+    steps: [
+      { text: 'Sol menüden **Hazırlık Araçları**’nı açın. Her aracın **Aç** düğmesi aracı yeni bir sekmede açar; stüdyo kendi sekmesinde açık kalır.' },
+      { text: '**Soru şablonu yerleştirici:** PowerPoint’teki sorularınızı Bakanlığın soru şablonuna yerleştirir, boyutlandırır ve uzun soruları ikiye böler. Kesim yeri uygun değilse elle hızlıca düzeltin, sonra soruları resim olarak toplu indirin.' },
+      { text: '**Çözüm senaryosu oluşturucu:** Soruların çözüm metnini hazırlamanıza yardım eder; Arapça sorular için de kullanılabilir.' },
+      { text: 'Stüdyoya dönün: indirdiğiniz resmi **Yeni soru** ile **1 Soru** adımına yükleyin, çözüm metnini **2 Metin** adımındaki kutuya yapıştırın.' },
+    ],
+    tips: ['Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
   },
   {
     id: 'yeni-soru',
