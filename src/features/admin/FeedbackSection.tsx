@@ -11,6 +11,54 @@ interface Report {
   context: Partial<FeedbackContext>;
   status: 'open' | 'resolved';
   created_at: string;
+  reply?: string | null;
+  replied_at?: string | null;
+}
+
+/** One tap fills the reply box; the admin can still edit it before sending. */
+const QUICK_REPLIES = ['Sorunu çözdük hocam, tekrar deneyebilirsiniz.', 'Önemli değil hocam.', 'Rica ederiz hocam.', 'Bakıyoruz hocam, çözünce haber vereceğiz.'];
+
+/** Reply box under a report: the teacher sees the answer under Bildirimlerim. */
+function ReplyBox({ report, onSent }: { report: Report; onSent: (reply: string, resolved: boolean) => void }) {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const send = async (resolve: boolean) => {
+    const reply = text.trim();
+    if (!reply) return;
+    setBusy(true); setError('');
+    const change = { reply, replied_at: new Date().toISOString(), ...(resolve ? { status: 'resolved' as const } : {}) };
+    const { error } = await database().from('feedback').update(change).eq('id', report.id);
+    setBusy(false);
+    if (error) return setError(isMigrationPending(error) ? 'Yanıt için veritabanı güncellemesi bekleniyor (supabase/migrations/20261008_feedback_reply.sql).' : 'Yanıt gönderilemedi.');
+    onSent(reply, resolve);
+    setOpen(false); setText('');
+  };
+  if (!open) return (
+    <button type="button" className="text-xs font-semibold text-[#8B1E2D] hover:underline" onClick={() => { setText(report.reply || ''); setOpen(true); }}>
+      {report.reply ? 'Yanıtı değiştir' : 'Hocaya yanıt yaz'}
+    </button>
+  );
+  return (
+    <div className="space-y-2 rounded-lg bg-[#FAF9F5] border p-3">
+      <div className="flex flex-wrap gap-1.5">
+        {QUICK_REPLIES.map(q => (
+          <button key={q} type="button" onClick={() => setText(q)} className="px-2 py-1 rounded-full border bg-white text-xs hover:bg-[#F7EEEE]">{q}</button>
+        ))}
+      </div>
+      <textarea aria-label="Hocaya yanıt" value={text} onChange={e => setText(e.target.value)} maxLength={2000} rows={2}
+        className="block w-full rounded-lg border border-[#D5D4CC] p-2 text-sm outline-none focus:border-[#8B1E2D]" placeholder="Hocaya kısa bir mesaj yazın" />
+      {error && <p role="alert" className="text-xs text-[#8B1E2D]">{error}</p>}
+      <div className="flex flex-wrap justify-end gap-2">
+        <button type="button" className="studio-secondary" onClick={() => setOpen(false)}>Vazgeç</button>
+        {report.status === 'open' && <button type="button" className="studio-secondary" disabled={busy || !text.trim()} onClick={() => void send(false)}>Yalnız gönder</button>}
+        <button type="button" className="studio-primary" disabled={busy || !text.trim()} onClick={() => void send(true)}>
+          {busy ? 'Gönderiliyor…' : report.status === 'open' ? 'Gönder ve çözüldü yap' : 'Gönder'}
+        </button>
+      </div>
+    </div>
+  );
 }
 
 const when = (iso: string) => new Date(iso).toLocaleString('tr', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -36,10 +84,12 @@ export function FeedbackSection({ who, onOpen }: { who: (ownerId: string) => str
   const [downloadError, setDownloadError] = useState('');
 
   const load = useCallback(async () => {
-    const { data, error } = await database().from('feedback').select('id,owner_id,message,context,status,created_at')
-      .order('created_at', { ascending: false }).limit(100);
+    const query = (columns: string) => database().from('feedback').select(columns).order('created_at', { ascending: false }).limit(100);
+    let { data, error } = await query('id,owner_id,message,context,status,created_at,reply,replied_at');
+    // The reply columns come with a later database update; until then the list shows without them.
+    if (error && isMigrationPending(error)) ({ data, error } = await query('id,owner_id,message,context,status,created_at'));
     if (error) return setState(isMigrationPending(error) ? 'pending' : 'error');
-    setReports((data || []) as Report[]);
+    setReports((data || []) as unknown as Report[]);
     setState('ready');
   }, []);
   useEffect(() => { void load().catch(() => setState('error')); }, [load]);
@@ -94,6 +144,13 @@ export function FeedbackSection({ who, onOpen }: { who: (ownerId: string) => str
                   )}
                 </div>
               )}
+              {report.reply && (
+                <p className="rounded-lg bg-[#F1F7F2] border border-[#CFE3D3] px-3 py-2 text-[#1E562A] whitespace-pre-line">
+                  <span className="font-semibold">Yanıtınız{report.replied_at ? ` (${when(report.replied_at)})` : ''}:</span> {report.reply}
+                </p>
+              )}
+              <ReplyBox report={report} onSent={(reply, resolved) => setReports(list => list.map(r => r.id === report.id
+                ? { ...r, reply, replied_at: new Date().toISOString(), status: resolved ? 'resolved' : r.status } : r))} />
               {!!c.shownErrors?.length && <p className="text-xs text-[#8B1E2D]">Ekrandaki uyarı: {c.shownErrors.join(' · ')}</p>}
               {!!c.recentErrors?.length && (
                 <details className="text-xs text-[#55544F]">

@@ -19,6 +19,12 @@ export const NEWS: NewsEntry[] = [
           { text: '**Kontrol Paneli**’nin üstündeki “Hazırlık araçlarına bakın” bağlantısı da bu sayfayı açar.', help: 'hazirlik-araclari' },
         ],
       },
+      {
+        title: 'Sorun bildirimleri',
+        items: [
+          { text: 'Gönderdiğiniz sorun bildirimlerine yönetici artık kısa bir yanıt yazabiliyor. Yanıtlar sol menüdeki **Bildirimlerim**’de görünür; yeni yanıt gelince yanında sayı çıkar.', help: 'sorun-bildir' },
+        ],
+      },
     ],
   },
   {

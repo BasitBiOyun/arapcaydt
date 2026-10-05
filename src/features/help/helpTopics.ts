@@ -326,6 +326,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     summary: 'Bir şey beklediğiniz gibi çalışmazsa tek tıkla yöneticiye haber verebilirsiniz.',
     steps: [
       { text: 'Sol menüdeki ya da editörün sağ üstündeki **Sorun bildir**’e basın, ne olduğunu kısaca yazın ve gönderin. Hangi sayfada olduğunuz gibi teknik bilgiler kendiliğinden eklenir.', image: 'sorun-bildir', alt: 'Sorun bildir penceresi' },
+      { text: 'Yönetici bildiriminize yanıt yazınca sol menüdeki **Bildirimlerim**’de görürsünüz; yeni yanıt varsa yanında sayı çıkar. Bildiriminizin çözülüp çözülmediği de orada yazar.' },
     ],
     tips: [
       '**Çalışmam kayboldu mu?** Hayır. Stüdyo her değişikliği birkaç saniye içinde kaydeder. İnternet kesilirse değişiklikler bu bilgisayarda saklanır ve bağlantı gelince gönderilir.',

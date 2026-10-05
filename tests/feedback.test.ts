@@ -70,6 +70,18 @@ test('feedback migration: teachers write their own reports, only admins read all
   await db.query(`insert into public.server_errors(route, status, message) values ('/api/vision/ocr', 500, 'x')`);
   assert.equal((await db.query<any>(`select count(*)::int n from public.server_errors`)).rows[0].n, 1);
   await db.exec('reset role');
+
+  // Replies: the admin answers, the teacher reads it and cannot write or change one.
+  const replies = readFileSync(new URL('../supabase/migrations/20261008_feedback_reply.sql', import.meta.url), 'utf8');
+  await db.exec(replies);
+  await db.exec(replies);
+  await as(admin);
+  await db.query(`update public.feedback set reply='Sorunu çözdük hocam', replied_at=now(), status='resolved' where message='Ses üretmedi'`);
+  await as(t1);
+  assert.deepEqual((await db.query<any>(`select reply, status from public.feedback where message='Ses üretmedi'`)).rows, [{ reply: 'Sorunu çözdük hocam', status: 'resolved' }]);
+  await db.query(`update public.feedback set reply='kendim yazdım'`);
+  assert.equal((await db.query<any>(`select reply from public.feedback where message='Ses üretmedi'`)).rows[0].reply, 'Sorunu çözdük hocam', 'a teacher cannot write a reply');
+  await db.exec('reset role');
 });
 
 test('a report with a one-tap reason says it first, and the teşhis snapshot is never part of its context', async () => {
