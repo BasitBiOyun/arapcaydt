@@ -4,6 +4,7 @@ import {
   Stack, TextAa, Waveform,
 } from '@phosphor-icons/react';
 import { BrandMark } from '../../components/common/BrandMark';
+import { Credit } from '../../components/common/Credit';
 import { APP_NAME, APP_OWNER_LINE } from '../../config/brand';
 import { DemoPlayer } from './DemoPlayer';
 import { useSignupsOpen } from '../settings/studioSettings';
@@ -153,7 +154,7 @@ export function LandingPage({ onAuth }: { onAuth: (mode: AuthMode) => void }) {
             <a href="/gizlilik.html" className="hover:text-[#1C1917]">Gizlilik</a>
             <a href="/kullanim-kosullari.html" className="hover:text-[#1C1917]">Kullanım Koşulları</a>
           </nav>
-          <p className="text-xs">Geliştiren: Yunus Emre Yılmaz</p>
+          <Credit className="text-xs" />
         </div>
       </footer>
     </div>

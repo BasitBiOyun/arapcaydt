@@ -3,6 +3,7 @@ import { SquaresFour, ListDashes, PlusCircle, Gear, SignOut, IdentificationBadge
 import { useAuth } from '../../features/auth/AuthContext';
 import { useProjects } from '../../features/projects/ProjectContext';
 import { BrandMark } from './BrandMark';
+import { Credit } from './Credit';
 import { APP_NAME } from '../../config/brand';
 import { PAGE_LABELS } from '../../config/pages';
 import { ReportProblem } from '../../features/feedback/ReportProblem';
@@ -119,6 +120,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <SignOut size={16} />
           </button>
         </div>
+        <Credit className="mt-2 text-center text-xs text-[#8C8A82]" />
       </div>
     </aside>
   );

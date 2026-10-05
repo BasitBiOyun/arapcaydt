@@ -40,11 +40,11 @@ export const HELP_TOPICS: HelpTopic[] = [
     summary: 'Stüdyoya gelmeden önce soru görselinizi ve çözüm metninizi komisyonumuzdan bir öğretmenin hazırladığı iki araçla hazırlayabilirsiniz.',
     steps: [
       { text: 'Sol menüden **Hazırlık Araçları**’nı açın. Her aracın **Aç** düğmesi aracı yeni bir sekmede açar; stüdyo kendi sekmesinde açık kalır.' },
-      { text: '**Soru şablonu yerleştirici:** PowerPoint’teki sorularınızı Bakanlığın soru şablonuna yerleştirir, boyutlandırır ve uzun soruları ikiye böler. Kesim yeri uygun değilse elle hızlıca düzeltin, sonra soruları resim olarak toplu indirin.' },
-      { text: '**Çözüm senaryosu oluşturucu:** Soruların çözüm metnini hazırlamanıza yardım eder; Arapça sorular için de kullanılabilir.' },
+      { text: '**Soru şablonu yerleştirici:** PowerPoint’teki sorularınızı Bakanlığın soru şablonuna yerleştirir, boyutlandırır ve uzun soruları ikiye böler. Kesim yeri uygun değilse elle hızlıca düzeltin, sonra soruları resim olarak toplu indirin (**Tümünü İndir (ZIP)**).', image: 'arac-sablon', alt: 'Soru şablonu yerleştirici ekranı' },
+      { text: '**Çözüm senaryosu oluşturucu:** Soru görsellerini toplu yükleyin; araç her sorunun çözüm metnini hazırlar. Arapça sorular için de kullanılabilir. İlk açılışta kendi Google anahtarınızı girmeniz gerekir (**Önce API Anahtarını Girin**).', image: 'arac-senaryo', alt: 'Çözüm senaryosu oluşturucu ekranı' },
       { text: 'Stüdyoya dönün: indirdiğiniz resmi **Yeni soru** ile **1 Soru** adımına yükleyin, çözüm metnini **2 Metin** adımındaki kutuya yapıştırın.' },
     ],
-    tips: ['Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
+    tips: ['Araçları komisyonumuzdan Ubeydullah Öz hazırladı.', 'Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
   },
   {
     id: 'yeni-soru',

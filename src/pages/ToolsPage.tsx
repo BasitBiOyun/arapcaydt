@@ -1,5 +1,6 @@
 import { ArrowSquareOut, ArrowRight } from '@phosphor-icons/react';
 import { pageHash } from '../layouts/route';
+import { helpImage } from '../features/help/helpTopics';
 
 /** Preparation tools made by a commission colleague; teachers use them before the studio. They open in a new tab. */
 const TOOLS = [
@@ -7,6 +8,7 @@ const TOOLS = [
     step: '1',
     title: 'Soru şablonu yerleştirici',
     url: 'https://soru-sablon-yerlestirici.vercel.app/',
+    image: 'arac-sablon',
     what: 'PowerPoint’teki sorularınızı Bakanlığın soru şablonuna yerleştirir; boyutlandırır, uzun soruları ikiye böler. Gerekirse kesim yerini elle hızlıca düzeltirsiniz.',
     then: 'Hazır soruları resim olarak toplu indirin, sonra stüdyoda **Yeni soru** ile yükleyin.',
   },
@@ -14,8 +16,9 @@ const TOOLS = [
     step: '2',
     title: 'Çözüm senaryosu oluşturucu',
     url: 'https://tyt-ayt-dkab-senaryo.vercel.app/',
+    image: 'arac-senaryo',
     what: 'Soruların çözüm metnini (senaryosunu) hazırlamanıza yardım eder. Arapça sorular için de kullanılabilir.',
-    then: 'Çıkan metni stüdyoda **2 Metin** adımındaki kutuya yapıştırın.',
+    then: 'Çıkan metni stüdyoda **2 Metin** adımındaki kutuya yapıştırın. Araç ilk açılışta kendi Google anahtarınızı ister.',
   },
 ];
 
@@ -39,6 +42,9 @@ export function ToolsPage() {
             <span className="w-8 h-8 rounded-full bg-[#8B1E2D]/10 text-[#8B1E2D] font-bold inline-flex items-center justify-center shrink-0">{tool.step}</span>
             <h3 className="text-lg font-bold text-[#1C1917]">{tool.title}</h3>
           </div>
+          <a href={tool.url} target="_blank" rel="noopener noreferrer" title="Aracı yeni sekmede aç" className="block overflow-hidden rounded-lg border border-[#E5E4DC]">
+            <img src={helpImage(tool.image)} alt={`${tool.title} ekranı`} loading="lazy" className="w-full" />
+          </a>
           <p className="text-base leading-relaxed text-[#33322E]">{tool.what}</p>
           <p className="text-base leading-relaxed text-[#33322E]"><Rich text={tool.then} /></p>
           <a href={tool.url} target="_blank" rel="noopener noreferrer" className="studio-primary inline-flex">
@@ -46,6 +52,7 @@ export function ToolsPage() {
           </a>
         </article>
       ))}
+      <p className="text-sm text-[#787670]">Araçları komisyonumuzdan Ubeydullah Öz hazırladı.</p>
       <a href={pageHash('help', 'hazirlik-araclari')} className="inline-flex items-center gap-1 text-sm font-semibold text-[#8B1E2D] hover:underline">
         Nasıl kullanılır? <ArrowRight size={13} />
       </a>
