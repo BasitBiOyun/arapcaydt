@@ -129,7 +129,7 @@ class LocalWhisperService {
   public async transcribeNarrationAudio(project: { narrationSource?: { audioUrl?: string }; audioNarration?: { audioUrl?: string } }): Promise<NarrationWord[]> {
     const audioUrl = project.narrationSource?.audioUrl || project.audioNarration?.audioUrl;
     if (!audioUrl) throw new Error('Ses dosyası bağlantısı bulunamadı.');
-    const response = await fetch(audioUrl);
+    const response = await fetch(audioUrl, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Ses dosyası indirilemedi (HTTP ${response.status}).`);
     return (await this.transcribeAudioLocally(await response.arrayBuffer())).words;
   }

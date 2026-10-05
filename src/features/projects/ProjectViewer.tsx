@@ -38,7 +38,7 @@ export function ProjectViewer({ project: p, onClose }: { project: QuestionProjec
             audioUrl={audio?.audioUrl}
           />
         ) : (
-          <img src={p.imageUrl} alt="Soru görseli" className="w-full" />
+          <img src={p.imageUrl} alt="Soru görseli" className="w-full" crossOrigin="anonymous" />
         ))}
       {!p.videoConfig.timelineActions?.length && audio?.audioUrl && <audio controls src={audio.audioUrl} className="w-full my-4" />}
       <h3 className="font-bold mt-5">Çözüm metni · Doğru cevap {p.correctAnswer}</h3>

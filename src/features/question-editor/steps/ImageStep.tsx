@@ -30,6 +30,7 @@ export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef
               <img
                 src={currentProject.imageUrl}
                 alt="Thumbnail"
+                crossOrigin="anonymous"
                 className="w-full h-full object-cover"
               />
             </div>

@@ -5,7 +5,7 @@ const SILENT = 0.01;
 
 /** Mono samples of an audio file or link, at the narration's rate. */
 export async function decodeAudio(source: string | Blob): Promise<Float32Array> {
-  const bytes = typeof source === 'string' ? await (await fetch(source)).arrayBuffer() : await source.arrayBuffer();
+  const bytes = typeof source === 'string' ? await (await fetch(source, { cache: 'no-store' })).arrayBuffer() : await source.arrayBuffer();
   const context = new OfflineAudioContext(1, 1, NARRATION_RATE);
   const audio = await context.decodeAudioData(bytes);
   return audio.getChannelData(0).slice();

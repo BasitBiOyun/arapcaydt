@@ -54,7 +54,7 @@ export async function buildArchive(files: ArchiveFile[], onProgress: (done: numb
       const f = files[next++];
       try {
         if (!f.url) throw new Error('bağlantı yok');
-        const res = await fetch(f.url);
+        const res = await fetch(f.url, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         zip.add(names.get(f.path)!, new Uint8Array(await res.arrayBuffer()), new Date(f.createdAt));
       } catch (e) {

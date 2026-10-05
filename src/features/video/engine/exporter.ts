@@ -93,7 +93,7 @@ export class BrowserVideoExporter implements IVideoExporter {
       if (audioUrl) {
         if (typeof AudioEncoder === 'undefined' || typeof AudioData === 'undefined')
           throw new Error('Bu tarayıcı sesli MP4 kodlamayı desteklemiyor. Güncel masaüstü Chrome veya Edge kullanın.');
-        const response = await fetch(audioUrl, { signal });
+        const response = await fetch(audioUrl, { signal, cache: 'no-store' });
         if (!response.ok) throw new Error('Ses dosyası yüklenemedi (' + response.status + ').');
         audioContext = new AudioContext({ sampleRate: 48000 });
         audioBuffer = await audioContext.decodeAudioData(await response.arrayBuffer());

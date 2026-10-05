@@ -174,7 +174,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
       if (!p) throw new Error('Proje bulunamadı.');
       let imageUrl = '';
       if (p.imageUrl) {
-        const response = await fetch(p.imageUrl);
+        const response = await fetch(p.imageUrl, { cache: 'no-store' });
         if (!response.ok) throw new Error('Görsel kopyalanamadı. Tekrar deneyin.');
         const blob = await response.blob();
         imageUrl = await new Promise<string>((resolve, reject) => {
@@ -345,7 +345,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
             </label>
             <button className="question-open" disabled={!!busy || view === 'trash'} onClick={() => onSelectProject(p.id)}>
               {p.imageUrl ? (
-                <img src={p.imageUrl} alt="" loading="lazy" />
+                <img src={p.imageUrl} alt="" loading="lazy" crossOrigin="anonymous" />
               ) : (
                 <span className="empty-thumbnail">Soru {p.questionNumber}</span>
               )}

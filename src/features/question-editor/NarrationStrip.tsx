@@ -83,6 +83,8 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
     const ws = WaveSurfer.create({
       container: waveBox.current, height: compact ? 26 : 40, waveColor: '#D5D4CC', progressColor: '#C98A93', cursorColor: '#8B1E2D', cursorWidth: 2,
       barWidth: 2, barGap: 1, barRadius: 2, normalize: true, dragToSeek: true, autoScroll: true, hideScrollbar: false, url: audioUrl,
+      // Not from the HTTP cache: an <audio> load of the same R2 link is cached without CORS headers.
+      fetchParams: { cache: 'no-store' },
       plugins: [TimelinePlugin.create({ height: 16, formatTimeCallback: s => clock(s).replace(/,\d$/, ''), style: { fontSize: '12px', color: '#8A8880' } })],
     });
     surfer.current = ws;
@@ -93,6 +95,7 @@ export function NarrationStrip({ solutionText, words, duration, audioUrl, showSk
     ws.on('scroll', (_a, _b, left) => setView(v => ({ ...v, scroll: left })));
     ws.on('timeupdate', t => { setNow(t); if (stopAt.current !== null && t >= stopAt.current) { ws.pause(); stopAt.current = null; } });
     ws.on('play', () => setRunning(true));
+    ws.on('error', () => setNote('Ses yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.'));
     ws.on('pause', () => { setPlaying(null); setRunning(false); });
     return () => { surfer.current = null; ws.destroy(); };
   }, [audioUrl, compact]);

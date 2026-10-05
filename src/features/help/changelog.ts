@@ -13,6 +13,12 @@ export const NEWS: NewsEntry[] = [
     title: 'Yeni sayfa: Hazırlık araçları',
     groups: [
       {
+        title: 'Düzeltmeler',
+        items: [
+          { text: 'Ses oluşturulduktan sonra **Ses şeridi**nin çalmaması (sayfayı yenilemeden ses gelmemesi) ve **İşaretleri otomatik hazırla** derken çıkan “Failed to fetch” hatası giderildi. Bir dosya yine de indirilemezse artık ne yapacağınızı Türkçe söyleyen bir uyarı çıkar.' },
+        ],
+      },
+      {
         title: 'Hazırlık araçları',
         items: [
           { text: 'Sol menüde yeni **Hazırlık Araçları** sayfası var. Komisyonumuzdan bir öğretmenin hazırladığı iki araç yeni sekmede açılır: **Soru şablonu yerleştirici** soruları Bakanlık şablonuna yerleştirip resim olarak toplu indirir, **Çözüm senaryosu oluşturucu** çözüm metnini hazırlamanıza yardım eder. Hazırladığınız resmi ve metni sonra stüdyoya eklersiniz.', help: 'hazirlik-araclari' },

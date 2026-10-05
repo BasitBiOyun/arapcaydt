@@ -105,7 +105,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
   if (step === 2 && narration && hasImage) return (
     <div className="narration-stage">
       <div className="narration-stage-picture">
-        <img src={currentProject.imageUrl} alt="Soru görseli" />
+        <img src={currentProject.imageUrl} alt="Soru görseli" crossOrigin="anonymous" />
         {spoken && <p className="narration-caption" dir="auto">{spoken}</p>}
       </div>
       <NarrationStrip solutionText={currentProject.solutionText} words={narration.words} duration={activeAudioDuration || 15}
@@ -240,6 +240,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
         <img
           src={currentProject.imageUrl}
           alt="Soru Görseli"
+          crossOrigin="anonymous"
           className="max-h-[calc(100vh-16rem)] max-w-full object-contain rounded-lg border border-[#E5E4DC] bg-white shadow-xs p-2"
         />
       </div>

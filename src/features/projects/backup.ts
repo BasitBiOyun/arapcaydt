@@ -24,7 +24,7 @@ export interface BackupProgress { done: number; total: number }
 export async function buildBackup(
   projects: QuestionProject[],
   fetchFile: (url: string) => Promise<Blob> = async url => {
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) throw new Error('Bir dosya indirilemedi. Bağlantınızı kontrol edip tekrar deneyin.');
     return response.blob();
   },

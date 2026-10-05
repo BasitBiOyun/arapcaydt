@@ -126,7 +126,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
       container: waveBox.current, height: compact ? COMPACT_WAVE : WAVE, waveColor: '#D5D4CC', progressColor: '#C98A93', cursorColor: '#8B1E2D', cursorWidth: 2,
       barWidth: 2, barGap: 1, barRadius: 2, normalize: true, dragToSeek: true, autoScroll: false, hideScrollbar: false,
       // The strip works without the narration file too: a flat outline of the video's length.
-      ...(audioUrl ? { url: audioUrl } : { peaks: [new Array(400).fill(.08)], duration: total }),
+      ...(audioUrl ? { url: audioUrl, fetchParams: { cache: 'no-store' } } : { peaks: [new Array(400).fill(.08)], duration: total }),
       plugins: [
         TimelinePlugin.create({ height: RULER, formatTimeCallback: s => clock(s).replace(/,\d$/, ''), style: { fontSize: '10px', color: '#8A8880' } }),
         HoverPlugin.create({ lineColor: '#8B1E2D66', lineWidth: 1, labelBackground: '#1C1917', labelColor: '#fff', labelSize: '11px', formatTimeCallback: clock }),

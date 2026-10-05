@@ -17,7 +17,8 @@ export interface VisionPage { width: number; height: number; words: VisionWord[]
 /** The picture's fingerprint (SHA-256 of its bytes), or null when it cannot be read. */
 export async function imageKey(imageUrl: string): Promise<string | null> {
   try {
-    const bytes = await (await fetch(imageUrl)).arrayBuffer();
+    // Not from the HTTP cache: an <img> load of the same R2 link is cached without CORS headers.
+    const bytes = await (await fetch(imageUrl, { cache: 'no-store' })).arrayBuffer();
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
     return Array.from(digest, b => b.toString(16).padStart(2, '0')).join('');
   } catch {

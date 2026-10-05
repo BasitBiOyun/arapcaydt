@@ -138,7 +138,11 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       reportClientError(project.id, 'isaretler', err);
       setCurrentStage('ERROR');
       setStatusDetail(null);
-      setErrorMessage(err?.message || 'Video analizi yerel olarak tamamlanamadı.');
+      // The browser's "Failed to fetch" means a file (picture or voice) could not be downloaded.
+      const network = /failed to fetch|networkerror|load failed/i.test(String(err?.message || ''));
+      setErrorMessage(network
+        ? 'Soru görseli veya ses dosyası indirilemedi. İnternet bağlantınızı kontrol edip Tekrar Dene’ye basın; sürerse sayfayı yenileyin.'
+        : err?.message || 'Video analizi yerel olarak tamamlanamadı.');
     }
   };
 
