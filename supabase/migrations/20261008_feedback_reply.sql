@@ -1,5 +1,5 @@
 -- "Sorun bildir" replies: the admin writes a short answer to a report ("Sorunu çözdük hocam");
--- the teacher reads it under Bildirimlerim in the side menu.
+-- the teacher reads it under Mesajlar in the side menu.
 -- Needs 20261003_feedback.sql first. Safe to run more than once.
 alter table public.feedback add column if not exists reply text
   check (reply is null or length(reply) <= 2000);

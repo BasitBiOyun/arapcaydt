@@ -7,7 +7,7 @@ import { Credit } from './Credit';
 import { APP_NAME } from '../../config/brand';
 import { PAGE_LABELS } from '../../config/pages';
 import { ReportProblem } from '../../features/feedback/ReportProblem';
-import { MyReports } from '../../features/feedback/MyReports';
+import { Inbox } from '../../features/messages/Inbox';
 import { readSeen, unseenNews } from '../../features/help/changelog';
 
 export type AppPage = 'dashboard' | 'questions' | 'editor' | 'batch' | 'settings' | 'admin' | 'help' | 'news' | 'tools';
@@ -92,7 +92,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         {link({ page: 'news', label: PAGE_LABELS.news, icon: Megaphone, badge: newCount ? 'Yeni' : undefined })}
         {link({ page: 'help', label: PAGE_LABELS.help, icon: Question })}
         <ReportProblem sender={user?.name} />
-        <MyReports />
+        {user && user.role !== 'admin' && <Inbox userId={user.id} />}
         <button className="mobile-signout" onClick={logout}><SignOut size={18}/>Çıkış</button>
       </nav>
 

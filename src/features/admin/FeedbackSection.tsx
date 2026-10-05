@@ -3,6 +3,7 @@ import { CheckCircle, Lifebuoy } from '@phosphor-icons/react';
 import { database } from '../../services/supabase';
 import { isMigrationPending } from '../settings/studioSettings';
 import type { FeedbackContext } from '../feedback/feedback';
+import { QUICK_MESSAGES } from '../messages/messages';
 
 interface Report {
   id: string;
@@ -15,10 +16,8 @@ interface Report {
   replied_at?: string | null;
 }
 
-/** One tap fills the reply box; the admin can still edit it before sending. */
-const QUICK_REPLIES = ['Sorunu çözdük hocam, tekrar deneyebilirsiniz.', 'Önemli değil hocam.', 'Rica ederiz hocam.', 'Bakıyoruz hocam, çözünce haber vereceğiz.'];
 
-/** Reply box under a report: the teacher sees the answer under Bildirimlerim. */
+/** Reply box under a report: the teacher sees the answer under Mesajlar. */
 function ReplyBox({ report, onSent }: { report: Report; onSent: (reply: string, resolved: boolean) => void }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
@@ -43,7 +42,7 @@ function ReplyBox({ report, onSent }: { report: Report; onSent: (reply: string, 
   return (
     <div className="space-y-2 rounded-lg bg-[#FAF9F5] border p-3">
       <div className="flex flex-wrap gap-1.5">
-        {QUICK_REPLIES.map(q => (
+        {QUICK_MESSAGES.map(q => (
           <button key={q} type="button" onClick={() => setText(q)} className="px-2 py-1 rounded-full border bg-white text-xs hover:bg-[#F7EEEE]">{q}</button>
         ))}
       </div>

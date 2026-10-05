@@ -21,9 +21,10 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
-        title: 'Sorun bildirimleri',
+        title: 'Mesajlar ve sorun bildirimleri',
         items: [
-          { text: 'Gönderdiğiniz sorun bildirimlerine yönetici artık kısa bir yanıt yazabiliyor. Yanıtlar sol menüdeki **Bildirimlerim**’de görünür; yeni yanıt gelince yanında sayı çıkar.', help: 'sorun-bildir' },
+          { text: 'Sol menüde yeni **Mesajlar** var: stüdyo yöneticisiyle birebir yazışabilirsiniz. Yönetici size özel mesaj gönderebilir, siz de ona buradan yazabilirsiniz. Yeni mesaj gelince yanında sayı çıkar.', help: 'sorun-bildir' },
+          { text: 'Gönderdiğiniz sorun bildirimlerine yönetici artık kısa bir yanıt yazabiliyor. Bildirimleriniz, durumları ve yanıtlar da **Mesajlar**’da görünür.', help: 'sorun-bildir' },
         ],
       },
     ],
