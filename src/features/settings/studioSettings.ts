@@ -71,7 +71,7 @@ export function announcementState(s: Pick<StudioSettings, 'announcement' | 'anno
 }
 
 /** Longest announcement (20261011_announcement_length.sql); before that migration the database allows 500. */
-export const ANNOUNCEMENT_MAX = 2000;
+export const ANNOUNCEMENT_MAX = 5000;
 const ANNOUNCEMENT_OLD_MAX = 500;
 
 /**

@@ -45,6 +45,17 @@ export async function sendMessage(teacherId: string, body: string, fromAdmin: bo
   return data as Message;
 }
 
+/** Admin "Toplu mesaj": the same message into each chosen teacher's own conversation, in one insert. */
+export async function sendBulkMessage(teacherIds: string[], body: string): Promise<number> {
+  if (!supabase) throw new Error('Bağlantı kurulamadı.');
+  const text = body.trim().slice(0, 2000);
+  const ids = [...new Set(teacherIds)];
+  if (!text || !ids.length) return 0;
+  const { error } = await supabase.from('messages').insert(ids.map(teacher_id => ({ teacher_id, body: text, from_admin: true })));
+  if (error) throw new Error(isMigrationPending(error) ? MESSAGES_PENDING : 'Mesaj gönderilemedi.');
+  return ids.length;
+}
+
 export async function markRead(teacherId: string): Promise<void> {
   if (!supabase) return;
   await supabase.rpc('mark_messages_read', { conversation: teacherId });
