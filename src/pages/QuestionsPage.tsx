@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X, PlayCircle, Tag } from '@phosphor-icons/react';
+import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X, PlayCircle, Tag, FileXls } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { useProjects } from '../features/projects/ProjectContext';
 import { QUESTION_CATEGORIES, getCategoryLabel } from '../config/categories';
@@ -11,6 +11,8 @@ import { useConfirm } from '../components/common/ConfirmDialog';
 import { CollectionInput } from '../features/projects/CollectionInput';
 import { SequencePlayer } from '../features/projects/SequencePlayer';
 import { TopicInput } from '../features/projects/TopicInput';
+import { videoInfoCsv } from '../features/video/videoInfo';
+import { saveFile } from '../services/narration/browserMedia';
 import { downloadBackup } from '../features/projects/backupActions';
 import { TRASH_DAYS, trashDaysLeft } from '../features/projects/trash';
 import { prepareOne, type MarkRow, type MarkState } from '../features/batch/prepareMarks';
@@ -409,6 +411,10 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               </button>
               <button disabled={!!busy} onClick={() => { setTopicName(''); setTopicFor(visibleChosen); }}>
                 <Tag size={18} /> Konu ver
+              </button>
+              <button disabled={!!busy} title="Seçilen soruların başlık, koleksiyon, soru no, konu, doğru cevap ve süresini Excel’de açılan bir liste olarak indirir"
+                onClick={() => saveFile(new Blob([videoInfoCsv(rows.filter(p => chosen.has(p.id)))], { type: 'text/csv;charset=utf-8' }), 'video-bilgileri.csv')}>
+                <FileXls size={18} /> Bilgi listesi (Excel)
               </button>
               <button disabled={!!busy} onClick={() => void backupChosen(visibleChosen)}>
                 <FileZip size={18} /> {busy.startsWith('backup:') ? `Hazırlanıyor ${busy.slice(7)}` : 'Yedeğini indir (ZIP)'}

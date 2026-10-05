@@ -1,6 +1,8 @@
 import React from 'react';
 import type { QuestionProject } from '../../../types';
-import { CheckCircle, CircleNotch, DownloadSimple, Sparkle, WarningCircle } from '@phosphor-icons/react';
+import { CheckCircle, CircleNotch, Copy, DownloadSimple, Sparkle, WarningCircle } from '@phosphor-icons/react';
+import { toast } from 'sonner';
+import { videoInfo, videoInfoText } from '../../video/videoInfo';
 import { ReadinessCard } from '../ReadinessCard';
 import type { ReadinessAction } from '../readiness';
 import { useConfirm } from '../../../components/common/ConfirmDialog';
@@ -75,6 +77,22 @@ export function ExportStep({ step, videoGenerated, currentProject, handleReadine
                 <button type="button" className="font-semibold text-[#8B1E2D] hover:underline" onClick={() => onMarkDone(true)}>tamamlandı olarak işaretleyin</button>.
               </p>
             ))}
+            {step === 4 && (
+              <details className="rounded-lg border border-[#E5E4DC] bg-white text-sm">
+                <summary className="px-3 py-2 cursor-pointer font-semibold text-[#33322E]">Video bilgileri</summary>
+                <div className="px-3 pb-3 space-y-2">
+                  <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+                    {videoInfo(currentProject).map(([label, value]) => (
+                      <React.Fragment key={label}><dt className="text-[#787670]">{label}</dt><dd dir="auto" className="text-[#1C1917]">{value}</dd></React.Fragment>
+                    ))}
+                  </dl>
+                  <button type="button" className="font-semibold text-[#8B1E2D] hover:underline inline-flex items-center gap-1"
+                    onClick={() => navigator.clipboard.writeText(videoInfoText(currentProject)).then(() => toast.success('Video bilgileri kopyalandı.'), () => toast.error('Kopyalanamadı; metni seçip kopyalayın.'))}>
+                    <Copy size={14} /> Kopyala
+                  </button>
+                </div>
+              </details>
+            )}
           </div>
 
           <div className="pt-1 text-center">
