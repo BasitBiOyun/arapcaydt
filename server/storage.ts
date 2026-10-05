@@ -66,3 +66,39 @@ export function summarizeStorage(objects: StoredObject[], rows: ProjectAssetRow[
     convertible: convertibleAudio(rows, objects).length,
   };
 }
+
+export interface ExportOwner { id: string; name?: string | null; email?: string | null }
+export interface ExportProjectRow extends ProjectAssetRow { title?: unknown; questionNumber?: unknown; examYear?: unknown }
+export interface ExportEntry {
+  path: string; bytes: number; mimetype: string | null; createdAt: string;
+  ownerName: string; ownerEmail: string;
+  projectId: string | null; projectTitle: string; use: 'image' | 'audio' | 'unused';
+}
+
+/**
+ * Every stored file with who made it and which project uses it, for the admin's
+ * archive download. The owner is the first folder of the path.
+ */
+export function exportEntries(objects: StoredObject[], rows: ExportProjectRow[], owners: ExportOwner[]): ExportEntry[] {
+  const users = new Map(owners.map(o => [o.id, o]));
+  const uses = new Map<string, { row: ExportProjectRow; use: 'image' | 'audio' }>();
+  for (const row of rows) {
+    const add = (value: unknown, use: 'image' | 'audio') => {
+      const path = pathOf(value);
+      if (path && !uses.has(path)) uses.set(path, { row, use });
+    };
+    add(row.image, 'image');
+    for (const value of [row.nsAudio, row.nsPath, row.anAudio, row.anPath]) add(value, 'audio');
+  }
+  return objects.map(o => {
+    const owner = users.get(o.name.split('/')[0]);
+    const hit = uses.get(o.name);
+    const title = hit ? [hit.row.examYear, hit.row.questionNumber ? `Soru ${hit.row.questionNumber}` : '', hit.row.title]
+      .filter(v => typeof v === 'string' || typeof v === 'number').map(String).map(s => s.trim()).filter(Boolean).join(' ') : '';
+    return {
+      path: o.name, bytes: o.bytes, mimetype: o.mimetype, createdAt: o.created_at,
+      ownerName: owner?.name?.trim() || owner?.email?.split('@')[0] || 'Bilinmeyen', ownerEmail: owner?.email || '',
+      projectId: hit?.row.id ?? null, projectTitle: title, use: hit?.use ?? 'unused',
+    };
+  });
+}

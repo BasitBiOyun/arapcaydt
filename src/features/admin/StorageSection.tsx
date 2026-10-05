@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { authHeaders } from '../../services/supabase';
 import { useConfirm } from '../../components/common/ConfirmDialog';
+import { buildArchive, type ArchiveFile } from './storageArchive';
 
 type Bucket = { count: number; bytes: number };
 interface StorageInfo {
@@ -97,6 +98,28 @@ export const StorageSection: React.FC = () => {
     }
   };
 
+  const downloadAll = async () => {
+    if (!info || !await confirm({ title: 'Tüm görseller ve sesler indirilsin mi?', message: `${mb(info.totalBytes)} tek ZIP dosyası olarak iner: her hocanın klasöründe soru soru görsel ve ses, ayrıca kimin yaptığını gösteren liste.csv. İndirme bitene kadar bu sekmeyi kapatmayın. Hiçbir dosya silinmez.`, confirmLabel: 'İndir' })) return;
+    setBusy(true); setError(''); setProgress('Dosya listesi hazırlanıyor…');
+    try {
+      const res = await fetch('/api/admin/storage?export=1', { cache: 'no-store', headers: await authHeaders() });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !Array.isArray(data?.files)) throw new Error(data?.error || `Dosya listesi alınamadı (HTTP ${res.status}).`);
+      const files: ArchiveFile[] = data.files;
+      const { zip, failed } = await buildArchive(files, (done, total) => setProgress(`${done} / ${total} dosya indirildi`));
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(zip);
+      link.download = `arapca-ydt-arsiv-${new Date().toISOString().slice(0, 10)}.zip`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 60_000);
+      setProgress(`${files.length - failed.length} dosya ZIP'e kondu (${mb(zip.size)}).${failed.length ? ` ${failed.length} dosya indirilemedi; adları ZIP içindeki indirilemeyenler.txt dosyasında.` : ''}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Arşiv hazırlanamadı.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const share = info ? info.totalBytes / info.limitBytes : 0;
   const barColor = share > 0.9 ? 'bg-red-600' : share > 0.7 ? 'bg-amber-500' : 'bg-[#15803D]';
 
@@ -135,10 +158,14 @@ export const StorageSection: React.FC = () => {
               className="border border-[#8B1E2D] text-[#8B1E2D] hover:bg-[#F8EEEE] disabled:opacity-50 rounded px-3 py-2 text-sm font-semibold">
               {info.orphans.count ? `Kullanılmayan ${info.orphans.count} dosyayı sil (${mb(info.orphans.bytes)})` : 'Kullanılmayan dosya yok'}
             </button>
+            <button disabled={busy || !info.totalBytes} onClick={() => void downloadAll()}
+              className="border rounded px-3 py-2 text-sm font-semibold hover:bg-stone-50 disabled:opacity-50">
+              Tümünü indir (ZIP, {mb(info.totalBytes)})
+            </button>
           </div>
           {progress && <p role="status" className="text-sm text-[#1E562A]">{busy ? '⏳ ' : ''}{progress}</p>}
           <p className="text-xs text-stone-500">
-            Çeviri sesi 6 kat küçültür, animasyon zamanlaması değişmez. "Kullanılmayan" dosyalar, hiçbir projenin artık göstermediği eski ses ve görsellerdir (yeniden seslendirme, silinen projeler); son 7 gündekiler korunur. Bu panel haftada bir açıldığında kullanılmayan dosyalar otomatik temizlenir. Yeni yüklenen soru görselleri kaydedilmeden önce küçültülür.
+            Çeviri sesi 6 kat küçültür, animasyon zamanlaması değişmez. "Kullanılmayan" dosyalar, hiçbir projenin artık göstermediği eski ses ve görsellerdir (yeniden seslendirme, silinen projeler); son 7 gündekiler korunur. Bu panel haftada bir açıldığında kullanılmayan dosyalar otomatik temizlenir. Yeni yüklenen soru görselleri kaydedilmeden önce küçültülür. "Tümünü indir" bütün görsel ve sesleri hoca ve soru klasörlerine ayırıp tek ZIP yapar; liste.csv kimin hangi dosyayı yaptığını gösterir.
           </p>
         </div>
       )}

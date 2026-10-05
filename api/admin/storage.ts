@@ -2,7 +2,7 @@ import { logged } from '../../server/errorLog.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { encodeMp3, pcmFromWav } from '../../server/mp3.js';
 import {
-  convertibleAudio, orphans, referencedPaths, summarizeStorage, type ProjectAssetRow, type StoredObject,
+  convertibleAudio, exportEntries, orphans, referencedPaths, summarizeStorage, type ExportProjectRow, type ProjectAssetRow, type StoredObject,
 } from '../../server/storage.js';
 
 export const config = { maxDuration: 60 };
@@ -38,6 +38,30 @@ async function readProjects(db: any): Promise<ProjectAssetRow[]> {
   return all;
 }
 
+/** Every file with its owner, project and a two-hour download link (admin archive). */
+async function exportList(db: any, objects: StoredObject[]) {
+  const rows: ExportProjectRow[] = [];
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await db.from('projects')
+      .select(`${PROJECT_FIELDS},title:data->>title,examYear:data->>examYear,questionNumber:data->questionNumber`)
+      .order('id').range(from, from + 999);
+    if (error) throw error;
+    rows.push(...(data || []));
+    if ((data || []).length < 1000) break;
+  }
+  const { data: owners, error } = await db.from('profiles').select('id,name,email');
+  if (error) throw error;
+  const files = exportEntries(objects, rows, owners || []);
+  const links = new Map<string, string>();
+  const bucket = db.storage.from('project-assets');
+  for (let i = 0; i < files.length; i += 500) {
+    const { data, error: signError } = await bucket.createSignedUrls(files.slice(i, i + 500).map(f => f.path), 7200);
+    if (signError) throw signError;
+    for (const item of data || []) if (item.path && item.signedUrl && !item.error) links.set(item.path, item.signedUrl);
+  }
+  return files.map(f => ({ ...f, url: links.get(f.path) || null }));
+}
+
 async function convert(db: any, item: { projectId: string; path: string }): Promise<string | null> {
   const bucket = db.storage.from('project-assets');
   const { data, error } = await bucket.download(item.path);
@@ -66,7 +90,8 @@ async function remove(db: any, names: string[]): Promise<number> {
 }
 
 /**
- * Admin storage housekeeping: GET usage; POST {action:'convert'} turns up to
+ * Admin storage housekeeping: GET usage; GET ?export=1 lists every file with
+ * its owner and a download link; POST {action:'convert'} turns up to
  * CONVERT_BATCH WAV narrations into MP3 (timings unchanged); POST
  * {action:'sweep', scope:'wav'|'all'} deletes files no project uses.
  */
@@ -83,6 +108,10 @@ async function handler(req: any, res: any) {
     const db = serviceDatabase();
     const [objects, rows] = await Promise.all([readObjects(db), readProjects(db)]);
     if (!objects) return res.status(200).json({ migrationPending: true });
+
+    if (req.method === 'GET' && req.query?.export) {
+      return res.status(200).json({ files: await exportList(db, objects) });
+    }
 
     if (req.method === 'POST' && req.body?.action === 'convert') {
       const pending = convertibleAudio(rows, objects);
