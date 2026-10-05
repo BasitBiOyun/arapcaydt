@@ -225,6 +225,48 @@ function markBadge(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius
   ctx.restore();
 }
 
+export const ARROW_COLOR = '#2563EB', NOTE_COLOR = '#7C3AED';
+
+/** An arrow from tail to head (shares of its box), grown to `progress` of its length; the head comes with the tip. */
+function drawArrow(ctx: CanvasRenderingContext2D, r: FitRect, ends: NonNullable<AnnotationRegion['arrow']>, progress: number, opacity: number, color: string, scale: number) {
+  const x1 = r.x + ends.x1 * r.width, y1 = r.y + ends.y1 * r.height;
+  const length = Math.hypot(r.x + ends.x2 * r.width - x1, r.y + ends.y2 * r.height - y1);
+  if (length < 1) return;
+  const ux = (r.x + ends.x2 * r.width - x1) / length, uy = (r.y + ends.y2 * r.height - y1) / length;
+  const head = Math.min(26 * scale, length * .45), tipX = x1 + ux * length * progress, tipY = y1 + uy * length * progress;
+  ctx.save(); ctx.globalAlpha = opacity;
+  ctx.shadowColor = 'rgba(255,255,255,.9)'; ctx.shadowBlur = 4 * scale;
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 6 * scale; ctx.lineCap = 'round';
+  // The shaft stops at the head's base so the tip stays sharp.
+  const shaft = Math.max(0, length * progress - head * .8);
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 + ux * shaft, y1 + uy * shaft); ctx.stroke();
+  if (length * progress > head * .5) {
+    const bx = tipX - ux * head, by = tipY - uy * head, wing = head * .6;
+    ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(bx - uy * wing, by + ux * wing); ctx.lineTo(bx + uy * wing, by - ux * wing); ctx.closePath(); ctx.fill();
+  }
+  ctx.restore();
+}
+
+/** A label in its box: a coloured pill with the teacher's text, as large as the box allows. */
+function drawNote(ctx: CanvasRenderingContext2D, r: FitRect, text: string, pop: number, opacity: number, color: string, scale: number) {
+  ctx.save(); ctx.globalAlpha = opacity;
+  ctx.translate(r.x + r.width / 2, r.y + r.height / 2); ctx.scale(pop, pop);
+  ctx.shadowColor = 'rgba(15,23,42,.28)'; ctx.shadowBlur = 12 * scale; ctx.shadowOffsetY = 3 * scale;
+  ctx.fillStyle = color; ctx.beginPath(); ctx.roundRect(-r.width / 2, -r.height / 2, r.width, r.height, Math.min(14 * scale, r.height / 2)); ctx.fill();
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+  ctx.direction = ARABIC.test(text) && !LATIN.test(text) ? 'rtl' : 'ltr';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#FFFFFF';
+  let size = r.height * .56;
+  const pad = Math.min(16 * scale, r.width * .08);
+  do {
+    ctx.font = `700 ${size}px "Manrope", "Amiri", sans-serif`;
+    if (ctx.measureText(text).width <= r.width - pad * 2 || size <= 8 * scale) break;
+    size *= .92;
+  } while (true);
+  ctx.fillText(text, 0, size * .04);
+  ctx.restore();
+}
+
 /** Silent closing frame after the narration that restates the answer. */
 export const OUTRO_SECONDS = 2.5;
 export function outroSeconds(actions: VideoAction[] = [], show = true): number {
@@ -296,6 +338,7 @@ export function renderQuestionVideoFrame(
     // Paused for editing: every mark on screen is shown whole, not at the first frame of its animation.
     for (const u of state.activeUnderlines) { u.progress = 1; u.opacity = 1; }
     for (const c of state.activeCircles) { c.progress = 1; c.opacity = 1; }
+    for (const a of [...state.activeArrows, ...state.activeNotes]) { a.progress = 1; a.opacity = 1; }
     for (const f of state.activeFocus) f.intensity = 1;
   }
   const byId = new Map(regions.map(r => [r.id, r]));
@@ -350,7 +393,7 @@ export function renderQuestionVideoFrame(
     const rx = r.width / 2 + (drawn ? 0 : 12 * scale), ry = r.height / 2 + (drawn ? 0 : 10 * scale);
     const from = -Math.PI * .6, sweep = Math.PI * 2.12 * easeOutCubic(c.progress);
     ctx.save(); ctx.globalAlpha = c.opacity;
-    ctx.strokeStyle = '#DC2626'; ctx.lineWidth = 4.5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
+    ctx.strokeStyle = c.color || '#DC2626'; ctx.lineWidth = 4.5 * scale; ctx.lineCap = 'round'; ctx.beginPath();
     for (let i = 0; i <= 48; i++) {
       const a = from + sweep * i / 48;
       // The ring widens a little as it goes round, so its end passes outside its start.
@@ -359,6 +402,16 @@ export function renderQuestionVideoFrame(
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
     ctx.stroke(); ctx.restore();
+  }
+  for (const a of state.activeArrows) {
+    const region = byId.get(a.regionId), r = rectFor(a.regionId);
+    if (!region || !r || a.progress <= 0) continue;
+    drawArrow(ctx, r, region.arrow ?? { x1: 0, y1: .5, x2: 1, y2: .5 }, easeOutCubic(a.progress), a.opacity, a.color || ARROW_COLOR, scale);
+  }
+  for (const n of state.activeNotes) {
+    const region = byId.get(n.regionId), r = rectFor(n.regionId);
+    if (!region?.text?.trim() || !r || n.progress <= 0) continue;
+    drawNote(ctx, r, region.text.trim(), easeOutBack(n.progress), n.opacity, n.color || NOTE_COLOR, scale);
   }
   // A stamp (✗/✓ put on the picture) is the badge itself, drawn in its box: no frame, no fading.
   const isStamp = (id: string) => byId.get(id)?.shape === 'stamp';

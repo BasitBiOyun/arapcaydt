@@ -7,12 +7,14 @@ const TITLE: Partial<Record<VideoAction['type'], (target: string) => string>> = 
   underline: t => `Altı çizilir: ${t}`,
   circle: t => `Daire: ${t}`,
   highlight: t => `Vurgu: ${t}`,
+  arrow: () => 'Ok',
 };
 
 /** A mark in plain words ("C şıkkı elenir"); for other actions, just the box's name. */
 export function cueTitle(action: VideoAction, regions: AnnotationRegion[]): string {
   const region = regions.find(r => r.id === action.targetRegionId);
   const option = /^option-([a-e])$/.exec(action.targetRegionId);
+  if (action.type === 'note') return `Yazı: ${(region?.text || '').trim().slice(0, 40)}`;
   const target = option ? `${option[1].toUpperCase()} şıkkı`
     : (region?.content || region?.label || 'Seçili alan').replace(/\s+/g, ' ').trim().slice(0, 40);
   return TITLE[action.type]?.(target) ?? target;

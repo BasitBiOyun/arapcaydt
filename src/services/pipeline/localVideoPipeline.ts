@@ -123,7 +123,9 @@ export class LocalVideoPipeline {
         const anchor = original.markerAnchor;
         const y = anchor ? (original.y + anchor.y*original.height - region.y)/region.height : -1;
         finalRegions[index] = { ...region, id,
-          ...(!region.markerAnchor && anchor && y>=0 && y<=1 ? {markerAnchor:{x:0,y}} : {}) };
+          ...(!region.markerAnchor && anchor && y>=0 && y<=1 ? {markerAnchor:{x:0,y}} : {}),
+          // "Otomatiğe döndür" goes back to where this reading found the box.
+          ...(region.auto ? { auto: { x: original.x, y: original.y, width: original.width, height: original.height } } : {}) };
       }
       else finalRegions.push({ ...region, id });
     }

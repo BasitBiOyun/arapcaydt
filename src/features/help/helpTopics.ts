@@ -201,7 +201,9 @@ export const HELP_TOPICS: HelpTopic[] = [
           'Çizgi, önizlemenin durduğu anda zaman şeridine iner; ne kadar süreceğini şeritte kenarından çekerek ya da **Şimdi** düğmesiyle dinleyerek ayarlarsınız. Çizgiyi sonradan uzatıp kısaltmak için seçin ve iki ucundaki tutamaçları çekin.',
           '**▁** aracı çizdikten sonra açık kalır: birkaç satırın altını arka arkaya çizebilirsiniz. Her çizgi önizlemenin durduğu anda başlar ve hemen görünür; zamanlarını şeritten ayarlarsınız. Bitince **Esc**’ye basın.',
           'Stüdyonun kendisinin bulduğu bir ifadede çizgiyi seçince çizginin kendisini fareyle tutup yukarı aşağı sürükleyerek yalnız o çizginin yüksekliğini ayarlayabilirsiniz.',
-          'Görselin üstündeki **Geri al** son değişikliği geri alır.',
+          '**➜ Ok**: Aracı seçin, okun kuyruğundan basın ve ucunun gideceği yere sürükleyip bırakın. Videoda ok kuyruğundan ucuna doğru uzayarak gelir. Araç açık kalır, birkaç ok çizebilirsiniz; bitince **Esc**. Okun yönünü küçük çubuktaki ⇄ düğmesiyle çevirirsiniz.',
+          '**T Yazı**: Aracı seçip yazının çıkacağı yere tıklayın (ya da sürükleyerek alanını çizin). Küçük çubuktaki kutuya yazınızı girip Enter’a basın; Türkçe de Arapça da yazabilirsiniz. Yazı kutusunu köşelerinden büyütünce yazı da büyür.',
+          'Görselin üstündeki **Geri al** son değişikliği geri alır (**Ctrl+Z**), **Yinele** geri aldığınızı geri getirir (**Ctrl+Y**).',
         ],
       },
       {
@@ -210,6 +212,8 @@ export const HELP_TOPICS: HelpTopic[] = [
           'İşaretler: her işaret simgesi ve saatiyle yazar. Raptiye (**Buraya al**) işareti önizlemenin durduğu ana taşır; ✕ işareti siler.',
           '**Şık** harfleri: Kutunun hangi şık olduğunu söyler. Bir harfe basınca kutu o şık olur; o şıkkın çarpısı ya da tiki sese göre kendiliğinden gelir. (Şık kutularında ve elle çizilen düz kutularda görünür.)',
                     'Kopyala / Yapıştır: kutuyu ya da işareti çoğaltır. Kopya biraz yanda çıkar ve işaretleri önizlemenin durduğu andan başlar; sürükleyip yerine koyun.',
+          '**Renkler**: Alt çizgi, daire, ok ve yazının rengini değiştirir (kırmızı, turuncu, yeşil, mavi, mor, siyah).',
+          '**Otomatiğe döndür**: Stüdyonun bulduğu bir kutuyu (bir şık, bir ifade) taşıdıysanız ya da boyunu değiştirdiyseniz, kutuyu bulunduğu yere ve boya geri getirir.',
           'Çöp kutusu: kutuyu ya da işareti siler (**Delete** tuşu da siler).',
         ],
       },
@@ -251,7 +255,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       },
     ],
     tips: [
-      'Klavyeyle: **Boşluk** oynatır/durdurur, **Ctrl+Z** geri alır, **Ctrl+C / Ctrl+V** seçili kutuyu kopyalar/yapıştırır, **Delete** seçili kutuyu siler, **Esc** seçimi bırakır. Şeritte **Enter** seçili işareti o anda başlatır / bitirir, **← →** önceki/sonraki işarete gider, **Shift + ← →** seçili işareti 0,1 saniye kaydırır.',
+      'Klavyeyle: **Boşluk** oynatır/durdurur, **Ctrl+Z** geri alır, **Ctrl+Y** yineler, **Ctrl+C / Ctrl+V** seçili kutuyu kopyalar/yapıştırır, **Delete** seçili kutuyu siler, **Esc** seçimi bırakır. Şeritte **Enter** seçili işareti o anda başlatır / bitirir, **← →** önceki/sonraki işarete gider, **Shift + ← →** seçili işareti 0,1 saniye kaydırır.',
       'Ekranınız küçükse sağ üstteki **Tam ekranda düzenle** düğmesine basın: yalnız soru ve zaman şeridi kalır, ikisi de kaydırmadan ekrana sığar. **Esc** ile geri dönersiniz. **Paneli gizle** sağdaki paneli kapatıp şeride yer açar.',
     ],
   },

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Moveable from 'react-moveable';
-import { ArrowCounterClockwise, ClipboardText, Copy, MapPin, Trash, X } from '@phosphor-icons/react';
+import { ArrowArcLeft, ArrowClockwise, ArrowCounterClockwise, ArrowsLeftRight, ClipboardText, Copy, MapPin, Trash, X } from '@phosphor-icons/react';
 import type { AnnotationRegion, VideoAction } from '../../types';
 import type { FitRect } from './engine/types';
-import { regionCanvasRect, underlineY } from './engine/renderer';
+import { ARROW_COLOR, NOTE_COLOR, regionCanvasRect, underlineY } from './engine/renderer';
 import { clock, moveRegion, nudgeAction } from '../question-editor/workflow';
 import { cueTitle, withLineOffset } from './markLabels';
 
@@ -16,7 +16,14 @@ const ICON: Partial<Record<VideoAction['type'], { icon: string; color: string; n
   focus: { icon: '◎', color: '#4338CA', name: 'Çerçeve' }, circle: { icon: '◯', color: '#DC2626', name: 'Daire' },
   underline: { icon: '▁', color: '#D97706', name: 'Altı çizgi' },
   highlight: { icon: '▮', color: '#B45309', name: 'Vurgu' },
+  arrow: { icon: '➜', color: ARROW_COLOR, name: 'Ok' }, note: { icon: 'T', color: NOTE_COLOR, name: 'Yazı' },
 };
+/** Colours a teacher can give an underline, a ring, an arrow or a note. */
+export const MARK_COLORS = [
+  { color: '#DC2626', name: 'Kırmızı' }, { color: '#D97706', name: 'Turuncu' }, { color: '#16A34A', name: 'Yeşil' },
+  { color: ARROW_COLOR, name: 'Mavi' }, { color: NOTE_COLOR, name: 'Mor' }, { color: '#1C1917', name: 'Siyah' },
+];
+const COLORABLE = new Set<VideoAction['type']>(['underline', 'circle', 'arrow', 'note']);
 /** "A şıkkı" or the phrase the box holds. */
 const boxName = (region: AnnotationRegion, regions: AnnotationRegion[]) =>
   cueTitle({ type: 'reset', targetRegionId: region.id } as VideoAction, regions);
@@ -39,7 +46,7 @@ export function resizeRegion(region: AnnotationRegion, handle: Handle, dx: numbe
 }
 
 /** Marks a teacher can put on the picture, in toolbar order. */
-export const TOOLS = ['reject', 'correct', 'focus', 'circle', 'underline', 'highlight'] as const;
+export const TOOLS = ['reject', 'correct', 'focus', 'circle', 'underline', 'highlight', 'arrow', 'note'] as const;
 export type Tool = typeof TOOLS[number];
 
 /**
@@ -49,7 +56,7 @@ export type Tool = typeof TOOLS[number];
 export function addMark(actions: VideoAction[], regionId: string, tool: Tool, time: number, total: number): VideoAction[] {
   const start = Math.max(0, Math.min(total - .1, time));
   const lasting = tool === 'reject' || tool === 'correct';
-  const duration = lasting ? total - start : Math.min(tool === 'focus' || tool === 'circle' ? 2.5 : 2, total - start);
+  const duration = lasting ? total - start : Math.min(tool === 'note' ? 4 : tool === 'focus' || tool === 'circle' || tool === 'arrow' ? 2.5 : 2, total - start);
   const mark: VideoAction = { id: `manual-${regionId}-${tool}-${Math.round(start * 1000)}-${actions.length}`, type: tool, targetRegionId: regionId,
     regionId, start, startTime: start, duration, label: `${tool}: elle eklendi` };
   // A box has one verdict: a new cross or tick replaces whichever it had.
@@ -105,6 +112,45 @@ export const LINE_BOX = .016;
 const lineAt = (drawn: AnnotationRegion, y: number): AnnotationRegion =>
   ({ ...drawn, y: Math.max(0, Math.min(1 - LINE_BOX, y - LINE_BOX / 2)), height: LINE_BOX, shape: 'line' });
 
+/** Smallest side of an arrow's box, in canvas pixels: a flat arrow still has a box to grab. */
+const ARROW_MIN = 28;
+
+/**
+ * An arrow dragged from (x1, y1) to (x2, y2) on the image: its box and where tail and head sit in it.
+ * Null for a stroke too short to be an arrow.
+ */
+export function arrowFromStroke(id: string, x1: number, y1: number, x2: number, y2: number, fit: FitRect): AnnotationRegion | null {
+  if (Math.hypot((x2 - x1) * fit.width, (y2 - y1) * fit.height) < 24) return null;
+  const span = (a: number, b: number, size: number) => {
+    const min = ARROW_MIN / size, lo = Math.min(a, b), length = Math.abs(b - a);
+    if (length >= min) return { from: Math.max(0, lo), size: Math.min(1 - Math.max(0, lo), length), flat: false };
+    return { from: Math.max(0, Math.min(1 - min, (a + b) / 2 - min / 2)), size: min, flat: true };
+  };
+  const h = span(x1, x2, fit.width), v = span(y1, y2, fit.height);
+  const at = (p: number, s: typeof h) => s.flat ? .5 : Math.max(0, Math.min(1, (p - s.from) / s.size));
+  return { id, type: 'keyword', label: 'Ok', x: h.from, y: v.from, width: h.size, height: v.size, manuallyAdjusted: true, shape: 'arrow',
+    arrow: { x1: at(x1, h), y1: at(y1, v), x2: at(x2, h), y2: at(y2, v) } };
+}
+
+/** A note box: as dragged, or (for a click) a short label centred where clicked. */
+export function noteAt(id: string, ix: number, iy: number, fit: FitRect, scale: number, dragged?: AnnotationRegion | null): AnnotationRegion {
+  const base = { id, type: 'keyword' as const, label: 'Yazı', manuallyAdjusted: true, shape: 'note' as const, text: 'Not' };
+  if (dragged && dragged.width * fit.width > 40 && dragged.height * fit.height > 20) return { ...dragged, ...base };
+  const width = Math.min(1, 260 * scale / fit.width), height = Math.min(1, 64 * scale / fit.height);
+  return { ...base, x: Math.max(0, Math.min(1 - width, ix - width / 2)), y: Math.max(0, Math.min(1 - height, iy - height / 2)), width, height };
+}
+
+/** The box back where the studio found it ("Otomatiğe döndür"); unchanged when it was never moved. */
+export function revertToAuto(region: AnnotationRegion): AnnotationRegion {
+  if (!region.auto) return region;
+  const { auto, manuallyAdjusted: _manual, ...rest } = region;
+  return { ...rest, ...auto };
+}
+
+/** One colour for every colourable mark of a box. */
+export const recolor = (actions: VideoAction[], regionId: string, color: string): VideoAction[] =>
+  actions.map(a => a.targetRegionId === regionId && COLORABLE.has(a.type) ? { ...a, color } : a);
+
 /** A ✗ or ✓ stamp of `side` canvas pixels centred where the teacher clicked (image shares). */
 export function stampAt(id: string, ix: number, iy: number, fit: FitRect, side: number): AnnotationRegion {
   const width = side / fit.width, height = side / fit.height;
@@ -148,6 +194,8 @@ interface Props {
   onActions: (actions: VideoAction[]) => void;
   onUndo?: () => void;
   canUndo?: boolean;
+  onRedo?: () => void;
+  canRedo?: boolean;
   /** The teacher says a box is option `letter` (the system then knows where "C şıkkı" is). */
   onAssignOption?: (boxId: string, letter: string) => void;
   /** A missing option to show on the picture: draw its box, or click the box that is it. */
@@ -167,13 +215,15 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E'];
  * drag a corner to resize, drag its underline up or down, and change its marks from the
  * small menu next to it. Every change goes through the same data the exported MP4 uses.
  */
-export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, actions, time, total, underlineOffset = 0, onRegions, onActions, onUndo, canUndo, onAssignOption, drawOption, onDrawOptionDone, focusBox }: Props) {
+export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, actions, time, total, underlineOffset = 0, onRegions, onActions, onUndo, canUndo, onRedo, canRedo, onAssignOption, drawOption, onDrawOptionDone, focusBox }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [gesture, setGesture] = useState<Gesture | null>(null);
   const [draft, setDraft] = useState<AnnotationRegion | VideoAction | null>(null);
   const [tool, setTool] = useState<Tool | null>(null);
   const [hasCopy, setHasCopy] = useState(!!copied);
+  /** Where the pointer is while an arrow is drawn (its head). */
+  const [pointer, setPointer] = useState<{ ix: number; iy: number } | null>(null);
   useEffect(() => { if (focusBox && !tool && !drawOption) setSelectedId(focusBox.id); }, [focusBox]); // eslint-disable-line react-hooks/exhaustive-deps
   const keys = useRef<(e: KeyboardEvent) => void>(() => {});
   const onPicture = useRef(false);
@@ -220,6 +270,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       const { ix, iy } = onImage(e);
       // The underline tool draws a flat line of fixed thickness: only its length follows the pointer.
       setDraft(drawnRegion('drawing', gesture.ix, gesture.iy, ix, tool === 'underline' ? gesture.iy : iy));
+      setPointer({ ix, iy });
       return;
     }
     if (gesture.mode === 'line') {
@@ -246,11 +297,20 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       // A drawn place (anywhere, even over a found box) gets the chosen mark; a click on a box marks that box.
       const lineHeight = typicalLineHeight(regions);
       const stamp = tool === 'reject' || tool === 'correct';
-      const stroke = tool && !stamp && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, lineHeight) : null;
+      const arrow = tool === 'arrow' && pointer ? arrowFromStroke(`manual-box-${Date.now()}`, gesture.ix, gesture.iy, pointer.ix, pointer.iy, fit) : null;
+      const stroke = tool && !stamp && tool !== 'arrow' && tool !== 'note' && draft && 'x' in draft ? placeFromStroke(draft, tool, fit, lineHeight) : null;
       const place = stroke && tool === 'underline' ? snapToText(stroke, regions, lineHeight)
         : stroke ? { ...stroke, shape: 'drawn' as const } : null;
       const dragged = draft && 'x' in draft && (draft.width * fit.width > 12 || draft.height * fit.height > 8);
-      if (stamp && (dragged || !gesture.boxId)) {
+      if (arrow) {
+        // An arrow points from where the drag began to where it ended; the tool stays on to draw more.
+        onRegions([...regions, arrow], addMark([], arrow.id, 'arrow', time, total));
+      } else if (tool === 'note') {
+        // A note goes where clicked (or fills the dragged area); its text is typed in the small bar.
+        const note = noteAt(`manual-box-${Date.now()}`, gesture.ix, gesture.iy, fit, scale, draft && 'x' in draft ? draft : null);
+        onRegions([...regions, note], addMark([], note.id, 'note', time, total));
+        setSelectedId(note.id); setTool(null);
+      } else if (stamp && (dragged || !gesture.boxId)) {
         // ✗ and ✓ are stamps: put where clicked (or in the middle of a dragged area), not beside a box.
         const id = `manual-box-${Date.now()}`;
         const at = draft && 'x' in draft && dragged ? { ix: draft.x + draft.width / 2, iy: draft.y + draft.height / 2 } : gesture;
@@ -265,11 +325,11 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         const marks = addMark([], id, tool, time, total).map(m => fromLeft ? { ...m, fromLeft: true } : m);
         onRegions([...regions, { ...place, id }], marks);
         if (!line) { setSelectedId(id); setTool(null); }
-      } else if (gesture.boxId) markBox(gesture.boxId);
+      } else if (gesture.boxId && tool !== 'arrow') markBox(gesture.boxId);
     } else if (gesture && draft && 'x' in draft) onRegions(regions.map(r => r.id === draft.id ? draft : r));
     else if (gesture && draft) onActions(actions.map(a => a.id === draft.id ? draft as VideoAction : a));
     // A box moved with the selection frame (react-moveable) is saved by its own end handlers.
-    if (gesture) { setGesture(null); setDraft(null); }
+    if (gesture) { setGesture(null); setDraft(null); setPointer(null); }
   };
 
   /** The selected box on screen, which the selection frame (react-moveable) moves and resizes. */
@@ -316,8 +376,11 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       return;
     }
     if (!ctrl && (e.key === 'Delete' || e.key === 'Backspace') && selected && onPicture.current) { e.preventDefault(); removeBox(selected.id); return; }
-    if (!ctrl || e.altKey || e.shiftKey) return;
+    if (!ctrl || e.altKey) return;
     const k = e.key.toLowerCase();
+    // Ctrl+Y or Ctrl+Shift+Z brings back what Ctrl+Z took away.
+    if ((k === 'y' || (k === 'z' && e.shiftKey)) && onRedo && canRedo) { e.preventDefault(); onRedo(); return; }
+    if (e.shiftKey) return;
     if (k === 'z' && onUndo && canUndo) { e.preventDefault(); onUndo(); return; }
     if (k === 'c' && selected && onPicture.current && !window.getSelection()?.toString()) {
       e.preventDefault();
@@ -357,11 +420,17 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
       <div className="absolute top-2 left-2 flex items-center gap-1.5 pointer-events-auto" onPointerDown={e => e.stopPropagation()}>
         <span className={`px-2 py-1 rounded-md text-white text-xs ${drawOption ? 'bg-[#8B1E2D] font-semibold' : 'bg-black/60'}`}>
           {drawOption ? `${drawOption} şıkkı: kutusunu görselde sürükleyerek çizin ya da onu gösteren kutuya tıklayın · Esc: vazgeç` : tool === 'underline' ? 'Alt çizgi: başlangıca basın, sağa ya da sola sürükleyip bırakın · yazının altına bırakırsanız satıra oturur · bitince Esc'
+            : tool === 'arrow' ? 'Ok: kuyruğundan basın, ucunun gideceği yere sürükleyip bırakın · bitince Esc'
+            : tool === 'note' ? `Yazı: yazının çıkacağı yere tıklayın, sonra metni küçük çubuğa yazın · ${clock(time)} anında eklenir`
             : tool ? `${ICON[tool]!.name}: istediğiniz yere sürükleyip alan çizin ya da bir kutuya tıklayın · ${clock(time)} anında eklenir` : 'Düzenlemek için bir kutuya tıklayın · soldan işaret ekleyin'}
         </span>
         {onUndo && <button type="button" disabled={!canUndo} onClick={onUndo} title="Son değişikliği geri al"
           className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
           <ArrowCounterClockwise size={12} /> Geri al
+        </button>}
+        {onRedo && <button type="button" disabled={!canRedo} onClick={onRedo} title="Geri alınanı yinele (Ctrl+Y)"
+          className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E] inline-flex items-center gap-1 disabled:opacity-40">
+          <ArrowClockwise size={12} /> Yinele
         </button>}
         {hasCopy && !selected && !drawing && <button type="button" onClick={paste} title="Kopyalanan kutuyu buraya yapıştır (Ctrl+V)"
           className="px-2 py-1 rounded-md bg-white/90 text-xs font-semibold text-[#33322E]">Yapıştır</button>}
@@ -374,7 +443,7 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
         const isSelected = region.id === selectedId;
         const color = region.shape ? undefined : ICON[active[0]?.type]?.color;
         // A stamp, a line or a drawn ring is the mark itself: grab it where it is drawn.
-        const shapeClass = region.shape === 'stamp' ? 'rounded-full' : region.shape === 'line' ? 'rounded-full' : region.shape === 'drawn' ? 'rounded-[40%]' : 'rounded-[3px]';
+        const shapeClass = region.shape === 'stamp' ? 'rounded-full' : region.shape === 'line' ? 'rounded-full' : region.shape === 'drawn' ? 'rounded-[40%]' : region.shape === 'note' ? 'rounded-lg' : 'rounded-[3px]';
         return (
           <div key={region.id} role="button" aria-label={`${region.shape ? (active[0] ? ICON[active[0].type]!.name : 'İşaret') : boxName(region, regions)} kutusu`}
             title="Seç: taşımak için sürükleyin"
@@ -422,7 +491,17 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
           style={{ left: `${rect.x / canvasWidth * 100}%`, width: `${Math.max(rect.width, 2) / canvasWidth * 100}%`,
             top: `${(rect.y - Math.max(2, 2.5 * scale)) / canvasHeight * 100}%`, height: `${Math.max(4, 5 * scale) / canvasHeight * 100}%` }} />;
       })()}
-      {gesture?.mode === 'draw' && draft && 'x' in draft && tool !== 'underline' && tool !== 'reject' && tool !== 'correct' && (
+      {gesture?.mode === 'draw' && tool === 'arrow' && pointer && (() => {
+        const at = (ix: number, iy: number) => ({ x: (fit.x + ix * fit.width) / canvasWidth * 100, y: (fit.y + iy * fit.height) / canvasHeight * 100 });
+        const a = at(gesture.ix, gesture.iy), b = at(pointer.ix, pointer.iy);
+        return (
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={ARROW_COLOR} strokeWidth={4 * scale} vectorEffect="non-scaling-stroke" strokeLinecap="round" />
+            <circle cx={b.x} cy={b.y} r={.6} fill={ARROW_COLOR} />
+          </svg>
+        );
+      })()}
+      {gesture?.mode === 'draw' && draft && 'x' in draft && tool !== 'underline' && tool !== 'arrow' && tool !== 'reject' && tool !== 'correct' && (
         <div className={`absolute border-2 ${tool === 'circle' ? 'rounded-[50%]' : 'border-dashed rounded-[3px]'} pointer-events-none`} style={{ ...pct(regionCanvasRect(draft, fit)), borderColor: tool ? ICON[tool]!.color : drawOption ? '#8B1E2D' : '#2563EB' }} />
       )}
 
@@ -470,6 +549,34 @@ export function PreviewEditOverlay({ fit, canvasWidth, canvasHeight, regions, ac
                 );
               })}
             </span>
+          )}
+          {selected.shape === 'note' && (
+            <input aria-label="Yazı" dir="auto" maxLength={80} defaultValue={selected.text ?? ''} key={selected.id} autoFocus
+              placeholder="Yazıyı girin" className="w-40 px-1.5 py-0.5 rounded border border-[#D5D4CC] text-xs"
+              onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }}
+              onBlur={e => { const text = e.target.value.trim(); if (text && text !== selected.text) onRegions(regions.map(r => r.id === selected.id ? { ...r, text } : r)); }} />
+          )}
+          {selectedMarks.some(m => COLORABLE.has(m.type)) && (
+            <span className="inline-flex items-center gap-0.5" role="group" aria-label="Renk">
+              {MARK_COLORS.map(c => {
+                const current = selectedMarks.filter(m => COLORABLE.has(m.type)).every(m => (m.color ?? ICON[m.type]!.color).toUpperCase() === c.color);
+                return <button key={c.color} type="button" aria-pressed={current} title={c.name} aria-label={`Renk: ${c.name}`}
+                  onClick={() => onActions(recolor(actions, selected.id, c.color))}
+                  className={`w-4 h-4 rounded-full border-2 ${current ? 'border-[#1C1917]' : 'border-white shadow-[0_0_0_1px_#D5D4CC]'}`} style={{ background: c.color }} />;
+              })}
+            </span>
+          )}
+          {selected.shape === 'arrow' && selected.arrow && (
+            <button type="button" title="Okun yönünü çevir" aria-label="Okun yönünü çevir" className="p-1 rounded hover:bg-[#F2F1EB]"
+              onClick={() => { const a = selected.arrow!; onRegions(regions.map(r => r.id === selected.id ? { ...r, arrow: { x1: a.x2, y1: a.y2, x2: a.x1, y2: a.y1 } } : r)); }}>
+              <ArrowsLeftRight size={14} />
+            </button>
+          )}
+          {selected.auto && (
+            <button type="button" title="Kutuyu stüdyonun bulduğu yere ve boya geri getir" className="px-1.5 py-0.5 rounded hover:bg-[#F2F1EB] inline-flex items-center gap-1 font-semibold"
+              onClick={() => onRegions(regions.map(r => r.id === selected.id ? revertToAuto(r) : r))}>
+              <ArrowArcLeft size={13} /> Otomatiğe döndür
+            </button>
           )}
           <span className="inline-flex items-center ml-auto">
             <button type="button" onClick={() => copy(selected)} title="Kopyala (Ctrl+C)" aria-label="Kopyala" className="p-1 rounded hover:bg-[#F2F1EB]"><Copy size={14} /></button>

@@ -8,12 +8,21 @@ export function planRegionActions(regions: AnnotationRegion[], text: string, wor
   return alignEventsWithNarration(parseSolutionSemantics(text, regions, matches).events, words, duration, text);
 }
 
+const sameBox = (a: Pick<AnnotationRegion, 'x' | 'y' | 'width' | 'height'>, b: Pick<AnnotationRegion, 'x' | 'y' | 'width' | 'height'>) =>
+  Math.abs(a.x - b.x) < 1e-6 && Math.abs(a.y - b.y) < 1e-6 && Math.abs(a.width - b.width) < 1e-6 && Math.abs(a.height - b.height) < 1e-6;
+
 /** Geometry edits retain existing timing; new/retargeted phrases get real audio timing. */
 export function applyRegionEdits(config: VideoConfig, next: AnnotationRegion[], text: string, words: NarrationWord[], duration: number): VideoConfig {
   const before = config.regions || [];
   const regions = next.map(r => {
     const old = before.find(o => o.id === r.id);
-    return JSON.stringify(old) === JSON.stringify(r) ? r : { ...r, manuallyAdjusted: true };
+    if (JSON.stringify(old) === JSON.stringify(r)) return r;
+    // Back where the studio found it ("Otomatiğe döndür"): a found box again.
+    if (old?.auto && !r.auto && !r.manuallyAdjusted && sameBox(r, old.auto)) return r;
+    // A found box moved or resized for the first time remembers where it was found.
+    const auto = r.auto ?? (old && !old.shape && !old.manuallyAdjusted && !sameBox(r, old)
+      ? { x: old.x, y: old.y, width: old.width, height: old.height } : undefined);
+    return { ...r, manuallyAdjusted: true, ...(auto ? { auto } : {}) };
   });
   const changedTargets = new Set(regions.filter(r => {
     const old = before.find(o => o.id === r.id);

@@ -79,7 +79,13 @@ export interface AnnotationRegion {
    * stamp), an underline `line` (the box is the line), or a `drawn` place (a ring fills it exactly).
    * Found boxes and older drawn boxes have none.
    */
-  shape?: 'stamp' | 'line' | 'drawn';
+  shape?: 'stamp' | 'line' | 'drawn' | 'arrow' | 'note';
+  /** An `arrow`'s tail and head inside its box (shares of the box, 0–1). */
+  arrow?: { x1: number; y1: number; x2: number; y2: number };
+  /** A `note`'s text, written on the picture (never matched to the narration). */
+  text?: string;
+  /** Where the studio first found this box, kept when the teacher moves or resizes it ("Otomatiğe döndür"). */
+  auto?: { x: number; y: number; width: number; height: number };
 }
 
 export interface VideoCaption {
@@ -98,6 +104,10 @@ export type VideoActionType =
   | 'focus'
   /** A hand-drawn ring around a word or an option, drawn in and kept for its duration. */
   | 'circle'
+  /** An arrow the teacher drew, growing from its tail to its head. */
+  | 'arrow'
+  /** A short text the teacher wrote on the picture. */
+  | 'note'
   | 'dim-others'
   | 'reset';
 
@@ -109,7 +119,7 @@ export interface VideoAction {
    * (`to`, 0–1) the line is `at` seconds after the mark starts; between points it moves evenly.
    */
   drawSteps?: Array<{ at: number; to: number }>;
-  /** Underline only: the line's colour (the studio's orange when not set). */
+  /** Underline, ring, arrow or note: the teacher's colour (each mark's own colour when not set). */
   color?: string;
   /** Underline only: drawn left-to-right (the way the teacher dragged it); otherwise right-to-left, as Arabic is read. */
   fromLeft?: boolean;

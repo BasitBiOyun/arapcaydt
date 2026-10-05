@@ -27,6 +27,15 @@ export interface ActiveCircle {
   regionId: string;
   progress: number;
   opacity: number;
+  color?: string;
+}
+
+/** An arrow drawn from its tail (`progress` 0–1), then kept; a note faded in and kept. */
+export interface ActiveShape {
+  regionId: string;
+  progress: number;
+  opacity: number;
+  color?: string;
 }
 
 export interface ActiveDimOthers {
@@ -46,6 +55,8 @@ export interface RenderState {
   activeUnderlines: ActiveUnderline[];
   activeFocus: ActiveFocus[];
   activeCircles: ActiveCircle[];
+  activeArrows: ActiveShape[];
+  activeNotes: ActiveShape[];
   activeDimOthers: ActiveDimOthers;
   rejectedRegions: Record<string, MarkerState>;
   correctRegions: Record<string, MarkerState>;

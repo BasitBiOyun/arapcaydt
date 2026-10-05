@@ -98,6 +98,10 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
   const [spoken, setSpoken] = useState<string | null>(null);
   /** The box to select on the picture after "Burada hata var" (a new object each time, so the same box can be picked again). */
   const [focusBox, setFocusBox] = useState<{ id: string } | null>(null);
+  /** What Ctrl+Z took away, for Ctrl+Y; a new change starts a fresh redo list. */
+  const [redo, setRedo] = useState<VideoConfig[]>([]);
+  useEffect(() => setRedo([]), [currentProject.id]);
+  const remember = () => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); setRedo([]); };
   if (step === 2 && narration && hasImage) return (
     <div className="narration-stage">
       <div className="narration-stage-picture">
@@ -160,16 +164,18 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
           audioUrl={activeAudioUrl}
           editing={step === 3 ? {
             canUndo: regionHistory.length > 0,
-            onUndo: () => { const previous = regionHistory.at(-1); if (previous) { updateCurrentProject({ videoConfig: previous }); setRegionHistory(regionHistory.slice(0, -1)); } },
-            onActions: actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); },
+            onUndo: () => { const previous = regionHistory.at(-1); if (previous) { setRedo(r => [...r, currentProject.videoConfig]); updateCurrentProject({ videoConfig: previous }); setRegionHistory(regionHistory.slice(0, -1)); } },
+            canRedo: redo.length > 0,
+            onRedo: () => { const next = redo.at(-1); if (next) { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: next }); setRedo(redo.slice(0, -1)); } },
+            onActions: actions => { remember(); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); },
             onRegions: (regions, add = []) => {
-              setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]);
+              remember();
               const config = applyRegionEdits(currentProject.videoConfig, regions, currentProject.solutionText,
                 currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15);
               updateCurrentProject({ videoConfig: add.length ? { ...config, timelineActions: [...(config.timelineActions || []), ...add].sort((a, b) => a.start - b.start) } : config });
             },
             onAssignOption: (boxId, letter) => {
-              setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]);
+              remember();
               updateCurrentProject({ videoConfig: assignOption(currentProject.videoConfig, boxId, letter, currentProject.solutionText,
                 currentProject.narrationSource?.words || currentProject.audioNarration?.words || [], activeAudioDuration || 15) });
             },
@@ -225,7 +231,7 @@ export function EditorStage({ videoGenerated, hasImage, previewMode, setPreviewM
             duration={activeAudioDuration || 15} currentTime={currentPreviewTime} audioUrl={activeAudioUrl}
             onSeek={setCurrentPreviewTime} onPlayPause={() => setIsPlayingPreview(!isPlayingPreview)} keyboard compact={short}
             playing={isPlayingPreview} onFlag={id => setFocusBox(id ? { id } : null)}
-            onActions={actions => { setRegionHistory(h => [...h.slice(-29), currentProject.videoConfig]); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} /></div>
+            onActions={actions => { remember(); updateCurrentProject({ videoConfig: { ...currentProject.videoConfig, timelineActions: actions } }); }} /></div>
         )}
       </div>
     ) : hasImage ? (

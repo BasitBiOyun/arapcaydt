@@ -22,6 +22,16 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
+        title: 'İşaretler ekranı',
+        items: [
+          { text: '**Ok aracı (➜):** Kuyruğundan basıp ucunun gideceği yere sürükleyin; videoda ok uzayarak gelir. Yönünü küçük çubuktan çevirebilirsiniz.', help: 'isaretler' },
+          { text: '**Yazı aracı (T):** Görselin istediğiniz yerine kısa bir yazı koyun (“Fiil”, “Mef’ûl-ü bih”, Arapça da olur). Yazıyı küçük çubuktaki kutuya girersiniz.', help: 'isaretler' },
+          { text: '**Renk seçimi:** Alt çizgi, daire, ok ve yazının rengini seçtiğinizde çıkan küçük çubuktan değiştirin.', help: 'isaretler' },
+          { text: '**Yinele:** Geri aldığınız bir değişikliği **Yinele** düğmesiyle ya da **Ctrl+Y** ile geri getirin.', help: 'isaretler' },
+          { text: '**Otomatiğe döndür:** Stüdyonun bulduğu bir kutuyu taşıdıktan ya da boyunu değiştirdikten sonra, küçük çubuktaki bu düğme kutuyu ilk bulunduğu yere döndürür.', help: 'isaretler' },
+        ],
+      },
+      {
         title: 'Ses ve video',
         items: [
           { text: '**Telaffuz sözlüğü:** Ses bir kelimeyi yanlış okuyorsa **Ayarlar → Telaffuz sözlüğü**’ne yazılışını ve okunuşunu ekleyin (örneğin “MEB” → “Meb”). Ekrandaki ve videodaki yazı değişmez, yalnız ses böyle okur. Sözlük bütün hocalar için ortaktır.', help: 'seslendirme' },

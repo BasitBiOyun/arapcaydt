@@ -49,6 +49,8 @@ export function computeTimelineVisualState(
     activeUnderlines: [],
     activeFocus: [],
     activeCircles: [],
+    activeArrows: [],
+    activeNotes: [],
     activeDimOthers: { active: false, opacity: 0 },
     rejectedRegions: {},
     correctRegions: {},
@@ -152,6 +154,22 @@ export function computeTimelineVisualState(
             regionId: action.targetRegionId,
             progress: Math.min(1, elapsed / .6),
             opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .2) : 1,
+            color: action.color,
+          });
+        }
+        break;
+      }
+
+      case 'arrow':
+      case 'note': {
+        // An arrow grows from its tail in 0.5 s; a note fades in. Both stay for the mark's duration, then fade.
+        const duration = action.duration ?? 2.5;
+        if (currentTime <= action.start + duration) {
+          (action.type === 'arrow' ? state.activeArrows : state.activeNotes).push({
+            regionId: action.targetRegionId,
+            progress: Math.min(1, elapsed / (action.type === 'arrow' ? .5 : .25)),
+            opacity: duration > .5 ? Math.min(1, (duration - elapsed) / .2) : 1,
+            color: action.color,
           });
         }
         break;
@@ -181,6 +199,8 @@ export function computeTimelineVisualState(
           state.activeUnderlines = [];
           state.activeFocus = [];
           state.activeCircles = [];
+          state.activeArrows = [];
+          state.activeNotes = [];
           state.activeDimOthers = { active: false, opacity: 0 };
         }
         break;

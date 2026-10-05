@@ -11,6 +11,7 @@ const MARK: Partial<Record<VideoAction['type'], { icon: string; color: string; n
   focus: { icon: '◎', color: '#4338CA', name: 'Çerçeve' }, circle: { icon: '◯', color: '#DC2626', name: 'Daire' },
   underline: { icon: '▁', color: '#D97706', name: 'Altı çizgi' },
   highlight: { icon: '▮', color: '#B45309', name: 'Vurgu' },
+  arrow: { icon: '➜', color: '#2563EB', name: 'Ok' }, note: { icon: 'T', color: '#7C3AED', name: 'Yazı' },
 };
 /** Crosses and ticks stay to the end of the video: only their start moves. */
 const lasting = (a: VideoAction) => a.type === 'reject' || a.type === 'correct';
@@ -292,7 +293,7 @@ export function MarkTimeline({ actions, regions, duration, currentTime, audioUrl
               {lasting(mark) && <span className="absolute h-px pointer-events-none" style={{ left: px(mark.start), right: 0, top: top + 12, background: `${style.color}55` }} />}
               <div role="button" aria-label={`${style.name} ${label(mark)} · ${clock(mark.start)}`} title={`${style.name} ${label(mark)} · ${clock(mark.start)} — sürükleyin`}
                 className={`absolute h-6 rounded-md text-xs font-semibold text-white flex items-center gap-1 px-2 overflow-hidden cursor-grab active:cursor-grabbing shadow-sm ${isSelected ? 'ring-2 ring-offset-1 ring-[#2563EB]' : 'hover:brightness-110'}`}
-                style={{ left, width, top, background: mark.type === 'underline' && mark.color ? mark.color : style.color }}
+                style={{ left, width, top, background: mark.color || style.color }}
                 onPointerDown={e => begin(e, mark.id, 'move')}>
                 {!lasting(mark) && <span className="absolute left-0 top-0 bottom-0 w-2.5 cursor-ew-resize bg-black/15 hover:bg-black/30" title="Başını çekin" onPointerDown={e => begin(e, mark.id, 'start')} />}
                 <span className="pl-1">{style.icon}</span><span className="truncate">{label(mark)}</span>
