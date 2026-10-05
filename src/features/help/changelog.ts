@@ -22,8 +22,9 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
-        title: 'Video',
+        title: 'Ses ve video',
         items: [
+          { text: '**Telaffuz sözlüğü:** Ses bir kelimeyi yanlış okuyorsa **Ayarlar → Telaffuz sözlüğü**’ne yazılışını ve okunuşunu ekleyin (örneğin “MEB” → “Meb”). Ekrandaki ve videodaki yazı değişmez, yalnız ses böyle okur. Sözlük bütün hocalar için ortaktır.', help: 'seslendirme' },
           { text: '**Bütün videolarda aynı ses seviyesi:** İndirilen her videonun sesi aynı yüksekliğe getirilir. Öğrenci bir videodan ötekine geçince sesi açıp kısmak zorunda kalmaz; kısık kaydedilmiş MP3’ler de duyulur hâle gelir. Önizlemede ses kaydedildiği gibi çalar.', help: 'video-indir' },
         ],
       },

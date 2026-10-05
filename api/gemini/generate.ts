@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { signAssets, writeAsset } from '../../server/assets.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage, type UsageEvent } from '../../server/usage.js';
+import { applyPronunciations, loadPronunciations } from '../../server/pronunciation.js';
 import { storedNarrationAudio } from '../../server/mp3.js';
 import {
   GEMINI_TTS_MODELS as GEMINI_MODELS, isDailyQuotaError, isInvalidKeyError, quotaTag, markTeacherKeyInvalid, normalizeApiKey,
@@ -173,7 +174,9 @@ async function handler(req: any, res: any) {
   // Teacher's own key first (their own free quota), then the studio key; models already
   // out of daily quota on that key are skipped until the Pacific reset.
   const systemKey = normalizeApiKey(process.env.GEMINI_API_KEY);
-  const [teacherKey, today] = await Promise.all([readTeacherKey(db, member.user.id), readDailyState(db, member.user.id)]);
+  const [teacherKey, today, pronunciations] = await Promise.all([readTeacherKey(db, member.user.id), readDailyState(db, member.user.id), loadPronunciations(db)]);
+  // What the voice reads: the solution with the shared pronunciation list applied (the text itself stays as written).
+  const spoken = applyPronunciations(text, pronunciations);
   const lanes: Array<{ source: KeySource; key: string; skip: string[] }> = [];
   if (teacherKey) lanes.push({ source: 'teacher', key: teacherKey, skip: today.own.ttsExhausted });
   if (systemKey) lanes.push({ source: 'system', key: systemKey, skip: today.shared.ttsExhausted });
@@ -195,7 +198,7 @@ async function handler(req: any, res: any) {
     // A key Google refused (invalid or not allowed) is not tried with the other models.
     if (!refusedKeys.has(lane.source)) {
       const remaining = deadline - Date.now();
-      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(text.replace(/[\u064B-\u065F\u0670\u0640]/g, '').length))) break tries;
+      if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(spoken.replace(/[\u064B-\u065F\u0670\u0640]/g, '').length))) break tries;
       try {
         const upstream = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
@@ -203,7 +206,7 @@ async function handler(req: any, res: any) {
             method: 'POST',
             signal: AbortSignal.timeout(remaining),
             headers: { 'x-goog-api-key': lane.key, 'Content-Type': 'application/json' },
-            body: JSON.stringify(makeRequestBody(model, text)),
+            body: JSON.stringify(makeRequestBody(model, spoken)),
           }
         );
 

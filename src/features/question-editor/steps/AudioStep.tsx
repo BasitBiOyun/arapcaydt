@@ -206,6 +206,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
             <p className="p-2.5 rounded-lg bg-[#F4EDEB] text-sm text-[#5C3A33] leading-relaxed">
               Sesi sorunun altındaki <strong>Ses şeridinden</strong> dinleyin. Yanlış bir yer duyarsanız <strong>Burada hata var</strong>’a,
               sonra <strong>Yeniden seslendir</strong>’e basın; yalnız o yer yeniden okunur. Her şey doğruysa <strong>Bu Sesi Kullan</strong>.
+              {' '}Bir kelime her seferinde yanlış okunuyorsa <a href="#/ayarlar/telaffuz" className="font-semibold text-[#8B1E2D] underline">telaffuz sözlüğüne</a> ekleyin.
             </p>
           )}
         </div>

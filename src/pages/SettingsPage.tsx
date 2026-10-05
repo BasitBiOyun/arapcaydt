@@ -13,6 +13,7 @@ import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
 import { DefaultsCard, ProfileCard, TextSizeCard } from '../features/settings/MySettingsCards';
 import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
 import { BackupCard } from '../features/settings/BackupCard';
+import { PronunciationCard } from '../features/settings/PronunciationCard';
 import { useAuth } from '../features/auth/AuthContext';
 
 export const SettingsPage: React.FC = () => {
@@ -44,7 +45,7 @@ export const SettingsPage: React.FC = () => {
       <header className="library-heading !mb-2">
         <div>
           <h2>Ayarlar</h2>
-          <p>Profiliniz, yeni soru varsayılanları, ses servisi ve yedekleme{user?.role === 'admin' ? '; en altta stüdyo ayarları' : ''}.</p>
+          <p>Profiliniz, yeni soru varsayılanları, ses servisi, telaffuz sözlüğü ve yedekleme{user?.role === 'admin' ? '; en altta stüdyo ayarları' : ''}.</p>
         </div>
       </header>
 
@@ -102,6 +103,8 @@ export const SettingsPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <PronunciationCard />
 
       {/* Teacher's own Google AI Studio key (used before the shared capacity) */}
       <TeacherKeyCard />
