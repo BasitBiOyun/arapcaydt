@@ -3,6 +3,7 @@ import { joinNarrationAudio } from '../../server/mp3.js';
 import { MAX_PROJECT_AUDIO_BYTES, ownedAssetPath } from '../../server/projectAudio.js';
 import { saveGeneratedAudio } from './generate.js';
 import { logged } from '../../server/errorLog.js';
+import { readAsset, removeAssets } from '../../server/assets.js';
 
 export const config = { maxDuration: 60 };
 const MAX_PARTS = 8;
@@ -31,18 +32,17 @@ async function handler(req: any, res: any) {
   const { data: project, error: projectError } = await db.from('projects').select('id').eq('id', projectId).eq('owner_id', member.user.id).maybeSingle();
   if (projectError || !project) return res.status(403).json({ error: 'Proje erişimi doğrulanamadı.', code: 'PROJECT_ACCESS_DENIED' });
 
-  const bucket = db.storage.from('project-assets');
   const buffers: Buffer[] = [];
   for (const path of paths as string[]) {
-    const { data, error } = await bucket.download(path);
-    if (error || !data) return res.status(502).json({ error: 'Ses parçalarından biri okunamadı. Seslendirmeyi yeniden deneyin.', code: 'PART_MISSING' });
-    buffers.push(Buffer.from(await data.arrayBuffer()));
+    const part = await readAsset(db, path);
+    if (!part) return res.status(502).json({ error: 'Ses parçalarından biri okunamadı. Seslendirmeyi yeniden deneyin.', code: 'PART_MISSING' });
+    buffers.push(part.bytes);
   }
   if (buffers.reduce((n, b) => n + b.length, 0) > MAX_PROJECT_AUDIO_BYTES) return res.status(413).json({ error: 'Birleşen ses 25 MB sınırını aşıyor.', code: 'TOO_LARGE' });
   try {
     const audio = await joinNarrationAudio(buffers);
     const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio.bytes, audio.extension, audio.mimeType);
-    await bucket.remove((paths as string[]).filter(p => p !== stored.path));
+    await removeAssets(db, (paths as string[]).filter(p => p !== stored.path));
     return res.status(200).json({ audioUrl: stored.signedUrl, assetPath: stored.path, mimeType: audio.mimeType });
   } catch (error: any) {
     return res.status(502).json({ error: error?.message || 'Ses parçaları birleştirilemedi.', code: 'JOIN_FAILED' });

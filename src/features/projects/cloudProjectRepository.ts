@@ -1,4 +1,4 @@
-import { database } from '../../services/supabase';
+import { authHeaders, database } from '../../services/supabase';
 import type { ProjectSummary, QuestionProject } from '../../types';
 import type { IProjectRepository } from './projectRepository';
 import { SUMMARY_SELECT, imageAssetPath, summaryFromRow } from './projectSummary';
@@ -6,6 +6,19 @@ import { SUMMARY_SELECT, imageAssetPath, summaryFromRow } from './projectSummary
 // Asset references survive reloads; signed URLs are reconstructed only for playback.
 const resolvedPaths = new Map<string, string>();
 const bucket = () => database().storage.from('project-assets');
+/** Asks the server where a file goes, or for playback links of files Supabase no longer holds (Cloudflare R2). */
+async function assetCall(body: unknown) {
+  const res = await fetch('/api/admin/storage', { method: 'POST', headers: { 'Content-Type': 'application/json', ...await authHeaders() }, body: JSON.stringify(body) });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(data?.error || `Dosya servisi hata döndürdü (HTTP ${res.status}).`);
+  return data;
+}
+async function serverLinks(paths: string[]): Promise<Map<string, string>> {
+  if (!paths.length) return new Map();
+  const data = await assetCall({ action: 'sign', paths }).catch(() => null);
+  return new Map(Object.entries((data?.links || {}) as Record<string, string>));
+}
+const EXTENSIONS: Record<string, string> = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'audio/mpeg': 'mp3', 'audio/wav': 'wav' };
 async function uploadAsset(url: string, owner: string, project: string) {
   if (resolvedPaths.has(url)) return { assetPath: resolvedPaths.get(url)! };
   if (!url.startsWith('data:') && !url.startsWith('blob:')) return url;
@@ -14,7 +27,16 @@ async function uploadAsset(url: string, owner: string, project: string) {
   const blob = await (await fetch(url)).blob();
   if(blob.size>25*1024*1024) throw new Error('Görsel veya ses dosyası 25 MB sınırını aşıyor.');
   const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer())),b=>b.toString(16).padStart(2,'0')).join('');
-  const path=`${owner}/${project}/${hash}`;
+  const ext=EXTENSIONS[blob.type];
+  const path=`${owner}/${project}/${hash}${ext?`.${ext}`:''}`;
+  if(blob.type){
+    const plan=await assetCall({action:'upload',path,contentType:blob.type,size:blob.size});
+    if(plan?.store==='r2'){
+      const put=await fetch(plan.url,{method:'PUT',body:blob,headers:{'Content-Type':blob.type}});
+      if(!put.ok)throw new Error(`Dosya yüklenemedi (HTTP ${put.status}).`);
+      return {assetPath:path};
+    }
+  }
   const {error}=await bucket().upload(path,blob,{contentType:blob.type,upsert:false});
   if(error && (error as any).statusCode!=='409' && (error as any).statusCode!==409 && (error as any).error!=='Duplicate' && error.message!=='The resource already exists') throw error;
   return {assetPath:path};
@@ -31,10 +53,11 @@ async function resolveAsset(value: any): Promise<string> {
   const recent=signedAt.get(value.assetPath);
   if(recent && Date.now()-recent.at<REUSE_MS) return recent.url;
   const {data,error}=await bucket().createSignedUrl(value.assetPath,SIGNED_SECONDS);
-  if(error) throw error;
-  resolvedPaths.set(data.signedUrl,value.assetPath);
-  signedAt.set(value.assetPath,{url:data.signedUrl,at:Date.now()});
-  return data.signedUrl;
+  const url=data?.signedUrl || (await serverLinks([value.assetPath])).get(value.assetPath);
+  if(!url) throw error || new Error('Dosya bağlantısı alınamadı.');
+  resolvedPaths.set(url,value.assetPath);
+  signedAt.set(value.assetPath,{url,at:Date.now()});
+  return url;
 }
 async function hydrate(row: any): Promise<QuestionProject> {
   const p=structuredClone(row.data);
@@ -50,10 +73,13 @@ async function signedLinks(paths: string[]): Promise<Map<string, string>> {
     const chunk = paths.slice(i, i + 200);
     const { data, error } = await bucket().createSignedUrls(chunk, 21600);
     for (const item of error ? [] : data || []) if (item.path && item.signedUrl && !item.error) links.set(item.path, item.signedUrl);
-    for (const path of chunk) if (!links.has(path)) {
+    // A failed batch is retried per file; files not in Supabase (moved to R2) are signed by the server.
+    const missing = chunk.filter(path => !links.has(path));
+    if (error) for (const path of missing) {
       const single = await bucket().createSignedUrl(path, 21600);
       if (single.data?.signedUrl) links.set(path, single.data.signedUrl);
     }
+    for (const [path, url] of await serverLinks(chunk.filter(path => !links.has(path)))) links.set(path, url);
   }
   for (const [path, url] of links) resolvedPaths.set(url, path);
   return links;

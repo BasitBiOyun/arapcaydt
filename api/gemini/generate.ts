@@ -1,5 +1,6 @@
 import { logged } from '../../server/errorLog.js';
 import { createHash } from 'node:crypto';
+import { signAssets, writeAsset } from '../../server/assets.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage, type UsageEvent } from '../../server/usage.js';
 import { storedNarrationAudio } from '../../server/mp3.js';
@@ -100,16 +101,14 @@ export async function saveGeneratedAudio(memberId: string, projectId: string, te
   const db = serviceDatabase();
   const digest = createHash('sha256').update(text).digest('hex').slice(0, 20);
   const path = `${memberId}/${projectId}/gemini-${digest}.${extension}`;
-  const bucket = db.storage.from('project-assets');
   let failure = '';
   for (const delay of STORE_RETRY_MS) {
     if (delay) await wait(delay);
     try {
-      const { error: uploadError } = await bucket.upload(path, audio, { contentType, upsert: true });
-      if (uploadError) { failure = uploadError.message; continue; }
-      const { data, error: signedError } = await bucket.createSignedUrl(path, 21600);
-      if (signedError || !data?.signedUrl) { failure = 'oynatma bağlantısı oluşturulamadı'; continue; }
-      return { path, signedUrl: data.signedUrl };
+      await writeAsset(db, path, audio, contentType);
+      const signedUrl = (await signAssets(db, [path])).get(path);
+      if (!signedUrl) { failure = 'oynatma bağlantısı oluşturulamadı'; continue; }
+      return { path, signedUrl };
     } catch (error: any) {
       failure = error?.message || 'ağ hatası';
     }
