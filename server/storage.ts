@@ -29,7 +29,7 @@ type Kind = 'wav' | 'mp3' | 'image' | 'other';
 const kindOf = (o: StoredObject): Kind =>
   /^audio\/(x-)?wav/.test(o.mimetype || '') || /\.wav$/i.test(o.name) ? 'wav'
     : o.mimetype === 'audio/mpeg' || /\.mp3$/i.test(o.name) ? 'mp3'
-      : (o.mimetype || '').startsWith('image/') ? 'image' : 'other';
+      : (o.mimetype || '').startsWith('image/') || /\.(png|jpe?g|webp|gif)$/i.test(o.name) ? 'image' : 'other';
 
 /**
  * Files no project points to. They are deleted only when older than a week,
@@ -101,4 +101,35 @@ export function exportEntries(objects: StoredObject[], rows: ExportProjectRow[],
       projectId: hit?.row.id ?? null, projectTitle: title, use: hit?.use ?? 'unused',
     };
   });
+}
+
+/** R2 limit on Cloudflare's free plan. */
+export const R2_LIMIT_BYTES = 10 * 1024 ** 3;
+export interface R2Object { name: string; bytes: number; created_at: string }
+
+/**
+ * Supabase and R2 listings as one: a file in both places (copied) counts once,
+ * keeping Supabase's content type. `copied` are Supabase files whose R2 copy
+ * has the same size (safe to remove from Supabase); `toCopy` are the rest.
+ */
+export function mergeStores(supabase: StoredObject[], r2: R2Object[]) {
+  const inR2 = new Map(r2.map(o => [o.name, o]));
+  const names = new Set(supabase.map(o => o.name));
+  const copied: StoredObject[] = [], toCopy: StoredObject[] = [];
+  for (const o of supabase) (inR2.get(o.name)?.bytes === o.bytes ? copied : toCopy).push(o);
+  const all: StoredObject[] = [...supabase, ...r2.filter(o => !names.has(o.name)).map(o => ({ ...o, mimetype: null }))];
+  const sum = (list: Array<{ bytes: number }>) => ({ count: list.length, bytes: list.reduce((n, o) => n + o.bytes, 0) });
+  return { all, copied, toCopy, supabase: sum(supabase), r2: sum(r2), copiedSum: sum(copied), toCopySum: sum(toCopy) };
+}
+
+/** Next files to copy in one request: at most `count` files and about `bytes` bytes (always at least one). */
+export function copyBatch(toCopy: StoredObject[], skip: Set<string>, count = 12, bytes = 30 * 1024 * 1024): StoredObject[] {
+  const batch: StoredObject[] = [];
+  let size = 0;
+  for (const o of toCopy) {
+    if (skip.has(o.name)) continue;
+    if (batch.length && (batch.length >= count || size + o.bytes > bytes)) break;
+    batch.push(o); size += o.bytes;
+  }
+  return batch;
 }

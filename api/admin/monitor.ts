@@ -1,6 +1,7 @@
 import { timingSafeEqual } from 'node:crypto';
 import { serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
+import { readAsset, signAssets } from '../../server/assets.js';
 
 /**
  * Read-only report for the morning check (a scheduled Claude session): the last hours' problem
@@ -52,13 +53,13 @@ async function handler(req: any, res: any) {
     const path = typeof (data as any).image === 'object' ? (data as any).image?.assetPath : null;
     if (req.query?.picture && path) {
       // The picture itself (for a checker that cannot reach the storage host).
-      const file = await db.storage.from('project-assets').download(path);
-      if (file.error || !file.data) return res.status(404).json({ error: 'Not found' });
-      res.setHeader('Content-Type', file.data.type || 'application/octet-stream');
-      return res.status(200).send(Buffer.from(await file.data.arrayBuffer()));
+      const file = await readAsset(db, path);
+      if (!file) return res.status(404).json({ error: 'Not found' });
+      res.setHeader('Content-Type', file.contentType);
+      return res.status(200).send(file.bytes);
     }
-    const signed = path ? await db.storage.from('project-assets').createSignedUrl(path, 600) : null;
-    return res.status(200).json({ ...(data as object), image: signed?.data?.signedUrl ?? (typeof (data as any).image === 'string' && /^https:/.test((data as any).image) ? (data as any).image : null) });
+    const signed = path ? (await signAssets(db, [path], 600)).get(path) : null;
+    return res.status(200).json({ ...(data as object), image: signed ?? (typeof (data as any).image === 'string' && /^https:/.test((data as any).image) ? (data as any).image : null) });
   }
 
   const hours = Math.min(168, Math.max(1, Number(req.query?.hours) || 24));

@@ -11,6 +11,10 @@ interface StorageInfo {
   byKind: Record<'wav' | 'mp3' | 'image' | 'other', Bucket>;
   orphans: Bucket;
   convertible: number;
+  supabase?: Bucket;
+  /** Cloudflare R2, when its keys are set on the server. */
+  r2?: (Bucket & { limitBytes: number; toCopy: Bucket; copied: Bucket }) | null;
+  r2Error?: string;
 }
 
 const mb = (bytes: number) => `${(bytes / 1024 / 1024).toLocaleString('tr', { maximumFractionDigits: bytes < 10 * 1024 * 1024 ? 1 : 0 })} MB`;
@@ -120,7 +124,44 @@ export const StorageSection: React.FC = () => {
     }
   };
 
-  const share = info ? info.totalBytes / info.limitBytes : 0;
+  const copyAll = async () => {
+    if (!info?.r2 || !await confirm({ title: 'Dosyalar R2’ye kopyalansın mı?', message: `Supabase’deki ${info.r2.toCopy.count} dosya (${mb(info.r2.toCopy.bytes)}) R2’ye kopyalanır ve her kopyanın boyutu kontrol edilir. Supabase’den hiçbir şey silinmez.`, confirmLabel: 'Kopyala' })) return;
+    setBusy(true); setError('');
+    const skip: string[] = [];
+    let done = 0;
+    try {
+      for (;;) {
+        const r = await call({ action: 'copy', skip });
+        done += r.copied;
+        for (const f of r.failures) skip.push(f.path);
+        setProgress(`${done} dosya R2’ye kopyalandı${skip.length ? `, ${skip.length} atlandı` : ''} · ${r.remaining} kaldı`);
+        if (!r.remaining || (!r.copied && !r.failures.length)) break;
+      }
+      setProgress(`${done} dosya R2’ye kopyalandı ve kontrol edildi.${skip.length ? ` ${skip.length} dosya kopyalanamadı; tekrar çalıştırabilirsiniz.` : ''}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Kopyalama tamamlanamadı.');
+    } finally {
+      setBusy(false);
+      await load();
+    }
+  };
+
+  const purgeCopied = async () => {
+    if (!info?.r2 || !await confirm({ title: 'Supabase’deki kopyalar silinsin mi?', message: `R2’de aynı boyutta kopyası doğrulanmış ${info.r2.copied.count} dosya (${mb(info.r2.copied.bytes)}) Supabase’den kalıcı olarak silinir. Dosyalar R2’den açılmaya devam eder.`, confirmLabel: 'Supabase’den sil', danger: true })) return;
+    setBusy(true); setError('');
+    try {
+      const r = await call({ action: 'purge' });
+      setProgress(`${r.removed} dosya Supabase’den silindi, ${mb(r.bytes)} yer açıldı. Hepsi R2’de duruyor.`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Silme tamamlanamadı.');
+    } finally {
+      setBusy(false);
+      await load();
+    }
+  };
+
+  const supabaseBytes = info?.supabase?.bytes ?? info?.totalBytes ?? 0;
+  const share = info ? supabaseBytes / info.limitBytes : 0;
   const barColor = share > 0.9 ? 'bg-red-600' : share > 0.7 ? 'bg-amber-500' : 'bg-[#15803D]';
 
   return (
@@ -128,11 +169,12 @@ export const StorageSection: React.FC = () => {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="font-semibold">Depolama</h3>
-          <p className="text-xs text-stone-500 mt-1">Supabase ücretsiz planı 1 GB. Görseller ve sesler burada tutulur; MP4'ler tutulmaz.</p>
+          <p className="text-xs text-stone-500 mt-1">Supabase ücretsiz planı 1 GB{info?.r2 ? ', Cloudflare R2 10 GB' : ''}. Görseller ve sesler burada tutulur; MP4'ler tutulmaz.</p>
         </div>
         <button disabled={busy} onClick={() => void load()} className="border rounded px-3 py-1.5 text-sm">Yenile</button>
       </div>
       {error && <p role="alert" className="mt-3 bg-red-50 text-red-800 p-2 rounded text-sm">{error}</p>}
+      {info?.r2Error && <p role="alert" className="mt-3 bg-red-50 text-red-800 p-2 rounded text-sm">Cloudflare R2’ye ulaşılamadı ({info.r2Error}). Vercel’deki R2 anahtarlarını kontrol edin.</p>}
       {info?.migrationPending && (
         <p className="mt-3 text-sm bg-amber-50 text-amber-900 border border-amber-200 rounded p-3">
           Depolama göstergesi için <code>supabase/migrations/20260930_storage_admin.sql</code> dosyasını Supabase SQL Editor'da bir kez çalıştırın.
@@ -141,9 +183,16 @@ export const StorageSection: React.FC = () => {
       {info && !info.migrationPending && (
         <div className="mt-3 space-y-3">
           <div>
-            <div className="flex justify-between text-sm"><strong>{mb(info.totalBytes)}</strong><span className="text-stone-500">/ {mb(info.limitBytes)} · %{Math.round(share * 100)}</span></div>
+            <div className="flex justify-between text-sm"><span><span className="text-stone-500">Supabase: </span><strong>{mb(supabaseBytes)}</strong></span><span className="text-stone-500">/ {mb(info.limitBytes)} · %{Math.round(share * 100)}</span></div>
             <div className="h-2 rounded-full bg-stone-100 overflow-hidden mt-1"><div className={`h-full ${barColor}`} style={{ width: `${Math.min(100, share * 100)}%` }} /></div>
           </div>
+          {info.r2 && (
+            <div>
+              <div className="flex justify-between text-sm"><span><span className="text-stone-500">Cloudflare R2: </span><strong>{mb(info.r2.bytes)}</strong></span><span className="text-stone-500">/ {mb(info.r2.limitBytes)} · %{Math.round(info.r2.bytes / info.r2.limitBytes * 100)}</span></div>
+              <div className="h-2 rounded-full bg-stone-100 overflow-hidden mt-1"><div className="h-full bg-[#15803D]" style={{ width: `${Math.min(100, info.r2.bytes / info.r2.limitBytes * 100)}%` }} /></div>
+              <p className="text-xs text-stone-500 mt-1">Yeni görseller ve sesler R2’ye kaydedilir. Supabase’de {info.r2.toCopy.count} dosya ({mb(info.r2.toCopy.bytes)}) henüz kopyalanmadı; {info.r2.copied.count} dosyanın ({mb(info.r2.copied.bytes)}) R2 kopyası doğrulandı.</p>
+            </div>
+          )}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-sm">
             {([['Ses (MP3)', info.byKind.mp3], ['Ses (WAV, eski)', info.byKind.wav], ['Görseller', info.byKind.image], ['Kullanılmayan', info.orphans]] as Array<[string, Bucket]>).map(([label, b]) => (
               <div key={label} className="border rounded-lg px-3 py-2"><p className="text-xs text-stone-500">{label}</p><strong>{mb(b.bytes)}</strong><span className="text-xs text-stone-500"> · {b.count} dosya</span></div>
@@ -162,6 +211,18 @@ export const StorageSection: React.FC = () => {
               className="border rounded px-3 py-2 text-sm font-semibold hover:bg-stone-50 disabled:opacity-50">
               Tümünü indir (ZIP, {mb(info.totalBytes)})
             </button>
+            {info.r2 && (
+              <button disabled={busy || !info.r2.toCopy.count} onClick={() => void copyAll()}
+                className="bg-[#1E562A] hover:bg-[#174420] disabled:opacity-50 text-white rounded px-3 py-2 text-sm font-semibold">
+                {info.r2.toCopy.count ? `${info.r2.toCopy.count} dosyayı R2’ye kopyala` : 'Tüm dosyalar R2’de'}
+              </button>
+            )}
+            {info.r2 && !!info.r2.copied.count && (
+              <button disabled={busy} onClick={() => void purgeCopied()}
+                className="border border-[#8B1E2D] text-[#8B1E2D] hover:bg-[#F8EEEE] disabled:opacity-50 rounded px-3 py-2 text-sm font-semibold">
+                R2’de olan {info.r2.copied.count} dosyayı Supabase’den sil ({mb(info.r2.copied.bytes)})
+              </button>
+            )}
           </div>
           {progress && <p role="status" className="text-sm text-[#1E562A]">{busy ? '⏳ ' : ''}{progress}</p>}
           <p className="text-xs text-stone-500">

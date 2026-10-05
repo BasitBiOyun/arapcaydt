@@ -67,7 +67,10 @@ function install(world: World) {
       }
       if (path === '/rest/v1/rpc/project_asset_objects') return rows(world.objects);
       if (path === '/rest/v1/rpc/replace_project_audio') { const args = JSON.parse(init.body); world.replaced.push(args); return json(true); }
-      if (path.startsWith('/storage/v1/object/sign/')) return json({ signedURL: '/object/sign/x?token=1' });
+      if (path.startsWith('/storage/v1/object/sign/')) {
+        const paths: string[] | undefined = init.body ? JSON.parse(init.body).paths : undefined;
+        return paths ? json(paths.map(p => ({ path: p, signedURL: `/object/sign/${p}?token=1`, error: null }))) : json({ signedURL: '/object/sign/x?token=1' });
+      }
       if (path.startsWith('/storage/v1/object/')) {
         const name = decodeURIComponent(path.replace(/^\/storage\/v1\/object\/(authenticated\/)?project-assets\/?/, ''));
         if (method === 'GET') { world.downloads.push(name); return new Response(world.files[name] ?? new Uint8Array(64)); }

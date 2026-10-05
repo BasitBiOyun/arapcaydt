@@ -1,8 +1,12 @@
 import { logged } from '../../server/errorLog.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { encodeMp3, pcmFromWav } from '../../server/mp3.js';
+import { ownedAssetPath } from '../../server/projectAudio.js';
+import { readAsset, removeAssets, signAssets, uploadLink, writeAsset } from '../../server/assets.js';
+import { r2Config, r2List, r2Put, r2Size } from '../../server/r2.js';
 import {
-  convertibleAudio, exportEntries, orphans, referencedPaths, summarizeStorage, type ExportProjectRow, type ProjectAssetRow, type StoredObject,
+  R2_LIMIT_BYTES, convertibleAudio, copyBatch, exportEntries, mergeStores, orphans, referencedPaths, summarizeStorage,
+  type ExportProjectRow, type ProjectAssetRow, type StoredObject,
 } from '../../server/storage.js';
 
 export const config = { maxDuration: 60 };
@@ -52,26 +56,18 @@ async function exportList(db: any, objects: StoredObject[]) {
   const { data: owners, error } = await db.from('profiles').select('id,name,email');
   if (error) throw error;
   const files = exportEntries(objects, rows, owners || []);
-  const links = new Map<string, string>();
-  const bucket = db.storage.from('project-assets');
-  for (let i = 0; i < files.length; i += 500) {
-    const { data, error: signError } = await bucket.createSignedUrls(files.slice(i, i + 500).map(f => f.path), 7200);
-    if (signError) throw signError;
-    for (const item of data || []) if (item.path && item.signedUrl && !item.error) links.set(item.path, item.signedUrl);
-  }
+  const links = await signAssets(db, files.map(f => f.path), 7200);
   return files.map(f => ({ ...f, url: links.get(f.path) || null }));
 }
 
 async function convert(db: any, item: { projectId: string; path: string }): Promise<string | null> {
-  const bucket = db.storage.from('project-assets');
-  const { data, error } = await bucket.download(item.path);
-  if (error || !data) return 'WAV okunamadı';
-  const pcm = pcmFromWav(Buffer.from(await data.arrayBuffer()));
+  const wav = await readAsset(db, item.path);
+  if (!wav) return 'WAV okunamadı';
+  const pcm = pcmFromWav(wav.bytes);
   if (!pcm?.samples.length) return 'WAV biçimi desteklenmiyor';
   const mp3 = await encodeMp3(pcm);
   const mp3Path = item.path.replace(/\.wav$/i, '') + '.mp3';
-  const { error: uploadError } = await bucket.upload(mp3Path, mp3, { contentType: 'audio/mpeg', upsert: true });
-  if (uploadError) return `MP3 kaydedilemedi: ${uploadError.message}`;
+  try { await writeAsset(db, mp3Path, mp3, 'audio/mpeg'); } catch (e: any) { return `MP3 kaydedilemedi: ${e?.message || e}`; }
   const { data: replaced, error: rpcError } = await db.rpc('replace_project_audio',
     { target_project: item.projectId, old_path: item.path, new_path: mp3Path, new_mime: 'audio/mpeg' });
   if (rpcError) return `Proje güncellenemedi: ${rpcError.message}`;
@@ -79,21 +75,44 @@ async function convert(db: any, item: { projectId: string; path: string }): Prom
   return replaced ? null : 'Proje bu arada değişmiş';
 }
 
-async function remove(db: any, names: string[]): Promise<number> {
-  let removed = 0;
-  for (let i = 0; i < names.length; i += 100) {
-    const { data, error } = await db.storage.from('project-assets').remove(names.slice(i, i + 100));
-    if (error) throw error;
-    removed += (data || []).length;
+/** Copies one Supabase file to R2 and checks the copy's size. */
+async function copyToR2(db: any, o: StoredObject): Promise<string | null> {
+  const c = r2Config()!;
+  const { data, error } = await db.storage.from('project-assets').download(o.name);
+  if (error || !data) return 'Supabase dosyası okunamadı';
+  await r2Put(c, o.name, Buffer.from(await data.arrayBuffer()), o.mimetype || data.type || 'application/octet-stream');
+  const size = await r2Size(c, o.name);
+  return size === o.bytes ? null : `R2 kopyası farklı boyutta (${size} / ${o.bytes})`;
+}
+
+/**
+ * Any approved member: POST {action:'sign', paths} gives playback links for
+ * their own files (admins: any file); POST {action:'upload', path, contentType,
+ * size} gives an R2 upload link for a new file in their folder, or {store:'supabase'}
+ * while R2 is not configured.
+ */
+async function memberAction(req: any, res: any, member: any) {
+  const isAdmin = member.profile?.role === 'admin';
+  const allowed = (p: unknown): p is string => typeof p === 'string' && (isAdmin ? !!ownedAssetPath(p.split('/')[0], p) : !!ownedAssetPath(member.user.id, p));
+  if (req.body.action === 'sign') {
+    const paths = Array.isArray(req.body.paths) ? [...new Set(req.body.paths.filter(allowed))].slice(0, 2000) as string[] : [];
+    const links = await signAssets(serviceDatabase(), paths, 21600);
+    return res.status(200).json({ links: Object.fromEntries(links) });
   }
-  return removed;
+  const { path, contentType, size } = req.body;
+  if (!ownedAssetPath(member.user.id, path) || typeof contentType !== 'string' || !/^(image|audio)\/[\w.+-]+(\s*;\s*[\w-]+=[\w.+-]+)*$/.test(contentType) || contentType === 'image/svg+xml'
+    || !Number.isInteger(size) || size <= 0 || size > 25 * 1024 * 1024) return res.status(400).json({ error: 'Dosya bilgisi geçersiz.' });
+  const url = uploadLink(path, contentType, size);
+  return res.status(200).json(url ? { store: 'r2', url } : { store: 'supabase' });
 }
 
 /**
  * Admin storage housekeeping: GET usage; GET ?export=1 lists every file with
  * its owner and a download link; POST {action:'convert'} turns up to
  * CONVERT_BATCH WAV narrations into MP3 (timings unchanged); POST
- * {action:'sweep', scope:'wav'|'all'} deletes files no project uses.
+ * {action:'sweep', scope:'wav'|'all'} deletes files no project uses; with R2
+ * configured, POST {action:'copy'} copies a batch of Supabase files to R2 and
+ * {action:'purge'} removes from Supabase the files whose R2 copy is verified.
  */
 async function handler(req: any, res: any) {
   if (req.method !== 'GET' && req.method !== 'POST') {
@@ -102,15 +121,30 @@ async function handler(req: any, res: any) {
   }
   const member = await requireMember(req, res);
   if (!member) return;
+  if (req.method === 'POST' && (req.body?.action === 'sign' || req.body?.action === 'upload')) {
+    try { return await memberAction(req, res, member); }
+    catch (error: any) {
+      console.error('[Assets]', error?.message || error);
+      return res.status(500).json({ error: 'Dosya bağlantısı hazırlanamadı.' });
+    }
+  }
   if (member.profile?.role !== 'admin') return res.status(403).json({ error: 'Yönetici yetkisi gerekli.' });
 
   try {
     const db = serviceDatabase();
-    const [objects, rows] = await Promise.all([readObjects(db), readProjects(db)]);
-    if (!objects) return res.status(200).json({ migrationPending: true });
+    const c = r2Config();
+    let r2Error = '';
+    const [stored, rows, inR2] = await Promise.all([readObjects(db), readProjects(db), c ? r2List(c).catch((e: any) => { r2Error = e?.message || 'R2 okunamadı'; return []; }) : Promise.resolve([])]);
+    if (!stored) return res.status(200).json({ migrationPending: true });
+    const stores = mergeStores(stored, inR2);
+    const objects = stores.all;
 
     if (req.method === 'GET' && req.query?.export) {
       return res.status(200).json({ files: await exportList(db, objects) });
+    }
+
+    if (r2Error && req.method === 'POST' && req.body?.action) {
+      return res.status(502).json({ error: `R2'ye ulaşılamadı: ${r2Error}` });
     }
 
     if (req.method === 'POST' && req.body?.action === 'convert') {
@@ -130,11 +164,42 @@ async function handler(req: any, res: any) {
     if (req.method === 'POST' && req.body?.action === 'sweep') {
       const unused = orphans(objects, referencedPaths(rows));
       const targets = req.body?.scope === 'all' ? unused : unused.filter(o => /\.wav$/i.test(o.name));
-      const removed = await remove(db, targets.map(o => o.name));
-      return res.status(200).json({ removed, bytes: targets.reduce((s, o) => s + o.bytes, 0) });
+      await removeAssets(db, targets.map(o => o.name));
+      return res.status(200).json({ removed: targets.length, bytes: targets.reduce((s, o) => s + o.bytes, 0) });
     }
 
-    return res.status(200).json({ migrationPending: false, ...summarizeStorage(objects, rows) });
+    if (req.method === 'POST' && req.body?.action === 'copy') {
+      if (!c) return res.status(400).json({ error: 'R2 bağlı değil.' });
+      const skip = new Set<string>(Array.isArray(req.body?.skip) ? req.body.skip.filter((s: unknown) => typeof s === 'string') : []);
+      const batch = copyBatch(stores.toCopy, skip);
+      const failures: Array<{ path: string; reason: string }> = [];
+      let copied = 0;
+      for (const o of batch) {
+        const reason = await copyToR2(db, o).catch((e: any) => e?.message || 'Bilinmeyen hata');
+        if (reason) failures.push({ path: o.name, reason }); else copied++;
+      }
+      return res.status(200).json({ copied, failures, remaining: stores.toCopy.filter(o => !skip.has(o.name)).length - batch.length });
+    }
+
+    // Removes from Supabase only the files whose R2 copy was checked to be the same size.
+    if (req.method === 'POST' && req.body?.action === 'purge') {
+      if (!c) return res.status(400).json({ error: 'R2 bağlı değil.' });
+      const names = stores.copied.map(o => o.name);
+      let removed = 0;
+      for (let i = 0; i < names.length; i += 100) {
+        const { data, error } = await db.storage.from('project-assets').remove(names.slice(i, i + 100));
+        if (error) throw error;
+        removed += (data || []).length;
+      }
+      return res.status(200).json({ removed, bytes: stores.copiedSum.bytes });
+    }
+
+    return res.status(200).json({
+      migrationPending: false, ...summarizeStorage(objects, rows),
+      supabase: stores.supabase,
+      r2: c ? { ...stores.r2, limitBytes: R2_LIMIT_BYTES, toCopy: stores.toCopySum, copied: stores.copiedSum } : null,
+      r2Error: r2Error || undefined,
+    });
   } catch (error: any) {
     console.error('[Admin storage]', error?.message || error);
     return res.status(500).json({ error: 'Depolama bilgisi hazırlanamadı.' });
