@@ -256,7 +256,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'Video, tarayıcınızın **İndirilenler** klasörüne sorunun adıyla kaydedilir.' },
       { text: 'İndirilen soru **Tamamlandı** olarak işaretlenir ve kontrol listelerinden çıkar; Sorularım’da yanında “✓ Tamamlandı” yazar. Değişiklik yapmak isterseniz **Düzenlemeye geri aç**’a basın, bitince yeniden indirin. Videoyu daha önce indirdiyseniz **tamamlandı olarak işaretleyin** bağlantısını kullanın.' },
     ],
-    tips: ['Altyazıları, soru boyutunu ve sondaki “Doğru cevap” kapanış kartını önizlemenin altındaki seçeneklerden açıp kapatabilirsiniz.'],
+    tips: ['Altyazıları, soru boyutunu ve sondaki “Doğru cevap” kapanış kartını önizlemenin altındaki seçeneklerden açıp kapatabilirsiniz.', 'Bütün videoların sesi indirilirken aynı seviyeye getirilir: kısık kaydedilmiş bir MP3 de, yüksek bir ses de videoda aynı yükseklikte duyulur. Önizlemede ses kaydedildiği gibi çalar.'],
   },
   {
     id: 'soru-listesi',

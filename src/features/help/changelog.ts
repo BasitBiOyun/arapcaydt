@@ -22,6 +22,12 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
+        title: 'Video',
+        items: [
+          { text: '**Bütün videolarda aynı ses seviyesi:** İndirilen her videonun sesi aynı yüksekliğe getirilir. Öğrenci bir videodan ötekine geçince sesi açıp kısmak zorunda kalmaz; kısık kaydedilmiş MP3’ler de duyulur hâle gelir. Önizlemede ses kaydedildiği gibi çalar.', help: 'video-indir' },
+        ],
+      },
+      {
         title: 'Mesajlar ve sorun bildirimleri',
         items: [
           { text: 'Sol menüde yeni **Mesajlar** var: stüdyo yöneticisiyle birebir yazışabilirsiniz. Yönetici size özel mesaj gönderebilir, siz de ona buradan yazabilirsiniz. Yeni mesaj gelince yanında sayı çıkar.', help: 'sorun-bildir' },

@@ -1,6 +1,7 @@
 import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
 import { ExportConfig } from '../../../types';
 import { ExportProgress, IVideoExporter } from './types';
+import { normalizeLoudness } from './loudness';
 
 export function exportDimensions(config: ExportConfig) {
   const long = config.resolution === '720p' ? 1280 : 1920;
@@ -101,6 +102,7 @@ export class BrowserVideoExporter implements IVideoExporter {
         if (audioBuffer.numberOfChannels > 2) throw new Error('Lütfen mono veya stereo ses yükleyin.');
         if (peakLevel(Array.from({ length: audioBuffer.numberOfChannels }, (_, c) => audioBuffer!.getChannelData(c))) < 1e-4)
           throw new Error('Bu sorunun ses dosyası sessiz görünüyor. Ses adımında sesi dinleyin; gerekirse yeniden seslendirin ya da MP3’ü yeniden yükleyin.');
+        normalizeLoudness(Array.from({ length: audioBuffer.numberOfChannels }, (_, c) => audioBuffer!.getChannelData(c)), audioBuffer.sampleRate);
       }
       check();
       const totalSeconds = Math.max(duration, audioBuffer?.duration || 0);
