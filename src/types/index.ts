@@ -240,6 +240,8 @@ export interface NarrationSource {
 export interface QuestionProject {
   ownerId?: string;
   examName?: string;
+  /** Konu (topic) of the question, e.g. "İsm-i mevsul"; free text with suggestions (src/config/topics.ts). */
+  topic?: string;
   id: string;
   title: string;
   examYear: string;
@@ -277,7 +279,7 @@ export interface QuestionProject {
 export type ProjectSummary = Pick<QuestionProject,
   'id' | 'ownerId' | 'createdAt' | 'updatedAt' | 'title' | 'examYear' | 'examName' | 'questionNumber' | 'category'
   | 'correctAnswer' | 'status' | 'audioApproved' | 'videoReady' | 'imageUrl' | 'imageFileName' | 'arabicQuestionSnippet' | 'solutionText'
-  | 'deletedAt' | 'completedAt'> & {
+  | 'deletedAt' | 'completedAt' | 'topic'> & {
   narrationSource?: Pick<NarrationSource, 'type' | 'isApproved' | 'duration'>;
   audioNarration?: Pick<AudioNarration, 'isApproved' | 'duration'>;
 };

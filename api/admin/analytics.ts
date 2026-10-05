@@ -12,6 +12,7 @@ export interface ProjectRow {
   updated_at: string;
   title?: string | null;
   category?: string | null;
+  topic?: string | null;
   status?: string | null;
   videoReady?: boolean | null;
   completedAt?: string | null;
@@ -31,7 +32,7 @@ export interface ProjectRow {
 
 const SELECT = [
   'id', 'owner_id', 'updated_at',
-  'title:data->>title', 'category:data->>category', 'status:data->>status', 'videoReady:data->videoReady',
+  'title:data->>title', 'category:data->>category', 'topic:data->>topic', 'status:data->>status', 'videoReady:data->videoReady',
   'completedAt:data->>completedAt', 'reopenedAt:data->>reopenedAt',
   'correctAnswer:data->>correctAnswer',
   'narrationType:data->narrationSource->>type', 'modelId:data->narrationSource->>modelId',
@@ -84,6 +85,8 @@ export function isCompleted(row: Pick<ProjectRow, 'completedAt' | 'reopenedAt'>,
 
 export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<string, string> = {}) {
   const categoryTotals: Record<string, number> = {};
+  /** Per topic (konu; '' when none was written): questions and finished questions. */
+  const topicTotals: Record<string, { total: number; completed: number }> = {};
   const members: Record<string, MemberStats> = {};
   const voice = { gemini: 0, elevenlabs: 0, geminiFallbacks: 0, uploaded: 0, none: 0, models: {} as Record<string, number>, timing: {} as Record<string, number> };
   const funnel = { total: rows.length, withAudio: 0, withMarkers: 0, ready: 0, completed: 0 };
@@ -125,6 +128,9 @@ export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<strin
 
     // A finished question is no longer "to check": it counts as completed, not by its publish check.
     const completed = isCompleted(row, lastExportAt[row.id]);
+    const topic = topicTotals[row.topic?.trim() || ''] ??= { total: 0, completed: 0 };
+    topic.total++;
+    if (completed) topic.completed++;
     const level = quality(row);
     if (level || completed) funnel.withMarkers++;
     if (completed) { funnel.completed++; stats.completed++; continue; }
@@ -137,7 +143,7 @@ export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<strin
     if (level === 'blocked') push('Yayın kontrolü: düzeltme gerekli (tik, plan sürümü veya zamanlama).');
   }
   issues.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-  return { totalProjects: rows.length, categoryTotals, members, voice, funnel, quality: qualityTotals, issues: issues.slice(0, 40) };
+  return { totalProjects: rows.length, categoryTotals, topicTotals, members, voice, funnel, quality: qualityTotals, issues: issues.slice(0, 40) };
 }
 
 export interface ActivityRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null; created_at: string }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X, PlayCircle } from '@phosphor-icons/react';
+import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X, PlayCircle, Tag } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { useProjects } from '../features/projects/ProjectContext';
 import { QUESTION_CATEGORIES, getCategoryLabel } from '../config/categories';
@@ -10,6 +10,7 @@ import type { AppPage } from '../components/common/AppSidebar';
 import { useConfirm } from '../components/common/ConfirmDialog';
 import { CollectionInput } from '../features/projects/CollectionInput';
 import { SequencePlayer } from '../features/projects/SequencePlayer';
+import { TopicInput } from '../features/projects/TopicInput';
 import { downloadBackup } from '../features/projects/backupActions';
 import { TRASH_DAYS, trashDaysLeft } from '../features/projects/trash';
 import { prepareOne, type MarkRow, type MarkState } from '../features/batch/prepareMarks';
@@ -59,6 +60,9 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
   const [collectionFor, setCollectionFor] = useState<string[] | null>(null);
   /** "Arka arkaya izle": the chosen questions, in list order. */
   const [watching, setWatching] = useState<string[] | null>(null);
+  const [topicFor, setTopicFor] = useState<string[] | null>(null);
+  const [topicName, setTopicName] = useState('');
+  const [topic, setTopic] = useState('');
   const [collectionName, setCollectionName] = useState('');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
@@ -68,15 +72,17 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
   const collections = [...new Set(projects.map(p => p.examName).filter(Boolean))].sort();
+  const topics = [...new Set(projects.map(p => p.topic?.trim()).filter((t): t is string => !!t))].sort((a, b) => a.localeCompare(b, 'tr'));
   const years = [...new Set(projects.map(p => p.examYear).filter(Boolean))].sort().reverse();
   const source = view === 'trash' ? trash : projects;
   const rows = source.filter(
     p =>
       (!category || p.category === category) &&
       (!collection || p.examName === collection) &&
+      (!topic || (topic === '-' ? !p.topic?.trim() : p.topic?.trim() === topic)) &&
       (!year || p.examYear === year) &&
       (!status || (status === 'done' ? !!p.completedAt : String(resumeStep(p)) === status && !p.completedAt)) &&
-      [p.title, p.examName, p.examYear, p.arabicQuestionSnippet, String(p.questionNumber)]
+      [p.title, p.examName, p.examYear, p.topic, p.arabicQuestionSnippet, String(p.questionNumber)]
         .join(' ')
         .toLocaleLowerCase('tr')
         .includes(search.toLocaleLowerCase('tr')),
@@ -180,6 +186,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
         title: p.title + ' (Kopya)',
         examYear: p.examYear,
         examName: p.examName,
+        topic: p.topic,
         category: p.category,
         correctAnswer: p.correctAnswer,
         imageUrl,
@@ -246,6 +253,11 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               <option key={c}>{c}</option>
             ))}
           </select>
+          <select aria-label="Konu" value={topic} onChange={e => setTopic(e.target.value)}>
+            <option value="">Tüm konular</option>
+            {topics.map(t => <option key={t}>{t}</option>)}
+            <option value="-">Konusu yazılmamış</option>
+          </select>
           <select aria-label="Sınav yılı" value={year} onChange={e => setYear(e.target.value)}>
             <option value="">Tüm yıllar</option>
             {years.map(y => (
@@ -274,11 +286,12 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               {(Object.keys(SORTS) as SortId[]).map(id => <option key={id} value={id}>{SORTS[id].label}</option>)}
             </select>
           )}
-          {(search || collection || year || category || status) && (
+          {(search || collection || topic || year || category || status) && (
             <button
               onClick={() => {
                 setSearch('');
                 setCollection('');
+                setTopic('');
                 setYear('');
                 setCategory('');
                 setStatus('');
@@ -337,7 +350,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               <span>
                 <strong>{p.title}</strong>
                 <small>
-                  {p.examName || p.examYear} · {getCategoryLabel(p.category)}
+                  {p.examName || p.examYear} · {getCategoryLabel(p.category)}{p.topic?.trim() ? ` · ${p.topic.trim()}` : ''}
                 </small>
               </span>
             </button>
@@ -393,6 +406,9 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
               </button>
               <button disabled={!!busy} onClick={() => { setCollectionName(''); setCollectionFor(visibleChosen); }}>
                 <FolderSimple size={18} /> Koleksiyona taşı
+              </button>
+              <button disabled={!!busy} onClick={() => { setTopicName(''); setTopicFor(visibleChosen); }}>
+                <Tag size={18} /> Konu ver
               </button>
               <button disabled={!!busy} onClick={() => void backupChosen(visibleChosen)}>
                 <FileZip size={18} /> {busy.startsWith('backup:') ? `Hazırlanıyor ${busy.slice(7)}` : 'Yedeğini indir (ZIP)'}
@@ -466,6 +482,31 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
       {watching && (
         <SequencePlayer ids={watching} titles={Object.fromEntries(projects.map(p => [p.id, p.title]))}
           onClose={() => setWatching(null)} onOpen={id => { setWatching(null); onSelectProject(id); }} />
+      )}
+      {topicFor && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="topic-title"
+          onKeyDown={e => { if (e.key === 'Escape') setTopicFor(null); }}>
+          <form className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4"
+            onSubmit={e => {
+              e.preventDefault();
+              const ids = topicFor, name = topicName.trim();
+              setTopicFor(null);
+              void run('topic', async () => countNote((await updateQuestions(ids, async full => ({ ...full, topic: name || undefined }))).length, ids.length,
+                name ? `“${name}” konusuna eklendi` : 'için konu silindi'));
+            }}>
+            <h3 id="topic-title" className="text-lg font-bold">{topicFor.length} soruya konu ver</h3>
+            <label className="flex flex-col gap-2 text-base">
+              Konu
+              <TopicInput autoFocus value={topicName} onChange={setTopicName} placeholder="Örneğin: İsm-i mevsul"
+                className="border rounded-lg px-3 py-2.5 text-base" />
+            </label>
+            <p className="text-sm text-[#746e66]">Listeden seçin ya da kendiniz yazın. Boş bırakırsanız soruların konusu silinir.</p>
+            <div className="flex justify-end gap-2">
+              <button type="button" className="studio-secondary" onClick={() => setTopicFor(null)}>Vazgeç</button>
+              <button type="submit" className="studio-primary">Kaydet</button>
+            </div>
+          </form>
+        </div>
       )}
       {collectionFor && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="collection-title"

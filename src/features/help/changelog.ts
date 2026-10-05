@@ -24,6 +24,7 @@ export const NEWS: NewsEntry[] = [
       {
         title: 'Sorularım',
         items: [
+          { text: '**Konu:** Sorulara konu yazabilirsiniz (soru bilgilerindeki **Konu** kutusu ya da seçili sorular için **Konu ver**). Sorularım’da konuya göre süzebilirsiniz; yönetici panelinde hangi konudan kaç soru olduğu görünür.', help: 'soru-listesi' },
           { text: '**Arka arkaya izle:** Sorularım’da soruları seçip (bir denemenin tamamı için **Tümünü seç**) alttaki çubuktan **Arka arkaya izle**’ye basın. Videolar sırayla oynar; hatalı olanı “Düzeltilecek” diye işaretlersiniz, sonunda bu sorular listelenir.', help: 'soru-listesi' },
         ],
       },

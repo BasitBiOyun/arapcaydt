@@ -36,6 +36,7 @@ import { toast } from 'sonner';
 import { useConfirm } from '../components/common/ConfirmDialog';
 import { useAuth } from '../features/auth/AuthContext';
 import { CollectionInput } from '../features/projects/CollectionInput';
+import { TopicInput } from '../features/projects/TopicInput';
 
 function voiceApproved(project: QuestionProject) {
   return Boolean(project.audioApproved || project.narrationSource?.isApproved || project.audioNarration?.isApproved);
@@ -773,6 +774,15 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
                   placeholder="Örnek: Eylül Denemesi 1"
                   value={currentProject.examName || ''}
                   onChange={examName => updateCurrentProject({ examName })}
+                  className="block w-full border rounded p-2"
+                />
+              </label>
+              <label className="block">
+                Konu
+                <TopicInput
+                  placeholder="Örnek: İsm-i mevsul"
+                  value={currentProject.topic || ''}
+                  onChange={topic => updateCurrentProject({ topic: topic.trim() ? topic : undefined })}
                   className="block w-full border rounded p-2"
                 />
               </label>

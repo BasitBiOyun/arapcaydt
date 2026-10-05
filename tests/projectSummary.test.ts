@@ -74,3 +74,10 @@ test('earlier collection names are offered most recent first, each once', async 
     { examName: 'Ağustos' },
   ]), ['Eylül Denemesi 1', 'Ekim Denemesi', 'Ağustos']);
 });
+
+test('a question’s topic (konu) reaches the list, and a question without one has none', async () => {
+  const { summaryFromRow, toSummary } = await import('../src/features/projects/projectSummary');
+  assert.equal(summaryFromRow({ id: 'p', topic: 'Hal' }, new Map()).topic, 'Hal');
+  assert.equal('topic' in summaryFromRow({ id: 'p' }, new Map()), false);
+  assert.equal(toSummary({ id: 'p', topic: 'Temyiz' } as any).topic, 'Temyiz');
+});

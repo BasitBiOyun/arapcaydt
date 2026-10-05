@@ -3,7 +3,7 @@ import type { ProjectSummary, QuestionProject } from '../../types';
 /** Project JSON fields read for lists (PostgREST aliases; nothing heavier than the solution text). */
 export const SUMMARY_SELECT = [
   'id', 'owner_id', 'created_at', 'updated_at',
-  'title:data->>title', 'examYear:data->>examYear', 'examName:data->>examName', 'questionNumber:data->questionNumber',
+  'title:data->>title', 'examYear:data->>examYear', 'examName:data->>examName', 'topic:data->>topic', 'questionNumber:data->questionNumber',
   'category:data->>category', 'correctAnswer:data->>correctAnswer', 'status:data->>status',
   'audioApproved:data->audioApproved', 'videoReady:data->videoReady',
   'imageUrl:data->imageUrl', 'imageFileName:data->>imageFileName', 'arabicQuestionSnippet:data->>arabicQuestionSnippet',
@@ -26,7 +26,7 @@ export function summaryFromRow(row: any, signed: Map<string, string>): ProjectSu
   const hasCompat = row.anApproved != null || row.anDuration != null;
   return {
     id: row.id, ownerId: row.owner_id, createdAt: row.created_at, updatedAt: row.updated_at,
-    title: row.title ?? '', examYear: row.examYear ?? '', examName: row.examName ?? undefined,
+    title: row.title ?? '', examYear: row.examYear ?? '', examName: row.examName ?? undefined, ...(row.topic ? { topic: row.topic } : {}),
     questionNumber: Number(row.questionNumber) || 0, category: row.category ?? '',
     correctAnswer: (LETTERS as readonly string[]).includes(row.correctAnswer) ? row.correctAnswer : 'A',
     status: row.status || 'draft', audioApproved: row.audioApproved === true, videoReady: row.videoReady === true,
@@ -44,7 +44,7 @@ export function summaryFromRow(row: any, signed: Map<string, string>): ProjectSu
 export function toSummary(p: QuestionProject | ProjectSummary): ProjectSummary {
   return {
     id: p.id, ownerId: p.ownerId, createdAt: p.createdAt, updatedAt: p.updatedAt, title: p.title, examYear: p.examYear,
-    examName: p.examName, questionNumber: p.questionNumber, category: p.category, correctAnswer: p.correctAnswer, status: p.status,
+    examName: p.examName, ...(p.topic ? { topic: p.topic } : {}), questionNumber: p.questionNumber, category: p.category, correctAnswer: p.correctAnswer, status: p.status,
     audioApproved: p.audioApproved, videoReady: p.videoReady, imageUrl: p.imageUrl, imageFileName: p.imageFileName,
     arabicQuestionSnippet: p.arabicQuestionSnippet, solutionText: p.solutionText,
     narrationSource: p.narrationSource ? { type: p.narrationSource.type, isApproved: p.narrationSource.isApproved, duration: p.narrationSource.duration } : undefined,

@@ -11,6 +11,7 @@ import { useProjects } from '../features/projects/ProjectContext';
 import React, { useCallback, useEffect, useState } from 'react';
 import { authHeaders, database } from '../services/supabase';
 import { getCategoryLabel } from '../config/categories';
+import { TOPIC_SUGGESTIONS } from '../config/topics';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import type { ElevenLabsStatus } from '../types';
 import { ArrowClockwise, CheckCircle, UserPlus } from '@phosphor-icons/react';
@@ -65,6 +66,8 @@ type RequestService = 'gemini_tts' | 'gemini_transcribe' | 'elevenlabs_align' | 
 interface Analytics {
   totalProjects: number;
   categoryTotals: Record<string, number>;
+  /** Missing before the analytics update is deployed. */
+  topicTotals?: Record<string, { total: number; completed: number }>;
   members: Record<string, MemberAnalytics>;
   voice: {
     gemini: number;
@@ -818,6 +821,31 @@ export const AdminPage: React.FC = () => {
               </div>
             </section>
           )}
+
+          {analytics?.topicTotals && (() => {
+            const totals = analytics.topicTotals;
+            const named = Object.entries(totals).filter(([t]) => t).sort((a, b) => b[1].total - a[1].total || a[0].localeCompare(b[0], 'tr'));
+            const missing = TOPIC_SUGGESTIONS.filter(t => !Object.keys(totals).some(k => k.toLocaleLowerCase('tr') === t.toLocaleLowerCase('tr')));
+            return (
+              <section className={card}>
+                <SectionTitle title="Konulara göre sorular" note="Tüm öğretmenlerin sorularında yazılan konu; hangi konudan kaç soru var, kaçının videosu tamamlandı." />
+                {named.length ? (
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {named.map(([t, n]) => (
+                      <div key={t} className="border rounded-lg px-3 py-2 flex items-center justify-between gap-3">
+                        <span className="text-sm min-w-0 truncate" title={t}>{t}</span>
+                        <span className="text-sm tabular-nums whitespace-nowrap"><strong>{n.total}</strong> <span className="text-[#787670]">· {n.completed} tamamlandı</span></span>
+                      </div>
+                    ))}
+                  </div>
+                ) : <p className="text-sm text-[#787670]">Henüz konusu yazılmış soru yok.</p>}
+                {totals[''] && <p className="text-sm text-[#55544F] mt-3">Konusu yazılmamış: <strong>{totals[''].total}</strong> soru.</p>}
+                {missing.length > 0 && (
+                  <p className="text-sm text-[#55544F] mt-2"><span className="font-semibold">Henüz sorusu olmayan konular:</span> {missing.join(', ')}.</p>
+                )}
+              </section>
+            );
+          })()}
 
           <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6">
             <section className={card}>

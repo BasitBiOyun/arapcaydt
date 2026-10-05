@@ -135,3 +135,13 @@ test('this week: finished, worked on, and where the open questions wait, per tea
   assert.deepEqual(week.t1, { completed: 1, working: 3, needsVoice: 1, needsMarks: 1, needsFix: 1, errors: 0 });
   assert.deepEqual(week.t2, { completed: 0, working: 0, needsVoice: 0, needsMarks: 0, needsFix: 0, errors: 1 });
 });
+
+test('topics: questions and finished ones are counted per topic; untyped ones under the empty topic', () => {
+  const s = summarizeProjects([
+    row('a', { topic: 'İsm-i mevsul', completedAt: '2026-10-05T10:00:00Z' }),
+    row('b', { topic: ' İsm-i mevsul ' }),
+    row('c', { topic: 'Hal' }),
+    row('d'),
+  ]);
+  assert.deepEqual(s.topicTotals, { 'İsm-i mevsul': { total: 2, completed: 1 }, Hal: { total: 1, completed: 0 }, '': { total: 1, completed: 0 } });
+});
