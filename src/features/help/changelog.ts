@@ -22,6 +22,12 @@ export const NEWS: NewsEntry[] = [
         ],
       },
       {
+        title: 'Sorularım',
+        items: [
+          { text: '**Arka arkaya izle:** Sorularım’da soruları seçip (bir denemenin tamamı için **Tümünü seç**) alttaki çubuktan **Arka arkaya izle**’ye basın. Videolar sırayla oynar; hatalı olanı “Düzeltilecek” diye işaretlersiniz, sonunda bu sorular listelenir.', help: 'soru-listesi' },
+        ],
+      },
+      {
         title: 'İşaretler ekranı',
         items: [
           { text: '**Ok aracı (➜):** Kuyruğundan basıp ucunun gideceği yere sürükleyin; videoda ok uzayarak gelir. Yönünü küçük çubuktan çevirebilirsiniz.', help: 'isaretler' },

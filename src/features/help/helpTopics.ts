@@ -280,6 +280,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'Bir soruya devam etmek için **Devam et**’e basın. Kopya kâğıt simgesi soruyu çoğaltır (metin ve ayarlar kopyalanır, ses yeniden hazırlanır).' },
       { text: 'Birden çok soru seçmek için satırların solundaki kutucukları işaretleyin (hepsi için **Tümünü seç**). Altta açılan koyu çubuktan **Koleksiyona taşı**, **Yedeğini indir (ZIP)** veya **Çöp kutusuna taşı** seçin.', image: 'toplu-secim', alt: 'Seçili sorular için işlem çubuğu' },
       { text: '**Koleksiyona taşı** penceresinde bir deneme adı yazın ya da önceki adlardan birine tıklayın ve **Taşı**’ya basın.', image: 'koleksiyon', alt: 'Koleksiyona taşıma penceresi' },
+      { text: '**Bir denemeyi baştan sona izlemek için:** Koleksiyon kutusundan denemeyi seçin, sıralamayı **Soru numarasına göre** yapın, **Tümünü seç**’i işaretleyip alttaki çubuktan **Arka arkaya izle**’ye basın. Videolar indirileceği gibi sırayla oynar; biri bitince sıradaki kendiliğinden başlar. Hatalı gördüğünüz soruda **Düzeltilecek olarak işaretle**’ye basın. İzleme bitince işaretlediğiniz sorular listelenir; **Aç** ile düzenlemeye geçersiniz. Sesi ya da işaretleri hazır olmayan sorular atlanır.' },
     ],
     tips: ['Seçtiğiniz sıralama bu bilgisayarda hatırlanır.'],
   },

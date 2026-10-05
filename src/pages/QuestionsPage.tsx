@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X } from '@phosphor-icons/react';
+import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X, PlayCircle } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { useProjects } from '../features/projects/ProjectContext';
 import { QUESTION_CATEGORIES, getCategoryLabel } from '../config/categories';
@@ -9,6 +9,7 @@ import { projectRepository } from '../features/projects/projectRepository';
 import type { AppPage } from '../components/common/AppSidebar';
 import { useConfirm } from '../components/common/ConfirmDialog';
 import { CollectionInput } from '../features/projects/CollectionInput';
+import { SequencePlayer } from '../features/projects/SequencePlayer';
 import { downloadBackup } from '../features/projects/backupActions';
 import { TRASH_DAYS, trashDaysLeft } from '../features/projects/trash';
 import { prepareOne, type MarkRow, type MarkState } from '../features/batch/prepareMarks';
@@ -56,6 +57,8 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
   const [chosen, setChosen] = useState<Set<string>>(new Set());
   useEffect(() => setChosen(new Set()), [view]);
   const [collectionFor, setCollectionFor] = useState<string[] | null>(null);
+  /** "Arka arkaya izle": the chosen questions, in list order. */
+  const [watching, setWatching] = useState<string[] | null>(null);
   const [collectionName, setCollectionName] = useState('');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
@@ -384,6 +387,10 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
                 title="Seçilen soruların işaretlerini sırayla hazırlar; sesi seçilmemiş ve tamamlanmış sorular atlanır">
                 <Sparkle size={18} /> İşaretleri hazırla
               </button>
+              <button disabled={!!busy} onClick={() => setWatching(visibleChosen)}
+                title="Seçilen soruların videolarını listedeki sırayla arka arkaya oynatır; hatalı olanları işaretlersiniz">
+                <PlayCircle size={18} /> Arka arkaya izle
+              </button>
               <button disabled={!!busy} onClick={() => { setCollectionName(''); setCollectionFor(visibleChosen); }}>
                 <FolderSimple size={18} /> Koleksiyona taşı
               </button>
@@ -455,6 +462,10 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
             </div>
           </div>
         </div>
+      )}
+      {watching && (
+        <SequencePlayer ids={watching} titles={Object.fromEntries(projects.map(p => [p.id, p.title]))}
+          onClose={() => setWatching(null)} onOpen={id => { setWatching(null); onSelectProject(id); }} />
       )}
       {collectionFor && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="collection-title"
