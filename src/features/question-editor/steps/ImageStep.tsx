@@ -1,6 +1,8 @@
 import React from 'react';
 import type { QuestionProject } from '../../../types';
 import { CheckCircle, UploadSimple, Trash } from '@phosphor-icons/react';
+import { PrepToolHint } from './PrepToolHint';
+import { TEMPLATE_TOOL_URL } from '../../../config/prepTools';
 
 export interface ImageStepProps {
   step: number;
@@ -100,6 +102,9 @@ export function ImageStep({ step, hasImage, currentProject, replaceImageInputRef
             }}
           />
         </label>
+      )}
+      {!hasImage && (
+        <PrepToolHint text="Sorunuz şablona yerleştirilmiş bir görsel olarak hazır değilse:" label="Soru şablonu yerleştirici" url={TEMPLATE_TOOL_URL} />
       )}
     </div>
   );

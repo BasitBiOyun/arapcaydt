@@ -44,7 +44,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: '**Çözüm senaryosu oluşturucu:** Soru görsellerini toplu yükleyin; araç her sorunun çözüm metnini hazırlar. Arapça sorular için de kullanılabilir. İlk açılışta kendi Google anahtarınızı girmeniz gerekir (**Önce API Anahtarını Girin**).', image: 'arac-senaryo', alt: 'Çözüm senaryosu oluşturucu ekranı' },
       { text: 'Stüdyoya dönün: indirdiğiniz resmi **Yeni soru** ile **1 Soru** adımına yükleyin, çözüm metnini **2 Metin** adımındaki kutuya yapıştırın.' },
     ],
-    tips: ['Araçları komisyonumuzdan Ubeydullah Öz hazırladı.', 'Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
+    tips: ['Soru eklerken de araçlara ulaşabilirsiniz: **1 Soru** adımında görsel yokken şablon aracına, **2 Metin** adımında metin kutusu boşken çözüm senaryosu aracına giden bağlantı görünür.', 'Araçları komisyonumuzdan Ubeydullah Öz hazırladı.', 'Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
   },
   {
     id: 'yeni-soru',
