@@ -1,13 +1,14 @@
 import { ArrowSquareOut, ArrowRight } from '@phosphor-icons/react';
 import { pageHash } from '../layouts/route';
 import { helpImage } from '../features/help/helpTopics';
+import { SCENARIO_TOOL_URL, TEMPLATE_TOOL_URL } from '../config/prepTools';
 
 /** Preparation tools made by a commission colleague; teachers use them before the studio. They open in a new tab. */
 const TOOLS = [
   {
     step: '1',
     title: 'Soru şablonu yerleştirici',
-    url: 'https://soru-sablon-yerlestirici.vercel.app/',
+    url: TEMPLATE_TOOL_URL,
     image: 'arac-sablon',
     what: 'PowerPoint’teki sorularınızı Bakanlığın soru şablonuna yerleştirir; boyutlandırır, uzun soruları ikiye böler. Gerekirse kesim yerini elle hızlıca düzeltirsiniz.',
     then: 'Hazır soruları resim olarak toplu indirin, sonra stüdyoda **Yeni soru** ile yükleyin.',
@@ -15,7 +16,7 @@ const TOOLS = [
   {
     step: '2',
     title: 'Çözüm senaryosu oluşturucu',
-    url: 'https://tyt-ayt-dkab-senaryo.vercel.app/',
+    url: SCENARIO_TOOL_URL,
     image: 'arac-senaryo',
     what: 'Soruların çözüm metnini (senaryosunu) hazırlamanıza yardım eder. Arapça sorular için de kullanılabilir.',
     then: 'Çıkan metni stüdyoda **2 Metin** adımındaki kutuya yapıştırın. Araç ilk açılışta kendi Google anahtarınızı ister.',

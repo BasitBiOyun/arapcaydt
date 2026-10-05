@@ -3,6 +3,8 @@ import { quotaResetClock } from '../services/narration/geminiKeyService';
 import { ProjectViewer } from '../features/projects/ProjectViewer';
 import { StorageSection } from '../features/admin/StorageSection';
 import { FeedbackSection } from '../features/admin/FeedbackSection';
+import { MessagesSection } from '../features/admin/MessagesSection';
+import { loadAllMessages } from '../features/messages/messages';
 import type { QuestionProject } from '../types';
 import { projectRepository } from '../features/projects/projectRepository';
 import { useProjects } from '../features/projects/ProjectContext';
@@ -151,7 +153,7 @@ function ago(iso: string | null | undefined): string {
   return rtf.format(-Math.round(minutes / 1440), 'day');
 }
 
-type Tab = 'overview' | 'teachers' | 'usage' | 'projects';
+type Tab = 'overview' | 'messages' | 'teachers' | 'usage' | 'projects';
 const card = 'rounded-xl border bg-white p-5';
 
 const Stat: React.FC<{ label: string; value: React.ReactNode; hint?: React.ReactNode; tone?: string }> = ({ label, value, hint, tone }) => (
@@ -199,6 +201,10 @@ export const AdminPage: React.FC = () => {
   const [busy, setBusy] = useState(false);
   const [filter, setFilter] = useState('');
   const [importMessage, setImportMessage] = useState('');
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  useEffect(() => {
+    loadAllMessages().then(list => setUnreadMessages(list.filter(m => !m.from_admin && !m.read_at).length)).catch(() => undefined);
+  }, []);
 
   const load = useCallback(async () => {
     setBusy(true);
@@ -318,6 +324,7 @@ export const AdminPage: React.FC = () => {
 
   const tabs: Array<{ id: Tab; label: string; badge?: number }> = [
     { id: 'overview', label: 'Genel bakış' },
+    { id: 'messages', label: 'Mesajlar', badge: unreadMessages || undefined },
     { id: 'teachers', label: 'Öğretmenler', badge: pending.length || undefined },
     { id: 'usage', label: 'Kullanım' },
     { id: 'projects', label: 'Projeler' },
@@ -505,6 +512,8 @@ export const AdminPage: React.FC = () => {
           )}
         </div>
       )}
+
+      {tab === 'messages' && <MessagesSection members={members} onUnread={setUnreadMessages} />}
 
       {tab === 'teachers' && (
         <section className="rounded-xl border bg-white overflow-hidden">

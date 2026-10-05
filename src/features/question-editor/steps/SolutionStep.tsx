@@ -13,6 +13,8 @@ export interface SolutionStepProps {
 /** STEP 2: Çözüm Metni */
 /** Longest solution text the voice can read in one go (the server refuses longer). */
 import { SPOKEN_LIMIT } from '../../../services/narration/narrationParts';
+import { PrepToolHint } from './PrepToolHint';
+import { SCENARIO_TOOL_URL } from '../../../config/prepTools';
 export { SPOKEN_LIMIT };
 
 export function SolutionStep({
@@ -72,6 +74,9 @@ export function SolutionStep({
           {currentProject.solutionText.trim().length > SPOKEN_LIMIT && ' · seslendirme için kısaltın'}
         </span>
       </div>
+      {!currentProject.solutionText.trim() && (
+        <PrepToolHint text="Çözüm metniniz hazır değilse önce hazırlayıp buraya yapıştırabilirsiniz:" label="Çözüm senaryosu oluşturucu" url={SCENARIO_TOOL_URL} />
+      )}
       {!currentProject.solutionText.trim() && (
         <p className="text-sm text-[#787670]">
           Hazır ses kaydınız (MP3) varsa metni yazmadan devam edin; bir sonraki adımda MP3’ü yükleyince çözüm metni sesinizden çıkarılır. Doğru cevabı seçmeyi unutmayın.

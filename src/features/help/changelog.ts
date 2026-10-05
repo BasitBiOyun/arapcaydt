@@ -18,12 +18,14 @@ export const NEWS: NewsEntry[] = [
           { text: 'Sol menüde yeni **Hazırlık Araçları** sayfası var. Komisyonumuzdan bir öğretmenin hazırladığı iki araç yeni sekmede açılır: **Soru şablonu yerleştirici** soruları Bakanlık şablonuna yerleştirip resim olarak toplu indirir, **Çözüm senaryosu oluşturucu** çözüm metnini hazırlamanıza yardım eder. Hazırladığınız resmi ve metni sonra stüdyoya eklersiniz.', help: 'hazirlik-araclari' },
           { text: '**Kontrol Paneli**’nin üstündeki “Hazırlık araçlarına bakın” bağlantısı da bu sayfayı açar.', help: 'hazirlik-araclari' },
           { text: 'Her aracın kartında ve Yardım’daki rehberde aracın ekran görüntüsü var; resme tıklayınca da araç açılır.', help: 'hazirlik-araclari' },
+          { text: 'Soru eklerken de araçlara ulaşabilirsiniz: **1 Soru** adımında görsel yüklenmemişken şablon aracına, **2 Metin** adımında metin kutusu boşken çözüm senaryosu aracına giden bir bağlantı görünür.', help: 'hazirlik-araclari' },
         ],
       },
       {
-        title: 'Sorun bildirimleri',
+        title: 'Mesajlar ve sorun bildirimleri',
         items: [
-          { text: 'Gönderdiğiniz sorun bildirimlerine yönetici artık kısa bir yanıt yazabiliyor. Yanıtlar sol menüdeki **Bildirimlerim**’de görünür; yeni yanıt gelince yanında sayı çıkar.', help: 'sorun-bildir' },
+          { text: 'Sol menüde yeni **Mesajlar** var: stüdyo yöneticisiyle birebir yazışabilirsiniz. Yönetici size özel mesaj gönderebilir, siz de ona buradan yazabilirsiniz. Yeni mesaj gelince yanında sayı çıkar.', help: 'sorun-bildir' },
+          { text: 'Gönderdiğiniz sorun bildirimlerine yönetici artık kısa bir yanıt yazabiliyor. Bildirimleriniz, durumları ve yanıtlar da **Mesajlar**’da görünür.', help: 'sorun-bildir' },
         ],
       },
     ],

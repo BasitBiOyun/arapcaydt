@@ -11,6 +11,7 @@ const tables: Record<string, Row[]> = {
   projects: sampleProjects(),
   studio_settings: [],
   feedback: [],
+  messages: [],
 };
 
 /** `alias:data->a->>b` items of a PostgREST select, read from one row. */

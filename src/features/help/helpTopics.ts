@@ -44,7 +44,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: '**Çözüm senaryosu oluşturucu:** Soru görsellerini toplu yükleyin; araç her sorunun çözüm metnini hazırlar. Arapça sorular için de kullanılabilir. İlk açılışta kendi Google anahtarınızı girmeniz gerekir (**Önce API Anahtarını Girin**).', image: 'arac-senaryo', alt: 'Çözüm senaryosu oluşturucu ekranı' },
       { text: 'Stüdyoya dönün: indirdiğiniz resmi **Yeni soru** ile **1 Soru** adımına yükleyin, çözüm metnini **2 Metin** adımındaki kutuya yapıştırın.' },
     ],
-    tips: ['Araçları komisyonumuzdan Ubeydullah Öz hazırladı.', 'Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
+    tips: ['Soru eklerken de araçlara ulaşabilirsiniz: **1 Soru** adımında görsel yokken şablon aracına, **2 Metin** adımında metin kutusu boşken çözüm senaryosu aracına giden bağlantı görünür.', 'Araçları komisyonumuzdan Ubeydullah Öz hazırladı.', 'Araçlar başka bir sitede çalışır; orada yaptıklarınız stüdyoya kendiliğinden gelmez. İndirdiğiniz resmi ve kopyaladığınız metni stüdyoya siz eklersiniz.'],
   },
   {
     id: 'yeni-soru',
@@ -322,11 +322,12 @@ export const HELP_TOPICS: HelpTopic[] = [
   },
   {
     id: 'sorun-bildir',
-    title: 'Sorun bildirme ve sık sorulanlar',
+    title: 'Mesajlar, sorun bildirme ve sık sorulanlar',
     summary: 'Bir şey beklediğiniz gibi çalışmazsa tek tıkla yöneticiye haber verebilirsiniz.',
     steps: [
       { text: 'Sol menüdeki ya da editörün sağ üstündeki **Sorun bildir**’e basın, ne olduğunu kısaca yazın ve gönderin. Hangi sayfada olduğunuz gibi teknik bilgiler kendiliğinden eklenir.', image: 'sorun-bildir', alt: 'Sorun bildir penceresi' },
-      { text: 'Yönetici bildiriminize yanıt yazınca sol menüdeki **Bildirimlerim**’de görürsünüz; yeni yanıt varsa yanında sayı çıkar. Bildiriminizin çözülüp çözülmediği de orada yazar.' },
+      { text: 'Sol menüdeki **Mesajlar** yöneticiyle birebir yazışmanızdır: yöneticinin size gönderdiği mesajları orada okur, ona oradan yazarsınız. Yeni mesaj ya da bildiriminize yanıt gelince yanında sayı çıkar.' },
+      { text: 'Gönderdiğiniz sorun bildirimleri de **Mesajlar**’ın altında, çözülüp çözülmediği ve yöneticinin yanıtıyla birlikte görünür.' },
     ],
     tips: [
       '**Çalışmam kayboldu mu?** Hayır. Stüdyo her değişikliği birkaç saniye içinde kaydeder. İnternet kesilirse değişiklikler bu bilgisayarda saklanır ve bağlantı gelince gönderilir.',
