@@ -134,7 +134,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       {
         title: 'Sesin ilk seferde doğru çıkması için metni nasıl yazmalı?',
         items: [
-          'Arapça ifadeleri **harekeli** yazın. Son hareke ve tenvin de yazdığınız gibi okunur; şıklardaki tek kelimeler gibi tek başına duran ya da duraktan önce gelen kelimelerde de ses son harekeyi düşürmez.',
+          'Arapça ifadeleri **harekeli** yazın. Son hareke ve tenvin de yazdığınız gibi okunur (fetha yazılan yer ötre okunmaz); şıklardaki tek kelimeler gibi tek başına duran kelimelerde de.',
           'Seste yanlış okunan bir harekeyi düzeltmek için metne aynı harekeyi birkaç kez yazmayın; sesi düzeltmez. Kelimeyi bir kez doğru harekeleyin ya da telaffuz sözlüğüne ekleyin.',
           'Türkçe ile Arapçayı aynı cümlenin içinde sık sık karıştırmayın. Arapça alıntıyı tam bir cümle olarak verin, açıklamasını ayrı bir Türkçe cümleyle yapın; iki dil de böyle daha doğru okunur.',
           'Uzun bir Arapça paragrafı tek parça hâlinde, arasına Türkçe koymadan yazın.',

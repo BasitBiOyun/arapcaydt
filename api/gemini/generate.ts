@@ -18,11 +18,11 @@ export const MAX_REQUEST_CHARS = 5000;
 
 const VOICE_NAME = 'Achernar';
 /**
- * Arabic read alone or before a pause (an option word, a word before a dash or comma) is
- * otherwise read in pausal form, dropping its written last vowel or tanwin; teachers want
- * every written mark heard, so the voice is told to keep them.
+ * The voice guesses an Arabic word's last vowel from grammar or habit (an option word read alone
+ * comes out with damma although fatha is written) and drops it before a pause. Teachers write
+ * every mark on purpose, so the voice is told to keep exactly the written marks.
  */
-export const ARABIC_ENDINGS = 'Pronounce every Arabic word with all of its written vowel marks, including the last vowel and tanwin (for example -un, -an, -in), even when the word stands alone, ends a line or comes before a pause; do not use the pausal form.';
+export const ARABIC_ENDINGS = 'Arabic vowel marks are written on purpose: pronounce each Arabic word with exactly the vowel marks written on it, above all its last mark. Never replace a written last vowel with the one grammar or habit suggests: a written fatha stays fatha (never damma), kasra stays kasra, damma stays damma, and tanwin stays tanwin (-un, -an, -in). This holds for a word standing alone (an answer option, a single verb), at the end of a line and before a pause; do not use the pausal form.';
 // 3.8 models read naturally on their own; the instructions are fidelity and the written Arabic endings.
 export const STYLE = `Read the text exactly as written. Do not add anything. ${ARABIC_ENDINGS}`;
 

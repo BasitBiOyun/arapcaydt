@@ -15,7 +15,7 @@ export const NEWS: NewsEntry[] = [
       {
         title: 'Seslendirme',
         items: [
-          { text: 'Ses artık Arapça kelimelerin yazılı son harekesini ve tenvinini okur. Şıklardaki tek kelimeler ve fiiller gibi tek başına duran ya da duraktan önce gelen kelimelerde son hareke düşmez.', help: 'seslendirme' },
+          { text: 'Ses artık Arapça kelimelerin son harekesini yazıldığı gibi okur: fetha yazılan yeri ötre okumaz, tenvini düşürmez. Bu, şıklardaki tek kelimeler ve fiiller gibi tek başına duran kelimelerde de geçerlidir.', help: 'seslendirme' },
           { text: '**Telaffuz sözlüğü** harekeli yazdığınız kelimeyi metinde farklı son harekeyle, eksik ya da fazladan harekeyle yazılmış olsa da bulur.', help: 'seslendirme' },
           { text: 'Bazı seslerde kelime zamanları yalnız Arapça kısımdan alınıyordu; bu yüzden **Sesi düzelt** “Bu sesin kelime zamanları yok” diyordu. Artık böyle bir zamanlama kullanılmaz; eski seslerde de **Sesi düzelt** önce zamanları yeniden alır, sonra seçtiğiniz cümleyi düzeltir.', help: 'seslendirme' },
         ],
