@@ -5,9 +5,9 @@ import { readAsset, signAssets } from '../../server/assets.js';
 
 /**
  * Read-only report for the morning check (a scheduled Claude session): the last hours' problem
- * reports, browser errors, server errors and failed service requests. It is opened with the
+ * reports, teachers' own Mesajlar, browser errors, server errors and failed service requests. It is opened with the
  * MONITOR_TOKEN secret, never with a teacher's session, and returns no keys or audio.
- *   GET /api/admin/monitor?hours=24         the report
+ *   GET /api/admin/monitor?hours=24         the report (up to 90 days back)
  *   GET /api/admin/monitor?feedback=<id>    one report's teşhis record
  *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks, a 10-minute picture link; no audio)
  *   GET /api/admin/monitor?project=<id>&picture=1   that question's picture itself
@@ -62,20 +62,22 @@ async function handler(req: any, res: any) {
     return res.status(200).json({ ...(data as object), image: signed ?? (typeof (data as any).image === 'string' && /^https:/.test((data as any).image) ? (data as any).image : null) });
   }
 
-  const hours = Math.min(168, Math.max(1, Number(req.query?.hours) || 24));
+  const hours = Math.min(2160, Math.max(1, Number(req.query?.hours) || 24));
   const since = new Date(Date.now() - hours * 3600e3).toISOString();
-  const [feedback, activity, server, profiles] = await Promise.all([
-    db.from('feedback').select('id,owner_id,message,context,status,created_at').gte('created_at', since).order('created_at', { ascending: false }).limit(200),
+  const [feedback, activity, server, profiles, messages] = await Promise.all([
+    db.from('feedback').select('id,owner_id,message,context,status,reply,replied_at,created_at').gte('created_at', since).order('created_at', { ascending: false }).limit(200),
     db.from('activity').select('owner_id,project_id,kind,state,detail,created_at').in('kind', FAILED_SERVICES).gte('created_at', since)
       .order('created_at', { ascending: false }).limit(500),
     db.from('server_errors').select('owner_id,route,status,message,created_at').gte('created_at', since).order('created_at', { ascending: false }).limit(200),
     db.from('profiles').select('id,name'),
+    db.from('messages').select('teacher_id,body,created_at,read_at').eq('from_admin', false).gte('created_at', since).order('created_at', { ascending: false }).limit(300),
   ]);
   const names = Object.fromEntries((profiles.data || []).map((p: any) => [p.id, p.name || 'Öğretmen']));
   const failures = (activity.data || []).filter((a: any) => a.kind === 'client_error' || a.state === 'failed');
   return res.status(200).json({
     since, hours, names,
     feedback: feedback.error ? { unavailable: feedback.error.message } : feedback.data,
+    messages: messages.error ? { unavailable: messages.error.message } : messages.data,
     browserErrors: failures.filter((a: any) => a.kind === 'client_error'),
     requestFailures: failures.filter((a: any) => a.kind !== 'client_error'),
     serverErrors: server.error ? { unavailable: server.error.message } : server.data,
