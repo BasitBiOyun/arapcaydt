@@ -12,6 +12,9 @@ import { readAsset, signAssets } from '../../server/assets.js';
  *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks, a 10-minute picture link; no audio)
  *   GET /api/admin/monitor?project=<id>&picture=1   that question's picture itself
  *   GET /api/admin/monitor?list=1           question ids with a picture (for measuring the reader)
+ * The check may also send one fixed answer (SOLVED_REPLY), nothing else, once a problem is fixed:
+ *   POST /api/admin/monitor?feedback=<id>   answers that report and marks it solved
+ *   POST /api/admin/monitor?teacher=<id>    writes it to that teacher under Mesajlar
  */
 export function tokenMatches(header: unknown, token: string | undefined): boolean {
   if (!token || token.length < 24 || typeof header !== 'string' || !header.startsWith('Bearer ')) return false;
@@ -19,11 +22,13 @@ export function tokenMatches(header: unknown, token: string | undefined): boolea
   return given.length === wanted.length && timingSafeEqual(given, wanted);
 }
 
+export const SOLVED_REPLY = 'Sorunu çözdüm hocam, sayfayı yenileyip tekrar deneyebilirsiniz.';
+
 const FAILED_SERVICES = ['gemini_tts', 'gemini_transcribe', 'elevenlabs_align', 'voice', 'client_error'];
 
 async function handler(req: any, res: any) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
+  if (req.method !== 'GET' && req.method !== 'POST') {
+    res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!process.env.MONITOR_TOKEN) return res.status(404).json({ error: 'Not found' });
@@ -31,6 +36,8 @@ async function handler(req: any, res: any) {
   res.setHeader('Cache-Control', 'no-store');
   const db = serviceDatabase();
   const id = (v: unknown) => typeof v === 'string' && /^[\w-]{1,80}$/.test(v) ? v : null;
+
+  if (req.method === 'POST') return answer(db, req, res, id);
 
   if (req.query?.feedback) {
     const { data, error } = await db.from('feedback').select('id,diagnostics').eq('id', id(req.query.feedback)).maybeSingle();
@@ -82,6 +89,28 @@ async function handler(req: any, res: any) {
     requestFailures: failures.filter((a: any) => a.kind !== 'client_error'),
     serverErrors: server.error ? { unavailable: server.error.message } : server.data,
   });
+}
+
+async function answer(db: any, req: any, res: any, id: (v: unknown) => string | null) {
+  const repliedAt = new Date().toISOString();
+  if (req.query?.feedback) {
+    const { data, error } = await db.from('feedback').update({ reply: SOLVED_REPLY, replied_at: repliedAt, status: 'resolved' })
+      .eq('id', id(req.query.feedback)).is('replied_at', null).select('id');
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json({ sent: (data || []).length > 0 });
+  }
+  if (req.query?.teacher) {
+    const teacher = id(req.query.teacher);
+    const [{ data: who }, { data: admin }] = await Promise.all([
+      db.from('profiles').select('id').eq('id', teacher).maybeSingle(),
+      db.from('profiles').select('id').eq('role', 'admin').eq('status', 'approved').order('created_at').limit(1).maybeSingle(),
+    ]);
+    if (!who || !admin) return res.status(404).json({ error: 'Not found' });
+    const { error } = await db.from('messages').insert({ teacher_id: who.id, sender_id: admin.id, from_admin: true, body: SOLVED_REPLY });
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json({ sent: true });
+  }
+  return res.status(400).json({ error: 'feedback or teacher required' });
 }
 
 export default logged('/api/admin/monitor', handler);

@@ -52,6 +52,7 @@ app.get('/api/admin/analytics', safe(analyticsHandler));
 app.all('/api/admin/storage', safe(storageHandler));
 app.post('/api/admin/set-role', safe(setRoleHandler));
 app.get('/api/admin/monitor', safe(monitorHandler));
+app.post('/api/admin/monitor', safe(monitorHandler));
 app.use('/api', safe(async(req,res)=>{if(await requireMember(req,res))res.status(404).json({ error: 'Bulunamadı.' });}));
 app.use('/api', (error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('[api]', error instanceof Error ? error.message : error);
