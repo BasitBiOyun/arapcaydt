@@ -30,7 +30,7 @@ export async function imageKey(imageUrl: string): Promise<string | null> {
 const pageOf = (data: VisionPage): VisionPage =>
   ({ width: data.width, height: data.height, text: data.text || '', lines: data.lines || [], words: data.words });
 
-/** Not set up on this server: asked once per session, then the in-browser reader is used. */
+/** Not set up or turned off: asked once per session, then the in-browser reader is used. */
 let notConfigured = false;
 let skipReason = 'VISION_NOT_CONFIGURED';
 
@@ -135,8 +135,9 @@ export async function readWithVision(imageUrl: string, onProgress?: (progress: O
     });
     const data = await res.json().catch(() => null);
     if (!res.ok) {
-      // Not set up, or this month's readings used up: not asked again in this session.
-      if (data?.code === 'VISION_NOT_CONFIGURED' || data?.code === 'VISION_MONTH_FULL' || data?.code === 'VISION_DAY_FULL') { notConfigured = true; skipReason = data.code; }
+      // Not set up, turned off on Google's side (key or billing), or this month's readings used up:
+      // not asked again in this session.
+      if (['VISION_NOT_CONFIGURED', 'VISION_KEY_INVALID', 'VISION_MONTH_FULL', 'VISION_DAY_FULL'].includes(data?.code)) { notConfigured = true; skipReason = data.code; }
       const issue = ISSUES[data?.code] || data?.error || `Google Vision isteği başarısız (${res.status})`;
       console.warn('Google Vision okuyamadı, tarayıcıdaki okuyucu kullanılıyor:', data?.code || res.status, data?.detail || '');
       return { issue: data?.detail ? `${issue}: ${String(data.detail).slice(0, 140)}` : issue };
