@@ -10,23 +10,43 @@ const ARABIC_LETTER = /[ء-يٱ-ۓ]/;
 const MARK = /[ً-ٰٟـ]/;
 const escape = (c: string) => c.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 
-/** An Arabic entry written without vowel marks also matches the word with its marks. */
-function pattern(written: string): string {
-  const plainArabic = ARABIC_LETTER.test(written) && !MARK.test(written);
-  return [...written].map(c => /\s/.test(c) ? '\\s+' : escape(c) + (plainArabic && ARABIC_LETTER.test(c) ? HARAKAT : '')).join('');
+/**
+ * One spelling for the same marks: composed form, shadda and vowel in one order, and a mark
+ * typed twice (شِِِمَالَ) counted once. Only the spoken copy is tidied this way.
+ */
+export function tidyMarks(text: string): string {
+  return text.normalize('NFC').replace(/([\u064B-\u0652])\1+/g, '$1');
 }
 
-/** Whole words only, case-insensitive, longest entry first, one pass (a replacement is not replaced again). */
+/**
+ * An Arabic entry written without vowel marks also matches the word with its marks; `loose`
+ * matches the letters whatever the marks are.
+ */
+function pattern(written: string, loose = false): string {
+  const plainArabic = ARABIC_LETTER.test(written) && (loose || !MARK.test(written));
+  return [...(loose ? written.replace(new RegExp(MARK.source, 'g'), '') : written)]
+    .map(c => /\s/.test(c) ? '\\s+' : escape(c) + (plainArabic && ARABIC_LETTER.test(c) ? HARAKAT : '')).join('');
+}
+
+/**
+ * Whole words only, case-insensitive, longest entry first, one pass (a replacement is not replaced again).
+ * An Arabic entry written with its marks is used for the word with exactly those marks first and
+ * otherwise for the same word marked differently (another last vowel, a mark missing or doubled).
+ */
 export function applyPronunciations(text: string, entries: Pronunciation[]): string {
   const clean = entries
-    .map(e => ({ written: e.written.trim(), spoken: e.spoken.trim() }))
-    .filter(e => e.written && e.spoken)
-    .sort((a, b) => b.written.length - a.written.length);
-  if (!clean.length) return text;
-  const regex = new RegExp(`(?<![\\p{L}\\p{N}\\p{M}])(?:${clean.map(e => `(${pattern(e.written)})`).join('|')})(?![\\p{L}\\p{N}\\p{M}])`, 'giu');
-  return text.replace(regex, (...match) => {
-    const index = match.slice(1, clean.length + 1).findIndex(group => group !== undefined);
-    return index >= 0 ? clean[index].spoken : match[0];
+    .map(e => ({ written: tidyMarks(e.written.trim()), spoken: e.spoken.trim() }))
+    .filter(e => e.written && e.spoken);
+  const spoken = tidyMarks(text);
+  if (!clean.length) return spoken;
+  const letters = (s: string) => s.replace(new RegExp(MARK.source, 'g'), '').length;
+  const forms = clean.flatMap(e => [{ ...e, source: pattern(e.written), exact: true },
+    ...(ARABIC_LETTER.test(e.written) && MARK.test(e.written) ? [{ ...e, source: pattern(e.written, true), exact: false }] : [])])
+    .sort((a, b) => letters(b.written) - letters(a.written) || Number(b.exact) - Number(a.exact) || b.written.length - a.written.length);
+  const regex = new RegExp(`(?<![\\p{L}\\p{N}\\p{M}])(?:${forms.map(f => `(${f.source})`).join('|')})(?![\\p{L}\\p{N}\\p{M}])`, 'giu');
+  return spoken.replace(regex, (...match) => {
+    const index = match.slice(1, forms.length + 1).findIndex(group => group !== undefined);
+    return index >= 0 ? forms[index].spoken : match[0];
   });
 }
 

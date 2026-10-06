@@ -134,7 +134,8 @@ export const HELP_TOPICS: HelpTopic[] = [
       {
         title: 'Sesin ilk seferde doğru çıkması için metni nasıl yazmalı?',
         items: [
-          'Arapça ifadeleri **harekeli** yazın.',
+          'Arapça ifadeleri **harekeli** yazın. Son hareke ve tenvin de yazdığınız gibi okunur; şıklardaki tek kelimeler gibi tek başına duran ya da duraktan önce gelen kelimelerde de ses son harekeyi düşürmez.',
+          'Seste yanlış okunan bir harekeyi düzeltmek için metne aynı harekeyi birkaç kez yazmayın; sesi düzeltmez. Kelimeyi bir kez doğru harekeleyin ya da telaffuz sözlüğüne ekleyin.',
           'Türkçe ile Arapçayı aynı cümlenin içinde sık sık karıştırmayın. Arapça alıntıyı tam bir cümle olarak verin, açıklamasını ayrı bir Türkçe cümleyle yapın; iki dil de böyle daha doğru okunur.',
           'Uzun bir Arapça paragrafı tek parça hâlinde, arasına Türkçe koymadan yazın.',
           'Kısaltma ve sembol yerine okunacak hâlini yazın (örneğin “vb.” yerine “ve benzeri”).',
@@ -144,7 +145,7 @@ export const HELP_TOPICS: HelpTopic[] = [
         title: 'Telaffuz sözlüğü',
         items: [
           'Ses bir kelimeyi her seferinde yanlış okuyorsa (bir kısaltma, bir özel isim, bir Arapça kelime) **Ayarlar → Telaffuz sözlüğü**’ne ekleyin: solda çözümde yazdığınız hâli, sağda nasıl okunması gerektiğini yazın (örneğin “MEB” → “Meb”).',
-          'Ekranda, altyazıda ve videoda yazı olduğu gibi kalır; yalnız ses sözlükteki gibi okur. Kelime tek başına geçtiği yerlerde değiştirilir, başka bir kelimenin içinde değiştirilmez. Büyük-küçük harf fark etmez; harekesiz yazdığınız Arapça kelime, metinde harekeli de olsa bulunur.',
+          'Ekranda, altyazıda ve videoda yazı olduğu gibi kalır; yalnız ses sözlükteki gibi okur. Kelime tek başına geçtiği yerlerde değiştirilir, başka bir kelimenin içinde değiştirilmez. Büyük-küçük harf fark etmez; harekesiz yazdığınız Arapça kelime, metinde harekeli de olsa bulunur. Harekeli yazdığınız kelime önce aynı harekeli hâliyle aranır; bulunmazsa farklı son harekeli, eksik ya da fazladan harekeli hâli de bulunur.',
           'Sözlük bütün hocalar için ortaktır: birinin eklediği kelime herkesin seslendirmesinde geçerlidir. Eklediğiniz kelimeyi silebilirsiniz.',
           'Sözlük yeni seslendirmelerde ve cümle düzeltmelerinde kullanılır; hazır sesler kendiliğinden değişmez. Hatalı cümleyi Ses şeridinde seçip yeniden seslendirin.',
         ],

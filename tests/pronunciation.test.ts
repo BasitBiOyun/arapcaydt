@@ -16,6 +16,23 @@ test('an Arabic entry without vowel marks matches the word with its marks; Turki
   assert.equal(applyPronunciations('والذي', list), 'والذي', 'not inside a longer Arabic word');
 });
 
+test('an Arabic entry written with marks still finds the word marked differently or with a doubled mark', () => {
+  const list = [{ written: 'شِمَالَ', spoken: 'شِمَالَ' }, { written: 'عُلِّمَ', spoken: 'عُلِّمَ' }];
+  // A kasra typed five times, another last vowel, no marks at all: the entry is used each time.
+  assert.equal(applyPronunciations('Burada شِِِِِمَالَ yazılı.', [{ written: 'شِمَالَ', spoken: 'X' }]), 'Burada X yazılı.');
+  assert.equal(applyPronunciations('شِمَالِ جِبَالِ', [{ written: 'شِمَالَ', spoken: 'X' }]), 'X جِبَالِ');
+  assert.equal(applyPronunciations('شمال', [{ written: 'شِمَالَ', spoken: 'X' }]), 'X');
+  // The exact marks win when two entries share the letters.
+  assert.equal(applyPronunciations('عَلِمَ ve عُلِّمَ', [{ written: 'عَلِمَ', spoken: 'A' }, { written: 'عُلِّمَ', spoken: 'B' }]), 'A ve B');
+  // Shadda and vowel typed in either order are the same word.
+  assert.equal(applyPronunciations('\u0639\u0644\u0651\u064E\u0645', [{ written: '\u0639\u0644\u064E\u0651\u0645', spoken: 'Y' }]), 'Y');
+  assert.equal(applyPronunciations('والشمال', list), 'والشمال', 'not inside a longer Arabic word');
+});
+
+test('a mark typed twice is read once even without a dictionary entry', () => {
+  assert.equal(applyPronunciations('شِِِمَالَ', []), 'شِمَالَ');
+});
+
 test('longest entry wins and a replacement is not replaced again', () => {
   const list = [{ written: 'A', spoken: 'A şıkkı B' }, { written: 'B', spoken: 'Be' }, { written: 'A B', spoken: 'A ile B' }];
   assert.equal(applyPronunciations('A B', list), 'A ile B');

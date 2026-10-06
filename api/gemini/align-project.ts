@@ -88,6 +88,7 @@ async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Bu proje için kayıtlı bir ses bulunamadı.' });
   }
 
+  const solutionText = typeof row.data?.solutionText === 'string' ? row.data.solutionText : '';
   let bytes: Buffer, mimeType: string;
   try {
     ({ bytes, mimeType } = await loadProjectAudio(db, member.user.id, source));
@@ -121,6 +122,8 @@ async function handler(req: any, res: any) {
       if (remaining < 15_000) break;
       if (attempt) await new Promise(resolve => setTimeout(resolve, retryDelayMs(result!.raw)));
       result = await transcribe(lane.key, bytes, mimeType, projectId, deadline - Date.now());
+      const gap = result.words?.length ? missingTurkish(result.words, solutionText) : '';
+      if (gap) result = { status: 200, raw: '', error: gap };
       await recordUsage(member.user.id, projectId, [{ kind: 'gemini_transcribe', state: result.words ? 'succeeded' : 'failed',
         detail: usageDetail(TRANSCRIBE_MODEL, result.status, !result.words && isDailyQuotaError(result.status, result.raw),
           result.words ? '' : quotaTag(result.status, result.raw), result.words ? '' : result.error), keySource: lane.source }]);
@@ -138,6 +141,20 @@ async function handler(req: any, res: any) {
     if (result.status === 200) break;
   }
   return res.status(lastStatus).json({ error: failures.join(' · '), code: 'GEMINI_TRANSCRIBE_ERROR' });
+}
+
+/**
+ * Transcribe sometimes takes a Turkish–Arabic narration for Arabic only: it writes the Arabic
+ * sentences and leaves the Turkish out (or turns it into Arabic). Those timings cannot place
+ * the solution's sentences, so they are not used; the text-based ElevenLabs alignment takes over.
+ * Returns why, or '' when the Turkish was written.
+ */
+export function missingTurkish(words: Array<{ text: string }>, solutionText: string): string {
+  const latin = (s: string) => /[A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû]/.test(s);
+  const expected = solutionText.split(/\s+/).filter(latin).length;
+  if (expected < 15) return '';
+  const heard = words.filter(w => latin(w.text)).length;
+  return heard < expected * 0.3 ? `Gemini Transcribe Türkçe kısmı yazmadı (${expected} Türkçe kelimeden ${heard}).` : '';
 }
 
 /** Worth one more try on the same key: no answer, a server error, or a per-minute (not daily) 429. */

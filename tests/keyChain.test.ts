@@ -35,6 +35,8 @@ interface World {
   removed: string[];
   /** Rows for the admin storage query (projects selected with asset field aliases). */
   assetRows?: Row[];
+  /** The question's solution text (default 'Doğru cevap C.'). */
+  solutionText?: string;
   /** Google answer per key and model ("transcribe" for Transcribe). */
   answer(key: string, model: string): { status: number; body?: any };
 }
@@ -54,7 +56,7 @@ function install(world: World) {
       if (path === '/rest/v1/profiles') return rows([{ role: world.role, status: 'approved' }]);
       if (path === '/rest/v1/projects' && (url.searchParams.get('select') || '').includes('nsAudio')) return rows(world.assetRows || []);
       if (path === '/rest/v1/projects') return rows([{ id: 'p1', owner_id: 't1', data: {
-        solutionText: 'Doğru cevap C.', narrationSource: { type: world.sourceType ?? 'gemini', mimeType: world.sourceType === 'uploaded' ? 'audio/mpeg' : 'audio/wav', audioUrl: world.audioUrl ?? { assetPath: 't1/p1/a.wav' } } } }]);
+        solutionText: world.solutionText ?? 'Doğru cevap C.', narrationSource: { type: world.sourceType ?? 'gemini', mimeType: world.sourceType === 'uploaded' ? 'audio/mpeg' : 'audio/wav', audioUrl: world.audioUrl ?? { assetPath: 't1/p1/a.wav' } } } }]);
       if (path === '/rest/v1/activity') {
         if (method === 'POST') { world.activity.push(...JSON.parse(init.body)); return json(null, 201); }
         return rows(world.activity);
@@ -222,6 +224,28 @@ test('a Transcribe reply without word timings is logged with its shape, not its 
   // The same audio on the shared key would answer the same: it is not tried (the shared allowance is kept).
   assert.deepEqual(world.activity.map(a => [a.key_source, a.detail]), [['teacher', `gemini-3.5-transcribe · 200 · ${reason}`]]);
   assert.ok(!world.activity.some(a => a.detail.includes('Doğru cevap')), 'no transcript text is stored');
+});
+
+test('a transcript that left out the Turkish is not used: the shared key is spared and ElevenLabs takes over', async () => {
+  const { default: align } = await import('../api/gemini/align-project');
+  // Rabia Hoca's question: Transcribe wrote the Arabic sentence and "عام 2019", nothing of the Turkish.
+  const arabicOnly = { status: 200, body: { steps: [{ content: [{ annotations: ['عثر', 'على', 'أول', 'الكتابات', 'عام', '2019']
+    .map((text, i) => ({ type: 'word_info', text, start_offset: `${i}s`, end_offset: `${i + 0.5}s` })) }] }] } };
+  const world = await freshWorld({ answer: () => arabicOnly });
+  world.solutionText = 'عُثِرَ عَلَى أَوَّلِ الْكِتَابَاتِ. İlk Türkçe yazılar Altay Dağları’nın kuzeyinde bulundu. Öncelikle boşluktan sonraki sıfata ve alfabeyle yazılmış bilgisine bakmalıyız. Taş üzerine yazılmış bir şey aranıyor. Yıl: 2019';
+  const r = await call(align, 'POST', { projectId: 'p1' });
+  assert.equal(r.payload.code, 'GEMINI_TRANSCRIBE_ERROR');
+  assert.match(r.payload.error, /Türkçe kısmı yazmadı/);
+  assert.equal(world.google.filter(g => g.what === 'transcribe').length, 1, 'not repeated on the shared key');
+  assert.equal(world.activity[0].state, 'failed');
+
+  // A transcript with the Turkish in it is kept as before.
+  world.google = []; world.activity = [];
+  const words = 'İlk Türkçe yazılar Altay Dağları’nın kuzeyinde bulundu Öncelikle boşluktan sonraki sıfata bakmalıyız'.split(' ');
+  world.answer = () => ({ status: 200, body: { steps: [{ content: [{ annotations: words.map((text, i) => ({ type: 'word_info', text, start_offset: `${i}s`, end_offset: `${i + 0.5}s` })) }] }] } });
+  const ok = await call(align, 'POST', { projectId: 'p1' });
+  assert.equal(ok.status, 200);
+  assert.equal(ok.payload.words.length, words.length);
 });
 
 test('ElevenLabs Forced Alignment stops at the per-teacher daily cap', async () => {

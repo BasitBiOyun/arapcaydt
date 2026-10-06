@@ -17,8 +17,14 @@ const MIN_ATTEMPT_MS = 10_000;
 export const MAX_REQUEST_CHARS = 5000;
 
 const VOICE_NAME = 'Achernar';
-// 3.8 models read naturally on their own; the only instruction is fidelity.
-const STYLE = 'Read the text exactly as written. Do not add anything.';
+/**
+ * Arabic read alone or before a pause (an option word, a word before a dash or comma) is
+ * otherwise read in pausal form, dropping its written last vowel or tanwin; teachers want
+ * every written mark heard, so the voice is told to keep them.
+ */
+export const ARABIC_ENDINGS = 'Pronounce every Arabic word with all of its written vowel marks, including the last vowel and tanwin (for example -un, -an, -in), even when the word stands alone, ends a line or comes before a pause; do not use the pausal form.';
+// 3.8 models read naturally on their own; the instructions are fidelity and the written Arabic endings.
+export const STYLE = `Read the text exactly as written. Do not add anything. ${ARABIC_ENDINGS}`;
 
 /**
  * Older TTS models (3.1) read a director's prompt. No classroom scene: a scene invites the
@@ -29,7 +35,7 @@ function legacyPrompt(text: string) {
 
 ### DIRECTOR'S NOTES (never read these notes aloud)
 Fidelity (most important): Speak only the transcript below, word for word, exactly once, from its first word to its last word. Do not add, drop, reorder, repeat, translate, summarize or explain anything. No greeting, no introduction, no closing remark, no words of your own.
-Pronunciation: Read Turkish with native Turkish pronunciation and Arabic with native Arabic pronunciation, exactly as written, including Arabic vowel marks and Turkish circumflex letters (â, î, û). Switch languages without carrying one accent into the other.
+Pronunciation: Read Turkish with native Turkish pronunciation and Arabic with native Arabic pronunciation, exactly as written, including Arabic vowel marks and Turkish circumflex letters (â, î, û). ${ARABIC_ENDINGS} Switch languages without carrying one accent into the other.
 Style: Natural, clear, calm and instructional, like a teacher explaining a solution. Not an announcer.
 Pace: Moderate and steady, with brief natural pauses between reasoning steps.
 

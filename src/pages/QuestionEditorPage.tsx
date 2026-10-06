@@ -365,8 +365,23 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
   // "Sesi düzelt": only the picked stretch is voiced again and put in place of the old one.
   const handleRevoice = async (range: TextRange) => {
     if (!currentProject || !activeAudioUrl) return;
-    const source = currentProject.narrationSource;
-    const span = spokenSpan(currentProject.solutionText, source?.words || [], activeAudioDuration, range);
+    let source = currentProject.narrationSource;
+    let span = spokenSpan(currentProject.solutionText, source?.words || [], activeAudioDuration, range);
+    if (!span && source?.audioUrl) {
+      // Timings that cannot place the sentence (a transcript that left out the Turkish): timed again once.
+      setAudioError(null);
+      setAudioInfo('Kelime zamanları yeniden alınıyor…');
+      setIsGeneratingAudio(true);
+      const timing = await timeGeneratedNarration(currentProject, project => narrationService.alignGeneratedNarration(project.id));
+      setIsGeneratingAudio(false);
+      setAudioInfo(null);
+      if (timing?.words.length) {
+        const timed = withWordTimings(currentProject, timing.words, timing.timingSource);
+        await saveCurrentProject(timed);
+        source = timed.narrationSource;
+        span = spokenSpan(currentProject.solutionText, timing.words, activeAudioDuration, range);
+      }
+    }
     if (!span) { setAudioError('Bu sesin kelime zamanları yok; seçili yer bulunamadı. Sesi yeniden oluşturun.'); return; }
     const excerpt = range.text.length > 160 ? `${range.text.slice(0, 160)}…` : range.text;
     // A sentence or two is fixed at once ("Olmadı, geri al" is right there); a long stretch is asked first.
