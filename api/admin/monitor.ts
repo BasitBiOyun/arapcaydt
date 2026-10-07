@@ -2,6 +2,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
 import { readAsset, signAssets } from '../../server/assets.js';
+import { pacificDayStart } from '../../server/quota.js';
 
 /**
  * Read-only report for the morning check (a scheduled Claude session): the last hours' problem
@@ -12,6 +13,7 @@ import { readAsset, signAssets } from '../../server/assets.js';
  *   GET /api/admin/monitor?project=<id>     one question (text, answer, marks, a 10-minute picture link; no audio)
  *   GET /api/admin/monitor?project=<id>&picture=1   that question's picture itself
  *   GET /api/admin/monitor?list=1           question ids with a picture (for measuring the reader)
+ *   GET /api/admin/monitor?usage=1          today's (Google day) voice and timing requests per teacher and key, and who has a key (last 4 only)
  * The check may also send one fixed answer (SOLVED_REPLY), nothing else, once a problem is fixed:
  *   POST /api/admin/monitor?feedback=<id>   answers that report and marks it solved
  *   POST /api/admin/monitor?teacher=<id>    writes it to that teacher under Mesajlar
@@ -44,6 +46,25 @@ async function handler(req: any, res: any) {
     if (error) return res.status(500).json({ error: error.message });
     return data ? res.status(200).json(data.diagnostics ?? null) : res.status(404).json({ error: 'Not found' });
   }
+  if (req.query?.usage) {
+    const [activity, keys, profiles] = await Promise.all([
+      db.from('activity').select('owner_id,kind,state,key_source').in('kind', ['gemini_tts', 'gemini_transcribe'])
+        .gte('created_at', pacificDayStart()).limit(5000),
+      db.from('teacher_gemini_keys').select('owner_id,last4,status,updated_at'),
+      db.from('profiles').select('id,name'),
+    ]);
+    if (activity.error) return res.status(500).json({ error: activity.error.message });
+    const names = Object.fromEntries((profiles.data || []).map((p: any) => [p.id, p.name || 'Öğretmen']));
+    const teachers: Record<string, any> = {};
+    const of = (owner: string) => teachers[owner] ??= { name: names[owner] ?? owner, key: null, counts: {} };
+    for (const k of keys.data || []) of(k.owner_id).key = { last4: k.last4, status: k.status, updatedAt: k.updated_at };
+    for (const a of activity.data || []) {
+      const label = `${a.kind} ${a.key_source || '-'} ${a.state}`;
+      const counts = of(a.owner_id).counts;
+      counts[label] = (counts[label] || 0) + 1;
+    }
+    return res.status(200).json({ since: pacificDayStart(), teachers });
+  }
   if (req.query?.list) {
     const { data, error } = await db.from('projects').select('id,updated_at,category:data->>category,vision:data->videoConfig->visionReading->>key')
       .not('data->imageUrl', 'is', null).order('updated_at', { ascending: false }).limit(1000);
@@ -73,7 +94,7 @@ async function handler(req: any, res: any) {
   const since = new Date(Date.now() - hours * 3600e3).toISOString();
   const [feedback, activity, server, profiles, messages] = await Promise.all([
     db.from('feedback').select('id,owner_id,message,context,status,reply,replied_at,created_at').gte('created_at', since).order('created_at', { ascending: false }).limit(200),
-    db.from('activity').select('owner_id,project_id,kind,state,detail,created_at').in('kind', FAILED_SERVICES).gte('created_at', since)
+    db.from('activity').select('owner_id,project_id,kind,state,detail,key_source,created_at').in('kind', FAILED_SERVICES).gte('created_at', since)
       .order('created_at', { ascending: false }).limit(500),
     db.from('server_errors').select('owner_id,route,status,message,created_at').gte('created_at', since).order('created_at', { ascending: false }).limit(200),
     db.from('profiles').select('id,name'),
