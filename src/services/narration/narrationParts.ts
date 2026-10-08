@@ -31,6 +31,15 @@ const FRESH_START = /^\s*(?:\*\*)?\s*(?:[A-E]\s*(?:şıkkı|seçeneği|şıkkın
  * allows. Joining the parts with a space gives back the text (apart from whitespace at the
  * cuts), so nothing is lost or reordered.
  */
+/**
+ * The voice keeps the accent of the language it starts in: a solution that opens in Arabic is read
+ * with Arabic-accented Turkish. True when the first letter of the text is Arabic.
+ */
+export function startsWithArabic(text: string): boolean {
+  const first = text.match(/\p{L}/u)?.[0];
+  return !!first && /\p{Script=Arabic}/u.test(first);
+}
+
 export function splitNarration(text: string, max = PART_CHARS): string[] {
   const whole = text.trim();
   if (!whole) return [];

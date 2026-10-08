@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { QuestionProject } from '../../../types';
 import { narrationDrift } from '../../../services/analysis/timelineAligner';
 import { capacityLine, geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
+import { startsWithArabic } from '../../../services/narration/narrationParts';
 import { VOICE_QUOTA_MESSAGE, VOICE_RETRY_MESSAGE } from '../../../services/narration/narrationService';
 import { Check, Pause, Play, DownloadSimple, ArrowsClockwise, Trash, CircleNotch, Microphone, UploadSimple } from '@phosphor-icons/react';
 
@@ -216,6 +217,11 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
           {currentProject.solutionText.trim().length > SPOKEN_LIMIT && (
             <p role="alert" className="text-sm text-[#B91C1C] bg-red-50 border border-red-200 rounded-md px-2.5 py-1.5">
               Çözüm metni {currentProject.solutionText.trim().length.toLocaleString('tr')} karakter; seslendirme en fazla {SPOKEN_LIMIT.toLocaleString('tr')} karakter okuyabilir. 2. adımda metni kısaltın ya da MP3 yükleyin.
+            </p>
+          )}
+          {startsWithArabic(currentProject.solutionText) && (
+            <p className="text-sm text-[#7C4A03] bg-amber-50 border border-amber-200 rounded-md px-2.5 py-1.5 leading-relaxed">
+              Çözüm metni Arapça başlıyor. Metni kısa bir Türkçe cümleyle başlatın (örneğin “Önce paragrafı okuyalım.”); yoksa ses Türkçeyi de Arap aksanıyla okur. 2. adımda ekleyebilirsiniz.
             </p>
           )}
           <div className="grid grid-cols-2 gap-2">

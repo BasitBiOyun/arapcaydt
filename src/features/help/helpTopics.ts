@@ -69,6 +69,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: 'Önce **Doğru cevap** kutusundan doğru şıkkı seçin. Ardından çözümü büyük metin kutusuna yazın veya yapıştırın.', image: 'cozum-metni', alt: 'Çözüm metni ve doğru cevap' },
       { text: 'Şıkları anlatırken şık harfini yazın: “A şıkkı … olmaz”, “B ve E şıklarını eliyoruz”, “Doğru cevap D şıkkı” gibi. Sistem bu cümlelerden hangi şıkkın ne zaman çarpı, hangisinin tik alacağını anlar.' },
       { text: 'Metnin altındaki kontrol kutusunda her şıkkın ne olacağını görürsünüz (✗ elenir / ✓ doğru cevap). Bir şık eksikse cümlenizi o şıkkı adıyla anarak düzeltin.' },
+      { text: 'Metne mutlaka kısa bir **Türkçe cümleyle** başlayın (örneğin “Önce paragrafı okuyalım.”). Ses hangi dille başlarsa o dilin aksanını sürdürür: metin Arapça başlarsa Türkçeyi de Arap aksanıyla okur. Arapça ifadeleri de Türkçe bir cümlenin içinde verin: “A seçeneğinde şu ifade var: …” gibi.' },
       { text: 'Arapça ifadeleri **harekeli** yazın; seslendirme böylece doğru okur ve ifadeler görselde bulunup altı çizilir. Bitince **Sese geç**’e basın.' },
     ],
     tips: ['Metin en fazla 10.000 karakter olabilir; sayaç kutunun altında görünür. Çok uzun metinler (yaklaşık 450 kelimeden uzun) paragraf sonlarından 2–3 bölüme ayrılıp seslendirilir ve tek ses dosyasında birleştirilir; her bölüm bir ses hakkı kullanır. Daha kısa metinler tek seferde okunur.'],

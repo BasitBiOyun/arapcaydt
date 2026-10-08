@@ -17,6 +17,7 @@ export const NEWS: NewsEntry[] = [
         items: [
           { text: 'En üst düzey modelin günlük hakkı bitince stüdyo bugün kaç ses kullandığınızı yazar ve yalnız **Sonraki modele geç** ya da **Kapat** diye sorar.', help: 'seslendirme' },
           { text: 'Google o an cevap vermezse artık başka model önerilmez; “Google’dan cevap gelmedi, birkaç dakika sonra tekrar deneyin” yazar.', help: 'seslendirme' },
+          { text: 'Çözüm metni Arapça başlıyorsa Ses adımı sizi uyarır: metni kısa bir Türkçe cümleyle başlatın (örneğin “Önce paragrafı okuyalım.”), yoksa ses Türkçeyi de Arap aksanıyla okur.', help: 'cozum-metni' },
           { text: 'Google bir metni seslendirmeyi kabul etmezse bunu açıkça yazar. Aynı metin aynı gün tekrar gönderilmez, böylece her denemede bir hak boşa gitmez.', help: 'seslendirme' },
         ],
       },

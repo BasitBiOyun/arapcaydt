@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { PART_CHARS, SPOKEN_LIMIT, splitNarration, spokenLength } from '../src/services/narration/narrationParts';
+import { PART_CHARS, SPOKEN_LIMIT, splitNarration, spokenLength, startsWithArabic } from '../src/services/narration/narrationParts';
 
 const solution = readFileSync(new URL('./fixtures/solution-54.txt', import.meta.url), 'utf8');
 const squash = (s: string) => s.replace(/\s+/g, ' ').trim();
@@ -47,4 +47,12 @@ test('without paragraphs the cut is at a sentence end; a single huge sentence is
   assert.ok(cut.length > 1);
   for (const p of cut) for (const w of p.split(' ')) assert.equal(w, 'hayvanlar', 'no word is cut in two');
   assert.equal(cut.join(' '), oneSentence);
+});
+
+test('a solution that opens in Arabic is noticed, one that opens in Turkish is not', () => {
+  assert.equal(startsWithArabic('“عُثِرَ عَلَى أَوَّلِ الْكِتَابَاتِ” İlk Türkçe yazılar'), true);
+  assert.equal(startsWithArabic('**أَنْتَ** tek başına'), true);
+  assert.equal(startsWithArabic('Önce paragrafı okuyalım. عُثِرَ عَلَى'), false);
+  assert.equal(startsWithArabic('A) أَدْوَارٌ'), false);
+  assert.equal(startsWithArabic('   '), false);
 });
