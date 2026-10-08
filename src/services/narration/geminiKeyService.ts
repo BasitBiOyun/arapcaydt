@@ -51,7 +51,7 @@ export function capacityLine(status: TeacherKeyStatus | null): string | null {
   // The counts include the backup models; say plainly when the best one is used up for today.
   const ownTop = status.key && status.key.status !== 'invalid' ? status.today.tts.topExhausted : true;
   return ownTop && status.today.shared.topExhausted
-    ? `${line} En üst düzey modelin bugünkü kullanım hakkı bitti; kalan haklar yedek model içindir ve kullanmadan önce size sorulur.`
+    ? `${line} En üst düzey modelin bugünkü kullanım hakkı bitti; kalan haklar sonraki modeller içindir.`
     : line;
 }
 

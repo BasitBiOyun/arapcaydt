@@ -7,7 +7,7 @@ import { applyPronunciations, loadPronunciations } from '../../server/pronunciat
 import { storedNarrationAudio } from '../../server/mp3.js';
 import {
   GEMINI_TTS_MODELS as GEMINI_MODELS, isDailyQuotaError, isInvalidKeyError, quotaTag, markTeacherKeyInvalid, normalizeApiKey,
-  readDailyState, readTeacherKey, usageDetail, type KeySource,
+  readDailyState, readTeacherKey, textMark, usageDetail, FREE_TTS_PER_MODEL, type KeySource,
 } from '../../server/quota.js';
 
 export const config = { maxDuration: 120 };
@@ -134,6 +134,16 @@ export function neededMs(characters: number): number {
   return 8_000 + characters * 12;
 }
 
+/**
+ * Google answered but would not voice this text: a filter on the text itself (finish reason
+ * OTHER, SAFETY, PROHIBITED_CONTENT… or a blocked prompt), not a busy or used-up model. The same
+ * text gets the same answer on another key, and each refusal still counts against the day's allowance.
+ */
+export function isContentRefusal(payload: any): boolean {
+  const reason = String(payload?.candidates?.[0]?.finishReason || '');
+  return !!payload?.promptFeedback?.blockReason || /^(OTHER|SAFETY|PROHIBITED_CONTENT|BLOCKLIST|SPII|RECITATION|LANGUAGE)$/.test(reason);
+}
+
 /** Why a reply came without audio, for the admin failure list. */
 export function missingAudioReason(payload: any): string {
   const candidate = payload?.candidates?.[0];
@@ -146,7 +156,17 @@ export function missingAudioReason(payload: any): string {
   ].filter(Boolean).join(', ') || 'ayrıntı yok';
 }
 
-interface Attempt { model: string; status: number; detail?: string; daily?: boolean; quota?: string; keySource: KeySource }
+export const NO_ANSWER = 'Google’dan cevap gelmedi. Birkaç dakika sonra tekrar deneyin.';
+
+/** Google would not voice this text: the same text gets the same answer, on any key and any model. */
+function refusedAnswer(attempts: Attempt[]) {
+  return {
+    error: 'Google bu metni seslendirmedi. Aynı metinle yeniden denemek sonuç vermez; metinde küçük bir değişiklik yapıp yeniden deneyin ya da sesi kendiniz kaydedip yükleyin.',
+    code: 'CONTENT_REFUSED', fallbackAllowed: false, attempts,
+  };
+}
+
+interface Attempt { model: string; status: number; detail?: string; daily?: boolean; quota?: string; refused?: boolean; keySource: KeySource }
 
 /** Each model attempt is its own request against that key's per-model free-tier quota. */
 function failedUsage(attempts: Attempt[], characters: number): UsageEvent[] {
@@ -190,6 +210,11 @@ async function handler(req: any, res: any) {
     return res.status(503).json({ error: 'Gemini ses servisi yapılandırılmamış.', code: 'MISSING_GEMINI_API_KEY', fallbackAllowed: true });
   }
 
+  // Google refuses a text the same way every time and each refusal uses up a voice: a text it
+  // already refused today is not sent again.
+  const mark = textMark(spoken);
+  if (today.own.refusedTexts.includes(mark)) return res.status(422).json(refusedAnswer([]));
+
   // The best model on every key first; the weaker backups only after the teacher agreed
   // (they add or drop sentences, flip negations, mispronounce Turkish).
   const allowLower = req.body?.allowLower === true;
@@ -200,9 +225,11 @@ async function handler(req: any, res: any) {
   const deadline = Date.now() + REQUEST_BUDGET_MS;
   const attempts: Attempt[] = [];
   const refusedKeys = new Set<KeySource>();
+  // A model that would not voice this text is not asked again with the other key.
+  const refusedModels = new Set<string>();
   tries: for (const { model, lane } of tries) {
     // A key Google refused (invalid or not allowed) is not tried with the other models.
-    if (!refusedKeys.has(lane.source)) {
+    if (!refusedKeys.has(lane.source) && !refusedModels.has(model)) {
       const remaining = deadline - Date.now();
       if (remaining < Math.max(MIN_ATTEMPT_MS, neededMs(spoken.replace(/[\u064B-\u065F\u0670\u0640]/g, '').length))) break tries;
       try {
@@ -234,7 +261,9 @@ async function handler(req: any, res: any) {
         const payload = JSON.parse(raw);
         const audioPart = (payload?.candidates?.[0]?.content?.parts || []).find((part: any) => part?.inlineData?.data);
         if (!audioPart?.inlineData?.data) {
-          attempts.push({ model, status: 502, detail: `Gemini yanıtında ses verisi yok (${missingAudioReason(payload)}).`, keySource: lane.source });
+          const refused = isContentRefusal(payload);
+          if (refused) refusedModels.add(model);
+          attempts.push({ model, status: 502, detail: `Gemini yanıtında ses verisi yok (${missingAudioReason(payload)}).${refused ? ` metin:${mark}` : ''}`, refused, keySource: lane.source });
           continue;
         }
 
@@ -275,14 +304,22 @@ async function handler(req: any, res: any) {
   }
 
   await recordUsage(member.user.id, projectId, failedUsage(attempts, text.length));
+  // Google would not voice this text (a backup model would not either): the browser voices it
+  // in smaller pieces, and names the piece that is still refused.
+  if (attempts.some(a => a.refused) && attempts.every(a => a.refused || a.daily)) return res.status(422).json(refusedAnswer(attempts));
   if (!allowLower && GEMINI_MODELS.length > 1) {
-    // Only the best model was tried: the teacher decides whether the backups may voice it.
     const daily = tries.length === 0 || (attempts.length > 0 && attempts.every(a => a.daily));
+    if (!daily) {
+      // The best model is not used up, Google just did not answer: try it again later, no other model.
+      return res.status(503).json({ error: NO_ANSWER, code: 'GOOGLE_NO_ANSWER', fallbackAllowed: false, attempts });
+    }
+    // The best model's allowance is used up: the teacher decides whether the next model voices it.
     // A page opened before this rule cannot ask; its teacher is told to reload instead.
-    const reload = req.body?.canAsk === true ? '' : ' Yedek modelle seslendirebilmek için sayfayı yenileyin (F5).';
+    const reload = req.body?.canAsk === true ? '' : ' Sonraki modelle seslendirmek için sayfayı yenileyin (F5).';
+    const used = teacherKey ? today.own.ttsUsed : today.shared.ttsUsedAll;
     return res.status(409).json({
-      error: (daily ? 'En üst düzey modelin bugünkü kullanım hakkı bitti.' : 'En üst düzey model şu anda yanıt vermiyor.') + reload,
-      code: 'TOP_MODEL_UNAVAILABLE', reason: daily ? 'daily' : 'busy', fallbackAllowed: false, attempts,
+      error: 'En üst düzey modelin bugünkü kullanım hakkı bitti.' + reload,
+      code: 'TOP_MODEL_UNAVAILABLE', reason: 'daily', used, limit: GEMINI_MODELS.length * FREE_TTS_PER_MODEL, fallbackAllowed: false, attempts,
     });
   }
   const compact = attempts.length

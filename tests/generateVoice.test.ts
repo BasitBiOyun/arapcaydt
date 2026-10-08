@@ -14,15 +14,21 @@ test('a reply without audio says why, for the admin failure list', () => {
   assert.equal(missingAudioReason({ candidates: [{}] }), 'ayrıntı yok');
 });
 
-test('the best model being unavailable asks the teacher instead of a quota or retry message', async () => {
-  const { voiceFailure, TopModelUnavailableError, askLowerWith } = await import('../src/services/narration/narrationService');
-  const daily = voiceFailure(409, { code: 'TOP_MODEL_UNAVAILABLE', reason: 'daily', error: 'En üst düzey modelin bugünkü kullanım hakkı bitti.' });
+test('a used-up best model asks plainly, with today’s count; no answer from Google says so', async () => {
+  const { voiceFailure, TopModelUnavailableError, askLowerWith, VOICE_RETRY_MESSAGE } = await import('../src/services/narration/narrationService');
+  const daily = voiceFailure(409, { code: 'TOP_MODEL_UNAVAILABLE', reason: 'daily', used: 10, limit: 30, error: 'En üst düzey modelin bugünkü kullanım hakkı bitti.' });
   assert.ok(daily instanceof TopModelUnavailableError);
-  assert.equal((daily as InstanceType<typeof TopModelUnavailableError>).reason, 'daily');
-  assert.equal((voiceFailure(409, { code: 'TOP_MODEL_UNAVAILABLE', reason: 'busy' }) as any).reason, 'busy');
   let asked: any;
-  assert.equal(await askLowerWith(async o => { asked = o; return true; })('daily'), true);
-  assert.match(asked.title, /En üst düzey modelin bugünkü kullanım hakkı bitti/);
-  assert.match(asked.message, /olumsuz cümleyi olumlu/);
-  assert.equal(asked.confirmLabel, 'Yedek modelle seslendir');
+  assert.equal(await askLowerWith(async o => { asked = o; return true; })(daily as InstanceType<typeof TopModelUnavailableError>), true);
+  assert.equal(asked.title, 'En üst düzey modelin bugünkü kullanım hakkı bitti');
+  assert.match(asked.message, /Bugün 10 \/ 30 ses kullanıldı/);
+  assert.doesNotMatch(asked.message, /yedek|olumsuz|telaffuz/i);
+  assert.equal(asked.confirmLabel, 'Sonraki modele geç');
+  assert.equal(asked.cancelLabel, 'Kapat');
+
+  const quiet = voiceFailure(503, { code: 'GOOGLE_NO_ANSWER', fallbackAllowed: false, error: 'Google’dan cevap gelmedi. Birkaç dakika sonra tekrar deneyin.' });
+  assert.ok(!(quiet instanceof TopModelUnavailableError));
+  assert.equal(quiet.message, VOICE_RETRY_MESSAGE);
+  const refused = voiceFailure(422, { code: 'CONTENT_REFUSED', fallbackAllowed: false, error: 'Google bu metni seslendirmedi.' });
+  assert.equal(refused.message, 'Google bu metni seslendirmedi.');
 });

@@ -94,6 +94,7 @@ function install(world: World) {
       const { status, body } = world.answer(key, model);
       if (status !== 200) return json(body || { error: { message: 'err' } }, status);
       if (model === 'transcribe') return json(body || { steps: [{ content: [{ annotations: [{ type: 'word_info', text: 'Doğru', start_offset: '0.1s', end_offset: '0.4s' }] }] }] });
+      if (body) return json(body);
       return json({ candidates: [{ content: { parts: [{ inlineData: { mimeType: 'audio/L16;rate=24000', data: Buffer.alloc(4800).toString('base64') } }] } }] });
     }
     if (url.hostname === 'evil.example.test') throw new Error('the server must never fetch a URL taken from project data');
@@ -151,6 +152,7 @@ test('the backup models voice only after the teacher agreed', async () => {
   assert.equal(asked.status, 409);
   assert.equal(asked.payload.code, 'TOP_MODEL_UNAVAILABLE');
   assert.equal(asked.payload.reason, 'daily');
+  assert.equal(asked.payload.limit, 30);
   assert.ok(world.google.every(g => g.what === GEMINI_TTS_MODELS[0]), 'no backup model without consent');
 
   world.google = [];
@@ -159,6 +161,44 @@ test('the backup models voice only after the teacher agreed', async () => {
   assert.equal(agreed.status, 200);
   assert.equal(agreed.payload.lowerModel, true);
   assert.deepEqual(world.google, [{ key: TEACHER_KEY, what: GEMINI_TTS_MODELS[1] }], 'exhausted best model is skipped');
+});
+
+test('a text Google refuses is not sent to the other key and is not offered to the backup models', async () => {
+  const { default: generate } = await import('../api/gemini/generate');
+  const { GEMINI_TTS_MODELS } = await import('../server/quota');
+  const refused = { status: 200, body: { candidates: [{ finishReason: 'OTHER', content: {} }] } };
+  const world = await freshWorld({ answer: () => refused });
+  const r = await call(generate, 'POST', { projectId: 'p1', text: 'Melekler ilim talebesine kanatlarını serer.', canAsk: true });
+  assert.equal(r.status, 422);
+  assert.equal(r.payload.code, 'CONTENT_REFUSED');
+  assert.deepEqual(world.google, [{ key: TEACHER_KEY, what: GEMINI_TTS_MODELS[0] }], 'one refusal, no second key spent on the same text');
+
+  // The teacher's own top model is used up and the studio key refuses: still a refusal, not "busy".
+  world.google = [];
+  install({ ...world, answer: key => key === TEACHER_KEY ? dailyQuota : refused });
+  const mixed = await call(generate, 'POST', { projectId: 'p1', text: 'Melekler ilim talebesine kanatlarını serer.', canAsk: true });
+  assert.equal(mixed.payload.code, 'CONTENT_REFUSED');
+
+  // The same text again today: Google is not asked (each refusal uses up a voice); another text is.
+  const again = await freshWorld({ answer: () => refused });
+  await call(generate, 'POST', { projectId: 'p1', text: 'Melekler ilim talebesine kanatlarını serer.', canAsk: true });
+  again.activity = again.activity.map(today);
+  again.google = [];
+  const repeat = await call(generate, 'POST', { projectId: 'p1', text: 'Melekler ilim talebesine kanatlarını serer.', canAsk: true });
+  assert.equal(repeat.status, 422);
+  assert.deepEqual(again.google, [], 'a refused text is not sent again the same day');
+  await call(generate, 'POST', { projectId: 'p1', text: 'Melekler, ilim talebesine kanatlarını serer.', canAsk: true });
+  assert.equal(again.google.length, 1, 'a changed text is tried');
+});
+
+test('when Google does not answer, the teacher is told to try again later; no other model is offered', async () => {
+  const { default: generate } = await import('../api/gemini/generate');
+  const world = await freshWorld({ answer: () => ({ status: 503, body: { error: { message: 'This model is currently experiencing high demand.' } } }) });
+  const r = await call(generate, 'POST', { projectId: 'p1', text: 'Doğru cevap C.', canAsk: true });
+  assert.equal(r.status, 503);
+  assert.equal(r.payload.code, 'GOOGLE_NO_ANSWER');
+  assert.match(r.payload.error, /Google’dan cevap gelmedi/);
+  assert.equal(world.google.length, 2, 'the best model on both keys, nothing else');
 });
 
 test('a working teacher key serves the narration itself', async () => {

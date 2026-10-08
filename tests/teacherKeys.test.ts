@@ -44,7 +44,7 @@ const rows: DayRow[] = [
 
 test('daily state separates the teacher key, the studio key and ElevenLabs', () => {
   const t1 = summarizeDay(rows, 't1');
-  assert.deepEqual(t1.own, { ttsUsed: 2, ttsExhausted: ['gemini-3.8-flash-lite-tts'], transcribeUsed: 1, transcribeExhausted: true });
+  assert.deepEqual(t1.own, { ttsUsed: 2, ttsExhausted: ['gemini-3.8-flash-lite-tts'], transcribeUsed: 1, transcribeExhausted: true, refusedTexts: [] });
   assert.deepEqual(t1.shared, { transcribeUsed: 2, transcribeUsedAll: 3, ttsUsedAll: 0, ttsExhausted: ['gemini-2.5-flash-preview-tts'], transcribeExhausted: false });
   assert.equal(t1.elevenlabsAlignUsed, 1);
   const voice = { owner_id: 't2', kind: 'gemini_tts', state: 'succeeded', detail: 'gemini-3.8-flash-tts · 200', key_source: 'system' };

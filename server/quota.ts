@@ -88,6 +88,9 @@ export function nextQuotaReset(nowIso = new Date().toISOString()): string {
   return pacificDayStart(new Date(new Date(start).getTime() + 25 * 3600_000).toISOString());
 }
 
+/** A short mark of a text (no text is stored in the usage log), to know a text Google already refused today. */
+export const textMark = (text: string) => createHash('sha256').update(text.trim()).digest('hex').slice(0, 12);
+
 export interface DayRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null }
 /** Per-teacher daily caps; admins can change them in Settings (studio_settings). */
 export interface Limits { sharedTranscribe: number; elevenlabsAlign: number }
@@ -111,7 +114,8 @@ export async function readLimits(db: any): Promise<Limits> {
 export interface DailyState {
   /** False when the usage log could not be read (migration pending): nothing is skipped or capped. */
   tracking: boolean;
-  own: { ttsUsed: number; ttsExhausted: string[]; transcribeUsed: number; transcribeExhausted: boolean };
+  /** refusedTexts: texts Google would not voice for this teacher today (textMark of the spoken text). */
+  own: { ttsUsed: number; ttsExhausted: string[]; transcribeUsed: number; transcribeExhausted: boolean; refusedTexts: string[] };
   shared: { transcribeUsed: number; transcribeUsedAll: number; ttsUsedAll: number; ttsExhausted: string[]; transcribeExhausted: boolean };
   elevenlabsAlignUsed: number;
   limits: Limits;
@@ -125,7 +129,7 @@ const consumed = (row: DayRow) => !['429', '0'].includes(parts(row.detail)[1]);
 export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = DEFAULT_LIMITS): DailyState {
   const state: DailyState = {
     tracking: true,
-    own: { ttsUsed: 0, ttsExhausted: [], transcribeUsed: 0, transcribeExhausted: false },
+    own: { ttsUsed: 0, ttsExhausted: [], transcribeUsed: 0, transcribeExhausted: false, refusedTexts: [] },
     shared: { transcribeUsed: 0, transcribeUsedAll: 0, ttsUsedAll: 0, ttsExhausted: [], transcribeExhausted: false },
     elevenlabsAlignUsed: 0,
     limits,
@@ -134,6 +138,8 @@ export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = D
     const mine = row.owner_id === ownerId;
     const model = parts(row.detail)[0];
     if (row.kind === 'elevenlabs_align') { if (mine) state.elevenlabsAlignUsed++; continue; }
+    const refused = mine && row.kind === 'gemini_tts' ? /metin:([0-9a-f]{12})/.exec(row.detail || '')?.[1] : undefined;
+    if (refused && !state.own.refusedTexts.includes(refused)) state.own.refusedTexts.push(refused);
     if (row.key_source === 'teacher') {
       if (!mine) continue;
       if (row.kind === 'gemini_tts') {

@@ -5,7 +5,7 @@ import { splitNarration } from './narrationParts';
 import { decodeAudio, encodeMp3 } from './audioCodec';
 
 export const VOICE_QUOTA_MESSAGE = `Bugünkü ücretsiz ses hakkı doldu. Kendi Google anahtarınızı ekleyin (Ayarlar → Google anahtarım) ya da haklar yenilenince (her gün saat ${quotaResetClock()}) tekrar deneyin.`;
-export const VOICE_RETRY_MESSAGE = 'Şu anda ses üretilemedi. Birkaç dakika sonra tekrar deneyin.';
+export const VOICE_RETRY_MESSAGE = 'Google’dan cevap gelmedi. Birkaç dakika sonra tekrar deneyin.';
 
 /**
  * Gemini could not make the voice. Voice comes only from the three Gemini
@@ -19,38 +19,34 @@ export class VoiceUnavailableError extends Error {
 }
 
 /**
- * Only the best voice model was tried and it could not voice today ("daily") or right now ("busy").
- * The weaker backups add or drop sentences, flip negations and mispronounce Turkish, so the
- * teacher decides whether they may be used.
+ * The best voice model's allowance is used up for today. The teacher decides whether the next
+ * model voices it; `used`/`limit` are today's voices on the key in use.
  */
 export class TopModelUnavailableError extends VoiceUnavailableError {
-  constructor(public reason: 'daily' | 'busy', detail: string) {
-    super(detail, reason === 'daily'
-      ? `Seslendirme yapılmadı. En üst düzey modelin kullanım hakkı her gün saat ${quotaResetClock()}’da yenilenir.`
-      : 'Seslendirme yapılmadı. En üst düzey model biraz sonra yine denenebilir.');
+  constructor(detail: string, public used?: number, public limit?: number) {
+    super(detail, `Seslendirme yapılmadı. En üst düzey modelin kullanım hakkı her gün saat ${quotaResetClock()}’da yenilenir.`);
   }
 }
 
-/** Asked once per narration before a backup model is used; true lets the backups voice. */
-export type AskLowerModel = (reason: 'daily' | 'busy') => Promise<boolean>;
+/** Asked once per narration before the next model is used; true lets it voice. */
+export type AskLowerModel = (error: TopModelUnavailableError) => Promise<boolean>;
 
-export const LOWER_MODEL_NOTE = 'Bu ses yedek modelle üretildi. Dinleyin: araya katılmış ya da yanlış okunmuş bir cümle varsa yalnız o cümleyi Ses şeridinden “Sesi düzelt” ile yeniden seslendirin.';
-
-/** The teacher's question before a backup model voices (asked with the studio's confirm dialog). */
+/** The teacher's question before the next model voices (asked with the studio's confirm dialog). */
 export function askLowerWith(confirm: (options: { title: string; message: string; confirmLabel: string; cancelLabel: string }) => Promise<boolean>): AskLowerModel {
-  return reason => confirm({
-    title: reason === 'daily' ? 'En üst düzey modelin bugünkü kullanım hakkı bitti' : 'En üst düzey model şu anda yanıt vermiyor',
-    message: `Yedek modelle seslendirilebilir, ama yedek model araya olmayan cümleler katabilir, olumsuz cümleyi olumlu okuyabilir ya da Türkçeyi yanlış telaffuz edebilir; sesi mutlaka dinleyin. ${reason === 'daily'
-      ? `En üst düzey modelin hakkı her gün saat ${quotaResetClock()}’da yenilenir.`
-      : 'Birkaç dakika sonra en üst düzey modelle yeniden deneyebilirsiniz.'}`,
-    confirmLabel: 'Yedek modelle seslendir',
-    cancelLabel: reason === 'daily' ? 'Yarını bekleyeceğim' : 'Sonra deneyeceğim',
+  return error => confirm({
+    title: 'En üst düzey modelin bugünkü kullanım hakkı bitti',
+    message: `${error.used !== undefined && error.limit ? `Bugün ${error.used} / ${error.limit} ses kullanıldı. ` : ''}Sonraki modelle seslendirmeye devam edebilirsiniz. En üst düzey modelin hakkı her gün saat ${quotaResetClock()}’da yenilenir.`,
+    confirmLabel: 'Sonraki modele geç',
+    cancelLabel: 'Kapat',
   });
 }
 
 /** What the teacher is told when /api/gemini/generate refuses. */
 export function voiceFailure(status: number, err: any): VoiceUnavailableError {
-  if (err?.code === 'TOP_MODEL_UNAVAILABLE') return new TopModelUnavailableError(err.reason === 'busy' ? 'busy' : 'daily', err?.error || 'En üst düzey model kullanılamadı.');
+  if (err?.code === 'TOP_MODEL_UNAVAILABLE') {
+    const count = (value: unknown) => typeof value === 'number' && value >= 0 ? value : undefined;
+    return new TopModelUnavailableError(err?.error || 'En üst düzey model kullanılamadı.', count(err.used), count(err.limit));
+  }
   const detail = err?.error || `Gemini ses servisi hata döndürdü (HTTP ${status}).`;
   // Input and permission problems are the teacher's to fix; say exactly what.
   if (err?.fallbackAllowed === false || status === 401) return new VoiceUnavailableError(detail, err?.error || VOICE_RETRY_MESSAGE);
@@ -137,7 +133,7 @@ class NarrationService {
       try {
         return await this.generatePart({ ...req, text }, allowLower);
       } catch (error) {
-        if (!(error instanceof TopModelUnavailableError) || !askLower || !await askLower(error.reason)) throw error;
+        if (!(error instanceof TopModelUnavailableError) || !askLower || !await askLower(error)) throw error;
         allowLower = true;
         return this.generatePart({ ...req, text }, true);
       }

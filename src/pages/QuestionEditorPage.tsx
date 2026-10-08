@@ -12,7 +12,7 @@ import { localWhisperService } from '../services/whisper/localWhisperService';
 import { localOcrService } from '../services/ocr/localOcrService';
 import { prepareUploadedNarration, transcriptText } from '../services/narration/uploadedNarration';
 import { readDataUrl, readAudioDuration, readCompressedImage, saveFile } from '../services/narration/browserMedia';
-import { askLowerWith, LOWER_MODEL_NOTE, narrationService } from '../services/narration/narrationService';
+import { askLowerWith, narrationService } from '../services/narration/narrationService';
 import { cutAtPauses, matchLoudness, moveTimeline, spliceAudio, spokenSpan, type TextRange } from '../services/narration/revoice';
 import { NARRATION_RATE, decodeAudio, encodeMp3 } from '../services/narration/audioCodec';
 import { alignSolutionNarration } from '../services/analysis/timelineAligner';
@@ -353,7 +353,6 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
         }
       }
       setVideoGenerated(false);
-      if (result.lowerModel) setAudioInfo(LOWER_MODEL_NOTE);
     } catch (err: any) {
       console.error('Audio generation error:', err);
       setAudioError(err instanceof Error ? err.message : 'Seslendirme oluşturulamadı.');
@@ -433,7 +432,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
           ? alignSolutionNarration(persisted.solutionText, timing.words, duration).captions : persisted.videoConfig.captions;
         await saveCurrentProject({ ...timed, videoConfig: { ...persisted.videoConfig, captions } });
       }
-      setAudioInfo(piece.lowerModel ? LOWER_MODEL_NOTE : null);
+      setAudioInfo(null);
     } catch (err) {
       setAudioInfo(null);
       setLastFix(null);

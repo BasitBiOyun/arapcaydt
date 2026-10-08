@@ -8,6 +8,21 @@ export interface NewsEntry { id: string; date: string; title: string; groups: { 
 
 export const NEWS: NewsEntry[] = [
   {
+    id: '2026-10-08',
+    date: '8 Ekim 2026',
+    title: 'Seslendirme mesajları sadeleşti',
+    groups: [
+      {
+        title: 'Seslendirme',
+        items: [
+          { text: 'En üst düzey modelin günlük hakkı bitince stüdyo bugün kaç ses kullandığınızı yazar ve yalnız **Sonraki modele geç** ya da **Kapat** diye sorar.', help: 'seslendirme' },
+          { text: 'Google o an cevap vermezse artık başka model önerilmez; “Google’dan cevap gelmedi, birkaç dakika sonra tekrar deneyin” yazar.', help: 'seslendirme' },
+          { text: 'Google bir metni seslendirmeyi kabul etmezse bunu açıkça yazar. Aynı metin aynı gün tekrar gönderilmez, böylece her denemede bir hak boşa gitmez.', help: 'seslendirme' },
+        ],
+      },
+    ],
+  },
+  {
     id: '2026-10-06',
     date: '6 Ekim 2026',
     title: 'Ses yazılı son harekeyi okur',
