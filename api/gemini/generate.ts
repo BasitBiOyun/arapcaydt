@@ -210,10 +210,10 @@ async function handler(req: any, res: any) {
     return res.status(503).json({ error: 'Gemini ses servisi yapılandırılmamış.', code: 'MISSING_GEMINI_API_KEY', fallbackAllowed: true });
   }
 
-  // Google refuses a text the same way every time and each refusal uses up a voice: a text it
-  // already refused today is not sent again.
+  // Google refuses a text the same way every time and each refusal uses up a voice: a model
+  // that already refused this text today is not asked again (another model may still voice it).
   const mark = textMark(spoken);
-  if (today.own.refusedTexts.includes(mark)) return res.status(422).json(refusedAnswer([]));
+  const refusedModels = new Set(GEMINI_MODELS.filter(model => today.own.refusedTexts.includes(`${model} ${mark}`)));
 
   // The best model on every key first; the weaker backups only after the teacher agreed
   // (they add or drop sentences, flip negations, mispronounce Turkish).
@@ -225,8 +225,7 @@ async function handler(req: any, res: any) {
   const deadline = Date.now() + REQUEST_BUDGET_MS;
   const attempts: Attempt[] = [];
   const refusedKeys = new Set<KeySource>();
-  // A model that would not voice this text is not asked again with the other key.
-  const refusedModels = new Set<string>();
+  if (tries.length && tries.every(t => refusedModels.has(t.model))) return res.status(422).json(refusedAnswer([]));
   tries: for (const { model, lane } of tries) {
     // A key Google refused (invalid or not allowed) is not tried with the other models.
     if (!refusedKeys.has(lane.source) && !refusedModels.has(model)) {

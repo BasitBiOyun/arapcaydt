@@ -114,7 +114,7 @@ export async function readLimits(db: any): Promise<Limits> {
 export interface DailyState {
   /** False when the usage log could not be read (migration pending): nothing is skipped or capped. */
   tracking: boolean;
-  /** refusedTexts: texts Google would not voice for this teacher today (textMark of the spoken text). */
+  /** refusedTexts: "<model> <textMark>" for each text a model would not voice for this teacher today. */
   own: { ttsUsed: number; ttsExhausted: string[]; transcribeUsed: number; transcribeExhausted: boolean; refusedTexts: string[] };
   shared: { transcribeUsed: number; transcribeUsedAll: number; ttsUsedAll: number; ttsExhausted: string[]; transcribeExhausted: boolean };
   elevenlabsAlignUsed: number;
@@ -138,8 +138,8 @@ export function summarizeDay(rows: DayRow[], ownerId: string, limits: Limits = D
     const mine = row.owner_id === ownerId;
     const model = parts(row.detail)[0];
     if (row.kind === 'elevenlabs_align') { if (mine) state.elevenlabsAlignUsed++; continue; }
-    const refused = mine && row.kind === 'gemini_tts' ? /metin:([0-9a-f]{12})/.exec(row.detail || '')?.[1] : undefined;
-    if (refused && !state.own.refusedTexts.includes(refused)) state.own.refusedTexts.push(refused);
+    const mark = mine && row.kind === 'gemini_tts' ? /metin:([0-9a-f]{12})/.exec(row.detail || '')?.[1] : undefined;
+    if (mark && !state.own.refusedTexts.includes(`${model} ${mark}`)) state.own.refusedTexts.push(`${model} ${mark}`);
     if (row.key_source === 'teacher') {
       if (!mine) continue;
       if (row.kind === 'gemini_tts') {

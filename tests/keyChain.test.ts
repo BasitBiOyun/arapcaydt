@@ -189,6 +189,16 @@ test('a text Google refuses is not sent to the other key and is not offered to t
   assert.deepEqual(again.google, [], 'a refused text is not sent again the same day');
   await call(generate, 'POST', { projectId: 'p1', text: 'Melekler, ilim talebesine kanatlarını serer.', canAsk: true });
   assert.equal(again.google.length, 1, 'a changed text is tried');
+
+  // Refused today only by a lower model: the best model still gets the text.
+  const { textMark, GEMINI_TTS_MODELS: models } = await import('../server/quota');
+  const text = 'Depresyon ve ruhsal gerginlik.';
+  const lower = await freshWorld();
+  lower.activity.push(today({ owner_id: 't1', kind: 'gemini_tts', state: 'failed', key_source: 'teacher',
+    detail: `${models[2]} · 502 · neden: Gemini yanıtında ses verisi yok (engel PROHIBITED_CONTENT, aday yok). metin:${textMark(text)}` }));
+  const best = await call(generate, 'POST', { projectId: 'p1', text, canAsk: true });
+  assert.equal(best.status, 200);
+  assert.deepEqual(lower.google, [{ key: TEACHER_KEY, what: models[0] }]);
 });
 
 test('when Google does not answer, the teacher is told to try again later; no other model is offered', async () => {
