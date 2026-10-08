@@ -43,7 +43,7 @@ Pace: Moderate and steady, with brief natural pauses between reasoning steps.
 ${text}`;
 }
 
-export function makeRequestBody(model: string, text: string, temperature?: number) {
+function makeRequestBody(model: string, text: string) {
   const is38 = model.startsWith('gemini-3.8-');
   return {
     contents: [{
@@ -51,7 +51,6 @@ export function makeRequestBody(model: string, text: string, temperature?: numbe
       parts: is38 ? [{ text, speech_metadata: { style: STYLE } }] : [{ text: legacyPrompt(text) }],
     }],
     generationConfig: {
-      ...(temperature === undefined ? {} : { temperature }),
       responseModalities: ['AUDIO'],
       speechConfig: {
         voiceConfig: is38
@@ -62,7 +61,7 @@ export function makeRequestBody(model: string, text: string, temperature?: numbe
   };
 }
 
-export function pcmToWav(pcm: Buffer, sampleRate = 24000) {
+function pcmToWav(pcm: Buffer, sampleRate = 24000) {
   const header = Buffer.alloc(44);
   header.write('RIFF', 0);
   header.writeUInt32LE(36 + pcm.length, 4);

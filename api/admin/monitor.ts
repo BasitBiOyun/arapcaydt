@@ -2,8 +2,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
 import { readAsset, signAssets } from '../../server/assets.js';
-import { GEMINI_TTS_MODELS, normalizeApiKey, pacificDayStart } from '../../server/quota.js';
-import { makeRequestBody, pcmToWav } from '../gemini/generate.js';
+import { pacificDayStart } from '../../server/quota.js';
 
 /**
  * Read-only report for the morning check (a scheduled Claude session): the last hours' problem
@@ -40,7 +39,6 @@ async function handler(req: any, res: any) {
   const db = serviceDatabase();
   const id = (v: unknown) => typeof v === 'string' && /^[\w-]{1,80}$/.test(v) ? v : null;
 
-  if (req.method === 'POST' && req.query?.tts) return ttsSample(req, res);
   if (req.method === 'POST') return answer(db, req, res, id);
 
   if (req.query?.feedback) {
@@ -136,26 +134,6 @@ async function answer(db: any, req: any, res: any, id: (v: unknown) => string | 
     return res.status(200).json({ sent: true });
   }
   return res.status(400).json({ error: 'feedback or teacher required' });
-}
-
-/** TEMPORARY pronunciation test: one studio-key voice on the top model, at a given temperature. */
-async function ttsSample(req: any, res: any) {
-  const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
-  const temperature = typeof req.body?.temperature === 'number' ? req.body.temperature : undefined;
-  const key = normalizeApiKey(process.env.GEMINI_API_KEY);
-  if (!text || text.length > 1500 || !key) return res.status(400).json({ error: 'text (≤1500) and studio key required' });
-  const model = GEMINI_TTS_MODELS[0];
-  const upstream = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify(makeRequestBody(model, text, temperature)),
-  });
-  const payload: any = await upstream.json().catch(() => null);
-  const part = (payload?.candidates?.[0]?.content?.parts || []).find((p: any) => p?.inlineData?.data);
-  if (!upstream.ok || !part) return res.status(502).json({ status: upstream.status, error: JSON.stringify(payload?.error ?? payload?.candidates?.[0]?.finishReason ?? null).slice(0, 300) });
-  let wav = Buffer.from(part.inlineData.data, 'base64');
-  if (wav.toString('ascii', 0, 4) !== 'RIFF') wav = pcmToWav(wav);
-  res.setHeader('Content-Type', 'audio/wav');
-  return res.status(200).send(wav);
 }
 
 export default logged('/api/admin/monitor', handler);
