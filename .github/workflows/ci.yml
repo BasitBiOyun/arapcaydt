@@ -1,0 +1,36 @@
+name: Kontrol
+
+# Every push to main (and every PR) runs the same checks a contributor runs locally.
+# It never blocks Vercel: a red run only says something broke.
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**']
+  pull_request:
+    paths-ignore: ['**.md', 'docs/**']
+  workflow_dispatch:
+
+concurrency:
+  group: kontrol-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  kontrol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Tip kontrolü
+        run: npm run lint
+      - name: Testler
+        run: npm test
+      - name: Derleme
+        run: npm run build

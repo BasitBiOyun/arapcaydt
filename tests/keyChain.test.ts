@@ -67,6 +67,9 @@ function install(world: World) {
         if (method === 'DELETE') { world.keys = []; return new Response(null, { status: 204 }); }
         return rows(world.keys);
       }
+      // Studio-wide tables the handlers read: empty means defaults (no shared pronunciations, default limits).
+      if (path === '/rest/v1/pronunciations' || path === '/rest/v1/studio_settings') return rows([]);
+      if (path === '/rest/v1/server_errors' && method === 'POST') return json(null, 201);
       if (path === '/rest/v1/rpc/project_asset_objects') return rows(world.objects);
       if (path === '/rest/v1/rpc/replace_project_audio') { const args = JSON.parse(init.body); world.replaced.push(args); return json(true); }
       if (path.startsWith('/storage/v1/object/sign/')) {
