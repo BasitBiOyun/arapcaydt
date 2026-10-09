@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { Suspense, lazy, useRef, useEffect, useState, useCallback } from 'react';
 import { AnnotationRegion, VideoAction, VideoConfig } from '../../types';
 import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
 import { clock } from '../question-editor/workflow';
-import { PreviewEditOverlay } from './PreviewEditOverlay';
 import type { FitRect } from './engine/types';
+// The drawing tools (and their large drag library) load only where marks are edited, not for playback.
+const PreviewEditOverlay = lazy(() => import('./PreviewEditOverlay').then(m => ({ default: m.PreviewEditOverlay })));
 import { 
   Play, 
   Pause, 
@@ -238,10 +239,12 @@ export const VideoPreviewCanvas: React.FC<VideoPreviewCanvasProps> = ({
         />
 
         {editing && !isPlaying && fit && imageElement && (
+          <Suspense fallback={null}>
           <PreviewEditOverlay fit={fit} canvasWidth={1920} canvasHeight={1080} regions={regions} actions={actions}
             time={currentTime} total={duration} underlineOffset={videoConfig.underlineOffset}
             onRegions={editing.onRegions} onActions={editing.onActions} onUndo={editing.onUndo} canUndo={editing.canUndo} onRedo={editing.onRedo} canRedo={editing.canRedo}
             onAssignOption={editing.onAssignOption} drawOption={editing.drawOption} onDrawOptionDone={editing.onDrawOptionDone} focusBox={editing.focusBox} />
+          </Suspense>
         )}
 
         {/* Center overlay play button when paused */}

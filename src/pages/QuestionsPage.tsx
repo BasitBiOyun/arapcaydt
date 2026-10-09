@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Plus, Copy, Trash, ArrowRight, MagnifyingGlass, ArrowCounterClockwise, FileZip, FolderSimple, Sparkle, X, PlayCircle, Tag, FileXls } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { useProjects } from '../features/projects/ProjectContext';
@@ -9,15 +9,17 @@ import { projectRepository } from '../features/projects/projectRepository';
 import type { AppPage } from '../components/common/AppSidebar';
 import { useConfirm } from '../components/common/ConfirmDialog';
 import { CollectionInput } from '../features/projects/CollectionInput';
-import { SequencePlayer } from '../features/projects/SequencePlayer';
 import { TopicInput } from '../features/projects/TopicInput';
 import { videoInfoCsv } from '../features/video/videoInfo';
 import { saveFile } from '../services/narration/browserMedia';
 import { downloadBackup } from '../features/projects/backupActions';
 import { TRASH_DAYS, trashDaysLeft } from '../features/projects/trash';
-import { prepareOne, type MarkRow, type MarkState } from '../features/batch/prepareMarks';
-import { localVideoPipeline } from '../services/pipeline/localVideoPipeline';
+import type { MarkRow, MarkState } from '../features/batch/prepareMarks';
 import { reportClientError } from '../services/supabase';
+
+// The player and the marks pipeline load when first used (they bring the image reader and the video engine).
+const SequencePlayer = lazy(() => import('../features/projects/SequencePlayer').then(m => ({ default: m.SequencePlayer })));
+const loadMarks = () => Promise.all([import('../features/batch/prepareMarks'), import('../services/pipeline/localVideoPipeline')]);
 
 /** Google Vision readings a teacher gets per day (the server's VISION_DAILY_PER_TEACHER). */
 const VISION_PER_DAY = 30;
@@ -145,6 +147,7 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
     const stop = marksStop.current = new AbortController();
     const outcome = new Map<string, MarkState>();
     const note = (id: string, row: Partial<MarkRow>) => { if (row.state) outcome.set(id, row.state); setMark(id, row); };
+    const [{ prepareOne }, { localVideoPipeline }] = await loadMarks();
     const saved = await updateQuestions(ids, async project => {
       if (stop.signal.aborted) { note(project.id, { state: 'stopped' }); return null; }
       note(project.id, { state: 'working' });
@@ -486,8 +489,10 @@ export function QuestionsPage({ onSelectProject, onNewQuestion, onNavigate }: Pr
         </div>
       )}
       {watching && (
+        <Suspense fallback={null}>
         <SequencePlayer ids={watching} titles={Object.fromEntries(projects.map(p => [p.id, p.title]))}
           onClose={() => setWatching(null)} onOpen={id => { setWatching(null); onSelectProject(id); }} />
+        </Suspense>
       )}
       {topicFor && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="topic-title"

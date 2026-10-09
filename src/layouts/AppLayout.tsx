@@ -1,6 +1,5 @@
 import {useAuth} from '../features/auth/AuthContext';
-import {AdminPage} from '../pages/AdminPage';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { AppSidebar, AppPage } from '../components/common/AppSidebar';
 import { AppHeader } from '../components/common/AppHeader';
 import { AnnouncementBanner } from '../features/settings/AnnouncementBanner';
@@ -10,17 +9,26 @@ import { setReportContext } from '../features/feedback/feedback';
 import { PAGE_LABELS } from '../config/pages';
 import { DashboardPage } from '../pages/DashboardPage';
 import { QuestionsPage } from '../pages/QuestionsPage';
-import { QuestionEditorPage } from '../pages/QuestionEditorPage';
-import { SettingsPage } from '../pages/SettingsPage';
-import { BatchPage } from '../pages/BatchPage';
-import { HelpPage } from '../pages/HelpPage';
-import { NewsPage } from '../pages/NewsPage';
-import { ToolsPage } from '../pages/ToolsPage';
 import { FirstRunGuide, guideSeen } from '../features/help/FirstRunGuide';
 import { useProjects } from '../features/projects/ProjectContext';
 import { NewProjectCategoryModal } from '../features/projects/NewProjectCategoryModal';
 import { pageHash, parseHash } from './route';
 import { toast } from 'sonner';
+
+// Pages a teacher opens now and then load when first opened, so the studio starts faster.
+// The editor is fetched in the background right after start, so opening a question stays instant.
+const loadEditor = () => import('../pages/QuestionEditorPage');
+const QuestionEditorPage = lazy(() => loadEditor().then(m => ({ default: m.QuestionEditorPage })));
+const AdminPage = lazy(() => import('../pages/AdminPage').then(m => ({ default: m.AdminPage })));
+const SettingsPage = lazy(() => import('../pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const BatchPage = lazy(() => import('../pages/BatchPage').then(m => ({ default: m.BatchPage })));
+const HelpPage = lazy(() => import('../pages/HelpPage').then(m => ({ default: m.HelpPage })));
+const NewsPage = lazy(() => import('../pages/NewsPage').then(m => ({ default: m.NewsPage })));
+const ToolsPage = lazy(() => import('../pages/ToolsPage').then(m => ({ default: m.ToolsPage })));
+
+const PageLoading = () => (
+  <p className="p-8 text-sm text-[#787670]" role="status">Sayfa açılıyor…</p>
+);
 
 /** A page that must not be left silently (MP4 export, batch run): returns true when leaving is fine. */
 export type LeaveGuard = () => boolean;
@@ -37,6 +45,11 @@ export const AppLayout: React.FC = () => {
     return page;
   });
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
+  useEffect(() => {
+    const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback;
+    const start = () => { void loadEditor().catch(() => undefined); };
+    if (idle) idle(start); else setTimeout(start, 1500);
+  }, []);
   // A short picture tour the first time a teacher signs in on this device.
   const [showGuide, setShowGuide] = useState(() => !!user && !guideSeen(user.id));
   const { selectProject, createNewProject, currentProject, projects, error, loadProjects, isLoading } = useProjects();
@@ -135,6 +148,8 @@ export const AppLayout: React.FC = () => {
   if (currentPage === 'editor') {
     return (
       <div className="h-screen w-screen overflow-hidden bg-[#FAF9F5]">
+        <BrowserSupportBanner />
+        <Suspense fallback={<PageLoading />}>
         <QuestionEditorPage key={currentProject?.id}
           onBack={() => navigate('questions')}
           onNewQuestion={handleNewQuestion}
@@ -142,6 +157,7 @@ export const AppLayout: React.FC = () => {
           waitingForProject={isLoading || (!currentProject && projects.length > 0 && !error)}
           loadError={error}
         />
+        </Suspense>
         <NewProjectCategoryModal
           isOpen={isNewModalOpen}
           onClose={() => setIsNewModalOpen(false)}
@@ -171,6 +187,7 @@ export const AppLayout: React.FC = () => {
         <BrowserSupportBanner />
         <AnnouncementBanner />
         <main className="flex-1 overflow-y-auto">
+          <Suspense fallback={<PageLoading />}>
           {error&&<div role="alert" className="p-4 bg-red-50 text-red-800">{error} <button onClick={()=>void loadProjects()}>Yeniden dene</button></div>}
           {currentPage==='admin'&&user?.role==='admin'&&<AdminPage/>}
           {currentPage === 'dashboard' && (
@@ -194,6 +211,7 @@ export const AppLayout: React.FC = () => {
           {currentPage === 'help' && <HelpPage onShowGuide={() => setShowGuide(true)} />}
           {currentPage === 'news' && <NewsPage />}
           {currentPage === 'tools' && <ToolsPage />}
+          </Suspense>
         </main>
       </div>
 
