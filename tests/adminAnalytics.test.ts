@@ -145,3 +145,21 @@ test('topics: questions and finished ones are counted per topic; untyped ones un
   ]);
   assert.deepEqual(s.topicTotals, { 'İsm-i mevsul': { total: 2, completed: 1 }, Hal: { total: 1, completed: 0 }, '': { total: 1, completed: 0 } });
 });
+
+test('mark accuracy counts finished questions the teacher did not have to fix, and which fixes the others needed', async () => {
+  const { markEdits } = await import('../api/admin/analytics');
+  const plan = [{ id: 'a1', type: 'correct', targetRegionId: 'option-c' }];
+  const row = (id: string, category: string, edits: ReturnType<typeof markEdits>): ProjectRow => ({
+    id, owner_id: 't1', updated_at: '2026-10-01T00:00:00Z', category, completedAt: '2026-10-01T00:00:00Z', correctAnswer: 'C', actions: plan, edits,
+  });
+  const s = summarizeProjects([
+    row('p1', 'nahiv', markEdits([{ id: 'option-c' }], plan, [])),
+    row('p2', 'nahiv', markEdits([{ id: 'option-c', manuallyAdjusted: true }], plan, [])),
+    row('p3', 'paragraf', markEdits([{ id: 'n1', shape: 'line', manuallyAdjusted: true }], [{ id: 'manual-1' }], ['keyword-2'])),
+    row('p4', 'paragraf', markEdits([], [{ id: 'a1', retimed: true }], null)),
+    // Not finished: not counted.
+    { ...row('p5', 'nahiv', markEdits([], plan, [])), completedAt: null },
+  ]);
+  assert.deepEqual({ ...s.marks, byCategory: undefined }, { finished: 4, untouched: 1, moved: 1, added: 1, removed: 1, retimed: 1, byCategory: undefined });
+  assert.deepEqual(s.marks.byCategory, { nahiv: { finished: 2, untouched: 1 }, paragraf: { finished: 2, untouched: 0 } });
+});

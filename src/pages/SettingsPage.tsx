@@ -11,7 +11,6 @@ import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { ElevenLabsStatus } from '../types';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
 import { DefaultsCard, ProfileCard, TextSizeCard } from '../features/settings/MySettingsCards';
-import { StudioSettingsCard } from '../features/settings/StudioSettingsCard';
 import { BackupCard } from '../features/settings/BackupCard';
 import { PronunciationCard } from '../features/settings/PronunciationCard';
 import { useAuth } from '../features/auth/AuthContext';
@@ -111,7 +110,9 @@ export const SettingsPage: React.FC = () => {
 
       <BackupCard />
 
-      {user?.role === 'admin' && <StudioSettingsCard />}
+      {user?.role === 'admin' && (
+        <p className="text-sm text-[#55544F]">Stüdyo ayarları (duyuru, günlük sınırlar, otomatik onay) <a href="#/yonetim" className="font-semibold text-[#8B1E2D] underline">Yönetim</a> sayfasında, <strong>Stüdyo ayarları</strong> sekmesinde.</p>
+      )}
     </div>
   );
 };

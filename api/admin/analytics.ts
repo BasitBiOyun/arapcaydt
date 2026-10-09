@@ -28,6 +28,27 @@ export interface ProjectRow {
   regionIds?: string[] | null;
   actions?: Array<{ type?: string; targetRegionId?: string }> | null;
   warnings?: string[] | null;
+  /** What the teacher changed in the studio's marks (from the stored plan; see markEdits). */
+  edits?: MarkEdits | null;
+}
+
+/** Kinds of hand fixes a question's marks got: a found box moved, a mark added, a found mark removed, a mark retimed. */
+export interface MarkEdits { moved: boolean; added: boolean; removed: boolean; retimed: boolean }
+
+/**
+ * Reads the hand fixes off a stored plan: the studio flags a box the teacher moved
+ * (`manuallyAdjusted`), a mark the teacher made has a `shape` or a `manual-` action, a found
+ * box the teacher deleted is in `suppressedRegionIds`, and Erken/Geç sets `retimed`.
+ */
+export function markEdits(regions: unknown, actions: unknown, suppressed: unknown): MarkEdits {
+  const r = Array.isArray(regions) ? regions as Array<{ manuallyAdjusted?: boolean; shape?: string }> : [];
+  const a = Array.isArray(actions) ? actions as Array<{ id?: string; retimed?: boolean }> : [];
+  return {
+    moved: r.some(x => x?.manuallyAdjusted && !x.shape),
+    added: r.some(x => !!x?.shape) || a.some(x => String(x?.id || '').startsWith('manual-')),
+    removed: Array.isArray(suppressed) && suppressed.length > 0,
+    retimed: a.some(x => x?.retimed === true),
+  };
 }
 
 const SELECT = [
@@ -40,6 +61,7 @@ const SELECT = [
   'timingSource:data->narrationSource->>timingSource', 'fallbackReason:data->narrationSource->>fallbackReason',
   'pipelineVersion:data->videoConfig->pipelineVersion', 'timingQuality:data->videoConfig->>timingQuality',
   'regions:data->videoConfig->regions', 'actions:data->videoConfig->timelineActions', 'warnings:data->videoConfig->warnings',
+  'suppressed:data->videoConfig->suppressedRegionIds',
 ].join(',');
 
 /** Mirrors the editor's publish check (src/features/question-editor/readiness.ts) on the stored plan. */
@@ -91,6 +113,12 @@ export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<strin
   const voice = { gemini: 0, elevenlabs: 0, geminiFallbacks: 0, uploaded: 0, none: 0, models: {} as Record<string, number>, timing: {} as Record<string, number> };
   const funnel = { total: rows.length, withAudio: 0, withMarkers: 0, ready: 0, completed: 0 };
   const qualityTotals: Record<Quality, number> = { ready: 0, check: 0, blocked: 0 };
+  /**
+   * How right the automatic marks were, over finished questions: how many the teacher finished
+   * without touching the marks, and what kind of fixes the others needed, in all and per question type.
+   */
+  const marks = { finished: 0, untouched: 0, moved: 0, added: 0, removed: 0, retimed: 0,
+    byCategory: {} as Record<string, { finished: number; untouched: number }> };
   const issues: Issue[] = [];
 
   for (const row of rows) {
@@ -133,6 +161,13 @@ export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<strin
     if (completed) topic.completed++;
     const level = quality(row);
     if (level || completed) funnel.withMarkers++;
+    if (completed && row.edits && (row.actions || []).length) {
+      const e = row.edits, touched = e.moved || e.added || e.removed || e.retimed;
+      const cat = marks.byCategory[category] ??= { finished: 0, untouched: 0 };
+      marks.finished++; cat.finished++;
+      if (!touched) { marks.untouched++; cat.untouched++; }
+      for (const k of ['moved', 'added', 'removed', 'retimed'] as const) if (e[k]) marks[k]++;
+    }
     if (completed) { funnel.completed++; stats.completed++; continue; }
     if (level) { qualityTotals[level]++; stats.quality[level]++; if (level === 'ready') funnel.ready++; }
 
@@ -143,7 +178,7 @@ export function summarizeProjects(rows: ProjectRow[], lastExportAt: Record<strin
     if (level === 'blocked') push('Yayın kontrolü: düzeltme gerekli (tik, plan sürümü veya zamanlama).');
   }
   issues.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-  return { totalProjects: rows.length, categoryTotals, topicTotals, members, voice, funnel, quality: qualityTotals, issues: issues.slice(0, 40) };
+  return { totalProjects: rows.length, categoryTotals, topicTotals, members, voice, funnel, quality: qualityTotals, marks, issues: issues.slice(0, 40) };
 }
 
 export interface ActivityRow { owner_id: string; kind: string; state: string; detail?: string | null; key_source?: string | null; created_at: string }
@@ -328,8 +363,9 @@ async function readAllProjects(db: any): Promise<ProjectRow[]> {
   for (let from = 0; ; from += pageSize) {
     const { data, error } = await db.from('projects').select(SELECT).order('updated_at', { ascending: false }).range(from, from + pageSize - 1);
     if (error) throw error;
-    const rows = ((data || []) as any[]).map(({ regions, ...row }) => ({
+    const rows = ((data || []) as any[]).map(({ regions, suppressed, ...row }) => ({
       ...row, regionIds: Array.isArray(regions) ? regions.map((r: any) => String(r?.id || '')) : [],
+      edits: markEdits(regions, row.actions, suppressed),
     })) as ProjectRow[];
     all.push(...rows);
     if (rows.length < pageSize) break;

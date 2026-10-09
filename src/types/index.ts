@@ -135,6 +135,8 @@ export interface VideoAction {
   regionId?: string; // alias
   type: VideoActionType;
   label?: string;
+  /** The teacher moved this mark in time (Erken/Geç or dragging on the timeline). */
+  retimed?: boolean;
 }
 
 export interface AudioNarration {

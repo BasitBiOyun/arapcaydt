@@ -77,21 +77,32 @@ async function downloadDiagnostics(report: Report) {
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 
+const RESOLVED_PAGE = 50;
+
 export function FeedbackSection({ who, onOpen }: { who: (ownerId: string) => string; onOpen?: (projectId: string) => void }) {
   const [reports, setReports] = useState<Report[]>([]);
   const [state, setState] = useState<'loading' | 'ready' | 'pending' | 'error'>('loading');
   const [showResolved, setShowResolved] = useState(false);
   const [downloadError, setDownloadError] = useState('');
 
+  /** How many resolved reports are listed; every open report is always listed, however old. */
+  const [resolvedShown, setResolvedShown] = useState(RESOLVED_PAGE);
+  const [moreResolved, setMoreResolved] = useState(false);
   const load = useCallback(async () => {
-    const query = (columns: string) => database().from('feedback').select(columns).order('created_at', { ascending: false }).limit(100);
-    let { data, error } = await query('id,owner_id,message,context,status,created_at,reply,replied_at');
+    const run = async (columns: string) => {
+      const base = () => database().from('feedback').select(columns).order('created_at', { ascending: false });
+      const [open, resolved] = await Promise.all([base().eq('status', 'open'), base().neq('status', 'open').limit(resolvedShown + 1)]);
+      return { data: [...(open.data || []), ...(resolved.data || [])], resolvedCount: (resolved.data || []).length, error: open.error || resolved.error };
+    };
+    let result = await run('id,owner_id,message,context,status,created_at,reply,replied_at');
     // The reply columns come with a later database update; until then the list shows without them.
-    if (error && isMigrationPending(error)) ({ data, error } = await query('id,owner_id,message,context,status,created_at'));
-    if (error) return setState(isMigrationPending(error) ? 'pending' : 'error');
-    setReports((data || []) as unknown as Report[]);
+    if (result.error && isMigrationPending(result.error)) result = await run('id,owner_id,message,context,status,created_at');
+    if (result.error) return setState(isMigrationPending(result.error) ? 'pending' : 'error');
+    setMoreResolved(result.resolvedCount > resolvedShown);
+    const list = (result.data as unknown as Report[]).slice(0, result.data.length - (result.resolvedCount > resolvedShown ? 1 : 0));
+    setReports(list.sort((x, y) => y.created_at.localeCompare(x.created_at)));
     setState('ready');
-  }, []);
+  }, [resolvedShown]);
   useEffect(() => { void load().catch(() => setState('error')); }, [load]);
 
   const resolve = async (id: string) => {
@@ -163,6 +174,11 @@ export function FeedbackSection({ who, onOpen }: { who: (ownerId: string) => str
           );
         })}
       </ul>
+      {showResolved && moreResolved && (
+        <button type="button" className="mt-3 text-sm font-semibold text-[#8B1E2D] hover:underline" onClick={() => setResolvedShown(n => n + RESOLVED_PAGE)}>
+          Daha eski bildirimleri göster
+        </button>
+      )}
     </section>
   );
 }

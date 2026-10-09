@@ -51,9 +51,9 @@ export function dragPill(action: VideoAction, mode: PillDrag, delta: number, tot
   const end = action.start + action.duration;
   if (mode === 'start') {
     const start = Math.max(0, Math.min(end - MIN_SECONDS, action.start + delta));
-    return { ...action, start, startTime: start, duration: end - start };
+    return { ...action, start, startTime: start, duration: end - start, retimed: true };
   }
-  return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)) };
+  return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, action.duration + delta)), retimed: true };
 }
 
 /**
@@ -61,7 +61,7 @@ export function dragPill(action: VideoAction, mode: PillDrag, delta: number, tot
  * tap ends it there. Crosses and ticks only start (they stay to the end).
  */
 export function tapMark(action: VideoAction, time: number, total: number, stage: 'start' | 'end'): VideoAction {
-  if (stage === 'end' && !lasting(action)) return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, time - action.start)) };
+  if (stage === 'end' && !lasting(action)) return { ...action, duration: Math.max(MIN_SECONDS, Math.min(total - action.start, time - action.start)), retimed: true };
   return nudgeAction(action, time - action.start, total);
 }
 

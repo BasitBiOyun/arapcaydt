@@ -51,7 +51,8 @@ export function nudgeAction(action:VideoAction,delta:number,total:number):VideoA
   const toEnd=action.start+action.duration>=total-.01;
   const start=Math.max(0,Math.min(Math.max(0,total-.1),action.start+delta));
   const duration=toEnd?total-start:Math.max(.05,Math.min(action.duration,total-start));
-  return {...action,start,startTime:start,duration};
+  // retimed: the teacher moved this mark by hand (counted in the panel's mark accuracy).
+  return {...action,start,startTime:start,duration,retimed:true};
 }
 
 /** One time format for the player and the marks list: "01:05,3" (minutes:seconds,tenths). */
