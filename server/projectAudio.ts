@@ -14,6 +14,14 @@ export class ProjectAudioError extends Error {
   constructor(message: string, public status: number) { super(message); }
 }
 
+/**
+ * A project id as the studio makes them (a UUID, or "legacy_<owner>_<id>" for imported ones).
+ * Ids become folder names in storage, so a slash, backslash, space or ".." is refused
+ * (the same rule as the projects_id_format check in 20261012_security.sql).
+ */
+export const isProjectId = (id: unknown): id is string =>
+  typeof id === 'string' && id.length >= 1 && id.length <= 200 && id !== '.' && !id.includes('..') && !/[\/\\\s]/.test(id);
+
 export function ownedAssetPath(ownerId: string, path: unknown): string | null {
   if (typeof path !== 'string' || !ownerId) return null;
   const parts = path.split('/');

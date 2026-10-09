@@ -1,5 +1,5 @@
-import { elevenLabsAlignAllowed, isCapped, readDailyState, usageDetail } from '../../server/quota.js';
-import { recordUsage } from '../../server/usage.js';
+import { elevenLabsAlignAllowed, isCapped, pacificDayStart, readDailyState, usageDetail } from '../../server/quota.js';
+import { holdUsage, settleUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
@@ -54,8 +54,10 @@ async function handler(req: any, res: any) {
 
   // Every Forced Alignment request is counted, including failures (admin usage view).
   let alignmentRequested = false;
-  const countAlignment = (state: 'succeeded' | 'failed', status: number | string, reason = '') => recordUsage(member.user.id, projectId,
-    [{ kind: 'elevenlabs_align', state, detail: usageDetail('forced-alignment', status, false, '', reason), characters: text.length }]);
+  /** Today's row held for this request (capped teachers), settled with the outcome. */
+  let held: string | null = null;
+  const countAlignment = (state: 'succeeded' | 'failed', status: number | string, reason = '') => settleUsage(db, held, member.user.id, projectId,
+    { kind: 'elevenlabs_align', state, detail: usageDetail('forced-alignment', status, false, '', reason), characters: text.length });
   try {
     let bytes: Buffer, mimeType: string;
     try {
@@ -69,6 +71,12 @@ async function handler(req: any, res: any) {
     form.append('file', new Blob([bytes], { type: mimeType }), mimeType.includes('wav') ? 'narration.wav' : 'narration.mp3');
     form.append('text', text);
 
+    // Parallel requests must not all pass the daily cap read above: hold today's place first.
+    if (isCapped(member)) {
+      const hold = await holdUsage(db, member.user.id, projectId, 'elevenlabs_align', pacificDayStart(), today.limits.elevenlabsAlign, text.length);
+      if (!hold.allowed) return res.status(429).json({ error: `Bugünkü ElevenLabs hizalama hakkınız doldu (günlük ${today.limits.elevenlabsAlign}).`, code: 'DAILY_LIMIT' });
+      held = hold.id;
+    }
     alignmentRequested = true;
     const upstream = await fetch('https://api.elevenlabs.io/v1/forced-alignment', {
       method: 'POST',

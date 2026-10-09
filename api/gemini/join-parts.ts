@@ -1,6 +1,6 @@
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { joinNarrationAudio } from '../../server/mp3.js';
-import { MAX_PROJECT_AUDIO_BYTES, ownedAssetPath } from '../../server/projectAudio.js';
+import { MAX_PROJECT_AUDIO_BYTES, ownedAssetPath, isProjectId } from '../../server/projectAudio.js';
 import { saveGeneratedAudio } from './generate.js';
 import { logged } from '../../server/errorLog.js';
 import { readAsset, removeAssets } from '../../server/assets.js';
@@ -25,7 +25,7 @@ async function handler(req: any, res: any) {
   const parts: unknown[] = Array.isArray(req.body?.parts) ? req.body.parts : [];
   const folder = `${member.user.id}/${projectId}/`;
   const paths = parts.map(p => ownedAssetPath(member.user.id, p));
-  if (!projectId || !text || parts.length < 2 || parts.length > MAX_PARTS || paths.some(p => !p || !p.startsWith(`${folder}gemini-`))) {
+  if (!isProjectId(projectId) || !text || parts.length < 2 || parts.length > MAX_PARTS || paths.some(p => !p || !p.startsWith(`${folder}gemini-`))) {
     return res.status(400).json({ error: 'Ses parçaları geçersiz.', code: 'INVALID_PARTS' });
   }
   const db = serviceDatabase();

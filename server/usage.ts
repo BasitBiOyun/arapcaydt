@@ -31,3 +31,42 @@ export async function recordUsage(ownerId: string, projectId: string | undefined
     console.warn('[usage] not recorded:', error?.message || error);
   }
 }
+
+/**
+ * Holds one of a teacher's capped requests for today before it is made. The row is written first
+ * and counted after, so requests sent at the same moment cannot all slip under the cap: when the
+ * count is over, the row is taken back and the request refused. When the row cannot be written
+ * or counted, the request goes ahead untracked, as recordUsage would have let it.
+ */
+export async function holdUsage(db: any, ownerId: string, projectId: string | undefined, kind: UsageKind, sinceIso: string, cap: number, characters = 0):
+  Promise<{ allowed: boolean; id: string | null }> {
+  try {
+    const { data, error } = await db.from('activity')
+      .insert({ owner_id: ownerId, project_id: projectId || null, kind, state: 'reserved', characters: Math.max(0, Math.round(characters)) })
+      .select('id').single();
+    const id: string | null = !error && data?.id ? String(data.id) : null;
+    if (!id) return { allowed: true, id: null };
+    const { count, error: countError } = await db.from('activity').select('id', { count: 'exact', head: true })
+      .eq('owner_id', ownerId).eq('kind', kind).gte('created_at', sinceIso);
+    if (countError || typeof count !== 'number') return { allowed: true, id };
+    if (count > cap) {
+      await db.from('activity').delete().eq('id', id);
+      return { allowed: false, id: null };
+    }
+    return { allowed: true, id };
+  } catch {
+    return { allowed: true, id: null };
+  }
+}
+
+/** Writes the outcome onto a held row (or logs a new row when nothing was held). */
+export async function settleUsage(db: any, heldId: string | null, ownerId: string, projectId: string | undefined, event: UsageEvent): Promise<void> {
+  if (heldId) {
+    try {
+      const { error } = await db.from('activity').update({ state: event.state, detail: (event.detail || '').slice(0, 300) || null,
+        characters: Math.max(0, Math.round(event.characters || 0)) }).eq('id', heldId);
+      if (!error) return;
+    } catch { /* logged as a new row below */ }
+  }
+  await recordUsage(ownerId, projectId, [event]);
+}

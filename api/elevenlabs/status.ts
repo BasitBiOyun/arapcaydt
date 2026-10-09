@@ -24,8 +24,11 @@ async function handler(req: any, res: any) {
   const geminiConfigured = Boolean(normalizeApiKey(process.env.GEMINI_API_KEY));
   const apiKey = normalizeApiKey(process.env.ELEVENLABS_API_KEY);
   const configured = Boolean(apiKey && apiKey !== 'MY_ELEVENLABS_API_KEY');
+  // Plan, remaining credits and the service's own error text are for admins; teachers see ready or not.
+  const admin = member.profile?.role === 'admin';
   const json = (body: Record<string, unknown>) => res.status(200).json({
-    ...body,
+    ...(admin ? body : { configured: body.configured, valid: body.valid, mode: body.mode,
+      message: body.valid ? 'Ses servisi hazır.' : 'Kelime zamanlama servisi şu anda kullanılamıyor.' }),
     gemini: { configured: geminiConfigured },
     // Narration works when either engine is available.
     // Voice comes only from Gemini; ElevenLabs is used for word timings only.

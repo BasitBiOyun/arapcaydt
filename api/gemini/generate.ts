@@ -1,3 +1,4 @@
+import { isProjectId, ownedAssetPath } from '../../server/projectAudio.js';
 import { logged } from '../../server/errorLog.js';
 import { createHash } from 'node:crypto';
 import { signAssets, writeAsset } from '../../server/assets.js';
@@ -108,6 +109,7 @@ export async function saveGeneratedAudio(memberId: string, projectId: string, te
   const db = serviceDatabase();
   const digest = createHash('sha256').update(text).digest('hex').slice(0, 20);
   const path = `${memberId}/${projectId}/gemini-${digest}.${extension}`;
+  if (!isProjectId(projectId) || !ownedAssetPath(memberId, path)) throw new StoreError('Gemini sesi depoya kaydedilemedi: geçersiz proje.');
   let failure = '';
   for (const delay of STORE_RETRY_MS) {
     if (delay) await wait(delay);
@@ -187,7 +189,7 @@ async function handler(req: any, res: any) {
   if (!text || text.length > MAX_REQUEST_CHARS) {
     return res.status(400).json({ error: `Seslendirme metni 1–${MAX_REQUEST_CHARS} karakter arasında olmalıdır.`, code: 'INVALID_TEXT', fallbackAllowed: false });
   }
-  if (!projectId) {
+  if (!isProjectId(projectId)) {
     return res.status(400).json({ error: 'Gemini seslendirmesi için proje kimliği gerekli.', code: 'MISSING_PROJECT_ID', fallbackAllowed: false });
   }
 

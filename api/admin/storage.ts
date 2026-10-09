@@ -100,10 +100,19 @@ async function memberAction(req: any, res: any, member: any) {
     return res.status(200).json({ links: Object.fromEntries(links) });
   }
   const { path, contentType, size } = req.body;
-  if (!ownedAssetPath(member.user.id, path) || typeof contentType !== 'string' || !/^(image|audio)\/[\w.+-]+(\s*;\s*[\w-]+=[\w.+-]+)*$/.test(contentType) || contentType === 'image/svg+xml'
+  if (!ownedAssetPath(member.user.id, path) || !safeMediaType(contentType)
     || !Number.isInteger(size) || size <= 0 || size > 25 * 1024 * 1024) return res.status(400).json({ error: 'Dosya bilgisi geçersiz.' });
   const url = uploadLink(path, contentType, size);
   return res.status(200).json(url ? { store: 'r2', url } : { store: 'supabase' });
+}
+
+/**
+ * A picture or sound type the studio may store. Script-carrying types (SVG, XML, HTML) are refused
+ * however they are spelled ("image/SVG+XML; charset=utf-8").
+ */
+export function safeMediaType(type: unknown): boolean {
+  if (typeof type !== 'string' || !/^(image|audio)\/[\w.+-]+(\s*;\s*[\w-]+=[\w.+-]+)*$/i.test(type)) return false;
+  return !/svg|xml|html/i.test(type.split(';')[0]);
 }
 
 /**
