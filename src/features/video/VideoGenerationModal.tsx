@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { QuestionProject } from '../../types';
 import { reportClientError } from '../../services/supabase';
+import { NETWORK_MESSAGE, plainMessage } from '../../services/plainError';
 import { pipelineParams } from '../question-editor/projectUpdates';
 import { localVideoPipeline, LocalPipelineProgress, LocalPipelineResult } from '../../services/pipeline/localVideoPipeline';
 import { 
@@ -21,8 +22,6 @@ type InternalStage =
   | 'IMAGE_ANALYSIS'
   | 'SOLUTION_ANALYSIS'
   | 'TIMESTAMP_MATCHING'
-  | 'ANIMATION_BUILD'
-  | 'VIDEO_RENDER'
   | 'COMPLETED'
   | 'ERROR';
 
@@ -48,21 +47,9 @@ const STAGES: StageDefinition[] = [
   },
   {
     id: 'TIMESTAMP_MATCHING',
-    activeText: 'Seslendirme zamanlamaları eşleştiriliyor...',
-    completedText: 'Seslendirme kelimeleri eşleştirildi',
-    pendingText: 'Seslendirme eşleştirmesi',
-  },
-  {
-    id: 'ANIMATION_BUILD',
-    activeText: 'Animasyonlar (odak, X, tik) hazırlanıyor...',
-    completedText: 'Animasyonlar hazırlandı',
-    pendingText: 'Animasyon oluşturma',
-  },
-  {
-    id: 'VIDEO_RENDER',
-    activeText: 'Video sahnesi oluşturuluyor...',
-    completedText: 'Video hazırlandı',
-    pendingText: 'Video sahnesi',
+    activeText: 'İşaretler (çizgi, X, tik) sesle eşleştiriliyor...',
+    completedText: 'İşaretler sesle eşleştirildi',
+    pendingText: 'İşaretleri sesle eşleştirme',
   },
 ];
 
@@ -116,15 +103,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       });
 
       if (!live()) return;
-      // Stage: ANIMATION_BUILD
-      setCurrentStage('ANIMATION_BUILD');
-      await new Promise((r) => setTimeout(r, 400));
-
-      // Stage: VIDEO_RENDER
-      setCurrentStage('VIDEO_RENDER');
-      await new Promise((r) => setTimeout(r, 400));
-
-      // Stage: COMPLETED
+      // Every step above did real work; the ticks stay on screen a moment before the dialog closes.
       setCurrentStage('COMPLETED');
       await new Promise((r) => setTimeout(r, 300));
 
@@ -139,10 +118,10 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       setCurrentStage('ERROR');
       setStatusDetail(null);
       // The browser's "Failed to fetch" means a file (picture or voice) could not be downloaded.
-      const network = /failed to fetch|networkerror|load failed/i.test(String(err?.message || ''));
-      setErrorMessage(network
+      const message = plainMessage(err, 'İşaretler hazırlanamadı.');
+      setErrorMessage(message === NETWORK_MESSAGE
         ? 'Soru görseli veya ses dosyası indirilemedi. İnternet bağlantınızı kontrol edip Tekrar Dene’ye basın; sürerse sayfayı yenileyin.'
-        : err?.message || 'Video analizi yerel olarak tamamlanamadı.');
+        : message);
     }
   };
 
@@ -158,8 +137,6 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       'IMAGE_ANALYSIS',
       'SOLUTION_ANALYSIS',
       'TIMESTAMP_MATCHING',
-      'ANIMATION_BUILD',
-      'VIDEO_RENDER',
     ];
     const currentIndex = order.indexOf(currentStage);
     const stageIndex = order.indexOf(stageId);
@@ -175,7 +152,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E4DC] bg-[#FAF9F5]">
           <h2 className="text-sm font-bold text-[#1C1917] tracking-tight">
-            Videonuz hazırlanıyor
+            İşaretler hazırlanıyor
           </h2>
           {currentStage !== 'COMPLETED' && (
             <button
@@ -244,7 +221,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
             <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-xs space-y-3">
               <div className="flex items-center gap-2 text-red-800 font-semibold">
                 <WarningCircle size={18} weight="fill" className="shrink-0" />
-                <span>{errorMessage || 'Video analizi şu anda tamamlanamadı.'}</span>
+                <span>{errorMessage || 'İşaretler şu anda hazırlanamadı.'}</span>
               </div>
               <button
                 type="button"

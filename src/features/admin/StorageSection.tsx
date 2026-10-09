@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { authHeaders } from '../../services/supabase';
 import { useConfirm } from '../../components/common/ConfirmDialog';
 import { buildArchive, type ArchiveFile } from './storageArchive';
+import { plainMessage } from '../../services/plainError';
 
 type Bucket = { count: number; bytes: number };
 interface StorageInfo {
@@ -49,7 +50,7 @@ export const StorageSection: React.FC = () => {
 
   const load = useCallback(async () => {
     try { const next: StorageInfo = await call(); setInfo(next); setError(''); return next; }
-    catch (e) { setError(e instanceof Error ? e.message : 'Depolama bilgisi alınamadı.'); return null; }
+    catch (e) { setError(plainMessage(e, 'Depolama bilgisi alınamadı.')); return null; }
   }, []);
   // Weekly automatic cleanup when an admin opens the panel: unused files older than 7 days go.
   useEffect(() => {
@@ -81,7 +82,7 @@ export const StorageSection: React.FC = () => {
       const swept = await call({ action: 'sweep', scope: 'wav' });
       setProgress(`${done} ses MP3'e çevrildi, eski WAV dosyalarından ${mb(swept.bytes)} yer açıldı.${skip.length ? ` ${skip.length} ses atlandı (proje o sırada değişmiş olabilir); tekrar çalıştırabilirsiniz.` : ''}`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Dönüştürme tamamlanamadı.');
+      setError(plainMessage(e, 'Dönüştürme tamamlanamadı.'));
     } finally {
       setBusy(false);
       await load();
@@ -95,7 +96,7 @@ export const StorageSection: React.FC = () => {
       const r = await call({ action: 'sweep', scope: 'all' });
       setProgress(`${r.removed} kullanılmayan dosya silindi, ${mb(r.bytes)} yer açıldı.`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Silme tamamlanamadı.');
+      setError(plainMessage(e, 'Silme tamamlanamadı.'));
     } finally {
       setBusy(false);
       await load();
@@ -118,7 +119,7 @@ export const StorageSection: React.FC = () => {
       setTimeout(() => URL.revokeObjectURL(link.href), 60_000);
       setProgress(`${files.length - failed.length} dosya ZIP'e kondu (${mb(zip.size)}).${failed.length ? ` ${failed.length} dosya indirilemedi; adları ZIP içindeki indirilemeyenler.txt dosyasında.` : ''}`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Arşiv hazırlanamadı.');
+      setError(plainMessage(e, 'Arşiv hazırlanamadı.'));
     } finally {
       setBusy(false);
     }
@@ -139,7 +140,7 @@ export const StorageSection: React.FC = () => {
       }
       setProgress(`${done} dosya R2’ye kopyalandı ve kontrol edildi.${skip.length ? ` ${skip.length} dosya kopyalanamadı; tekrar çalıştırabilirsiniz.` : ''}`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Kopyalama tamamlanamadı.');
+      setError(plainMessage(e, 'Kopyalama tamamlanamadı.'));
     } finally {
       setBusy(false);
       await load();
@@ -153,7 +154,7 @@ export const StorageSection: React.FC = () => {
       const r = await call({ action: 'purge' });
       setProgress(`${r.removed} dosya Supabase’den silindi, ${mb(r.bytes)} yer açıldı. Hepsi R2’de duruyor.`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Silme tamamlanamadı.');
+      setError(plainMessage(e, 'Silme tamamlanamadı.'));
     } finally {
       setBusy(false);
       await load();

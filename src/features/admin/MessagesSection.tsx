@@ -3,6 +3,7 @@ import { ChatCircleText, UsersThree } from '@phosphor-icons/react';
 import { BulkMessage } from '../messages/BulkMessage';
 import { Conversation } from '../messages/Conversation';
 import { loadAllMessages, messageTime, type Message } from '../messages/messages';
+import { plainMessage } from '../../services/plainError';
 
 const BULK = 'toplu';
 
@@ -20,7 +21,7 @@ export function MessagesSection({ members, onUnread }: { members: Teacher[]; onU
       const list = await loadAllMessages();
       setMessages(list); setError('');
       onUnread?.(list.filter(m => !m.from_admin && !m.read_at).length);
-    } catch (e) { setError((e as Error).message); }
+    } catch (e) { setError(plainMessage(e, 'İşlem tamamlanamadı.')); }
   }, [onUnread]);
   useEffect(() => { void load(); }, [load]);
 

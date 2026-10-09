@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useProjects } from '../projects/ProjectContext';
 import { downloadBackup, openBackupFile } from '../projects/backupActions';
 import { useConfirm } from '../../components/common/ConfirmDialog';
+import { plainMessage } from '../../services/plainError';
 
 /** Backup as one ZIP (questions, pictures, voices) and restore from it. */
 export function BackupCard() {
@@ -20,7 +21,7 @@ export function BackupCard() {
       const count = await downloadBackup(null, p => setBusy(`Yedek hazırlanıyor… ${p.done} / ${p.total} soru`));
       toast.success(`${count} sorunun yedeği indirildi.`, { description: 'Dosyayı bilgisayarınızda güvenli bir yere taşıyın.' });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Yedek hazırlanamadı. Bağlantınızı kontrol edip tekrar deneyin.');
+      setError(plainMessage(e, 'Yedek hazırlanamadı. Bağlantınızı kontrol edip tekrar deneyin.'));
     } finally {
       setBusy('');
     }
@@ -39,7 +40,7 @@ export function BackupCard() {
       const count = await importProjects(list, done => setBusy(`Geri yükleniyor… ${done} / ${list.length} soru`));
       toast.success(`${count} soru yedekten geri yüklendi.`, { description: 'Sorularım sayfasında görebilirsiniz.' });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Yedek geri yüklenemedi.');
+      setError(plainMessage(e, 'Yedek geri yüklenemedi.'));
     } finally {
       setBusy('');
       if (input.current) input.current.value = '';

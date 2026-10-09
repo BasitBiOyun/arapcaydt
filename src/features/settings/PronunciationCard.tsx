@@ -4,6 +4,7 @@ import { useAuth } from '../auth/AuthContext';
 import { database } from '../../services/supabase';
 import { isMigrationPending, MIGRATION_PENDING } from './studioSettings';
 import { CardHeader, Result, card, field, primary } from './MySettingsCards';
+import { plainMessage } from '../../services/plainError';
 
 interface Entry { id: string; written: string; spoken: string; created_by: string }
 
@@ -19,7 +20,7 @@ export function PronunciationCard() {
 
   const load = async () => {
     const { data, error } = await database().from('pronunciations').select('id, written, spoken, created_by').order('written');
-    if (error) return setState({ error: isMigrationPending(error) ? MIGRATION_PENDING : error.message });
+    if (error) return setState({ error: isMigrationPending(error) ? MIGRATION_PENDING : plainMessage(error, 'Sözlük kaydedilemedi.') });
     setEntries(data as Entry[]);
   };
   useEffect(() => {
@@ -34,14 +35,14 @@ export function PronunciationCard() {
     if (!written.trim() || !spoken.trim()) return setState({ error: 'İki kutuyu da doldurun.' });
     setState({ busy: true });
     const { error } = await database().from('pronunciations').insert({ written: written.trim(), spoken: spoken.trim() });
-    if (error) return setState({ error: error.code === '23505' ? 'Bu kelime sözlükte zaten var.' : isMigrationPending(error) ? MIGRATION_PENDING : error.message });
+    if (error) return setState({ error: error.code === '23505' ? 'Bu kelime sözlükte zaten var.' : isMigrationPending(error) ? MIGRATION_PENDING : plainMessage(error, 'Sözlük kaydedilemedi.') });
     setWritten(''); setSpoken('');
     setState({ notice: 'Eklendi. Bundan sonra seslendirilen metinlerde böyle okunur.' });
     await load();
   };
   const remove = async (entry: Entry) => {
     const { error } = await database().from('pronunciations').delete().eq('id', entry.id);
-    if (error) return setState({ error: error.message });
+    if (error) return setState({ error: plainMessage(error, 'Sözlük kaydedilemedi.') });
     setState({ notice: `“${entry.written}” sözlükten çıkarıldı.` });
     await load();
   };

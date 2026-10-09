@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { narrationService } from '../../services/narration/narrationService';
 import { useProjects } from '../projects/ProjectContext';
+import { plainMessage } from '../../services/plainError';
 
 export function VoiceSample({ text, disabled, onBusy }: { text: string; disabled: boolean; onBusy: (busy: boolean) => void }) {
   const { saveCurrentProject } = useProjects();
@@ -21,7 +22,7 @@ export function VoiceSample({ text, disabled, onBusy }: { text: string; disabled
       // Gemini returns a stored file link; the ElevenLabs fallback returns inline audio.
       setAudio(result.audioUrl || (result.audioBase64 ? `data:${result.mimeType};base64,${result.audioBase64}` : ''));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Örnek ses oluşturulamadı.');
+      setError(plainMessage(e, 'Örnek ses oluşturulamadı.'));
     } finally {
       setBusy(false);
       onBusy(false);

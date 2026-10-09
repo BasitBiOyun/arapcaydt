@@ -38,6 +38,7 @@ import { useAuth } from '../features/auth/AuthContext';
 import { CollectionInput } from '../features/projects/CollectionInput';
 import { TopicInput } from '../features/projects/TopicInput';
 import { VoiceProgress, nextVoiceStage, startVoiceProgress } from '../features/question-editor/voiceProgress';
+import { plainMessage } from '../services/plainError';
 
 function voiceApproved(project: QuestionProject) {
   return Boolean(project.audioApproved || project.narrationSource?.isApproved || project.audioNarration?.isApproved);
@@ -360,7 +361,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       setVideoGenerated(false);
     } catch (err: any) {
       console.error('Audio generation error:', err);
-      setAudioError(err instanceof Error ? err.message : 'Seslendirme oluşturulamadı.');
+      setAudioError(plainMessage(err, 'Seslendirme oluşturulamadı.'));
     } finally {
       setIsGeneratingAudio(false);
       setVoiceProgress(null);
@@ -442,7 +443,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     } catch (err) {
       setAudioInfo(null);
       setLastFix(null);
-      setAudioError(err instanceof Error ? err.message : 'Seçili yer yeniden seslendirilemedi.');
+      setAudioError(plainMessage(err, 'Seçili yer yeniden seslendirilemedi.'));
     } finally {
       setIsGeneratingAudio(false);
     }
@@ -497,7 +498,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       else if (!currentProject.solutionText.trim()) setAudioError('Sesinizden metin çıkarılamadı. İşaretler için 2. adımda çözüm metnini yazın.');
       setVideoGenerated(false);
     } catch (err) {
-      setAudioError(err instanceof Error ? err.message : 'Ses dosyası okunamadı.');
+      setAudioError(plainMessage(err, 'Ses dosyası okunamadı.'));
     } finally {
       setIsTranscribingMp3(false);
       setTranscribeProgress(null);
@@ -595,7 +596,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     } catch (err) {
       console.error('Local MP4 Export error:', err);
       if (!exportAbortRef.current?.signal.aborted) reportClientError(currentProject.id, 'mp4', err);
-      setExportError(err instanceof Error ? err.message : 'Video oluşturulamadı.');
+      setExportError(plainMessage(err, 'Video oluşturulamadı.'));
     } finally {
       setIsExportingMp4(false);
       setExportPercent(null);

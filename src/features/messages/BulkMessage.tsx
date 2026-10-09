@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PaperPlaneRight } from '@phosphor-icons/react';
 import { FormattedText } from '../../components/common/FormattedText';
 import { sendBulkMessage } from './messages';
+import { plainMessage } from '../../services/plainError';
 
 /** Admin "Toplu mesaj": one message, delivered into each chosen teacher's own Mesajlar conversation. */
 export function BulkMessage({ teachers, onSent }: { teachers: { id: string; name: string; email: string }[]; onSent: () => void }) {
@@ -19,7 +20,7 @@ export function BulkMessage({ teachers, onSent }: { teachers: { id: string; name
       const count = await sendBulkMessage(ids, text);
       setText(''); setState({ notice: `Mesaj ${count} öğretmene gönderildi. Her biri kendi Mesajlar’ında görür ve size oradan cevap verebilir.` });
       onSent();
-    } catch (err) { setState({ error: (err as Error).message }); }
+    } catch (err) { setState({ error: plainMessage(err, 'Mesaj gönderilemedi.') }); }
   };
 
   return (

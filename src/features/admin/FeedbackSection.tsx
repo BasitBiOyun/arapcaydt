@@ -4,6 +4,7 @@ import { database } from '../../services/supabase';
 import { isMigrationPending } from '../settings/studioSettings';
 import type { FeedbackContext } from '../feedback/feedback';
 import { QUICK_MESSAGES } from '../messages/messages';
+import { plainMessage } from '../../services/plainError';
 
 interface Report {
   id: string;
@@ -137,7 +138,7 @@ export function FeedbackSection({ who, onOpen }: { who: (ownerId: string) => str
                   {c.projectId && onOpen && <button type="button" className="text-[#8B1E2D] hover:underline" onClick={() => onOpen(c.projectId!)}>Soruyu aç</button>}
                   {c.hasDiagnostics && (
                     <button type="button" className="text-[#8B1E2D] hover:underline"
-                      onClick={() => { setDownloadError(''); downloadDiagnostics(report).catch(e => setDownloadError(e.message)); }}>
+                      onClick={() => { setDownloadError(''); downloadDiagnostics(report).catch(e => setDownloadError(plainMessage(e, 'Dosya indirilemedi.'))); }}>
                       Teşhis dosyasını indir
                     </button>
                   )}

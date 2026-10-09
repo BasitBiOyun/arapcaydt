@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Key, Trash, FloppyDisk, CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import { geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../services/narration/geminiKeyService';
 import { useConfirm } from '../../components/common/ConfirmDialog';
+import { plainMessage } from '../../services/plainError';
 
 const badge = (ok: boolean) => `font-semibold px-2.5 py-0.5 rounded-full text-xs ${
   ok ? 'bg-[#EFF7F0] text-[#1E562A] border border-[#C5DAC8]' : 'bg-[#FAF5E6] text-[#78540E] border border-[#E5D7B0]'}`;
@@ -15,12 +16,12 @@ export const TeacherKeyCard: React.FC = () => {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
-  useEffect(() => { geminiKeyService.status().then(setStatus, e => setError(e.message)); }, []);
+  useEffect(() => { geminiKeyService.status().then(setStatus, e => setError(plainMessage(e, 'Bilgi alınamadı.'))); }, []);
 
   const run = async (action: () => Promise<TeacherKeyStatus>, done: string) => {
     setBusy(true); setError(''); setNotice('');
     try { setStatus(await action()); setValue(''); setNotice(done); }
-    catch (e) { setError(e instanceof Error ? e.message : 'İşlem tamamlanamadı.'); }
+    catch (e) { setError(plainMessage(e, 'İşlem tamamlanamadı.')); }
     finally { setBusy(false); }
   };
   const save = () => run(() => geminiKeyService.save(value), 'Anahtar doğrulandı ve kaydedildi.');

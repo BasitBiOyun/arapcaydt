@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkle, X, Check, BookOpen, GraduationCap, FileText } from '@phosphor-icons/react';
 import { QUESTION_CATEGORIES, DEFAULT_CATEGORY_ID } from '../../config/categories';
+import { plainMessage } from '../../services/plainError';
 
 interface NewProjectCategoryModalProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ export const NewProjectCategoryModal: React.FC<NewProjectCategoryModalProps> = (
       await onCreate(selectedCategory);
       onClose();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Proje oluşturulamadı.');
+      setError(plainMessage(e, 'Proje oluşturulamadı.'));
     } finally {
       setBusy(false);
     }

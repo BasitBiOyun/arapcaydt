@@ -7,6 +7,7 @@ import { TEXT_SIZES, applyTextSize, cleanPreferences, type UserPreferences } fro
 import { saveMyProfile } from './studioSettings';
 import { PasswordChecklist, authMessage, passwordProblem } from '../auth/LoginPage';
 import { CollectionInput } from '../projects/CollectionInput';
+import { plainMessage } from '../../services/plainError';
 
 export const card = 'p-5 rounded-xl bg-white border border-[#E5E4DC] space-y-4 shadow-xs';
 export const field = 'w-full px-3 py-1.5 rounded border border-[#D5D4CC] bg-[#FAF9F5] focus:bg-white text-xs outline-none';
@@ -45,7 +46,7 @@ export function ProfileCard() {
     if (!name.trim()) return setNameState({ error: 'Ad boş olamaz.' });
     setNameState({ busy: true });
     try { await saveMyProfile(name, user.preferences || {}); await refresh(); setNameState({ notice: 'Adınız kaydedildi.' }); }
-    catch (err: any) { setNameState({ error: err.message }); }
+    catch (err: any) { setNameState({ error: plainMessage(err, 'Ad kaydedilemedi.') }); }
   };
   const savePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +100,7 @@ export function TextSizeCard() {
       await saveMyProfile(user.name, cleanPreferences({ ...user.preferences, textSize: size }));
       await refresh();
       setState({ notice: 'Yazı boyutu kaydedildi; bu hesapla girdiğiniz her cihazda kullanılır.' });
-    } catch (err: any) { setState({ error: err.message }); }
+    } catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
   return (
     <section className={card}>
@@ -137,7 +138,7 @@ export function DefaultsCard() {
     setState({ busy: true });
     // The text size is saved by its own card; keep whatever it holds now.
     try { await saveMyProfile(user.name, cleanPreferences({ ...prefs, textSize: user.preferences?.textSize })); await refresh(); setState({ notice: 'Varsayılanlar kaydedildi; yeni sorularda kullanılacak.' }); }
-    catch (err: any) { setState({ error: err.message }); }
+    catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
 
   return (

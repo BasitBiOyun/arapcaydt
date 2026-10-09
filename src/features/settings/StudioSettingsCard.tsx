@@ -7,6 +7,7 @@ import {
 } from './studioSettings';
 import { useConfirm } from '../../components/common/ConfirmDialog';
 import { FormattedText } from '../../components/common/FormattedText';
+import { plainMessage } from '../../services/plainError';
 
 const endsAt = (iso: string) => new Date(iso).toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
@@ -38,7 +39,7 @@ export function StudioSettingsCard() {
       await saveStudioSettings({ ...rest, auto_approve: parsed.entries });
       setApproveText(parsed.entries.join('\n'));
       setState({ notice: 'Stüdyo ayarları kaydedildi.' });
-    } catch (err: any) { setState({ error: err.message }); }
+    } catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
 
   const announce = async (patch: Pick<StudioSettings, 'announcement' | 'announcement_active' | 'announcement_until'>, done: string) => {
@@ -47,7 +48,7 @@ export function StudioSettingsCard() {
       const result = await updateAnnouncement(patch);
       setSettings(s => s && { ...s, ...result.patch });
       setState({ notice: result.expiryPending ? `${done} Süre için veritabanı güncellemesi bekleniyor (supabase/migrations/20261004_announcement_until.sql); o zamana kadar siz kaldırana dek görünür.` : done });
-    } catch (err: any) { setState({ error: err.message }); }
+    } catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
   const live = settings ? announcementState(settings) : 'off';
 

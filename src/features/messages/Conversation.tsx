@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PaperPlaneRight } from '@phosphor-icons/react';
 import { loadConversation, markRead, messageTime, QUICK_MESSAGES, sendMessage, type Message } from './messages';
 import { FormattedText } from '../../components/common/FormattedText';
+import { plainMessage } from '../../services/plainError';
 
 /**
  * One teacher's conversation with the studio admins, oldest first, with a box to write.
@@ -25,7 +26,7 @@ export function Conversation({ teacherId, asAdmin, otherName, onChange }: {
         setMessages(list);
         if (list.some(m => m.from_admin !== asAdmin && !m.read_at)) { await markRead(teacherId); onChange?.(); }
       })
-      .catch(e => live && (setMessages([]), setError(e.message)));
+      .catch(e => live && (setMessages([]), setError(plainMessage(e, 'Bilgi alınamadı.'))));
     return () => { live = false; };
     // onChange only reports back; a new function each render must not reload the conversation.
   }, [teacherId, asAdmin]);
@@ -41,7 +42,7 @@ export function Conversation({ teacherId, asAdmin, otherName, onChange }: {
       setText('');
       onChange?.();
     } catch (err) {
-      setError((err as Error).message);
+      setError(plainMessage(err, 'İşlem tamamlanamadı.'));
     }
     setBusy(false);
   };

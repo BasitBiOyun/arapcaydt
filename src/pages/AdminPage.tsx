@@ -16,6 +16,7 @@ import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import type { ElevenLabsStatus } from '../types';
 import { ArrowClockwise, CheckCircle, UserPlus } from '@phosphor-icons/react';
 import { useConfirm } from '../components/common/ConfirmDialog';
+import { plainMessage } from '../services/plainError';
 
 interface Member {
   id: string;
@@ -242,7 +243,7 @@ export const AdminPage: React.FC = () => {
       if (!p) throw new Error('Proje bulunamadı.');
       setViewing(p);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Proje açılamadı.');
+      setError(plainMessage(e, 'Proje açılamadı.'));
     } finally {
       setBusy(false);
     }
@@ -258,7 +259,7 @@ export const AdminPage: React.FC = () => {
       setMessage(`${member.name || member.email}: ${statuses[status] || status}.`);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Değişiklik kaydedilemedi.');
+      setError(plainMessage(e, 'Değişiklik kaydedilemedi.'));
     } finally {
       setBusy(false);
     }
@@ -280,7 +281,7 @@ export const AdminPage: React.FC = () => {
       setMessage(`${member.name || member.email} artık yönetici.`);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Yönetici yetkisi verilemedi.');
+      setError(plainMessage(e, 'Yönetici yetkisi verilemedi.'));
     } finally {
       setBusy(false);
     }
@@ -310,7 +311,7 @@ export const AdminPage: React.FC = () => {
       await loadProjects();
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Aktarım tamamlanamadı.');
+      setError(plainMessage(e, 'Aktarım tamamlanamadı.'));
     } finally {
       setBusy(false);
     }
