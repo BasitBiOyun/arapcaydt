@@ -37,6 +37,7 @@ import { useConfirm } from '../components/common/ConfirmDialog';
 import { useAuth } from '../features/auth/AuthContext';
 import { CollectionInput } from '../features/projects/CollectionInput';
 import { TopicInput } from '../features/projects/TopicInput';
+import { VoiceProgress, nextVoiceStage, startVoiceProgress } from '../features/question-editor/voiceProgress';
 
 function voiceApproved(project: QuestionProject) {
   return Boolean(project.audioApproved || project.narrationSource?.isApproved || project.audioNarration?.isApproved);
@@ -83,6 +84,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
 
   // Audio generation state
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+  const [voiceProgress, setVoiceProgress] = useState<VoiceProgress | null>(null);
   const [isTranscribingMp3, setIsTranscribingMp3] = useState(false);
   const [transcribeProgress, setTranscribeProgress] = useState<{ progress: number; message: string } | null>(null);
   const [audioError, setAudioError] = useState<string | null>(null);
@@ -316,18 +318,20 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
     setAudioError(null);
     setAudioInfo(null);
     setIsGeneratingAudio(true);
+    setVoiceProgress(startVoiceProgress(currentProject.solutionText, voiceParts));
 
     try {
       if (!(await saveCurrentProject())) throw new Error('Önce proje kaydedilmelidir.');
+      setVoiceProgress(p => p && nextVoiceStage(p, 'voicing', 1));
       const result = await narrationService.generateNarration({
         projectId: currentProject.id,
         text: currentProject.solutionText,
         voiceId: STANDARD_VOICE_CONFIG.voiceId,
         modelId: STANDARD_VOICE_CONFIG.modelId,
         outputFormat: STANDARD_VOICE_CONFIG.outputFormat,
-      }, (done, total) => setAudioInfo(done < total
-        ? `Uzun çözüm ${total} bölümde seslendiriliyor: ${done + 1}. bölüm hazırlanıyor…`
-        : 'Bölümler tek ses dosyasında birleştiriliyor…'), askLowerWith(confirm));
+      }, (done, total) => setVoiceProgress(p => p && (done < total
+        ? nextVoiceStage({ ...p, parts: total }, 'voicing', done + 1)
+        : nextVoiceStage(p, 'joining'))), askLowerWith(confirm));
 
       const { narrationSource: newNarrationSource, audioNarration: compatNarration } = narrationFromTts(result);
 
@@ -341,6 +345,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       if (!persisted) {
         setAudioError('Ses üretildi ama kaydedilemedi. Ses dosyasını indirip Kaydet düğmesini tekrar deneyin.');
       } else if (result.provider === 'gemini') {
+        setVoiceProgress(p => p && nextVoiceStage(p, 'timing'));
         const timing = await timeGeneratedNarration(
           persisted,
           project => narrationService.alignGeneratedNarration(project.id),
@@ -358,6 +363,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
       setAudioError(err instanceof Error ? err.message : 'Seslendirme oluşturulamadı.');
     } finally {
       setIsGeneratingAudio(false);
+      setVoiceProgress(null);
     }
   };
 
@@ -845,6 +851,7 @@ export const QuestionEditorPage: React.FC<QuestionEditorPageProps> = ({
             handleGenerateAudio={handleGenerateAudio}
             handleApproveVoice={handleApproveVoice}
             isGeneratingAudio={isGeneratingAudio}
+            voiceProgress={voiceProgress}
             sampleBusy={sampleBusy}
             isTranscribingMp3={isTranscribingMp3}
             transcribeProgress={transcribeProgress}

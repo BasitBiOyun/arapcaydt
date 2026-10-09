@@ -4,6 +4,8 @@ import type { QuestionProject } from '../../../types';
 import { narrationDrift } from '../../../services/analysis/timelineAligner';
 import { capacityLine, geminiKeyService, quotaResetClock, type TeacherKeyStatus } from '../../../services/narration/geminiKeyService';
 import { startsWithArabic } from '../../../services/narration/narrationParts';
+import { VoiceProgressPanel } from '../VoiceProgressPanel';
+import type { VoiceProgress } from '../voiceProgress';
 import { VOICE_QUOTA_MESSAGE, VOICE_RETRY_MESSAGE } from '../../../services/narration/narrationService';
 import { Check, Pause, Play, DownloadSimple, ArrowsClockwise, Trash, CircleNotch, Microphone, UploadSimple } from '@phosphor-icons/react';
 
@@ -30,6 +32,8 @@ export interface AudioStepProps {
   handleGenerateAudio: () => void;
   handleApproveVoice: () => void;
   isGeneratingAudio: boolean;
+  /** Steps of the running "Seslendirme Oluştur", while it runs. */
+  voiceProgress?: VoiceProgress | null;
   sampleBusy: boolean;
   isTranscribingMp3: boolean;
   transcribeProgress: { progress: number; message: string } | null;
@@ -42,7 +46,7 @@ export interface AudioStepProps {
 const formatTime = (secs: number) =>
   `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
 
-export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, stripShown, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo }: AudioStepProps) {
+export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudioApproved, currentProject, stripShown, isAudioPlaying, toggleStageAudio, audioPlayTime, setAudioPlayTime, activeAudioDuration, activeAudioUrl, stageAudioRef, uploadMp3InputRef, handleDownloadNarrationMp3, handleUploadMp3File, handleDeleteAudio, handleGenerateAudio, handleApproveVoice, isGeneratingAudio, voiceProgress, sampleBusy, isTranscribingMp3, transcribeProgress, audioError, audioInfo }: AudioStepProps) {
   // Which Google key the next narration uses; refreshed after each generation.
   const [keyStatus, setKeyStatus] = useState<TeacherKeyStatus | null>(null);
   useEffect(() => {
@@ -203,6 +207,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               </button>
             )}
           </div>
+          {voiceProgress && <VoiceProgressPanel progress={voiceProgress} />}
           {stripShown && (
             <p className="p-2.5 rounded-lg bg-[#F4EDEB] text-sm text-[#5C3A33] leading-relaxed">
               Sesi sorunun altındaki <strong>Ses şeridinden</strong> dinleyin. Yanlış bir yer duyarsanız <strong>Burada hata var</strong>’a,
@@ -265,6 +270,7 @@ export function AudioStep({ step, hasAudio, hasSolution, isUploadedAudio, isAudi
               />
             </label>
           </div>
+          {voiceProgress && <VoiceProgressPanel progress={voiceProgress} />}
           {!hasSolution && (
             <p className="text-sm text-[#787670]">
               Seslendirme oluşturmak için önce çözüm metnini yazın. Hazır sesiniz varsa MP3 Yükle’ye basın; çözüm metni ve işaretler sesinizden çıkarılır.
