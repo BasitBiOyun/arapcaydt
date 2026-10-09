@@ -1,5 +1,5 @@
 import { authHeaders } from '../supabase';
-import { ElevenLabsVoice, ElevenLabsStatus, NarrationWord } from '../../types';
+import { ElevenLabsVoice, ElevenLabsStatus } from '../../types';
 import { IElevenLabsService } from './types';
 import { STANDARD_VOICE_CONFIG } from '../../config/voice';
 

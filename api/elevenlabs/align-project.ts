@@ -1,3 +1,4 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { elevenLabsAlignAllowed, isCapped, pacificDayStart, readDailyState, usageDetail } from '../../server/quota.js';
 import { holdUsage, settleUsage } from '../../server/usage.js';
 import { ProjectAudioError, loadProjectAudio } from '../../server/projectAudio.js';
@@ -12,7 +13,7 @@ function normalizeApiKey(value?: string): string {
   return key;
 }
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -62,7 +63,7 @@ async function handler(req: any, res: any) {
     let bytes: Buffer, mimeType: string;
     try {
       ({ bytes, mimeType } = await loadProjectAudio(db, member.user.id, source));
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof ProjectAudioError) return res.status(error.status).json({ error: error.message });
       throw error;
     }
@@ -130,10 +131,10 @@ async function handler(req: any, res: any) {
       timingSource: 'forced-alignment',
       loss: Number.isFinite(result?.loss) ? Number(result.loss.toFixed(4)) : null,
     });
-  } catch (error: any) {
-    if (alignmentRequested) await countAlignment('failed', 'network', error?.message);
-    console.error('[ElevenLabs Forced Alignment project]', error?.message || error);
-    return res.status(502).json({ error: error?.message || 'ElevenLabs Forced Alignment servisine ulaşılamadı.' });
+  } catch (error) {
+    if (alignmentRequested) await countAlignment('failed', 'network', messageOf(error));
+    console.error('[ElevenLabs Forced Alignment project]', messageOf(error) || error);
+    return res.status(502).json({ error: messageOf(error) || 'ElevenLabs Forced Alignment servisine ulaşılamadı.' });
   }
 }
 

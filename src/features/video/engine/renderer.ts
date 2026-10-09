@@ -1,7 +1,7 @@
 import { AnnotationRegion, VideoAction } from '../../../types';
 import { RenderOptions, FitRect } from './types';
 import { computeTimelineVisualState } from './timeline';
-import { drawAnimatedCross, drawAnimatedCheck, easeOutBack, easeOutCubic, easeOutQuad } from './animations';
+import { drawAnimatedCross, drawAnimatedCheck, easeOutBack, easeOutCubic } from './animations';
 
 export function calculateFitRect(imgWidth: number, imgHeight: number, canvasWidth: number, canvasHeight: number, margin = 0): FitRect {
   const availableW = Math.max(1, canvasWidth - margin * 2);
@@ -36,10 +36,6 @@ export function markerGeometry(rect: FitRect, canvasWidth: number, scale = 1, co
     ?? (obstacles.length ? undefined : order.find(p => p.x - radius >= 2 * scale && p.x + radius <= canvasWidth - 2 * scale))
     ?? above;
   return { x: spot.x, y: spot.y, radius };
-}
-
-function isolateArabic(text: string) {
-  return text.replace(/([\u0600-\u06ff][\u0600-\u06ff\s«»\-]*[\u0600-\u06ff])/g, '\u2067$1\u2069');
 }
 
 const ARABIC = /[؀-ۿ]/;

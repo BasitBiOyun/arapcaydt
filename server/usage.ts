@@ -1,3 +1,4 @@
+import { messageOf } from './http.js';
 import { serviceDatabase } from './auth.js';
 
 export type UsageKind = 'gemini_tts' | 'gemini_transcribe' | 'elevenlabs_align';
@@ -27,8 +28,8 @@ export async function recordUsage(ownerId: string, projectId: string | undefined
     // Before 20260928_teacher_keys.sql there is no key_source column.
     if (error) ({ error } = await db.from('activity').insert(rows.map(({ key_source, ...r }: any) => ({ ...r, project_id: null }))));
     if (error) console.warn('[usage] not recorded:', error.message);
-  } catch (error: any) {
-    console.warn('[usage] not recorded:', error?.message || error);
+  } catch (error) {
+    console.warn('[usage] not recorded:', messageOf(error) || error);
   }
 }
 

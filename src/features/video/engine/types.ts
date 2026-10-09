@@ -1,4 +1,4 @@
-import { AnnotationRegion, VideoAction, ExportConfig, VideoCaption } from '../../../types';
+import { ExportConfig, VideoCaption } from '../../../types';
 
 export interface ActiveHighlight {
   regionId: string;

@@ -1,5 +1,5 @@
 import { AnnotationRegion, VideoAction } from '../../../types';
-import { RenderState, MarkerState } from './types';
+import { RenderState } from './types';
 import { easeOutCubic } from './animations';
 
 /** How far an underline is drawn `elapsed` seconds in, following its word steps (0–1). */

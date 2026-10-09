@@ -1,3 +1,4 @@
+import type { ApiRequest, ApiResponse } from '../../server/http.js';
 import { timingSafeEqual } from 'node:crypto';
 import { serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
@@ -28,7 +29,7 @@ export const SOLVED_REPLY = 'Sorunu çözdüm hocam, sayfayı yenileyip tekrar d
 
 const FAILED_SERVICES = ['gemini_tts', 'gemini_transcribe', 'elevenlabs_align', 'voice', 'client_error'];
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   if (req.method !== 'GET' && req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
@@ -114,7 +115,7 @@ async function handler(req: any, res: any) {
   });
 }
 
-async function answer(db: any, req: any, res: any, id: (v: unknown) => string | null) {
+async function answer(db: any, req: ApiRequest, res: ApiResponse, id: (v: unknown) => string | null) {
   const repliedAt = new Date().toISOString();
   if (req.query?.feedback) {
     const { data, error } = await db.from('feedback').update({ reply: SOLVED_REPLY, replied_at: repliedAt, status: 'resolved' })

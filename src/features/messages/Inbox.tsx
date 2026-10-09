@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ChatCircleText, X } from '@phosphor-icons/react';
 import { supabase } from '../../services/supabase';

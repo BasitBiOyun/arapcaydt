@@ -1,3 +1,4 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { logged } from '../../server/errorLog.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { recordUsage } from '../../server/usage.js';
@@ -61,7 +62,7 @@ async function deleteGeminiFile(apiKey: string, name: string) {
   }).catch(() => undefined);
 }
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -92,8 +93,8 @@ async function handler(req: any, res: any) {
   let bytes: Buffer, mimeType: string;
   try {
     ({ bytes, mimeType } = await loadProjectAudio(db, member.user.id, source));
-  } catch (error: any) {
-    return res.status(error instanceof ProjectAudioError ? error.status : 502).json({ error: error?.message || 'Ses dosyası okunamadı.' });
+  } catch (error) {
+    return res.status(error instanceof ProjectAudioError ? error.status : 502).json({ error: messageOf(error) || 'Ses dosyası okunamadı.' });
   }
 
   // Teacher's own Transcribe quota first, then the studio key (capped per teacher per day).
@@ -259,9 +260,9 @@ async function transcribe(apiKey: string, bytes: Buffer, mimeType: string, proje
 
     if (!words.length) return { status, raw: '', error: `Gemini Transcribe kelime zaman damgası döndürmedi (${describeResponse(payload)}).` };
     return { status, raw: '', words };
-  } catch (error: any) {
-    console.error('[Gemini Transcribe alignment]', error?.message || error);
-    return { status, raw: '', error: error?.message || 'Gemini zamanlama servisine ulaşılamadı.' };
+  } catch (error) {
+    console.error('[Gemini Transcribe alignment]', messageOf(error) || error);
+    return { status, raw: '', error: messageOf(error) || 'Gemini zamanlama servisine ulaşılamadı.' };
   } finally {
     await deleteGeminiFile(apiKey, uploadedName);
   }

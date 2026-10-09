@@ -1,3 +1,4 @@
+import type { ApiRequest, ApiResponse } from '../../server/http.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
 
@@ -62,7 +63,7 @@ export function passingFailure(status: number, data: any): boolean {
   return !!error && (error.code === 8 || error.code === 14 || /exhausted|unavailable/i.test(String(error.message || '')));
 }
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });

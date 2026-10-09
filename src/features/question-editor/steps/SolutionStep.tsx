@@ -1,4 +1,3 @@
-import React from 'react';
 import type { QuestionProject } from '../../../types';
 
 export interface SolutionStepProps {

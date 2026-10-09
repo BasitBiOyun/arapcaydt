@@ -1,3 +1,4 @@
+import { messageOf } from './http.js';
 /**
  * Narration audio is stored as MP3 (mono, 64 kbps): speech stays clear and a
  * minute of audio takes ~0.5 MB instead of ~2.9 MB as 24 kHz WAV, which keeps
@@ -84,8 +85,8 @@ export async function storedNarrationAudio(wav: Buffer): Promise<{ bytes: Buffer
     try {
       const mp3 = await encodeMp3(pcm);
       if (mp3.length) return { bytes: mp3, mimeType: 'audio/mpeg', extension: 'mp3' };
-    } catch (error: any) {
-      console.warn('[MP3] encoding failed, keeping WAV:', error?.message || error);
+    } catch (error) {
+      console.warn('[MP3] encoding failed, keeping WAV:', messageOf(error) || error);
     }
   }
   return { bytes: wav, mimeType: 'audio/wav', extension: 'wav' };

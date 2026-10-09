@@ -1,4 +1,4 @@
-import { AudioNarration, ElevenLabsVoice, ElevenLabsStatus, NarrationWord } from '../../types';
+import { ElevenLabsVoice, ElevenLabsStatus, NarrationWord } from '../../types';
 
 export interface GenerateNarrationRequest {
   projectId?: string;

@@ -1,4 +1,3 @@
-import React from 'react';
 import type { QuestionProject } from '../../../types';
 import { checkNarration } from '../workflow';
 import { SPOKEN_LIMIT } from '../../../services/narration/narrationParts';

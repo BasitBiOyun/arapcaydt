@@ -1,3 +1,4 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { DEFAULT_LIMITS, GEMINI_TTS_MODELS, nextQuotaReset, readLimits, quotaDay, summarizeDay, type Limits } from '../../server/quota.js';
 import { logged } from '../../server/errorLog.js';
@@ -373,7 +374,7 @@ async function readAllProjects(db: any): Promise<ProjectRow[]> {
   return all;
 }
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });
@@ -396,8 +397,8 @@ async function handler(req: any, res: any) {
     return res.status(200).json({ ...summary, issues, week, serverErrors, teacherKeys,
       vision: { month: visionMonth, limit: Number.isInteger(visionLimit) && visionLimit >= 0 ? visionLimit : 950, configured: !!process.env.GOOGLE_VISION_API_KEY },
       requests: { ...summarizeRequests(usage.rows, undefined, limits), migrationPending: usage.migrationPending } });
-  } catch (error: any) {
-    console.error('[Admin analytics]', error?.message || error);
+  } catch (error) {
+    console.error('[Admin analytics]', messageOf(error) || error);
     return res.status(500).json({ error: 'Yönetim istatistikleri hazırlanamadı.' });
   }
 }

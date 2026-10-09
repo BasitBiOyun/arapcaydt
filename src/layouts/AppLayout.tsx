@@ -46,9 +46,9 @@ export const AppLayout: React.FC = () => {
   });
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   useEffect(() => {
-    const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback;
     const start = () => { void loadEditor().catch(() => undefined); };
-    if (idle) idle(start); else setTimeout(start, 1500);
+    // Safari has no idle callback.
+    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(start); else setTimeout(start, 1500);
   }, []);
   // A short picture tour the first time a teacher signs in on this device.
   const [showGuide, setShowGuide] = useState(() => !!user && !guideSeen(user.id));

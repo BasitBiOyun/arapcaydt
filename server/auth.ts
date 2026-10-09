@@ -1,6 +1,7 @@
+import type { ApiRequest, ApiResponse } from './http.js';
 import {createClient} from '@supabase/supabase-js';
 
-export async function requireMember(req:any,res:any) {
+export async function requireMember(req:ApiRequest,res:ApiResponse) {
   const url=process.env.SUPABASE_URL;
   const key=process.env.SUPABASE_ANON_KEY;
   if(!url||!key){res.status(503).json({error:'Üyelik servisi henüz hazır değil.'});return null;}
@@ -15,6 +16,8 @@ export async function requireMember(req:any,res:any) {
     return {user,profile,client};
   }catch{res.status(503).json({error:'Üyelik servisine ulaşılamadı.'});return null;}
 }
+/** An approved member's session, as `requireMember` gives it. */
+export type Member=NonNullable<Awaited<ReturnType<typeof requireMember>>>;
 export function serviceDatabase(){
   if(!process.env.SUPABASE_URL||!process.env.SUPABASE_SERVICE_ROLE_KEY)throw new Error('Üyelik sunucu ayarları eksik.');
   return createClient(process.env.SUPABASE_URL,process.env.SUPABASE_SERVICE_ROLE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});

@@ -39,7 +39,7 @@ export function StudioSettingsCard() {
       await saveStudioSettings({ ...rest, auto_approve: parsed.entries });
       setApproveText(parsed.entries.join('\n'));
       setState({ notice: 'Stüdyo ayarları kaydedildi.' });
-    } catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
+    } catch (err) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
 
   const announce = async (patch: Pick<StudioSettings, 'announcement' | 'announcement_active' | 'announcement_until'>, done: string) => {
@@ -48,7 +48,7 @@ export function StudioSettingsCard() {
       const result = await updateAnnouncement(patch);
       setSettings(s => s && { ...s, ...result.patch });
       setState({ notice: result.expiryPending ? `${done} Süre için veritabanı güncellemesi bekleniyor (supabase/migrations/20261004_announcement_until.sql); o zamana kadar siz kaldırana dek görünür.` : done });
-    } catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
+    } catch (err) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
   const live = settings ? announcementState(settings) : 'off';
 

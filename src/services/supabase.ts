@@ -1,6 +1,8 @@
+/// <reference types="vite/client" />
 import { createClient } from '@supabase/supabase-js';
 
-const env = (import.meta as any).env || {};
+// Empty outside Vite (tests run the services directly).
+const env: Partial<ImportMetaEnv> = import.meta.env || {};
 const REMEMBER = 'studio-remember-me';
 
 /** "Beni hatırla": on (default) keeps the session after the browser closes; off keeps it for this browser session only. */

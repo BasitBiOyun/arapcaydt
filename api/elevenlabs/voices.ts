@@ -1,6 +1,7 @@
+import type { ApiRequest, ApiResponse } from '../../server/http.js';
 import { requireMember } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member=await requireMember(req,res);
   if(!member)return;
   if (req.method !== 'GET') {

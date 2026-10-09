@@ -110,7 +110,7 @@ export const VideoGenerationModal: React.FC<VideoGenerationModalProps> = ({
       if (!live()) return;
       isRunningRef.current = false;
       onSuccess(result);
-    } catch (err: any) {
+    } catch (err) {
       if (!live()) return;
       isRunningRef.current = false;
       console.error('[Local Video Generation Error]:', err);

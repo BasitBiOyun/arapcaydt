@@ -1,3 +1,4 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { joinNarrationAudio } from '../../server/mp3.js';
 import { MAX_PROJECT_AUDIO_BYTES, ownedAssetPath, isProjectId } from '../../server/projectAudio.js';
@@ -13,7 +14,7 @@ const MAX_PARTS = 8;
  * narration the project uses. Only the teacher's own part files of this project are read;
  * the part files are removed once the whole narration is stored.
  */
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -44,8 +45,8 @@ async function handler(req: any, res: any) {
     const stored = await saveGeneratedAudio(member.user.id, projectId, text, audio.bytes, audio.extension, audio.mimeType);
     await removeAssets(db, (paths as string[]).filter(p => p !== stored.path));
     return res.status(200).json({ audioUrl: stored.signedUrl, assetPath: stored.path, mimeType: audio.mimeType });
-  } catch (error: any) {
-    return res.status(502).json({ error: error?.message || 'Ses parçaları birleştirilemedi.', code: 'JOIN_FAILED' });
+  } catch (error) {
+    return res.status(502).json({ error: messageOf(error) || 'Ses parçaları birleştirilemedi.', code: 'JOIN_FAILED' });
   }
 }
 

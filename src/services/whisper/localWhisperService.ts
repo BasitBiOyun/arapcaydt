@@ -199,9 +199,9 @@ class LocalWhisperService {
         duration: parseFloat(duration.toFixed(2)),
         words,
       };
-    } catch (err: any) {
+    } catch (err) {
       console.error('Local Whisper transcription encountered an error:', err);
-      throw new Error(`Yerel Whisper ses çözümlemesi başarısız: ${err?.message || err}`);
+      throw new Error(`Yerel Whisper ses çözümlemesi başarısız: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
 }

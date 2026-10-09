@@ -1,5 +1,6 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { logged } from '../../server/errorLog.js';
-import { requireMember, serviceDatabase } from '../../server/auth.js';
+import { requireMember, serviceDatabase, type Member } from '../../server/auth.js';
 import { encodeMp3, pcmFromWav } from '../../server/mp3.js';
 import { ownedAssetPath } from '../../server/projectAudio.js';
 import { readAsset, removeAssets, signAssets, uploadLink, writeAsset } from '../../server/assets.js';
@@ -67,7 +68,7 @@ async function convert(db: any, item: { projectId: string; path: string }): Prom
   if (!pcm?.samples.length) return 'WAV biçimi desteklenmiyor';
   const mp3 = await encodeMp3(pcm);
   const mp3Path = item.path.replace(/\.wav$/i, '') + '.mp3';
-  try { await writeAsset(db, mp3Path, mp3, 'audio/mpeg'); } catch (e: any) { return `MP3 kaydedilemedi: ${e?.message || e}`; }
+  try { await writeAsset(db, mp3Path, mp3, 'audio/mpeg'); } catch (e) { return `MP3 kaydedilemedi: ${messageOf(e) || e}`; }
   const { data: replaced, error: rpcError } = await db.rpc('replace_project_audio',
     { target_project: item.projectId, old_path: item.path, new_path: mp3Path, new_mime: 'audio/mpeg' });
   if (rpcError) return `Proje güncellenemedi: ${rpcError.message}`;
@@ -91,16 +92,18 @@ async function copyToR2(db: any, o: StoredObject): Promise<string | null> {
  * size} gives an R2 upload link for a new file in their folder, or {store:'supabase'}
  * while R2 is not configured.
  */
-async function memberAction(req: any, res: any, member: any) {
+async function memberAction(req: ApiRequest, res: ApiResponse, member: Member) {
+  const body = req.body ?? {};
   const isAdmin = member.profile?.role === 'admin';
   const allowed = (p: unknown): p is string => typeof p === 'string' && (isAdmin ? !!ownedAssetPath(p.split('/')[0], p) : !!ownedAssetPath(member.user.id, p));
-  if (req.body.action === 'sign') {
-    const paths = Array.isArray(req.body.paths) ? [...new Set(req.body.paths.filter(allowed))].slice(0, 2000) as string[] : [];
+  if (body.action === 'sign') {
+    const paths = Array.isArray(body.paths) ? [...new Set(body.paths.filter(allowed))].slice(0, 2000) as string[] : [];
     const links = await signAssets(serviceDatabase(), paths, 21600);
     return res.status(200).json({ links: Object.fromEntries(links) });
   }
-  const { path, contentType, size } = req.body;
-  if (!ownedAssetPath(member.user.id, path) || !safeMediaType(contentType)
+  const { contentType, size } = body;
+  const path = ownedAssetPath(member.user.id, body.path);
+  if (!path || !safeMediaType(contentType) || typeof size !== 'number'
     || !Number.isInteger(size) || size <= 0 || size > 25 * 1024 * 1024) return res.status(400).json({ error: 'Dosya bilgisi geçersiz.' });
   const url = uploadLink(path, contentType, size);
   return res.status(200).json(url ? { store: 'r2', url } : { store: 'supabase' });
@@ -110,7 +113,7 @@ async function memberAction(req: any, res: any, member: any) {
  * A picture or sound type the studio may store. Script-carrying types (SVG, XML, HTML) are refused
  * however they are spelled ("image/SVG+XML; charset=utf-8").
  */
-export function safeMediaType(type: unknown): boolean {
+export function safeMediaType(type: unknown): type is string {
   if (typeof type !== 'string' || !/^(image|audio)\/[\w.+-]+(\s*;\s*[\w-]+=[\w.+-]+)*$/i.test(type)) return false;
   return !/svg|xml|html/i.test(type.split(';')[0]);
 }
@@ -123,7 +126,7 @@ export function safeMediaType(type: unknown): boolean {
  * configured, POST {action:'copy'} copies a batch of Supabase files to R2 and
  * {action:'purge'} removes from Supabase the files whose R2 copy is verified.
  */
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   if (req.method !== 'GET' && req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
@@ -132,8 +135,8 @@ async function handler(req: any, res: any) {
   if (!member) return;
   if (req.method === 'POST' && (req.body?.action === 'sign' || req.body?.action === 'upload')) {
     try { return await memberAction(req, res, member); }
-    catch (error: any) {
-      console.error('[Assets]', error?.message || error);
+    catch (error) {
+      console.error('[Assets]', messageOf(error) || error);
       return res.status(500).json({ error: 'Dosya bağlantısı hazırlanamadı.' });
     }
   }
@@ -143,7 +146,7 @@ async function handler(req: any, res: any) {
     const db = serviceDatabase();
     const c = r2Config();
     let r2Error = '';
-    const [stored, rows, inR2] = await Promise.all([readObjects(db), readProjects(db), c ? r2List(c).catch((e: any) => { r2Error = e?.message || 'R2 okunamadı'; return []; }) : Promise.resolve([])]);
+    const [stored, rows, inR2] = await Promise.all([readObjects(db), readProjects(db), c ? r2List(c).catch((e: unknown) => { r2Error = messageOf(e) || 'R2 okunamadı'; return []; }) : Promise.resolve([])]);
     if (!stored) return res.status(200).json({ migrationPending: true });
     const stores = mergeStores(stored, inR2);
     const objects = stores.all;
@@ -164,7 +167,7 @@ async function handler(req: any, res: any) {
       const failures: Array<{ path: string; reason: string }> = [];
       let converted = 0;
       for (const item of batch) {
-        const reason = await convert(db, item).catch((e: any) => e?.message || 'Bilinmeyen hata');
+        const reason = await convert(db, item).catch((e: unknown) => messageOf(e) || 'Bilinmeyen hata');
         if (reason) failures.push({ path: item.path, reason }); else converted++;
       }
       return res.status(200).json({ converted, failures, remaining: open.length - batch.length });
@@ -184,7 +187,7 @@ async function handler(req: any, res: any) {
       const failures: Array<{ path: string; reason: string }> = [];
       let copied = 0;
       for (const o of batch) {
-        const reason = await copyToR2(db, o).catch((e: any) => e?.message || 'Bilinmeyen hata');
+        const reason = await copyToR2(db, o).catch((e: unknown) => messageOf(e) || 'Bilinmeyen hata');
         if (reason) failures.push({ path: o.name, reason }); else copied++;
       }
       return res.status(200).json({ copied, failures, remaining: stores.toCopy.filter(o => !skip.has(o.name)).length - batch.length });
@@ -209,8 +212,8 @@ async function handler(req: any, res: any) {
       r2: c ? { ...stores.r2, limitBytes: R2_LIMIT_BYTES, toCopy: stores.toCopySum, copied: stores.copiedSum } : null,
       r2Error: r2Error || undefined,
     });
-  } catch (error: any) {
-    console.error('[Admin storage]', error?.message || error);
+  } catch (error) {
+    console.error('[Admin storage]', messageOf(error) || error);
     return res.status(500).json({ error: 'Depolama bilgisi hazırlanamadı.' });
   }
 }

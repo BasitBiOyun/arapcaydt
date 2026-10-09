@@ -1,3 +1,4 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { requireMember } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
 function normalizeApiKey(value?: string): string {
@@ -11,7 +12,7 @@ function normalizeApiKey(value?: string): string {
   return key;
 }
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member=await requireMember(req,res);
   if(!member)return;
   if (req.method !== 'GET') {
@@ -90,13 +91,13 @@ async function handler(req: any, res: any) {
         characterLimit > 0 ? Math.max(0, characterLimit - characterCount) : null,
       message: 'Ses servisi hazır.',
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('[ElevenLabs status network error]', error);
     return json({
       configured: true,
       valid: false,
       mode: 'live',
-      message: `API anahtarı bulundu ancak ElevenLabs bağlantısı doğrulanamadı: ${error?.message || 'Ağ hatası'}`,
+      message: `API anahtarı bulundu ancak ElevenLabs bağlantısı doğrulanamadı: ${messageOf(error) || 'Ağ hatası'}`,
     });
   }
 }

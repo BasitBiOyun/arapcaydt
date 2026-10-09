@@ -1,7 +1,8 @@
+import type { ApiRequest, ApiResponse } from '../../server/http.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
 
-async function handler(req:any,res:any) {
+async function handler(req:ApiRequest,res:ApiResponse) {
   if(req.method!=='POST'){
     res.setHeader('Allow','POST');
     return res.status(405).json({error:'Method not allowed'});

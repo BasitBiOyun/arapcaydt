@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Gear, 
-  Waveform, 
-  ArrowCounterClockwise, 
-  Sparkle, 
-  ShieldCheck, 
-  Info
-} from '@phosphor-icons/react';
+import { Waveform, ShieldCheck } from '@phosphor-icons/react';
 import { elevenlabsService } from '../services/elevenlabs/elevenlabsService';
 import { ElevenLabsStatus } from '../types';
 import { TeacherKeyCard } from '../features/settings/TeacherKeyCard';
@@ -14,6 +7,7 @@ import { DefaultsCard, ProfileCard, TextSizeCard } from '../features/settings/My
 import { BackupCard } from '../features/settings/BackupCard';
 import { PronunciationCard } from '../features/settings/PronunciationCard';
 import { useAuth } from '../features/auth/AuthContext';
+import { plainMessage } from '../services/plainError';
 
 export const SettingsPage: React.FC = () => {
   const { user } = useAuth();
@@ -32,8 +26,8 @@ export const SettingsPage: React.FC = () => {
       const s = await elevenlabsService.checkStatus();
       setStatus(s);
       setTestResult(s.voiceReady ?? s.gemini?.configured ? 'Ses servisi hazır.' : 'Ses servisi şu anda kullanılamıyor.');
-    } catch (e: any) {
-      setTestResult('Bağlantı kontrolü sırasında hata: ' + e.message);
+    } catch (e) {
+      setTestResult(plainMessage(e, 'Ses servisinin durumu alınamadı.'));
     } finally {
       setIsTesting(false);
     }
@@ -90,6 +84,7 @@ export const SettingsPage: React.FC = () => {
           <p className="text-[#55544F] leading-relaxed text-xs">
             Ses yalnızca Google Gemini ile üretilir. Kelime zamanları önce Gemini ile alınır, olmazsa yedek servis devreye girer. Günlük ücretsiz ses hakkı biterse kendi Google anahtarınızı ekleyebilirsiniz.
           </p>
+          {testResult && <p role="status" className="font-semibold text-[#33322E]">{testResult}</p>}
         </div>
 
         <div className="p-3 rounded bg-[#F8EEEE] border border-[#DFC8CB] text-xs text-[#8B1E2D] flex items-start gap-2">

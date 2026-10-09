@@ -1,7 +1,8 @@
+import type { ApiRequest, ApiResponse } from './http.js';
 import { serviceDatabase } from './auth.js';
 
 /** The signed-in user's id from the request's token, for the log only (the token is checked by the handler). */
-function ownerOf(req: any): string | null {
+function ownerOf(req: ApiRequest): string | null {
   const header = req?.headers?.authorization;
   if (typeof header !== 'string' || !header.startsWith('Bearer ')) return null;
   try {
@@ -12,7 +13,7 @@ function ownerOf(req: any): string | null {
   }
 }
 
-async function record(route: string, status: number, message: string, req: any) {
+async function record(route: string, status: number, message: string, req: ApiRequest) {
   try {
     const row = { route: route.slice(0, 80), status, message: message.slice(0, 500), owner_id: ownerOf(req) };
     let { error } = await serviceDatabase().from('server_errors').insert(row);
@@ -27,15 +28,15 @@ async function record(route: string, status: number, message: string, req: any) 
  * Keeps every 5xx answer and every crash of an API handler in `server_errors`, so failures
  * nobody reported still reach the admin panel and the morning check. The answer is unchanged.
  */
-export function logged(route: string, handler: (req: any, res: any) => unknown, save: typeof record = record) {
-  return async (req: any, res: any) => {
+export function logged(route: string, handler: (req: ApiRequest, res: ApiResponse) => unknown, save: typeof record = record) {
+  return async (req: ApiRequest, res: ApiResponse) => {
     const pending: Promise<void>[] = [];
     const status = res.status.bind(res);
     res.status = (code: number) => {
       const out = status(code);
       if (code >= 500 && out && typeof out.json === 'function') {
         const json = out.json.bind(out);
-        out.json = (body: any) => {
+        out.json = (body: { error?: unknown; message?: unknown; code?: unknown; detail?: unknown } | null) => {
           pending.push(save(route, code, String(body?.error || body?.message || '') + (body?.code ? ` [${body.code}]` : '') + (body?.detail ? ` · ${String(body.detail)}` : ''), req));
           return json(body);
         };

@@ -46,7 +46,7 @@ export function ProfileCard() {
     if (!name.trim()) return setNameState({ error: 'Ad boş olamaz.' });
     setNameState({ busy: true });
     try { await saveMyProfile(name, user.preferences || {}); await refresh(); setNameState({ notice: 'Adınız kaydedildi.' }); }
-    catch (err: any) { setNameState({ error: plainMessage(err, 'Ad kaydedilemedi.') }); }
+    catch (err) { setNameState({ error: plainMessage(err, 'Ad kaydedilemedi.') }); }
   };
   const savePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,7 +100,7 @@ export function TextSizeCard() {
       await saveMyProfile(user.name, cleanPreferences({ ...user.preferences, textSize: size }));
       await refresh();
       setState({ notice: 'Yazı boyutu kaydedildi; bu hesapla girdiğiniz her cihazda kullanılır.' });
-    } catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
+    } catch (err) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
   return (
     <section className={card}>
@@ -138,7 +138,7 @@ export function DefaultsCard() {
     setState({ busy: true });
     // The text size is saved by its own card; keep whatever it holds now.
     try { await saveMyProfile(user.name, cleanPreferences({ ...prefs, textSize: user.preferences?.textSize })); await refresh(); setState({ notice: 'Varsayılanlar kaydedildi; yeni sorularda kullanılacak.' }); }
-    catch (err: any) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
+    catch (err) { setState({ error: plainMessage(err, 'İşlem tamamlanamadı.') }); }
   };
 
   return (

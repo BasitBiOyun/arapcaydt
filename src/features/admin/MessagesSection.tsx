@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ChatCircleText, UsersThree } from '@phosphor-icons/react';
 import { BulkMessage } from '../messages/BulkMessage';
 import { Conversation } from '../messages/Conversation';

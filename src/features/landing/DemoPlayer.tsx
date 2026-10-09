@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pause, Play } from '@phosphor-icons/react';
 import { renderQuestionVideoFrame, outroSeconds } from '../video/engine/renderer';
 import { DEMO_PLAN } from './demoPlan';

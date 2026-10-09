@@ -3,18 +3,9 @@ import { AnnotationRegion, VideoAction, VideoConfig } from '../../types';
 import { outroSeconds, renderQuestionVideoFrame } from './engine/renderer';
 import { clock } from '../question-editor/workflow';
 import type { FitRect } from './engine/types';
+import { Play, Pause, ArrowCounterClockwise, CornersOut } from '@phosphor-icons/react';
 // The drawing tools (and their large drag library) load only where marks are edited, not for playback.
 const PreviewEditOverlay = lazy(() => import('./PreviewEditOverlay').then(m => ({ default: m.PreviewEditOverlay })));
-import { 
-  Play, 
-  Pause, 
-  ArrowCounterClockwise, 
-  CornersOut, 
-  Desktop, 
-  DeviceMobile,
-  Clock,
-  Sparkle
-} from '@phosphor-icons/react';
 
 /** Preview speeds a teacher can step through when checking a video. */
 export const PREVIEW_SPEEDS = [1, 1.25, 1.5, 1.75, 2];

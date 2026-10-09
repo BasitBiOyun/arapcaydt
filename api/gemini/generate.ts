@@ -1,3 +1,4 @@
+import { messageOf, type ApiRequest, type ApiResponse } from '../../server/http.js';
 import { isProjectId, ownedAssetPath } from '../../server/projectAudio.js';
 import { logged } from '../../server/errorLog.js';
 import { createHash } from 'node:crypto';
@@ -118,8 +119,8 @@ export async function saveGeneratedAudio(memberId: string, projectId: string, te
       const signedUrl = (await signAssets(db, [path])).get(path);
       if (!signedUrl) { failure = 'oynatma bağlantısı oluşturulamadı'; continue; }
       return { path, signedUrl };
-    } catch (error: any) {
-      failure = error?.message || 'ağ hatası';
+    } catch (error) {
+      failure = messageOf(error) || 'ağ hatası';
     }
   }
   throw new StoreError(`Gemini sesi depoya kaydedilemedi: ${failure}`);
@@ -175,7 +176,7 @@ function failedUsage(attempts: Attempt[], characters: number): UsageEvent[] {
   return attempts.map(a => ({ kind: 'gemini_tts', state: 'failed', detail: usageDetail(a.model, a.status, a.daily, a.quota, a.detail), characters, keySource: a.keySource }));
 }
 
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member = await requireMember(req, res);
   if (!member) return;
   if (req.method !== 'POST') {
@@ -277,7 +278,7 @@ async function handler(req: any, res: any) {
         let storeNote = '';
         try {
           stored = await saveGeneratedAudio(member.user.id, projectId, text, audio.bytes, audio.extension, audio.mimeType);
-        } catch (error: any) {
+        } catch (error) {
           // The voice exists: the browser gets it and stores it with the project instead.
           if (!(error instanceof StoreError)) throw error;
           storeNote = ` (depo: ${error.message}; ses tarayıcıya gönderildi)`;
@@ -298,8 +299,8 @@ async function handler(req: any, res: any) {
           keySource: lane.source,
           lowerModel: model !== GEMINI_MODELS[0],
         });
-      } catch (error: any) {
-        attempts.push({ model, status: 502, detail: error?.message || 'Ağ hatası', keySource: lane.source });
+      } catch (error) {
+        attempts.push({ model, status: 502, detail: messageOf(error) || 'Ağ hatası', keySource: lane.source });
       }
     }
   }

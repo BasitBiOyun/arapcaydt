@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ArrowRight, BookOpenText, CheckCircle, ClockCounterClockwise, FilmStrip, ImageSquare, Lock, PencilLine,
   Stack, TextAa, Waveform,

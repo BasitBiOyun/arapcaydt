@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/plugins/timeline';
 import { ArrowCounterClockwise, ArrowsOutLineHorizontal, Check, DotsThree, HandPalm, ListBullets, MagnifyingGlassMinus, MagnifyingGlassPlus, Microphone, Pause, Play, PlusCircle, Stop, WarningCircle, X } from '@phosphor-icons/react';

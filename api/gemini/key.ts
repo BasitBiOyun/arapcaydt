@@ -1,3 +1,4 @@
+import type { ApiRequest, ApiResponse } from '../../server/http.js';
 import { requireMember, serviceDatabase } from '../../server/auth.js';
 import { logged } from '../../server/errorLog.js';
 import {
@@ -37,10 +38,10 @@ export function keySaveMessage(error: { code?: string; message?: string }, admin
  * encrypted on the server and never sent back to any browser; only its last
  * four characters are shown.
  */
-async function handler(req: any, res: any) {
+async function handler(req: ApiRequest, res: ApiResponse) {
   const member = await requireMember(req, res);
   if (!member) return;
-  if (!['GET', 'POST', 'DELETE'].includes(req.method)) {
+  if (!['GET', 'POST', 'DELETE'].includes(req.method || '')) {
     res.setHeader('Allow', 'GET, POST, DELETE');
     return res.status(405).json({ error: 'Method not allowed' });
   }
