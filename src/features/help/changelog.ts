@@ -8,6 +8,34 @@ export interface NewsEntry { id: string; date: string; title: string; groups: { 
 
 export const NEWS: NewsEntry[] = [
   {
+    id: '2026-10-09',
+    date: '9 Ekim 2026',
+    title: 'Seslendirmede adım adım ilerleme',
+    groups: [
+      {
+        title: 'Seslendirme',
+        items: [
+          { text: 'Seslendirme sürerken sağda hangi aşamada olduğu görünür: soru kaydediliyor, ses üretiliyor (uzun metinde kaçıncı bölüm), birleştiriliyor, kelime zamanları alınıyor. Ne kadar süredir beklediğiniz ve olağan süre de yazar.', help: 'seslendirme' },
+        ],
+      },
+      {
+        title: 'Video ve tarayıcı',
+        items: [
+          { text: 'Tarayıcınız video hazırlayamıyorsa (bazı Safari ve iPad sürümleri) stüdyo bunu son adımda değil, daha açılırken söyler. Videoyu bilgisayarda güncel Chrome ya da Edge ile indirebilirsiniz.', help: 'video-indir' },
+          { text: '**İşaretleri otomatik hazırla** penceresinde yalnız gerçekten yapılan üç aşama görünür: görsel okunuyor, çözüm metnindeki elemeler bulunuyor, işaretler sesle eşleştiriliyor.', help: 'isaretler' },
+        ],
+      },
+      {
+        title: 'Daha sade ve hızlı',
+        items: [
+          { text: 'İngilizce teknik hata mesajları yerine ne yapmanız gerektiğini söyleyen kısa Türkçe mesajlar çıkar.' },
+          { text: 'Stüdyo daha hızlı açılır: bazı sayfalar ve çizim araçları ilk kullandığınızda yüklenir.' },
+          { text: '**Ayarlar**’daki **Durumu Yenile** düğmesi artık sonucu yazar.', help: 'ayarlar' },
+        ],
+      },
+    ],
+  },
+  {
     id: '2026-10-08',
     date: '8 Ekim 2026',
     title: 'Seslendirme mesajları sadeleşti',

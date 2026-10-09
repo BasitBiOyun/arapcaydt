@@ -43,7 +43,7 @@ const STAGES: StageDefinition[] = [
     id: 'SOLUTION_ANALYSIS',
     activeText: 'Çözüm planı ve şık elemeleri çözümleniyor...',
     completedText: 'Çözüm planı ve elemeler hazırlandı',
-    pendingText: 'Çözüm semantik analizi',
+    pendingText: 'Çözüm metnindeki elemeleri bulma',
   },
   {
     id: 'TIMESTAMP_MATCHING',

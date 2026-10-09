@@ -79,7 +79,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     title: 'Ses adımı: tam rehber',
     summary: 'Çözüm metniniz Türkçe ve Arapça olarak seslendirilir. Sesi dinler, yanlış okunan yer varsa yalnız o cümleyi düzeltir ve onaylarsınız. Bütün sesi yeniden üretmek son çaredir.',
     steps: [
-      { text: '**3 Ses** adımına geçin. Henüz ses yoksa sağda iki seçenek vardır: **Seslendirme Oluştur** (stüdyo okur) ve **MP3 Yükle** (kendi kaydınız). **Seslendirme Oluştur**’a basın. Ses birkaç saniye ile bir iki dakika arasında hazırlanır; bu sırada sayfayı kapatmayın.', image: 'ses-olustur', alt: 'Seslendirme Oluştur ve MP3 Yükle düğmeleri' },
+      { text: '**3 Ses** adımına geçin. Henüz ses yoksa sağda iki seçenek vardır: **Seslendirme Oluştur** (stüdyo okur) ve **MP3 Yükle** (kendi kaydınız). **Seslendirme Oluştur**’a basın. Ses birkaç saniye ile bir iki dakika arasında hazırlanır; bu sırada sayfayı kapatmayın. Hazırlanırken sağda hangi aşamada olduğu (soru kaydediliyor, ses üretiliyor, birleştiriliyor, kelime zamanları alınıyor) ve ne kadar süredir beklediğiniz görünür.', image: 'ses-olustur', alt: 'Seslendirme Oluştur ve MP3 Yükle düğmeleri' },
       { text: 'Ses hazır olunca sorunun altında **Ses şeridi** açılır. Üstte sesin dalgası, altında çözümünüzün her cümlesi bir kutucuk olarak durur. Kutucuk, o cümlenin seste okunduğu yerdedir. Arapça cümleler bej, Türkçe cümleler mavi renktedir.' },
       { text: '**Oynat**’a basıp sesi baştan sona dinleyin. O an okunan cümle hem şeritte çerçeveyle hem de sorunun altında yazı olarak görünür. Dalganın üstünde bir yere tıklarsanız ses oradan devam eder.', image: 'ses-onay', alt: 'Ses şeridinde Oynat ve sağda Bu Sesi Kullan' },
       { text: 'Yanlış okunan bir yer duyduğunuz anda **Burada hata var**’a basın. Ses durur ve az önce okunan cümle seçilir (koyu kırmızı olur). Seçili cümle şeridin altında yazılı görünür; **Dinle** ile yalnız o cümleyi dinleyebilirsiniz. Hatayı duymadan da bir cümlenin kutucuğuna tıklayarak seçebilirsiniz.', image: 'sesi-duzelt', alt: 'Burada hata var, seçili cümle ve Yeniden seslendir' },
@@ -164,7 +164,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     title: 'İşaretler adımı: tam rehber',
     summary: 'Çarpı, tik, çerçeve, altı çizgi ve vurgular sesle aynı anda çıkar. Stüdyo bunları metninizden ve seslendirmeden kendisi yerleştirir; siz videoyu izler, yalnız yanlış olanı düzeltirsiniz.',
     steps: [
-      { text: '**4 İşaretler** adımında ilk kez **İşaretleri otomatik hazırla**’ya basın. Stüdyo soru görselini okur (şıkları ve Arapça ifadeleri bulur), metninizden hangi şıkkın ne zaman eleneceğini çıkarır ve her işareti seste söylendiği ana yerleştirir. Birkaç saniye sürer.' },
+      { text: '**4 İşaretler** adımında ilk kez **İşaretleri otomatik hazırla**’ya basın. Stüdyo soru görselini okur (şıkları ve Arapça ifadeleri bulur), metninizden hangi şıkkın ne zaman eleneceğini çıkarır ve her işareti seste söylendiği ana yerleştirir. Pencerede bu üç aşama sırayla işaretlenir. Birkaç saniye sürer.' },
       { text: 'Ekranda üstte videonun önizlemesi, altında ayarlar satırı ve **Zaman şeridi** vardır. Önizlemede ▶ ile videoyu izleyin; 1× … 2× düğmeleriyle daha hızlı izleyebilirsiniz.', image: 'isaretler', alt: 'Önizleme ve işaret araçları' },
       { text: 'Yanlış bir şey görürseniz **Burada hata var**’a basın: video durur ve az önce çıkan işaretin kutusu görselde seçilir.' },
       { text: 'Video durunca görsel düzenlenebilir olur. Bir kutuya ya da işarete tıklayınca yanında küçük bir çubuk açılır: işaretleri ve saatleri, şık kutularında **Şık** harfleri, kopyala, yapıştır ve sil düğmeleri buradadır.', image: 'isaret-secili', alt: 'Seçili kutu ve çubuğu' },
@@ -274,7 +274,7 @@ export const HELP_TOPICS: HelpTopic[] = [
       { text: '**Video bilgileri** bölümünü açınca sorunun başlığı, koleksiyonu, soru numarası, konusu, doğru cevabı ve süresi görünür; **Kopyala** ile yükleme formuna yapıştırabilirsiniz.' },
       { text: 'İndirilen soru **Tamamlandı** olarak işaretlenir ve kontrol listelerinden çıkar; Sorularım’da yanında “✓ Tamamlandı” yazar. Değişiklik yapmak isterseniz **Düzenlemeye geri aç**’a basın, bitince yeniden indirin. Videoyu daha önce indirdiyseniz **tamamlandı olarak işaretleyin** bağlantısını kullanın.' },
     ],
-    tips: ['Altyazıları, soru boyutunu ve sondaki “Doğru cevap” kapanış kartını önizlemenin altındaki seçeneklerden açıp kapatabilirsiniz.', 'Bütün videoların sesi indirilirken aynı seviyeye getirilir: kısık kaydedilmiş bir MP3 de, yüksek bir ses de videoda aynı yükseklikte duyulur. Önizlemede ses kaydedildiği gibi çalar.'],
+    tips: ['Video bilgisayarınızın tarayıcısında hazırlanır. Tarayıcınız video hazırlayamıyorsa (bazı Safari ve iPad sürümleri) stüdyo daha açılırken en üstte sarı bir uyarı gösterir; soruyu yine hazırlayabilirsiniz ama videoyu bilgisayarda güncel Chrome ya da Edge ile indirin.', 'Altyazıları, soru boyutunu ve sondaki “Doğru cevap” kapanış kartını önizlemenin altındaki seçeneklerden açıp kapatabilirsiniz.', 'Bütün videoların sesi indirilirken aynı seviyeye getirilir: kısık kaydedilmiş bir MP3 de, yüksek bir ses de videoda aynı yükseklikte duyulur. Önizlemede ses kaydedildiği gibi çalar.'],
   },
   {
     id: 'soru-listesi',
