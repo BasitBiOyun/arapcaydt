@@ -87,7 +87,7 @@ jobs:
           exit 1
       - if: steps.anahtar.outputs.var == 'true'
         name: Vercel ayarlarını al
-        run: npx --yes vercel@60.1.3 pull --yes --environment=production --token="$VERCEL_TOKEN"
+        run: npx --yes vercel@60.1.3 pull --yes --environment=production --debug --token="$VERCEL_TOKEN" 2>&1 | grep -viE "authorization|bearer" ; exit ${PIPESTATUS[0]}
       - if: steps.anahtar.outputs.var == 'true'
         name: Derle
         run: npx --yes vercel@60.1.3 build --prod --token="$VERCEL_TOKEN"
