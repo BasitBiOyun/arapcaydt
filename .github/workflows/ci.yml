@@ -58,6 +58,27 @@ jobs:
           node-version: 22
           cache: npm
       - if: steps.anahtar.outputs.var == 'true'
+        name: Vercel kimliklerini doğrula
+        # Says in plain words which of the three secrets is wrong (no id or token is printed).
+        run: |
+          api() { curl -s -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com$1"; }
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID")
+          [ "$code" = 200 ] && exit 0
+          user=$(api /v2/user | jq -r '.user.id // empty')
+          [ -z "$user" ] && { echo "::error::VERCEL_TOKEN geçersiz ya da süresi dolmuş."; exit 1; }
+          teams=$(api /v2/teams | jq -r '.teams[]?.id')
+          if ! printf '%s\n' "$user" $teams | grep -qx "$VERCEL_ORG_ID"; then
+            echo "::error::VERCEL_ORG_ID bu anahtarın eriştiği hesaplardan hiçbirine ait değil."
+          fi
+          for team in $teams; do
+            if [ "$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$team")" = 200 ]; then
+              [ "$team" = "$VERCEL_ORG_ID" ] || echo "::error::Proje başka bir ekipte: VERCEL_ORG_ID olarak projenin bulunduğu ekibin Team ID'si girilmeli."
+              exit 1
+            fi
+          done
+          echo "::error::VERCEL_PROJECT_ID bu anahtarla bulunamadı (proje kimliği yanlış ya da anahtar başka bir ekip için)."
+          exit 1
+      - if: steps.anahtar.outputs.var == 'true'
         name: Vercel ayarlarını al
         run: npx --yes vercel@60.1.3 pull --yes --environment=production --token="$VERCEL_TOKEN"
       - if: steps.anahtar.outputs.var == 'true'
