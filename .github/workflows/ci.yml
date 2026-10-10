@@ -1,7 +1,9 @@
 name: Kontrol
 
 # Every push to main (and every PR) runs the same checks a contributor runs locally.
-# It never blocks Vercel: a red run only says something broke.
+# When they pass on main, the site is published to Vercel from here (the repo moved to another
+# GitHub account and Vercel's own Git link could not follow it). Publishing needs three repo
+# secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID; without them it is skipped.
 on:
   push:
     branches: [main]
@@ -34,3 +36,33 @@ jobs:
         run: npm test
       - name: Derleme
         run: npm run build
+
+  yayin:
+    needs: kontrol
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Vercel anahtarları var mı
+        id: anahtar
+        run: echo "var=${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}" >> "$GITHUB_OUTPUT"
+      - if: steps.anahtar.outputs.var == 'true'
+        uses: actions/checkout@v4
+      - if: steps.anahtar.outputs.var == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.anahtar.outputs.var == 'true'
+        name: Vercel ayarlarını al
+        run: npx --yes vercel@60.1.3 pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - if: steps.anahtar.outputs.var == 'true'
+        name: Derle
+        run: npx --yes vercel@60.1.3 build --prod --token="$VERCEL_TOKEN"
+      - if: steps.anahtar.outputs.var == 'true'
+        name: Yayınla
+        run: npx --yes vercel@60.1.3 deploy --prebuilt --prod --token="$VERCEL_TOKEN"
