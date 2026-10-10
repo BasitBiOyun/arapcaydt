@@ -69,6 +69,11 @@ jobs:
             # The CLI needs the project's own account id; a personal "Vercel ID" in its place fails to load the project.
             [ "$owner" = "$VERCEL_ORG_ID" ] || echo "::notice::VERCEL_ORG_ID projenin hesabıyla aynı değil; projenin hesabı kullanılıyor."
             echo "VERCEL_ORG_ID=$owner" >> "$GITHUB_ENV"
+            # The CLI also reads the account itself; a token limited to one project cannot.
+            if [ "$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com/v2/user)" != 200 ]; then
+              echo "::error::VERCEL_TOKEN yalnız projeyi görebiliyor; Vercel aracı için hesabın tamamına yetkili (Full Account) bir anahtar gerekir."
+              exit 1
+            fi
             exit 0
           fi
           user=$(api /v2/user | jq -r '.user.id // empty')
@@ -87,7 +92,7 @@ jobs:
           exit 1
       - if: steps.anahtar.outputs.var == 'true'
         name: Vercel ayarlarını al
-        run: npx --yes vercel@60.1.3 pull --yes --environment=production --debug --token="$VERCEL_TOKEN" 2>&1 | grep -viE "authorization|bearer" ; exit ${PIPESTATUS[0]}
+        run: npx --yes vercel@60.1.3 pull --yes --environment=production --token="$VERCEL_TOKEN"
       - if: steps.anahtar.outputs.var == 'true'
         name: Derle
         run: npx --yes vercel@60.1.3 build --prod --token="$VERCEL_TOKEN"
