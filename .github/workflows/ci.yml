@@ -43,7 +43,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
@@ -59,11 +58,19 @@ jobs:
           cache: npm
       - if: steps.anahtar.outputs.var == 'true'
         name: Vercel kimliklerini doğrula
-        # Says in plain words which of the three secrets is wrong (no id or token is printed).
+        # Says in plain words which of the three secrets is wrong (no id or token is printed), and
+        # hands the CLI the account the project really belongs to.
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         run: |
           api() { curl -s -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com$1"; }
-          code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID")
-          [ "$code" = 200 ] && exit 0
+          owner=$(api "/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID" | jq -r '.accountId // empty')
+          if [ -n "$owner" ]; then
+            # The CLI needs the project's own account id; a personal "Vercel ID" in its place fails to load the project.
+            [ "$owner" = "$VERCEL_ORG_ID" ] || echo "::notice::VERCEL_ORG_ID projenin hesabıyla aynı değil; projenin hesabı kullanılıyor."
+            echo "VERCEL_ORG_ID=$owner" >> "$GITHUB_ENV"
+            exit 0
+          fi
           user=$(api /v2/user | jq -r '.user.id // empty')
           [ -z "$user" ] && { echo "::error::VERCEL_TOKEN geçersiz ya da süresi dolmuş."; exit 1; }
           teams=$(api /v2/teams | jq -r '.teams[]?.id')
